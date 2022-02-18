@@ -410,7 +410,7 @@ namespace Nucleus.Coop
                     titleBarButtons.BackColor = BackColor;
                 }
 
-            
+                
 
                 getId = new ScriptDownloader(this);
                 downloadPrompt = new DownloadPrompt(hubHandler, this, null, true);
@@ -430,6 +430,24 @@ namespace Nucleus.Coop
                 splayer.Play();
             }
 
+            string[] ncFiles =  { "DotNetZip.dll", "EasyHook.dll", "EasyHook32.dll", "EasyHook32Svc.exe", "EasyHook64.dll", "EasyHook64Svc.exe", "EasyHookSvc.exe", "Jint.dll", "NAudio.dll", "Newtonsoft.Json.dll", "Nucleus.Gaming.dll", "Nucleus.Hook32.dll", "Nucleus.Hook64.dll", "Nucleus.IJx64.exe", "Nucleus.IJx86.exe", "Nucleus.SHook32.dll", "Nucleus.SHook64.dll", "openxinput1_3.dll", "ProtoInputHooks32.dll", "ProtoInputHooks64.dll", "ProtoInputHooks64.dll", "ProtoInputHost.exe", "ProtoInputIJ32.exe", "ProtoInputIJ64.exe", "ProtoInputIJP32.dll", "ProtoInputIJP64.dll", "ProtoInputLoader32.dll", "ProtoInputLoader64.dll", "ProtoInputUtilDynamic32.dll", "ProtoInputUtilDynamic64.dll", "SharpDX.DirectInput.dll", "SharpDX.dll", "SharpDX.XInput.dll", "StartGame.exe", "WindowScrape.dll" };
+            
+            foreach (string file in ncFiles)
+            {
+                if (!File.Exists(Path.Combine(Application.StartupPath, file)))
+                {
+                    MessageBox.Show(file + " is missing from your Nucleus Co-op installation folder.", "Missing file(s)", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    Process[] processes = Process.GetProcessesByName("NucleusCoop");
+
+                    foreach (Process NucleusCoop in processes)
+                    {
+                        NucleusCoop.Kill();
+                    }
+                }
+            }
+              
+
             if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\covers")))//Doing this where other folders get created/re-created would be better
             {
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\covers")));
@@ -438,12 +456,9 @@ namespace Nucleus.Coop
             {
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\screenshots")));
             }
-
-            if (offline == "Off")
-            {
-                CheckNetCon();
-            }
-
+       
+            CheckNetCon();
+            
             CenterToScreen();
 
             DPIManager.Register(this);
