@@ -388,10 +388,10 @@ namespace Nucleus.Coop
             this.btn_dlFromHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_dlFromHub.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_dlFromHub.ForeColor = System.Drawing.Color.Transparent;
-            this.btn_dlFromHub.Location = new System.Drawing.Point(355, 7);
+            this.btn_dlFromHub.Location = new System.Drawing.Point(348, 4);
             this.btn_dlFromHub.Margin = new System.Windows.Forms.Padding(0);
             this.btn_dlFromHub.Name = "btn_dlFromHub";
-            this.btn_dlFromHub.Size = new System.Drawing.Size(17, 15);
+            this.btn_dlFromHub.Size = new System.Drawing.Size(24, 22);
             this.btn_dlFromHub.TabIndex = 42;
             this.btn_dlFromHub.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolTip1.SetToolTip(this.btn_dlFromHub, "Download handlers (.nc) directly from the handlers hub, use the extract handler o" +
