@@ -1,15 +1,13 @@
 # Nucleus Co-op 2.0 
 
-![alt text](https://repository-images.githubusercontent.com/459159665/a4bddd2a-c47a-485c-9f18-55165b217533)
-
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
 
-This repo is a new and improved official version of the Nucleus Co-op application and is part of the [SplitScreen.Me github organization](https://www.splitscreen.me/docs/what-is-splitscreen-me). This new version is based off of the [Nucleus Co-op Alpha 8 Mod build](https://github.com/ZeroFox5866/nucleuscoop) and features a ton of enhancements, such as:
+This repo is a new and improved official version of the Nucleus Co-op application and is part of the [SplitScreen.Me](https://www.splitscreen.me/docs/what-is-splitscreen-me) github organization. This new version is based off of the [Nucleus Co-op Alpha 8 Mod build](https://github.com/ZeroFox5866/nucleuscoop) and features a ton of enhancements, such as:
 
-- Beautiful and customizable new overhauled user interface with support for themes, game covers and screenshots.
+- New overhauled and customizable user interface with support for themes, game covers and screenshots.
 - Full support for different monitor scales.
 - Massive increase to the amount of compatible games, 400+ as of now.
-- Much more customization (via game handlers).
+- Much more game handlers customization.
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
 
