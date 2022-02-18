@@ -18,13 +18,11 @@ View the full list of features/changes and changelog in the Readme.txt inside Nu
 # Disclaimer
 Nucleus Co-op was originally created by Lucas Assis. This official new Nucleus Co-op version is endorsed by Lucas. 
 
-Github link to the original project: https://github.com/lucasassislar/nucleuscoop
-Official website: https://www.splitscreen.me/docs/what-is-splitscreen-me
-
-Subscribe the official Nucleus Co-op subreddit: https://www.reddit.com/r/nucleuscoop/   
-Nucleus Co-op FAQ on website: https://www.splitscreen.me/docs/faq
-
-Join the official Nucleus Co-op Discord: https://discord.gg/QDUt8HpCvr
+- Github link to the original project: https://github.com/lucasassislar/nucleuscoop
+- Official website: https://www.splitscreen.me/docs/what-is-splitscreen-me
+- Subscribe the official Nucleus Co-op subreddit: https://www.reddit.com/r/nucleuscoop/ 
+- Nucleus Co-op FAQ: https://www.splitscreen.me/docs/faq
+- Join the official Nucleus Co-op Discord: https://discord.gg/QDUt8HpCvr
 
 # How does Nucleus Co-op work?
 Nucleus Co-op symlinks and opens multiple instances of the same game files (sometimes mutex killing is required for that, among other methods) that will only answer to one specific gamepad (we do this via Nucleus Co-op custom xinput libraries or xinput plus dlls) and connects those instances via LAN or online multiplayer emulation (Goldberg, Nemirtingas emulators etc.), all while making sure the game windows have focus so they can be playable at the same time with multiple controllers or that the instances are playable even in the background. Nucleus then resizes, removes borders and repositions the game windows so you can have synthetic split-screen to play locally with your friends!
