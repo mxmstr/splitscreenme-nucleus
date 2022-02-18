@@ -6,6 +6,7 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 
 - New overhauled and customizable user interface with support for themes, game covers and screenshots.
 - Full support for different monitor scales.
+- Improved input handling (left to right).
 - Massive increase to the amount of compatible games, 400+ as of now.
 - Much more game handlers customization.
 - Many quality of life improvements and ton of bug fixes.
