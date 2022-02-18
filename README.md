@@ -4,7 +4,7 @@
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
 
-This repo is a new and improved official version of the Nucleus Co-op application. This new version is based off of the [Nucleus Co-op Alpha 8 Mod build](https://github.com/ZeroFox5866/nucleuscoop) and feautures a ton of enhancements, such as:
+This repo is a new and improved official version of the Nucleus Co-op application and is part of the [SplitScreen.Me banner](https://www.splitscreen.me/docs/what-is-splitscreen-me). This new version is based off of the [Nucleus Co-op Alpha 8 Mod build](https://github.com/ZeroFox5866/nucleuscoop) and feautures a ton of enhancements, such as:
 
 - Beautiful and customizable new overhauled user interface with support for themes, game covers and screenshots.
 - Full support for different monitor scales.
@@ -40,7 +40,7 @@ Note that Nucleus does not add multiplayer or co-op to single player games, the 
 - Microsoft Visual C++ 2015-2019 Redistributable (both x86 and x64)
 
 # How can you contribute?
-Please report any bugs you may find and provide any feedback you have regarding the mod. I am always open to suggestions and I want to make split-screen available for every game, for everyone! Don't forget to create game handlers and share!
+Please report any bugs you may find and provide any feedback you have regarding the app. I am always open to suggestions and I want to make split-screen available for every game, for everyone! Don't forget to create game handlers and share!
 
 You can find me on the Nucleus subreddit/discord as well as the Splitscreen Dreams discord, a special community created specifically for making games non-split-screen games split-screen. 
 
@@ -50,9 +50,11 @@ Thank you ^_^
 
 # Credits
 - Original Nucleus Co-op Project: [Lucas Assis (lucasassislar)](https://github.com/lucasassislar)  
-- Official Nucleus Co-op Alpha 8 Mod : [ZeroFox](https://github.com/ZeroFox5866)  
-- Proto Input, multiple keyboards/mice: [Ilyaki](https://github.com/Ilyaki)  
+- Nucleus Co-op Alpha 8 Mod : [ZeroFox](https://github.com/ZeroFox5866)  
+- Proto Input, USS, multiple keyboards/mice & hooks: [Ilyaki](https://github.com/Ilyaki)  
+- Official Nucleus Co-op 2.0: [Mikou27](https://github.com/Mikou27) 
 - Website & handler API: [r-mach](https://github.com/r-mach)  
+- Handlers development and general testing: [Talos91](https://github.com/Talos910), PoundlandBacon, Pizzo, dr.oldboi and many more.
   
 Additional credits to all original developers of third party utilities Nucleus uses:
 - Mr_Goldberg ([Goldberg Emulator](https://gitlab.com/Mr_Goldberg/goldberg_emulator))
@@ -65,5 +67,7 @@ Additional credits to all original developers of third party utilities Nucleus u
 - VerGreeneyes ([DirectXWrapper](https://community.pcgamingwiki.com/files/file/87-the-bards-tale-2005-windowed-mode/))
 - wizark952 (dinput8 blocker)
 - Nemirtingas ([Epic\Galaxy Emulator](https://gitlab.com/Nemirtingas) & [OpenXinput](https://github.com/Nemirtingas/OpenXinput))
+- Josivan88 (SplitCalculator)
 
-Special thanks to: Talos91, PoundlandBacon, dr.oldboi, Pizzo, Snailed It and the rest of the Splitscreen Dreams discord community.
+Special thanks to the SplitScreenDreams discord community, this wouldn't have been possible without all your contributions.
+
