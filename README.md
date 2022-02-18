@@ -13,10 +13,10 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
 
-View the full list of features/changes and changelog in Readme.txt in releases.
+View the full list of features/changes and changelog in the Readme.txt inside Nucleus.
 
 # Disclaimer
-Nucleus Co-op was originally created by Lucas Assis. This official Nucleus Co-op version is endorsed by Lucas. 
+Nucleus Co-op was originally created by Lucas Assis. This official new Nucleus Co-op version is endorsed by Lucas. 
 
 Github link to the original project: https://github.com/lucasassislar/nucleuscoop
 Official website: https://www.splitscreen.me/docs/what-is-splitscreen-me
