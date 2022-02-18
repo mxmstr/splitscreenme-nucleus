@@ -18,7 +18,7 @@ View the full list of features/changes and changelog in the Readme.txt inside Nu
 Nucleus Co-op was originally created by Lucas Assis.
 
 - Github link to the original project: https://github.com/lucasassislar/nucleuscoop
-- Official website: https://www.splitscreen.me/docs/what-is-splitscreen-me- 
+- Official website: https://www.splitscreen.me/docs/what-is-splitscreen-me/
 - Nucleus Co-op FAQ: https://www.splitscreen.me/docs/faq
 - Subscribe the official Nucleus Co-op subreddit: https://www.reddit.com/r/nucleuscoop/ 
 - Join the official Nucleus Co-op Discord server: https://discord.gg/QDUt8HpCvr
