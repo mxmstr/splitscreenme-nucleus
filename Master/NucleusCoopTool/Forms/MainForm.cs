@@ -499,6 +499,15 @@ namespace Nucleus.Coop
             }
 
             float newFontSize = Font.Size * scale;
+            float mainButtonFrameFont = mainButtonFrame.Font.Size*1.0f;
+
+            if (scale > 1.0f)
+            {
+                foreach (Control button in mainButtonFrame.Controls)
+                {
+                    button.Font = new Font("Franklin Gothic Medium", mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Point, 0);
+                }
+            }
             scriptAuthorTxt.Font = new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
             txt_GameDesc.Font =  new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
             

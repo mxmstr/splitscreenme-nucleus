@@ -388,12 +388,12 @@ namespace Nucleus.Coop
             this.btn_dlFromHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_dlFromHub.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_dlFromHub.ForeColor = System.Drawing.Color.Transparent;
-            this.btn_dlFromHub.Location = new System.Drawing.Point(348, 4);
+            this.btn_dlFromHub.Location = new System.Drawing.Point(346, 3);
             this.btn_dlFromHub.Margin = new System.Windows.Forms.Padding(0);
             this.btn_dlFromHub.Name = "btn_dlFromHub";
             this.btn_dlFromHub.Size = new System.Drawing.Size(24, 22);
             this.btn_dlFromHub.TabIndex = 42;
-            this.btn_dlFromHub.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_dlFromHub.Text = "                                ";
             this.toolTip1.SetToolTip(this.btn_dlFromHub, "Download handlers (.nc) directly from the handlers hub, use the extract handler o" +
         "ption to install them.");
             this.btn_dlFromHub.UseVisualStyleBackColor = false;
@@ -1032,7 +1032,7 @@ namespace Nucleus.Coop
             this.btn_Download.FlatAppearance.BorderSize = 0;
             this.btn_Download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Download.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Download.Location = new System.Drawing.Point(374, 2);
+            this.btn_Download.Location = new System.Drawing.Point(374, 3);
             this.btn_Download.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Download.Name = "btn_Download";
             this.btn_Download.Size = new System.Drawing.Size(159, 22);
@@ -1051,7 +1051,7 @@ namespace Nucleus.Coop
             this.btn_Extract.FlatAppearance.BorderSize = 0;
             this.btn_Extract.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Extract.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Extract.Location = new System.Drawing.Point(538, 2);
+            this.btn_Extract.Location = new System.Drawing.Point(538, 3);
             this.btn_Extract.Name = "btn_Extract";
             this.btn_Extract.Size = new System.Drawing.Size(110, 22);
             this.btn_Extract.TabIndex = 0;
@@ -1084,7 +1084,7 @@ namespace Nucleus.Coop
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearch.Location = new System.Drawing.Point(653, 2);
+            this.btnSearch.Location = new System.Drawing.Point(653, 3);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(106, 22);
@@ -1103,7 +1103,7 @@ namespace Nucleus.Coop
             this.btnBack.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btnBack.FlatAppearance.BorderSize = 0;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Location = new System.Drawing.Point(896, 2);
+            this.btnBack.Location = new System.Drawing.Point(896, 3);
             this.btnBack.Margin = new System.Windows.Forms.Padding(2);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(22, 22);
@@ -1123,7 +1123,7 @@ namespace Nucleus.Coop
             this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Play.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Play.ForeColor = System.Drawing.Color.Lime;
-            this.btn_Play.Location = new System.Drawing.Point(922, 1);
+            this.btn_Play.Location = new System.Drawing.Point(922, 2);
             this.btn_Play.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Play.Name = "btn_Play";
             this.btn_Play.Size = new System.Drawing.Size(100, 22);
@@ -1142,7 +1142,7 @@ namespace Nucleus.Coop
             this.btn_Next.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_Next.FlatAppearance.BorderSize = 0;
             this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Next.Location = new System.Drawing.Point(1026, 2);
+            this.btn_Next.Location = new System.Drawing.Point(1026, 3);
             this.btn_Next.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Next.Name = "btn_Next";
             this.btn_Next.Size = new System.Drawing.Size(22, 22);
@@ -1161,7 +1161,7 @@ namespace Nucleus.Coop
             this.btnAutoSearch.FlatAppearance.BorderSize = 0;
             this.btnAutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAutoSearch.Font = new System.Drawing.Font("Franklin Gothic Medium", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAutoSearch.Location = new System.Drawing.Point(763, 2);
+            this.btnAutoSearch.Location = new System.Drawing.Point(763, 3);
             this.btnAutoSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnAutoSearch.Name = "btnAutoSearch";
             this.btnAutoSearch.Size = new System.Drawing.Size(121, 22);

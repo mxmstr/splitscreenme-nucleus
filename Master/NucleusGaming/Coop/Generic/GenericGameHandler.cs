@@ -1734,35 +1734,36 @@ namespace Nucleus.Gaming
 
             if (ini.IniReadValue("Hotkeys", "LockKey") != "Default(End key)")
             {
-                IDictionary<string, int> lockKeys = new Dictionary<string, int>();
-
-                lockKeys.Add("Home", 0x24);
-                lockKeys.Add("Delete", 0x2E);
-                lockKeys.Add("Multiply", 0x6A);
-                lockKeys.Add("F1", 0x70);
-                lockKeys.Add("F2", 0x71);
-                lockKeys.Add("F3", 0x72);
-                lockKeys.Add("F4", 0x73);
-                lockKeys.Add("F5", 0x74);
-                lockKeys.Add("F6", 0x75);
-                lockKeys.Add("F7", 0x76);
-                lockKeys.Add("F8", 0x77);
-                lockKeys.Add("F9", 0x78);
-                lockKeys.Add("F10", 0x79);
-                lockKeys.Add("F11", 0x7A);
-                lockKeys.Add("F12", 0x7B);
-                lockKeys.Add("+", 0xBB);
-                lockKeys.Add("-", 0xBD);
-                lockKeys.Add("Numpad 0", 0x60);
-                lockKeys.Add("Numpad 1", 0x61);
-                lockKeys.Add("Numpad 2", 0x62);
-                lockKeys.Add("Numpad 3", 0x63);
-                lockKeys.Add("Numpad 4", 0x64);
-                lockKeys.Add("Numpad 5", 0x65);
-                lockKeys.Add("Numpad 6", 0x66);
-                lockKeys.Add("Numpad 7", 0x67);
-                lockKeys.Add("Numpad 8", 0x68);
-                lockKeys.Add("Numpad 9", 0x69);
+                IDictionary<string, int> lockKeys = new Dictionary<string, int>
+                {
+                    { "Home", 0x24 },
+                    { "Delete", 0x2E },
+                    { "Multiply", 0x6A },
+                    { "F1", 0x70 },
+                    { "F2", 0x71 },
+                    { "F3", 0x72 },
+                    { "F4", 0x73 },
+                    { "F5", 0x74 },
+                    { "F6", 0x75 },
+                    { "F7", 0x76 },
+                    { "F8", 0x77 },
+                    { "F9", 0x78 },
+                    { "F10", 0x79 },
+                    { "F11", 0x7A },
+                    { "F12", 0x7B },
+                    { "+", 0xBB },
+                    { "-", 0xBD },
+                    { "Numpad 0", 0x60 },
+                    { "Numpad 1", 0x61 },
+                    { "Numpad 2", 0x62 },
+                    { "Numpad 3", 0x63 },
+                    { "Numpad 4", 0x64 },
+                    { "Numpad 5", 0x65 },
+                    { "Numpad 6", 0x66 },
+                    { "Numpad 7", 0x67 },
+                    { "Numpad 8", 0x68 },
+                    { "Numpad 9", 0x69 }
+                };
 
                 foreach (KeyValuePair<string, int> key in lockKeys)
                 {
