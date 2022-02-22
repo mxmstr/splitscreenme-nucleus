@@ -134,6 +134,25 @@ Game.UserProfileSavePathNoCopy = false;			//Do not copy files from original User
 Game.LauncherExeIgnoreFileCheck = false;		//Do not check if Launcher Exe exists in game folder | you will need to provide a relative filepath from game root folder
 Game.ForceLauncherExeIgnoreFileCheck = false;           //Experimental//Force LauncherExeIgnoreFileCheck when game isn't symlinked
 Game.UseNemirtingasGalaxyEmu = false;                   //Automatically set up Nemirtinga's Galaxy Emulator in Nucleus
+
+////////////////////////////////////// 
+NemirtingasGalxyEmu.json edition from a handler example
+
+    var jsonPath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\ngalaxye_settings\\NemirtingasGalaxyEmu.json";
+    var params = [
+    '{',
+    '  "api_version": "1.139.2.0",',
+    '  "enable_overlay": false,',
+    '  "galaxyid": 14549624462898294'+PlayerID+',',
+	'  "language":' + '"' + Context.GogLang + '"' + ',',
+    '  "productid": 2143654691,',
+    '  "username": ' + '"' + Context.Nickname + '"',//must always be added if you edit the json and must be the last line else the emulator will reset all parameters(there is no coma at the end of this line in the json)
+    '}'
+     ];
+    Context.WriteTextFile(jsonPath,params);    
+
+//////////////////////////////////////
+
 Game.UseNemirtingasEpicEmu = false;			//Automatically set up Nemirtinga's Epic Emulator in Nucleus
 Game.EpicEmuArgs = false;				//When using Nemirtinga's Epic Emulator, use pre-defined parameters " -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epicusername=" + <Player Nickname here> + " -epicuserid=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + "-epiclocale=" + EpicLang"
 Game.AltEpicEmuArgs = false;                            //Optional. When using Nemirtinga's Epic Emulator, use pre-defined parameters + Set NickName as epic id, only to use with game that do not use epic id to start or connect(Set clever save names if the game use the epic id to name saves ex: Tiny Tina's Assault On Dragon Keep)" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epicusername=" + <Player Nickname here> + " -epicuserid="+ <Player Nickname here> + "-epiclocale=" + EpicLang"
@@ -276,9 +295,9 @@ Context.DeleteRegKey(string baseKey, string sKey, string subKey)				//Delete a r
 Context.EditRegKey(string baseKey, string sKey, string name, object data, RegType type)	//Edit a registry key for current user, baseKey can either be "HKEY_LOCAL_MACHINE" or "HKEY_CURRENT_USER"
 	EditRegKey uses a custom registry data type to use, by using Nucleus.RegType.DWord for example. The last word can be of the same name of RegistryValueKind enum.
 Context.Nickname										//Use this in a game handler to get the player's nickname
-Context.EpicLang                                                                                //A start argument that get user Epic language parameter //ex: Context.StartArguments = ' -AlwaysFocus -nosplash -nomoviestartup -nomouse' + Context.EpicLang; (if Epic Language is set to "en" return => "-epiclocale=en", Should not be necessary in most cases)
-Context.GamepadGuid                                                                             //Get the raw gamepad guid
-
+Context.EpicLang                                        //Can be use to edit NemirtingasEpicEmu.json  //Can be use in start argument to setup user Epic language parameter //ex: Context.StartArguments = ' -AlwaysFocus -nosplash -nomoviestartup -nomouse' + Context.EpicLang; (if Epic Language is set to "en" return => "-epiclocale=en", Should not be necessary in most cases)
+Context.GamepadGuid                                     //Get the raw gamepad guid
+Context.GogLang                                         //Can be use to edit NemirtingasGalaxyEmu.json from handlers
 Context.GamepadId										//Useful to make sure that controllers are correctly assigned to the player they are meant to be assigned.
 
 Context.x360ceGamepadGuid									//Get the x360ce formatted gamepad guid
