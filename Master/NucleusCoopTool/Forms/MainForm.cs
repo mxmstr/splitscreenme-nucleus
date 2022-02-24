@@ -508,6 +508,7 @@ namespace Nucleus.Coop
                     button.Font = new Font("Franklin Gothic Medium", mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Point, 0);
                 }
             }
+
             scriptAuthorTxt.Font = new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
             txt_GameDesc.Font =  new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
             

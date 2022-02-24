@@ -462,19 +462,6 @@ namespace Nucleus.Gaming
             return context;
         }
 
-        //public string GetEpicLanguage()
-        //{
-        //    IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-
-        //    string EpicLang = ini.IniReadValue("Misc", "EpicLang"); ;
-
-        //    if (EpicLang == "" )
-        //    {
-        //        EpicLang = "en";
-        //    }
-
-        //    return EpicLang;
-        //}
         private string EpicLang;
         
         public string GetEpicLanguage()
