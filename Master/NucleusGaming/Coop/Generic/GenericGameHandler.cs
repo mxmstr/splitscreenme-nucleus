@@ -1606,7 +1606,7 @@ namespace Nucleus.Gaming
                     }
                 }
             }
-
+         
             gen.SetPlayerList(players);
 
             gen.SetProtoInputValues();
@@ -8666,7 +8666,6 @@ namespace Nucleus.Gaming
 
                     string jsonPath = Path.Combine(instanceExeFolder, "ngalaxye_settings\\NemirtingasGalaxyEmu.json");
 
-                    string oldjsonPath = Path.Combine(instanceExeFolder, "NemirtingasGalaxyEmu.json");//for older eos emu version
 
                     Log("Writing emulator settings NemirtingasGalaxyEmu.json");
 
