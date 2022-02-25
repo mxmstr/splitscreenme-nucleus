@@ -11,7 +11,6 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 - New player and input order processing (left to right).
 - New player nickname assignation.
 - New optional splitscreen divisions setting (visually  similar to native splitscreen games).
-- Fixed multi-monitor vertical setup drawing to not overlap input device list.
 - Massive increase to the amount of compatible games, 400+ as of now.
 - Much more game handlers customization.
 - Many quality of life improvements and ton of bug fixes.
