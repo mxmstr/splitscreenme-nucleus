@@ -10,7 +10,7 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 - Full support for different monitor scales, UI scaling issues at more than 100% desktop scale are finally fixed (and all other issues/bugs related to it).
 - New player and input order processing (left to right).
 - New player nickname assignation.
-- New optional splitscreen divisions setting (visually  similar to a native splitscreen games).
+- New optional splitscreen divisions setting (visually  similar to native splitscreen games).
 - Fixed multi-monitor vertical setup drawing to not overlap input device list.
 - Massive increase to the amount of compatible games, 400+ as of now.
 - Much more game handlers customization.
