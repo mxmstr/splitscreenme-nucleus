@@ -16,7 +16,7 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
 
-View the full list of features/changes and changelog in the Readme.txt inside Nucleus.
+View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op 2.0 here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 
 # Disclaimer
 Nucleus Co-op was originally created by Lucas Assis.
@@ -33,7 +33,7 @@ Nucleus Co-op symlinks and opens multiple instances of the same game files (some
 Note that Nucleus does not add multiplayer or co-op to single player games, the game needs to already have some form of online or LAN multiplayer, or another way to connect the instances, like via mods for example.
 
 # Installation:
-1. Download the latest release. 
+1. Download the latest [release](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
 
 # Prerequisites:
