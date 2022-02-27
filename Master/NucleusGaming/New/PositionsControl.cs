@@ -298,6 +298,10 @@ namespace Nucleus.Coop
 
         private void GamepadPollTimer_Tick(object state)/* object sender, EventArgs e)*/
         {
+            if (profile == null)
+            {
+                return;
+            }
             gamePadPressed = -1;
             try
             {
