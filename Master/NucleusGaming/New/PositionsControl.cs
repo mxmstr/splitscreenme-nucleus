@@ -298,7 +298,13 @@ namespace Nucleus.Coop
 
         private void GamepadPollTimer_Tick(object state)/* object sender, EventArgs e)*/
         {
+            if (profile == null)
+            {
+                return;
+            }
+
             gamePadPressed = -1;
+
             try
             {
                 List<PlayerInfo> data = profile.PlayerData;
@@ -312,13 +318,14 @@ namespace Nucleus.Coop
             }
             catch (Exception)
             {
-                //UpdatePlayers();
                 if (InvokeRequired)
                 {
                     Invoke(new MethodInvoker(UpdatePlayers));
                     Invoke(new MethodInvoker(Refresh));
+                   
                     return;
                 }
+             
                 gamePadPressed = -1;
             }
 
@@ -333,15 +340,8 @@ namespace Nucleus.Coop
             {
                 if (player.DInputJoystick.IsDisposed)
                 {
-                    //player.DInputJoystick.Dispose();
                     return;
                 }
-
-                //if (player.DInputJoystick.Poll().IsFailure)
-                //{
-                //    //player.DInputJoystick.Dispose();
-                //    return;
-                //}
 
                 JoystickState state = player.DInputJoystick.GetCurrentState();
 
@@ -377,7 +377,7 @@ namespace Nucleus.Coop
         }
 
 
-        private void GamepadTimer_Tick(object state)/* object sender, EventArgs e)*/
+        private void GamepadTimer_Tick(object state)
         {
             if (insideGamepadTick)
             {
@@ -395,7 +395,7 @@ namespace Nucleus.Coop
             }
 
             List<PlayerInfo> data = profile.PlayerData;
-            //List<string> instanceIds = new List<string>();
+
             bool changed = false;
 
             GenericGameInfo g = game.Game;
@@ -407,7 +407,7 @@ namespace Nucleus.Coop
             if (g.Hook.DInputEnabled || g.Hook.XInputReroute || g.ProtoInput.DinputDeviceHook)
             {
 
-                IList<DeviceInstance> devices = dinput.GetDevices(DeviceClass.GameControl /*SlimDX.DirectInput.DeviceType.Gamepad*/, DeviceEnumerationFlags.AllDevices);
+                IList<DeviceInstance> devices = dinput.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AllDevices);
 
                 // first search for disconnected gamepads
                 for (int j = 0; j < data.Count; j++)
@@ -418,18 +418,9 @@ namespace Nucleus.Coop
                         continue;
                     }
 
-                    //if (!p.DInputJoystick.Acquire().IsFailure)
-                    //{
-                    //    if (!p.DInputJoystick.Poll().IsFailure)
-                    //    {
-                    //        JoystickState state = p.DInputJoystick.GetCurrentState();
-                    //    }
-                    //}
-
                     bool foundGamepad = false;
                     for (int i = 0; i < devices.Count; i++)
                     {
-                        //DeviceInstance device = devices[i];
                         if (devices[i].InstanceGuid == p.GamepadGuid && i == data[j].GamepadId)
                         {
                             foundGamepad = true;
@@ -449,7 +440,6 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < devices.Count; i++)
                 {
-                    //DeviceInstance device = devices[i];
                     bool already = false;
 
                     // see if this gamepad is already on a player
@@ -482,7 +472,6 @@ namespace Nucleus.Coop
                     }
                     player.GamepadProductGuid = devices[i].ProductGuid;
                     player.GamepadGuid = devices[i].InstanceGuid;
-                    //instanceIds.Add(device.InstanceGuid.ToString());
                     player.GamepadName = devices[i].InstanceName;
                     player.IsDInput = true;
                     player.GamepadId = i;
@@ -492,10 +481,6 @@ namespace Nucleus.Coop
                     int end = hid.LastIndexOf("#{");
                     string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
                     player.HIDDeviceID = fhid;
-                    //if (ini.IniReadValue("ControllerMapping", "Player_"+ (i + 1)) != "")
-                    //{
-                    //    player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                    //}
                     player.DInputJoystick.Acquire();
 
                     data.Add(player);
@@ -508,15 +493,11 @@ namespace Nucleus.Coop
                 // XInput is only really enabled inside Nucleus Coop when
                 // we have 4 or less players, else we need to force DirectInput to grab everything
 
-                // foreach (var xinput in xinputControllers)
-                //  xinput.openXinput = g.ProtoInput.UseOpenXinput;
-
                 for (int j = 0; j < data.Count; j++)
                 {
                     PlayerInfo p = data[j];
                     if (p.IsXInput && !p.IsFake)
                     {
-                        // var c = xinputControllers[p.GamepadId];
                         OpenXinputController c = new OpenXinputController(g.ProtoInput.UseOpenXinput, p.GamepadId);
                         if (!c.IsConnected)
                         {
@@ -530,7 +511,7 @@ namespace Nucleus.Coop
                 }
 
                 IList<DeviceInstance> devices = dinput.GetDevices(
-                SharpDX.DirectInput.DeviceType.Gamepad /*SlimDX.DirectInput.DeviceType.Gamepad*//*DeviceClass.GameController*/, DeviceEnumerationFlags.AttachedOnly);
+                SharpDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
 
                 int cOffset = 0;
                 int numControllers = g.ProtoInput.UseOpenXinput ? 32 : 4;
@@ -577,7 +558,7 @@ namespace Nucleus.Coop
                         for (int x = 0; x < devices.Count; x++)
                         {
                             DeviceInstance device = devices[x];
-                            //if(!instanceIds.Contains(device.InstanceGuid.ToString()))
+                        
                             if ((x + cOffset) == i)
                             {
                                 //instanceIds.Add(device.InstanceGuid.ToString());
@@ -591,14 +572,8 @@ namespace Nucleus.Coop
                                 int end = hid.LastIndexOf("#{");
                                 string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
                                 player.HIDDeviceID = fhid;
-                                //if (ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)) != "")
-                                //{
-                                //    player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                                //}
-
                                 player.DInputJoystick.Acquire();
 
-                                //dinput.Dispose();
                                 break;
                             }
                         }
@@ -613,7 +588,6 @@ namespace Nucleus.Coop
 
             if (changed)
             {
-                //UpdatePlayers();
                 if (InvokeRequired)
                 {
                     Invoke(new MethodInvoker(UpdatePlayers));
@@ -637,7 +611,6 @@ namespace Nucleus.Coop
             profile.PlayerData.Add(player);
         }
 
-       // private bool setupPrimary = false;
         private void UpdateScreens()
         {          
             if (screens == null)
@@ -653,9 +626,7 @@ namespace Nucleus.Coop
                 {
                     return;
                 }
-
-                //Display[] scr = ScreensUtil.AllScreensParams();
-              
+          
                 // screens got updated, need to reflect in our window
                 screens = newScreens;
                 totalBounds = newBounds;
@@ -681,32 +652,16 @@ namespace Nucleus.Coop
             {
                 screensArea = new RectangleF(10, 50 + Height * 0.2f + 10, Width - 20, Height * 0.5f);
             }
-
-            //if (totalBounds.Width > totalBounds.Height)
-            //{
-            // horizontal monitor setup
-            
+          
             scale = screensArea.Width / (float)totalBounds.Width;
             if (totalBounds.Height * scale > screensArea.Height)
             {
                 scale = screensArea.Height / (float)totalBounds.Height;
             }
             
-            //}
-            //else
-            //{
-            //    // vertical monitor setup
-            //    scale = screensArea.Height / (float)totalBounds.Height;
-            //    if (totalBounds.Width * scale > screensArea.Width)
-            //    {
-            //        scale = screensArea.Width / (float)totalBounds.Width;
-            //    }
-            //}
-
             Rectangle scaledBounds = RectangleUtil.Scale(totalBounds, scale);
             scaledBounds.X = (int)screensArea.X;
             scaledBounds.Y = (int)screensArea.Y;
-            //scaledBounds = RectangleUtil.Center(scaledBounds, RectangleUtil.Float(0, this.Height * 0.25f, this.Width, this.Height * 0.7f));
 
             int minY = 0;
             for (int i = 0; i < screens.Length; i++)
@@ -714,9 +669,6 @@ namespace Nucleus.Coop
                 UserScreen screen = screens[i];
 
                 Rectangle bounds = RectangleUtil.Scale(screen.MonitorBounds, scale);
-               // Console.WriteLine(bounds);
-               // float boundW = scaledBounds.Width * 1.30f;
-                //float boundH = scaledBounds.Height * 1.30f;
 
                 Rectangle uiBounds = new Rectangle(bounds.X, bounds.Y + scaledBounds.Y,bounds.Width, bounds.Height);
                 screen.UIBounds = uiBounds;
@@ -747,9 +699,6 @@ namespace Nucleus.Coop
         public override void Initialize(UserGameInfo game, GameProfile profile)
         {
             base.Initialize(game, profile);
-
-            //gamepadTimer.Enabled = true;
-            //gamepadPollTimer.Enabled = true;
 
             if (gamepadTimer == null)
             {
@@ -794,7 +743,6 @@ namespace Nucleus.Coop
                         GamepadId = 99
                     };
                     playerData.Add(kbPlayer);
-                    //keyboardPlayer = true;
                 }
 
                 //Raw mice/keyboards
@@ -970,10 +918,6 @@ namespace Nucleus.Coop
                         int verLines = int.Parse(ini.IniReadValue("CustomLayout", "VerticalLines"));
                         int maxPlayers = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
 
-                        //if (horLines == 0)
-                        //    horLines = 1;
-                        //if (verLines == 0)
-                        //    verLines = 1;
                         horLines++;
                         verLines++;
 
@@ -1220,8 +1164,6 @@ namespace Nucleus.Coop
                                     break;
                             }
 
-                            //int halfWidth = screen.MonitorBounds.Width / 2;
-                            //int halfHeight = screen.MonitorBounds.Height / 2;
                             int halfWidth = screen.MonitorBounds.Width / verLines;
                             int halfHeight = screen.MonitorBounds.Height / horLines;
 
@@ -1243,47 +1185,11 @@ namespace Nucleus.Coop
                                         }
 
                                         PlayerInfo other = players[j];
-                                        //if (other.ScreenIndex == p.ScreenIndex)
-                                        //{
-                                        //    continue;
-                                        //}
-
-                                        //if(other.ScreenIndex == -1)
-                                        //{
-                                        //    continue;
-                                        //}
-
-                                        //if (other.MonitorBounds.Y == p.MonitorBounds.Y)
-                                        //{
-                                        //    hasLeftRightSpace = false;
-                                        //}
-                                        //if (other.MonitorBounds.X == p.MonitorBounds.X)
-                                        //{
-                                        //    hasTopBottomSpace = false;
-                                        //}
-
-                                        //if (other.EditBounds.Y <= 50)
-                                        //{
-                                        //    continue;
-                                        //}
-
-                                        //if(p.MonitorBounds.Y == other.MonitorBounds.Y && p.MonitorBounds.Width + other.MonitorBounds.X + other.MonitorBounds.Width > )
-                                        //{
-                                        //    hasLeftRightSpace = false;
-                                        //}
 
                                         if (other.MonitorBounds == new Rectangle(0, 0, 0, 0))
                                         {
                                             continue;
                                         }
-
-                                        //if(p.MonitorBounds == other.MonitorBounds && (p.IsRawKeyboard && !other.IsRawMouse || p.IsRawMouse && !other.IsRawKeyboard))
-                                        //{
-                                        //if (p.IsRawMouse)
-                                        //{
-                                        //    continue;
-                                        //}
-                                        //}
 
                                         if (((p.IsKeyboardPlayer && !p.IsRawKeyboard && !p.IsRawMouse) || p.IsXInput || p.IsDInput || (p.IsRawKeyboard && !other.IsRawMouse) || (p.IsRawMouse && !other.IsRawKeyboard)) && (p.MonitorBounds.Y == other.MonitorBounds.Y || (p.MonitorBounds.Y < other.MonitorBounds.Height && p.MonitorBounds.Y > other.MonitorBounds.Y)))
                                         {
@@ -1294,25 +1200,6 @@ namespace Nucleus.Coop
                                             hasTopBottomSpace = false;
                                         }
 
-                                        //if (p.EditBounds.Y == other.EditBounds.Y - other.EditBounds.Height || p.EditBounds.Y == other.EditBounds.Y + other.EditBounds.Height)
-                                        //{
-                                        //    hasLeftRightSpace = false;
-                                        //}
-                                        //if (p.EditBounds.X == other.EditBounds.X - other.EditBounds.Width || p.EditBounds.X == other.EditBounds.X + other.EditBounds.Width)
-                                        //{
-                                        //    hasTopBottomSpace = false;
-                                        //}
-
-                                        //if (other.MonitorBounds.X == screen.MonitorBounds.X + halfWidth &&
-                                        //    other.MonitorBounds.Height == screen.MonitorBounds.Height)
-                                        //{
-                                        //    hasLeftRightSpace = false;
-                                        //}
-                                        //if (other.MonitorBounds.X == screen.MonitorBounds.X &&
-                                        //    other.MonitorBounds.Width == screen.MonitorBounds.Width)
-                                        //{
-                                        //    hasTopBottomSpace = false;
-                                        //}
                                     }
 
                                     if (hasLeftRightSpace)

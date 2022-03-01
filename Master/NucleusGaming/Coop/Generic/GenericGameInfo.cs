@@ -138,9 +138,7 @@ namespace Nucleus.Gaming
         public bool GoldbergIgnoreSteamAppId;
         public bool UseSteamStubDRMPatcher;
         public bool HardlinkGame;
-        //public bool RunAsAdmin;
         public bool SetForegroundWindowElsewhere;
-        //public bool GoldbergLobbyConnect;
         public bool PreventWindowDeactivation;
         public bool SymlinkFolders;
         public bool CreateSteamAppIdByExe;
@@ -180,7 +178,6 @@ namespace Nucleus.Gaming
         public bool PromptBetweenInstancesEnd;
         public bool IgnoreDeleteFilesPrompt;
         public bool ChangeIPPerInstance;
-        //public string NetworkInterface = null;
         public string FlawlessWidescreen;
         public string[] RenameAndOrMoveFiles;
         public string[] DeleteFiles;
@@ -317,8 +314,6 @@ namespace Nucleus.Gaming
             JsFileName = fileName;
             Folder = folderPath;
 
-            //StreamReader reader = new StreamReader(str);
-            //js = reader.ReadToEnd();
             js = "";
             using (StreamReader sr = new StreamReader(str))
             {
@@ -326,11 +321,6 @@ namespace Nucleus.Gaming
                 {
                     
                     string line = sr.ReadLine();
-                    // if (line.StartsWith("Hub."))
-                    // {
-                    //     continue;
-                    // }
-                    // else
                     {
                         js += "\r\n" + line + "\r\n";                   
                     }

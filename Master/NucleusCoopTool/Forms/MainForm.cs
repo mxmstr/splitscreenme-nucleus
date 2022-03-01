@@ -304,7 +304,7 @@ namespace Nucleus.Coop
                 InitializeComponent();
 
                 var DisposeTimer = new System.Windows.Forms.Timer();//dispose splash screen timer
-              
+                var animLoopTimer = new System.Windows.Forms.Timer();//dispose splash screen timer
                 if (ini.IniReadValue("Advanced", "Font") != "")
                 {
                     btn_gameOptions.Font = new Font("Segoe UI", float.Parse((ini.IniReadValue("Advanced", "Font"))) - 1.75f);
@@ -312,7 +312,8 @@ namespace Nucleus.Coop
 
                 if (Splash_On)
                 {
-                    DisposeTimer.Interval = (3500); //millisecond
+                    DisposeTimer.Interval = (4700); //millisecond
+                    animLoopTimer.Interval = (3500); //millisecond
                     splash.Image = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme + "\\splash.gif"));
                 }
                 else
@@ -322,7 +323,10 @@ namespace Nucleus.Coop
                 }
 
                 DisposeTimer.Tick += new EventHandler(TimerTick);
+                animLoopTimer.Tick += new EventHandler(AnimLoopTimerTick);
+
                 DisposeTimer.Start();
+                animLoopTimer.Start();
 
                 //Controls Pictures
                 BackColor = TitleBarColor;
@@ -378,10 +382,8 @@ namespace Nucleus.Coop
                 Settings settingsForm = new Settings(this, positionsControl);
                 positionsControl.Paint += PositionsControl_Paint;
 
-                //Log("positions control");
                 settingsForm.RegHotkeys(this);
 
-                //Log("referencing controls");
                 controls = new Dictionary<UserGameInfo, GameControl>();
                 gameManager = new GameManager(this);
 
@@ -409,8 +411,6 @@ namespace Nucleus.Coop
                 {
                     titleBarButtons.BackColor = BackColor;
                 }
-
-                
 
                 getId = new ScriptDownloader(this);
                 downloadPrompt = new DownloadPrompt(hubHandler, this, null, true);
@@ -464,7 +464,10 @@ namespace Nucleus.Coop
             DPIManager.Register(this);
             DPIManager.AddForm(this);           
         }
-
+        private void AnimLoopTimerTick(Object myObject, EventArgs myEventArgs)
+        {
+           splash.Enabled = false;     
+        }
         private void TimerTick(Object myObject, EventArgs myEventArgs)
         {
             if (connected)
@@ -472,7 +475,6 @@ namespace Nucleus.Coop
                 btn_noHub.Visible = false;
                 btn_downloadAssets.Enabled = true;
                 btn_Download.Enabled = true;
-                //DisposeTimer.Dispose();
             }
             else
             {
@@ -482,13 +484,13 @@ namespace Nucleus.Coop
             }
 
             if (Splash_On && !stopSleep)
-            {              
-                Thread.Sleep(1200);
+            {
                 splash.Dispose();
                 Controls.Remove(splash);
                 stopSleep = true;
             }
         }
+      
 
         public void UpdateSize(float scale)
         {
@@ -1701,7 +1703,6 @@ namespace Nucleus.Coop
                                 }
                             }
 
-                            //Path.GetDirectoryName(DocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents"
                         }
 
                         if (i == 9)
@@ -2359,12 +2360,7 @@ namespace Nucleus.Coop
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-           // offline = ini.IniReadValue("Dev", "OfflineMod");
-
-            //if (offline == "Off")
-            //{
-                CheckNetCon();
-           // }
+           CheckNetCon();
         }
 
         private void button1_Click_2(object sender, EventArgs e)

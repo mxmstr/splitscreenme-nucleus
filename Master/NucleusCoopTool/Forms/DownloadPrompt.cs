@@ -34,6 +34,11 @@ namespace Nucleus.Coop.Forms
                 Handler = handler;
                 mainForm = mf;
 
+                if (handler == null)
+                {
+                    return;
+                }
+
                 lbl_Handler.Text = zipFile;
                 BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme + "\\other_backgrounds.jpg"));
                 if (zipFileName == null)

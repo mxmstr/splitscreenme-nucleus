@@ -25,7 +25,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
-//using EasyHook;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -178,15 +177,12 @@ namespace Nucleus.Gaming
         static extern bool CreateProcess(
             string lpApplicationName,
             string lpCommandLine,
-            //ref SECURITY_ATTRIBUTES lpProcessAttributes,
-            //ref SECURITY_ATTRIBUTES lpThreadAttributes,
             IntPtr lpProcessAttributes,
             IntPtr lpThreadAttributes,
             bool bInheritHandles,
             uint dwCreationFlags,
             IntPtr lpEnvironment,
             string lpCurrentDirectory,
-            //IntPtr lpStartupInfo,
             [In] ref STARTUPINFO lpStartupInfo,
             out PROCESS_INFORMATION lpProcessInformation);
 
@@ -512,7 +508,6 @@ namespace Nucleus.Gaming
         {
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
             startInfo.FileName = "cmd.exe";
             startInfo.Arguments = "/C rd /S /Q  \"" + file + "\"";
             process.StartInfo = startInfo;
@@ -740,23 +735,9 @@ namespace Nucleus.Gaming
                                 if (Directory.Exists(SourcePath))
                                 {
                                     Directory.CreateDirectory(DestinationPath);
-
-                                    //foreach (string dirPath in Directory.GetDirectories(SourcePath, "*",
-                                    //    SearchOption.AllDirectories))
-                                    //    Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
-
-                                    //foreach (string newPath in Directory.GetFiles(SourcePath, "*.*",
-                                    //    SearchOption.AllDirectories))
-                                    //    File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
-
                                     string cmd = "xcopy \"" + SourcePath + "\" \"" + DestinationPath + "\" /E/H/C/I/Y/R";
                                     CmdUtil.ExecuteCommand(SourcePath, out int exitCode, cmd, true);
-                                    //while (exitCode != 0)
-                                    //{
-                                    //    Thread.Sleep(25);
-                                    //}
                                     Log($"Command: {cmd}, exit code: {exitCode}");
-                                    //Log(string.Format("Copying {0}, exit code {1}", subFolder, exitCode));
                                 }
 
                             }
@@ -783,8 +764,7 @@ namespace Nucleus.Gaming
                             {
                                 nucUsers.Add(username);
                                 try
-                                {
-                                    //string username = $"nucleusplayer{pc}";
+                                {     
                                     PrincipalContext principalContext = new PrincipalContext(ContextType.Machine);
                                     UserPrincipal userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
                                     if (userPrincipal != null)
@@ -793,8 +773,6 @@ namespace Nucleus.Gaming
                                         nucSIDs.Add(userSid.ToString());
                                         DeleteProfile(userSid.ToString(), null, null);
                                         userPrincipal.Delete();
-                                        //context.DeleteRegKey("HKEY_LOCAL_MACHINE", "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList", userSid.ToString());
-
                                         string keyName = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList";
                                         using (RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName, true))
                                         {
@@ -1176,9 +1154,6 @@ namespace Nucleus.Gaming
 
             try
             {
-                // if there's a keyboard player, re-order play list
-                //hasKeyboardPlayer = players.Any(c => c.IsKeyboardPlayer == true);
-
                 for (int pl = 0; pl < players.Count; pl++)
                 {
                     if (players[pl].IsKeyboardPlayer)
@@ -1187,23 +1162,7 @@ namespace Nucleus.Gaming
                         break;
                     }
                 }
-
-                //if (hasKeyboardPlayer)
-                //{
-                //    bool IsKeyboard(PlayerInfo p)
-                //    {
-                //        return p.IsRawKeyboard || p.IsRawMouse || p.IsKeyboardPlayer;
-                //    }
-
-                //    if (gen.KeyboardPlayerFirst)
-                //    {
-                //        players.Sort((x, y) => IsKeyboard(y).CompareTo(IsKeyboard(x)));   ////Commenté par bibi
-                //    }
-                //    else
-                //    {
-                //        players.Sort((x, y) => IsKeyboard(x).CompareTo(IsKeyboard(y)));
-                //    }
-                //}
+           
             }
             catch (Exception ex)
             {
@@ -1354,15 +1313,13 @@ namespace Nucleus.Gaming
                 {
                     lblTxt = "Starting shut down procedures";
                 }
-                //private Label statusLbl;
+
                 Label statusLbl = new Label
                 {
                     Text = lblTxt,
                     Width = 560,
                     Height = 93,
                     AutoSize = false,
-                    //ppDesc.MaximumSize = new Size(ppDesc.Width, 0);
-                    //ppDesc.AutoSize = true;
                     Location = new Point(12, 9),
                     TextAlign = ContentAlignment.MiddleCenter
                 };
@@ -1403,13 +1360,7 @@ namespace Nucleus.Gaming
                             statusForm.TopMost = true;
                             statusForm.TopMost = false;
                             statusForm.TopMost = true;
-                            //statusLbl.BeginInvoke(new Action(() =>
-                            //{
                             statusLbl.Text = logMsg;
-                            //}));
-                            //statusLbl.Text = logMessage;
-                            //statusForm.Invoke();
-
                             Application.DoEvents();
 
                             WindowScrape.Static.HwndInterface.MakeTopMost(statusForm.Handle);
@@ -1426,23 +1377,17 @@ namespace Nucleus.Gaming
             }
             catch { }
 
-            //Application.Run();
         }
 
         private static DISP_CHANGE SetResolution(int w, int h, string deviceName)
         {
-            //long RetVal = 0;
 
             DEVMODE dm = new DEVMODE();
 
             dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
-
-            //dm.dmDeviceName = deviceName;
             dm.dmPelsWidth = w;
             dm.dmPelsHeight = h;
-
             dm.dmFields = DEVMODE.DM_PELSWIDTH | DEVMODE.DM_PELSHEIGHT;
-            //RetVal = ChangeDisplaySettings(ref dm, 0);
             DISP_CHANGE result = ChangeDisplaySettingsEx(deviceName, ref dm, IntPtr.Zero, (uint)(ChangeDisplaySettingsFlags.CDS_UPDATEREGISTRY | ChangeDisplaySettingsFlags.CDS_RESET), IntPtr.Zero);
             ChangeDisplaySettingsEx(null, IntPtr.Zero, IntPtr.Zero, 0, IntPtr.Zero);
 
@@ -1452,7 +1397,6 @@ namespace Nucleus.Gaming
         public static string EnumerateSupportedModes(Display displayDevice)
         {
             DEVMODE dm = new DEVMODE();
-            //mode.dmSize = (short)Marshal.SizeOf(mode);
             dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
             dm.dmDeviceName = displayDevice.DeviceName;
 
