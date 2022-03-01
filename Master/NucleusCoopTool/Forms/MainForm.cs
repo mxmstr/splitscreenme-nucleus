@@ -296,11 +296,12 @@ namespace Nucleus.Coop
                 string[] rgb_MenuStripBackColor = theme.IniReadValue("Colors", "MenuStripBackColor").Split(',');
                 string[] rgb_MenuStripFontColor = theme.IniReadValue("Colors", "MenuStripFontColor").Split(',');
                 string[] rgb_TitleBarColor = theme.IniReadValue("Colors", "TitleBarColor").Split(',');
+                bool BordersOff = Convert.ToBoolean(theme.IniReadValue("Misc", "DisableBorders"));
                 Color TitleBarColor = Color.FromArgb(Convert.ToInt32(rgb_TitleBarColor[0]), Convert.ToInt32(rgb_TitleBarColor[1]), Convert.ToInt32(rgb_TitleBarColor[2]));
                 Color MouseOverBackColor = Color.FromArgb(Convert.ToInt32(rgb_MouseOverColor[0]), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
                 Color MenuStripBackColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripBackColor[0]), Convert.ToInt32(rgb_MenuStripBackColor[1]), Convert.ToInt32(rgb_MenuStripBackColor[2]));
                 Color MenuStripFontColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripFontColor[0]), Convert.ToInt32(rgb_MenuStripFontColor[1]), Convert.ToInt32(rgb_MenuStripFontColor[2]));
-               
+
                 InitializeComponent();
 
                 var DisposeTimer = new System.Windows.Forms.Timer();//dispose splash screen timer
@@ -313,7 +314,7 @@ namespace Nucleus.Coop
                 if (Splash_On)
                 {
                     DisposeTimer.Interval = (4700); //millisecond
-                    animLoopTimer.Interval = (3500); //millisecond
+                    animLoopTimer.Interval = (3400); //millisecond
                     splash.Image = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme + "\\splash.gif"));
                 }
                 else
@@ -367,6 +368,16 @@ namespace Nucleus.Coop
                 btn_dlFromHub.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 gameContextMenuStrip.BackColor = MenuStripBackColor;
                 gameContextMenuStrip.ForeColor = MenuStripFontColor;
+
+
+                if (BordersOff)
+                {
+                    game_listSizer.BorderStyle = BorderStyle.None;
+                    StepPanel.BorderStyle = BorderStyle.None;
+                    rightFrame.BorderStyle = BorderStyle.None;
+                    cover.BorderStyle = BorderStyle.None;
+                    scriptAuthorTxtSizer.BorderStyle = BorderStyle.None;
+                }
 
                 minimizeBtn.Click += new EventHandler(this.minimizeButton);
                 maximizeBtn.Click += new EventHandler(this.maximizeButton);
@@ -512,8 +523,7 @@ namespace Nucleus.Coop
             }
 
             scriptAuthorTxt.Font = new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txt_GameDesc.Font =  new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-            
+            txt_GameDesc.Font =  new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);            
         }
 
         private void PositionsControl_Paint(object sender, PaintEventArgs e)
