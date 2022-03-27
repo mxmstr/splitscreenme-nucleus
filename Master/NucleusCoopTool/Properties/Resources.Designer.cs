@@ -63,26 +63,6 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap blankCover {
-            get {
-                object obj = ResourceManager.GetObject("blankCover", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap border {
-            get {
-                object obj = ResourceManager.GetObject("border", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap close_button {
             get {
                 object obj = ResourceManager.GetObject("close_button", resourceCulture);
@@ -123,16 +103,6 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap edge {
-            get {
-                object obj = ResourceManager.GetObject("edge", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap faq {
             get {
                 object obj = ResourceManager.GetObject("faq", resourceCulture);
@@ -143,49 +113,9 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FormBackground {
-            get {
-                object obj = ResourceManager.GetObject("FormBackground", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap gamepad {
-            get {
-                object obj = ResourceManager.GetObject("gamepad", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap hform {
             get {
                 object obj = ResourceManager.GetObject("hform", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap hform_Background {
-            get {
-                object obj = ResourceManager.GetObject("hform_Background", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icon {
-            get {
-                object obj = ResourceManager.GetObject("icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +133,9 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap keyboard {
+        internal static System.Drawing.Bitmap linksArrow {
             get {
-                object obj = ResourceManager.GetObject("keyboard", resourceCulture);
+                object obj = ResourceManager.GetObject("linksArrow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,39 +143,9 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap left_arrow {
+        internal static System.Drawing.Bitmap linksArrowOpen {
             get {
-                object obj = ResourceManager.GetObject("left_arrow", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap left_arrow_disabled {
-            get {
-                object obj = ResourceManager.GetObject("left_arrow_disabled", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap left_arrow_hover {
-            get {
-                object obj = ResourceManager.GetObject("left_arrow_hover", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap left_arrow_press {
-            get {
-                object obj = ResourceManager.GetObject("left_arrow_press", resourceCulture);
+                object obj = ResourceManager.GetObject("linksArrowOpen", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -256,16 +156,6 @@ namespace Nucleus.Coop.Properties {
         internal static System.Drawing.Bitmap logo {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap lupa {
-            get {
-                object obj = ResourceManager.GetObject("lupa", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,16 +183,6 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap no_hub {
-            get {
-                object obj = ResourceManager.GetObject("no_hub", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap no_image {
             get {
                 object obj = ResourceManager.GetObject("no_image", resourceCulture);
@@ -313,119 +193,9 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap no_keyboard {
-            get {
-                object obj = ResourceManager.GetObject("no_keyboard", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap not_found {
-            get {
-                object obj = ResourceManager.GetObject("not_found", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap not_found_white {
-            get {
-                object obj = ResourceManager.GetObject("not_found_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap opac {
-            get {
-                object obj = ResourceManager.GetObject("opac", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap play {
-            get {
-                object obj = ResourceManager.GetObject("play", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap plus {
-            get {
-                object obj = ResourceManager.GetObject("plus", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap reddit {
             get {
                 object obj = ResourceManager.GetObject("reddit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap refresh_button {
-            get {
-                object obj = ResourceManager.GetObject("refresh_button", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap right_arrow {
-            get {
-                object obj = ResourceManager.GetObject("right_arrow", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap right_arrow_disabled {
-            get {
-                object obj = ResourceManager.GetObject("right_arrow_disabled", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap right_arrow_hover {
-            get {
-                object obj = ResourceManager.GetObject("right_arrow_hover", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap right_arrow_press {
-            get {
-                object obj = ResourceManager.GetObject("right_arrow_press", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -446,16 +216,6 @@ namespace Nucleus.Coop.Properties {
         internal static System.Drawing.Bitmap SplitCalculator {
             get {
                 object obj = ResourceManager.GetObject("SplitCalculator", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap splitscreen_me_logo {
-            get {
-                object obj = ResourceManager.GetObject("splitscreen-me-logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

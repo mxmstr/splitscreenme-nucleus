@@ -20,6 +20,7 @@ namespace Nucleus.Gaming
 
         protected virtual void RemoveFlicker()
         {
+                
                 SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.UserPaint |
@@ -30,7 +31,7 @@ namespace Nucleus.Gaming
         public virtual void Initialize(UserGameInfo game, GameProfile profile)
         {
             this.profile = profile;
-            this.game = game;
+            this.game = game;           
         }
 
         public virtual void Ended()

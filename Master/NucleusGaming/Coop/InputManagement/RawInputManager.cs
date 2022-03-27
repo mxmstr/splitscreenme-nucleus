@@ -135,6 +135,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     IsRawKeyboard = device.deviceInfo.dwType == 1,
                     HIDDeviceID = "T" + device.deviceInfo.dwType + "PID" + device.deviceInfo.hid.dwProductId + "VID" + device.deviceInfo.hid.dwVendorId + "VN" + device.deviceInfo.hid.dwVersionNumber
                 };
+
                 if (player.IsRawMouse)
                 {
                     player.RawMouseDeviceHandle = device.deviceHandle;
@@ -143,8 +144,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 if (player.IsRawKeyboard)
                 {
                     player.RawKeyboardDeviceHandle = device.deviceHandle;
-
                 };
+
                 player.IsKeyboardPlayer = true;
                 yield return player;
             }

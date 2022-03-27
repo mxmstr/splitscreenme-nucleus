@@ -176,7 +176,6 @@ Game.GoldbergIgnoreSteamAppId = false;			//When set to true, Goldberg will not c
 Game.PlayerSteamIDs = [ "1234","5678" ];		//A list of steam IDs to be used instead of the pre-defined ones Nucleuses uses | IDs will be used in order they are placed, i.e. instance 1 will be first non-empty string in array.
 Game.GoldbergExperimentalRename = false;		//Set to true to have Goldberg Experimental rename instanced steam_api(64).dll to cracksteam_api(64).dll.
 Game.GoldbergWriteSteamIDAndAccount = false;		//Force Goldberg to write account_name.txt and user_steam_id.txt | Requires Game.UseGoldberg;
-Game.GoldbergIgnoreFileCheck = false;			//When using Game.UseGoldberg, ignore checking for account_name.txt and user_steam_id.txt.
 
 #################### Smart Steam Emulator ###################
 
@@ -356,7 +355,7 @@ Context.DocumentsRoot                                       //Path to Nucleus do
 Context.DocumentsConfigPath                                 //Relative path from user profile to game's config path | requires Game.DocumentsConfigPath be set.
 Context.DocumentsSavePath                                   //Relative path from user profile to game's save path | requires Game.DocumentsSavePath be set.
 Context.NucleusUserRoot                                     //Path to current players Nucleus environment Windows User root folder.
-
+Context.HandlersFolder                                      //return "NucleusCo-op\handlers" path.
 
 Context.ChangeXmlNodeInnerTextValue(string path, string nodeName, string newValue)		//Edit an XML element (previously only nodes and attributes).
 Context.ReplaceLinesInTextFile(string path, string[] lineNumAndnewValues)			//Replace an entire line; for string array use the format: "lineNum|newValue", the | is required.
@@ -389,7 +388,7 @@ Context.AspectRatioDecimal									//Player's aspect ratio in decimal (e.g. 1777
 Context.FindFiles(string rootFolder, string fileName)						//Return a string array of filenames (and their paths) found that match a pattern you specify.
 Context.CreatedDate(string file, int year, int month, int day)					//Change the creation date of a file.
 Context.ModifiedDate(string file, int year, int month, int day)					//Change the last modified date of a file.
-Context.RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, int secondsToPause)	//Specify additional files to run before launching game. By default will run each additional file once but can specify to run during specific player's instances by prefixing the filepath with #|. Replace # with player number. Can also specify to run files for each player by prefixing filepath with "all|". Optional two extra params, bool run as admin and bool prompt between.
+Context.RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, string customText(optional parameter), int secondsToPauseInbetween, bool showFilePath(optional parameter), bool runAsAdmin(optional parameter), bool promptBetween(optional parameter))	//Specify additional files to run before launching game. By default will run each additional file once but can specify to run during specific player's instances by prefixing the filepath with #|. Replace # with player number. Can also specify to run files for each player by prefixing filepath with "all|".
 Context.ReadRegKey(string baseKey, string sKey, string subKey)					//Return the value of a provided key as a string.
 Context.HandlerGUID
 Context.StartArguments = "";                                                                    //Adds whatever you put into the field as starting parameters for the game's executable in context. For example, in most cases '-windowed' will force windowed mode. Parameters can be chained.

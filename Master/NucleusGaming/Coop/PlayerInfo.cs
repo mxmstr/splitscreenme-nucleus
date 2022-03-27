@@ -31,9 +31,11 @@ namespace Nucleus.Gaming.Coop
         public bool IsXInput;
         public bool IsDInput;
         public bool IsFake;
-
+       // public bool IsInputUsed;
         public bool IsRawMouse;
         public bool IsRawKeyboard;
+        public bool IsInputUsed;
+
         //public IntPtr RawDeviceHandle = (IntPtr)(-1);
         public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
         public IntPtr RawKeyboardDeviceHandle = (IntPtr)(-1);

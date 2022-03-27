@@ -97,7 +97,6 @@ namespace Nucleus.Coop
             this.label2.TabIndex = 2;
             this.label2.Text = "Found Games";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
@@ -110,7 +109,6 @@ namespace Nucleus.Coop
             this.label1.TabIndex = 1;
             this.label1.Text = "Paths to Search";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // closeBtn
             // 
@@ -127,6 +125,8 @@ namespace Nucleus.Coop
             this.closeBtn.TabIndex = 16;
             this.closeBtn.UseVisualStyleBackColor = false;
             this.closeBtn.Click += new System.EventHandler(this.closeButton);
+            this.closeBtn.MouseEnter += new System.EventHandler(this.closeBtn_MouseEnter);
+            this.closeBtn.MouseLeave += new System.EventHandler(this.closeBtn_MouseLeave);
             // 
             // checkBoxSizer2
             // 
@@ -179,7 +179,6 @@ namespace Nucleus.Coop
             this.disksBox.Name = "disksBox";
             this.disksBox.Size = new System.Drawing.Size(220, 236);
             this.disksBox.TabIndex = 0;
-            this.disksBox.SelectedIndexChanged += new System.EventHandler(this.disksBox_SelectedIndexChanged);
             // 
             // txt_Path
             // 
@@ -217,7 +216,6 @@ namespace Nucleus.Coop
             this.txt_Stage.Size = new System.Drawing.Size(105, 19);
             this.txt_Stage.TabIndex = 15;
             this.txt_Stage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txt_Stage.TextChanged += new System.EventHandler(this.txt_Stage_TextChanged);
             // 
             // btn_deselectAll
             // 
@@ -350,7 +348,6 @@ namespace Nucleus.Coop
             this.Text = "Search for Games";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SearchDisksForm_FormClosing);
-            this.Load += new System.EventHandler(this.SearchDisksForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.checkBoxSizer2.ResumeLayout(false);

@@ -18,11 +18,11 @@ using System.Threading;
 using System.Windows.Forms;
 using WindowScrape.Constants;
 using System.Media;
-using System.Net;
 using System.Net.NetworkInformation;
 using Nucleus.Gaming.Coop.Generic;
 using System.Linq;
-using System.ComponentModel;
+using Microsoft.Win32;
+using System.Drawing.Text;
 
 namespace Nucleus.Coop
 {
@@ -31,68 +31,94 @@ namespace Nucleus.Coop
     /// </summary>
     public partial class MainForm : BaseForm, IDynamicSized
     {
+        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+
         public string version = "v2.0";
         private string faq_link = "https://www.splitscreen.me/docs/faq";
-        private Settings settingsForm = null;
-
-        private int currentStepIndex;
-        private bool formClosing;
-        private ContentManager content;
-        private IGameHandler handler;
-
-        private GameManager gameManager;
-        private Dictionary<UserGameInfo, GameControl> controls;
-
-        private SearchDisksForm form;
-
-        private GameControl currentControl;
-        private UserGameInfo currentGameInfo;
-        private GenericGameInfo currentGame;
-        private GameProfile currentProfile;
-        private bool noGamesPresent;
-        private List<UserInputControl> stepsList;
-        private UserInputControl currentStep;
-        private PositionsControl positionsControl;
-        private PlayerOptionsControl optionsControl;
-        private JSUserInputControl jsControl;
-        private Handler hubHandler = null;
-        private int KillProcess_HotkeyID = 1;
-        private int TopMost_HotkeyID = 2;
-        private int StopSession_HotkeyID = 3;
-        private List<string> profilePaths = new List<string>();
-        private List<Control> ctrls = new List<Control>();
-        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-        private Thread handlerThread;
-        private int inst_click = 0;
-        private int GameDesc_click = 0;
-        private int thirdPartytools_click = 0;
-        private bool TopMostToggle = true;
         private string gameDescription;
         protected string api = "https://hub.splitscreen.me/api/v1/";
         private string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        public string ChoosenTheme;
+        public string themePath;
+        public string customFont;
+        public IniFile theme;
+
+        public Form backgroundForm;
+        private Settings settingsForm = null;
+        private ContentManager content;
+        private IGameHandler handler;
+        private GameManager gameManager;
+        private Dictionary<UserGameInfo, GameControl> controls;
+        private SearchDisksForm form;
+        private GameControl currentControl;
+        private UserGameInfo currentGameInfo;
+        private GenericGameInfo currentGame;
+        private GameProfile currentProfile;
+        private AssetsScraper getAssets;
+        private List<UserInputControl> stepsList;
+        private UserInputControl currentStep;
+        public PositionsControl positionsControl;
+        private PlayerOptionsControl optionsControl;
+        private JSUserInputControl jsControl;
+        private Handler hubHandler = null;
         private ScriptDownloader getId;
         private DownloadPrompt downloadPrompt;
-        private Image coverImg;
-        private Image screenshotImg;
+        private SoundPlayer splayer;
+        private int KillProcess_HotkeyID = 1;
+        private int TopMost_HotkeyID = 2;
+        private int StopSession_HotkeyID = 3;
+        private int currentStepIndex;
+
+        private List<string> profilePaths = new List<string>();
+        private List<Control> ctrls = new List<Control>();
+        private List<Form> backgroundForms = new List<Form>();
+
+        private Thread handlerThread;
         public Action<IntPtr> RawInputAction { get; set; }
 
-        private bool currentlyUpdatingScript = false;
-        private Image defBackground;
-        private Image defglowingLine0;
-        private Image defglowingLine1;
-        private AssetsScraper getAssets;
+        private Bitmap defBackground;
+        private Bitmap coverImg;
+        private Bitmap screenshotImg;
+        public Bitmap AppButtons;
         public bool connected;
+        private bool currentlyUpdatingScript = false;
         private bool Splash_On;
-        private bool IntroSound_On;
         private bool stopSleep = false;
-        private string offline;
-        private Color ChoosenColor;
-        public Form hform;
-        //public PictureBox loading;
+        private bool TopMostToggle = true;
+        private bool formClosing;
+        private bool noGamesPresent;
+        private bool NucleusMultiInstances;
+        public bool mouseClick;
+        private bool roundedcorners;
+        public bool useButtonsBorder;
 
-        //private System.Windows.Forms.Timer DisposeTimer;
-        public void CheckNetCon()//should be re-worked
+        private Color ChoosenColor;
+
+        private System.Windows.Forms.Timer DisposeTimer;//dispose splash screen timer
+        private System.Windows.Forms.Timer slideshow;
+        private System.Windows.Forms.Timer loadTimer;
+
+        public string[] rgb_font;
+        public string[] rgb_MouseOverColor;
+        public string[] rgb_MenuStripBackColor;
+        public string[] rgb_MenuStripFontColor;
+        public string[] rgb_TitleBarColor;
+        public string[] rgb_HandlerNoteBackColor;
+        public string[] rgb_HandlerNoteFontColor;
+        public string[] rgb_ButtonsBorderColor;
+        public Color TitleBarColor;
+        public Color MouseOverBackColor;
+        public Color MenuStripBackColor;
+        public Color MenuStripFontColor;
+        public Color ButtonsBorderColor;
+        private Color HandlerNoteBackColor;
+        private Color HandlerNoteFontColor;
+
+        private Point btn_dlFromHubDefLoc;
+        public FileInfo fontPath;
+
+        public void CheckNetCon()
         {
             System.Threading.Tasks.Task.Run(() =>// Run this in another thread to not block UI 
              {
@@ -108,21 +134,57 @@ namespace Nucleus.Coop
                      {
                          this.connected = true;
                          myPing.Dispose();
+                         return;
                      }
                      else
                      {
                          this.connected = false;
                          myPing.Dispose();
+                         return;
                      }
                  }
-                 catch(Exception)
+                 catch (Exception)
                  {
-                     this.connected = false;                   
+                     this.connected = false;
+                     return;
                  }
-
              });
-           
         }
+        void ExportRegistry(string strKey, string filepath)
+        {
+            try
+            {
+                using (Process proc = new Process())
+                {
+                    proc.StartInfo.FileName = "reg.exe";
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.RedirectStandardError = true;
+                    proc.StartInfo.CreateNoWindow = true;
+                    proc.StartInfo.Arguments = "export \"" + strKey + "\" \"" + filepath + "\" /y";
+                    proc.Start();
+                    string stdout = proc.StandardOutput.ReadToEnd();
+                    string stderr = proc.StandardError.ReadToEnd();
+                    proc.WaitForExit();
+                }
+            }
+            catch (Exception)
+            {
+                // handle exception
+            }
+        }
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+           int nLeftRect,     // x-coordinate of upper-left corner
+           int nTopRect,      // y-coordinate of upper-left corner
+           int nRightRect,    // x-coordinate of lower-right corner
+           int nBottomRect,   // y-coordinate of lower-right corner
+           int nWidthEllipse, // width of ellipse
+           int nHeightEllipse // height of ellipse
+        );
+
         public enum MachineType : ushort
         {
             IMAGE_FILE_MACHINE_UNKNOWN = 0x0,
@@ -224,13 +286,21 @@ namespace Nucleus.Coop
                 };
             }
         }
-        //
+
+        public void SoundPlayer(string filePath)
+        {
+            splayer = new SoundPlayer(filePath);
+            splayer.Play();
+            splayer.Dispose();
+        }
+
         public void button_Click(object sender, EventArgs e)
         {
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            SoundPlayer splayer = new SoundPlayer((Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\button_click.wav")));
-            splayer.Play();
-        }  
+            if (mouseClick)
+            {
+                SoundPlayer(themePath + "\\button_click.wav");
+            }
+        }
 
         private void minimizeButton(object sender, EventArgs e)
         {
@@ -239,10 +309,21 @@ namespace Nucleus.Coop
 
         private void maximizeButton(object sender, EventArgs e)
         {
-            clientAreaPanel.SuspendLayout();
+            SuspendLayout();
             WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized;
-            clientAreaPanel.ResumeLayout();
-            
+
+            if (roundedcorners)
+            {
+                if (WindowState == FormWindowState.Maximized)
+                {
+                    Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+                }
+                else
+                {
+                    Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                }
+            }
+            ResumeLayout();
         }
 
         private void closeButton(object sender, EventArgs e)
@@ -253,6 +334,7 @@ namespace Nucleus.Coop
             {
                 SplitCalculator.Kill();
             }
+
             Application.Exit();
         }
 
@@ -276,66 +358,68 @@ namespace Nucleus.Coop
             }
         }
 
+      
+
         public MainForm()
         {
-           
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-            Splash_On = Convert.ToBoolean(ini.IniReadValue("Dev", "SplashScreen_On"));
-            IntroSound_On = Convert.ToBoolean(ini.IniReadValue("Dev", "IntroSound_On"));
-            offline = ini.IniReadValue("Dev", "OfflineMod");
-
             try
-            {
-                bool MouseClick = Convert.ToBoolean(theme.IniReadValue("Sounds", "MouseClick"));
+            {              
+                ChoosenTheme = ini.IniReadValue("Theme", "Theme");
+                theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
+                Splash_On = Convert.ToBoolean(ini.IniReadValue("Dev", "SplashScreen_On"));
+                themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
+                mouseClick = Convert.ToBoolean(ini.IniReadValue("Dev", "MouseClick"));
+                roundedcorners = Convert.ToBoolean(theme.IniReadValue("Misc", "UseRoundedCorners"));
+                useButtonsBorder = Convert.ToBoolean(theme.IniReadValue("Misc", "UseButtonsBorder"));
+                customFont = theme.IniReadValue("Font", "FontFamily");
+                rgb_font = theme.IniReadValue("Colors", "Font").Split(',');
+                rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
+                rgb_MenuStripBackColor = theme.IniReadValue("Colors", "MenuStripBack").Split(',');
+                rgb_MenuStripFontColor = theme.IniReadValue("Colors", "MenuStripFont").Split(',');
+                rgb_TitleBarColor = theme.IniReadValue("Colors", "TitleBar").Split(',');
+                rgb_HandlerNoteBackColor = theme.IniReadValue("Colors", "HandlerNoteBack").Split(',');
+                rgb_HandlerNoteFontColor = theme.IniReadValue("Colors", "HandlerNoteFont").Split(',');
+                rgb_ButtonsBorderColor = theme.IniReadValue("Colors", "ButtonsBorder").Split(',');
+                float fontSize = float.Parse(theme.IniReadValue("Font", "MainFontSize")); 
+ 
+                 NucleusMultiInstances = Convert.ToBoolean(ini.IniReadValue("Misc", "NucleusMultiInstances"));
+                bool coverBorderOff = Convert.ToBoolean(theme.IniReadValue("Misc", "DisableCoverBorder"));
+                bool noteBorderOff = Convert.ToBoolean(theme.IniReadValue("Misc", "DisableNoteBorder"));
+
+                TitleBarColor = Color.FromArgb(Convert.ToInt32(rgb_TitleBarColor[0]), Convert.ToInt32(rgb_TitleBarColor[1]), Convert.ToInt32(rgb_TitleBarColor[2]));
+                MouseOverBackColor = Color.FromArgb(Convert.ToInt32(rgb_MouseOverColor[0]), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
+                MenuStripBackColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripBackColor[0]), Convert.ToInt32(rgb_MenuStripBackColor[1]), Convert.ToInt32(rgb_MenuStripBackColor[2]));
+                MenuStripFontColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripFontColor[0]), Convert.ToInt32(rgb_MenuStripFontColor[1]), Convert.ToInt32(rgb_MenuStripFontColor[2]));
+                HandlerNoteBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteBackColor[0]), Convert.ToInt32(rgb_HandlerNoteBackColor[1]), Convert.ToInt32(rgb_HandlerNoteBackColor[2]));
+                HandlerNoteFontColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteFontColor[0]), Convert.ToInt32(rgb_HandlerNoteFontColor[1]), Convert.ToInt32(rgb_HandlerNoteFontColor[2]));
+                ButtonsBorderColor = Color.FromArgb(Convert.ToInt32(rgb_ButtonsBorderColor[0]), Convert.ToInt32(rgb_ButtonsBorderColor[1]), Convert.ToInt32(rgb_ButtonsBorderColor[2]));
+              
                 
-                Image AppButtons = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\button.png"));
-             
-                string[] rgb_font = theme.IniReadValue("Colors", "FontColor").Split(',');
-                string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOverColor").Split(',');
-                string[] rgb_MenuStripBackColor = theme.IniReadValue("Colors", "MenuStripBackColor").Split(',');
-                string[] rgb_MenuStripFontColor = theme.IniReadValue("Colors", "MenuStripFontColor").Split(',');
-                string[] rgb_TitleBarColor = theme.IniReadValue("Colors", "TitleBarColor").Split(',');
-                bool BordersOff = Convert.ToBoolean(theme.IniReadValue("Misc", "DisableBorders"));
-                Color TitleBarColor = Color.FromArgb(Convert.ToInt32(rgb_TitleBarColor[0]), Convert.ToInt32(rgb_TitleBarColor[1]), Convert.ToInt32(rgb_TitleBarColor[2]));
-                Color MouseOverBackColor = Color.FromArgb(Convert.ToInt32(rgb_MouseOverColor[0]), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
-                Color MenuStripBackColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripBackColor[0]), Convert.ToInt32(rgb_MenuStripBackColor[1]), Convert.ToInt32(rgb_MenuStripBackColor[2]));
-                Color MenuStripFontColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripFontColor[0]), Convert.ToInt32(rgb_MenuStripFontColor[1]), Convert.ToInt32(rgb_MenuStripFontColor[2]));
-
                 InitializeComponent();
+                         
+                SuspendLayout();
 
-                var DisposeTimer = new System.Windows.Forms.Timer();//dispose splash screen timer
-                var animLoopTimer = new System.Windows.Forms.Timer();//dispose splash screen timer
-                if (ini.IniReadValue("Advanced", "Font") != "")
+                if (roundedcorners)
                 {
-                    btn_gameOptions.Font = new Font("Segoe UI", float.Parse((ini.IniReadValue("Advanced", "Font"))) - 1.75f);
+                    Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
                 }
 
-                if (Splash_On)
-                {
-                    DisposeTimer.Interval = (4700); //millisecond
-                    animLoopTimer.Interval = (3400); //millisecond
-                    splash.Image = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme + "\\splash.gif"));
-                }
-                else
-                {
-                    DisposeTimer.Interval = (1); //millisecond
-                    splash.Dispose();
-                }
+                splashTimer();
 
-                DisposeTimer.Tick += new EventHandler(TimerTick);
-                animLoopTimer.Tick += new EventHandler(AnimLoopTimerTick);
-
-                DisposeTimer.Start();
-                animLoopTimer.Start();
-
-                //Controls Pictures
                 BackColor = TitleBarColor;
+                linksPanel.BackColor = BackColor;
+                Font = new Font(customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 ForeColor = Color.FromArgb(Convert.ToInt32(rgb_font[0]), Convert.ToInt32(rgb_font[1]), Convert.ToInt32(rgb_font[2]));
-                clientAreaPanel.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\background.jpg"));
-                mainButtonFrame.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\main_buttons_frame.png"));
-                rightFrame.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\right_panel.png"));              
-                list_Games.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\game_list.png"));
+                scriptAuthorTxt.BackColor = HandlerNoteBackColor;
+                scriptAuthorTxt.ForeColor = HandlerNoteFontColor;
+                //Controls Pictures
+
+                AppButtons = new Bitmap(themePath + "\\button.png");
+                splash.Image = new Bitmap(themePath + "\\splash.gif");
+                clientAreaPanel.BackgroundImage = new Bitmap(themePath + "\\background.jpg");
+                mainButtonFrame.BackgroundImage = new Bitmap(themePath + "\\main_buttons_frame.png");
+                rightFrame.BackgroundImage = new Bitmap(themePath + "\\right_panel.png");
+                game_listSizer.BackgroundImage = new Bitmap(themePath + "\\game_list.png");
                 btnAutoSearch.BackgroundImage = AppButtons;
                 button_UpdateAvailable.BackgroundImage = AppButtons;
                 btnSearch.BackgroundImage = AppButtons;
@@ -343,16 +427,29 @@ namespace Nucleus.Coop
                 btn_Download.BackgroundImage = AppButtons;
                 btn_Play.BackgroundImage = AppButtons;
                 btn_Extract.BackgroundImage = AppButtons;
-                btnBack.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\arrow_left.png"));
-                btn_Next.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\arrow_right.png"));
-                coverFrame.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\cover_layer.png"));
-                stepPanelPictureBox.Image = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\logo.png"));
-                label_StepTitle.BackgroundImage = AppButtons;
+                //label_StepTitle.BackgroundImage = AppButtons;
                 btn_GameDesc.BackgroundImage = AppButtons;
                 btn_scriptAuthorTxt.BackgroundImage = AppButtons;
-                btn_dlFromHub.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme + "\\dlhub_btn.png"));
-                glowingLine0.Image = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\lightbar_top.gif"));
-                glowingLine1.Image = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\lightbar_bottom.gif"));
+                btnBack.BackgroundImage = new Bitmap(themePath + "\\arrow_left.png");
+                btn_Next.BackgroundImage = new Bitmap(themePath + "\\arrow_right.png");
+                coverFrame.BackgroundImage = new Bitmap(themePath + "\\cover_layer.png");
+                stepPanelPictureBox.Image = new Bitmap(themePath + "\\logo.png");
+                logo.BackgroundImage = new Bitmap(themePath + "\\title_logo.png");
+                btn_Discord.BackgroundImage = new Bitmap(themePath + "\\discord.png");
+                btn_downloadAssets.BackgroundImage = new Bitmap(themePath + "\\title_download_assets.png");
+                btn_faq.BackgroundImage = new Bitmap(themePath + "\\faq.png");
+                btn_Links.BackgroundImage = new Bitmap(themePath + "\\title_dropdown_closed.png");
+                btn_noHub.BackgroundImage = new Bitmap(themePath + "\\title_no_hub.png");
+                btn_reddit.BackgroundImage = new Bitmap(themePath + "\\reddit.png");
+                btn_SplitCalculator.BackgroundImage = new Bitmap(themePath + "\\splitcalculator.png");
+                btn_thirdPartytools.BackgroundImage = new Bitmap(themePath + "\\thirdpartytools.png");
+                closeBtn.BackgroundImage = new Bitmap(themePath + "\\title_close.png");
+                maximizeBtn.BackgroundImage = new Bitmap(themePath + "\\title_maximize.png");
+                minimizeBtn.BackgroundImage = new Bitmap(themePath + "\\title_minimize.png");
+                btn_settings.BackgroundImage = new Bitmap(themePath + "\\title_settings.png");
+                btn_dlFromHub.BackgroundImage = new Bitmap(themePath + "\\dlhub_btn.png");
+                glowingLine0.Image = new Bitmap(themePath + "\\lightbar_top.gif");
+                StepPanel.BackgroundImage = new Bitmap(themePath + "\\setup_screen.png");
                 //
                 btn_Extract.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 btnAutoSearch.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
@@ -369,27 +466,83 @@ namespace Nucleus.Coop
                 gameContextMenuStrip.BackColor = MenuStripBackColor;
                 gameContextMenuStrip.ForeColor = MenuStripFontColor;
 
-
-                if (BordersOff)
+                if (useButtonsBorder)
                 {
-                    game_listSizer.BorderStyle = BorderStyle.None;
-                    StepPanel.BorderStyle = BorderStyle.None;
-                    rightFrame.BorderStyle = BorderStyle.None;
+                    btnAutoSearch.FlatAppearance.BorderSize = 1;
+                    btnAutoSearch.FlatAppearance.BorderColor = ButtonsBorderColor;
+
+                    button_UpdateAvailable.FlatAppearance.BorderSize = 1;
+                    button_UpdateAvailable.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btnSearch.FlatAppearance.BorderSize = 1;
+                    btnSearch.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btn_gameOptions.FlatAppearance.BorderSize = 1;
+                    btn_gameOptions.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btn_Download.FlatAppearance.BorderSize = 1;
+                    btn_Download.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btn_Play.FlatAppearance.BorderSize = 1;
+                    btn_Play.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btn_Extract.FlatAppearance.BorderSize = 1;
+                    btn_Extract.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btn_GameDesc.FlatAppearance.BorderSize = 1;
+                    btn_GameDesc.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btn_scriptAuthorTxt.FlatAppearance.BorderSize = 1;
+                    btn_scriptAuthorTxt.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btnBack.FlatAppearance.BorderSize = 1;
+                    btnBack.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btn_Next.FlatAppearance.BorderSize = 1;
+                    btn_Next.FlatAppearance.BorderColor = ButtonsBorderColor;
+                    btn_dlFromHub.FlatAppearance.BorderSize = 1;
+                    btn_dlFromHub.FlatAppearance.BorderColor = ButtonsBorderColor;
+                }
+
+
+                if (coverBorderOff)
+                {
                     cover.BorderStyle = BorderStyle.None;
+                }
+
+                if (noteBorderOff)
+                {
                     scriptAuthorTxtSizer.BorderStyle = BorderStyle.None;
                 }
+
+                foreach (Control titleBarButtons in Controls)
+                {
+                    titleBarButtons.BackColor = BackColor;//avoid "glitchs" while maximizing the window (aesthetic stuff only)            
+                }
+
+                controlscollect();
+
+                foreach (Control control in ctrls)
+                {
+                    if (control.Name != "btn_Links" && control.Name != "btn_thirdPartytools")//Close "third_party_tools_container" control when an other control in the for is clicked.
+                    {
+                        control.Font = new Font(customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        control.Click += new EventHandler(this.this_Click);
+                    }
+
+                    control.Click += new EventHandler(button_Click);
+
+                    if (mouseClick)
+                    {
+                        handleClickSound(true);
+                    }
+                }
+
+                ResumeLayout();
 
                 minimizeBtn.Click += new EventHandler(this.minimizeButton);
                 maximizeBtn.Click += new EventHandler(this.maximizeButton);
                 closeBtn.Click += new EventHandler(this.closeButton);
 
-                defBackground = clientAreaPanel.BackgroundImage;
-                defglowingLine0 = glowingLine0.Image;
-                defglowingLine1 = glowingLine1.Image;
+                btn_dlFromHubDefLoc = btn_dlFromHub.Location;
+
+                defBackground = new Bitmap(clientAreaPanel.BackgroundImage);
 
                 Moveable(this);//Make the main window moveable on screen.
 
                 positionsControl = new PositionsControl();
+
                 Settings settingsForm = new Settings(this, positionsControl);
                 positionsControl.Paint += PositionsControl_Paint;
 
@@ -404,24 +557,7 @@ namespace Nucleus.Coop
                 positionsControl.OnCanPlayUpdated += StepCanPlay;
                 optionsControl.OnCanPlayUpdated += StepCanPlay;
                 jsControl.OnCanPlayUpdated += StepCanPlay;
-
-                controlscollect();
-
-                if (MouseClick)
-                {
-                    foreach (Control control in ctrls)
-                    {
-                        if (control.GetType() == typeof(Button))
-                        {
-                            control.Click += new EventHandler(this.button_Click);
-                        }
-                    }
-                }
-
-                foreach (Control titleBarButtons in Controls)//avoid "glitchs" while maximizing the window (aesthetic stuff only)
-                {
-                    titleBarButtons.BackColor = BackColor;
-                }
+                positionsControl.Click += new EventHandler(this_Click);
 
                 getId = new ScriptDownloader(this);
                 downloadPrompt = new DownloadPrompt(hubHandler, this, null, true);
@@ -431,18 +567,74 @@ namespace Nucleus.Coop
                 gameManager.ReorderUserProfile();
             }
             catch (Exception ex)
-            {                
+            {
                 Log("ERROR - " + ex.Message + "\n\nSTACKTRACE: " + ex.StackTrace);
             }
 
-            if (IntroSound_On && Splash_On)
-            {//Play intro sound
-                SoundPlayer splayer = new SoundPlayer((Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme + "\\intro.wav")));
-                splayer.Play();
+            if (Splash_On)//Play intro sound
+            {
+                SoundPlayer(themePath + "\\intro.wav");
             }
 
-            string[] ncFiles =  { "DotNetZip.dll", "EasyHook.dll", "EasyHook32.dll", "EasyHook32Svc.exe", "EasyHook64.dll", "EasyHook64Svc.exe", "EasyHookSvc.exe", "Jint.dll", "NAudio.dll", "Newtonsoft.Json.dll", "Nucleus.Gaming.dll", "Nucleus.Hook32.dll", "Nucleus.Hook64.dll", "Nucleus.IJx64.exe", "Nucleus.IJx86.exe", "Nucleus.SHook32.dll", "Nucleus.SHook64.dll", "openxinput1_3.dll", "ProtoInputHooks32.dll", "ProtoInputHooks64.dll", "ProtoInputHooks64.dll", "ProtoInputHost.exe", "ProtoInputIJ32.exe", "ProtoInputIJ64.exe", "ProtoInputIJP32.dll", "ProtoInputIJP64.dll", "ProtoInputLoader32.dll", "ProtoInputLoader64.dll", "ProtoInputUtilDynamic32.dll", "ProtoInputUtilDynamic64.dll", "SharpDX.DirectInput.dll", "SharpDX.dll", "SharpDX.XInput.dll", "StartGame.exe", "WindowScrape.dll" };
-            
+            CenterToScreen();
+
+            DPIManager.Register(this);
+            DPIManager.AddForm(this);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            if (!NucleusMultiInstances)
+            {
+                IsAlredyRunning();
+            }
+
+            CheckNetCon();
+            CheckFilesIntegrity();
+            CheckUserEnvironment();
+        }
+
+        public void UpdateSize(float scale)
+        {
+            if (IsDisposed)
+            {
+                DPIManager.Unregister(this);
+                return;
+            }
+
+            SuspendLayout();
+
+            float newFontSize = Font.Size * scale;
+            float mainButtonFrameFont = mainButtonFrame.Font.Size * 1.0f;
+
+            if (scale > 1.0f)
+            {
+                foreach (Control button in mainButtonFrame.Controls)
+                {
+                    button.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+            }
+
+            scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            txt_GameDesc.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+            ResumeLayout();
+        }
+
+        private void IsAlredyRunning()
+        {
+            if (Process.GetProcessesByName("NucleusCoop").Length > 1)
+            {
+                MessageBox.Show("Nucleus Co - op is already running, if you don't see the Nucleus Co-op window it might be running in the background, close the process using task manager.", "Nucleus Co - op is already running", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Application.Exit();
+                return;
+            }
+        }
+
+        private void CheckFilesIntegrity()
+        {
+            string[] ncFiles = { "DotNetZip.dll", "EasyHook.dll", "EasyHook32.dll", "EasyHook32Svc.exe", "EasyHook64.dll", "EasyHook64Svc.exe", "EasyHookSvc.exe", "Jint.dll", "NAudio.dll", "Newtonsoft.Json.dll", "Nucleus.Gaming.dll", "Nucleus.Hook32.dll", "Nucleus.Hook64.dll", "Nucleus.IJx64.exe", "Nucleus.IJx86.exe", "Nucleus.SHook32.dll", "Nucleus.SHook64.dll", "openxinput1_3.dll", "ProtoInputHooks32.dll", "ProtoInputHooks64.dll", "ProtoInputHooks64.dll", "ProtoInputHost.exe", "ProtoInputIJ32.exe", "ProtoInputIJ64.exe", "ProtoInputIJP32.dll", "ProtoInputIJP64.dll", "ProtoInputLoader32.dll", "ProtoInputLoader64.dll", "ProtoInputUtilDynamic32.dll", "ProtoInputUtilDynamic64.dll", "SharpDX.DirectInput.dll", "SharpDX.dll", "SharpDX.XInput.dll", "StartGame.exe", "WindowScrape.dll" };
+
             foreach (string file in ncFiles)
             {
                 if (!File.Exists(Path.Combine(Application.StartupPath, file)))
@@ -457,73 +649,159 @@ namespace Nucleus.Coop
                     }
                 }
             }
-              
 
             if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\covers")))//Doing this where other folders get created/re-created would be better
             {
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\covers")));
             }
+
             if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\screenshots")))
             {
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\screenshots")));
             }
-       
-            CheckNetCon();
-            
-            CenterToScreen();
+        }
 
-            DPIManager.Register(this);
-            DPIManager.AddForm(this);           
-        }
-        private void AnimLoopTimerTick(Object myObject, EventArgs myEventArgs)
+        private void splashTimer()
         {
-           splash.Enabled = false;     
-        }
-        private void TimerTick(Object myObject, EventArgs myEventArgs)
-        {
-            if (connected)
+            this.Activate();
+            DisposeTimer = new System.Windows.Forms.Timer();//dispose splash screen timer
+
+            if (Splash_On)
             {
-                btn_noHub.Visible = false;
-                btn_downloadAssets.Enabled = true;
-                btn_Download.Enabled = true;
+                DisposeTimer.Interval = (3500); //millisecond                   
             }
             else
             {
+                DisposeTimer.Interval = (1); //millisecond
+                splash.Dispose();
+            }
+
+            DisposeTimer.Tick += new EventHandler(SplashTimerTick);
+            DisposeTimer.Start();
+        }
+
+        public void CheckUserEnvironment()
+        {
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try
+                {
+                    RegistryKey dkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
+                    string mydocPath = dkey.GetValue("Personal").ToString();
+
+                    if (mydocPath.Contains("NucleusCoop"))
+                    {
+                        string[] environmentRegFileBackup = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
+
+                        if (environmentRegFileBackup.Length > 0)
+                        {
+                            foreach (string environmentRegFilePathBackup in environmentRegFileBackup)
+                            {
+                                if (environmentRegFilePathBackup.Contains("User Shell Folders"))
+                                {
+                                    Process regproc = new Process();
+
+                                    try
+                                    {
+                                        regproc.StartInfo.FileName = "reg.exe";
+                                        regproc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                                        regproc.StartInfo.CreateNoWindow = true;
+                                        regproc.StartInfo.UseShellExecute = false;
+
+                                        string command = "import \"" + environmentRegFilePathBackup + "\"";
+                                        regproc.StartInfo.Arguments = command;
+                                        regproc.Start();
+
+                                        regproc.WaitForExit();
+
+                                    }
+                                    catch (Exception)
+                                    {
+                                        regproc.Dispose();
+                                    }
+                                }
+                            }
+                            // Console.WriteLine("Registry has been restored");
+                        }
+                    }
+                    else if (!File.Exists(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg")))
+                    {
+                        ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
+                    }
+                    else
+                    {
+                        if (!Directory.Exists(Path.Combine(Application.StartupPath, @"utils\backup\Temp")))
+                        {
+                            Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"utils\backup\Temp")));
+                        }
+
+                        ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
+
+                        FileStream currentEnvPathBackup = new FileStream(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"), FileMode.Open);
+                        FileStream TempEnvPathBackup = new FileStream(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"), FileMode.Open);
+
+                        if (currentEnvPathBackup.Length == TempEnvPathBackup.Length)
+                        {
+                            TempEnvPathBackup.Dispose();
+                            currentEnvPathBackup.Dispose();
+
+                            File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
+                            Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));
+                            //Console.WriteLine("Registry backup is up-to-date");
+                        }
+                        else
+                        {
+                            TempEnvPathBackup.Dispose();
+                            currentEnvPathBackup.Dispose();
+                            File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
+                            File.Move(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"), Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
+                            File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
+                            Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));
+                            // Console.WriteLine("Registry has been updated");
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+            });
+        }
+
+        public void handleClickSound(bool enable)
+        {
+            mouseClick = enable;
+        }
+
+        private void SplashTimerTick(Object Object, EventArgs EventArgs)
+        {
+          
+            if (connected)
+            {
+               // btn_dlFromHub.Location = btn_dlFromHubDefLoc;
+               // btn_dlFromHub.Visible = true;
+                btn_noHub.Visible = false;
+                btn_downloadAssets.Enabled = true;
+                btn_Download.Enabled = true;
+                DisposeTimer.Dispose();
+            }
+            else
+            {
+                //n_dlFromHub.Location = new Point(btn_Download.Right - btn_dlFromHub.Width - 3, btn_dlFromHub.Location.Y);
+                //btn_dlFromHub.Visible = true;
                 btn_noHub.Visible = true;
                 btn_downloadAssets.Enabled = false;
                 btn_Download.Enabled = false;
+                //btn_Download.Visible = false;
             }
 
             if (Splash_On && !stopSleep)
             {
+                Thread.Sleep(1200);
                 splash.Dispose();
-                Controls.Remove(splash);
+                splayer.Dispose();
                 stopSleep = true;
             }
-        }
-      
-
-        public void UpdateSize(float scale)
-        {
-            if (IsDisposed)
-            {
-                DPIManager.Unregister(this);
-                return;
-            }
-
-            float newFontSize = Font.Size * scale;
-            float mainButtonFrameFont = mainButtonFrame.Font.Size*1.0f;
-
-            if (scale > 1.0f)
-            {
-                foreach (Control button in mainButtonFrame.Controls)
-                {
-                    button.Font = new Font("Franklin Gothic Medium", mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Point, 0);
-                }
-            }
-
-            scriptAuthorTxt.Font = new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txt_GameDesc.Font =  new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);            
         }
 
         private void PositionsControl_Paint(object sender, PaintEventArgs e)
@@ -562,14 +840,14 @@ namespace Nucleus.Coop
                         try
                         {
 
-                            Process[] procs =Process.GetProcessesByName(Path.GetFileNameWithoutExtension(currentGame.ExecutableName.ToLower()));
+                            Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(currentGame.ExecutableName.ToLower()));
                             if (procs.Length > 0)
                             {
                                 for (int i = 0; i < procs.Length; i++)
                                 {
                                     IntPtr hWnd = procs[i].NucleusGetMainWindowHandle();
                                     User32Interop.SetWindowPos(hWnd, new IntPtr(-2), 0, 0, 0, 0,
-                                        (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
+                                    (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
                                     ShowWindow(hWnd, ShowWindowEnum.Minimize);
                                 }
                             }
@@ -610,6 +888,7 @@ namespace Nucleus.Coop
                 {
                     if (btn_Play.Text == "S T O P")
                     {
+
                         WindowState = FormWindowState.Normal;
                         BringToFront();
                         btn_Play.PerformClick();
@@ -629,6 +908,8 @@ namespace Nucleus.Coop
                     {
                         con.Value.Dispose();
                     }
+                    con.Value.Click += new EventHandler(button_Click);
+                    con.Value.Font = this.Font;
                 }
                 list_Games.Controls.Clear();
                 controls.Clear();
@@ -646,10 +927,11 @@ namespace Nucleus.Coop
                     GameControl con = new GameControl(null, null)
                     {
                         Width = game_listSizer.Width,
-                        Text = "No games"
+                        Text = "No games",
+                        Font = this.Font
                     };
 
-                    list_Games.Controls.Add(con);                  
+                    list_Games.Controls.Add(con);
                 }
             }
 
@@ -657,7 +939,7 @@ namespace Nucleus.Coop
         }
 
         public void NewUserGame(UserGameInfo game)
-        {            
+        {
             if (game.Game == null || !game.IsGamePresent())
             {
                 return;
@@ -672,14 +954,14 @@ namespace Nucleus.Coop
             list_Games.SuspendLayout();
             GameControl con = new GameControl(game.Game, game)
             {
-                Width = game_listSizer.Width              
+                Width = game_listSizer.Width
             };
 
             controls.Add(game, con);
             list_Games.Controls.Add(con);
             list_Games.ResumeLayout();
 
-            ThreadPool.QueueUserWorkItem(GetIcon, game);            
+            ThreadPool.QueueUserWorkItem(GetIcon, game);
         }
 
         protected override void OnShown(EventArgs e)
@@ -723,53 +1005,56 @@ namespace Nucleus.Coop
                     GameControl control = controls[game];
                     control.Invoke((Action)delegate ()
                     {
+                        control.Click += new EventHandler(button_Click);
                         control.Image = game.Icon;
                     });
                 }
             }
         }
 
-        public delegate void CheckForAssets(Label dllabel, bool visible,string game);
+        public delegate void CheckForAssets(Label dllabel, bool visible, string game);
 
-        public void DelegateCheckForAssets(Label dllabel, bool visible,string game)
-        {           
+        public void DelegateCheckForAssets(Label dllabel, bool visible, string game)
+        {
             dllabel.BackColor = this.BackColor;
-            dllabel.ForeColor = this.ForeColor;          
+            dllabel.ForeColor = this.ForeColor;
             dllabel.AutoSize = true;
             dllabel.Text = game;
             dllabel.Location = new Point(this.Width / 2 - dllabel.Width / 2, 12);
             dllabel.Visible = visible;
 
             Controls.Add(dllabel);
-    
+
             if (game == "Download Completed")
             {
-                glowingLine0.Image =  defglowingLine0;
-                glowingLine1.Image = defglowingLine1;          
+                SuspendLayout();
+                glowingLine0.Image = new Bitmap(themePath + "\\lightbar_top.gif");
+                ResumeLayout();
                 mainButtonFrame.Enabled = true;
                 btn_downloadAssets.Enabled = true;
                 game_listSizer.Enabled = true;
-                rightFrame.Enabled = true;
+                button_UpdateAvailable.Enabled = true;
+                btn_gameOptions.Enabled = true;
                 StepPanel.Enabled = true;
                 btn_settings.Enabled = true;
-                Controls.Remove(dllabel);            
-            }   
+                Controls.Remove(dllabel);
+            }
         }
         private void btn_downloadAssets_Click(object sender, EventArgs e)
         {
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            glowingLine0.Image = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\download_bar.gif"));
-            glowingLine1.Image = Image.FromFile(Path.Combine(Application.StartupPath,@"gui\theme\" + ChoosenTheme + "\\download_bar.gif"));
+            SuspendLayout();
+            glowingLine0.Image = new Bitmap(themePath + "\\download_bar.gif");
+            ResumeLayout();
             Control dllabel = new Label();
             mainButtonFrame.Enabled = false;
             StepPanel.Enabled = false;
-            rightFrame.Enabled = false;       
+            button_UpdateAvailable.Enabled = false;
+            btn_gameOptions.Enabled = false;
             btn_settings.Enabled = false;
             btn_downloadAssets.Enabled = false;
             game_listSizer.Enabled = false;
             CheckForCovers(dllabel);
         }
-
         private void CheckForCovers(Control dllabel)
         {
             List<UserGameInfo> games = gameManager.User.Games;
@@ -784,10 +1069,10 @@ namespace Nucleus.Coop
                     {
                         hubHandler = getId.GetHandler(game.Game.GetHubId());
                         string _covers = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{hubHandler.GameCover}.jpg";
-                       
+
                         if (hubHandler.Id != null)
-                        {                                 
-                            getAssets.SaveCovers(_covers, game.GameGuid);                           
+                        {
+                            getAssets.SaveCovers(_covers, game.GameGuid);
                         }
                     }
                     catch (Exception)
@@ -795,7 +1080,7 @@ namespace Nucleus.Coop
                 }
                 CheckForScreenshots(dllabel);
             });
-           
+
         }
         private void CheckForScreenshots(Control dllabel)
         {
@@ -813,20 +1098,20 @@ namespace Nucleus.Coop
                         string _screenshots = game.Game.GetScreenshots();
 
                         if (hubHandler.Id != null)
-                        {                         
-                            getAssets.SaveScreenshots(_screenshots, game.GameGuid);                           
+                        {
+                            getAssets.SaveScreenshots(_screenshots, game.GameGuid);
                         }
                     }
                     catch (Exception)
                     { }
-                }               
+                }
                 this.BeginInvoke(new CheckForAssets(DelegateCheckForAssets), dllabel, false, "Download Completed");
             });
         }
 
         bool stepPanelPictureBoxDispose = false;
         private void list_Games_SelectedChanged(object arg1, Control arg2)
-        {            
+        {
             currentControl = (GameControl)arg1;
             currentGameInfo = currentControl.UserGameInfo;
 
@@ -837,11 +1122,9 @@ namespace Nucleus.Coop
                 return;
             }
             else
-            {           
+            {
                 currentGame = currentGameInfo.Game;
 
-                inst_click = 0;
-                GameDesc_click = 0;
                 if (!stepPanelPictureBoxDispose)
                 {
                     stepPanelPictureBox.Dispose();
@@ -849,10 +1132,11 @@ namespace Nucleus.Coop
                     btn_gameOptions.Visible = true;
                     btn_scriptAuthorTxt.Visible = true;
                     stepPanelPictureBoxDispose = true;
+                    StepPanel.Visible = true;
                 }
-                StepPanel.Visible = true;
+
                 button_UpdateAvailable.Visible = false;
-                
+
                 gameDescription = "";
 
                 string name = currentGame.GUID;
@@ -861,7 +1145,7 @@ namespace Nucleus.Coop
                     ///Apply covers
                     if (File.Exists(Path.Combine(Application.StartupPath, @"gui\covers\" + name + ".jpeg")))
                     {
-                        coverImg = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\covers\" + name + ".jpeg"));
+                        coverImg = new Bitmap(Path.Combine(Application.StartupPath, @"gui\covers\" + name + ".jpeg"));
                         clientAreaPanel.SuspendLayout();
                         cover.BackgroundImage = coverImg;
                         clientAreaPanel.ResumeLayout();
@@ -870,13 +1154,12 @@ namespace Nucleus.Coop
                     }
                     else
                     {
-                        string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-                        cover.Visible = true;
-                        coverFrame.Visible = true;
-                        cover.BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme + "\\no_cover.png"));
+                        cover.BackgroundImage = new Bitmap(themePath + "\\no_cover.png");
                         clientAreaPanel.SuspendLayout();
                         clientAreaPanel.BackgroundImage = defBackground;
                         clientAreaPanel.ResumeLayout();
+                        cover.Visible = true;
+                        coverFrame.Visible = true;
                     }
 
                     //Apply screenshots randomly
@@ -887,11 +1170,10 @@ namespace Nucleus.Coop
                         Random rNum = new Random();
                         int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                        screenshotImg = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\screenshots\" + name + "\\" + RandomIndex + "_" + name + ".jpeg"));   //name(1) => directory name ; name(2) = partial image name 
+                        screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + name + "\\" + RandomIndex + "_" + name + ".jpeg"));   //name(1) => directory name ; name(2) = partial image name 
                         clientAreaPanel.SuspendLayout();
                         clientAreaPanel.BackgroundImage = screenshotImg;
                         clientAreaPanel.ResumeLayout();
-
                     }
                     else
                     {
@@ -900,11 +1182,11 @@ namespace Nucleus.Coop
                         clientAreaPanel.ResumeLayout();
                     }
                 }
-               
-                catch
+
+                catch (Exception)
                 { }
             }
-           
+
             //if (connected)
             //{ 
             //    try//get game description (online)
@@ -932,7 +1214,7 @@ namespace Nucleus.Coop
             //        txt_GameDesc.Visible = false;
             //    }
             // }
-           
+
 
             btn_Play.Enabled = false;
 
@@ -944,13 +1226,13 @@ namespace Nucleus.Coop
 
             for (int i = 0; i < currentGame.CustomSteps.Count; i++)
             {
-                stepsList.Add(jsControl); 
+                stepsList.Add(jsControl);
             }
 
             currentProfile = new GameProfile();
             currentProfile.InitializeDefault(currentGame);
             gameManager.UpdateCurrentGameProfile(currentProfile);
-            
+
             btn_gameOptions.Enabled = true;
 
             button_UpdateAvailable.Visible = currentGameInfo.Game.IsUpdateAvailable(false);
@@ -958,8 +1240,10 @@ namespace Nucleus.Coop
 
             if (currentGame.Description?.Length > 0)
             {
-                btn_scriptAuthorTxt.Enabled = true;              
+                btn_scriptAuthorTxt.Enabled = true;
+                SuspendLayout();
                 scriptAuthorTxt.Text = currentGame.Description;
+                ResumeLayout();
                 scriptAuthorTxt.Visible = true;
                 scriptAuthorTxtSizer.Visible = true;
             }
@@ -1019,7 +1303,7 @@ namespace Nucleus.Coop
 
             if (currentGameInfo.Game.Description?.Length > 0)
             {
-                btn_scriptAuthorTxt.Visible = true;         
+                btn_scriptAuthorTxt.Visible = true;
             }
 
             if (gameDescription?.Length > 0 && connected)
@@ -1106,12 +1390,14 @@ namespace Nucleus.Coop
             User32Util.ShowTaskBar();
         }
 
-        private System.Windows.Forms.Timer slideshow;
-        private List<Form> list = new List<Form>();
         private void btn_Play_Click(object sender, EventArgs e)
         {
+
+            bool useCustomLayout = Convert.ToBoolean(ini.IniReadValue("CustomLayout", "SplitDiv"));
+            string splitDivisionBackColor = ini.IniReadValue("CustomLayout", "SplitDivColor");
+
             if (btn_Play.Text == "S T O P")
-            {              
+            {
                 try
                 {
                     if (handler != null)
@@ -1129,11 +1415,12 @@ namespace Nucleus.Coop
                     }
                 }
                 catch { }
+
                 User32Util.ShowTaskBar();
                 SetBtnToPlay();
-                btn_Play.Enabled = false;          
+                btn_Play.Enabled = false;
                 RefreshGames();
-                GoToStep(0);               
+                GoToStep(0);
                 return;
             }
 
@@ -1158,12 +1445,12 @@ namespace Nucleus.Coop
                 handlerThread.Start();
             }
 
-            if (currentGame.HideTaskbar && ini.IniReadValue("CustomLayout", "SplitDiv") != "True")
+            if (currentGame.HideTaskbar && !useCustomLayout)
             {
                 User32Util.HideTaskbar();
             }
 
-            if (currentGame.ProtoInput.AutoHideTaskbar || ini.IniReadValue("CustomLayout", "SplitDiv") == "True")
+            if (currentGame.ProtoInput.AutoHideTaskbar || useCustomLayout)
             {
                 if (ProtoInput.protoInput.GetTaskbarAutohide())
                 {
@@ -1174,9 +1461,9 @@ namespace Nucleus.Coop
                     ProtoInput.protoInput.SetTaskbarAutohide(true);
                 }
             }
-     
-            if (ini.IniReadValue("CustomLayout", "SplitDiv") == "True")
-            {                
+
+            if (useCustomLayout)
+            {
                 IDictionary<string, Color> splitColors = new Dictionary<string, Color>();
 
                 splitColors.Add("Black", Color.Black);
@@ -1193,13 +1480,13 @@ namespace Nucleus.Coop
 
                 foreach (KeyValuePair<string, Color> color in splitColors)
                 {
-                    if (color.Key == ini.IniReadValue("CustomLayout", "SplitDivColor"))
+                    if (color.Key == splitDivisionBackColor)
                     {
                         ChoosenColor = color.Value;
                     }
                 }
 
-                var loadTimer = new System.Windows.Forms.Timer
+                loadTimer = new System.Windows.Forms.Timer
                 {
                     Interval = (80000) //millisecond
                 };
@@ -1217,85 +1504,84 @@ namespace Nucleus.Coop
 
                 foreach (Screen screen in Screen.AllScreens)
                 {
-                    Form hform = new Form
+                    Form backgroundForm = new Form
                     {
                         BackColor = Color.Black,
                         Location = new Point(screen.Bounds.X, screen.Bounds.Y),
                         Width = screen.WorkingArea.Size.Width,
-                        Height = screen.WorkingArea.Size.Height+50,
+                        Height = screen.WorkingArea.Size.Height + 50,
                         BackgroundImage = clientAreaPanel.BackgroundImage,
                         BackgroundImageLayout = ImageLayout.Stretch,
                         FormBorderStyle = FormBorderStyle.None,
                         StartPosition = FormStartPosition.Manual
+
                     };
 
-                    list.Add(hform);
-                    hform.Show();                   
+                    backgroundForms.Add(backgroundForm);
+                    backgroundForm.Show();
                 }
             }
 
-            if (currentGame.HideDesktop && ini.IniReadValue("CustomLayout", "SplitDiv") != "True")
+            if (currentGame.HideDesktop && !useCustomLayout)
             {
                 foreach (Screen screen in Screen.AllScreens)
                 {
-                    hform = new Form
+                    backgroundForm = new Form
                     {
                         BackColor = Color.Black,
                         Location = new Point(screen.Bounds.X, screen.Bounds.Y),
-                        
-                };
-            
-                    hform.Width = screen.WorkingArea.Size.Width;
-                    hform.Height = screen.WorkingArea.Size.Height+50;
-                    hform.FormBorderStyle = FormBorderStyle.None;
-                    hform.StartPosition = FormStartPosition.Manual;
-                    hform.Show();
+
+                    };
+
+                    backgroundForm.Width = screen.WorkingArea.Size.Width;
+                    backgroundForm.Height = screen.WorkingArea.Size.Height + 50;
+                    backgroundForm.FormBorderStyle = FormBorderStyle.None;
+                    backgroundForm.StartPosition = FormStartPosition.Manual;
+                    backgroundForm.Show();
                 }
             }
-           
+
             WindowState = FormWindowState.Minimized;
         }
 
         private void slideshowTick(Object myObject, EventArgs myEventArgs)
         {
-           
             if (Directory.Exists(Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGameInfo.Game.GameName)))
             {
-               
                 string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGameInfo.Game.GameName)));
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                screenshotImg = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGameInfo.Game.GameName + "\\" + RandomIndex + "_" + currentGameInfo.Game.GameName + ".jpeg"));  
-                foreach (Form l in list)
+                screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGameInfo.Game.GameName + "\\" + RandomIndex + "_" + currentGameInfo.Game.GameName + ".jpeg"));
+                foreach (Form _backgroundForm in backgroundForms)
                 {
-                   l.SuspendLayout();
-                   l.BackgroundImage = screenshotImg;
-                   l.ResumeLayout();
+                    _backgroundForm.SuspendLayout();
+                    _backgroundForm.BackgroundImage = screenshotImg;
+                    _backgroundForm.ResumeLayout();
                 }
-
             }
         }
 
         private void loadTimerTick(Object myObject, EventArgs myEventArgs)
         {
-            slideshow.Stop();
-            foreach (Form l in list)
+            slideshow.Dispose();
+            loadTimer.Dispose();
+
+            foreach (Form _backgroundForm in backgroundForms)
             {
-                l.BackgroundImage = null;
-                l.BackColor = ChoosenColor;
+                _backgroundForm.BackgroundImage = null;
+                _backgroundForm.BackColor = ChoosenColor;
             }
+
         }
 
         private void SetBtnToPlay()
         {
             btn_Play.Text = "P L A Y";
-            
         }
 
         private void handler_Ended()
         {
-            hform.Dispose();
             Log("Handler ended method called");
             User32Util.ShowTaskBar();
             handler = null;
@@ -1308,6 +1594,7 @@ namespace Nucleus.Coop
                 }
             }
             catch { }
+
             Invoke(new Action(SetBtnToPlay));
         }
 
@@ -1394,7 +1681,7 @@ namespace Nucleus.Coop
         {
             try
             {
-                using (OpenFileDialog open = new OpenFileDialog())
+                using (System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog())
                 {
 
                     if (string.IsNullOrEmpty(exeName))
@@ -1442,7 +1729,7 @@ namespace Nucleus.Coop
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
 
             }
@@ -1453,14 +1740,14 @@ namespace Nucleus.Coop
         {
             if (!AutoSearchLoaded)
             {
-                form = new SearchDisksForm(this);               
+                form = new SearchDisksForm(this);
                 form.FormClosed += Form_FormClosed;
                 form.Show();
                 AutoSearchLoaded = true;
             }
             else
             {
-                form.Location = new Point(Location.X+Width/2-form.Width/2, Location.Y+Height/2-form.Height/2);
+                form.Location = new Point(Location.X + Width / 2 - form.Width / 2, Location.Y + Height / 2 - form.Height / 2);
                 form.Visible = true;
             }
         }
@@ -1489,7 +1776,7 @@ namespace Nucleus.Coop
             {
                 settingsForm.Location = new Point(Location.X + Width / 2 - settingsForm.Width / 2, Location.Y + Height / 2 - settingsForm.Height / 2);
                 settingsForm.Visible = true;
-            }           
+            }
         }
 
         private void DetailsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1517,7 +1804,7 @@ namespace Nucleus.Coop
                     string gameGuid = jObject["Games"][i]["GameGuid"].ToString();
                     string profiles = jObject["Games"][i]["Profiles"].ToString();
                     string exePath = jObject["Games"][i]["ExePath"].ToString();
-                    
+
                     if (gameGuid == currentGameInfo.GameGuid && exePath == currentGameInfo.ExePath)
                     {
                         string arch = "";
@@ -1597,10 +1884,9 @@ namespace Nucleus.Coop
                     }
                 }
             }
-			 		
+
             if (selectedControl.GetType() == typeof(GameControl) || selectedControl.GetType() == typeof(Button))
             {
-
                 bool btnClick = false;
                 if (selectedControl.GetType() == typeof(GameControl))
                 {
@@ -1887,6 +2173,7 @@ namespace Nucleus.Coop
             else
             {
                 gameContextMenuStrip.Items[0].Text = "No game selected...";
+
                 for (int i = 1; i < gameContextMenuStrip.Items.Count; i++)
                 {
                     gameContextMenuStrip.Items[i].Visible = false;
@@ -2095,7 +2382,7 @@ namespace Nucleus.Coop
 
         private void ChangeIconToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog dlg = new OpenFileDialog())
+            using (System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog())
             {
                 dlg.Title = "Open Image";
                 dlg.Filter = "All Images Files (*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.tiff;*.tif;*.ico;*.exe)|*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.tiff;*.tif;*.ico;*.exe" +
@@ -2187,39 +2474,25 @@ namespace Nucleus.Coop
             }
         }
 
-      
         private void btn_scriptAuthorTxt_Click(object sender, EventArgs e)
         {
-            GameDesc_click = 0;
-            inst_click++;
-            txt_GameDescSizer.Visible = false;
-            txt_GameDesc.Visible = false;
-            scriptAuthorTxtSizer.Visible = true;
-            scriptAuthorTxt.Visible = true;
-            
-            if (inst_click == 2)
+            if (scriptAuthorTxtSizer.Visible)
             {
                 scriptAuthorTxtSizer.Visible = false;
                 scriptAuthorTxt.Visible = false;
-                inst_click = 0;
+                txt_GameDescSizer.Visible = true;
+                txt_GameDesc.Visible = true;
             }
         }
 
-        
         private void btn_GameDesc_Click(object sender, EventArgs e)
         {
-            inst_click = 0;
-            GameDesc_click++;
-            scriptAuthorTxtSizer.Visible = false;
-            scriptAuthorTxt.Visible = false;
-            txt_GameDescSizer.Visible = true;
-            txt_GameDesc.Visible = true;           
-
-            if (GameDesc_click == 2)
+            if (txt_GameDescSizer.Visible)
             {
+                scriptAuthorTxtSizer.Visible = true;
+                scriptAuthorTxt.Visible = true;
                 txt_GameDescSizer.Visible = false;
                 txt_GameDesc.Visible = false;
-                GameDesc_click = 0;
             }
         }
 
@@ -2228,10 +2501,9 @@ namespace Nucleus.Coop
             getId.ShowDialog();
         }
 
-      
         private void button_UpdateAvailable_Click(object sender, EventArgs e)
         {
-             hubHandler = getId.GetHandler(currentGameInfo.Game.GetHubId());
+            hubHandler = getId.GetHandler(currentGameInfo.Game.GetHubId());
 
             if (hubHandler == null)
             {
@@ -2252,29 +2524,107 @@ namespace Nucleus.Coop
                     btn_gameOptions.Visible = false;
                     button_UpdateAvailable.Visible = false;
                     stepsList.Clear();
-                   
+
                     downloadPrompt = new DownloadPrompt(hubHandler, this, null, true);
                     list_Games.SuspendLayout();
                     downloadPrompt.ShowDialog();
                     list_Games.ResumeLayout();
                     StepPanel.Visible = true;
-                   
+
                 }
             }
-        } 
-
-        private void MainForm_Paint(object sender, PaintEventArgs e)
-        {         
-
         }
+
+
+        private void btn_Extract_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog
+            {
+                Title = "Select a game handler to extract",
+                DefaultExt = "nc",
+                InitialDirectory = Gaming.GameManager.Instance.GetJsScriptsPath(),
+                Filter = "nc files (*.nc)|*.nc"
+            };
+
+            DialogResult result = ofd.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                DownloadPrompt downloadPrompt = new DownloadPrompt(null, this, ofd.FileName);
+                downloadPrompt.ShowDialog();
+            }
+        }
+
+        private void btn_SplitCalculator_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start((Path.Combine(Application.StartupPath, @"utils\SplitCalculator\SplitCalculator.exe")));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(@"SplitCalculator.exe has not been found in the utils\SplitCalculator folder. Try again with a fresh Nucleus Co-op installation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            CheckNetCon();
+        }
+
+       
+
+        private void btn_Links_Click(object sender, EventArgs e)
+        {
+
+            if (linksPanel.Visible)
+            {
+                linksPanel.Visible = false;
+                btn_Links.BackgroundImage = new Bitmap(themePath + "\\title_dropdown_closed.png");
+
+                if (third_party_tools_container.Visible)
+                {
+                    third_party_tools_container.Visible = false;
+                }
+            }
+            else
+            {
+                linksPanel.Visible = true;
+                btn_Links.BackgroundImage = new Bitmap(themePath + "\\title_dropdown_opened.png");
+            }
+        }
+
+        private void splash_Click(object sender, EventArgs e)
+        {
+            splayer.Stop();
+            splayer.Dispose();
+            splash.Dispose();
+        }
+
+        private void this_Click(object sender, System.EventArgs e)
+        {
+
+            linksPanel.Visible = false;
+            btn_Links.BackgroundImage = new Bitmap(themePath + "\\title_dropdown_closed.png");
+
+            if (third_party_tools_container.Visible)
+            {
+                third_party_tools_container.Visible = false;
+            }
+        }
+
         private void MainForm_MouseHover(object sender, EventArgs e)
         {
             if (!currentlyUpdatingScript)
             {
                 button_UpdateAvailable.Visible = currentGameInfo?.Game?.IsUpdateAvailable(false) ?? button_UpdateAvailable.Visible;
-                
             }
         }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            Process.Start("https://hub.splitscreen.me/");
+        }
+
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Process.Start(faq_link);
@@ -2305,25 +2655,21 @@ namespace Nucleus.Coop
         {
             Process.Start("https://github.com/nefarius/ScpToolkit/releases");
             third_party_tools_container.Visible = false;
-            thirdPartytools_click = 0;
         }
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/ViGEm/HidHide/releases");    
+            Process.Start("https://github.com/ViGEm/HidHide/releases");
             third_party_tools_container.Visible = false;
-            thirdPartytools_click = 0;
         }
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://github.com/Ryochan7/DS4Windows/releases");
             third_party_tools_container.Visible = false;
-            thirdPartytools_click = 0;
         }
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/csutorasa/XOutput/releases");   
+            Process.Start("https://github.com/csutorasa/XOutput/releases");
             third_party_tools_container.Visible = false;
-            thirdPartytools_click = 0;
         }
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -2331,51 +2677,122 @@ namespace Nucleus.Coop
         }
         private void btn_thirdPartytools_Click(object sender, EventArgs e)
         {
-            thirdPartytools_click++;
-            third_party_tools_container.Visible = true;
-            if (thirdPartytools_click == 2)
+            if (third_party_tools_container.Visible)
             {
                 third_party_tools_container.Visible = false;
-                thirdPartytools_click = 0;
+            }
+            else
+            {
+                third_party_tools_container.Visible = true;
             }
         }
-        private void btn_Extract_Click(object sender, EventArgs e)
+        private void scriptAuthorTxt_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                Title = "Select a game handler to extract",
-                DefaultExt = "nc",
-                InitialDirectory = Gaming.GameManager.Instance.GetJsScriptsPath(),
-                Filter = "nc files (*.nc)|*.nc"
-            };
-
-            DialogResult result = ofd.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                DownloadPrompt downloadPrompt = new DownloadPrompt(null, this, ofd.FileName);
-                downloadPrompt.ShowDialog();
-            }
-        }
-        private void btn_SplitCalculator_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Process.Start((Path.Combine(Application.StartupPath, @"utils\SplitCalculator\SplitCalculator.exe")));
-            }
-            catch(Exception)
-            {
-                MessageBox.Show(@"SplitCalculator.exe has not been found in the utils\SplitCalculator folder. Try again with a fresh Nucleus Co-op installation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            Process.Start(e.LinkText);
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void closeBtn_MouseEnter(object sender, EventArgs e)
         {
-           CheckNetCon();
+            closeBtn.BackgroundImage = new Bitmap(themePath + "\\title_close_mousehover.png");
+
         }
 
-        private void button1_Click_2(object sender, EventArgs e)
+        private void closeBtn_MouseLeave(object sender, EventArgs e)
         {
-            Process.Start("https://hub.splitscreen.me/");
+            closeBtn.BackgroundImage = new Bitmap(themePath + "\\title_close.png");
         }
+
+        private void maximizeBtn_MouseEnter(object sender, EventArgs e)
+        {
+            maximizeBtn.BackgroundImage = new Bitmap(themePath + "\\title_maximize_mousehover.png");
+        }
+
+        private void maximizeBtn_MouseLeave(object sender, EventArgs e)
+        {
+            maximizeBtn.BackgroundImage = new Bitmap(themePath + "\\title_maximize.png");
+        }
+
+        private void minimizeBtn_MouseLeave(object sender, EventArgs e)
+        {
+            minimizeBtn.BackgroundImage = new Bitmap(themePath + "\\title_minimize.png");
+        }
+
+        private void minimizeBtn_MouseEnter(object sender, EventArgs e)
+        {
+            minimizeBtn.BackgroundImage = new Bitmap(themePath + "\\title_minimize_mousehover.png");
+        }
+
+        private void btn_settings_MouseEnter(object sender, EventArgs e)
+        {
+            btn_settings.BackgroundImage = new Bitmap(themePath + "\\title_settings_mousehover.png");
+        }
+
+        private void btn_settings_MouseLeave(object sender, EventArgs e)
+        {
+            btn_settings.BackgroundImage = new Bitmap(themePath + "\\title_settings.png");
+        }
+
+        private void btn_downloadAssets_MouseEnter(object sender, EventArgs e)
+        {
+            btn_downloadAssets.BackgroundImage = new Bitmap(themePath + "\\title_download_assets_mousehover.png");
+        }
+
+        private void btn_downloadAssets_MouseLeave(object sender, EventArgs e)
+        {
+            btn_downloadAssets.BackgroundImage = new Bitmap(themePath + "\\title_download_assets.png");
+        }
+
+        private void btn_faq_MouseEnter(object sender, EventArgs e)
+        {
+            btn_faq.BackgroundImage = new Bitmap(themePath + "\\faq_mousehover.png");
+        }
+
+        private void btn_faq_MouseLeave(object sender, EventArgs e)
+        {
+            btn_faq.BackgroundImage = new Bitmap(themePath + "\\faq.png");
+        }
+
+        private void btn_reddit_MouseEnter(object sender, EventArgs e)
+        {
+            btn_reddit.BackgroundImage = new Bitmap(themePath + "\\reddit_mousehover.png");
+        }
+
+        private void btn_reddit_MouseLeave(object sender, EventArgs e)
+        {
+            btn_reddit.BackgroundImage = new Bitmap(themePath + "\\reddit.png");
+        }
+
+        private void btn_Discord_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Discord.BackgroundImage = new Bitmap(themePath + "\\discord_mousehover.png");
+        }
+
+        private void btn_Discord_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Discord.BackgroundImage = new Bitmap(themePath + "\\discord.png");
+        }
+
+        private void btn_SplitCalculator_MouseEnter(object sender, EventArgs e)
+        {
+            btn_SplitCalculator.BackgroundImage = new Bitmap(themePath + "\\splitcalculator_mousehover.png");
+
+        }
+
+        private void btn_SplitCalculator_MouseLeave(object sender, EventArgs e)
+        {
+            btn_SplitCalculator.BackgroundImage = new Bitmap(themePath + "\\splitcalculator.png");
+
+        }
+
+        private void btn_thirdPartytools_MouseEnter(object sender, EventArgs e)
+        {
+            btn_thirdPartytools.BackgroundImage = new Bitmap(themePath + "\\thirdPartytools_mousehover.png");
+        }
+
+        private void btn_thirdPartytools_MouseLeave(object sender, EventArgs e)
+        {
+            btn_thirdPartytools.BackgroundImage = new Bitmap(themePath + "\\thirdPartytools.png");
+        }
+
     }
 }

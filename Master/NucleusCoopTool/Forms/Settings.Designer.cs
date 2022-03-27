@@ -47,17 +47,21 @@ namespace Nucleus.Coop
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-        {					
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.offlineMod = new System.Windows.Forms.ComboBox();
-            this.OfflineModLabel = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label35 = new System.Windows.Forms.Label();
+            this.nucUserPassTxt = new System.Windows.Forms.TextBox();
+            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
+            this.themeLabel = new System.Windows.Forms.Label();
+            this.themeCbx = new System.Windows.Forms.ComboBox();
+            this.splashScreenChkB = new System.Windows.Forms.CheckBox();
+            this.clickSoundChkB = new System.Windows.Forms.CheckBox();
             this.cmb_EpicLang = new System.Windows.Forms.ComboBox();
             this.label46 = new System.Windows.Forms.Label();
             this.ignoreInputLockReminderCheckbox = new System.Windows.Forms.CheckBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.nucUserPassTxt = new System.Windows.Forms.TextBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
             this.statusCheck = new System.Windows.Forms.CheckBox();
             this.cmb_Lang = new System.Windows.Forms.ComboBox();
@@ -83,20 +87,18 @@ namespace Nucleus.Coop
             this.label1 = new System.Windows.Forms.Label();
             this.settingsCloseHKTxt = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.numMaxPlyrs = new System.Windows.Forms.NumericUpDown();
+            this.numHorDiv = new System.Windows.Forms.NumericUpDown();
+            this.numVerDiv = new System.Windows.Forms.NumericUpDown();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.SplitDiv = new System.Windows.Forms.CheckBox();
             this.label49 = new System.Windows.Forms.Label();
             this.SplitColors = new System.Windows.Forms.ComboBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.numVerDiv = new System.Windows.Forms.NumericUpDown();
-            this.numHorDiv = new System.Windows.Forms.NumericUpDown();
-            this.numMaxPlyrs = new System.Windows.Forms.NumericUpDown();
             this.layoutSizer = new System.Windows.Forms.Panel();
             this.label30 = new System.Windows.Forms.Label();
-            this.enableCustomCheckbox = new System.Windows.Forms.CheckBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.label21 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
@@ -165,12 +167,12 @@ namespace Nucleus.Coop
             this.setting_Label = new System.Windows.Forms.Panel();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numHorDiv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxPlyrs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHorDiv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).BeginInit();
             this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.audioCustomSettingsBox.SuspendLayout();
@@ -201,13 +203,15 @@ namespace Nucleus.Coop
             // 
             this.tabPage3.BackColor = System.Drawing.Color.Transparent;
             this.tabPage3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tabPage3.Controls.Add(this.offlineMod);
-            this.tabPage3.Controls.Add(this.OfflineModLabel);
+            this.tabPage3.Controls.Add(this.panel1);
+            this.tabPage3.Controls.Add(this.scaleOptionCbx);
+            this.tabPage3.Controls.Add(this.themeLabel);
+            this.tabPage3.Controls.Add(this.themeCbx);
+            this.tabPage3.Controls.Add(this.splashScreenChkB);
+            this.tabPage3.Controls.Add(this.clickSoundChkB);
             this.tabPage3.Controls.Add(this.cmb_EpicLang);
             this.tabPage3.Controls.Add(this.label46);
             this.tabPage3.Controls.Add(this.ignoreInputLockReminderCheckbox);
-            this.tabPage3.Controls.Add(this.label35);
-            this.tabPage3.Controls.Add(this.nucUserPassTxt);
             this.tabPage3.Controls.Add(this.keepAccountsCheck);
             this.tabPage3.Controls.Add(this.statusCheck);
             this.tabPage3.Controls.Add(this.cmb_Lang);
@@ -226,36 +230,107 @@ namespace Nucleus.Coop
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Settings";
             // 
-            // offlineMod
+            // panel1
             // 
-            this.offlineMod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.offlineMod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.offlineMod.FormattingEnabled = true;
-            this.offlineMod.Items.AddRange(new object[] {
-            "Off",
-            "On"});
-            this.offlineMod.Location = new System.Drawing.Point(399, 38);
-            this.offlineMod.Margin = new System.Windows.Forms.Padding(0);
-            this.offlineMod.MaxDropDownItems = 10;
-            this.offlineMod.Name = "offlineMod";
-            this.offlineMod.Size = new System.Drawing.Size(108, 21);
-            this.offlineMod.TabIndex = 80;
-            this.offlineMod.Visible = false;
-            this.offlineMod.SelectedIndexChanged += new System.EventHandler(this.OfflineMod_SelectedIndexChanged);
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label35);
+            this.panel1.Controls.Add(this.nucUserPassTxt);
+            this.panel1.Location = new System.Drawing.Point(270, 67);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(238, 45);
+            this.panel1.TabIndex = 85;
             // 
-            // OfflineModLabel
+            // label35
             // 
-            this.OfflineModLabel.AutoSize = true;
-            this.OfflineModLabel.BackColor = System.Drawing.Color.Transparent;
-            this.OfflineModLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OfflineModLabel.Location = new System.Drawing.Point(272, 40);
-            this.OfflineModLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.OfflineModLabel.Name = "OfflineModLabel";
-            this.OfflineModLabel.Size = new System.Drawing.Size(125, 15);
-            this.OfflineModLabel.TabIndex = 79;
-            this.OfflineModLabel.Text = "Nucleus Ofline Mode:";
-            this.OfflineModLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.OfflineModLabel.Visible = false;
+            this.label35.AutoSize = true;
+            this.label35.BackColor = System.Drawing.Color.Transparent;
+            this.label35.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label35.Location = new System.Drawing.Point(0, 0);
+            this.label35.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(120, 13);
+            this.label35.TabIndex = 85;
+            this.label35.Text = "Nucleus User Password";
+            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // nucUserPassTxt
+            // 
+            this.nucUserPassTxt.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.nucUserPassTxt.Location = new System.Drawing.Point(0, 23);
+            this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.nucUserPassTxt.MaxLength = 127;
+            this.nucUserPassTxt.Name = "nucUserPassTxt";
+            this.nucUserPassTxt.PasswordChar = '*';
+            this.nucUserPassTxt.Size = new System.Drawing.Size(236, 20);
+            this.nucUserPassTxt.TabIndex = 74;
+            this.nucUserPassTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // scaleOptionCbx
+            // 
+            this.scaleOptionCbx.AutoSize = true;
+            this.scaleOptionCbx.Checked = true;
+            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.scaleOptionCbx.Location = new System.Drawing.Point(20, 198);
+            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
+            this.scaleOptionCbx.Name = "scaleOptionCbx";
+            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
+            this.scaleOptionCbx.TabIndex = 83;
+            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
+            this.scaleOptionCbx.UseVisualStyleBackColor = true;
+            this.scaleOptionCbx.CheckedChanged += new System.EventHandler(this.scaleOptionCbx_CheckedChanged);
+            // 
+            // themeLabel
+            // 
+            this.themeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.themeLabel.AutoSize = true;
+            this.themeLabel.Location = new System.Drawing.Point(272, 42);
+            this.themeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.themeLabel.Name = "themeLabel";
+            this.themeLabel.Size = new System.Drawing.Size(43, 13);
+            this.themeLabel.TabIndex = 82;
+            this.themeLabel.Text = "Theme:";
+            this.themeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // themeCbx
+            // 
+            this.themeCbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.themeCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.themeCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.themeCbx.FormattingEnabled = true;
+            this.themeCbx.ItemHeight = 13;
+            this.themeCbx.Location = new System.Drawing.Point(329, 40);
+            this.themeCbx.Margin = new System.Windows.Forms.Padding(0);
+            this.themeCbx.MaxDropDownItems = 10;
+            this.themeCbx.Name = "themeCbx";
+            this.themeCbx.Size = new System.Drawing.Size(178, 21);
+            this.themeCbx.TabIndex = 81;
+            // 
+            // splashScreenChkB
+            // 
+            this.splashScreenChkB.AutoSize = true;
+            this.splashScreenChkB.Checked = true;
+            this.splashScreenChkB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.splashScreenChkB.Location = new System.Drawing.Point(20, 156);
+            this.splashScreenChkB.Margin = new System.Windows.Forms.Padding(2);
+            this.splashScreenChkB.Name = "splashScreenChkB";
+            this.splashScreenChkB.Size = new System.Drawing.Size(127, 17);
+            this.splashScreenChkB.TabIndex = 80;
+            this.splashScreenChkB.Text = "Enable splash screen";
+            this.splashScreenChkB.UseVisualStyleBackColor = true;
+            // 
+            // clickSoundChkB
+            // 
+            this.clickSoundChkB.AutoSize = true;
+            this.clickSoundChkB.Checked = true;
+            this.clickSoundChkB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.clickSoundChkB.Location = new System.Drawing.Point(20, 177);
+            this.clickSoundChkB.Margin = new System.Windows.Forms.Padding(2);
+            this.clickSoundChkB.Name = "clickSoundChkB";
+            this.clickSoundChkB.Size = new System.Drawing.Size(116, 17);
+            this.clickSoundChkB.TabIndex = 79;
+            this.clickSoundChkB.Text = "Enable click sound";
+            this.clickSoundChkB.UseVisualStyleBackColor = true;
             // 
             // cmb_EpicLang
             // 
@@ -312,7 +387,7 @@ namespace Nucleus.Coop
             // ignoreInputLockReminderCheckbox
             // 
             this.ignoreInputLockReminderCheckbox.AutoSize = true;
-            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(20, 146);
+            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(20, 135);
             this.ignoreInputLockReminderCheckbox.Margin = new System.Windows.Forms.Padding(2);
             this.ignoreInputLockReminderCheckbox.Name = "ignoreInputLockReminderCheckbox";
             this.ignoreInputLockReminderCheckbox.Size = new System.Drawing.Size(148, 17);
@@ -320,31 +395,10 @@ namespace Nucleus.Coop
             this.ignoreInputLockReminderCheckbox.Text = "Ignore input lock reminder";
             this.ignoreInputLockReminderCheckbox.UseVisualStyleBackColor = true;
             // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.BackColor = System.Drawing.Color.Transparent;
-            this.label35.Location = new System.Drawing.Point(16, 190);
-            this.label35.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(166, 13);
-            this.label35.TabIndex = 75;
-            this.label35.Text = "Nucleus User Account Password:";
-            // 
-            // nucUserPassTxt
-            // 
-            this.nucUserPassTxt.Location = new System.Drawing.Point(20, 207);
-            this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
-            this.nucUserPassTxt.MaxLength = 127;
-            this.nucUserPassTxt.Name = "nucUserPassTxt";
-            this.nucUserPassTxt.PasswordChar = '*';
-            this.nucUserPassTxt.Size = new System.Drawing.Size(160, 20);
-            this.nucUserPassTxt.TabIndex = 74;
-            // 
             // keepAccountsCheck
             // 
             this.keepAccountsCheck.AutoSize = true;
-            this.keepAccountsCheck.Location = new System.Drawing.Point(20, 169);
+            this.keepAccountsCheck.Location = new System.Drawing.Point(20, 219);
             this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
             this.keepAccountsCheck.Name = "keepAccountsCheck";
             this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
@@ -356,7 +410,7 @@ namespace Nucleus.Coop
             // statusCheck
             // 
             this.statusCheck.AutoSize = true;
-            this.statusCheck.Location = new System.Drawing.Point(20, 123);
+            this.statusCheck.Location = new System.Drawing.Point(20, 114);
             this.statusCheck.Margin = new System.Windows.Forms.Padding(2);
             this.statusCheck.Name = "statusCheck";
             this.statusCheck.Size = new System.Drawing.Size(197, 17);
@@ -427,11 +481,11 @@ namespace Nucleus.Coop
             this.cmb_Network.ItemHeight = 13;
             this.cmb_Network.Items.AddRange(new object[] {
             "Automatic"});
-            this.cmb_Network.Location = new System.Drawing.Point(320, 10);
+            this.cmb_Network.Location = new System.Drawing.Point(329, 10);
             this.cmb_Network.Margin = new System.Windows.Forms.Padding(0);
             this.cmb_Network.MaxDropDownItems = 10;
             this.cmb_Network.Name = "cmb_Network";
-            this.cmb_Network.Size = new System.Drawing.Size(187, 21);
+            this.cmb_Network.Size = new System.Drawing.Size(178, 21);
             this.cmb_Network.TabIndex = 69;
             // 
             // label32
@@ -450,7 +504,7 @@ namespace Nucleus.Coop
             // 
             this.debugLogCheck.AutoSize = true;
             this.debugLogCheck.BackColor = System.Drawing.Color.Transparent;
-            this.debugLogCheck.Location = new System.Drawing.Point(20, 100);
+            this.debugLogCheck.Location = new System.Drawing.Point(20, 93);
             this.debugLogCheck.Margin = new System.Windows.Forms.Padding(2);
             this.debugLogCheck.Name = "debugLogCheck";
             this.debugLogCheck.Size = new System.Drawing.Size(115, 17);
@@ -462,7 +516,7 @@ namespace Nucleus.Coop
             // 
             this.useNicksCheck.AutoSize = true;
             this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
-            this.useNicksCheck.Location = new System.Drawing.Point(20, 77);
+            this.useNicksCheck.Location = new System.Drawing.Point(20, 72);
             this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
             this.useNicksCheck.Name = "useNicksCheck";
             this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
@@ -488,7 +542,7 @@ namespace Nucleus.Coop
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.settingsCloseHKTxt);
-            this.groupBox1.Location = new System.Drawing.Point(271, 77);
+            this.groupBox1.Location = new System.Drawing.Point(271, 114);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
@@ -705,17 +759,18 @@ namespace Nucleus.Coop
             // 
             this.tabPage4.BackColor = System.Drawing.Color.Transparent;
             this.tabPage4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage4.Controls.Add(this.numMaxPlyrs);
+            this.tabPage4.Controls.Add(this.numHorDiv);
+            this.tabPage4.Controls.Add(this.numVerDiv);
+            this.tabPage4.Controls.Add(this.label29);
+            this.tabPage4.Controls.Add(this.label27);
+            this.tabPage4.Controls.Add(this.label28);
             this.tabPage4.Controls.Add(this.label31);
             this.tabPage4.Controls.Add(this.SplitDiv);
             this.tabPage4.Controls.Add(this.label49);
             this.tabPage4.Controls.Add(this.SplitColors);
-            this.tabPage4.Controls.Add(this.label27);
-            this.tabPage4.Controls.Add(this.label29);
-            this.tabPage4.Controls.Add(this.label28);
-            this.tabPage4.Controls.Add(this.panel2);
             this.tabPage4.Controls.Add(this.layoutSizer);
             this.tabPage4.Controls.Add(this.label30);
-            this.tabPage4.Controls.Add(this.enableCustomCheckbox);
             this.tabPage4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage4.Location = new System.Drawing.Point(4, 27);
             this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
@@ -724,7 +779,98 @@ namespace Nucleus.Coop
             this.tabPage4.Size = new System.Drawing.Size(511, 240);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Custom Layout";
-            this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
+            // 
+            // numMaxPlyrs
+            // 
+            this.numMaxPlyrs.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.numMaxPlyrs.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.numMaxPlyrs.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.numMaxPlyrs.Enabled = false;
+            this.numMaxPlyrs.Location = new System.Drawing.Point(6, 106);
+            this.numMaxPlyrs.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.numMaxPlyrs.Name = "numMaxPlyrs";
+            this.numMaxPlyrs.ReadOnly = true;
+            this.numMaxPlyrs.Size = new System.Drawing.Size(46, 16);
+            this.numMaxPlyrs.TabIndex = 33;
+            this.numMaxPlyrs.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numMaxPlyrs.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numHorDiv
+            // 
+            this.numHorDiv.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.numHorDiv.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.numHorDiv.Location = new System.Drawing.Point(6, 65);
+            this.numHorDiv.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numHorDiv.Name = "numHorDiv";
+            this.numHorDiv.ReadOnly = true;
+            this.numHorDiv.Size = new System.Drawing.Size(46, 16);
+            this.numHorDiv.TabIndex = 31;
+            this.numHorDiv.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numHorDiv.ValueChanged += new System.EventHandler(this.NumHorDiv_ValueChanged);
+            // 
+            // numVerDiv
+            // 
+            this.numVerDiv.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.numVerDiv.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.numVerDiv.Location = new System.Drawing.Point(6, 24);
+            this.numVerDiv.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numVerDiv.Name = "numVerDiv";
+            this.numVerDiv.ReadOnly = true;
+            this.numVerDiv.Size = new System.Drawing.Size(46, 16);
+            this.numVerDiv.TabIndex = 32;
+            this.numVerDiv.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numVerDiv.ValueChanged += new System.EventHandler(this.NumVerDiv_ValueChanged);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label29.Location = new System.Drawing.Point(5, 87);
+            this.label29.Margin = new System.Windows.Forms.Padding(3);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(64, 13);
+            this.label29.TabIndex = 30;
+            this.label29.Text = "Max Players";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.Transparent;
+            this.label27.Location = new System.Drawing.Point(5, 46);
+            this.label27.Margin = new System.Windows.Forms.Padding(3);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(151, 13);
+            this.label27.TabIndex = 28;
+            this.label27.Text = "Number of Horizontal Divisions";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(5, 5);
+            this.label28.Margin = new System.Windows.Forms.Padding(3);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(139, 13);
+            this.label28.TabIndex = 29;
+            this.label28.Text = "Number of Vertical Divisions";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label31
             // 
@@ -733,10 +879,10 @@ namespace Nucleus.Coop
             this.label31.BackColor = System.Drawing.Color.Transparent;
             this.label31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label31.ForeColor = System.Drawing.Color.Red;
-            this.label31.Location = new System.Drawing.Point(1, 165);
+            this.label31.Location = new System.Drawing.Point(4, 208);
             this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(237, 15);
+            this.label31.Size = new System.Drawing.Size(256, 28);
             this.label31.TabIndex = 86;
             this.label31.Text = "Splitscreen division may not work for all games.";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -747,7 +893,7 @@ namespace Nucleus.Coop
             this.SplitDiv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SplitDiv.AutoSize = true;
             this.SplitDiv.Cursor = System.Windows.Forms.Cursors.Default;
-            this.SplitDiv.Location = new System.Drawing.Point(4, 118);
+            this.SplitDiv.Location = new System.Drawing.Point(6, 134);
             this.SplitDiv.Margin = new System.Windows.Forms.Padding(2);
             this.SplitDiv.Name = "SplitDiv";
             this.SplitDiv.Size = new System.Drawing.Size(116, 17);
@@ -762,12 +908,12 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(1, 137);
+            this.label49.Location = new System.Drawing.Point(4, 155);
             this.label49.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(106, 15);
+            this.label49.Size = new System.Drawing.Size(103, 15);
             this.label49.TabIndex = 84;
-            this.label49.Text = "Background color:";
+            this.label49.Text = "Background color";
             this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // SplitColors
@@ -788,122 +934,13 @@ namespace Nucleus.Coop
             "Orange",
             "Yellow    ",
             "Green"});
-            this.SplitColors.Location = new System.Drawing.Point(112, 137);
+            this.SplitColors.Location = new System.Drawing.Point(7, 174);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.MaxDropDownItems = 10;
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(78, 21);
             this.SplitColors.TabIndex = 82;
             this.SplitColors.SelectedIndexChanged += new System.EventHandler(this.SplitColors_SelectedIndexChanged);
-            // 
-            // label27
-            // 
-            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.Color.Transparent;
-            this.label27.Location = new System.Drawing.Point(2, 65);
-            this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(124, 13);
-            this.label27.TabIndex = 28;
-            this.label27.Text = "# of Horizontal Divisions:";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // label29
-            // 
-            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label29.AutoSize = true;
-            this.label29.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label29.Location = new System.Drawing.Point(59, 82);
-            this.label29.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(67, 13);
-            this.label29.TabIndex = 30;
-            this.label29.Text = "Max Players:";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // label28
-            // 
-            this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(16, 48);
-            this.label28.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(112, 13);
-            this.label28.TabIndex = 29;
-            this.label28.Text = "# of Vertical Divisions:";
-            this.label28.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // panel2
-            // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.numVerDiv);
-            this.panel2.Controls.Add(this.numHorDiv);
-            this.panel2.Controls.Add(this.numMaxPlyrs);
-            this.panel2.Location = new System.Drawing.Point(135, 48);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(55, 56);
-            this.panel2.TabIndex = 39;
-            // 
-            // numVerDiv
-            // 
-            this.numVerDiv.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.numVerDiv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numVerDiv.Location = new System.Drawing.Point(9, 2);
-            this.numVerDiv.Margin = new System.Windows.Forms.Padding(2);
-            this.numVerDiv.Maximum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.numVerDiv.Name = "numVerDiv";
-            this.numVerDiv.ReadOnly = true;
-            this.numVerDiv.Size = new System.Drawing.Size(46, 16);
-            this.numVerDiv.TabIndex = 32;
-            this.numVerDiv.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numVerDiv.ValueChanged += new System.EventHandler(this.NumVerDiv_ValueChanged);
-            // 
-            // numHorDiv
-            // 
-            this.numHorDiv.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.numHorDiv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numHorDiv.Location = new System.Drawing.Point(9, 20);
-            this.numHorDiv.Margin = new System.Windows.Forms.Padding(2);
-            this.numHorDiv.Maximum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.numHorDiv.Name = "numHorDiv";
-            this.numHorDiv.ReadOnly = true;
-            this.numHorDiv.Size = new System.Drawing.Size(46, 16);
-            this.numHorDiv.TabIndex = 31;
-            this.numHorDiv.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numHorDiv.ValueChanged += new System.EventHandler(this.NumHorDiv_ValueChanged);
-            // 
-            // numMaxPlyrs
-            // 
-            this.numMaxPlyrs.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.numMaxPlyrs.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.numMaxPlyrs.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numMaxPlyrs.Enabled = false;
-            this.numMaxPlyrs.Location = new System.Drawing.Point(9, 38);
-            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(2);
-            this.numMaxPlyrs.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.numMaxPlyrs.Name = "numMaxPlyrs";
-            this.numMaxPlyrs.ReadOnly = true;
-            this.numMaxPlyrs.Size = new System.Drawing.Size(46, 16);
-            this.numMaxPlyrs.TabIndex = 33;
-            this.numMaxPlyrs.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numMaxPlyrs.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // layoutSizer
             // 
@@ -922,31 +959,13 @@ namespace Nucleus.Coop
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(235, 4);
+            this.label30.Location = new System.Drawing.Point(235, 8);
             this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(48, 13);
             this.label30.TabIndex = 35;
             this.label30.Text = "Preview:";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // enableCustomCheckbox
-            // 
-            this.enableCustomCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.enableCustomCheckbox.AutoSize = true;
-            this.enableCustomCheckbox.Checked = true;
-            this.enableCustomCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableCustomCheckbox.Enabled = false;
-            this.enableCustomCheckbox.Location = new System.Drawing.Point(4, 4);
-            this.enableCustomCheckbox.Margin = new System.Windows.Forms.Padding(2);
-            this.enableCustomCheckbox.Name = "enableCustomCheckbox";
-            this.enableCustomCheckbox.Size = new System.Drawing.Size(132, 17);
-            this.enableCustomCheckbox.TabIndex = 0;
-            this.enableCustomCheckbox.Text = "Enable Custom Layout";
-            this.enableCustomCheckbox.UseVisualStyleBackColor = true;
-            this.enableCustomCheckbox.Visible = false;
             // 
             // tabPage5
             // 
@@ -1188,7 +1207,7 @@ namespace Nucleus.Coop
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(265, 36);
+            this.label26.Location = new System.Drawing.Point(260, 36);
             this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(51, 13);
@@ -1414,7 +1433,7 @@ namespace Nucleus.Coop
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(226, 15);
             this.label39.TabIndex = 7;
-            this.label39.Text = "Note: this feature may not work for all games";
+            this.label39.Text = "This feature may not work for all games";
             this.label39.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label39.UseMnemonic = false;
             // 
@@ -1464,7 +1483,7 @@ namespace Nucleus.Coop
             this.AudioInstance8.BackColor = System.Drawing.Color.White;
             this.AudioInstance8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AudioInstance8.FormattingEnabled = true;
-            this.AudioInstance8.Location = new System.Drawing.Point(316, 84);
+            this.AudioInstance8.Location = new System.Drawing.Point(321, 84);
             this.AudioInstance8.Margin = new System.Windows.Forms.Padding(2);
             this.AudioInstance8.Name = "AudioInstance8";
             this.AudioInstance8.Size = new System.Drawing.Size(170, 21);
@@ -1485,7 +1504,7 @@ namespace Nucleus.Coop
             this.AudioInstance7.BackColor = System.Drawing.Color.White;
             this.AudioInstance7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AudioInstance7.FormattingEnabled = true;
-            this.AudioInstance7.Location = new System.Drawing.Point(316, 62);
+            this.AudioInstance7.Location = new System.Drawing.Point(321, 62);
             this.AudioInstance7.Margin = new System.Windows.Forms.Padding(2);
             this.AudioInstance7.Name = "AudioInstance7";
             this.AudioInstance7.Size = new System.Drawing.Size(170, 21);
@@ -1506,7 +1525,7 @@ namespace Nucleus.Coop
             this.AudioInstance6.BackColor = System.Drawing.Color.White;
             this.AudioInstance6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AudioInstance6.FormattingEnabled = true;
-            this.AudioInstance6.Location = new System.Drawing.Point(316, 40);
+            this.AudioInstance6.Location = new System.Drawing.Point(321, 40);
             this.AudioInstance6.Margin = new System.Windows.Forms.Padding(2);
             this.AudioInstance6.Name = "AudioInstance6";
             this.AudioInstance6.Size = new System.Drawing.Size(170, 21);
@@ -1527,7 +1546,7 @@ namespace Nucleus.Coop
             this.AudioInstance5.BackColor = System.Drawing.Color.White;
             this.AudioInstance5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AudioInstance5.FormattingEnabled = true;
-            this.AudioInstance5.Location = new System.Drawing.Point(316, 18);
+            this.AudioInstance5.Location = new System.Drawing.Point(321, 18);
             this.AudioInstance5.Margin = new System.Windows.Forms.Padding(2);
             this.AudioInstance5.Name = "AudioInstance5";
             this.AudioInstance5.Size = new System.Drawing.Size(170, 21);
@@ -1548,7 +1567,7 @@ namespace Nucleus.Coop
             this.AudioInstance4.BackColor = System.Drawing.Color.White;
             this.AudioInstance4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AudioInstance4.FormattingEnabled = true;
-            this.AudioInstance4.Location = new System.Drawing.Point(65, 84);
+            this.AudioInstance4.Location = new System.Drawing.Point(70, 84);
             this.AudioInstance4.Margin = new System.Windows.Forms.Padding(2);
             this.AudioInstance4.Name = "AudioInstance4";
             this.AudioInstance4.Size = new System.Drawing.Size(170, 21);
@@ -1569,7 +1588,7 @@ namespace Nucleus.Coop
             this.AudioInstance3.BackColor = System.Drawing.Color.White;
             this.AudioInstance3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AudioInstance3.FormattingEnabled = true;
-            this.AudioInstance3.Location = new System.Drawing.Point(65, 62);
+            this.AudioInstance3.Location = new System.Drawing.Point(70, 62);
             this.AudioInstance3.Margin = new System.Windows.Forms.Padding(2);
             this.AudioInstance3.Name = "AudioInstance3";
             this.AudioInstance3.Size = new System.Drawing.Size(170, 21);
@@ -1590,12 +1609,11 @@ namespace Nucleus.Coop
             this.AudioInstance2.BackColor = System.Drawing.Color.White;
             this.AudioInstance2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AudioInstance2.FormattingEnabled = true;
-            this.AudioInstance2.Location = new System.Drawing.Point(65, 40);
+            this.AudioInstance2.Location = new System.Drawing.Point(70, 40);
             this.AudioInstance2.Margin = new System.Windows.Forms.Padding(2);
             this.AudioInstance2.Name = "AudioInstance2";
             this.AudioInstance2.Size = new System.Drawing.Size(170, 21);
             this.AudioInstance2.TabIndex = 6;
-            this.AudioInstance2.DropDown += new System.EventHandler(this.audioBox_DropDown);
             // 
             // AudioInstance1
             // 
@@ -1604,12 +1622,11 @@ namespace Nucleus.Coop
             this.AudioInstance1.FormattingEnabled = true;
             this.AudioInstance1.Items.AddRange(new object[] {
             "Default"});
-            this.AudioInstance1.Location = new System.Drawing.Point(65, 18);
+            this.AudioInstance1.Location = new System.Drawing.Point(70, 18);
             this.AudioInstance1.Margin = new System.Windows.Forms.Padding(2);
             this.AudioInstance1.Name = "AudioInstance1";
             this.AudioInstance1.Size = new System.Drawing.Size(170, 21);
             this.AudioInstance1.TabIndex = 1;
-            this.AudioInstance1.DropDown += new System.EventHandler(this.audioBox_DropDown);
             // 
             // label37
             // 
@@ -1777,14 +1794,15 @@ namespace Nucleus.Coop
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numHorDiv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxPlyrs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHorDiv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.tabPage1.ResumeLayout(false);
@@ -1821,7 +1839,6 @@ namespace Nucleus.Coop
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.NumericUpDown numMaxPlyrs;
-        private System.Windows.Forms.CheckBox enableCustomCheckbox;
         private System.Windows.Forms.NumericUpDown numVerDiv;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.NumericUpDown numHorDiv;
@@ -1866,13 +1883,11 @@ namespace Nucleus.Coop
         private System.Windows.Forms.ComboBox cmb_Lang;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.ComboBox cmb_Network;
-        private System.Windows.Forms.Label label32;
         private System.Windows.Forms.CheckBox debugLogCheck;
         private System.Windows.Forms.CheckBox useNicksCheck;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.CheckBox keepAccountsCheck;
-        private System.Windows.Forms.Label label35;
         private System.Windows.Forms.TextBox nucUserPassTxt;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.RadioButton audioCustomSettingsRadio;
@@ -1897,20 +1912,25 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.ComboBox AudioInstance3;
         private System.Windows.Forms.Label label40;
-		private System.Windows.Forms.CheckBox ignoreInputLockReminderCheckbox;
+        private System.Windows.Forms.CheckBox ignoreInputLockReminderCheckbox;
         private Panel layoutSizer;
-        private Panel panel2;
         private Label label38;
         private Panel setting_Label;
         private ComboBox cmb_EpicLang;
         private Label label46;
-        private ComboBox offlineMod;
-        private Label OfflineModLabel;
         private CheckBox SplitDiv;
         private Label label49;
         private ComboBox SplitColors;
         private Label label31;
         private ComboBox comboBox_lockKey;
         private Label label_lockKey;
+        private CheckBox clickSoundChkB;
+        private CheckBox splashScreenChkB;
+        private Label themeLabel;
+        private ComboBox themeCbx;
+        private Label label32;
+        private CheckBox scaleOptionCbx;
+        private Panel panel1;
+        private Label label35;
     }
 }

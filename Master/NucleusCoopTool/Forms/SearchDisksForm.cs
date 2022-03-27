@@ -30,67 +30,100 @@ namespace Nucleus.Coop
         private float lastProgress;
 
         private List<string> pathsToSearch;
-
+        private List<Control> ctrls = new List<Control>();
         private bool searching;
         private bool closed;
         private MainForm main;
-        
-		private readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-		
-		
-		public void button_Click(object sender, EventArgs e)
-        {   
-		    
-			string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-			
-            SoundPlayer splayer = new SoundPlayer((Path.Combine(Application.StartupPath, @"gui\theme\"+ChoosenTheme+"\\button_click.wav")));
-            splayer.Play();
+        private float fontSize;
+
+        private void controlscollect()
+        {
+            foreach (Control control in Controls)
+            {
+                ctrls.Add(control);
+                foreach (Control container1 in control.Controls)
+                {
+                    ctrls.Add(container1);
+                    foreach (Control container2 in container1.Controls)
+                    {
+                        ctrls.Add(container2);
+                        foreach (Control container3 in container2.Controls)
+                        {
+                            ctrls.Add(container3);
+                        }
+                    }
+                }
+            }
         }
-		
-		private void closeButton(object sender, EventArgs e)
+
+        public void button_Click(object sender, EventArgs e)
+        {
+            if (main.mouseClick)
+            main.SoundPlayer(main.themePath + "\\button_click.wav");
+        }
+
+        private void closeButton(object sender, EventArgs e)
 		{
             closing = true;
             this.Visible = false;
 		}
 
-
         public SearchDisksForm(MainForm main)
         {
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-            bool MouseClick = Convert.ToBoolean(theme.IniReadValue("Sounds", "MouseClick"));
-            string[] rgb_font = theme.IniReadValue("Colors", "FontColor").Split(',');
-            string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOverColor").Split(',');
-            Image AppButtons = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\Theme\" +ChoosenTheme+"\\button.png"));
-					
-			Color MouseOverBackColor = Color.FromArgb(Convert.ToInt32(rgb_MouseOverColor[0]), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2])); 
-			
             this.main = main;
             InitializeComponent();
 
-            ForeColor = Color.FromArgb(Convert.ToInt32(rgb_font[0]), Convert.ToInt32(rgb_font[1]), Convert.ToInt32(rgb_font[2]));
+            SuspendLayout();
+            fontSize = float.Parse(main.theme.IniReadValue("Font", "AutoSearchFontSize"));
+            ForeColor = Color.FromArgb(Convert.ToInt32(main.rgb_font[0]), Convert.ToInt32(main.rgb_font[1]), Convert.ToInt32(main.rgb_font[2]));
 
-            BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\Theme\"+ChoosenTheme+ "\\other_backgrounds.jpg"));
-            
+            BackgroundImage = new Bitmap(main.themePath + "\\other_backgrounds.jpg");
+            closeBtn.BackgroundImage = new Bitmap(main.themePath + "\\title_close.png");
             //Controls Image
-			btn_addSelection.BackgroundImage = AppButtons;
-			btn_customPath.BackgroundImage = AppButtons;
-			btnSearch.BackgroundImage = AppButtons;
-			btn_delPath.BackgroundImage = AppButtons;
-			btn_selectAll.BackgroundImage = AppButtons;
-			btn_deselectAll.BackgroundImage = AppButtons;
+            btn_addSelection.BackgroundImage = main.AppButtons;
+			btn_customPath.BackgroundImage = main.AppButtons;
+			btnSearch.BackgroundImage = main.AppButtons;
+			btn_delPath.BackgroundImage = main.AppButtons;
+			btn_selectAll.BackgroundImage = main.AppButtons;
+			btn_deselectAll.BackgroundImage = main.AppButtons;
 			//
 			//MouseOverColor
 			//
-			btn_addSelection.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-			btn_customPath.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-			btnSearch.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-			btn_delPath.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-			btn_selectAll.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-			btn_deselectAll.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-           
-            if (MouseClick)
+			btn_addSelection.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+			btn_customPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+			btnSearch.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+			btn_delPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+			btn_selectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+			btn_deselectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+
+            controlscollect();
+
+            foreach (Control control in ctrls)
+            {
+                control.Font = new Font(main.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            }
+
+            if (main.useButtonsBorder)
+            {
+                btn_addSelection.FlatAppearance.BorderSize = 1;
+                btn_addSelection.FlatAppearance.BorderColor = main.ButtonsBorderColor;
+                btn_customPath.FlatAppearance.BorderSize = 1;
+                btn_customPath.FlatAppearance.BorderColor = main.ButtonsBorderColor;
+                btnSearch.FlatAppearance.BorderSize = 1;
+                btnSearch.FlatAppearance.BorderColor = main.ButtonsBorderColor;
+
+                btn_delPath.FlatAppearance.BorderSize = 1;
+                btn_delPath.FlatAppearance.BorderColor = main.ButtonsBorderColor;
+                btn_selectAll.FlatAppearance.BorderSize = 1;
+                btn_selectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
+                btn_deselectAll.FlatAppearance.BorderSize = 1;
+                btn_deselectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
+
+            }
+
+            ResumeLayout();
+
+            if (main.mouseClick)
             {
                foreach (Control button in this.Controls) { if (button is Button) { button.Click += new System.EventHandler(this.button_Click);}}
             }
@@ -103,9 +136,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    disksBox.Items.Add(ini.IniReadValue("SearchPaths", x.ToString()), true);
-                   
-
+                    disksBox.Items.Add(ini.IniReadValue("SearchPaths", x.ToString()), true);                  
                 }
             }
 
@@ -127,6 +158,8 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
+
+            SuspendLayout();
 
             if (scale > 1.0F)
             {
@@ -161,15 +194,16 @@ namespace Nucleus.Coop
             {
                 if (c.GetType() == typeof(CheckedListBox))
                 {
-                    c.Font = new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                    c.Font = new Font(main.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                 }
 
                 if (c.GetType() == typeof(TextBox))
                 {
-                    c.Font = new Font("Franklin Gothic Medium", textBoxFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                    c.Font = new Font(main.customFont, textBoxFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                 }
             }
 
+            ResumeLayout();
 
         }
 
@@ -346,18 +380,7 @@ namespace Nucleus.Coop
                     UpdateProgress(thirdDiskPc);
 
                     List<string> result = new List<string>();
-                    //if(IsElevated)
-                    //{
-                    //result = Directory.EnumerateFiles(currentPath, "*.exe", SearchOption.AllDirectories).ToList();
-                    //result = Directory.GetFiles(currentPath, "*.exe", SearchOption.AllDirectories).ToList();
-                    //}
-                    //else
-                    //{
-                    //result = GetFiles(currentPath).ToList();
-                    //}
 
-
-                    //result = GetFiles(currentPath, "*.exe").ToList();
                     result = GetFiles(currentPath).ToList();
 
 
@@ -589,30 +612,15 @@ namespace Nucleus.Coop
             }
         }
 
-        private void SearchDisksForm_Load(object sender, EventArgs e)
+        private void closeBtn_MouseEnter(object sender, EventArgs e)
         {
-          
-            
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
+            closeBtn.BackgroundImage = new Bitmap(main.themePath + "\\title_close_mousehover.png");
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void closeBtn_MouseLeave(object sender, EventArgs e)
         {
-
-        }
-
-        private void disksBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txt_Stage_TextChanged(object sender, EventArgs e)
-        {
-
+            closeBtn.BackgroundImage = new Bitmap(main.themePath + "\\title_close.png");
         }
     }
 }

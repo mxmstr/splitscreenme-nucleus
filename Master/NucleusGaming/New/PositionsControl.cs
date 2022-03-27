@@ -12,24 +12,17 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+
 namespace Nucleus.Coop
 {
     public class PositionsControl : UserInputControl, IDynamicSized
     {
+        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+
         private static PositionsControl _positionsControl;
-
-        private bool canProceed;
-
-        //private bool keyboardPlayer = false;
 
         // array of users's screens
         private UserScreen[] screens;
-
-        // the factor to scale all screens to fit them inside the edit area
-        private float scale;
-
-        // the total bounds of all the connected monitors together
-        private Rectangle totalBounds;
 
         private Font playerFont;
         private Font playerCustomFont;
@@ -37,26 +30,39 @@ namespace Nucleus.Coop
         private Font playerTextFont;
         private Font extraSmallTextFont;
 
+        // the total bounds of all the connected monitors together
+        private Rectangle totalBounds;
         private RectangleF screensArea;
         private RectangleF playersArea;
+        private Rectangle setupScr;
         private int playerSize;
-
-        private bool dragging = false;
         private int draggingIndex = -1;
+        private int draggingScreen = -1;
+        private int dinputPressed = -1;
+        private int gamePadPressed = -1;
+        private int testDinputPlayers = -1;// 16;
+        private int testXinputPlayers = -1;// 16;
+
+        private bool canProceed;
+        private bool controllerIdentification;
+        private bool dragging = false;
+        public bool isDisconnected;
+        private bool insideGamepadTick = false;
+        private bool UseSetupScreenBorder;
+        private bool UseLayoutSelectionBorder;
+        private bool UseSetupScreenImage;
+        public override bool CanProceed => canProceed;
+        public override bool CanPlay => false;
+
+
         private Point draggingOffset;
         private Point mousePos;
-        private int draggingScreen = -1;
+        
         private Rectangle draggingScreenRec;
         private Rectangle draggingScreenBounds;
 
-        private Image gamepadImg;
-        private Image genericImg;
-        private Image keyboardImg;
-        private Image rawKeyboardImg;
-        private Image rawMouseImg;
-
-        public bool isDisconnected;
-        private int dinputPressed = -1;
+        // the factor to scale all screens to fit them inside the edit area
+        private float scale;
         private float fontMinus;
         private float fontScale;
         private float newplayerFontSize ;
@@ -64,48 +70,63 @@ namespace Nucleus.Coop
         private float newplayerTextFontSize; 
         private float newsmallTextFontSize ;
         private float newextraSmallTextFontSize;
-        private int instruction_click = 0;
-        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
-        private ImageAttributes flashImageAttributes;
 
-        private bool insideGamepadTick = false;
-        public override bool CanProceed => canProceed;
-        public override string Title => "Position Players";
-        public override bool CanPlay => false;
-
-        // dinput
-        //private DirectInput dinput;
-        //private List<Joystick> dinputJoysticks;
-
-        // xinput
-        // private List<OpenXinputController> xinputControllers;
-
-        //private Timer gamepadTimer;
-        //private Timer gamepadPollTimer;
         private System.Threading.Timer gamepadTimer;
         private System.Threading.Timer gamepadPollTimer;
-        //private System.Threading.Thread pollThread;
 
-        private int gamePadPressed = -1;
-
-        private int testDinputPlayers = -1;// 16;
-        private int testXinputPlayers = -1;// 16;
-        //private TextBox instructionText;
         private PictureBox instruction;
         private PictureBox instructionImg;
 
+        private ImageAttributes flashImageAttributes;
+
+        private Bitmap instructionCloseImg;
+        private Bitmap instructionOpenImg;
+
+        private Bitmap xinputPic;
+        private Bitmap dinputPic;
+        private Bitmap keyboardPic;
+        private Bitmap protKeyboardPic;
+        private Bitmap protoMousePic;
+        private Bitmap virtualKeyboardPic;
+        private Bitmap virtualMousePic;
+        private Bitmap screenimg ;
+        //private Image playerScreenimg;
+        private Bitmap draggingScreenImg;
+        private Bitmap fullscreen;
+        private Bitmap horizontal2;
+        private Bitmap vertical2;
+        private Bitmap players4;
+        private Bitmap players6;
+        private Bitmap players8;
+        private Bitmap players16;
+        private Bitmap customLayout;
+
+        private Brush[] colors;
+        private SolidBrush myBrush;
+        private Pen PositionPlayerScreenPen;
+        private Pen PositionScreenPen;
+        public override string Title => "Position Players";
         public PositionsControl()
         {
             PositionsControl._positionsControl = this;
-
             Initialize();
         }
 
         private void Initialize()
         {
+            //TODO: Add device handle zero mouse & keyboard w/ special icon
+
             string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
             IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
+            string themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
+            string[] rgb_PositionControlsFontColor = theme.IniReadValue("Colors", "SetupScreenFont").Split(',');
+            string[] rgb_PositionScreenColor = theme.IniReadValue("Colors", "SetupScreenBorder").Split(',');
+            string[] rgb_PositionPlayerScreenColor = theme.IniReadValue("Colors", "SetupScreenPlayerBorder").Split(',');
+            controllerIdentification = Convert.ToBoolean(theme.IniReadValue("Misc", "ControllerIdentificationOn"));
+            UseSetupScreenBorder = Convert.ToBoolean(theme.IniReadValue("Misc", "UseSetupScreenBorder"));
+            UseLayoutSelectionBorder = Convert.ToBoolean(theme.IniReadValue("Misc", "UseLayoutSelectionBorder"));
+            UseSetupScreenImage = Convert.ToBoolean(theme.IniReadValue("Misc", "UseSetupScreenImage"));
 
             if (gamepadTimer == null)
             {
@@ -116,28 +137,44 @@ namespace Nucleus.Coop
             {
                 gamepadPollTimer = new System.Threading.Timer(GamepadPollTimer_Tick, null, 0, 1001);
             }
-            
+
+            SuspendLayout();
+
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom| AnchorStyles.Left| AnchorStyles.Right;
             playerFont = new Font("Franklin Gothic Medium", 20.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
             playerCustomFont = new Font("Franklin Gothic Medium", 16.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
             playerTextFont = new Font("Franklin Gothic Medium", 12.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
             smallTextFont = new Font("Franklin Gothic Medium", 12.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
             extraSmallTextFont = new Font("Franklin Gothic Medium", 10.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
+
+            PositionScreenPen = new Pen(Color.FromArgb(Convert.ToInt32(rgb_PositionScreenColor[0]), Convert.ToInt32(rgb_PositionScreenColor[1]), Convert.ToInt32(rgb_PositionScreenColor[2])));
+            PositionPlayerScreenPen = new Pen(Color.FromArgb(Convert.ToInt32(rgb_PositionPlayerScreenColor[0]), Convert.ToInt32(rgb_PositionPlayerScreenColor[1]), Convert.ToInt32(rgb_PositionPlayerScreenColor[2])));
+            myBrush = new SolidBrush(Color.FromArgb(Convert.ToInt32(rgb_PositionControlsFontColor[0]), Convert.ToInt32(rgb_PositionControlsFontColor[1]), Convert.ToInt32(rgb_PositionControlsFontColor[2])));
+
             BackColor = Color.Transparent;
-            BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\Theme\" + ChoosenTheme + "\\setup_screen.png"));
+            //BackgroundImage = new Bitmap(themePath + "\\setup_screen.png");           
             BackgroundImageLayout = ImageLayout.Stretch;
+            instructionCloseImg = new Bitmap(themePath + "\\instruction_closed.png");
+            instructionOpenImg = new Bitmap(themePath + "\\instruction_opened.png");
+            xinputPic = new Bitmap(themePath + "\\xinput.png");
+            dinputPic = new Bitmap(themePath + "\\dinput.png");
+            keyboardPic = new Bitmap(themePath + "\\keyboard.png");
+            protKeyboardPic = new Bitmap(themePath + "\\proto_keyboard.png");
+            protoMousePic = new Bitmap(themePath + "\\proto_mouse.png");
+            virtualKeyboardPic = new Bitmap(themePath + "\\virtual_keyboard.png");
+            virtualMousePic = new Bitmap(themePath + "\\virtual_mouse.png");
+            screenimg = new Bitmap(themePath + "\\screen.png");
+            //playerScreenimg = Image.FromFile(themePath + "\\player_screen.png");
+            draggingScreenImg = new Bitmap(themePath + "\\dragging_indicator.png");
+            fullscreen = new Bitmap(themePath + "\\fullscreen.png");
+            horizontal2 = new Bitmap(themePath + "\\2horizontal.png");
+            vertical2 = new Bitmap(themePath + "\\2vertical.png");
+            players4 = new Bitmap(themePath + "\\4players.png");
+            players6 = new Bitmap(themePath + "\\6players.png");
+            players8 = new Bitmap(themePath + "\\8players.png");
+            players16 = new Bitmap(themePath + "\\16players.png");
+            customLayout = new Bitmap(themePath + "\\customLayout.png");
 
-            if (ini.IniReadValue("Advanced", "Font") != "")
-            {
-                float fontSize = 12F;
-                fontSize = float.Parse(ini.IniReadValue("Advanced", "Font"));
-                playerFont = new Font("Segoe UI", fontSize);
-                playerCustomFont = new Font("Segoe UI", fontSize);
-                playerTextFont = new Font("Segoe UI", fontSize);
-                smallTextFont = new Font("Segoe UI", fontSize);
-                extraSmallTextFont = new Font("Segoe UI", fontSize);
-
-            }
 
             instruction = new PictureBox();//using a button cause focus issues
             instruction.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -145,7 +182,7 @@ namespace Nucleus.Coop
             instruction.Location = new Point((Width-instruction.Width)-5,5);
             instruction.BackColor = Color.Transparent;
             instruction.ForeColor = Color.White;
-            instruction.BackgroundImage = Resources.instruction;
+            instruction.BackgroundImage = instructionCloseImg;
             instruction.BackgroundImageLayout = ImageLayout.Stretch;
             instruction.Click += new EventHandler(this.instruction_Click);
  
@@ -161,14 +198,20 @@ namespace Nucleus.Coop
                 Visible = false
 
             };
-           
+            
+
+            ResumeLayout();
+
+            colors = new Brush[]
+            {
+              Brushes.Red, Brushes.DodgerBlue, Brushes.LimeGreen, Brushes.Yellow,Brushes.SaddleBrown, Brushes.BlueViolet, Brushes.Aqua, Brushes.DarkOrange, Brushes.Silver,
+              Brushes.Magenta, Brushes.SpringGreen, Brushes.Indigo, Brushes.Black, Brushes.White, Brushes.Bisque, Brushes.SkyBlue, Brushes.SeaGreen,Brushes.Wheat, Brushes.Crimson, Brushes.Turquoise, Brushes.Chocolate,
+              Brushes.OrangeRed, Brushes.Olive, Brushes.DarkRed, Brushes.Lavender
+            };
+
             this.Controls.Add(instruction);
             this.Controls.Add(instructionImg);
-            gamepadImg = Resources.gamepad;
-            genericImg = Resources.generic;
-            keyboardImg = Resources.keyboard;
-            rawMouseImg = Resources.mouse;
-            rawKeyboardImg = Resources.rawkeyboard;
+            //gamepadImg = Resources.gamepad;
 
             //Flash image attributes
             {
@@ -184,26 +227,34 @@ namespace Nucleus.Coop
                 flashImageAttributes = new ImageAttributes();
                 flashImageAttributes.SetColorMatrix(colorMatrix);
             }
+
             DPIManager.Register(this);         
             DPIManager.Update(this);
             RemoveFlicker();
         }
 
-        
         private void instruction_Click(object sender, EventArgs e)
-        {          
-            instruction_click++;
-            instruction.BackgroundImage = Resources.instruction_close;
-            instructionImg.Visible = true;
-
-            if (instruction_click == 2)
-            { 
+        {
+          
+            if (instructionImg.Visible)
+            {
+                SuspendLayout();
+                instruction.BackgroundImage = instructionCloseImg;
+                ResumeLayout();
                 instructionImg.Visible = false;
-                instruction.BackgroundImage = Resources.instruction;
-                instruction_click = 0;
-            }  
+            }
+            else 
+            {
+                SuspendLayout();               
+                instruction.BackgroundImage = instructionOpenImg;
+                ResumeLayout();
+                instructionImg.Visible = true;
+            }
+            
         }
+
         private bool appStart = false;
+
         public void UpdateSize(float scale)
         {
           
@@ -212,6 +263,9 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
+
+            SuspendLayout();
+
             if (!appStart)
             {
                 if (fontScale > 1.0F || fontScale < 2.0F)
@@ -241,6 +295,8 @@ namespace Nucleus.Coop
                 instruction.Location = new Point((Width - instruction.Width) - 5, 5);
                 appStart = true;
             }
+
+            ResumeLayout();
         }
         public static void InvalidateFlash()
         {
@@ -249,12 +305,6 @@ namespace Nucleus.Coop
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-
-            //if (dinput != null)
-            //{
-            //    dinput.Dispose();
-            //    dinput = null;
-            //}
 
             if (profile != null && profile.PlayerData != null)
             {
@@ -283,20 +333,12 @@ namespace Nucleus.Coop
                 }
             }
 
-            //if (dinput != null)
-            //{
-            //    dinput.Dispose();
-            //    dinput = null;
-            //}
-
-            //gamepadTimer.Enabled = false;
-            //gamepadPollTimer.Enabled = false;
             gamepadTimer.Dispose();
             gamepadPollTimer.Dispose();
         }
 
 
-        private void GamepadPollTimer_Tick(object state)/* object sender, EventArgs e)*/
+        private void GamepadPollTimer_Tick(object state)
         {
             if (profile == null)
             {
@@ -333,7 +375,6 @@ namespace Nucleus.Coop
 
         private void PollGamepad(PlayerInfo player)
         {
-
             gamePadPressed = -1;
 
             try
@@ -385,7 +426,6 @@ namespace Nucleus.Coop
             }
 
             insideGamepadTick = true;
-
 
             gamePadPressed = -1;
             if (profile == null)
@@ -482,7 +522,7 @@ namespace Nucleus.Coop
                     string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
                     player.HIDDeviceID = fhid;
                     player.DInputJoystick.Acquire();
-
+                    player.IsInputUsed = true;
                     data.Add(player);
                 }
 
@@ -580,6 +620,7 @@ namespace Nucleus.Coop
 
                         // new gamepad
                         player.IsXInput = true;
+                        player.IsInputUsed = true;
                         player.GamepadId = i;
                         data.Add(player);
                     }
@@ -723,7 +764,7 @@ namespace Nucleus.Coop
             Invalidate();
         }
 
-        private void UpdatePlayers()
+        public void UpdatePlayers()
         {
             if (profile == null)
             {
@@ -732,6 +773,7 @@ namespace Nucleus.Coop
 
             List<PlayerInfo> playerData = profile.PlayerData;
             canProceed = playerData.Count(c => c.ScreenIndex != -1) >= 1;
+
             if (playerData.Count == 0)
             {
                 if (game.Game.SupportsKeyboard)
@@ -740,19 +782,19 @@ namespace Nucleus.Coop
                     PlayerInfo kbPlayer = new PlayerInfo
                     {
                         IsKeyboardPlayer = true,
-                        GamepadId = 99
-                    };
+                        GamepadId = 99,
+                        IsInputUsed = true
+                };
+                     
                     playerData.Add(kbPlayer);
-                }
-
-                //Raw mice/keyboards
-                if (game.Game.SupportsMultipleKeyboardsAndMice)
+                }             
+               
+                if (game.Game.SupportsMultipleKeyboardsAndMice) //Raw mice/keyboards
                 {
                     playerData.AddRange(RawInputManager.GetDeviceInputInfos());
                 }
-
-                // make fake data if needed
-                if (testDinputPlayers != -1)
+              
+                if (testDinputPlayers != -1) // make fake data if needed
                 {
                     for (int i = 0; i < testDinputPlayers; i++)
                     {
@@ -767,7 +809,7 @@ namespace Nucleus.Coop
                         playerData.Add(player);
                     }
                 }
-
+               
                 if (testXinputPlayers != -1)
                 {
                     for (int i = 0; i < testXinputPlayers; i++)
@@ -784,6 +826,7 @@ namespace Nucleus.Coop
                     }
                 }
             }
+
             UpdateScreens();
 
             float playersWidth = Width * 0.65f;
@@ -800,14 +843,16 @@ namespace Nucleus.Coop
             int horizontal = (int)Math.Round((playersWidth / playerSize) - 0.5);
             int vertical = (int)Math.Round((playerHeight / playerSize) - 0.5);
             int total = vertical * horizontal;
+
             if (total < playerCount)
             {
                 int newVertical = vertical + 1;
+                SuspendLayout();
                 playerCustomFont = new Font("Franklin Gothic Medium", newplayerCustomFontSize*0.8f, FontStyle.Regular, GraphicsUnit.Point, 0);
+                ResumeLayout();
                 playerSize = (int)Math.Round(((playerHeight/1.2f) / newVertical));
             }
-
-
+       
             for (int i = 0; i < playerData.Count; i++)
             {
                 PlayerInfo info = playerData[i];
@@ -820,7 +865,7 @@ namespace Nucleus.Coop
             }
 
             CanPlayUpdated(canProceed, false);
-            Invalidate();
+           // Invalidate();
         }
 
         private bool GetScreenDivisionBounds(UserScreenType screenType, int index, out Rectangle? monitorBounds, out Rectangle? editorBounds, Rectangle bounds, Rectangle ebounds)
@@ -1271,8 +1316,13 @@ namespace Nucleus.Coop
                 List<PlayerInfo> players = profile.PlayerData;
 
                 PlayerInfo player = players[draggingIndex];
+                if (!player.IsInputUsed)
+                {
+                    return;
+                }
 
                 Rectangle p = player.EditBounds;
+
                 if (draggingScreen == -1)
                 {
                     for (int i = 0; i < screens.Length; i++)
@@ -1285,7 +1335,6 @@ namespace Nucleus.Coop
                         if (pc > 0.6f)
                         {
                             float offset = s.Width * 0.05f;
-
                             // check if there's space available on this screen
                             List<PlayerInfo> playas = profile.PlayerData;
                             GetFreeSpace(i, out Rectangle? editor, out Rectangle? monitor, player);
@@ -1299,6 +1348,7 @@ namespace Nucleus.Coop
                             break;
                         }
                     }
+
                 }
                 else
                 {
@@ -1306,14 +1356,17 @@ namespace Nucleus.Coop
                     float pc = RectangleUtil.PcInside(p, s);
                     if (pc < 0.6f)
                     {
+                       
                         draggingScreen = -1;
                     }
                 }
-
+                
                 p = new Rectangle(mousePos.X + draggingOffset.X, mousePos.Y + draggingOffset.Y, p.Width, p.Height);
                 players[draggingIndex].EditBounds = p;
+                Rectangle r = new Rectangle(this.Location.X+5, this.Location.Y+15,  this.Width-20,this.Height-60);
 
-                Invalidate();
+                Invalidate(r,false);
+          
             }
         }
 
@@ -1353,7 +1406,7 @@ namespace Nucleus.Coop
                 }
             }
         }
-
+      
         private Rectangle GetDefaultBounds(int index)
         {
             float lineWidth = index * playerSize;
@@ -1373,59 +1426,64 @@ namespace Nucleus.Coop
 
         protected override void OnPaint(PaintEventArgs e)
         {
-
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-
             base.OnPaint(e);
-            string[] rgb_PositionControlsFontColor = theme.IniReadValue("Colors", "PositionControlsFontColor").Split(',');
-            string[] rgb_PositionScreenColor = theme.IniReadValue("Colors", "PositionScreenColor").Split(',');
-            string[] rgb_PositionPlayerScreenColor = theme.IniReadValue("Colors", "PositionPlayerScreenColor").Split(',');
-
-            SolidBrush myBrush = new SolidBrush(Color.FromArgb(Convert.ToInt32(rgb_PositionControlsFontColor[0]), Convert.ToInt32(rgb_PositionControlsFontColor[1]), Convert.ToInt32(rgb_PositionControlsFontColor[2])));
-            Pen PositionScreenPen = new Pen(Color.FromArgb(Convert.ToInt32(rgb_PositionScreenColor[0]), Convert.ToInt32(rgb_PositionScreenColor[1]), Convert.ToInt32(rgb_PositionScreenColor[2])));
-            Pen PositionPlayerScreenPen = new Pen(Color.FromArgb(Convert.ToInt32(rgb_PositionPlayerScreenColor[0]), Convert.ToInt32(rgb_PositionPlayerScreenColor[1]), Convert.ToInt32(rgb_PositionPlayerScreenColor[2])));
+          
             Graphics g = e.Graphics;
-            int gampadCount = 0;
+
+            
+            int gamepadCount = 0;
 #if DEBUG
-            //g.FillRectangle(Brushes.Green, playersArea);
-            //g.FillRectangle(Brushes.CornflowerBlue, screensArea);
-            //g.FillRectangle(Brushes.CornflowerBlue, new RectangleF(0, 0, Width, Height));
+                //g.FillRectangle(Brushes.Green, playersArea);
+                //g.FillRectangle(Brushes.CornflowerBlue, screensArea);
+                //g.FillRectangle(Brushes.CornflowerBlue, new RectangleF(0, 0, Width, Height));
 #endif
-            SuspendLayout();
-            UpdateScreens();
 
             for (int i = 0; i < screens.Length; i++)
             {
                 UserScreen s = screens[i];
-                g.DrawRectangle(PositionScreenPen, s.UIBounds);
-                g.DrawRectangle(PositionScreenPen, s.SwapTypeBounds);
 
+                if(UseLayoutSelectionBorder)
+                { 
+                    g.DrawRectangle(PositionScreenPen, s.SwapTypeBounds);
+                }
+
+                if(UseSetupScreenBorder)
+                {
+                    g.DrawRectangle(PositionScreenPen, s.UIBounds);
+                }
+
+                if (UseSetupScreenImage)
+                {
+                    setupScr = new Rectangle((int)s.UIBounds.X, (int)s.UIBounds.Y, (int)s.UIBounds.Width, (int)s.UIBounds.Height);
+                    g.DrawImage(screenimg, setupScr);
+                }
+
+                //g.DrawImage(screenimg, setupScrSwap);
                 switch (s.Type)
                 {
                     case UserScreenType.FullScreen:
-                        g.DrawImage(Resources.fullscreen, s.SwapTypeBounds);
+                        g.DrawImage(fullscreen, s.SwapTypeBounds);
                         break;
                     case UserScreenType.DualHorizontal:
-                        g.DrawImage(Resources.horizontal, s.SwapTypeBounds);
+                        g.DrawImage(horizontal2, s.SwapTypeBounds);
                         break;
                     case UserScreenType.DualVertical:
-                        g.DrawImage(Resources.vertical, s.SwapTypeBounds);
+                        g.DrawImage(vertical2, s.SwapTypeBounds);
                         break;
                     case UserScreenType.FourPlayers:
-                        g.DrawImage(Resources._4players, s.SwapTypeBounds);
+                        g.DrawImage(players4, s.SwapTypeBounds);
                         break;
                     case UserScreenType.SixPlayers:
-                        g.DrawImage(Resources._6players, s.SwapTypeBounds);
+                        g.DrawImage(players6, s.SwapTypeBounds);
                         break;
                     case UserScreenType.EightPlayers:
-                        g.DrawImage(Resources._8players, s.SwapTypeBounds);
+                        g.DrawImage(players8, s.SwapTypeBounds);
                         break;
                     case UserScreenType.SixteenPlayers:
-                        g.DrawImage(Resources._16players, s.SwapTypeBounds);
+                        g.DrawImage(players16, s.SwapTypeBounds);
                         break;
                     case UserScreenType.Custom:
-                        g.DrawImage(Resources.customLayout, s.SwapTypeBounds);
+                        g.DrawImage(customLayout, s.SwapTypeBounds);
                         break;
                 }
             }
@@ -1434,38 +1492,30 @@ namespace Nucleus.Coop
 
             if (players.Count == 0)
             {
+                g.DrawString(game.Game.SupportsMultipleKeyboardsAndMice ? "Input Devices" : "No Gamepads detected", playerTextFont, myBrush, new PointF(10, 10));
             }
             else
             {
                 for (int i = 0; i < players.Count; i++)
-                {                    
+                {
                     PlayerInfo info = players[i];
 
-                    Brush[] colors = new Brush[]
-                    {
-                      Brushes.Red,
-                      Brushes.DodgerBlue, Brushes.LimeGreen, Brushes.Yellow,
-                      Brushes.SaddleBrown, Brushes.BlueViolet, Brushes.Aqua, Brushes.DarkOrange, Brushes.Silver,
-                      Brushes.Magenta, Brushes.SpringGreen, Brushes.Indigo, Brushes.Black,
-                      Brushes.White, Brushes.Bisque, Brushes.SkyBlue, Brushes.SeaGreen,
-                      Brushes.Wheat, Brushes.Crimson, Brushes.Turquoise, Brushes.Chocolate,
-                      Brushes.OrangeRed, Brushes.Olive, Brushes.DarkRed, Brushes.Lavender
-                    };
-          
+
                     Rectangle s = info.EditBounds;
                     g.ResetClip();
                     g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 1, s.Height + 1));
+
+
+                    Rectangle gamepadRect = RectangleUtil.ScaleAndCenter(xinputPic.Size, s);
                   
-                    Rectangle gamepadRect = RectangleUtil.ScaleAndCenter(gamepadImg.Size, s);
-                    
                     string str = (i + 1).ToString();
                     SizeF size = g.MeasureString(str, playerFont);
                     PointF loc = RectangleUtil.Center(size, s);
 
                     if (gamePadPressed == info.GamepadId)
                     {
-                        var playerColor =  colors[info.GamepadId];
-                        g.FillPie(playerColor, gamepadRect,100.0f,-20.0f);
+                        var playerColor = colors[info.GamepadId];
+                        g.FillPie(playerColor, gamepadRect, 100.0f, -20.0f);
                         gamePadPressed = -1;
                     }
                     else
@@ -1474,61 +1524,91 @@ namespace Nucleus.Coop
                     }
 
                     if (info.IsXInput)
-                    {                       
+                    {
                         loc.Y -= gamepadRect.Height * 0.1f;
                         var playerColor = colors[info.GamepadId];
-                        gampadCount++;
-                        str = Convert.ToString(gampadCount);                           
+                        gamepadCount++;
+                        str = Convert.ToString(gamepadCount);
 
                         size = g.MeasureString(str, playerCustomFont);
                         loc = RectangleUtil.Center(size, s);
                         loc.Y -= 5;
-                            
-                        g.DrawString(str, playerCustomFont, playerColor, loc);
-                        g.DrawImage(gamepadImg, gamepadRect);
+
+                        if (controllerIdentification)
+                        {
+                            g.DrawString(str, playerCustomFont, playerColor, loc);
+                        }
+                        g.DrawImage(xinputPic, gamepadRect);
+                       
                     }
                     else if (info.IsKeyboardPlayer && !info.IsRawKeyboard && !info.IsRawMouse)
                     {
-                        g.DrawImage(keyboardImg, gamepadRect);
+                        g.DrawImage(keyboardPic, gamepadRect);
                     }
                     else if (info.IsRawKeyboard || info.IsRawMouse)
                     {
-                        Image img = info.IsRawKeyboard ? rawKeyboardImg : rawMouseImg;
+                        Image img = info.IsRawKeyboard ? protKeyboardPic : protoMousePic;
 
-                        if (info.ShouldFlash)
+                        if (info.RawMouseDeviceHandle != IntPtr.Zero && info.RawKeyboardDeviceHandle != IntPtr.Zero)
                         {
-                            g.DrawImage(img, gamepadRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, flashImageAttributes);
+                            if (info.ShouldFlash)
+                            {
+                                info.IsInputUsed = true;
+                                g.DrawImage(img, gamepadRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, flashImageAttributes);
+                            }
+                            else if (info.IsInputUsed)
+                            {
+                                g.DrawImage(img, gamepadRect);
+                            }
                         }
                         else
                         {
-                            g.DrawImage(img, gamepadRect);
+                            Image virtualImg = info.IsRawKeyboard ? virtualKeyboardPic : virtualMousePic;
+
+                            if (info.ShouldFlash)
+                            {
+                                info.IsInputUsed = true;
+                                g.DrawImage(virtualImg, gamepadRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, flashImageAttributes);
+                            }
+                            else if (info.IsInputUsed)
+                            {
+                                g.DrawImage(virtualImg, gamepadRect);
+                            }
+
                         }
+
                     }
                     else
                     {
+                       
                         loc.Y -= gamepadRect.Height * 0.2f;
-                        
                         var playerColor = colors[info.GamepadId];
-                        gampadCount++;
-                        str = Convert.ToString(gampadCount);
+                        gamepadCount++;
+                        str = Convert.ToString(gamepadCount);
                         size = g.MeasureString(str, playerCustomFont);
                         loc = RectangleUtil.Center(size, s);
                         loc.Y -= 5;
-                        
-                        g.DrawString(str, playerCustomFont, playerColor, loc);
-                      
-                        g.DrawImage(genericImg, gamepadRect);
+
+                        if (controllerIdentification)
+                        {
+                            g.DrawString(str, playerCustomFont, playerColor, loc);
+                        }
+
+                        g.DrawImage(dinputPic, gamepadRect);
                     }
 
                     if (info.ScreenIndex != -1)
                     {
                         UserScreen screen = screens[info.ScreenIndex];
+
                         if ((s.Height + s.Y) - (screen.UIBounds.Height + screen.UIBounds.Y) == -1)
                         {
                             s.Height += 1;
                         }
+
                         g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 1, s.Height + 1));
-                        g.DrawRectangle(PositionPlayerScreenPen, s);
+                 
+                        g.DrawRectangle(PositionPlayerScreenPen, s);                     
                     }
 
                     if (gamePadPressed != info.GamepadId)
@@ -1536,22 +1616,20 @@ namespace Nucleus.Coop
                         g.FillEllipse(Brushes.Transparent, gamepadRect);
                     }
                 }
+
+                g.DrawString("Input Devices", playerTextFont, myBrush, new PointF(10, 10));
             }
+
             g.ResetClip();
+
             if (dragging && draggingScreen != -1)
             {
-                g.DrawRectangle(Pens.LimeGreen, draggingScreenRec);
+                Rectangle draggingScreen = new Rectangle(draggingScreenRec.Right - draggingScreenRec.Height, draggingScreenRec.Y, draggingScreenRec.Height, draggingScreenRec.Height);
+                g.DrawRectangle(PositionPlayerScreenPen, draggingScreenRec);
+                g.DrawImage(draggingScreenImg, draggingScreen);
             }
-            if (players.Count == 0)
-            {
-                g.DrawString(game.Game.SupportsMultipleKeyboardsAndMice ? "Input Devices" : "No Gamepads detected", playerTextFont, myBrush, new PointF(10, 10));
-            }
-            else
-            {
-                g.DrawString( "Input Devices", playerTextFont, myBrush, new PointF(10, 10));
-            }
-            ResumeLayout();
+            
+           UpdateScreens();
         }
-
     }
 }

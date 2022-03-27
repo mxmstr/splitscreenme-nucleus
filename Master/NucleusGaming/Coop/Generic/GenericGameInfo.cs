@@ -250,7 +250,6 @@ namespace Nucleus.Gaming
         public bool GoldbergExperimentalSteamClient;
         public int PauseBeforeMutexKilling;
         public int KillMutexDelayProcess;
-        public bool GoldbergIgnoreFileCheck;
         public bool XInputPlusNoIni;
         public string DocumentsConfigPath;
         public string DocumentsSavePath;
@@ -347,11 +346,6 @@ namespace Nucleus.Gaming
             System.Threading.Tasks.Task.Run(() =>
             {
                 bool update = Hub.IsUpdateAvailable(true);
-
-                //if (update)
-                //{
-                //    MessageBox.Show("Update is available for " + GameName);
-                //}
             });
 
             engine.SetValue("Game", (object)null);
