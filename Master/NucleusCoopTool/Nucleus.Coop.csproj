@@ -250,6 +250,9 @@
     <None Include="copyoutput\utils\XInputPlus\x86\xinput1_3.dl_" />
     <None Include="copyoutput\utils\XInputPlus\XInputPlus.ini" />
     <None Include="copyoutput\utils\XInputPlus\XInputPlus_Default.ini" />
+    <None Include="gui\icons\icons.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="gui\theme\default\theme.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -440,6 +443,9 @@
     <Content Include="copyoutput\utils\XInputPlus\òKé+é¿ô¦é¦é¡é+é¦éó.txt" />
     <Content Include="gui\covers\covers here.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\icons\default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\screenshots\screenshots here.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -32,8 +32,8 @@ namespace Nucleus.Coop
     public partial class MainForm : BaseForm, IDynamicSized
     {
         private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-
-        public string version = "v2.0";
+        private IniFile iconsIni;
+        public string version = "v2.1";
         private string faq_link = "https://www.splitscreen.me/docs/faq";
         private string gameDescription;
         protected string api = "https://hub.splitscreen.me/api/v1/";
@@ -88,11 +88,10 @@ namespace Nucleus.Coop
         private bool TopMostToggle = true;
         private bool formClosing;
         private bool noGamesPresent;
-        private bool NucleusMultiInstances;
         public bool mouseClick;
         private bool roundedcorners;
         public bool useButtonsBorder;
-
+        private bool DisableOfflineIcon;
         private Color ChoosenColor;
 
         private System.Windows.Forms.Timer DisposeTimer;//dispose splash screen timer
@@ -107,6 +106,7 @@ namespace Nucleus.Coop
         public string[] rgb_HandlerNoteBackColor;
         public string[] rgb_HandlerNoteFontColor;
         public string[] rgb_ButtonsBorderColor;
+        public string[] rgb_ThirdPartyToolsLinks;
         public Color TitleBarColor;
         public Color MouseOverBackColor;
         public Color MenuStripBackColor;
@@ -114,8 +114,6 @@ namespace Nucleus.Coop
         public Color ButtonsBorderColor;
         private Color HandlerNoteBackColor;
         private Color HandlerNoteFontColor;
-
-        private Point btn_dlFromHubDefLoc;
         public FileInfo fontPath;
 
         public void CheckNetCon()
@@ -150,29 +148,7 @@ namespace Nucleus.Coop
                  }
              });
         }
-        void ExportRegistry(string strKey, string filepath)
-        {
-            try
-            {
-                using (Process proc = new Process())
-                {
-                    proc.StartInfo.FileName = "reg.exe";
-                    proc.StartInfo.UseShellExecute = false;
-                    proc.StartInfo.RedirectStandardOutput = true;
-                    proc.StartInfo.RedirectStandardError = true;
-                    proc.StartInfo.CreateNoWindow = true;
-                    proc.StartInfo.Arguments = "export \"" + strKey + "\" \"" + filepath + "\" /y";
-                    proc.Start();
-                    string stdout = proc.StandardOutput.ReadToEnd();
-                    string stderr = proc.StandardError.ReadToEnd();
-                    proc.WaitForExit();
-                }
-            }
-            catch (Exception)
-            {
-                // handle exception
-            }
-        }
+
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -361,12 +337,17 @@ namespace Nucleus.Coop
       
 
         public MainForm()
-        {
+        {          
             try
-            {              
+            {
+                //RegistryKey DocKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
+                //customDocumentsRoot = DocKey.GetValue("Personal").ToString();
+                //Console.WriteLine(customDocumentsRoot);
                 ChoosenTheme = ini.IniReadValue("Theme", "Theme");
                 theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
+                iconsIni = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
                 Splash_On = Convert.ToBoolean(ini.IniReadValue("Dev", "SplashScreen_On"));
+                DisableOfflineIcon = Convert.ToBoolean(ini.IniReadValue("Dev", "DisableOfflineIcon"));
                 themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
                 mouseClick = Convert.ToBoolean(ini.IniReadValue("Dev", "MouseClick"));
                 roundedcorners = Convert.ToBoolean(theme.IniReadValue("Misc", "UseRoundedCorners"));
@@ -381,8 +362,7 @@ namespace Nucleus.Coop
                 rgb_HandlerNoteFontColor = theme.IniReadValue("Colors", "HandlerNoteFont").Split(',');
                 rgb_ButtonsBorderColor = theme.IniReadValue("Colors", "ButtonsBorder").Split(',');
                 float fontSize = float.Parse(theme.IniReadValue("Font", "MainFontSize")); 
- 
-                 NucleusMultiInstances = Convert.ToBoolean(ini.IniReadValue("Misc", "NucleusMultiInstances"));
+               
                 bool coverBorderOff = Convert.ToBoolean(theme.IniReadValue("Misc", "DisableCoverBorder"));
                 bool noteBorderOff = Convert.ToBoolean(theme.IniReadValue("Misc", "DisableNoteBorder"));
 
@@ -393,6 +373,7 @@ namespace Nucleus.Coop
                 HandlerNoteBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteBackColor[0]), Convert.ToInt32(rgb_HandlerNoteBackColor[1]), Convert.ToInt32(rgb_HandlerNoteBackColor[2]));
                 HandlerNoteFontColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteFontColor[0]), Convert.ToInt32(rgb_HandlerNoteFontColor[1]), Convert.ToInt32(rgb_HandlerNoteFontColor[2]));
                 ButtonsBorderColor = Color.FromArgb(Convert.ToInt32(rgb_ButtonsBorderColor[0]), Convert.ToInt32(rgb_ButtonsBorderColor[1]), Convert.ToInt32(rgb_ButtonsBorderColor[2]));
+
               
                 
                 InitializeComponent();
@@ -427,7 +408,6 @@ namespace Nucleus.Coop
                 btn_Download.BackgroundImage = AppButtons;
                 btn_Play.BackgroundImage = AppButtons;
                 btn_Extract.BackgroundImage = AppButtons;
-                //label_StepTitle.BackgroundImage = AppButtons;
                 btn_GameDesc.BackgroundImage = AppButtons;
                 btn_scriptAuthorTxt.BackgroundImage = AppButtons;
                 btnBack.BackgroundImage = new Bitmap(themePath + "\\arrow_left.png");
@@ -515,7 +495,7 @@ namespace Nucleus.Coop
 
                 foreach (Control control in ctrls)
                 {
-                    if (control.Name != "btn_Links" && control.Name != "btn_thirdPartytools")//Close "third_party_tools_container" control when an other control in the for is clicked.
+                    if (control.Name != "btn_Links" && control.Name != "btn_thirdPartytools")//Close "third_party_tools_container" control when an other control in the form is clicked.
                     {
                         control.Font = new Font(customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         control.Click += new EventHandler(this.this_Click);
@@ -530,19 +510,17 @@ namespace Nucleus.Coop
                 }
 
                 ResumeLayout();
-
+                
                 minimizeBtn.Click += new EventHandler(this.minimizeButton);
                 maximizeBtn.Click += new EventHandler(this.maximizeButton);
                 closeBtn.Click += new EventHandler(this.closeButton);
-
-                btn_dlFromHubDefLoc = btn_dlFromHub.Location;
 
                 defBackground = new Bitmap(clientAreaPanel.BackgroundImage);
 
                 Moveable(this);//Make the main window moveable on screen.
 
                 positionsControl = new PositionsControl();
-
+                
                 Settings settingsForm = new Settings(this, positionsControl);
                 positionsControl.Paint += PositionsControl_Paint;
 
@@ -584,14 +562,7 @@ namespace Nucleus.Coop
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if (!NucleusMultiInstances)
-            {
-                IsAlredyRunning();
-            }
-
             CheckNetCon();
-            CheckFilesIntegrity();
-            CheckUserEnvironment();
         }
 
         public void UpdateSize(float scale)
@@ -621,46 +592,7 @@ namespace Nucleus.Coop
             ResumeLayout();
         }
 
-        private void IsAlredyRunning()
-        {
-            if (Process.GetProcessesByName("NucleusCoop").Length > 1)
-            {
-                MessageBox.Show("Nucleus Co - op is already running, if you don't see the Nucleus Co-op window it might be running in the background, close the process using task manager.", "Nucleus Co - op is already running", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Application.Exit();
-                return;
-            }
-        }
-
-        private void CheckFilesIntegrity()
-        {
-            string[] ncFiles = { "DotNetZip.dll", "EasyHook.dll", "EasyHook32.dll", "EasyHook32Svc.exe", "EasyHook64.dll", "EasyHook64Svc.exe", "EasyHookSvc.exe", "Jint.dll", "NAudio.dll", "Newtonsoft.Json.dll", "Nucleus.Gaming.dll", "Nucleus.Hook32.dll", "Nucleus.Hook64.dll", "Nucleus.IJx64.exe", "Nucleus.IJx86.exe", "Nucleus.SHook32.dll", "Nucleus.SHook64.dll", "openxinput1_3.dll", "ProtoInputHooks32.dll", "ProtoInputHooks64.dll", "ProtoInputHooks64.dll", "ProtoInputHost.exe", "ProtoInputIJ32.exe", "ProtoInputIJ64.exe", "ProtoInputIJP32.dll", "ProtoInputIJP64.dll", "ProtoInputLoader32.dll", "ProtoInputLoader64.dll", "ProtoInputUtilDynamic32.dll", "ProtoInputUtilDynamic64.dll", "SharpDX.DirectInput.dll", "SharpDX.dll", "SharpDX.XInput.dll", "StartGame.exe", "WindowScrape.dll" };
-
-            foreach (string file in ncFiles)
-            {
-                if (!File.Exists(Path.Combine(Application.StartupPath, file)))
-                {
-                    MessageBox.Show(file + " is missing from your Nucleus Co-op installation folder.", "Missing file(s)", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    Process[] processes = Process.GetProcessesByName("NucleusCoop");
-
-                    foreach (Process NucleusCoop in processes)
-                    {
-                        NucleusCoop.Kill();
-                    }
-                }
-            }
-
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\covers")))//Doing this where other folders get created/re-created would be better
-            {
-                Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\covers")));
-            }
-
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\screenshots")))
-            {
-                Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\screenshots")));
-            }
-        }
-
+    
         private void splashTimer()
         {
             this.Activate();
@@ -679,95 +611,7 @@ namespace Nucleus.Coop
             DisposeTimer.Tick += new EventHandler(SplashTimerTick);
             DisposeTimer.Start();
         }
-
-        public void CheckUserEnvironment()
-        {
-            System.Threading.Tasks.Task.Run(() =>
-            {
-                try
-                {
-                    RegistryKey dkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
-                    string mydocPath = dkey.GetValue("Personal").ToString();
-
-                    if (mydocPath.Contains("NucleusCoop"))
-                    {
-                        string[] environmentRegFileBackup = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
-
-                        if (environmentRegFileBackup.Length > 0)
-                        {
-                            foreach (string environmentRegFilePathBackup in environmentRegFileBackup)
-                            {
-                                if (environmentRegFilePathBackup.Contains("User Shell Folders"))
-                                {
-                                    Process regproc = new Process();
-
-                                    try
-                                    {
-                                        regproc.StartInfo.FileName = "reg.exe";
-                                        regproc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                                        regproc.StartInfo.CreateNoWindow = true;
-                                        regproc.StartInfo.UseShellExecute = false;
-
-                                        string command = "import \"" + environmentRegFilePathBackup + "\"";
-                                        regproc.StartInfo.Arguments = command;
-                                        regproc.Start();
-
-                                        regproc.WaitForExit();
-
-                                    }
-                                    catch (Exception)
-                                    {
-                                        regproc.Dispose();
-                                    }
-                                }
-                            }
-                            // Console.WriteLine("Registry has been restored");
-                        }
-                    }
-                    else if (!File.Exists(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg")))
-                    {
-                        ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
-                    }
-                    else
-                    {
-                        if (!Directory.Exists(Path.Combine(Application.StartupPath, @"utils\backup\Temp")))
-                        {
-                            Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"utils\backup\Temp")));
-                        }
-
-                        ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
-
-                        FileStream currentEnvPathBackup = new FileStream(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"), FileMode.Open);
-                        FileStream TempEnvPathBackup = new FileStream(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"), FileMode.Open);
-
-                        if (currentEnvPathBackup.Length == TempEnvPathBackup.Length)
-                        {
-                            TempEnvPathBackup.Dispose();
-                            currentEnvPathBackup.Dispose();
-
-                            File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
-                            Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));
-                            //Console.WriteLine("Registry backup is up-to-date");
-                        }
-                        else
-                        {
-                            TempEnvPathBackup.Dispose();
-                            currentEnvPathBackup.Dispose();
-                            File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
-                            File.Move(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"), Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
-                            File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
-                            Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));
-                            // Console.WriteLine("Registry has been updated");
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-
-                }
-            });
-        }
-
+     
         public void handleClickSound(bool enable)
         {
             mouseClick = enable;
@@ -778,8 +622,6 @@ namespace Nucleus.Coop
           
             if (connected)
             {
-               // btn_dlFromHub.Location = btn_dlFromHubDefLoc;
-               // btn_dlFromHub.Visible = true;
                 btn_noHub.Visible = false;
                 btn_downloadAssets.Enabled = true;
                 btn_Download.Enabled = true;
@@ -787,12 +629,12 @@ namespace Nucleus.Coop
             }
             else
             {
-                //n_dlFromHub.Location = new Point(btn_Download.Right - btn_dlFromHub.Width - 3, btn_dlFromHub.Location.Y);
-                //btn_dlFromHub.Visible = true;
-                btn_noHub.Visible = true;
+                if (!DisableOfflineIcon)
+                {
+                    btn_noHub.Visible = true;
+                }
                 btn_downloadAssets.Enabled = false;
                 btn_Download.Enabled = false;
-                //btn_Download.Visible = false;
             }
 
             if (Splash_On && !stopSleep)
@@ -974,19 +816,31 @@ namespace Nucleus.Coop
         private void GetIcon(object state)
         {
             UserGameInfo game = (UserGameInfo)state;
-            Bitmap bmp;
-            string iconPath = ini.IniReadValue("GameIcons", game.Game.GameName);
+            Bitmap bmp = null;
+            string iconPath = iconsIni.IniReadValue("GameIcons", game.Game.GameName);
+
             if (!string.IsNullOrEmpty(iconPath))
             {
                 if (iconPath.EndsWith(".exe"))
                 {
+                    bmp = new Bitmap(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png"));
                     Icon icon = Shell32.GetIcon(iconPath, false);
                     bmp = icon.ToBitmap();
                     icon.Dispose();
                 }
-                else
+                else 
                 {
-                    bmp = new Bitmap(iconPath);
+                    if (File.Exists(iconPath))
+                    {
+                        bmp = new Bitmap(iconPath);
+                    }
+                    else 
+                    {
+                        if (File.Exists(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png")))
+                        {
+                            bmp = new Bitmap(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png"));
+                        }
+                    }
                 }
             }
             else
@@ -995,8 +849,8 @@ namespace Nucleus.Coop
                 bmp = icon.ToBitmap();
                 icon.Dispose();
             }
-
             game.Icon = bmp;
+           
 
             lock (controls)
             {
@@ -1124,6 +978,7 @@ namespace Nucleus.Coop
             else
             {
                 currentGame = currentGameInfo.Game;
+              
 
                 if (!stepPanelPictureBoxDispose)
                 {
@@ -1261,6 +1116,7 @@ namespace Nucleus.Coop
 
             // content manager is shared withing the same game
             content = new ContentManager(currentGame);
+
             GoToStep(0);
         }
 
@@ -1724,7 +1580,7 @@ namespace Nucleus.Coop
                         }
                         else
                         {
-                            MessageBox.Show(string.Format("The executable '{0}' was not found in any game handler's Game.ExecutableName field. Game has not been added.", Path.GetFileName(path)), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(string.Format("The executable '{0}' was not found in any game handler's Game.ExecutableName field. Game has not been added.", Path.GetFileName(path)), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
@@ -2009,25 +1865,33 @@ namespace Nucleus.Coop
                             {
                                 if (profilePaths.Count > 0)
                                 {
-                                    foreach (string profilePath in profilePaths)
+                                    try
                                     {
-                                        string currPath = Path.Combine(profilePath, currentGameInfo.Game.UserProfileConfigPath);
-                                        if (Directory.Exists(currPath))
+
+                                        foreach (string profilePath in profilePaths)
                                         {
-                                            if (!userConfigPathExists)
+                                            string currPath = Path.Combine(profilePath, currentGameInfo.Game.UserProfileConfigPath);
+                                            if (Directory.Exists(currPath))
                                             {
-                                                userConfigPathExists = true;
-                                            }
+                                                if (!userConfigPathExists)
+                                                {
+                                                    userConfigPathExists = true;
+                                                }
 
-                                            string nucPrefix = "";
-                                            if (Directory.GetParent(profilePath).Name == "NucleusCoop")
-                                            {
-                                                nucPrefix = "Nucleus: ";
-                                            }
+                                                string nucPrefix = "";
+                                                if (Directory.GetParent(profilePath).Name == "NucleusCoop")
+                                                {
+                                                    nucPrefix = "Nucleus: ";
+                                                }
 
-                                            (gameContextMenuStrip.Items[8] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
-                                            (gameContextMenuStrip.Items[9] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[8] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[9] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                            }
                                         }
+                                    }
+                                    catch(Exception)
+                                    {
+
                                     }
                                 }
                             }
@@ -2045,29 +1909,38 @@ namespace Nucleus.Coop
                             (gameContextMenuStrip.Items[11] as ToolStripMenuItem).DropDownItems.Clear();
                             if (currentGameInfo.Game.UserProfileSavePath?.Length > 0)
                             {
+
                                 if (profilePaths.Count > 0)
                                 {
-                                    foreach (string profilePath in profilePaths)
+                                    try
                                     {
-                                        string currPath = Path.Combine(profilePath, currentGameInfo.Game.UserProfileSavePath);
-                                        if (Directory.Exists(currPath))
+                                        foreach (string profilePath in profilePaths)
                                         {
-                                            if (!userSavePathExists)
+                                            string currPath = Path.Combine(profilePath, currentGameInfo.Game.UserProfileSavePath);
+                                            if (Directory.Exists(currPath))
                                             {
-                                                userSavePathExists = true;
-                                            }
+                                                if (!userSavePathExists)
+                                                {
+                                                    userSavePathExists = true;
+                                                }
 
-                                            string nucPrefix = "";
-                                            if (Directory.GetParent(profilePath).Name == "NucleusCoop")
-                                            {
-                                                nucPrefix = "Nucleus: ";
-                                            }
+                                                string nucPrefix = "";
+                                                if (Directory.GetParent(profilePath).Name == "NucleusCoop")
+                                                {
+                                                    nucPrefix = "Nucleus: ";
+                                                }
 
-                                            (gameContextMenuStrip.Items[10] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
-                                            (gameContextMenuStrip.Items[11] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[10] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[11] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                            }
                                         }
                                     }
+                                    catch (Exception)
+                                    {
+
+                                    }
                                 }
+                                
                             }
 
                             if (!userSavePathExists)
@@ -2083,30 +1956,40 @@ namespace Nucleus.Coop
                             (gameContextMenuStrip.Items[13] as ToolStripMenuItem).DropDownItems.Clear();
                             if (currentGameInfo.Game.DocumentsConfigPath?.Length > 0)
                             {
+
                                 if (profilePaths.Count > 0)
                                 {
-                                    foreach (string profilePath in profilePaths)
+                                    try
                                     {
-                                        string currPath = Path.Combine(profilePath, currentGameInfo.Game.DocumentsConfigPath);
-                                        if (Directory.Exists(currPath))
+                                        foreach (string profilePath in profilePaths)
                                         {
-                                            if (!docConfigPathExists)
+                                            string currPath = Path.Combine(profilePath, currentGameInfo.Game.DocumentsConfigPath);
+                                            if (Directory.Exists(currPath))
                                             {
-                                                docConfigPathExists = true;
-                                            }
+                                                if (!docConfigPathExists)
+                                                {
+                                                    docConfigPathExists = true;
+                                                }
 
-                                            string nucPrefix = "";
-                                            if (Directory.GetParent(Directory.GetParent(profilePath).ToString()).Name == "NucleusCoop")
-                                            {
-                                                nucPrefix = "Nucleus: ";
-                                            }
+                                                string nucPrefix = "";
+                                                if (Directory.GetParent(Directory.GetParent(profilePath).ToString()).Name == "NucleusCoop")
+                                                {
+                                                    nucPrefix = "Nucleus: ";
+                                                }
 
-                                            (gameContextMenuStrip.Items[12] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
-                                            (gameContextMenuStrip.Items[13] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[12] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[13] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
+                                            }
                                         }
                                     }
+                                    catch (Exception)
+                                    {
+
+                                    }
                                 }
-                            }
+
+                                
+                        }
 
                             if (!docConfigPathExists)
                             {
@@ -2123,26 +2006,34 @@ namespace Nucleus.Coop
                             {
                                 if (profilePaths.Count > 0)
                                 {
-                                    foreach (string profilePath in profilePaths)
+                                    try
                                     {
-                                        string currPath = Path.Combine(profilePath, currentGameInfo.Game.DocumentsSavePath);
-                                        if (Directory.Exists(currPath))
+                                        foreach (string profilePath in profilePaths)
                                         {
-                                            if (!docSavePathExists)
+                                            string currPath = Path.Combine(profilePath, currentGameInfo.Game.DocumentsSavePath);
+                                            if (Directory.Exists(currPath))
                                             {
-                                                docSavePathExists = true;
-                                            }
+                                                if (!docSavePathExists)
+                                                {
+                                                    docSavePathExists = true;
+                                                }
 
-                                            string nucPrefix = "";
-                                            if (Directory.GetParent(Directory.GetParent(profilePath).ToString()).Name == "NucleusCoop")
-                                            {
-                                                nucPrefix = "Nucleus: ";
-                                            }
+                                                string nucPrefix = "";
+                                                if (Directory.GetParent(Directory.GetParent(profilePath).ToString()).Name == "NucleusCoop")
+                                                {
+                                                    nucPrefix = "Nucleus: ";
+                                                }
 
-                                            (gameContextMenuStrip.Items[14] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
-                                            (gameContextMenuStrip.Items[15] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[14] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[15] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
+                                            }
                                         }
                                     }
+                                    catch (Exception)
+                                    {
+
+                                    }
+
                                 }
                             }
 
@@ -2313,6 +2204,7 @@ namespace Nucleus.Coop
             }
         }
 
+
         public static Control FindControlAtPoint(Control container, Point pos)
         {
             Control child;
@@ -2392,6 +2284,7 @@ namespace Nucleus.Coop
                             "|TIF Tagged Imaged File Format (*.tif *.tiff)|*.tif;*.tiff" +
                             "|Icon (*.ico)|*.ico" +
                             "|Executable (*.exe)|*.exe";
+                dlg.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons");
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
@@ -2411,7 +2304,7 @@ namespace Nucleus.Coop
                     {
                         currentGameInfo.Icon = new Bitmap(dlg.FileName);
                     }
-                    ini.IniWriteValue("GameIcons", currentGameInfo.Game.GameName, dlg.FileName);
+                    iconsIni.IniWriteValue("GameIcons", currentGameInfo.Game.GameName, dlg.FileName);
 
                     GetIcon(currentGameInfo);
                     RefreshGames();
@@ -2521,7 +2414,7 @@ namespace Nucleus.Coop
                     label_StepTitle.Text = "Select a game";
                     btn_Play.Enabled = false;
                     btn_Next.Enabled = false;
-                    btn_gameOptions.Visible = false;
+                   // btn_gameOptions.Visible = false;
                     button_UpdateAvailable.Visible = false;
                     stepsList.Clear();
 

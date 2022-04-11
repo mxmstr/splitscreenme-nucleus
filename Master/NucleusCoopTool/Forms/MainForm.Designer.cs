@@ -268,7 +268,7 @@ namespace Nucleus.Coop
             this.logo.TabIndex = 24;
             this.logo.TabStop = false;
             this.toolTip1.SetToolTip(this.logo, "Nucleus Co-op Github release page.");
-            this.logo.Click += new System.EventHandler(this.logo_Click);
+            this.logo.DoubleClick += new System.EventHandler(this.logo_Click);
             // 
             // btn_faq
             // 

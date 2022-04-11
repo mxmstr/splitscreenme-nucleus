@@ -62,6 +62,8 @@ namespace Nucleus.Gaming
         public bool FakeFocusSendActivate = true;
         public bool SendFakeFocusMsg;
         public bool SplitDivCompatibility = true;
+        public bool SetTopMostAtEnd;
+
 
         public void AddOption(string name, string desc, string key, object value, object defaultValue)
         {
@@ -339,7 +341,14 @@ namespace Nucleus.Gaming
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("There is an error in the game handler {0}. The game this handler is for will not appear in the list. If the issue has been fixed, please try re-adding the game.\n\nCommon errors include:\n- A syntax error (such as a \',\' \';\' or \']\' missing)\n- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format (for example: methods using Context must be within the Game.Play function)\n\n{1}: {2}", fileName, ex.InnerException, ex.Message), "Error in handler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    string[] lineSplit = ex.Message.Split(':');
+                    string splited = lineSplit[0];
+                    string[] getNum = splited.Split(' ');
+                    int numLine = Convert.ToInt32(getNum[1]);
+                    MessageBox.Show(string.Format("There is an error in the game handler {0}. The game this handler is for will not appear in the list. If the issue has been fixed, please try re-adding the game.\n\nCommon errors include:\n- A syntax error (such as a \',\' \';\' or \']\' missing)\n- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format (for example: methods using Context must be within the Game.Play function)\n\n{1} {2}", fileName,"", "Error at line: " ) + numLine / 2, "Error in handler", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                });
             }
 
             // Run this in another thread to not block UI
@@ -355,7 +364,7 @@ namespace Nucleus.Gaming
         public CustomStep ShowOptionAsStep(string optionKey, bool required, string title)
         {
             GameOption option = Options.First(c => c.Key == optionKey);
-            option.Hidden = true;
+            option.Hidden = true;  
 
             CustomStep step = new CustomStep
             {

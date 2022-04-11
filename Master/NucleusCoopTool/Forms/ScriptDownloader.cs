@@ -671,6 +671,7 @@ namespace Nucleus.Coop.Forms
 
                 DownloadPrompt downloadPrompt = new DownloadPrompt(handler, mainForm, null);
                 downloadPrompt.ShowDialog();
+
             }
         }
 

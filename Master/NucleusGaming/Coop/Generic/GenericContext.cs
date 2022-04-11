@@ -108,7 +108,7 @@ namespace Nucleus.Gaming
         public string[] PlayerSteamIDs;
         public int NumControllers = 0;
         public int NumKeyboards = 0;
-
+   
         private List<string> regKeyPaths = new List<string>();
 
         public string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -262,7 +262,20 @@ namespace Nucleus.Gaming
             }
         }
 
-        private string epicLang;
+        public void ProceedSymlink()
+        {
+            string[] filesToSymlink = SymlinkFiles;
+            for (int f = 0; f < filesToSymlink.Length; f++)
+            {
+                string s = filesToSymlink[f].ToLower();
+                // make sure it's lower case
+                CmdUtil.MkLinkFile(Path.Combine(OrigRootFolder, s), Path.Combine(RootFolder, s), out int exitCode);
+                Console.WriteLine(OrigRootFolder+ s + " => Instance folder " + RootFolder+s);
+            }
+        }
+
+
+    private string epicLang;
         public string EpicLang
         { 
             get
@@ -637,89 +650,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, string customText, int secondsToPauseInbetween,bool showFilePath, bool runAsAdmin, bool promptBetween)
-        {
-            for (int fileIndex = 0; fileIndex < filePaths.Length; fileIndex++)
-            {
-                string fileName = filePaths[fileIndex];
-                if (fileName.Contains('|'))
-                {
-                    string[] fileNameSplit = fileName.Split('|');
-                    fileName = fileNameSplit[1];
-
-                    if (fileNameSplit[0].ToLower() != "all")
-                    {
-                        if (int.Parse(fileNameSplit[0]) != (pInfo.PlayerID + 1))
-                        {
-                            continue;
-                        }
-                    }
-                }
-                else
-                {
-                    if (pInfo.PlayerID > 0)
-                    {
-                        continue;
-                    }
-                }
-
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    FileName = fileName,
-                    UseShellExecute = false
-                };
-                if (changeWorkingDir)
-                {
-                    psi.WorkingDirectory = GameManager.Instance.GetAppContentPath() + "\\AdditionalFiles";
-                }
-                else
-                {
-                    psi.WorkingDirectory = Path.GetDirectoryName(fileName);
-                }
-                if (runAsAdmin)
-                {
-                    psi.UseShellExecute = true;
-                    psi.Verb = "runas";
-                }
-
-                Process.Start(psi);
-
-                if (promptBetween)
-                {
-                    if (fileIndex < (filePaths.Length - 1))
-                    {
-                        if (showFilePath)
-                        {
-                            Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
-                            prompt.ShowDialog();
-                        }
-                        else
-                        {
-                            Forms.Prompt prompt = new Forms.Prompt(customText);
-                            prompt.ShowDialog();
-                        }
-                    }
-                    else
-                    {
-                        if (showFilePath)
-                        {
-                            Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
-                            prompt.ShowDialog();
-                        }
-                        else
-                        {
-                            Forms.Prompt prompt = new Forms.Prompt(customText);
-                            prompt.ShowDialog();
-                        }
-                    }
-
-                    if (fileIndex < (filePaths.Length - 1) && secondsToPauseInbetween > 0)
-                    {
-                        Thread.Sleep(TimeSpan.FromSeconds(secondsToPauseInbetween));
-                    }
-                }
-            }
-        }
+       
         public void RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, int secondsToPauseInbetween, bool runAsAdmin, bool promptBetween)
         {
             for (int fileIndex = 0; fileIndex < filePaths.Length; fileIndex++)
@@ -787,7 +718,225 @@ namespace Nucleus.Gaming
                 }
             }
         }
+        public void RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, string customText, int secondsToPauseInbetween, bool showFilePath, bool runAsAdmin, bool promptBetween, bool confirm)
+        {
+            for (int fileIndex = 0; fileIndex < filePaths.Length; fileIndex++)
+            {
+                string fileName = filePaths[fileIndex];
+                if (fileName.Contains('|'))
+                {
+                    string[] fileNameSplit = fileName.Split('|');
+                    fileName = fileNameSplit[1];
 
+                    if (fileNameSplit[0].ToLower() != "all")
+                    {
+                        if (int.Parse(fileNameSplit[0]) != (pInfo.PlayerID + 1))
+                        {
+                            continue;
+                        }
+                    }
+                }
+                else
+                {
+                    if (pInfo.PlayerID > 0)
+                    {
+                        continue;
+                    }
+                }
+
+                if (!confirm)//no need to press ok
+                {
+                    ProcessStartInfo psi = new ProcessStartInfo
+                    {
+                        FileName = fileName,
+                        UseShellExecute = false
+                    };
+
+                    if (changeWorkingDir)
+                    {
+                        psi.WorkingDirectory = GameManager.Instance.GetAppContentPath() + "\\AdditionalFiles";
+                    }
+                    else
+                    {
+                        psi.WorkingDirectory = Path.GetDirectoryName(fileName);
+                    }
+
+                    if (runAsAdmin)
+                    {
+                        psi.UseShellExecute = true;
+                        psi.Verb = "runas";
+                    }
+
+                    Process.Start(psi);
+
+                    if (promptBetween)
+                    {
+                        if (fileIndex < (filePaths.Length - 1))
+                        {
+                            if (showFilePath)
+                            {
+                                Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
+                                prompt.ShowDialog();
+                            }
+                            else
+                            {
+                                Forms.Prompt prompt = new Forms.Prompt(customText);
+                                prompt.ShowDialog();
+                            }
+                        }
+                        else
+                        {
+                            if (showFilePath)
+                            {
+                                Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
+                                prompt.ShowDialog();
+                            }
+                            else
+                            {
+                                Forms.Prompt prompt = new Forms.Prompt(customText);
+                                prompt.ShowDialog();
+                            }
+                        }
+
+                        if (fileIndex < (filePaths.Length - 1) && secondsToPauseInbetween > 0)
+                        {
+                            Thread.Sleep(TimeSpan.FromSeconds(secondsToPauseInbetween));
+                        }
+                    }
+                }
+                else//need to press ok
+                {
+                    if (promptBetween)
+                    {
+                        if (fileIndex < (filePaths.Length - 1))
+                        {
+                            if (showFilePath)
+                            {
+                                Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
+                                prompt.ShowDialog();
+
+                                ProcessStartInfo psi = new ProcessStartInfo
+                                {
+                                    FileName = fileName,
+                                    UseShellExecute = false
+                                };
+
+                                if (changeWorkingDir)
+                                {
+                                    psi.WorkingDirectory = GameManager.Instance.GetAppContentPath() + "\\AdditionalFiles";
+                                }
+                                else
+                                {
+                                    psi.WorkingDirectory = Path.GetDirectoryName(fileName);
+                                }
+
+                                if (runAsAdmin)
+                                {
+                                    psi.UseShellExecute = true;
+                                    psi.Verb = "runas";
+                                }
+
+                                Process.Start(psi);
+                            }
+                            else
+                            {
+                                Forms.Prompt prompt = new Forms.Prompt(customText);
+                                prompt.ShowDialog();
+
+                                ProcessStartInfo psi = new ProcessStartInfo
+                                {
+                                    FileName = fileName,
+                                    UseShellExecute = false
+                                };
+
+                                if (changeWorkingDir)
+                                {
+                                    psi.WorkingDirectory = GameManager.Instance.GetAppContentPath() + "\\AdditionalFiles";
+                                }
+                                else
+                                {
+                                    psi.WorkingDirectory = Path.GetDirectoryName(fileName);
+                                }
+
+                                if (runAsAdmin)
+                                {
+                                    psi.UseShellExecute = true;
+                                    psi.Verb = "runas";
+                                }
+
+                                Process.Start(psi);
+                            }
+                        }
+                        else
+                        {
+                            if (showFilePath)
+                            {
+                                Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
+                                prompt.ShowDialog();
+
+                                ProcessStartInfo psi = new ProcessStartInfo
+                                {
+                                    FileName = fileName,
+                                    UseShellExecute = false
+                                };
+
+                                if (changeWorkingDir)
+                                {
+                                    psi.WorkingDirectory = GameManager.Instance.GetAppContentPath() + "\\AdditionalFiles";
+                                }
+                                else
+                                {
+                                    psi.WorkingDirectory = Path.GetDirectoryName(fileName);
+                                }
+
+                                if (runAsAdmin)
+                                {
+                                    psi.UseShellExecute = true;
+                                    psi.Verb = "runas";
+                                }
+
+                                Process.Start(psi);
+                            }
+                            else
+                            {
+                                Forms.Prompt prompt = new Forms.Prompt(customText);
+                                prompt.ShowDialog();
+
+                                ProcessStartInfo psi = new ProcessStartInfo
+                                {
+                                    FileName = fileName,
+                                    UseShellExecute = false
+                                };
+
+                                if (changeWorkingDir)
+                                {
+                                    psi.WorkingDirectory = GameManager.Instance.GetAppContentPath() + "\\AdditionalFiles";
+                                }
+                                else
+                                {
+                                    psi.WorkingDirectory = Path.GetDirectoryName(fileName);
+                                }
+                                
+                                if (runAsAdmin)
+                                {
+                                    psi.UseShellExecute = true;
+                                    psi.Verb = "runas";
+                                }
+
+                                Process.Start(psi);
+                            }
+                        }
+
+                        if (fileIndex < (filePaths.Length - 1) && secondsToPauseInbetween > 0)
+                        {
+                            Thread.Sleep(TimeSpan.FromSeconds(secondsToPauseInbetween));
+                        }
+                    }
+
+
+                }
+            }
+        }
         private static int GCD(int a, int b)
         {
             return b == 0 ? Math.Abs(a) : GCD(b, a % b);

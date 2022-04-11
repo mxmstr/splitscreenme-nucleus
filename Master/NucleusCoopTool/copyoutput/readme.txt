@@ -1,4 +1,4 @@
-Nucleus Co-op - version 2.0
+Nucleus Co-op - version 2.1
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy.
 
@@ -72,7 +72,7 @@ Game.IgnoreDeleteFilesPrompt = false;			//Do not display the warning message abo
 Game.RenameAndOrMoveFiles = [ "1|before.dat|after.dat" ];//Specify files to either rename or move | can accept relative path from root | optional first parameter to specify a specific instance to apply to, omit to do them all.
 Game.DeleteFiles = [ "1|delete.dis" ];			//Specify files to be deleted from instanced folder | can accept relative path from root | optional first parameter to specify a specific instance to apply to, omit to do them all.
 Game.RunLauncherAndExe = false;				//When using Game.LauncherExe, should ExecutableName also be launched?
-Game.ForceLauncherExeIgnoreFileCheck = false;           //Experimental. Forces LauncherExeIgnoreFileCheck when game isn't symlinked.
+Game.ForceLauncherExeIgnoreFileCheck = false;           //Forces LauncherExeIgnoreFileCheck when game isn't symlinked.
 
 #################### Nucleus Co-op Environment ####################
 
@@ -92,7 +92,7 @@ Game.ForceDocumentsConfigCopy = false;			//When using DocumentsConfigPath, force
 Game.ForceDocumentsSaveCopy = false;			//When using DocumentsSavePath, forces a file copy from original location to Nucleus Documents.
 Game.DocumentsConfigPathNoCopy = false;			//When using DocumentsConfigPath, do not let Nucleus copy from original location to Nucleus Documents.
 Game.DocumentsSavePathNoCopy = false;			//When using DocumentsSavePath, do not let Nucleus copy from original location to Nucleus Documents.
-Game.ForceEnvironmentUse = true;                        //Experimental. Forces use of custom environment variable when Game.ThirdPartyLaunch = true;
+Game.ForceEnvironmentUse = true;                        //Forces use of custom environment variable when Game.ThirdPartyLaunch = true;
 
 #################### Focus ####################
 
@@ -141,7 +141,7 @@ Game.WindowStyleEndChanges = [ "~0xC00000", "0x8000000" ];	//Override Nucleus' d
 Game.ExtWindowStyleEndChanges = [ "~0xC00000", "0x8000000" ]; 	//Override Nucleus' default of removing borders and specify a custom window style during end processing | Start string with ~ to remove a style, or don't use it to add one | See https://docs.microsoft.com/en-us/windows/win32/winmsg/window-styles for values that can be used.
 Game.IgnoreWindowBordercheck = false;			//Ignore logic at end to check if any game window still has a border.
 Game.DontRemoveBorders = false;				//Prevents Nucleus from removing game window borders.
-
+Game.SetTopMostAtEnd = true;                            //Set the game windows to top most at the very end.
 
 #################### Input ####################
 
@@ -388,7 +388,7 @@ Context.AspectRatioDecimal									//Player's aspect ratio in decimal (e.g. 1777
 Context.FindFiles(string rootFolder, string fileName)						//Return a string array of filenames (and their paths) found that match a pattern you specify.
 Context.CreatedDate(string file, int year, int month, int day)					//Change the creation date of a file.
 Context.ModifiedDate(string file, int year, int month, int day)					//Change the last modified date of a file.
-Context.RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, string customText(optional parameter), int secondsToPauseInbetween, bool showFilePath(optional parameter), bool runAsAdmin(optional parameter), bool promptBetween(optional parameter))	//Specify additional files to run before launching game. By default will run each additional file once but can specify to run during specific player's instances by prefixing the filepath with #|. Replace # with player number. Can also specify to run files for each player by prefixing filepath with "all|".
+Context.RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, string customText, int secondsToPauseInbetween, bool showFilePath, bool runAsAdmin, bool promptBetween,bool confirm)	//Specify additional files to run before launching game. By default will run each additional file once but can specify to run during specific player's instances by prefixing the filepath with #|. Replace # with player number. Can also specify to run files for each player by prefixing filepath with "all|". "bool confirm" will only run the file after clicking "Ok" in the prompt.
 Context.ReadRegKey(string baseKey, string sKey, string subKey)					//Return the value of a provided key as a string.
 Context.HandlerGUID
 Context.StartArguments = "";                                                                    //Adds whatever you put into the field as starting parameters for the game's executable in context. For example, in most cases '-windowed' will force windowed mode. Parameters can be chained.
@@ -450,7 +450,40 @@ Known Issues: ------------------------------------------------------------------
 
 Changelog: -----------------------------------------------------------------------------------------
 
-v2.0 - xx
+v2.1 - xx
+ - Added Context.HandlersFolder (path to the root of Nucleus Co-op handlers folder: NucleusCo-op\handlers). 
+ - Fixed app crash when a handler throws an error (sometimes on app close). 
+ - Fixed random crashes while clicking on the game list. 
+ - All monitors in use should be correctly scaled to 100% when a game starts now.
+ - Added UI option to enable/disable the auto setting of the desktop scale to 100% (enabled by default).
+ - All UI elements (pictures) can be customized now (see the default theme folder). 
+ - Splashscreen fixes, you can skip it now by clicking on it if it shows for too long.
+ - Added UI options in settings to disable/enable the splashscreen and click sound in the settings tab and moved the "mouse click" setting to the setting.ini instead of theme.ini. 
+ - Other UI related details.
+ - Some UI code optimizations.
+ - New and improved Nucleus Co-op themes.
+ - Added theme switch option in settings.
+ - Links can be clicked in handler notes now.
+ - Added option to use custom text in Context.RunAdditionalFiles prompt(s) + a boolean to show or not the file path. See readme.txt.
+ - New Documents path registry key backup/restoration handling, should fully fix Nucleus changing the location of the Documents folder sometimes after a crash.
+ - Added custom virtual devices icons.
+ - First attempt to fix Turkish "Ä±" bug, requires to be tested in real conditions.
+ - Fixed account_name.txt being edited while UseGoldberg is not used.
+ - Added new input device detection in setup screen, keyboards and mice icons will only show in the UI if a key is pressed or a mouse moved now.
+ - Added an option in theme.ini to round the Nucleus Co-op window corners (enabled by default). 
+ - Added multiple Nucleus Co-op instances check (can be disabled in settings.ini).
+ - Added the possibility to choose the app font in theme.ini (size can be adjusted).
+ - Fixed a crash that occurred when custom icon pictures were deleted.
+ - Added new "icons" folder inside the Nucleus Co-op "gui" folder, custom icon paths are now saved in the "icons.ini" inside that folder instead of being saved in settings.ini. 
+ - Fixed crash that occurred when an user had a custom Documents folder in the root of his drive and clicked game options in the UI.
+ - Fixed "Game.SymlinkFiles = [""];" and updated so that it can work under "Game.Play = function() {" using "Context.ProceedSymlink();".
+ - Help gif updated.
+ - Fixed Nucleus Co-op reporting the incorrect line number when a handler has an error, can still show the number with an offset of +1 if the line number returned is a float. 
+ - Fixed a Nucleus Co-op silent crash that happened when controllers got disconnected and reconnected multiple times.
+ - Added Game.SetTopMostAtEnd = true; Sets the game windows to top most at the very end.
+ - Added .ini option to hide the Nucleus Co-op offline icon.
+
+v2.0 - February 25, 2022
  - New overhauled and customizable user interface with support for themes, game covers and screenshots.
  - Fixed ui scaling issues at more than 100% desktop scale (and all other issues/bugs related to it).
  - Fixed multi-monitor vertical setup drawing to not overlap input device list.

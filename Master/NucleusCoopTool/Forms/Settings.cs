@@ -13,8 +13,6 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Media;
-using System.Diagnostics;
 
 namespace Nucleus.Coop
 {
@@ -830,8 +828,6 @@ namespace Nucleus.Coop
             }
         }
 
-
-
         private void RefreshAudioList()
         {
             audioDevices = new Dictionary<string, string>();
@@ -913,7 +909,5 @@ namespace Nucleus.Coop
             }
 
         }
-
-
     }
 }

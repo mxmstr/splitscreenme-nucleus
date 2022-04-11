@@ -1445,11 +1445,11 @@ namespace Nucleus.Gaming
                 Log("Determining which monitors will be used by Nucleus");
                 foreach (Display dp in User32Util.GetDisplays())
                 {
-                    if (players[i].ScreenIndex != (dp.DisplayIndex - 1) && !screensInUse.Contains(dp))
-                    {
+                    //if (players[i].ScreenIndex != (dp.DisplayIndex - 1) && !screensInUse.Contains(dp))
+                    //{
                         //A voir pour split div  //dp.Bounds.Bottom/Top etc.
                         screensInUse.Add(dp);
-                    }
+                   // }
                 }
             }
          
@@ -1662,7 +1662,7 @@ namespace Nucleus.Gaming
 
             if (isDebug)
             {
-                Log("Nucleus Co-op version: 2.0");
+                Log("Nucleus Co-op version: 2.1");
 
                 Log("########## START OF HANDLER ##########");
                 string line;
@@ -1945,6 +1945,9 @@ namespace Nucleus.Gaming
                 string linkBinFolder;
                 string origRootFolder = "";
 
+               
+               
+
                 if (gen.SymlinkGame || gen.HardcopyGame || gen.HardlinkGame)
                 {
 
@@ -1981,18 +1984,19 @@ namespace Nucleus.Gaming
                     {
 
 
-                        Log("Starting symlink and copies");
-                        if (gen.SymlinkFiles != null)
-                        {
-                            Log("Symlinking " + gen.SymlinkFiles.Length + " files in Game.SymlinkFiles");
-                            string[] filesToSymlink = gen.SymlinkFiles;
-                            for (int f = 0; f < filesToSymlink.Length; f++)
-                            {
-                                string s = filesToSymlink[f].ToLower();
-                                // make sure it's lower case
-                                CmdUtil.MkLinkFile(Path.Combine(rootFolder, s), Path.Combine(linkFolder, s), out int exitCode);
-                            }
-                        }
+                        //Log("Starting symlink and copies");
+                        //if (gen.SymlinkFiles != null)
+                        //{
+                        //    Log("Symlinking " + gen.SymlinkFiles.Length + " files in Game.SymlinkFiles");
+                        //    string[] filesToSymlink = gen.SymlinkFiles;
+                        //    for (int f = 0; f < filesToSymlink.Length; f++)
+                        //    {
+                        //        string s = filesToSymlink[f].ToLower();  
+                        //        // make sure it's lower case
+                        //        CmdUtil.MkLinkFile(Path.Combine(rootFolder, s), Path.Combine(linkFolder, s), out int exitCode);
+                        //        Console.WriteLine(Path.Combine(rootFolder, s) +" "+ Path.Combine(linkFolder, s));
+                        //    }
+                        //}
 
                         if (gen.CopyFiles != null)
                         {
@@ -2244,17 +2248,12 @@ namespace Nucleus.Gaming
                         }
                         else
                         {
-                            if (!gen.LauncherExeIgnoreFileCheck || gen.ForceLauncherExeIgnoreFileCheck)
-                            {
-                                string[] launcherFiles = Directory.GetFiles(linkFolder, gen.LauncherExe, SearchOption.AllDirectories);
 
-                                if (gen.ForceLauncherExeIgnoreFileCheck)
-                                {
-                                    Log("Force Launcher executable ignore file check");
-                                    Log("Ignoring validation check of launcher exe. Will use filepath: " + Path.Combine(linkFolder, gen.LauncherExe));
-                                    exePath = Path.Combine(linkFolder, gen.LauncherExe);
-                                }
-                                else if (launcherFiles.Length < 1)
+                            if (!gen.LauncherExeIgnoreFileCheck)
+                            {
+                                string[] launcherFiles = Directory.GetFiles(linkFolder, gen.LauncherExe, SearchOption.AllDirectories);                            
+
+                                if (launcherFiles.Length < 1)
                                 {
                                     Log("ERROR - Could not find " + gen.LauncherExe + " in instance folder, Game executable will be used instead; " + exePath);
                                 }
@@ -2380,35 +2379,39 @@ namespace Nucleus.Gaming
                     instanceExeFolder = linkBinFolder;
                     origRootFolder = rootFolder;
 
-
-                    if (gen.LauncherExe?.Length > 0)
+                    if (!gen.ForceLauncherExeIgnoreFileCheck)
                     {
-                        if (gen.LauncherExe.Contains(':') && gen.LauncherExe.Contains('\\'))
+
+                        if (gen.LauncherExe?.Length > 0)
                         {
-                            exePath = gen.LauncherExe;
-                            origExePath = gen.LauncherExe;
-                        }
-                        else
-                        {
-                            string[] launcherFiles = Directory.GetFiles(linkFolder, gen.LauncherExe, SearchOption.AllDirectories);
-                            if (launcherFiles.Length < 1)
+                            if (gen.LauncherExe.Contains(':') && gen.LauncherExe.Contains('\\'))
                             {
-                                Log("ERROR - Could not find " + gen.LauncherExe + " in instance folder, Game executable will be used instead; " + exePath);
-                            }
-                            else if (launcherFiles.Length == 1)
-                            {
-                                exePath = launcherFiles[0];
-                                origExePath = launcherFiles[0];
-                                Log("Found launcher exe at " + exePath + ". This will be used to launch the game");
+                                exePath = gen.LauncherExe;
+                                origExePath = gen.LauncherExe;
                             }
                             else
                             {
-                                exePath = launcherFiles[0];
-                                origExePath = launcherFiles[0];
-                                Log("Multiple " + gen.LauncherExe + "'s found in instance folder." + " Using " + exePath + " to launch the game");
+                                string[] launcherFiles = Directory.GetFiles(linkFolder, gen.LauncherExe, SearchOption.AllDirectories);
+                                if (launcherFiles.Length < 1)
+                                {
+                                    Log("ERROR - Could not find " + gen.LauncherExe + " in instance folder, Game executable will be used instead; " + exePath);
+                                }
+                                else if (launcherFiles.Length == 1)
+                                {
+                                    exePath = launcherFiles[0];
+                                    origExePath = launcherFiles[0];
+                                    Log("Found launcher exe at " + exePath + ". This will be used to launch the game");
+                                }
+                                else
+                                {
+                                    exePath = launcherFiles[0];
+                                    origExePath = launcherFiles[0];
+                                    Log("Multiple " + gen.LauncherExe + "'s found in instance folder." + " Using " + exePath + " to launch the game");
+                                }
                             }
                         }
                     }
+
                 }
 
                 if (processingExit)
@@ -2627,50 +2630,6 @@ namespace Nucleus.Gaming
 
                 }
 
-                //if (gen.UseNucleusEnvironment && player.PlayerID == 0)
-                //{
-                //    RegistryKey dkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
-                //    string mydocPath = dkey.GetValue("Personal").ToString();
-
-                    //if (mydocPath.Contains("NucleusCoop"))
-                    //{
-                        
-                    //    string[] environmentRegFileBackup = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
-
-                    //    if (environmentRegFileBackup.Length > 0)
-                    //    {
-                    //        Log("Restoring default windows user environment path before launching " + gen.GUID + " because it has not been restored correcly on Nucleus close last time.");
-
-                    //        foreach (string environmentRegFilePathBackup in environmentRegFileBackup)
-                    //        {
-                    //            if (environmentRegFilePathBackup.Contains("User Shell Folders"))
-                    //            {
-                    //                Process regproc = new Process();
-
-                    //                try
-                    //                {
-                    //                    regproc.StartInfo.FileName = "reg.exe";
-                    //                    regproc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    //                    regproc.StartInfo.CreateNoWindow = true;
-                    //                    regproc.StartInfo.UseShellExecute = false;
-
-                    //                    string command = "import \"" + environmentRegFilePathBackup + "\"";
-                    //                    regproc.StartInfo.Arguments = command;
-                    //                    regproc.Start();
-
-                    //                    regproc.WaitForExit();
-                    //                    Log($"Imported {Path.GetFileName(environmentRegFilePathBackup)}");
-                    //                    Log($"Setup will continue now...");
-                    //                }
-                    //                catch (Exception)
-                    //                {
-                    //                    regproc.Dispose();
-                    //                }
-                    //            }
-                    //        }
-                    //    }                     
-                    //}
-                //}
 
                 bool userConfigPathConverted = false;
                 if (gen.UserProfileConfigPath?.Length > 0 && gen.UserProfileConfigPath.ToLower().StartsWith(@"documents\"))
@@ -2778,17 +2737,65 @@ namespace Nucleus.Gaming
                 context.PlayerID = player.PlayerID;
                 context.IsFullscreen = isFullscreen;
 
-                if (gen.LauncherExe?.Length > 0)
-                {
-                    context.LauncherFolder = Path.GetDirectoryName(gen.LauncherExe);
-                }
-
                 context.ExePath = exePath;
                 context.RootInstallFolder = exeFolder;
                 context.RootFolder = linkFolder;
                 context.OrigRootFolder = rootFolder;
                 context.UserProfileConfigPath = gen.UserProfileConfigPath;
                 context.UserProfileSavePath = gen.UserProfileSavePath;
+
+                if (gen.SymlinkFiles != null)
+                {
+                    Log("Symlinking " + gen.SymlinkFiles.Length + " files in Game.SymlinkFiles");                                    
+                    context.SymlinkFiles = gen.SymlinkFiles;
+                }
+ 
+                if (gen.ForceLauncherExeIgnoreFileCheck)
+                {
+
+                    Log("Force ignoring validation check of launcher exe. Will use filepath: " + Path.GetDirectoryName(userGame.ExePath).ToLower());
+                    linkFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
+                    exePath = Path.Combine(Path.GetDirectoryName(userGame.ExePath).ToLower(), gen.LauncherExe);
+
+                    Console.WriteLine(exePath + " Launcher custom");
+
+                    if (gen.LauncherExe?.Length > 0)
+                    {
+                        if (gen.LauncherExe.Contains(':') && gen.LauncherExe.Contains('\\'))
+                        {
+                            exePath = gen.LauncherExe;
+                            origExePath = gen.LauncherExe;
+                        }
+                        else
+                        {
+                            string[] launcherFiles = Directory.GetFiles(linkFolder, gen.LauncherExe, SearchOption.AllDirectories);
+                            if (launcherFiles.Length < 1)
+                            {
+                                Log("ERROR - Could not find " + gen.LauncherExe + " in instance folder, Game executable will be used instead; " + exePath);
+                            }
+                            else if (launcherFiles.Length == 1)
+                            {
+                                exePath = launcherFiles[0];
+                                origExePath = launcherFiles[0];
+                                Log("Found launcher exe at " + exePath + ". This will be used to launch the game");
+                            }
+                            else
+                            {
+                                exePath = launcherFiles[0];
+                                origExePath = launcherFiles[0];
+                                Log("Multiple " + gen.LauncherExe + "'s found in instance folder." + " Using " + exePath + " to launch the game");
+                            }
+                        }
+                    }
+                    gen.LauncherExe = exePath;
+                }
+
+                if (gen.LauncherExe?.Length > 0)
+                {
+                    context.LauncherFolder = Path.GetDirectoryName(gen.LauncherExe);
+                    Console.WriteLine(gen.LauncherExe + " last check");
+                }
+
 
                 if (userConfigPathConverted || userSavePathConverted)
                 {
@@ -3288,23 +3295,6 @@ namespace Nucleus.Gaming
                             files.Add(goldbergNoLocal);
                         }
                     }
-
-
-                    //foreach (string nameFile in files)//commented for nucleus 2.0 hotfix #1
-                    //{
-                    //    if (!string.IsNullOrEmpty(player.Nickname))
-                    //    {
-                    //        Log(string.Format("Writing nickname {0} in account_name.txt", player.Nickname));
-                    //        File.Delete(nameFile);
-                    //        File.WriteAllText(nameFile, player.Nickname);
-                    //    }
-                    //    else
-                    //    {
-                    //        Log("Writing nickname {0} in account_name.txt " + "Player" + (i + 1));
-                    //        File.Delete(nameFile);
-                    //        File.WriteAllText(nameFile, "Player" + (i + 1));
-                    //    }
-                    //}
 
                     saFiles = Directory.GetFiles(linkFolder, "user_steam_id.txt", SearchOption.AllDirectories);
                     files = saFiles.ToList();
@@ -5309,6 +5299,25 @@ namespace Nucleus.Gaming
             //    statusForm.Close();
             //    Thread.Sleep(200);
             //}
+            if (gen.SetTopMostAtEnd)
+            {
+                if (!gen.PromptBetweenInstances)
+                {
+                    if (!gen.NotTopMost)
+                    {
+                        for (int i = 0; i < players.Count; i++)
+                        {
+                            PlayerInfo p = players[i];
+                            ProcessData data = p.ProcessData;
+
+
+                            Log("(Update) Setting game window to top most");
+                            data.HWnd.TopMost = true;
+                        }
+                    }
+                }
+            }
+
             if (gen.UseNucleusEnvironment)
             {
                 string[] environmentRegFile = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
@@ -6991,8 +7000,11 @@ namespace Nucleus.Gaming
                             {
                                 if (!gen.NotTopMost)
                                 {
-                                    Log("(Update) Setting game window to top most");
-                                    data.HWnd.TopMost = true;
+                                    if (!gen.SetTopMostAtEnd)
+                                    {
+                                        Log("(Update) Setting game window to top most");
+                                        data.HWnd.TopMost = true;
+                                    }
                                 }
                             }
 

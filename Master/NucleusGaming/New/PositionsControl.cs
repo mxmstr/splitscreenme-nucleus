@@ -424,122 +424,52 @@ namespace Nucleus.Coop
             {
                 return;
             }
-
-            insideGamepadTick = true;
-
-            gamePadPressed = -1;
-            if (profile == null)
+            try
             {
-                insideGamepadTick = false;
-                return;
-            }
+                insideGamepadTick = true;
 
-            List<PlayerInfo> data = profile.PlayerData;
-
-            bool changed = false;
-
-            GenericGameInfo g = game.Game;
-
-            DirectInput dinput = new DirectInput();
-
-            // Using OpenXinput with more than 4 players means we can use more than 4 xinput controllers
-
-            if (g.Hook.DInputEnabled || g.Hook.XInputReroute || g.ProtoInput.DinputDeviceHook)
-            {
-
-                IList<DeviceInstance> devices = dinput.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AllDevices);
-
-                // first search for disconnected gamepads
-                for (int j = 0; j < data.Count; j++)
+                gamePadPressed = -1;
+                if (profile == null)
                 {
-                    PlayerInfo p = data[j];
-                    if (!p.IsDInput || p.IsFake)
-                    {
-                        continue;
-                    }
-
-                    bool foundGamepad = false;
-                    for (int i = 0; i < devices.Count; i++)
-                    {
-                        if (devices[i].InstanceGuid == p.GamepadGuid && i == data[j].GamepadId)
-                        {
-                            foundGamepad = true;
-                            break;
-                        }
-                    }
-
-                    if (!foundGamepad)
-                    {
-                        data[j].DInputJoystick.Unacquire();
-                        changed = true;
-                        data.RemoveAt(j);
-                        j--;
-                        isDisconnected = true;
-                    }
+                    insideGamepadTick = false;
+                    return;
                 }
 
-                for (int i = 0; i < devices.Count; i++)
-                {
-                    bool already = false;
+                List<PlayerInfo> data = profile.PlayerData;
 
-                    // see if this gamepad is already on a player
+                bool changed = false;
+
+                GenericGameInfo g = game.Game;
+
+                DirectInput dinput = new DirectInput();
+
+                // Using OpenXinput with more than 4 players means we can use more than 4 xinput controllers
+
+                if (g.Hook.DInputEnabled || g.Hook.XInputReroute || g.ProtoInput.DinputDeviceHook)
+                {
+
+                    IList<DeviceInstance> devices = dinput.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AllDevices);
+
+                    // first search for disconnected gamepads
                     for (int j = 0; j < data.Count; j++)
                     {
                         PlayerInfo p = data[j];
-                        if (p.GamepadGuid == devices[i].InstanceGuid)
+                        if (!p.IsDInput || p.IsFake)
                         {
-                            already = true;
-                            break;
+                            continue;
                         }
-                    }
 
-                    if (already)
-                    {
-                        continue;
-                    }
+                        bool foundGamepad = false;
+                        for (int i = 0; i < devices.Count; i++)
+                        {
+                            if (devices[i].InstanceGuid == p.GamepadGuid && i == data[j].GamepadId)
+                            {
+                                foundGamepad = true;
+                                break;
+                            }
+                        }
 
-                    changed = true;
-
-                    // new gamepad
-                    PlayerInfo player = new PlayerInfo
-                    {
-                        DInputJoystick = new Joystick(dinput, devices[i].InstanceGuid)
-                    };
-
-                    if (player.DInputJoystick.Properties.InterfacePath.ToUpper().Contains("IG_") && !g.Hook.XInputReroute && g.Hook.XInputEnabled)
-                    {
-                        continue;
-                    }
-                    player.GamepadProductGuid = devices[i].ProductGuid;
-                    player.GamepadGuid = devices[i].InstanceGuid;
-                    player.GamepadName = devices[i].InstanceName;
-                    player.IsDInput = true;
-                    player.GamepadId = i;
-                    string hid = player.DInputJoystick.Properties.InterfacePath;
-                    player.RawHID = hid;
-                    int start = hid.IndexOf("hid#");
-                    int end = hid.LastIndexOf("#{");
-                    string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
-                    player.HIDDeviceID = fhid;
-                    player.DInputJoystick.Acquire();
-                    player.IsInputUsed = true;
-                    data.Add(player);
-                }
-
-            }
-
-            if ((g.Hook.XInputEnabled && !g.Hook.XInputReroute && !g.ProtoInput.DinputDeviceHook) || g.ProtoInput.XinputHook)
-            {
-                // XInput is only really enabled inside Nucleus Coop when
-                // we have 4 or less players, else we need to force DirectInput to grab everything
-
-                for (int j = 0; j < data.Count; j++)
-                {
-                    PlayerInfo p = data[j];
-                    if (p.IsXInput && !p.IsFake)
-                    {
-                        OpenXinputController c = new OpenXinputController(g.ProtoInput.UseOpenXinput, p.GamepadId);
-                        if (!c.IsConnected)
+                        if (!foundGamepad)
                         {
                             data[j].DInputJoystick.Unacquire();
                             changed = true;
@@ -548,39 +478,17 @@ namespace Nucleus.Coop
                             isDisconnected = true;
                         }
                     }
-                }
 
-                IList<DeviceInstance> devices = dinput.GetDevices(
-                SharpDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
-
-                int cOffset = 0;
-                int numControllers = g.ProtoInput.UseOpenXinput ? 32 : 4;
-                for (int i = 0; i < numControllers; i++)
-                {
-                    OpenXinputController c = new OpenXinputController(g.ProtoInput.UseOpenXinput, i);
-
-                    bool already = false;
-
-                    if (!c.IsConnected)
+                    for (int i = 0; i < devices.Count; i++)
                     {
-                        cOffset++;
-                    }
-                    else
-                    {
+                        bool already = false;
+
                         // see if this gamepad is already on a player
-                        foreach (PlayerInfo p in data)
+                        for (int j = 0; j < data.Count; j++)
                         {
-                            if (p.IsXInput && p.GamepadId == i)
+                            PlayerInfo p = data[j];
+                            if (p.GamepadGuid == devices[i].InstanceGuid)
                             {
-                                State s = c.GetState();
-                                int newmask = (int)s.Gamepad.Buttons;
-                                if (p.GamepadMask != newmask)
-                                {
-                                    changed = true;
-                                    p.GamepadMask = newmask;
-                                }
-
-
                                 already = true;
                                 break;
                             }
@@ -593,53 +501,151 @@ namespace Nucleus.Coop
 
                         changed = true;
 
-                        PlayerInfo player = new PlayerInfo();
-
-                        for (int x = 0; x < devices.Count; x++)
-                        {
-                            DeviceInstance device = devices[x];
-                        
-                            if ((x + cOffset) == i)
-                            {
-                                //instanceIds.Add(device.InstanceGuid.ToString());
-                                player.GamepadGuid = device.InstanceGuid;
-                                player.GamepadProductGuid = device.ProductGuid;
-                                player.GamepadName = device.InstanceName;
-                                player.DInputJoystick = new Joystick(dinput, device.InstanceGuid);
-                                string hid = player.DInputJoystick.Properties.InterfacePath;
-                                player.RawHID = hid;
-                                int start = hid.IndexOf("hid#");
-                                int end = hid.LastIndexOf("#{");
-                                string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
-                                player.HIDDeviceID = fhid;
-                                player.DInputJoystick.Acquire();
-
-                                break;
-                            }
-                        }
-
                         // new gamepad
-                        player.IsXInput = true;
-                        player.IsInputUsed = true;
+                        PlayerInfo player = new PlayerInfo
+                        {
+                            DInputJoystick = new Joystick(dinput, devices[i].InstanceGuid)
+                        };
+
+                        if (player.DInputJoystick.Properties.InterfacePath.ToUpper().Contains("IG_") && !g.Hook.XInputReroute && g.Hook.XInputEnabled)
+                        {
+                            continue;
+                        }
+                        player.GamepadProductGuid = devices[i].ProductGuid;
+                        player.GamepadGuid = devices[i].InstanceGuid;
+                        player.GamepadName = devices[i].InstanceName;
+                        player.IsDInput = true;
                         player.GamepadId = i;
+                        string hid = player.DInputJoystick.Properties.InterfacePath;
+                        player.RawHID = hid;
+                        int start = hid.IndexOf("hid#");
+                        int end = hid.LastIndexOf("#{");
+                        string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
+                        player.HIDDeviceID = fhid;
+                        player.DInputJoystick.Acquire();
+                        player.IsInputUsed = true;
                         data.Add(player);
                     }
-                }
-            }
 
-            if (changed)
-            {
-                if (InvokeRequired)
+                }
+
+                if ((g.Hook.XInputEnabled && !g.Hook.XInputReroute && !g.ProtoInput.DinputDeviceHook) || g.ProtoInput.XinputHook)
                 {
-                    Invoke(new MethodInvoker(UpdatePlayers));
-                    Invoke(new MethodInvoker(Refresh));
-                    insideGamepadTick = false;
-                    return;
-                }
-            }
+                    // XInput is only really enabled inside Nucleus Coop when
+                    // we have 4 or less players, else we need to force DirectInput to grab everything
 
-            dinput?.Dispose();
-            insideGamepadTick = false;
+                    for (int j = 0; j < data.Count; j++)
+                    {
+                        PlayerInfo p = data[j];
+                        if (p.IsXInput && !p.IsFake)
+                        {
+                            OpenXinputController c = new OpenXinputController(g.ProtoInput.UseOpenXinput, p.GamepadId);
+                            if (!c.IsConnected)
+                            {
+                                data[j].DInputJoystick.Unacquire();
+                                changed = true;
+                                data.RemoveAt(j);
+                                j--;
+                                isDisconnected = true;
+                            }
+                        }
+                    }
+
+                    IList<DeviceInstance> devices = dinput.GetDevices(
+                    SharpDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
+
+                    int cOffset = 0;
+                    int numControllers = g.ProtoInput.UseOpenXinput ? 32 : 4;
+                    for (int i = 0; i < numControllers; i++)
+                    {
+                        OpenXinputController c = new OpenXinputController(g.ProtoInput.UseOpenXinput, i);
+
+                        bool already = false;
+
+                        if (!c.IsConnected)
+                        {
+                            cOffset++;
+                        }
+                        else
+                        {
+                            // see if this gamepad is already on a player
+                            foreach (PlayerInfo p in data)
+                            {
+                                if (p.IsXInput && p.GamepadId == i)
+                                {
+                                    State s = c.GetState();
+                                    int newmask = (int)s.Gamepad.Buttons;
+                                    if (p.GamepadMask != newmask)
+                                    {
+                                        changed = true;
+                                        p.GamepadMask = newmask;
+                                    }
+
+
+                                    already = true;
+                                    break;
+                                }
+                            }
+
+                            if (already)
+                            {
+                                continue;
+                            }
+
+                            changed = true;
+
+                            PlayerInfo player = new PlayerInfo();
+
+                            for (int x = 0; x < devices.Count; x++)
+                            {
+                                DeviceInstance device = devices[x];
+
+                                if ((x + cOffset) == i)
+                                {
+                                    //instanceIds.Add(device.InstanceGuid.ToString());
+                                    player.GamepadGuid = device.InstanceGuid;
+                                    player.GamepadProductGuid = device.ProductGuid;
+                                    player.GamepadName = device.InstanceName;
+                                    player.DInputJoystick = new Joystick(dinput, device.InstanceGuid);
+                                    string hid = player.DInputJoystick.Properties.InterfacePath;
+                                    player.RawHID = hid;
+                                    int start = hid.IndexOf("hid#");
+                                    int end = hid.LastIndexOf("#{");
+                                    string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
+                                    player.HIDDeviceID = fhid;
+                                    player.DInputJoystick.Acquire();
+
+                                    break;
+                                }
+                            }
+
+                            // new gamepad
+                            player.IsXInput = true;
+                            player.IsInputUsed = true;
+                            player.GamepadId = i;
+                            data.Add(player);
+                        }
+                    }
+                }
+
+                if (changed)
+                {
+                    if (InvokeRequired)
+                    {
+                        Invoke(new MethodInvoker(UpdatePlayers));
+                        Invoke(new MethodInvoker(Refresh));
+                        insideGamepadTick = false;
+                        return;
+                    }
+                }
+
+                dinput?.Dispose();
+                insideGamepadTick = false;
+            }
+            catch (Exception)
+            {
+               
+            }
         }
 
         private void AddPlayer(int i, float playerWidth, float playerHeight, float offset)
