@@ -11,9 +11,7 @@ namespace Nucleus.Gaming.Coop.Generic
     {
         private bool checkedUpdate = false;
         private bool updateAvailable = false;
-        private Bitmap bmp;
-        private string imgId;
-        private string imageUrl;
+
         public bool IsUpdateAvailable(bool fetch)
         {
             if (fetch && !checkedUpdate)
@@ -111,7 +109,7 @@ namespace Nucleus.Gaming.Coop.Generic
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.DefaultConnectionLimit = 9999;
-
+       
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);

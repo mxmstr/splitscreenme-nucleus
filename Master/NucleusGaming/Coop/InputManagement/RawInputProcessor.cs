@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows;
 
 namespace Nucleus.Gaming.Coop.InputManagement
 {
@@ -395,18 +396,20 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 return;
             }
 
-            if (!splitScreenRunning() && PlayerInfos != null)
+            try
             {
-                foreach (PlayerInfo toFlash in PlayerInfos.Where(x => x != null &&
-                       (
-                           (type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) ||
-                           (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice))
-                           )
-                       ).ToArray()
-                )
+                if (!splitScreenRunning() && PlayerInfos != null)
                 {
-                    toFlash.FlashIcon();
+                    foreach (PlayerInfo toFlash in PlayerInfos.Where(x => x != null && ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
+                    {
+                        toFlash.FlashIcon();
+                    }
                 }
+            }
+            catch (Exception)// ex)
+            {
+                Console.WriteLine("Iteration failed");
+                return;
             }
 
             if (type == HeaderDwType.RIM_TYPEKEYBOARD)

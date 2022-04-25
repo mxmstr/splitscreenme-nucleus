@@ -11,31 +11,57 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
 {
+
     public partial class DownloadPrompt : Form
     {
 
         private Handler Handler;
         private string zipFile;
         private string scriptFolder = Gaming.GameManager.Instance.GetJsScriptsPath();
+        private List<Control> ctrls = new List<Control>();
         private bool zipExtractFinished;
         private int numEntries;
         private int entriesDone = 0;
+        private float fontSize;
         private bool overwriteWithoutAsking = false;
         private readonly IniFile prompt = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         private MainForm mainForm;
-
+        private void controlscollect()
+        {
+            foreach (Control control in Controls)
+            {
+                ctrls.Add(control);
+                foreach (Control container1 in control.Controls)
+                {
+                    ctrls.Add(container1);
+                    foreach (Control container2 in container1.Controls)
+                    {
+                        ctrls.Add(container2);
+                        foreach (Control container3 in container2.Controls)
+                        {
+                            ctrls.Add(container3);
+                        }
+                    }
+                }
+            }
+        }
         public DownloadPrompt(Handler handler, MainForm mf, string zipFileName)
         {
-            string ChoosenTheme = prompt.IniReadValue("Theme", "Theme");
+            fontSize = float.Parse(mf.theme.IniReadValue("Font", "DownloadPromptFontSize"));
+
             try
             {
                 InitializeComponent();
-          
+                
                 Handler = handler;
                 mainForm = mf;
 
                 lbl_Handler.Text = zipFile;
-                BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme + "\\other_backgrounds.jpg"));
+
+                SuspendLayout();
+
+                BackgroundImage = new Bitmap(mainForm.themePath + "\\other_backgrounds.jpg");
+
                 if (zipFileName == null)
                 {
                     Text = "Downloading Game Handler";
@@ -48,6 +74,15 @@ namespace Nucleus.Coop.Forms
                     zipFile = zipFileName;
                     ExtractHandler();
                 }
+
+                controlscollect();
+
+                foreach (Control control in ctrls)
+                {
+                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+
+                ResumeLayout();
             }
             catch (Exception)
             {

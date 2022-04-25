@@ -241,6 +241,8 @@ namespace Nucleus.Coop.Forms
             this.btn_Close.TabIndex = 38;
             this.btn_Close.UseVisualStyleBackColor = false;
             this.btn_Close.Click += new System.EventHandler(this.btn_Close_Click);
+            this.btn_Close.MouseEnter += new System.EventHandler(this.btn_Close_MouseEnter);
+            this.btn_Close.MouseLeave += new System.EventHandler(this.btn_Close_MouseLeave);
             // 
             // btn_Download
             // 

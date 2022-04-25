@@ -25,6 +25,7 @@ namespace Nucleus.Coop.Forms
         private string lastSearch;
 
         private ListViewColumnSorter lvwColumnSorter;
+        private List<Control> ctrls = new List<Control>();
 
         private bool grabAll = false;
 
@@ -40,27 +41,40 @@ namespace Nucleus.Coop.Forms
 
         private int lastVer = 0;
 
+        private float fontSize;
+
         private SortOrder sortOrder = SortOrder.Ascending;
-		
-		public void button_Click(object sender, EventArgs e)
-        {   		    
-			string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            SoundPlayer splayer = new SoundPlayer((Path.Combine(Application.StartupPath, @"gui\theme\"+ChoosenTheme+"\\button_click.wav")));
-            splayer.Play();
+
+
+        private void controlscollect()
+        {
+            foreach (Control control in Controls)
+            {
+                ctrls.Add(control);
+                foreach (Control container1 in control.Controls)
+                {
+                    ctrls.Add(container1);
+                    foreach (Control container2 in container1.Controls)
+                    {
+                        ctrls.Add(container2);
+                        foreach (Control container3 in container2.Controls)
+                        {
+                            ctrls.Add(container3);
+                        }
+                    }
+                }
+            }
+        }
+        public void button_Click(object sender, EventArgs e)
+        {
+           if(mainForm.mouseClick)
+            mainForm.SoundPlayer(mainForm.themePath + "\\button_click.wav");
         }
 
         public ScriptDownloader(MainForm mf)
         {
+            fontSize = float.Parse(mf.theme.IniReadValue("Font", "HandlerDownloaderFontSize"));
             InitializeComponent();
-
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-            bool MouseClick = Convert.ToBoolean(theme.IniReadValue("Sounds", "MouseClick"));
-            string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOverColor").Split(',');
-            string[] rgb_font = theme.IniReadValue("Colors", "FontColor").Split(',');
-            Color MouseOverBackColor = Color.FromArgb(Convert.ToInt32(rgb_MouseOverColor[0]), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
-
-            Image AppButtons = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\Theme\" + ChoosenTheme + "\\button.png"));
 
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -74,30 +88,68 @@ namespace Nucleus.Coop.Forms
             cmb_NumResults.SelectedIndex = 1;
             entriesPerPage = Convert.ToInt32(cmb_NumResults.SelectedItem);
 
-            ForeColor = Color.FromArgb(Convert.ToInt32(rgb_font[0]), Convert.ToInt32(rgb_font[1]), Convert.ToInt32(rgb_font[2]));
-            BackgroundImage = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\Theme\" + ChoosenTheme + "\\other_backgrounds.jpg"));
+            SuspendLayout();
+
+            ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
+            BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             //Controls Pictures
-            btn_Next.BackgroundImage = AppButtons;
-            btn_Prev.BackgroundImage = AppButtons;
-            btn_ViewAll.BackgroundImage = AppButtons;
-            btn_Info.BackgroundImage = AppButtons;
-            btn_Search.BackgroundImage = AppButtons;
-            btn_Close.BackgroundImage = AppButtons;
-            btn_Download.BackgroundImage = AppButtons;
-            btn_Extract.BackgroundImage = AppButtons;
+            btn_Next.BackgroundImage = mf.AppButtons;
+            btn_Prev.BackgroundImage = mf.AppButtons;
+            btn_ViewAll.BackgroundImage = mf.AppButtons;
+            btn_Info.BackgroundImage = mf.AppButtons;
+            btn_Search.BackgroundImage = mf.AppButtons;
+            btn_Close.BackgroundImage = mf.AppButtons;
+            btn_Download.BackgroundImage = mf.AppButtons;
+            btn_Extract.BackgroundImage = mf.AppButtons;
             //
             //MouseOverColor
             //
-            btn_Next.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-            btn_Prev.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-            btn_ViewAll.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-            btn_Info.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-            btn_Search.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-            btn_Close.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-            btn_Download.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-            btn_Extract.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
+            btn_Next.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btn_Prev.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btn_ViewAll.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btn_Info.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btn_Search.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btn_Close.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btn_Download.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btn_Extract.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            
+            controlscollect();
 
-            if (MouseClick)
+            foreach (Control control in ctrls)
+            {
+                control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            }
+
+            if (mf.useButtonsBorder)
+            {
+                btn_Next.FlatAppearance.BorderSize = 1;
+                btn_Next.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
+
+                btn_Prev.FlatAppearance.BorderSize = 1;
+                btn_Prev.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
+
+                btn_Download.FlatAppearance.BorderSize = 1;
+                btn_Download.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
+
+                btn_Info.FlatAppearance.BorderSize = 1;
+                btn_Info.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
+
+                btn_Close.FlatAppearance.BorderSize = 1;
+                btn_Close.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
+
+                btn_Extract.FlatAppearance.BorderSize = 1;
+                btn_Extract.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
+
+                btn_ViewAll.FlatAppearance.BorderSize = 1;
+                btn_ViewAll.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
+
+                btn_Search.FlatAppearance.BorderSize = 1;
+                btn_Search.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
+
+            }
+            ResumeLayout();
+
+            if (mf.mouseClick)
             {
                 foreach (Control button in this.Controls) { if (button is Button) { button.Click += new System.EventHandler(this.button_Click); } }
             }
@@ -116,6 +168,8 @@ namespace Nucleus.Coop.Forms
                 return;
             }
 
+            SuspendLayout();
+
             if (scale > 1.0F)
             {
                 float newFontSize = Font.Size * scale;
@@ -123,16 +177,16 @@ namespace Nucleus.Coop.Forms
                 {
                     if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox) ^ c.GetType() == typeof(Panel) ^ c.GetType() == typeof(ListView))
                     {
-                        c.Font = new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                     }
                 }
             }
+
+            ResumeLayout();
         }
 
         public Handler GetHandler(string id)
         {
-
-
             try
             {
                 ServicePointManager.Expect100Continue = true;
@@ -211,8 +265,6 @@ namespace Nucleus.Coop.Forms
 
                 lastSearch = txt_Search.Text;
 
-                //list_Games.Items.Clear();
-                //searchHandlers.Clear();
                 lbl_Status.Text = "";
 
                 ServicePointManager.Expect100Continue = true;
@@ -401,8 +453,6 @@ namespace Nucleus.Coop.Forms
                 try
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_cover);
-                    //request.ClientCertificates.Add(X509Certificate.CreateFromCertFile(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "hub_cert.cer")));
-                    //request.Timeout = 10;
                     WebResponse resp = request.GetResponse();
                     Stream respStream = resp.GetResponseStream();
                     bmp = new Bitmap(respStream);
@@ -500,13 +550,7 @@ namespace Nucleus.Coop.Forms
 
             try
             {
-                //X509Certificate2Collection certificates = new X509Certificate2Collection();
-                //certificates.Import(certName, password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-                //request.ClientCertificates.Add(X509Certificate.CreateFromCertFile(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "hub_cert.cer")));
-                //request.Timeout = 10;
-                //request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
                 using (StreamReader reader = new StreamReader(stream))
@@ -514,7 +558,7 @@ namespace Nucleus.Coop.Forms
                     return reader.ReadToEnd();
                 }
             }
-            catch (Exception )//ex)
+            catch (Exception)//ex)
             {
                 //MessageBox.Show(string.Format("{0}: {1}", ex.ToString(), ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
@@ -585,8 +629,6 @@ namespace Nucleus.Coop.Forms
         {
             if (list_Games.SelectedItems.Count == 1)
             {
-                //int index = list_Games.Items.IndexOf(list_Games.SelectedItems[0]);
-
                 Handler handler = null;
                 foreach (Handler hndl in searchHandlers)
                 {
@@ -611,8 +653,6 @@ namespace Nucleus.Coop.Forms
         {
             if (list_Games.SelectedItems.Count == 1)
             {
-                //int index = list_Games.Items.IndexOf(list_Games.SelectedItems[0]);
-                //Handler handler = searchHandlers[index];
                 Handler handler = null;
                 foreach (Handler hndl in searchHandlers)
                 {
@@ -629,19 +669,9 @@ namespace Nucleus.Coop.Forms
                     return;
                 }
 
-                //Regex pattern = new Regex("[\\/:*?\"<>|]");
-                //string frmHandleTitle = pattern.Replace(handler.Title, ""); 
-                //if (File.Exists(Path.Combine(Gaming.GameManager.Instance.GetJsScriptsPath(), frmHandleTitle + ".js")))
-                //{
-                //    DialogResult dialogResult = MessageBox.Show("An existing script with the name " + (frmHandleTitle + ".js") + " already exists. Do you wish to overwrite it?", "Script already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                //    if (dialogResult != DialogResult.Yes)
-                //    {
-                //        return;
-                //    }
-                //}
-
                 DownloadPrompt downloadPrompt = new DownloadPrompt(handler, mainForm, null);
                 downloadPrompt.ShowDialog();
+
             }
         }
 

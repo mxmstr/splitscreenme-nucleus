@@ -133,9 +133,6 @@
     <Compile Include="BufferedClientAreaPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GameNameControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -253,6 +250,9 @@
     <None Include="copyoutput\utils\XInputPlus\x86\xinput1_3.dl_" />
     <None Include="copyoutput\utils\XInputPlus\XInputPlus.ini" />
     <None Include="copyoutput\utils\XInputPlus\XInputPlus_Default.ini" />
+    <None Include="gui\icons\icons.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="gui\theme\default\theme.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -286,45 +286,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\lupa.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\edge.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\border.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gamepad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\not_found.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\play.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\plus.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\left_arrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\right_arrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\left_arrow_disabled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\right_arrow_disabled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\opac.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
@@ -347,44 +308,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\keyboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\no_keyboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\left_arrow_press.png" />
-    <None Include="Resources\left_arrow_hover.png" />
-    <None Include="Resources\right_arrow_press.png" />
-    <None Include="Resources\right_arrow_hover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\not_found_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\splitscreen-me-logo.png" />
-    <None Include="Resources\no_hub.png" />
-    <None Include="Resources\no_hub1.png" />
-    <None Include="Resources\no_hub.jpg" />
+    <None Include="Resources\linksArrowOpen.png" />
+    <None Include="Resources\linksArrow.png" />
     <None Include="Resources\logo.png" />
     <None Include="Resources\instructions.gif" />
     <None Include="Resources\settings.png" />
     <None Include="Resources\maximize_button.png" />
     <None Include="Resources\minimize_button.png" />
     <None Include="Resources\reddit11.png" />
-    <None Include="Resources\reddit1.png" />
-    <None Include="Resources\reddit.png" />
-    <None Include="Resources\splitCalc.png" />
-    <None Include="Resources\toolbox_background1.png" />
-    <None Include="Resources\toolbox_background.png" />
     <None Include="Resources\toolbox3.png" />
-    <None Include="Resources\toolbox2.png" />
-    <None Include="Resources\toolbox1.png" />
-    <None Include="Resources\toolbox.png" />
-    <None Include="Resources\logo_white2.png" />
-    <None Include="Resources\logo_white1.png" />
-    <None Include="Resources\logo_white.png" />
-    <None Include="Resources\refresh_button.png" />
     <None Include="Resources\players.png" />
     <Content Include="copyoutput\openxinput1_3.dll" />
     <Content Include="copyoutput\utils\Credits.txt" />
@@ -468,7 +400,6 @@
     <Content Include="copyoutput\utils\ForceBindIP\BindIP64.dll" />
     <Content Include="copyoutput\utils\ForceBindIP\ForceBindIP.exe" />
     <Content Include="copyoutput\utils\ForceBindIP\ForceBindIP64.exe" />
-    <None Include="Resources\this.Icon.ico" />
     <None Include="Resources\no_image.jpg" />
     <Content Include="copyoutput\utils\LaunchUsers\PsExec.exe" />
     <Content Include="copyoutput\utils\SmartSteamEmu\SmartSteamEmu.dll" />
@@ -513,13 +444,40 @@
     <Content Include="gui\covers\covers here.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\icons\default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\screenshots\screenshots here.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\16players.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\2horizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\2vertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\4players.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\6players.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\8players.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\arrow_left.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\arrow_left_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\arrow_right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\arrow_right_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\background.jpg">
@@ -534,20 +492,88 @@
     <Content Include="gui\theme\default\cover_layer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\dlhub_btn.png" />
+    <Content Include="gui\theme\default\customLayout.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\dinput.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\dinput_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\discord.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\discord_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\dlhub_btn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\download_bar.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\dragging_indicator.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\faq.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\faq_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\fullscreen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\game_list.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\intro.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\setup_screen.png">
+    <Content Include="gui\theme\default\instruction_closed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\lightbar_bottom.gif">
+    <Content Include="gui\theme\default\instruction_opened .png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\instruction_opened.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\intro.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\keyboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\keyboard_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\magnifier.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\magnifier_close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\players.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\player_screen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\proto_keyboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\proto_mouse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\reddit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\reddit_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\screen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\setup_screen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\lightbar_top.gif">
@@ -571,28 +597,79 @@
     <Content Include="gui\theme\default\splash.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\splitcalculator.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\splitcalculator_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\thirdpartytools.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\thirdpartytools_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_close_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_download_assets.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_download_assets_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_dropdown_closed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_dropdown_opened.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_maximize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_maximize_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_minimize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_minimize_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_no_hub.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_settings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_settings_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\virtual_keyboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\virtual_mouse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\xinput.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\xinput_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="icon.ico" />
-    <None Include="Resources\blankCover.png" />
-    <None Include="Resources\DownloadArts_button.png" />
-    <None Include="Resources\FormBackground.jpg" />
-    <None Include="Resources\faq.png" />
     <None Include="Resources\DownloadArts_button1.png" />
     <None Include="Resources\faq1.png" />
-    <None Include="Resources\close_button_alpha.png" />
-    <None Include="Resources\close_button_alpha1.png" />
-    <None Include="Resources\close_button_alpha2.png" />
-    <None Include="Resources\calculator.png" />
     <None Include="Resources\calculator1.png" />
-    <None Include="Resources\discord.png" />
-    <None Include="Resources\discord1.png" />
-    <None Include="Resources\discord2.png" />
-    <None Include="Resources\discord3.png" />
-    <None Include="Resources\discord4.png" />
     <None Include="Resources\discord5.png" />
     <None Include="Resources\close_button.png" />
     <None Include="Resources\hform_Background.jpg" />
-    <None Include="Resources\hform_Background.png" />
-    <None Include="Resources\1_2B9jzdGvieTx98er34lZ0w.gif" />
     <None Include="Resources\hform.gif" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>

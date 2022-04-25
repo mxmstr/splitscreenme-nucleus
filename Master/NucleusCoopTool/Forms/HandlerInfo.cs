@@ -8,47 +8,58 @@ using System.Net;
 using System.Windows.Forms;
 using System.Media;
 using Nucleus.Gaming;
-
-
+using System.Collections.Generic;
 
 namespace Nucleus.Coop.Forms
 {
     public partial class HandlerInfo : BaseForm, IDynamicSized
     {
         protected string api = "https://hub.splitscreen.me/api/v1/";
-        
-		public readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-        
+             
 		private readonly Handler Handler;
         private MainForm mainForm;
-        
-		public void button_Click(object sender, EventArgs e)
-        {   		    
-			string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            SoundPlayer splayer = new SoundPlayer((Path.Combine(Application.StartupPath, @"gui\theme\"+ChoosenTheme+"\\button_click.wav")));
-            splayer.Play();
+        private List<Control> ctrls = new List<Control>();
+        private float fontSize;
+
+        public void button_Click(object sender, EventArgs e)
+        {
+            if (mainForm.mouseClick)
+            mainForm.SoundPlayer(mainForm.themePath + "\\button_click.wav");
         }
-		
+
+        private void controlscollect()
+        {
+            foreach (Control control in Controls)
+            {
+                ctrls.Add(control);
+                foreach (Control container1 in control.Controls)
+                {
+                    ctrls.Add(container1);
+                    foreach (Control container2 in container1.Controls)
+                    {
+                        ctrls.Add(container2);
+                        foreach (Control container3 in container2.Controls)
+                        {
+                            ctrls.Add(container3);
+                        }
+                    }
+                }
+            }
+        }
+
         public HandlerInfo(Handler handler, MainForm mf)
         {
-           
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-
-            bool MouseClick = Convert.ToBoolean(theme.IniReadValue("Sounds", "MouseClick"));
-
-            Image AppButtons = Image.FromFile(Path.Combine(Application.StartupPath, @"gui\Theme\"+ChoosenTheme+"\\button.png"));	        		
-					
-			Color label_backColor = Color.FromArgb(0, 0, 0); 
+            fontSize = float.Parse(mf.theme.IniReadValue("Font", "HandlerInfoFontSize"));
+            Color label_backColor = Color.FromArgb(0, 0, 0); 
             Color label_foreColor = Color.FromArgb(255,255,255);
 			
             InitializeComponent();
-            
+            SuspendLayout();
 			ForeColor = label_foreColor;
 
-			btn_Download.BackgroundImage = AppButtons;
-						
-			btn_Close.FlatAppearance.MouseOverBackColor = Color.Transparent;
+			btn_Download.BackgroundImage = mf.AppButtons;
+            btn_Close.BackgroundImage = new Bitmap(mf.themePath + "\\title_close.png");
+            btn_Close.FlatAppearance.MouseOverBackColor = Color.Transparent;
 			
 			BackColor = label_backColor;
 			txt_Updated.BackColor = label_backColor;
@@ -83,18 +94,30 @@ namespace Nucleus.Coop.Forms
 			label2.ForeColor = label_foreColor;
 			label1.ForeColor = label_foreColor;
 
-            if (MouseClick)
+            controlscollect();
+
+            foreach (Control control in ctrls)
             {
-                foreach (Control button in this.Controls) { if (button is Button) { button.Click += new System.EventHandler(this.button_Click); } }
+                control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             }
 
-			Handler = handler;
+            ResumeLayout();
+
+            if (mf.mouseClick)
+            {
+                foreach (Control button in this.Controls) { if (button is Button && button.Name != "btn_Close") { button.Click += new System.EventHandler(this.button_Click); } }
+            }
+
+            this.mainForm = mf;
+
+            Handler = handler;
             
             txt_GameName.Text = Handler.GameName;
             txt_GameDesc.Text = Handler.GameDescription;
             txt_Version.Text = Handler.CurrentVersion;
             txt_Down.Text = Handler.DownloadCount;
             txt_Likes.Text = Handler.Stars;
+
             if (Handler.Verified == "True")
             {
                 txt_Verified.Text = "Yes";
@@ -174,19 +197,21 @@ namespace Nucleus.Coop.Forms
                 DPIManager.Unregister(this);
                 return;
             }
+            SuspendLayout();
 
             if (scale > 1.0F)
             {
-                float newFontSize = txt_GameDesc.Font.Size * scale;
+                float newFontSize = Font.Size * scale;
                 foreach (Control c in Controls)
                 {
                     if (c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(RichTextBox) ^ c.GetType() == typeof(PictureBox))
                     {
-                        c.Font = new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                     }
                 }
             }
+
+            ResumeLayout();
         }
 
         public string Get(string uri)
@@ -226,6 +251,16 @@ namespace Nucleus.Coop.Forms
         private void txt_Comm_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             Process.Start(e.LinkText);
+        }
+
+        private void btn_Close_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Close.BackgroundImage = new Bitmap(mainForm.themePath + "\\title_close_mousehover.png");
+        }
+
+        private void btn_Close_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Close.BackgroundImage = new Bitmap(mainForm.themePath + "\\title_close.png");
         }
     }
 }

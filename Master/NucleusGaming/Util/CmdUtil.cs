@@ -146,6 +146,7 @@ namespace Nucleus.Gaming
 
                 UseShellExecute = true
             };
+
             if (runAsAdmin)
             {
                 processInfo.Verb = "runas";

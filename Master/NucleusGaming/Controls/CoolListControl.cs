@@ -14,7 +14,7 @@ namespace SplitTool.Controls
         protected Label descLabel;
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
-
+        
         public string Title
         {
             get => titleLabel.Text;
@@ -37,8 +37,8 @@ namespace SplitTool.Controls
 
             string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
             IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-
-            string[] rgb_CoollistInitialColor = theme.IniReadValue("Colors", "SelectionColor").Split(',');
+ 
+            string[] rgb_CoollistInitialColor = theme.IniReadValue("Colors", "Selection").Split(',');
 
             Anchor = AnchorStyles.Top|AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));

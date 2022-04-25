@@ -17,8 +17,6 @@ namespace Nucleus.Coop
         public readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         public BaseForm()
         {        
-            //SystemEvents.DisplaySettingsChanged += new EventHandler(SystemEvents_DisplaySettingsChanged); 
-
             Name = "BaseForm";
             Text = "BaseForm";
             // Default DPI = 96 = 100%
@@ -27,34 +25,22 @@ namespace Nucleus.Coop
             // 12 * 300% = 36
             // 12 * 125% = 15
             // 12 * 150% = 18
-            //AutoScaleMode = AutoScaleMode.Font;
-
-            // BackColor = Color.FromArgb(50, 50, 50);
-            // ForeColor = Color.White;
-            //  Margin = new Padding(4, 4, 4, 4);
-
-
-            // create it here, else the desgienr will show the default windows font
-            //Font = new Font("Segoe UI", 9, GraphicsUnit.Point);
-            Font = new Font("Franklin Gothic Medium",9.75f, GraphicsUnit.Point);
-
+     
             DPIManager.Register(this);
         }
 
-     
-
         ~BaseForm()
         {       
-           //DPIManager.Unregister(this);
+           DPIManager.Unregister(this);
         }
-
-        //private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
-        //{
-        //    DPIManager.ForceUpdate();
-        //}
 
         public void UpdateSize(float scale)
         {
+            if (IsDisposed)
+            {
+                DPIManager.Unregister(this);
+                return;
+            }
         }
 
         /// <summary>
@@ -76,6 +62,21 @@ namespace Nucleus.Coop
         {
             Point desktop = this.DesktopLocation;
             f.SetDesktopLocation(desktop.X + 100, desktop.Y + 100);
+        }
+
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BaseForm));
+            this.SuspendLayout();
+            // 
+            // BaseForm
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "BaseForm";
+            this.Text = "Nucleus Co-op";
+            this.ResumeLayout(false);
+
         }
     }
 }
