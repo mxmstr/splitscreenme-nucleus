@@ -53,7 +53,7 @@ Thank you ^_^
 - Original Nucleus Co-op Project: [Lucas Assis (lucasassislar)](https://github.com/lucasassislar)  
 - Nucleus Co-op Alpha 8 Mod : [ZeroFox](https://github.com/ZeroFox5866)  
 - Proto Input, USS, multiple keyboards/mice & hooks: [Ilyaki](https://github.com/Ilyaki)  
-- Official Nucleus Co-op 2.0: [Mikou27](https://github.com/Mikou27) 
+- Official Nucleus Co-op 2.0 and Up: [Mikou27](https://github.com/Mikou27) 
 - Website & handler API: [r-mach](https://github.com/r-mach)  
 - Handlers development and general testing: [Talos91](https://github.com/Talos910), PoundlandBacon, Pizzo, dr.oldboi and many more.
   
