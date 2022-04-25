@@ -7,14 +7,16 @@ Nucleus Co-op is a free and open source tool for Windows that allows split-scree
 This repo is a new and improved official version of the Nucleus Co-op application and is part of the [SplitScreen.Me](https://www.splitscreen.me/docs/what-is-splitscreen-me) github organization. This new version is based off of the [Nucleus Co-op Alpha 8 Mod](https://github.com/ZeroFox5866/nucleuscoop) build and features a ton of enhancements, such as:
 
 - New overhauled and customizable user interface with support for themes, game covers and screenshots.
-- Full support for different monitor scales.
-- Improved input handling (left to right).
+- Full support for different monitor scales, UI scaling issues at more than 100% desktop scale are finally fixed (and all other issues/bugs related to it).
+- New player and input order processing (left to right).
+- New player nickname assignation.
+- New optional splitscreen divisions setting (visually  similar to native splitscreen games).
 - Massive increase to the amount of compatible games, 400+ as of now.
 - Much more game handlers customization.
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
 
-View the full list of features/changes and changelog in the Readme.txt inside Nucleus.
+View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op 2.0 here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 
 # Disclaimer
 Nucleus Co-op was originally created by Lucas Assis.
@@ -31,7 +33,7 @@ Nucleus Co-op symlinks and opens multiple instances of the same game files (some
 Note that Nucleus does not add multiplayer or co-op to single player games, the game needs to already have some form of online or LAN multiplayer, or another way to connect the instances, like via mods for example.
 
 # Installation:
-1. Download the latest release. 
+1. Download the latest [release](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
 
 # Prerequisites:
