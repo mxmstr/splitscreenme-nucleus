@@ -1,4 +1,4 @@
-# Nucleus Co-op 2.0 
+# Nucleus Co-op 
 
 ![alt text](https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/Nucleushk.png?raw=true)
 
@@ -16,7 +16,7 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
 
-View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op 2.0 here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
+View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op 2.1 here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 
 # Disclaimer
 Nucleus Co-op was originally created by Lucas Assis.
