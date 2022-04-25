@@ -52,7 +52,7 @@ namespace Nucleus.Coop.Forms
             try
             {
                 InitializeComponent();
-          
+                
                 Handler = handler;
                 mainForm = mf;
 

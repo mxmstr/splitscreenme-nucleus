@@ -3320,15 +3320,35 @@ namespace Nucleus.Gaming
 
                     foreach (string nameFile in files)
                     {
-                        long steamID = random_steam_id + i;
-                        if (gen.PlayerSteamIDs != null)
+                        long steamID = 0;
+
+                        if (ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
+                        {
+                            Log("Using steam ID from Nucleus settings");
+                            steamID = Convert.ToInt64(ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));
+                        }
+                        else if(gen.PlayerSteamIDs != null)
                         {
                             if (i < gen.PlayerSteamIDs.Length && !string.IsNullOrEmpty(gen.PlayerSteamIDs[i]))
                             {
-                                Log("Using a manually entered steam ID");
+                                Log("Usingsteam ID from handler");
                                 steamID = long.Parse(gen.PlayerSteamIDs[i]);
                             }
                         }
+                        else  
+                        {
+                            Log("Using default Nucleus steam ID");
+                            steamID = random_steam_id + i;
+                        }        
+
+                        //if (gen.PlayerSteamIDs != null)
+                        //{
+                        //    if (i < gen.PlayerSteamIDs.Length && !string.IsNullOrEmpty(gen.PlayerSteamIDs[i]))
+                        //    {
+                        //        Log("Using a manually entered steam ID");
+                        //        steamID = long.Parse(gen.PlayerSteamIDs[i]);
+                        //    }
+                        //}
 
                         Log("Generating user_steam_id.txt with user steam ID " + (steamID).ToString());
                         File.Delete(nameFile);
@@ -3422,7 +3442,16 @@ namespace Nucleus.Gaming
 
                     emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
                     emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Manual");
-                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", (random_steam_id + i).ToString());
+                    
+                    if (ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
+                    {
+                        emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());//ToString?   
+                    }
+                    else
+                    {
+                        emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", (random_steam_id + i).ToString());
+                    }
+                                    
                     string lang = "english";
                     if (ini.IniReadValue("Misc", "SteamLang") != "" && ini.IniReadValue("Misc", "SteamLang") != "Automatic")
                     {
@@ -5311,7 +5340,7 @@ namespace Nucleus.Gaming
                             ProcessData data = p.ProcessData;
 
 
-                            Log("(Update) Setting game window to top most");
+                            Log("Setting game window to top most");
                             data.HWnd.TopMost = true;
                         }
                     }
@@ -9047,15 +9076,28 @@ namespace Nucleus.Gaming
                         }
                     }
 
-                    long steamID = random_steam_id + i;
-                    if (gen.PlayerSteamIDs != null)
+                    long steamID = 0;
+
+                    if (ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
+                    {
+                        Log("Using steam ID from Nucleus settings ");
+                        steamID = Convert.ToInt64(ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));//ToString?   
+                    }
+                    else if (gen.PlayerSteamIDs != null)
                     {
                         if (i < gen.PlayerSteamIDs.Length && !string.IsNullOrEmpty(gen.PlayerSteamIDs[i]))
                         {
-                            Log("Using a manually entered steam ID");
+                            Log("Usingsteam ID from handler");
                             steamID = long.Parse(gen.PlayerSteamIDs[i]);
                         }
                     }
+                    else
+                    {
+                        Log("Using default Nucleus steam ID");
+                        steamID = random_steam_id + i;                 
+                    }
+
+                   
 
                     Log("Generating user_steam_id.txt with user steam ID " + (steamID).ToString());
                     //if (File.Exists(Path. Combine(instanceSteamSettingsFolder, "user_steam_id.txt")))

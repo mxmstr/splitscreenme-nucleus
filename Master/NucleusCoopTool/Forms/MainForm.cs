@@ -103,10 +103,14 @@ namespace Nucleus.Coop
         public string[] rgb_MenuStripBackColor;
         public string[] rgb_MenuStripFontColor;
         public string[] rgb_TitleBarColor;
-        public string[] rgb_HandlerNoteBackColor;
+        public string[] rgb_HandlerNoteTitleFont;
         public string[] rgb_HandlerNoteFontColor;
+        public string[] rgb_HandlerNoteTitleFontColor;
         public string[] rgb_ButtonsBorderColor;
         public string[] rgb_ThirdPartyToolsLinks;
+        public string[] rgb_HandlerNoteBackColor;
+        public string[] rgb_HandlerNoteTitleBackColor;
+
         public Color TitleBarColor;
         public Color MouseOverBackColor;
         public Color MenuStripBackColor;
@@ -114,6 +118,9 @@ namespace Nucleus.Coop
         public Color ButtonsBorderColor;
         private Color HandlerNoteBackColor;
         private Color HandlerNoteFontColor;
+        private Color HandlerNoteTitleBackColor;
+        private Color HandlerNoteTitleFont;
+
         public FileInfo fontPath;
 
         public void CheckNetCon()
@@ -281,6 +288,7 @@ namespace Nucleus.Coop
         private void minimizeButton(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+
         }
 
         private void maximizeButton(object sender, EventArgs e)
@@ -292,13 +300,16 @@ namespace Nucleus.Coop
             {
                 if (WindowState == FormWindowState.Maximized)
                 {
-                    Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+                    Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
                 }
                 else
                 {
-                    Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                    Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
                 }
             }
+
+            positionsControl.handlerNoteZoom.Visible = false;
+            btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
             ResumeLayout();
         }
 
@@ -360,6 +371,8 @@ namespace Nucleus.Coop
                 rgb_TitleBarColor = theme.IniReadValue("Colors", "TitleBar").Split(',');
                 rgb_HandlerNoteBackColor = theme.IniReadValue("Colors", "HandlerNoteBack").Split(',');
                 rgb_HandlerNoteFontColor = theme.IniReadValue("Colors", "HandlerNoteFont").Split(',');
+                rgb_HandlerNoteTitleFontColor = theme.IniReadValue("Colors", "HandlerNoteTitleFont").Split(',');
+                rgb_HandlerNoteTitleBackColor = theme.IniReadValue("Colors", "HandlerNoteTitleBackColor").Split(',');
                 rgb_ButtonsBorderColor = theme.IniReadValue("Colors", "ButtonsBorder").Split(',');
                 float fontSize = float.Parse(theme.IniReadValue("Font", "MainFontSize")); 
                
@@ -372,10 +385,10 @@ namespace Nucleus.Coop
                 MenuStripFontColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripFontColor[0]), Convert.ToInt32(rgb_MenuStripFontColor[1]), Convert.ToInt32(rgb_MenuStripFontColor[2]));
                 HandlerNoteBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteBackColor[0]), Convert.ToInt32(rgb_HandlerNoteBackColor[1]), Convert.ToInt32(rgb_HandlerNoteBackColor[2]));
                 HandlerNoteFontColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteFontColor[0]), Convert.ToInt32(rgb_HandlerNoteFontColor[1]), Convert.ToInt32(rgb_HandlerNoteFontColor[2]));
+                HandlerNoteTitleBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteTitleBackColor[0]), Convert.ToInt32(rgb_HandlerNoteTitleBackColor[1]), Convert.ToInt32(rgb_HandlerNoteTitleBackColor[2]));
+                HandlerNoteTitleFont = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteTitleFontColor[0]), Convert.ToInt32(rgb_HandlerNoteTitleFontColor[1]), Convert.ToInt32(rgb_HandlerNoteTitleFontColor[2]));
                 ButtonsBorderColor = Color.FromArgb(Convert.ToInt32(rgb_ButtonsBorderColor[0]), Convert.ToInt32(rgb_ButtonsBorderColor[1]), Convert.ToInt32(rgb_ButtonsBorderColor[2]));
 
-              
-                
                 InitializeComponent();
                          
                 SuspendLayout();
@@ -393,6 +406,9 @@ namespace Nucleus.Coop
                 ForeColor = Color.FromArgb(Convert.ToInt32(rgb_font[0]), Convert.ToInt32(rgb_font[1]), Convert.ToInt32(rgb_font[2]));
                 scriptAuthorTxt.BackColor = HandlerNoteBackColor;
                 scriptAuthorTxt.ForeColor = HandlerNoteFontColor;
+                scriptAuthorTxtSizer.BackColor = HandlerNoteTitleBackColor;
+                HandlerNoteTitle.ForeColor = HandlerNoteTitleFont;
+
                 //Controls Pictures
 
                 AppButtons = new Bitmap(themePath + "\\button.png");
@@ -430,6 +446,7 @@ namespace Nucleus.Coop
                 btn_dlFromHub.BackgroundImage = new Bitmap(themePath + "\\dlhub_btn.png");
                 glowingLine0.Image = new Bitmap(themePath + "\\lightbar_top.gif");
                 StepPanel.BackgroundImage = new Bitmap(themePath + "\\setup_screen.png");
+                btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
                 //
                 btn_Extract.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 btnAutoSearch.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
@@ -495,7 +512,7 @@ namespace Nucleus.Coop
 
                 foreach (Control control in ctrls)
                 {
-                    if (control.Name != "btn_Links" && control.Name != "btn_thirdPartytools")//Close "third_party_tools_container" control when an other control in the form is clicked.
+                    if (control.Name != "btn_Links" && control.Name != "btn_thirdPartytools" && control.Name != "HandlerNoteTitle")//Close "third_party_tools_container" control when an other control in the form is clicked.
                     {
                         control.Font = new Font(customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         control.Click += new EventHandler(this.this_Click);
@@ -588,7 +605,7 @@ namespace Nucleus.Coop
 
             scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             txt_GameDesc.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
+          
             ResumeLayout();
         }
 
@@ -968,7 +985,8 @@ namespace Nucleus.Coop
         {
             currentControl = (GameControl)arg1;
             currentGameInfo = currentControl.UserGameInfo;
-
+            positionsControl.handlerNoteZoom.Visible = false;
+            btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
             if (currentGameInfo == null)
             {
                 btn_gameOptions.Visible = false;
@@ -1494,7 +1512,10 @@ namespace Nucleus.Coop
                                 proc.Dispose();
                             }
 
-                            File.Delete(regFilePath);
+                            if (!regFilePath.Contains("User Shell Folders"))
+                            {
+                                File.Delete(regFilePath);
+                            }
                         }
 
                         handler_Ended();
@@ -2428,7 +2449,6 @@ namespace Nucleus.Coop
             }
         }
 
-
         private void btn_Extract_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog
@@ -2463,8 +2483,6 @@ namespace Nucleus.Coop
         {
             CheckNetCon();
         }
-
-       
 
         private void btn_Links_Click(object sender, EventArgs e)
         {
@@ -2668,7 +2686,6 @@ namespace Nucleus.Coop
         private void btn_SplitCalculator_MouseEnter(object sender, EventArgs e)
         {
             btn_SplitCalculator.BackgroundImage = new Bitmap(themePath + "\\splitcalculator_mousehover.png");
-
         }
 
         private void btn_SplitCalculator_MouseLeave(object sender, EventArgs e)
@@ -2687,5 +2704,41 @@ namespace Nucleus.Coop
             btn_thirdPartytools.BackgroundImage = new Bitmap(themePath + "\\thirdPartytools.png");
         }
 
+        private void btn_Next_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Next.BackgroundImage = new Bitmap(themePath + "\\arrow_right_mousehover.png");
+        }
+
+        private void btn_Next_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Next.BackgroundImage = new Bitmap(themePath + "\\arrow_right.png");
+        }
+
+        private void btnBack_MouseEnter(object sender, EventArgs e)
+        {
+            btnBack.BackgroundImage = new Bitmap(themePath + "\\arrow_left_mousehover.png");
+        }
+
+        private void btnBack_MouseLeave(object sender, EventArgs e)
+        {
+            btnBack.BackgroundImage = new Bitmap(themePath + "\\arrow_left.png");
+        }
+
+        private void btn_magnifier_Click(object sender, EventArgs e)
+        {
+            if (!positionsControl.handlerNoteZoom.Visible)
+            {
+                positionsControl.handlerNoteZoom.Text = currentGame.Description;
+                positionsControl.handlerNoteZoom.Location = new Point(positionsControl.Width / 2 - positionsControl.handlerNoteZoom.Width / 2, positionsControl.instruction.Height + 10);
+                positionsControl.handlerNoteZoom.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, positionsControl.handlerNoteZoom.Width, positionsControl.handlerNoteZoom.Height, 15, 15));
+                positionsControl.handlerNoteZoom.Visible = true;
+                btn_magnifier.Image = new Bitmap(themePath + "\\magnifier_close.png");
+            }
+            else
+            {
+                positionsControl.handlerNoteZoom.Visible = false;
+                btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
+            }
+        }
     }
 }

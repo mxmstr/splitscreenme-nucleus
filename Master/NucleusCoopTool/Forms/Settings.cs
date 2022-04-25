@@ -22,7 +22,10 @@ namespace Nucleus.Coop
 
         private MainForm mainForm = null;
         private PositionsControl positionsControl;
-        private TextBox[] controllerNicks;
+        private ComboBox[] controllerNicks;
+        private List<string> nicksList = new List<string>();
+        private List<string> steamIdsList = new List<string>();
+        private ComboBox[] steamIds;
         public int KillProcess_HotkeyID = 1;
         public int TopMost_HotkeyID = 2;
         public int StopSession_HotkeyID = 3;
@@ -33,6 +36,15 @@ namespace Nucleus.Coop
         private string epicLang;
         private string epicLangText;
         private string prevTheme;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleparams = base.CreateParams;
+                handleparams.ExStyle = 0x02000000;
+                return handleparams;
+            }
+        }
 
         private void controlscollect()
         {
@@ -74,9 +86,7 @@ namespace Nucleus.Coop
             controlscollect();
             foreach (Control control in ctrls)
             {
-                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-               
-               
+                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);              
             }
                 ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
             //
@@ -107,10 +117,10 @@ namespace Nucleus.Coop
                 settingsSaveBtn.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
                 settingsCloseBtn.FlatAppearance.BorderSize = 1;
                 settingsCloseBtn.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
-
             }
 
-            controllerNicks = new TextBox[] { controllerOneNick, controllerTwoNick, controllerThreeNick, controllerFourNick, controllerFiveNick, controllerSixNick, controllerSevenNick, controllerEightNick, controllerNineNick, controllerTenNick, controllerElevenNick, controllerTwelveNick, controllerThirteenNick, controllerFourteenNick, controllerFifteenNick, controllerSixteenNick };
+            controllerNicks = new ComboBox[] { controllerOneNick, controllerTwoNick, controllerThreeNick, controllerFourNick, controllerFiveNick, controllerSixNick, controllerSevenNick, controllerEightNick, controllerNineNick, controllerTenNick, controllerElevenNick, controllerTwelveNick, controllerThirteenNick, controllerFourteenNick, controllerFifteenNick, controllerSixteenNick };
+            steamIds = new ComboBox[] { steamid1, steamid2, steamid3, steamid4, steamid5, steamid6, steamid7, steamid8, steamid9, steamid10, steamid11, steamid12, steamid13, steamid14, steamid15, steamid16};
 
             ResumeLayout();
 
@@ -370,15 +380,7 @@ namespace Nucleus.Coop
             DPIManager.Update(this);
 
         }
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams handleparams = base.CreateParams;
-                handleparams.ExStyle = 0x02000000;
-                return handleparams;
-            }
-        }
+
         public Settings()
         {
             DPIManager.Unregister(this);
@@ -480,21 +482,27 @@ namespace Nucleus.Coop
         }
 
         private void GetPlayersNickName()
-        {          
-            foreach (TextBox tbox in controllerNicks)
+        {
+
+            for (int i = 0; i < 16; i++)
             {
-                tbox.Clear();
+                nicksList.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)).ToString());
+                steamIdsList.Add(ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());
             }
 
-            for (int i = 0; i <  16 ; i++)
+            for (int i = 0; i < 16; i++)
             {
-
-                if (ini.IniReadValue("ControllerMapping", "Player_" + (i+1)) != "")
-                {
-                    controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                }
+                controllerNicks[i].Items.AddRange(nicksList.ToArray());
+                controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
+                controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
             }
-           
+
+            for (int i = 0; i < 16; i++)
+            {
+                steamIds[i].Items.AddRange(steamIdsList.ToArray());
+                steamIds[i].SelectedItem = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
+                steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
+            }
         }
 
         private void SettingsSaveBtn_Click(object sender, EventArgs e)
@@ -515,8 +523,32 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < controllerNicks.Length; i++)
                 {
-                   ini.IniWriteValue("ControllerMapping", "Player_" + (i+1), controllerNicks[i].Text);
+                    ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
                 }
+
+                for (int i = 0; i < steamIds.Length; i++)
+                {
+                    ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
+                }
+
+                nicksList.Clear();
+                steamIdsList.Clear();
+
+                for (int i = 0; i < 16; i++)
+                {
+                    nicksList.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)).ToString());
+                    steamIdsList.Add(ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());
+
+                    controllerNicks[i].Items.Clear();
+                    steamIds[i].Items.Clear();
+                }
+
+                for (int i = 0; i < 16; i++)
+                {
+                    controllerNicks[i].Items.AddRange(nicksList.ToArray());
+                    steamIds[i].Items.AddRange(steamIdsList.ToArray());
+                }
+
                 if (positionsControl != null)
                 {
                     positionsControl.Refresh();
@@ -581,6 +613,7 @@ namespace Nucleus.Coop
                 if (themeCbx.SelectedItem.ToString() != prevTheme)
                 {
                     ini.IniWriteValue("Theme", "Theme", themeCbx.SelectedItem.ToString());
+                    
                     Application.Restart();
                 }
             }
@@ -610,8 +643,7 @@ namespace Nucleus.Coop
 
         private void SettingsCloseBtn_Click(object sender, EventArgs e)
         {
-            Hide();
-               
+            Hide();               
         }
 
         private void SettingsCloseHKTxt_TextChanged(object sender, EventArgs e)

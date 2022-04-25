@@ -482,7 +482,12 @@ v2.1 - xx
  - Fixed a Nucleus Co-op silent crash that happened when controllers got disconnected and reconnected multiple times.
  - Added Game.SetTopMostAtEnd = true; Sets the game windows to top most at the very end.
  - Added .ini option to hide the Nucleus Co-op offline icon.
+ - Added handler notes magnifier option.
+ - Added new supported inputs UI icons, display what input devices a handler supports.
+ - Added Player Steam IDs fields to the Nucleus Nicknames settings tab (now named Players), you can change the instances Player Steam IDs when a handler uses goldberg or SSE via the UI now.
+ - Added new Nicknames/Player Steam IDs switcher, you can quickly switch the order of the nicknames and Player Steam IDs you set up.
 
+ 
 v2.0 - February 25, 2022
  - New overhauled and customizable user interface with support for themes, game covers and screenshots.
  - Fixed ui scaling issues at more than 100% desktop scale (and all other issues/bugs related to it).

@@ -408,7 +408,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
             catch (Exception)// ex)
             {
-                Console.WriteLine("Iteration has failed");
+                Console.WriteLine("Iteration failed");
                 return;
             }
 

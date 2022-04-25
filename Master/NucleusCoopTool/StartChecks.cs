@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -37,7 +38,7 @@ namespace Nucleus.Coop
 
         public static bool IsAlredyRunning()
         {
-
+            Thread.Sleep(1000);//Put this here for the theme switch option.
             if (Process.GetProcessesByName("NucleusCoop").Length > 1)
             {
                 MessageBox.Show("Nucleus Co-op is already running, if you don't see the Nucleus Co-op window it might be running in the background, close the process using task manager.", "Nucleus Co-op is already running", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -207,7 +207,6 @@ namespace Nucleus.Coop.Forms
                     if (c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(RichTextBox) ^ c.GetType() == typeof(PictureBox))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-
                     }
                 }
             }

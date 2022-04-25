@@ -86,6 +86,62 @@ namespace Nucleus.Coop
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.settingsCloseHKTxt = new System.Windows.Forms.TextBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.steamid16 = new System.Windows.Forms.ComboBox();
+            this.steamid15 = new System.Windows.Forms.ComboBox();
+            this.steamid14 = new System.Windows.Forms.ComboBox();
+            this.steamid13 = new System.Windows.Forms.ComboBox();
+            this.steamid12 = new System.Windows.Forms.ComboBox();
+            this.steamid11 = new System.Windows.Forms.ComboBox();
+            this.steamid10 = new System.Windows.Forms.ComboBox();
+            this.label48 = new System.Windows.Forms.Label();
+            this.steamid9 = new System.Windows.Forms.ComboBox();
+            this.steamid8 = new System.Windows.Forms.ComboBox();
+            this.steamid7 = new System.Windows.Forms.ComboBox();
+            this.steamid6 = new System.Windows.Forms.ComboBox();
+            this.steamid5 = new System.Windows.Forms.ComboBox();
+            this.steamid4 = new System.Windows.Forms.ComboBox();
+            this.steamid3 = new System.Windows.Forms.ComboBox();
+            this.steamid2 = new System.Windows.Forms.ComboBox();
+            this.label47 = new System.Windows.Forms.Label();
+            this.steamid1 = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.btn_Refresh = new System.Windows.Forms.Button();
+            this.controllerSixteenNick = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.controllerFifteenNick = new System.Windows.Forms.ComboBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.controllerFourteenNick = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.controllerThirteenNick = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.controllerTwelveNick = new System.Windows.Forms.ComboBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.controllerElevenNick = new System.Windows.Forms.ComboBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.controllerTenNick = new System.Windows.Forms.ComboBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.controllerNineNick = new System.Windows.Forms.ComboBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.controllerEightNick = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.controllerSevenNick = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.controllerSixNick = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.controllerFiveNick = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.controllerFourNick = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.controllerThreeNick = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.controllerTwoNick = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.controllerOneNick = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.numMaxPlyrs = new System.Windows.Forms.NumericUpDown();
             this.numHorDiv = new System.Windows.Forms.NumericUpDown();
@@ -99,44 +155,6 @@ namespace Nucleus.Coop
             this.SplitColors = new System.Windows.Forms.ComboBox();
             this.layoutSizer = new System.Windows.Forms.Panel();
             this.label30 = new System.Windows.Forms.Label();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.btn_Refresh = new System.Windows.Forms.Button();
-            this.controllerSixteenNick = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.controllerFifteenNick = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.controllerFourteenNick = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.controllerThirteenNick = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.controllerTwelveNick = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.controllerElevenNick = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.controllerTenNick = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.controllerNineNick = new System.Windows.Forms.TextBox();
-            this.label26 = new System.Windows.Forms.Label();
-            this.controllerEightNick = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.controllerSevenNick = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.controllerSixNick = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.controllerFiveNick = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.controllerFourNick = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.controllerThreeNick = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.controllerTwoNick = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.controllerOneNick = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label39 = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
@@ -169,11 +187,11 @@ namespace Nucleus.Coop
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxPlyrs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHorDiv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).BeginInit();
-            this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.audioCustomSettingsBox.SuspendLayout();
             this.setting_Label.SuspendLayout();
@@ -184,8 +202,8 @@ namespace Nucleus.Coop
             this.tabControl2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tabControl2.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.tabControl2.Controls.Add(this.tabPage3);
-            this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage5);
+            this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage1);
             this.tabControl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl2.ItemSize = new System.Drawing.Size(52, 23);
@@ -755,6 +773,641 @@ namespace Nucleus.Coop
             this.settingsCloseHKTxt.TabIndex = 2;
             this.settingsCloseHKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // tabPage5
+            // 
+            this.tabPage5.BackColor = System.Drawing.Color.Transparent;
+            this.tabPage5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage5.Controls.Add(this.steamid16);
+            this.tabPage5.Controls.Add(this.steamid15);
+            this.tabPage5.Controls.Add(this.steamid14);
+            this.tabPage5.Controls.Add(this.steamid13);
+            this.tabPage5.Controls.Add(this.steamid12);
+            this.tabPage5.Controls.Add(this.steamid11);
+            this.tabPage5.Controls.Add(this.steamid10);
+            this.tabPage5.Controls.Add(this.label48);
+            this.tabPage5.Controls.Add(this.steamid9);
+            this.tabPage5.Controls.Add(this.steamid8);
+            this.tabPage5.Controls.Add(this.steamid7);
+            this.tabPage5.Controls.Add(this.steamid6);
+            this.tabPage5.Controls.Add(this.steamid5);
+            this.tabPage5.Controls.Add(this.steamid4);
+            this.tabPage5.Controls.Add(this.steamid3);
+            this.tabPage5.Controls.Add(this.steamid2);
+            this.tabPage5.Controls.Add(this.label47);
+            this.tabPage5.Controls.Add(this.steamid1);
+            this.tabPage5.Controls.Add(this.label21);
+            this.tabPage5.Controls.Add(this.label25);
+            this.tabPage5.Controls.Add(this.btn_Refresh);
+            this.tabPage5.Controls.Add(this.controllerSixteenNick);
+            this.tabPage5.Controls.Add(this.label17);
+            this.tabPage5.Controls.Add(this.controllerFifteenNick);
+            this.tabPage5.Controls.Add(this.label18);
+            this.tabPage5.Controls.Add(this.controllerFourteenNick);
+            this.tabPage5.Controls.Add(this.label19);
+            this.tabPage5.Controls.Add(this.controllerThirteenNick);
+            this.tabPage5.Controls.Add(this.label20);
+            this.tabPage5.Controls.Add(this.controllerTwelveNick);
+            this.tabPage5.Controls.Add(this.label22);
+            this.tabPage5.Controls.Add(this.controllerElevenNick);
+            this.tabPage5.Controls.Add(this.label23);
+            this.tabPage5.Controls.Add(this.controllerTenNick);
+            this.tabPage5.Controls.Add(this.label24);
+            this.tabPage5.Controls.Add(this.controllerNineNick);
+            this.tabPage5.Controls.Add(this.label26);
+            this.tabPage5.Controls.Add(this.controllerEightNick);
+            this.tabPage5.Controls.Add(this.label16);
+            this.tabPage5.Controls.Add(this.controllerSevenNick);
+            this.tabPage5.Controls.Add(this.label15);
+            this.tabPage5.Controls.Add(this.controllerSixNick);
+            this.tabPage5.Controls.Add(this.label11);
+            this.tabPage5.Controls.Add(this.controllerFiveNick);
+            this.tabPage5.Controls.Add(this.label9);
+            this.tabPage5.Controls.Add(this.label13);
+            this.tabPage5.Controls.Add(this.controllerFourNick);
+            this.tabPage5.Controls.Add(this.label14);
+            this.tabPage5.Controls.Add(this.controllerThreeNick);
+            this.tabPage5.Controls.Add(this.label12);
+            this.tabPage5.Controls.Add(this.controllerTwoNick);
+            this.tabPage5.Controls.Add(this.label10);
+            this.tabPage5.Controls.Add(this.label8);
+            this.tabPage5.Controls.Add(this.controllerOneNick);
+            this.tabPage5.Controls.Add(this.label7);
+            this.tabPage5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabPage5.Location = new System.Drawing.Point(4, 27);
+            this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(511, 240);
+            this.tabPage5.TabIndex = 2;
+            this.tabPage5.Text = "Players";
+            // 
+            // steamid16
+            // 
+            this.steamid16.BackColor = System.Drawing.Color.White;
+            this.steamid16.Location = new System.Drawing.Point(396, 166);
+            this.steamid16.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid16.MaxLength = 17;
+            this.steamid16.Name = "steamid16";
+            this.steamid16.Size = new System.Drawing.Size(113, 21);
+            this.steamid16.TabIndex = 127;
+            // 
+            // steamid15
+            // 
+            this.steamid15.BackColor = System.Drawing.Color.White;
+            this.steamid15.Location = new System.Drawing.Point(396, 147);
+            this.steamid15.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid15.MaxLength = 17;
+            this.steamid15.Name = "steamid15";
+            this.steamid15.Size = new System.Drawing.Size(113, 21);
+            this.steamid15.TabIndex = 126;
+            // 
+            // steamid14
+            // 
+            this.steamid14.BackColor = System.Drawing.Color.White;
+            this.steamid14.Location = new System.Drawing.Point(396, 128);
+            this.steamid14.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid14.MaxLength = 17;
+            this.steamid14.Name = "steamid14";
+            this.steamid14.Size = new System.Drawing.Size(113, 21);
+            this.steamid14.TabIndex = 125;
+            // 
+            // steamid13
+            // 
+            this.steamid13.BackColor = System.Drawing.Color.White;
+            this.steamid13.Location = new System.Drawing.Point(396, 109);
+            this.steamid13.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid13.MaxLength = 17;
+            this.steamid13.Name = "steamid13";
+            this.steamid13.Size = new System.Drawing.Size(113, 21);
+            this.steamid13.TabIndex = 124;
+            // 
+            // steamid12
+            // 
+            this.steamid12.BackColor = System.Drawing.Color.White;
+            this.steamid12.Location = new System.Drawing.Point(396, 90);
+            this.steamid12.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid12.MaxLength = 17;
+            this.steamid12.Name = "steamid12";
+            this.steamid12.Size = new System.Drawing.Size(113, 21);
+            this.steamid12.TabIndex = 123;
+            // 
+            // steamid11
+            // 
+            this.steamid11.BackColor = System.Drawing.Color.White;
+            this.steamid11.Location = new System.Drawing.Point(396, 71);
+            this.steamid11.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid11.MaxLength = 17;
+            this.steamid11.Name = "steamid11";
+            this.steamid11.Size = new System.Drawing.Size(113, 21);
+            this.steamid11.TabIndex = 122;
+            // 
+            // steamid10
+            // 
+            this.steamid10.BackColor = System.Drawing.Color.White;
+            this.steamid10.Location = new System.Drawing.Point(396, 52);
+            this.steamid10.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid10.MaxLength = 17;
+            this.steamid10.Name = "steamid10";
+            this.steamid10.Size = new System.Drawing.Size(113, 21);
+            this.steamid10.TabIndex = 121;
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(398, 12);
+            this.label48.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(83, 13);
+            this.label48.TabIndex = 119;
+            this.label48.Text = "Player Steam ID";
+            // 
+            // steamid9
+            // 
+            this.steamid9.BackColor = System.Drawing.Color.White;
+            this.steamid9.Location = new System.Drawing.Point(396, 33);
+            this.steamid9.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid9.MaxLength = 17;
+            this.steamid9.Name = "steamid9";
+            this.steamid9.Size = new System.Drawing.Size(113, 21);
+            this.steamid9.TabIndex = 120;
+            // 
+            // steamid8
+            // 
+            this.steamid8.BackColor = System.Drawing.Color.White;
+            this.steamid8.Location = new System.Drawing.Point(134, 166);
+            this.steamid8.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid8.MaxLength = 17;
+            this.steamid8.Name = "steamid8";
+            this.steamid8.Size = new System.Drawing.Size(113, 21);
+            this.steamid8.TabIndex = 118;
+            // 
+            // steamid7
+            // 
+            this.steamid7.BackColor = System.Drawing.Color.White;
+            this.steamid7.Location = new System.Drawing.Point(134, 147);
+            this.steamid7.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid7.MaxLength = 17;
+            this.steamid7.Name = "steamid7";
+            this.steamid7.Size = new System.Drawing.Size(113, 21);
+            this.steamid7.TabIndex = 117;
+            // 
+            // steamid6
+            // 
+            this.steamid6.BackColor = System.Drawing.Color.White;
+            this.steamid6.Location = new System.Drawing.Point(134, 128);
+            this.steamid6.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid6.MaxLength = 17;
+            this.steamid6.Name = "steamid6";
+            this.steamid6.Size = new System.Drawing.Size(113, 21);
+            this.steamid6.TabIndex = 116;
+            // 
+            // steamid5
+            // 
+            this.steamid5.BackColor = System.Drawing.Color.White;
+            this.steamid5.Location = new System.Drawing.Point(134, 109);
+            this.steamid5.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid5.MaxLength = 17;
+            this.steamid5.Name = "steamid5";
+            this.steamid5.Size = new System.Drawing.Size(113, 21);
+            this.steamid5.TabIndex = 115;
+            // 
+            // steamid4
+            // 
+            this.steamid4.BackColor = System.Drawing.Color.White;
+            this.steamid4.Location = new System.Drawing.Point(134, 90);
+            this.steamid4.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid4.MaxLength = 17;
+            this.steamid4.Name = "steamid4";
+            this.steamid4.Size = new System.Drawing.Size(113, 21);
+            this.steamid4.TabIndex = 114;
+            // 
+            // steamid3
+            // 
+            this.steamid3.BackColor = System.Drawing.Color.White;
+            this.steamid3.Location = new System.Drawing.Point(134, 71);
+            this.steamid3.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid3.MaxLength = 17;
+            this.steamid3.Name = "steamid3";
+            this.steamid3.Size = new System.Drawing.Size(113, 21);
+            this.steamid3.TabIndex = 113;
+            // 
+            // steamid2
+            // 
+            this.steamid2.BackColor = System.Drawing.Color.White;
+            this.steamid2.Location = new System.Drawing.Point(134, 52);
+            this.steamid2.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid2.MaxLength = 17;
+            this.steamid2.Name = "steamid2";
+            this.steamid2.Size = new System.Drawing.Size(113, 21);
+            this.steamid2.TabIndex = 112;
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(136, 12);
+            this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(83, 13);
+            this.label47.TabIndex = 110;
+            this.label47.Text = "Player Steam ID";
+            // 
+            // steamid1
+            // 
+            this.steamid1.BackColor = System.Drawing.Color.White;
+            this.steamid1.Location = new System.Drawing.Point(134, 33);
+            this.steamid1.Margin = new System.Windows.Forms.Padding(2);
+            this.steamid1.MaxLength = 17;
+            this.steamid1.Name = "steamid1";
+            this.steamid1.Size = new System.Drawing.Size(113, 21);
+            this.steamid1.TabIndex = 111;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(259, 12);
+            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(50, 13);
+            this.label21.TabIndex = 109;
+            this.label21.Text = "Player ID";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(322, 12);
+            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(55, 13);
+            this.label25.TabIndex = 108;
+            this.label25.Text = "Nickname";
+            // 
+            // btn_Refresh
+            // 
+            this.btn_Refresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_Refresh.Location = new System.Drawing.Point(215, 209);
+            this.btn_Refresh.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Refresh.Name = "btn_Refresh";
+            this.btn_Refresh.Size = new System.Drawing.Size(80, 23);
+            this.btn_Refresh.TabIndex = 16;
+            this.btn_Refresh.Text = "Refresh";
+            this.btn_Refresh.Visible = false;
+            this.btn_Refresh.Click += new System.EventHandler(this.Btn_Refresh_Click);
+            // 
+            // controllerSixteenNick
+            // 
+            this.controllerSixteenNick.BackColor = System.Drawing.Color.White;
+            this.controllerSixteenNick.Location = new System.Drawing.Point(320, 166);
+            this.controllerSixteenNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerSixteenNick.MaxLength = 9;
+            this.controllerSixteenNick.Name = "controllerSixteenNick";
+            this.controllerSixteenNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerSixteenNick.TabIndex = 105;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(259, 170);
+            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(57, 13);
+            this.label17.TabIndex = 106;
+            this.label17.Text = "Player 16 :";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerFifteenNick
+            // 
+            this.controllerFifteenNick.BackColor = System.Drawing.Color.White;
+            this.controllerFifteenNick.Location = new System.Drawing.Point(320, 147);
+            this.controllerFifteenNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerFifteenNick.MaxLength = 9;
+            this.controllerFifteenNick.Name = "controllerFifteenNick";
+            this.controllerFifteenNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerFifteenNick.TabIndex = 102;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(259, 150);
+            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(57, 13);
+            this.label18.TabIndex = 103;
+            this.label18.Text = "Player 15 :";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerFourteenNick
+            // 
+            this.controllerFourteenNick.BackColor = System.Drawing.Color.White;
+            this.controllerFourteenNick.Location = new System.Drawing.Point(320, 128);
+            this.controllerFourteenNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerFourteenNick.MaxLength = 9;
+            this.controllerFourteenNick.Name = "controllerFourteenNick";
+            this.controllerFourteenNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerFourteenNick.TabIndex = 99;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(259, 131);
+            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(57, 13);
+            this.label19.TabIndex = 100;
+            this.label19.Text = "Player 14 :";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerThirteenNick
+            // 
+            this.controllerThirteenNick.BackColor = System.Drawing.Color.White;
+            this.controllerThirteenNick.Location = new System.Drawing.Point(320, 109);
+            this.controllerThirteenNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerThirteenNick.MaxLength = 9;
+            this.controllerThirteenNick.Name = "controllerThirteenNick";
+            this.controllerThirteenNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerThirteenNick.TabIndex = 96;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(259, 112);
+            this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(57, 13);
+            this.label20.TabIndex = 97;
+            this.label20.Text = "Player 13 :";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerTwelveNick
+            // 
+            this.controllerTwelveNick.BackColor = System.Drawing.Color.White;
+            this.controllerTwelveNick.Location = new System.Drawing.Point(320, 90);
+            this.controllerTwelveNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerTwelveNick.MaxLength = 9;
+            this.controllerTwelveNick.Name = "controllerTwelveNick";
+            this.controllerTwelveNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerTwelveNick.TabIndex = 92;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(259, 93);
+            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(57, 13);
+            this.label22.TabIndex = 93;
+            this.label22.Text = "Player 12 :";
+            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerElevenNick
+            // 
+            this.controllerElevenNick.BackColor = System.Drawing.Color.White;
+            this.controllerElevenNick.Location = new System.Drawing.Point(320, 71);
+            this.controllerElevenNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerElevenNick.MaxLength = 9;
+            this.controllerElevenNick.Name = "controllerElevenNick";
+            this.controllerElevenNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerElevenNick.TabIndex = 91;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(259, 74);
+            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(57, 13);
+            this.label23.TabIndex = 89;
+            this.label23.Text = "Player 11 :";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerTenNick
+            // 
+            this.controllerTenNick.BackColor = System.Drawing.Color.White;
+            this.controllerTenNick.Location = new System.Drawing.Point(320, 52);
+            this.controllerTenNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerTenNick.MaxLength = 9;
+            this.controllerTenNick.Name = "controllerTenNick";
+            this.controllerTenNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerTenNick.TabIndex = 88;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(259, 54);
+            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(57, 13);
+            this.label24.TabIndex = 85;
+            this.label24.Text = "Player 10 :";
+            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerNineNick
+            // 
+            this.controllerNineNick.BackColor = System.Drawing.Color.White;
+            this.controllerNineNick.Location = new System.Drawing.Point(320, 33);
+            this.controllerNineNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerNineNick.MaxLength = 9;
+            this.controllerNineNick.Name = "controllerNineNick";
+            this.controllerNineNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerNineNick.TabIndex = 87;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(260, 36);
+            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(51, 13);
+            this.label26.TabIndex = 82;
+            this.label26.Text = "Player 9 :";
+            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerEightNick
+            // 
+            this.controllerEightNick.BackColor = System.Drawing.Color.White;
+            this.controllerEightNick.Location = new System.Drawing.Point(58, 166);
+            this.controllerEightNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerEightNick.MaxLength = 9;
+            this.controllerEightNick.Name = "controllerEightNick";
+            this.controllerEightNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerEightNick.TabIndex = 79;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(4, 170);
+            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(51, 13);
+            this.label16.TabIndex = 80;
+            this.label16.Text = "Player 8 :";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerSevenNick
+            // 
+            this.controllerSevenNick.BackColor = System.Drawing.Color.White;
+            this.controllerSevenNick.Location = new System.Drawing.Point(58, 147);
+            this.controllerSevenNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerSevenNick.MaxLength = 9;
+            this.controllerSevenNick.Name = "controllerSevenNick";
+            this.controllerSevenNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerSevenNick.TabIndex = 76;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(4, 150);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(51, 13);
+            this.label15.TabIndex = 77;
+            this.label15.Text = "Player 7 :";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerSixNick
+            // 
+            this.controllerSixNick.BackColor = System.Drawing.Color.White;
+            this.controllerSixNick.Location = new System.Drawing.Point(58, 128);
+            this.controllerSixNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerSixNick.MaxLength = 9;
+            this.controllerSixNick.Name = "controllerSixNick";
+            this.controllerSixNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerSixNick.TabIndex = 73;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(4, 131);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(51, 13);
+            this.label11.TabIndex = 74;
+            this.label11.Text = "Player 6 :";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerFiveNick
+            // 
+            this.controllerFiveNick.BackColor = System.Drawing.Color.White;
+            this.controllerFiveNick.Location = new System.Drawing.Point(58, 109);
+            this.controllerFiveNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerFiveNick.MaxLength = 9;
+            this.controllerFiveNick.Name = "controllerFiveNick";
+            this.controllerFiveNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerFiveNick.TabIndex = 70;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(4, 112);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 13);
+            this.label9.TabIndex = 71;
+            this.label9.Text = "Player 5 :";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(4, 12);
+            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(50, 13);
+            this.label13.TabIndex = 69;
+            this.label13.Text = "Player ID";
+            // 
+            // controllerFourNick
+            // 
+            this.controllerFourNick.BackColor = System.Drawing.Color.White;
+            this.controllerFourNick.Location = new System.Drawing.Point(58, 90);
+            this.controllerFourNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerFourNick.MaxLength = 9;
+            this.controllerFourNick.Name = "controllerFourNick";
+            this.controllerFourNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerFourNick.TabIndex = 66;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(4, 93);
+            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(51, 13);
+            this.label14.TabIndex = 67;
+            this.label14.Text = "Player 4 :";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerThreeNick
+            // 
+            this.controllerThreeNick.BackColor = System.Drawing.Color.White;
+            this.controllerThreeNick.Location = new System.Drawing.Point(58, 71);
+            this.controllerThreeNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerThreeNick.MaxLength = 9;
+            this.controllerThreeNick.Name = "controllerThreeNick";
+            this.controllerThreeNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerThreeNick.TabIndex = 65;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(4, 74);
+            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(51, 13);
+            this.label12.TabIndex = 63;
+            this.label12.Text = "Player 3 :";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // controllerTwoNick
+            // 
+            this.controllerTwoNick.BackColor = System.Drawing.Color.White;
+            this.controllerTwoNick.Location = new System.Drawing.Point(58, 52);
+            this.controllerTwoNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerTwoNick.MaxLength = 9;
+            this.controllerTwoNick.Name = "controllerTwoNick";
+            this.controllerTwoNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerTwoNick.TabIndex = 62;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(4, 54);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(51, 13);
+            this.label10.TabIndex = 59;
+            this.label10.Text = "Player 2 :";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(60, 12);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 13);
+            this.label8.TabIndex = 58;
+            this.label8.Text = "Nickname";
+            // 
+            // controllerOneNick
+            // 
+            this.controllerOneNick.BackColor = System.Drawing.Color.White;
+            this.controllerOneNick.Location = new System.Drawing.Point(58, 33);
+            this.controllerOneNick.Margin = new System.Windows.Forms.Padding(2);
+            this.controllerOneNick.MaxLength = 9;
+            this.controllerOneNick.Name = "controllerOneNick";
+            this.controllerOneNick.Size = new System.Drawing.Size(69, 21);
+            this.controllerOneNick.TabIndex = 61;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(4, 35);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(51, 13);
+            this.label7.TabIndex = 56;
+            this.label7.Text = "Player 1 :";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.Color.Transparent;
@@ -966,442 +1619,6 @@ namespace Nucleus.Coop
             this.label30.TabIndex = 35;
             this.label30.Text = "Preview:";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.BackColor = System.Drawing.Color.Transparent;
-            this.tabPage5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tabPage5.Controls.Add(this.label21);
-            this.tabPage5.Controls.Add(this.label25);
-            this.tabPage5.Controls.Add(this.btn_Refresh);
-            this.tabPage5.Controls.Add(this.controllerSixteenNick);
-            this.tabPage5.Controls.Add(this.label17);
-            this.tabPage5.Controls.Add(this.controllerFifteenNick);
-            this.tabPage5.Controls.Add(this.label18);
-            this.tabPage5.Controls.Add(this.controllerFourteenNick);
-            this.tabPage5.Controls.Add(this.label19);
-            this.tabPage5.Controls.Add(this.controllerThirteenNick);
-            this.tabPage5.Controls.Add(this.label20);
-            this.tabPage5.Controls.Add(this.controllerTwelveNick);
-            this.tabPage5.Controls.Add(this.label22);
-            this.tabPage5.Controls.Add(this.controllerElevenNick);
-            this.tabPage5.Controls.Add(this.label23);
-            this.tabPage5.Controls.Add(this.controllerTenNick);
-            this.tabPage5.Controls.Add(this.label24);
-            this.tabPage5.Controls.Add(this.controllerNineNick);
-            this.tabPage5.Controls.Add(this.label26);
-            this.tabPage5.Controls.Add(this.controllerEightNick);
-            this.tabPage5.Controls.Add(this.label16);
-            this.tabPage5.Controls.Add(this.controllerSevenNick);
-            this.tabPage5.Controls.Add(this.label15);
-            this.tabPage5.Controls.Add(this.controllerSixNick);
-            this.tabPage5.Controls.Add(this.label11);
-            this.tabPage5.Controls.Add(this.controllerFiveNick);
-            this.tabPage5.Controls.Add(this.label9);
-            this.tabPage5.Controls.Add(this.label13);
-            this.tabPage5.Controls.Add(this.controllerFourNick);
-            this.tabPage5.Controls.Add(this.label14);
-            this.tabPage5.Controls.Add(this.controllerThreeNick);
-            this.tabPage5.Controls.Add(this.label12);
-            this.tabPage5.Controls.Add(this.controllerTwoNick);
-            this.tabPage5.Controls.Add(this.label10);
-            this.tabPage5.Controls.Add(this.label8);
-            this.tabPage5.Controls.Add(this.controllerOneNick);
-            this.tabPage5.Controls.Add(this.label7);
-            this.tabPage5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage5.Location = new System.Drawing.Point(4, 27);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(511, 240);
-            this.tabPage5.TabIndex = 2;
-            this.tabPage5.Text = "Nicknames";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(259, 12);
-            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(50, 13);
-            this.label21.TabIndex = 109;
-            this.label21.Text = "Player ID";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(342, 12);
-            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(55, 13);
-            this.label25.TabIndex = 108;
-            this.label25.Text = "Nickname";
-            // 
-            // btn_Refresh
-            // 
-            this.btn_Refresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_Refresh.Location = new System.Drawing.Point(215, 209);
-            this.btn_Refresh.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_Refresh.Name = "btn_Refresh";
-            this.btn_Refresh.Size = new System.Drawing.Size(80, 23);
-            this.btn_Refresh.TabIndex = 16;
-            this.btn_Refresh.Text = "Refresh";
-            this.btn_Refresh.Click += new System.EventHandler(this.Btn_Refresh_Click);
-            // 
-            // controllerSixteenNick
-            // 
-            this.controllerSixteenNick.BackColor = System.Drawing.Color.White;
-            this.controllerSixteenNick.Location = new System.Drawing.Point(345, 169);
-            this.controllerSixteenNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerSixteenNick.MaxLength = 9;
-            this.controllerSixteenNick.Name = "controllerSixteenNick";
-            this.controllerSixteenNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerSixteenNick.TabIndex = 105;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(259, 170);
-            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(57, 13);
-            this.label17.TabIndex = 106;
-            this.label17.Text = "Player 16 :";
-            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerFifteenNick
-            // 
-            this.controllerFifteenNick.BackColor = System.Drawing.Color.White;
-            this.controllerFifteenNick.Location = new System.Drawing.Point(345, 150);
-            this.controllerFifteenNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerFifteenNick.MaxLength = 9;
-            this.controllerFifteenNick.Name = "controllerFifteenNick";
-            this.controllerFifteenNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerFifteenNick.TabIndex = 102;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(259, 150);
-            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(57, 13);
-            this.label18.TabIndex = 103;
-            this.label18.Text = "Player 15 :";
-            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerFourteenNick
-            // 
-            this.controllerFourteenNick.BackColor = System.Drawing.Color.White;
-            this.controllerFourteenNick.Location = new System.Drawing.Point(345, 131);
-            this.controllerFourteenNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerFourteenNick.MaxLength = 9;
-            this.controllerFourteenNick.Name = "controllerFourteenNick";
-            this.controllerFourteenNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerFourteenNick.TabIndex = 99;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(259, 131);
-            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(57, 13);
-            this.label19.TabIndex = 100;
-            this.label19.Text = "Player 14 :";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerThirteenNick
-            // 
-            this.controllerThirteenNick.BackColor = System.Drawing.Color.White;
-            this.controllerThirteenNick.Location = new System.Drawing.Point(345, 112);
-            this.controllerThirteenNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerThirteenNick.MaxLength = 9;
-            this.controllerThirteenNick.Name = "controllerThirteenNick";
-            this.controllerThirteenNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerThirteenNick.TabIndex = 96;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(259, 112);
-            this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(57, 13);
-            this.label20.TabIndex = 97;
-            this.label20.Text = "Player 13 :";
-            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerTwelveNick
-            // 
-            this.controllerTwelveNick.BackColor = System.Drawing.Color.White;
-            this.controllerTwelveNick.Location = new System.Drawing.Point(345, 93);
-            this.controllerTwelveNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerTwelveNick.MaxLength = 9;
-            this.controllerTwelveNick.Name = "controllerTwelveNick";
-            this.controllerTwelveNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerTwelveNick.TabIndex = 92;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(259, 93);
-            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(57, 13);
-            this.label22.TabIndex = 93;
-            this.label22.Text = "Player 12 :";
-            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerElevenNick
-            // 
-            this.controllerElevenNick.BackColor = System.Drawing.Color.White;
-            this.controllerElevenNick.Location = new System.Drawing.Point(345, 74);
-            this.controllerElevenNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerElevenNick.MaxLength = 9;
-            this.controllerElevenNick.Name = "controllerElevenNick";
-            this.controllerElevenNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerElevenNick.TabIndex = 91;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(259, 74);
-            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(57, 13);
-            this.label23.TabIndex = 89;
-            this.label23.Text = "Player 11 :";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerTenNick
-            // 
-            this.controllerTenNick.BackColor = System.Drawing.Color.White;
-            this.controllerTenNick.Location = new System.Drawing.Point(345, 55);
-            this.controllerTenNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerTenNick.MaxLength = 9;
-            this.controllerTenNick.Name = "controllerTenNick";
-            this.controllerTenNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerTenNick.TabIndex = 88;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(259, 54);
-            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(57, 13);
-            this.label24.TabIndex = 85;
-            this.label24.Text = "Player 10 :";
-            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerNineNick
-            // 
-            this.controllerNineNick.BackColor = System.Drawing.Color.White;
-            this.controllerNineNick.Location = new System.Drawing.Point(345, 36);
-            this.controllerNineNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerNineNick.MaxLength = 9;
-            this.controllerNineNick.Name = "controllerNineNick";
-            this.controllerNineNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerNineNick.TabIndex = 87;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(260, 36);
-            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(51, 13);
-            this.label26.TabIndex = 82;
-            this.label26.Text = "Player 9 :";
-            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerEightNick
-            // 
-            this.controllerEightNick.BackColor = System.Drawing.Color.White;
-            this.controllerEightNick.Location = new System.Drawing.Point(90, 166);
-            this.controllerEightNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerEightNick.MaxLength = 9;
-            this.controllerEightNick.Name = "controllerEightNick";
-            this.controllerEightNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerEightNick.TabIndex = 79;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(4, 170);
-            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(51, 13);
-            this.label16.TabIndex = 80;
-            this.label16.Text = "Player 8 :";
-            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerSevenNick
-            // 
-            this.controllerSevenNick.BackColor = System.Drawing.Color.White;
-            this.controllerSevenNick.Location = new System.Drawing.Point(90, 147);
-            this.controllerSevenNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerSevenNick.MaxLength = 9;
-            this.controllerSevenNick.Name = "controllerSevenNick";
-            this.controllerSevenNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerSevenNick.TabIndex = 76;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(4, 150);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(51, 13);
-            this.label15.TabIndex = 77;
-            this.label15.Text = "Player 7 :";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerSixNick
-            // 
-            this.controllerSixNick.BackColor = System.Drawing.Color.White;
-            this.controllerSixNick.Location = new System.Drawing.Point(90, 128);
-            this.controllerSixNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerSixNick.MaxLength = 9;
-            this.controllerSixNick.Name = "controllerSixNick";
-            this.controllerSixNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerSixNick.TabIndex = 73;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(4, 131);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(51, 13);
-            this.label11.TabIndex = 74;
-            this.label11.Text = "Player 6 :";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerFiveNick
-            // 
-            this.controllerFiveNick.BackColor = System.Drawing.Color.White;
-            this.controllerFiveNick.Location = new System.Drawing.Point(90, 109);
-            this.controllerFiveNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerFiveNick.MaxLength = 9;
-            this.controllerFiveNick.Name = "controllerFiveNick";
-            this.controllerFiveNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerFiveNick.TabIndex = 70;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(4, 112);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(51, 13);
-            this.label9.TabIndex = 71;
-            this.label9.Text = "Player 5 :";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(4, 12);
-            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(50, 13);
-            this.label13.TabIndex = 69;
-            this.label13.Text = "Player ID";
-            // 
-            // controllerFourNick
-            // 
-            this.controllerFourNick.BackColor = System.Drawing.Color.White;
-            this.controllerFourNick.Location = new System.Drawing.Point(90, 90);
-            this.controllerFourNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerFourNick.MaxLength = 9;
-            this.controllerFourNick.Name = "controllerFourNick";
-            this.controllerFourNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerFourNick.TabIndex = 66;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(4, 93);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(51, 13);
-            this.label14.TabIndex = 67;
-            this.label14.Text = "Player 4 :";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerThreeNick
-            // 
-            this.controllerThreeNick.BackColor = System.Drawing.Color.White;
-            this.controllerThreeNick.Location = new System.Drawing.Point(90, 71);
-            this.controllerThreeNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerThreeNick.MaxLength = 9;
-            this.controllerThreeNick.Name = "controllerThreeNick";
-            this.controllerThreeNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerThreeNick.TabIndex = 65;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(4, 74);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(51, 13);
-            this.label12.TabIndex = 63;
-            this.label12.Text = "Player 3 :";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // controllerTwoNick
-            // 
-            this.controllerTwoNick.BackColor = System.Drawing.Color.White;
-            this.controllerTwoNick.Location = new System.Drawing.Point(90, 52);
-            this.controllerTwoNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerTwoNick.MaxLength = 9;
-            this.controllerTwoNick.Name = "controllerTwoNick";
-            this.controllerTwoNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerTwoNick.TabIndex = 62;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(4, 54);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(51, 13);
-            this.label10.TabIndex = 59;
-            this.label10.Text = "Player 2 :";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(87, 12);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 13);
-            this.label8.TabIndex = 58;
-            this.label8.Text = "Nickname";
-            // 
-            // controllerOneNick
-            // 
-            this.controllerOneNick.BackColor = System.Drawing.Color.White;
-            this.controllerOneNick.Location = new System.Drawing.Point(90, 33);
-            this.controllerOneNick.Margin = new System.Windows.Forms.Padding(2);
-            this.controllerOneNick.MaxLength = 9;
-            this.controllerOneNick.Name = "controllerOneNick";
-            this.controllerOneNick.Size = new System.Drawing.Size(69, 20);
-            this.controllerOneNick.TabIndex = 61;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(4, 35);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(51, 13);
-            this.label7.TabIndex = 56;
-            this.label7.Text = "Player 1 :";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tabPage1
             // 
@@ -1798,13 +2015,13 @@ namespace Nucleus.Coop
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxPlyrs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHorDiv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).EndInit();
-            this.tabPage5.ResumeLayout(false);
-            this.tabPage5.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.audioCustomSettingsBox.ResumeLayout(false);
@@ -1845,39 +2062,39 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.TextBox controllerSixteenNick;
+        private System.Windows.Forms.ComboBox controllerSixteenNick;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox controllerFifteenNick;
+        private System.Windows.Forms.ComboBox controllerFifteenNick;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox controllerFourteenNick;
+        private System.Windows.Forms.ComboBox controllerFourteenNick;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.TextBox controllerThirteenNick;
+        private System.Windows.Forms.ComboBox controllerThirteenNick;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox controllerTwelveNick;
+        private System.Windows.Forms.ComboBox controllerTwelveNick;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox controllerElevenNick;
+        private System.Windows.Forms.ComboBox controllerElevenNick;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox controllerTenNick;
+        private System.Windows.Forms.ComboBox controllerTenNick;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TextBox controllerNineNick;
+        private System.Windows.Forms.ComboBox controllerNineNick;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TextBox controllerEightNick;
+        private System.Windows.Forms.ComboBox controllerEightNick;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox controllerSevenNick;
+        private System.Windows.Forms.ComboBox controllerSevenNick;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox controllerSixNick;
+        private System.Windows.Forms.ComboBox controllerSixNick;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox controllerFiveNick;
+        private System.Windows.Forms.ComboBox controllerFiveNick;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox controllerFourNick;
+        private System.Windows.Forms.ComboBox controllerFourNick;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox controllerThreeNick;
+        private System.Windows.Forms.ComboBox controllerThreeNick;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox controllerTwoNick;
+        private System.Windows.Forms.ComboBox controllerTwoNick;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox controllerOneNick;
+        private System.Windows.Forms.ComboBox controllerOneNick;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox statusCheck;
         private System.Windows.Forms.ComboBox cmb_Lang;
@@ -1932,5 +2149,23 @@ namespace Nucleus.Coop
         private CheckBox scaleOptionCbx;
         private Panel panel1;
         private Label label35;
+        private ComboBox steamid8;
+        private ComboBox steamid7;
+        private ComboBox steamid6;
+        private ComboBox steamid5;
+        private ComboBox steamid4;
+        private ComboBox steamid3;
+        private ComboBox steamid2;
+        private Label label47;
+        private ComboBox steamid1;
+        private ComboBox steamid16;
+        private ComboBox steamid15;
+        private ComboBox steamid14;
+        private ComboBox steamid13;
+        private ComboBox steamid12;
+        private ComboBox steamid11;
+        private ComboBox steamid10;
+        private Label label48;
+        private ComboBox steamid9;
     }
 }
