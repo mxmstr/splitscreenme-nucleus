@@ -4925,6 +4925,7 @@ namespace Nucleus.Gaming
                         prompt.ShowDialog();
                     }
                 }
+
                 if (gen.PromptBetweenInstances && i < (players.Count - 1))
                 {
                     if (gen.PauseBetweenStarts > 0)
@@ -4937,7 +4938,7 @@ namespace Nucleus.Gaming
                     Forms.Prompt prompt = new Forms.Prompt("Press OK when ready to launch instance " + (i + 2) + ".");
                     prompt.ShowDialog();
                 }
-                else if (gen.PromptBetweenInstances && i == players.Count - 1 && (gen.HookFocus || gen.FakeFocus || gen.SetWindowHook || gen.HideCursor || gen.PreventWindowDeactivation))
+                else if (gen.PromptBetweenInstances && i == players.Count - 1 && (gen.HookFocus || gen.FakeFocus || gen.SetWindowHook || gen.HideCursor || gen.PreventWindowDeactivation || gen.SetTopMostAtEnd))
                 {
                     if (gen.PauseBetweenStarts > 0)
                     {

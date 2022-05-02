@@ -87,6 +87,7 @@ namespace Nucleus.Coop
             this.label1 = new System.Windows.Forms.Label();
             this.settingsCloseHKTxt = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label51 = new System.Windows.Forms.Label();
             this.steamid16 = new System.Windows.Forms.ComboBox();
             this.steamid15 = new System.Windows.Forms.ComboBox();
             this.steamid14 = new System.Windows.Forms.ComboBox();
@@ -107,7 +108,6 @@ namespace Nucleus.Coop
             this.steamid1 = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.btn_Refresh = new System.Windows.Forms.Button();
             this.controllerSixteenNick = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.controllerFifteenNick = new System.Windows.Forms.ComboBox();
@@ -777,6 +777,7 @@ namespace Nucleus.Coop
             // 
             this.tabPage5.BackColor = System.Drawing.Color.Transparent;
             this.tabPage5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage5.Controls.Add(this.label51);
             this.tabPage5.Controls.Add(this.steamid16);
             this.tabPage5.Controls.Add(this.steamid15);
             this.tabPage5.Controls.Add(this.steamid14);
@@ -797,7 +798,6 @@ namespace Nucleus.Coop
             this.tabPage5.Controls.Add(this.steamid1);
             this.tabPage5.Controls.Add(this.label21);
             this.tabPage5.Controls.Add(this.label25);
-            this.tabPage5.Controls.Add(this.btn_Refresh);
             this.tabPage5.Controls.Add(this.controllerSixteenNick);
             this.tabPage5.Controls.Add(this.label17);
             this.tabPage5.Controls.Add(this.controllerFifteenNick);
@@ -839,6 +839,16 @@ namespace Nucleus.Coop
             this.tabPage5.Size = new System.Drawing.Size(511, 240);
             this.tabPage5.TabIndex = 2;
             this.tabPage5.Text = "Players";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(4, 211);
+            this.label51.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(223, 13);
+            this.label51.TabIndex = 129;
+            this.label51.Text = "Player Steam ID format: 76561199075562883";
             // 
             // steamid16
             // 
@@ -1039,18 +1049,6 @@ namespace Nucleus.Coop
             this.label25.Size = new System.Drawing.Size(55, 13);
             this.label25.TabIndex = 108;
             this.label25.Text = "Nickname";
-            // 
-            // btn_Refresh
-            // 
-            this.btn_Refresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_Refresh.Location = new System.Drawing.Point(215, 209);
-            this.btn_Refresh.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_Refresh.Name = "btn_Refresh";
-            this.btn_Refresh.Size = new System.Drawing.Size(80, 23);
-            this.btn_Refresh.TabIndex = 16;
-            this.btn_Refresh.Text = "Refresh";
-            this.btn_Refresh.Visible = false;
-            this.btn_Refresh.Click += new System.EventHandler(this.Btn_Refresh_Click);
             // 
             // controllerSixteenNick
             // 
@@ -2035,7 +2033,6 @@ namespace Nucleus.Coop
 
         private System.Windows.Forms.Button settingsSaveBtn;
         private System.Windows.Forms.Button settingsCloseBtn;
-        private System.Windows.Forms.Button btn_Refresh;
         private System.Windows.Forms.Button btn_credits;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.TabControl tabControl2;
@@ -2167,5 +2164,6 @@ namespace Nucleus.Coop
         private ComboBox steamid10;
         private Label label48;
         private ComboBox steamid9;
+        private Label label51;
     }
 }

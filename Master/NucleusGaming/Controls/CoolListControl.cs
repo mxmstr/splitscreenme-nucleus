@@ -12,9 +12,11 @@ namespace SplitTool.Controls
 
         private Label titleLabel;
         protected Label descLabel;
+        private Color userOverBackColor;
+        private Color userLeaveBackColor;
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
-        
+
         public string Title
         {
             get => titleLabel.Text;
@@ -37,20 +39,25 @@ namespace SplitTool.Controls
 
             string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
             IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
- 
-            string[] rgb_CoollistInitialColor = theme.IniReadValue("Colors", "Selection").Split(',');
 
+            string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
+            string[] rgb_CoollistInitialColor = theme.IniReadValue("Colors", "Selection").Split(',');
+            string customFont = theme.IniReadValue("Font", "FontFamily");
+
+            userOverBackColor = Color.FromArgb(Convert.ToInt32(Convert.ToInt32(rgb_MouseOverColor[0])), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
+            userLeaveBackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
+          
             Anchor = AnchorStyles.Top|AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
            
             titleLabel = new Label
             {
-                Font = new Font("Microsoft Sans Serif", 10.0f, FontStyle.Bold, GraphicsUnit.Point, 0),
+                Font = new Font(customFont, 10.0f, FontStyle.Bold, GraphicsUnit.Point, 0),
             };
 
             descLabel = new Label
             {
-                Font = new Font("Microsoft Sans Serif", 9.25f, FontStyle.Regular, GraphicsUnit.Point, 0),
+                Font = new Font(customFont, 9.25f, FontStyle.Regular, GraphicsUnit.Point, 0),
             };
 
             Controls.Add(titleLabel);
@@ -76,7 +83,15 @@ namespace SplitTool.Controls
             descLabel.Location = new Point(titleLabel.Location.X, titleLabel.Bottom + 10);
 
             Height = descLabel.Location.Y + descLabel.Height + 10;
-        
+            foreach(Control picture in Controls)
+            {
+                if(picture.GetType() == typeof(PictureBox))
+                {
+                    Height = picture.Height+20;
+                }
+
+            }
+
             VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
         }
 
@@ -108,7 +123,42 @@ namespace SplitTool.Controls
         private void C_Click(object sender, EventArgs e)
         {
             OnClick(e);
-        }      
- 
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            BackColor = userLeaveBackColor;
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            if (!ContainsFocus)
+            {
+                BackColor = userOverBackColor;
+            }
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            if (!ContainsFocus)
+            {
+                BackColor = userLeaveBackColor;
+            }
+        }
+
+        protected override void OnClick(EventArgs e)
+        {
+            base.OnClick(e);
+
+            BackColor = userOverBackColor;
+            if (OnSelected != null)
+            {
+                OnSelected(Data);
+            }
+        }
+
     }
 }

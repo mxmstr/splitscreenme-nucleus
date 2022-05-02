@@ -184,6 +184,84 @@ namespace Nucleus.Coop.Forms
 
             ResumeLayout();
         }
+        private int cover_index = 0;
+        public void Main_Showcase()
+        {
+            ImageList showcaseCovers = new ImageList
+            {
+                ImageSize = new Size(170, 227)
+            };
+
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.DefaultConnectionLimit = 9999;
+
+            string rawHandlers = null;
+
+            rawHandlers = Get(api + "allhandlers");
+
+            if (rawHandlers == null)
+            {
+                return;
+            }
+            else if (rawHandlers == "{}")
+            {
+                return;
+            }
+
+            JObject jObject = JsonConvert.DeserializeObject(rawHandlers) as JObject;
+
+            JArray array = jObject["Handlers"] as JArray;
+            handlers = new JArray(array.OrderByDescending(obj => (DateTime)obj["createdAt"]));
+            sortColumn = 0;
+            sortOrder = SortOrder.Ascending;
+
+            for (int i = 0; i < 16; i++)
+            {
+                string GameCover = handlers[i]["gameCover"].ToString();
+                Bitmap bmp = new Bitmap(Properties.Resources.no_image);
+
+                string _cover = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{GameCover}.jpg";
+
+                try
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_cover);
+                    WebResponse resp = request.GetResponse();
+                    Stream respStream = resp.GetResponseStream();
+                    bmp = new Bitmap(respStream);
+                    respStream.Dispose();
+                    showcaseCovers.Images.Add(bmp);
+                }
+                catch (Exception) { }
+            }
+            
+            foreach (Control parent in mainForm.hubShowcase.Controls)
+            {
+                foreach (Control childCon in parent.Controls)
+                {
+                    foreach (Control coverBox in childCon.Controls)
+                    {
+                        Panel coverLayer = new Panel()
+                        {
+                            Location = new Point(0, 0),
+                            Size = new Size(170, 227),
+                            BackgroundImageLayout = ImageLayout.Stretch,
+                            Dock = DockStyle.Fill,
+                            BackColor = Color.Transparent,
+                            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase_cover_layer.png")
+                        };
+
+                        coverBox.BackgroundImage = showcaseCovers.Images[cover_index];
+                        coverBox.Controls.Add(coverLayer);
+                        cover_index++;
+                    }
+                }
+            }
+
+            mainForm.hubShowcase.Visible = true;
+            handlers.Clear();
+        }
 
         public Handler GetHandler(string id)
         {

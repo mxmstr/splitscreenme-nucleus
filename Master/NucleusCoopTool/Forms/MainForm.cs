@@ -54,6 +54,7 @@ namespace Nucleus.Coop
         private GameControl currentControl;
         private UserGameInfo currentGameInfo;
         private GenericGameInfo currentGame;
+        public HubShowcase hubShowcase;
         private GameProfile currentProfile;
         private AssetsScraper getAssets;
         private List<UserInputControl> stepsList;
@@ -345,8 +346,6 @@ namespace Nucleus.Coop
             }
         }
 
-      
-
         public MainForm()
         {          
             try
@@ -526,6 +525,7 @@ namespace Nucleus.Coop
                     }
                 }
 
+       
                 ResumeLayout();
                 
                 minimizeBtn.Click += new EventHandler(this.minimizeButton);
@@ -556,7 +556,14 @@ namespace Nucleus.Coop
 
                 getId = new ScriptDownloader(this);
                 downloadPrompt = new DownloadPrompt(hubHandler, this, null, true);
+               
+                hubShowcase = new HubShowcase(this)
+                {
+                    Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                    Visible = false
+                };
 
+                clientAreaPanel.Controls.Add(hubShowcase);
                 // selects the list of games, so the buttons look equal
                 list_Games.Select();
                 gameManager.ReorderUserProfile();
@@ -605,7 +612,9 @@ namespace Nucleus.Coop
 
             scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             txt_GameDesc.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-          
+            hubShowcase.Size = new Size(Convert.ToInt32(848 * scale), Convert.ToInt32(569 * scale));
+            hubShowcase.Location = new Point(game_listSizer.Right, mainButtonFrame.Bottom);//202
+
             ResumeLayout();
         }
 
@@ -639,10 +648,12 @@ namespace Nucleus.Coop
           
             if (connected)
             {
+                //stepPanelPictureBox.Visible = false;             
                 btn_noHub.Visible = false;
                 btn_downloadAssets.Enabled = true;
                 btn_Download.Enabled = true;
                 DisposeTimer.Dispose();
+                //Showcase_UI();
             }
             else
             {
@@ -882,9 +893,19 @@ namespace Nucleus.Coop
                 }
             }
         }
+        private void Showcase_UI()//(Control dllabel)
+        {
+            try
+            {
+                getId.Main_Showcase();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
 
         public delegate void CheckForAssets(Label dllabel, bool visible, string game);
-
         public void DelegateCheckForAssets(Label dllabel, bool visible, string game)
         {
             dllabel.BackColor = this.BackColor;
@@ -996,7 +1017,7 @@ namespace Nucleus.Coop
             else
             {
                 currentGame = currentGameInfo.Game;
-              
+                hubShowcase.Dispose();
 
                 if (!stepPanelPictureBoxDispose)
                 {
@@ -2262,7 +2283,15 @@ namespace Nucleus.Coop
         {
             try
             {
-                Process.Start("notepad++.exe", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
+                if(ini.IniReadValue("Dev", "TextEditorPath") != "Default")
+                {
+                    Process.Start($"{ini.IniReadValue("Dev", "TextEditorPath")}", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
+                }
+                else
+                {
+                    Process.Start("notepad++.exe", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
+                }
+           
             }
             catch
             {
@@ -2536,15 +2565,6 @@ namespace Nucleus.Coop
             Process.Start("https://hub.splitscreen.me/");
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Process.Start(faq_link);
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            Process.Start(faq_link);
-        }
         private void button1_Click(object sender, EventArgs e)
         {
             Process.Start("https://discord.com/invite/QDUt8HpCvr");

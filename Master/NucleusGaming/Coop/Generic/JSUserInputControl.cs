@@ -1,20 +1,24 @@
 ﻿using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Generic.Step;
 using SplitTool.Controls;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
     public class JSUserInputControl : UserInputControl
     {
+        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         private bool canProceed;
         private bool canPlay;
 
         private Font nameFont;
         private Font detailsFont;
+        private Color _BackColor;
 
         public CustomStep CustomStep;
         public ContentManager Content;
@@ -33,6 +37,11 @@ namespace Nucleus.Gaming
         public override void Initialize(UserGameInfo game, GameProfile profile)
         {
             base.Initialize(game, profile);
+            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
+            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
+
+            string[] rgb_CoollistInitialColor = theme.IniReadValue("Colors", "Selection").Split(',');
+            _BackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
 
             Controls.Clear();
 
@@ -66,7 +75,7 @@ namespace Nucleus.Gaming
                     CoolListControl control = new CoolListControl(true)
                     {
                         Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right,
-                        BackColor = Color.FromArgb(30, 30, 30),
+                        BackColor = _BackColor,
                         Size = new Size(list.Width, 120),
                         Data = val
                     };
@@ -99,7 +108,7 @@ namespace Nucleus.Gaming
                                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
                                 Size = new Size(140, 80)
                             };
-                            box.Location = new Point(list.Width - box.Width - 10, 20);
+                            box.Location = new Point(list.Width - box.Width - 10, 10);
                             box.SizeMode = PictureBoxSizeMode.Zoom;
                             box.Image = img;
                             control.Controls.Add(box);

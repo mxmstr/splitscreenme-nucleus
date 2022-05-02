@@ -144,15 +144,5 @@ namespace Nucleus.Gaming
             }
         }
 
-        private void InitializeComponent()
-        {
-            SuspendLayout();
-            // 
-            // ImageButton
-            // 
-            Name = "ImageButton";
-            ResumeLayout(false);
-
-        }
     }
 }
