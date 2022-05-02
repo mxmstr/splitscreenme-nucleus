@@ -1,6 +1,6 @@
 # Nucleus Co-op 
 
-![alt text](https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/Nucleushk.png?raw=true)
+![alt text](https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/hknucleus.png?raw=true)
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
 
@@ -11,7 +11,7 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 - New player and input order processing (left to right).
 - New player nickname assignation.
 - New optional splitscreen divisions setting (visually  similar to native splitscreen games).
-- Massive increase to the amount of compatible games, 400+ as of now.
+- Massive increase to the amount of compatible games, 450+ as of now.
 - Much more game handlers customization.
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
