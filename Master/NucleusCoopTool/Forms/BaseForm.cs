@@ -64,19 +64,5 @@ namespace Nucleus.Coop
             f.SetDesktopLocation(desktop.X + 100, desktop.Y + 100);
         }
 
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BaseForm));
-            this.SuspendLayout();
-            // 
-            // BaseForm
-            // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "BaseForm";
-            this.Text = "Nucleus Co-op";
-            this.ResumeLayout(false);
-
-        }
     }
 }

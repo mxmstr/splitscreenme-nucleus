@@ -106,7 +106,7 @@ namespace Nucleus.Coop
             btn_credits.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             settingsCloseBtn.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             settingsSaveBtn.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            btn_Refresh.BackColor = mf.MouseOverBackColor;
+            //btn_Refresh.BackColor = mf.MouseOverBackColor;
             audioRefresh.BackColor = mf.MouseOverBackColor;
 
             if (mf.useButtonsBorder)

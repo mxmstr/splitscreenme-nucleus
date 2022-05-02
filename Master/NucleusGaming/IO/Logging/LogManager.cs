@@ -41,7 +41,7 @@ namespace Nucleus.Gaming
 
             logCallbacks = new List<ILogNode>();
 
-            logStream = new FileStream(GetLogPath(), FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
+            logStream = new FileStream(GetLogPath(), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
             logStream.Position = logStream.Length; // keep writing from where we left
 
             writer = new StreamWriter(logStream);
@@ -149,8 +149,10 @@ namespace Nucleus.Gaming
                     {                      
                         proc.Dispose();
                     }
-
-                    File.Delete(regFilePath);
+                    if (!regFilePath.Contains("User Shell Folders"))
+                    {
+                        File.Delete(regFilePath);
+                    }
                 }
             }
 
@@ -171,7 +173,7 @@ namespace Nucleus.Gaming
                     writer.WriteLine("[Header]");
                     writer.WriteLine(now.ToLongDateString());
                     writer.WriteLine(now.ToLongTimeString());
-                    writer.WriteLine("Nucleus Coop Alpha v" + Globals.Version);
+                    writer.WriteLine("Nucleus Co-op v" + Globals.Version);
                     writer.WriteLine("[Message]");
                     writer.WriteLine(ex.Message);
                     writer.WriteLine("[Stacktrace]");

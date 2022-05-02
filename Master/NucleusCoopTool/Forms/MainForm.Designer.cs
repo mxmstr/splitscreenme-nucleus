@@ -449,7 +449,6 @@ namespace Nucleus.Coop
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // detailsToolStripMenuItem
             // 
@@ -483,8 +482,6 @@ namespace Nucleus.Coop
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(207, 6);
-            this.toolStripMenuItem2.Visible = false;
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -690,10 +687,10 @@ namespace Nucleus.Coop
             this.StepPanel.BackColor = System.Drawing.Color.Transparent;
             this.StepPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.StepPanel.Cursor = System.Windows.Forms.Cursors.Default;
-            this.StepPanel.Location = new System.Drawing.Point(202, 33);
+            this.StepPanel.Location = new System.Drawing.Point(202, 31);
             this.StepPanel.Margin = new System.Windows.Forms.Padding(0);
             this.StepPanel.Name = "StepPanel";
-            this.StepPanel.Size = new System.Drawing.Size(655, 535);
+            this.StepPanel.Size = new System.Drawing.Size(655, 537);
             this.StepPanel.TabIndex = 0;
             this.StepPanel.Visible = false;
             // 
@@ -741,10 +738,10 @@ namespace Nucleus.Coop
             this.rightFrame.Controls.Add(this.scriptAuthorTxtSizer);
             this.rightFrame.Controls.Add(this.cover);
             this.rightFrame.Controls.Add(this.txt_GameDescSizer);
-            this.rightFrame.Location = new System.Drawing.Point(845, 31);
+            this.rightFrame.Location = new System.Drawing.Point(857, 31);
             this.rightFrame.Margin = new System.Windows.Forms.Padding(0);
             this.rightFrame.Name = "rightFrame";
-            this.rightFrame.Size = new System.Drawing.Size(205, 537);
+            this.rightFrame.Size = new System.Drawing.Size(193, 537);
             this.rightFrame.TabIndex = 34;
             this.rightFrame.Visible = false;
             // 
@@ -759,7 +756,7 @@ namespace Nucleus.Coop
             this.buttonContainer.Cursor = System.Windows.Forms.Cursors.Default;
             this.buttonContainer.Location = new System.Drawing.Point(0, 470);
             this.buttonContainer.Name = "buttonContainer";
-            this.buttonContainer.Size = new System.Drawing.Size(204, 64);
+            this.buttonContainer.Size = new System.Drawing.Size(192, 64);
             this.buttonContainer.TabIndex = 0;
             // 
             // btn_GameDesc
@@ -772,7 +769,7 @@ namespace Nucleus.Coop
             this.btn_GameDesc.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_GameDesc.FlatAppearance.BorderSize = 0;
             this.btn_GameDesc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_GameDesc.Location = new System.Drawing.Point(193, -19);
+            this.btn_GameDesc.Location = new System.Drawing.Point(187, -19);
             this.btn_GameDesc.Margin = new System.Windows.Forms.Padding(2);
             this.btn_GameDesc.Name = "btn_GameDesc";
             this.btn_GameDesc.Size = new System.Drawing.Size(166, 13);
@@ -791,7 +788,7 @@ namespace Nucleus.Coop
             this.btn_gameOptions.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_gameOptions.FlatAppearance.BorderSize = 0;
             this.btn_gameOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_gameOptions.Location = new System.Drawing.Point(22, 2);
+            this.btn_gameOptions.Location = new System.Drawing.Point(10, 1);
             this.btn_gameOptions.Margin = new System.Windows.Forms.Padding(2);
             this.btn_gameOptions.Name = "btn_gameOptions";
             this.btn_gameOptions.Size = new System.Drawing.Size(172, 25);
@@ -811,7 +808,7 @@ namespace Nucleus.Coop
             this.btn_scriptAuthorTxt.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_scriptAuthorTxt.FlatAppearance.BorderSize = 0;
             this.btn_scriptAuthorTxt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_scriptAuthorTxt.Location = new System.Drawing.Point(18, -34);
+            this.btn_scriptAuthorTxt.Location = new System.Drawing.Point(12, -34);
             this.btn_scriptAuthorTxt.Margin = new System.Windows.Forms.Padding(2);
             this.btn_scriptAuthorTxt.Name = "btn_scriptAuthorTxt";
             this.btn_scriptAuthorTxt.Size = new System.Drawing.Size(166, 11);
@@ -831,10 +828,10 @@ namespace Nucleus.Coop
             this.button_UpdateAvailable.FlatAppearance.BorderSize = 0;
             this.button_UpdateAvailable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_UpdateAvailable.ForeColor = System.Drawing.Color.Yellow;
-            this.button_UpdateAvailable.Location = new System.Drawing.Point(22, 30);
+            this.button_UpdateAvailable.Location = new System.Drawing.Point(10, 30);
             this.button_UpdateAvailable.Margin = new System.Windows.Forms.Padding(2);
             this.button_UpdateAvailable.Name = "button_UpdateAvailable";
-            this.button_UpdateAvailable.Size = new System.Drawing.Size(173, 25);
+            this.button_UpdateAvailable.Size = new System.Drawing.Size(172, 25);
             this.button_UpdateAvailable.TabIndex = 23;
             this.button_UpdateAvailable.Text = "New Handler Available!";
             this.button_UpdateAvailable.UseVisualStyleBackColor = false;
@@ -851,7 +848,7 @@ namespace Nucleus.Coop
             this.scriptAuthorTxtSizer.Controls.Add(this.btn_magnifier);
             this.scriptAuthorTxtSizer.Controls.Add(this.HandlerNoteTitle);
             this.scriptAuthorTxtSizer.Controls.Add(this.scriptAuthorTxt);
-            this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(22, 242);
+            this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(10, 242);
             this.scriptAuthorTxtSizer.Margin = new System.Windows.Forms.Padding(5);
             this.scriptAuthorTxtSizer.Name = "scriptAuthorTxtSizer";
             this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(172, 220);
@@ -894,7 +891,7 @@ namespace Nucleus.Coop
             this.scriptAuthorTxt.Name = "scriptAuthorTxt";
             this.scriptAuthorTxt.ReadOnly = true;
             this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.scriptAuthorTxt.Size = new System.Drawing.Size(187, 199);
+            this.scriptAuthorTxt.Size = new System.Drawing.Size(187, 196);
             this.scriptAuthorTxt.TabIndex = 13;
             this.scriptAuthorTxt.Text = "";
             this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.scriptAuthorTxt_LinkClicked);
@@ -907,7 +904,7 @@ namespace Nucleus.Coop
             this.cover.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.cover.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.cover.Controls.Add(this.coverFrame);
-            this.cover.Location = new System.Drawing.Point(22, 5);
+            this.cover.Location = new System.Drawing.Point(10, 5);
             this.cover.Name = "cover";
             this.cover.Size = new System.Drawing.Size(172, 229);
             this.cover.TabIndex = 27;
@@ -936,7 +933,7 @@ namespace Nucleus.Coop
             this.txt_GameDescSizer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.txt_GameDescSizer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txt_GameDescSizer.Controls.Add(this.txt_GameDesc);
-            this.txt_GameDescSizer.Location = new System.Drawing.Point(210, 240);
+            this.txt_GameDescSizer.Location = new System.Drawing.Point(198, 240);
             this.txt_GameDescSizer.Margin = new System.Windows.Forms.Padding(5);
             this.txt_GameDescSizer.Name = "txt_GameDescSizer";
             this.txt_GameDescSizer.Size = new System.Drawing.Size(103, 207);
@@ -1208,6 +1205,7 @@ namespace Nucleus.Coop
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1050, 602);
             this.ControlBox = false;
+            this.Controls.Add(this.splash);
             this.Controls.Add(this.btn_Links);
             this.Controls.Add(this.glowingLine0);
             this.Controls.Add(this.linksPanel);
@@ -1221,7 +1219,6 @@ namespace Nucleus.Coop
             this.Controls.Add(this.minimizeBtn);
             this.Controls.Add(this.logo);
             this.Controls.Add(this.maximizeBtn);
-            this.Controls.Add(this.splash);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
