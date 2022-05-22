@@ -64,6 +64,11 @@ namespace Nucleus.Coop.Forms
 
                 if (zipFileName == null)
                 {
+                    if (handler == null)
+                    {
+                        return;
+                    }
+
                     Text = "Downloading Game Handler";
                     zipFile = string.Format("handler-{0}-v{1}.nc", Handler.Id, Handler.CurrentVersion);
                     BeginDownload();

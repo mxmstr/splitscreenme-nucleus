@@ -266,8 +266,8 @@ namespace Nucleus.Gaming
         public string ForceGameArch;
         public string[] SSEAdditionalLines;
         public string[] DeleteOnClose;
-      
-
+        public int SteamlessTiming = 2500;
+        public bool KeepEditedRegKeys;
         // -- From USS
         //Effectively a switch for all of USS features
         public bool SupportsMultipleKeyboardsAndMice;
@@ -288,7 +288,7 @@ namespace Nucleus.Gaming
         public bool HookReRegisterRawInputKeyboard = true;
         public bool InjectHookXinput = false;
         public bool InjectDinputToXinputTranslation = false;
-
+     
         //Not hooks
         public bool SendNormalMouseInput = true;
         public bool SendNormalKeyboardInput = true;
@@ -302,8 +302,9 @@ namespace Nucleus.Gaming
         public bool PreventGameFocus = false;
         public int LockInputToggleKey = 0x23;//End by default. Keys: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
         public bool ForceEnvironmentUse;
-        public bool ForceLauncherExeIgnoreFileCheck;                                  
-
+        public bool ForceLauncherExeIgnoreFileCheck;
+        public bool UseSteamless = false;
+        public string SteamlessArgs;
         // Proto Input
         public ProtoInputOptions ProtoInput = new ProtoInputOptions();
         public bool LockInputSuspendsExplorer = false;
@@ -320,10 +321,10 @@ namespace Nucleus.Gaming
             {
                 while (!sr.EndOfStream)
                 {
-                    
+
                     string line = sr.ReadLine();
                     {
-                        js += "\r\n" + line + "\r\n";                   
+                        js += "\r\n" + line + "\r\n";
                     }
                 }
             }
@@ -347,7 +348,7 @@ namespace Nucleus.Gaming
                     string splited = lineSplit[0];
                     string[] getNum = splited.Split(' ');
                     int numLine = Convert.ToInt32(getNum[1]);
-                    MessageBox.Show(string.Format("There is an error in the game handler {0}. The game this handler is for will not appear in the list. If the issue has been fixed, please try re-adding the game.\n\nCommon errors include:\n- A syntax error (such as a \',\' \';\' or \']\' missing)\n- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format (for example: methods using Context must be within the Game.Play function)\n\n{1} {2}", fileName,"", "Error at line: " ) + numLine / 2, "Error in handler", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(string.Format("There is an error in the game handler {0}. The game this handler is for will not appear in the list. If the issue has been fixed, please try re-adding the game.\n\nCommon errors include:\n- A syntax error (such as a \',\' \';\' or \']\' missing)\n- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format (for example: methods using Context must be within the Game.Play function)\n\n{1} {2}", fileName, "", "Error at line: ") + numLine / 2, "Error in handler", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 });
             }
 
@@ -364,7 +365,7 @@ namespace Nucleus.Gaming
         public CustomStep ShowOptionAsStep(string optionKey, bool required, string title)
         {
             GameOption option = Options.First(c => c.Key == optionKey);
-            option.Hidden = true;  
+            option.Hidden = true;
 
             CustomStep step = new CustomStep
             {
@@ -456,39 +457,39 @@ namespace Nucleus.Gaming
         }
 
         private string EpicLang;
-        
+
         public string GetEpicLanguage()
         {
             IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
             IDictionary<string, string> epiclangs = new Dictionary<string, string>();
-                epiclangs.Add("Arabic", "ar");
-                epiclangs.Add("Brazilian", "pt-BR");
-                epiclangs.Add("Bulgarian", "bg");
-                epiclangs.Add("Chinese", "zh");
-                epiclangs.Add("Czech", "cs");
-                epiclangs.Add("Danish", "da");
-                epiclangs.Add("Dutch", "nl");
-                epiclangs.Add("English", "en");
-                epiclangs.Add("Finnish", "fi");
-                epiclangs.Add("French", "fr");
-                epiclangs.Add("German", "de");
-                epiclangs.Add("Greek", "el");
-                epiclangs.Add("Hungarian", "hu");
-                epiclangs.Add("Italian", "it");
-                epiclangs.Add("Japanese", "ja");
-                epiclangs.Add("Koreana", "ko");
-                epiclangs.Add("Norwegian", "no");
-                epiclangs.Add("Polish", "pl");
-                epiclangs.Add("Portuguese", "pt");
-                epiclangs.Add("Romanian", "ro");
-                epiclangs.Add("Russian", "ru");
-                epiclangs.Add("Spanish", "es");
-                epiclangs.Add("Swedish", "sv");
-                epiclangs.Add("Thai", "th");
-                epiclangs.Add("Turkish", "tr");
-                epiclangs.Add("Ukrainian", "uk");
-       
+            epiclangs.Add("Arabic", "ar");
+            epiclangs.Add("Brazilian", "pt-BR");
+            epiclangs.Add("Bulgarian", "bg");
+            epiclangs.Add("Chinese", "zh");
+            epiclangs.Add("Czech", "cs");
+            epiclangs.Add("Danish", "da");
+            epiclangs.Add("Dutch", "nl");
+            epiclangs.Add("English", "en");
+            epiclangs.Add("Finnish", "fi");
+            epiclangs.Add("French", "fr");
+            epiclangs.Add("German", "de");
+            epiclangs.Add("Greek", "el");
+            epiclangs.Add("Hungarian", "hu");
+            epiclangs.Add("Italian", "it");
+            epiclangs.Add("Japanese", "ja");
+            epiclangs.Add("Koreana", "ko");
+            epiclangs.Add("Norwegian", "no");
+            epiclangs.Add("Polish", "pl");
+            epiclangs.Add("Portuguese", "pt");
+            epiclangs.Add("Romanian", "ro");
+            epiclangs.Add("Russian", "ru");
+            epiclangs.Add("Spanish", "es");
+            epiclangs.Add("Swedish", "sv");
+            epiclangs.Add("Thai", "th");
+            epiclangs.Add("Turkish", "tr");
+            epiclangs.Add("Ukrainian", "uk");
+
             foreach (KeyValuePair<string, string> lang in epiclangs)
             {
                 if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))

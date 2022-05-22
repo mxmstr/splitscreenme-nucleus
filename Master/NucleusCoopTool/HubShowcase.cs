@@ -17,9 +17,10 @@ namespace Nucleus.Coop
 
         public HubShowcase(MainForm mainForm)
         { 
-               InitializeComponent();
-              // showcaseBanner1.BackgroundImage = new Bitmap(mainForm.themePath + "\\setup_screen.png");
-
+            InitializeComponent();
+            titleBackground.Location = new Point(Width / 2 - titleBackground.Width / 2, (Container1.Top-titleBackground.Height)+6);
+            titleBackground.BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase_title-back.png");
+            titleBackground.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void showcaseBanner1_Paint(object sender, PaintEventArgs e)

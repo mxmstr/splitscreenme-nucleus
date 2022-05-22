@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssetsScraper.cs" />
+    <Compile Include="blur.cs" />
     <Compile Include="BufferedClientAreaPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -177,7 +178,7 @@
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
@@ -187,6 +188,12 @@
     </Compile>
     <Compile Include="HubShowcase.designer.cs">
       <DependentUpon>HubShowcase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputIcons.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InputIcons.designer.cs">
+      <DependentUpon>InputIcons.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -430,6 +437,17 @@
     <Content Include="copyoutput\utils\SplitCalculator\SplitCalculator.exe" />
     <Content Include="copyoutput\utils\Steam Stub DRM Patcher\x64\winmm.dll" />
     <Content Include="copyoutput\utils\Steam Stub DRM Patcher\x86\winmm.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\ExamplePlugin.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\SharpDisasm.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\Steamless.API.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\Steamless.Unpacker.Variant10.x86.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\Steamless.Unpacker.Variant20.x86.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\Steamless.Unpacker.Variant21.x86.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\Steamless.Unpacker.Variant30.x64.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\Steamless.Unpacker.Variant30.x86.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\Steamless.Unpacker.Variant31.x64.dll" />
+    <Content Include="copyoutput\utils\Steamless\Plugins\Steamless.Unpacker.Variant31.x86.dll" />
+    <Content Include="copyoutput\utils\Steamless\Steamless.CLI.exe" />
     <Content Include="copyoutput\utils\x360ce\dinput8.dll" />
     <Content Include="copyoutput\utils\x360ce\dinput8_x64.dll" />
     <Content Include="copyoutput\utils\x360ce\x360ce.exe" />
@@ -540,6 +558,12 @@
     <Content Include="gui\theme\default\game_list.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\game_options.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\handlernote_background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\instruction_closed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -609,6 +633,9 @@
     <Content Include="gui\theme\default\showcase_cover_layer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\showcase_title-back.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\splash.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -616,6 +643,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\splitcalculator_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\text_switcher.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\thirdpartytools.png">
@@ -664,6 +694,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\title_settings_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\update_available.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\virtual_keyboard.png">

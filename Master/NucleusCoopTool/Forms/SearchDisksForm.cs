@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Media;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Nucleus.Coop
 {
@@ -35,6 +36,17 @@ namespace Nucleus.Coop
         private bool closed;
         private MainForm main;
         private float fontSize;
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+         int nLeftRect,     // x-coordinate of upper-left corner
+         int nTopRect,      // y-coordinate of upper-left corner
+         int nRightRect,    // x-coordinate of lower-right corner
+         int nBottomRect,   // y-coordinate of lower-right corner
+         int nWidthEllipse, // width of ellipse
+         int nHeightEllipse // height of ellipse
+        );
 
         private void controlscollect()
         {
@@ -74,6 +86,7 @@ namespace Nucleus.Coop
             InitializeComponent();
 
             SuspendLayout();
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             fontSize = float.Parse(main.theme.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(Convert.ToInt32(main.rgb_font[0]), Convert.ToInt32(main.rgb_font[1]), Convert.ToInt32(main.rgb_font[2]));
 

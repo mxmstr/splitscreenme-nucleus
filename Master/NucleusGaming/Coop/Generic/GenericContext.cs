@@ -108,7 +108,8 @@ namespace Nucleus.Gaming
         public string[] PlayerSteamIDs;
         public int NumControllers = 0;
         public int NumKeyboards = 0;
-   
+        public bool KeepEditedRegKeys;
+
         private List<string> regKeyPaths = new List<string>();
 
         public string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -237,7 +238,7 @@ namespace Nucleus.Gaming
         public string GamepadGuid => pInfo.GamepadGuid.ToString();
 
         public bool IsKeyboardPlayer => pInfo.IsKeyboardPlayer;
-        public int GamepadId => pInfo.GamepadId+1;
+        public int GamepadId => pInfo.GamepadId + 1;
         public float OrigAspectRatioDecimal => (float)profile.Screens[pInfo.PlayerID].display.Width / profile.Screens[pInfo.PlayerID].display.Height;
 
         public string OrigAspectRatio
@@ -270,14 +271,14 @@ namespace Nucleus.Gaming
                 string s = filesToSymlink[f].ToLower();
                 // make sure it's lower case
                 CmdUtil.MkLinkFile(Path.Combine(OrigRootFolder, s), Path.Combine(RootFolder, s), out int exitCode);
-                Console.WriteLine(OrigRootFolder+ s + " => Instance folder " + RootFolder+s);
+                Console.WriteLine(OrigRootFolder + s + " => Instance folder " + RootFolder + s);
             }
         }
 
 
-    private string epicLang;
+        private string epicLang;
         public string EpicLang
-        { 
+        {
             get
             {
                 IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
@@ -316,9 +317,9 @@ namespace Nucleus.Gaming
                 foreach (KeyValuePair<string, string> lang in epiclangs)
                 {
                     if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
-                    {                     
-                       epicLang = lang.Value;                      
-                    }                 
+                    {
+                        epicLang = lang.Value;
+                    }
                 }
                 return epicLang;
             }
@@ -1681,7 +1682,9 @@ namespace Nucleus.Gaming
                     break;
             }
 
+            
             string fullKeyPath = baseKey + "\\" + sKey;
+
             if (!regKeyPaths.Contains(fullKeyPath) && key != null)
             {
                 string regPath = Directory.GetCurrentDirectory() + "\\utils\\backup\\" + sKey.Substring(sKey.LastIndexOf('\\') + 1) + ".reg";
@@ -1692,6 +1695,7 @@ namespace Nucleus.Gaming
                     ExportRegistry(baseKey + "\\" + sKey, regPath);
                 }
             }
+           
 
             if (key == null)
             {
@@ -1718,6 +1722,59 @@ namespace Nucleus.Gaming
             {
                 key.SetValue(subKey, value, (RegistryValueKind)(int)regType);
             }
+            key.Close();
+        }
+        public void EditRegKeyNoBackup(string baseKey, string sKey, string subKey, object value, RegType regType)
+        {
+            if ((baseKey != "HKEY_LOCAL_MACHINE" && baseKey != "HKEY_CURRENT_USER" && baseKey != "HKEY_USERS") || value == null)
+            {
+                return;
+            }
+
+            string val = value.ToString();
+
+            RegistryKey key = null;
+            switch (baseKey)
+            {
+                case "HKEY_LOCAL_MACHINE":
+                    key = Registry.LocalMachine.OpenSubKey(sKey, true);
+                    break;
+                case "HKEY_CURRENT_USER":
+                    key = Registry.CurrentUser.OpenSubKey(sKey, true);
+                    break;
+                case "HKEY_USERS":
+                    key = Registry.Users.OpenSubKey(sKey, true);
+                    break;
+            }
+  
+            Log("Registry key : " + baseKey + "\\" + sKey + "\\" + subKey + " -Value= " + value + " -RegType= " + regType + " will not be deleted from registry  on Nucleus Co-op close");
+          
+            if (key == null)
+            {
+                switch (baseKey)
+                {
+                    case "HKEY_LOCAL_MACHINE":
+                        key = Registry.LocalMachine.CreateSubKey(sKey, true);
+                        break;
+                    case "HKEY_CURRENT_USER":
+                        key = Registry.CurrentUser.CreateSubKey(sKey, true);
+                        break;
+                    case "HKEY_USERS":
+                        key = Registry.Users.CreateSubKey(sKey, true);
+                        break;
+                }
+            }
+
+            if (regType == RegType.Binary)
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(val);
+                key.SetValue(subKey, bytes, (RegistryValueKind)(int)regType);
+            }
+            else
+            {
+                key.SetValue(subKey, value, (RegistryValueKind)(int)regType);
+            }
+
             key.Close();
         }
 

@@ -48,7 +48,6 @@ namespace Nucleus.Coop
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -601,7 +600,7 @@ namespace Nucleus.Coop
             "Numpad 7",
             "Numpad 8",
             "Numpad 9"});
-            this.comboBox_lockKey.Location = new System.Drawing.Point(102, 89);
+            this.comboBox_lockKey.Location = new System.Drawing.Point(102, 92);
             this.comboBox_lockKey.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox_lockKey.Name = "comboBox_lockKey";
             this.comboBox_lockKey.Size = new System.Drawing.Size(123, 21);
@@ -610,7 +609,7 @@ namespace Nucleus.Coop
             // 
             // label_lockKey
             // 
-            this.label_lockKey.Location = new System.Drawing.Point(8, 90);
+            this.label_lockKey.Location = new System.Drawing.Point(8, 93);
             this.label_lockKey.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_lockKey.Name = "label_lockKey";
             this.label_lockKey.Size = new System.Drawing.Size(86, 15);
@@ -1984,28 +1983,17 @@ namespace Nucleus.Coop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.BackColor = System.Drawing.Color.Transparent;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(572, 336);
-            this.ControlBox = false;
             this.Controls.Add(this.setting_Label);
             this.Controls.Add(this.settingsSaveBtn);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.settingsCloseBtn);
             this.Controls.Add(this.btn_credits);
-            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "Settings";
-            this.ShowIcon = false;
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Settings";
-            this.TopMost = true;
+            this.Size = new System.Drawing.Size(572, 336);
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
