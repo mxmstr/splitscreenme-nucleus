@@ -101,8 +101,6 @@ namespace Nucleus.Coop
         private Bitmap players16;
         private Bitmap customLayout;
 
-        private Color handlerNoteZoomFontColor;
-
         private Brush[] colors;
         private SolidBrush myBrush;
         private Pen PositionPlayerScreenPen;
@@ -126,9 +124,7 @@ namespace Nucleus.Coop
             string themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
             string[] rgb_PositionControlsFontColor = theme.IniReadValue("Colors", "SetupScreenFont").Split(',');
             string[] rgb_PositionScreenColor = theme.IniReadValue("Colors", "SetupScreenBorder").Split(',');
-            string[] rgb_PositionPlayerScreenColor = theme.IniReadValue("Colors", "SetupScreenPlayerBorder").Split(',');
-            string[] rgb_handlerNoteZoomFontColor = theme.IniReadValue("Colors", "HandlerNoteMagnifierFont").Split(',');
-            handlerNoteZoomFontColor = (Color.FromArgb(Convert.ToInt32(rgb_handlerNoteZoomFontColor[0]), Convert.ToInt32(rgb_handlerNoteZoomFontColor[1]), Convert.ToInt32(rgb_handlerNoteZoomFontColor[2])));           
+            string[] rgb_PositionPlayerScreenColor = theme.IniReadValue("Colors", "SetupScreenPlayerBorder").Split(',');     
             controllerIdentification = Convert.ToBoolean(theme.IniReadValue("Misc", "ControllerIdentificationOn"));
             UseSetupScreenBorder = Convert.ToBoolean(theme.IniReadValue("Misc", "UseSetupScreenBorder"));
             UseLayoutSelectionBorder = Convert.ToBoolean(theme.IniReadValue("Misc", "UseLayoutSelectionBorder"));
@@ -219,7 +215,7 @@ namespace Nucleus.Coop
             textZoomContainer.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             textZoomContainer.BorderStyle = BorderStyle.None;
             textZoomContainer.BackgroundImageLayout = ImageLayout.Stretch;
-            textZoomContainer.BackgroundImage = new Bitmap(themePath + "\\right_panel.png");
+           
 
             ResumeLayout();
 
@@ -364,7 +360,6 @@ namespace Nucleus.Coop
             gamepadTimer.Dispose();
             gamepadPollTimer.Dispose();
         }
-
 
         private void GamepadPollTimer_Tick(object state)
         {

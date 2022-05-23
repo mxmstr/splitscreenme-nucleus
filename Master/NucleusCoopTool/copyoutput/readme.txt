@@ -1,4 +1,4 @@
-Nucleus Co-op - version 2.1
+Nucleus Co-op - version 2.1.1
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy.
 
@@ -372,6 +372,7 @@ Context.CreateRegKey(string baseKey, string sKey, string subKey)				//Create a r
 Context.DeleteRegKey(string baseKey, string sKey, string subKey)				//Delete a registry key for current user, baseKey can either be "HKEY_LOCAL_MACHINE" or "HKEY_CURRENT_USER".
 Context.EditRegKey(string baseKey, string sKey, string name, object data, RegType type)	//Edit a registry key for current user, baseKey can either be "HKEY_LOCAL_MACHINE" or "HKEY_CURRENT_USER".
 	EditRegKey uses a custom registry data type to use, by using Nucleus.RegType.DWord for example. The last word can be of the same name of RegistryValueKind enum.
+Context.EditRegKeyNoBackup                                                                      //Edit a registry key for current user without Nucleus creating a backup of the registry or before it creates one. Must be placed before any "Context.EditRegKey" line in handler for it to work.
 Context.Nickname										//Use this in a game handler to get the player's nickname
 Context.EpicLang                                                                                //Can be use to edit NemirtingasEpicEmu.json  //Can be use in start argument to setup user Epic language parameter //ex: Context.StartArguments = ' -AlwaysFocus -nosplash -nomoviestartup -nomouse' + Context.EpicLang; (if Epic Language is set to "en" return => "-epiclocale=en", Should not be necessary in most cases)
 Context.GamepadGuid                                                                             //Get the raw gamepad guid
@@ -453,11 +454,17 @@ Known Issues: ------------------------------------------------------------------
 
 Changelog: -----------------------------------------------------------------------------------------
 
-v2.1.1? - xx
+v2.1.1 - May X, 2022
 
  - Added Steamless command line version support: "Game.UseSteamless = true;", "Game.SteamlessArgs = "";", "Game.SteamlessTiming = 2500;". 
  - Fixed nicknames not working when using "Game.GoldbergExperimentalSteamClient = true;".
- - Fixed steam player ids setting to 0 when using "Game.PlayerSteamIDs = [];".
+ - Fixed Player Steam IDs setting to 0 when using "Game.PlayerSteamIDs = [];".
+ - Added game descriptions, they get downloaded to gui\descriptions.
+ - Added new line Context.EditRegKeyNoBackup, will not create a backup of the registry when editing.
+ - Fixed an unknown bug breaking the Nucleus window shape in some cases (maximizing without using the app maximizing button).
+ - Fixed changing the default text editor in Settings.ini not working.
+ - Added blur to background images, the blur can be disabled by setting Blur = 0 in Settings.ini.
+ - Other minor UI improvements and changes.
 
 v2.1 - May 5, 2022
  - Added Context.HandlersFolder (path to the root of Nucleus Co-op handlers folder: NucleusCo-op\handlers). 

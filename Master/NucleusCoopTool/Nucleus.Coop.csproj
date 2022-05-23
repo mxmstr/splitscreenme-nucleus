@@ -471,14 +471,8 @@
     <Content Include="copyoutput\utils\XInputPlus\XInputPlus.exe" />
     <Content Include="copyoutput\utils\XInputPlus\ìXÉVùÜù=.txt" />
     <Content Include="copyoutput\utils\XInputPlus\òKé+é¿ô¦é¦é¡é+é¦éó.txt" />
-    <Content Include="gui\covers\covers here.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="gui\icons\default.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\screenshots\screenshots here.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\16players.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

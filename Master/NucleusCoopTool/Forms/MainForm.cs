@@ -33,7 +33,7 @@ namespace Nucleus.Coop
     {
         private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         private IniFile iconsIni;
-        public string version = "v2.1";
+        public string version = "v"+ Globals.Version;
         private string faq_link = "https://www.splitscreen.me/docs/faq";
         private string gameDescription;
         protected string api = "https://hub.splitscreen.me/api/v1/";
@@ -114,7 +114,7 @@ namespace Nucleus.Coop
         public string[] rgb_ButtonsBorderColor;
         public string[] rgb_ThirdPartyToolsLinks;
         public string[] rgb_HandlerNoteBackColor;
-        public string[] rgb_HandlerNoteTitleBackColor;
+        public string[] rgb_HandlerNoteMagnifierTitleBackColor;
        
         public Color TitleBarColor;
         public Color MouseOverBackColor;
@@ -123,7 +123,7 @@ namespace Nucleus.Coop
         public Color ButtonsBorderColor;
         private Color HandlerNoteBackColor;
         private Color HandlerNoteFontColor;
-        private Color HandlerNoteTitleBackColor;
+        private Color HandlerNoteMagnifierTitleBackColor;
         private Color HandlerNoteTitleFont;
 
         public FileInfo fontPath;
@@ -391,8 +391,8 @@ namespace Nucleus.Coop
                 rgb_HandlerNoteBackColor = theme.IniReadValue("Colors", "HandlerNoteBack").Split(',');
                 rgb_HandlerNoteFontColor = theme.IniReadValue("Colors", "HandlerNoteFont").Split(',');
                 rgb_HandlerNoteTitleFontColor = theme.IniReadValue("Colors", "HandlerNoteTitleFont").Split(',');
-                rgb_HandlerNoteTitleBackColor = theme.IniReadValue("Colors", "HandlerNoteTitleBackColor").Split(',');
                 rgb_ButtonsBorderColor = theme.IniReadValue("Colors", "ButtonsBorder").Split(',');
+                rgb_HandlerNoteMagnifierTitleBackColor = theme.IniReadValue("Colors", "HandlerNoteMagnifierTitleBackColor ").Split(',');
                 blurValue = Convert.ToInt32(ini.IniReadValue("Dev", "Blur"));
                 float fontSize = float.Parse(theme.IniReadValue("Font", "MainFontSize")); 
                
@@ -405,7 +405,7 @@ namespace Nucleus.Coop
                 MenuStripFontColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripFontColor[0]), Convert.ToInt32(rgb_MenuStripFontColor[1]), Convert.ToInt32(rgb_MenuStripFontColor[2]));
                 HandlerNoteBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteBackColor[0]), Convert.ToInt32(rgb_HandlerNoteBackColor[1]), Convert.ToInt32(rgb_HandlerNoteBackColor[2]));
                 HandlerNoteFontColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteFontColor[0]), Convert.ToInt32(rgb_HandlerNoteFontColor[1]), Convert.ToInt32(rgb_HandlerNoteFontColor[2]));
-                HandlerNoteTitleBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteTitleBackColor[0]), Convert.ToInt32(rgb_HandlerNoteTitleBackColor[1]), Convert.ToInt32(rgb_HandlerNoteTitleBackColor[2]));
+                HandlerNoteMagnifierTitleBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteMagnifierTitleBackColor[0]), Convert.ToInt32(rgb_HandlerNoteMagnifierTitleBackColor[1]), Convert.ToInt32(rgb_HandlerNoteMagnifierTitleBackColor[2]));
                 HandlerNoteTitleFont = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteTitleFontColor[0]), Convert.ToInt32(rgb_HandlerNoteTitleFontColor[1]), Convert.ToInt32(rgb_HandlerNoteTitleFontColor[2]));
                 ButtonsBorderColor = Color.FromArgb(Convert.ToInt32(rgb_ButtonsBorderColor[0]), Convert.ToInt32(rgb_ButtonsBorderColor[1]), Convert.ToInt32(rgb_ButtonsBorderColor[2]));
 
@@ -429,7 +429,7 @@ namespace Nucleus.Coop
                 scriptAuthorTxtSizer.BackColor = Color.Transparent;// HandlerNoteTitleBackColor;
                 scriptAuthorTxtSizer.BackgroundImage =  new Bitmap(themePath + "\\handlerNote_background.png");
                 HandlerNoteTitle.ForeColor = HandlerNoteTitleFont;
-
+                
                 //Controls Pictures
 
                 AppButtons = new Bitmap(themePath + "\\button.png");
@@ -511,7 +511,6 @@ namespace Nucleus.Coop
                 }
 
                 linksPanel.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, linksPanel.Width, linksPanel.Height, 15, 15));
-                //cover.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, cover.Width, cover.Height, 10, 10));
                 scriptAuthorTxtSizer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, scriptAuthorTxtSizer.Width, scriptAuthorTxtSizer.Height, 20, 20));
 
                 if (coverBorderOff)
@@ -546,7 +545,9 @@ namespace Nucleus.Coop
                         handleClickSound(true);
                     }
                 }
-                
+
+                txt_version.Text = version;
+
                 ResumeLayout();
                 
                 minimizeBtn.Click += new EventHandler(this.minimizeButton);
@@ -559,6 +560,10 @@ namespace Nucleus.Coop
 
                 positionsControl = new PositionsControl();
                 
+                positionsControl.textZoomContainer.BackColor = HandlerNoteMagnifierTitleBackColor;// Color.Black;
+                positionsControl.handlerNoteZoom.BackColor = HandlerNoteBackColor;
+                positionsControl.handlerNoteZoom.ForeColor = HandlerNoteFontColor;
+
                 settingsForm = new Settings(this, positionsControl);
                 clientAreaPanel.Controls.Add(settingsForm);
               
@@ -2830,11 +2835,7 @@ namespace Nucleus.Coop
             if (!positionsControl.textZoomContainer.Visible)
             {
                 positionsControl.textZoomContainer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, positionsControl.textZoomContainer.Width, positionsControl.textZoomContainer.Height, 15, 15));
-                positionsControl.textZoomContainer.BackColor = Color.Gray;// Color.Black;
-
                 positionsControl.handlerNoteZoom.Text = scriptAuthorTxt.Text;
-                positionsControl.handlerNoteZoom.BackColor = HandlerNoteBackColor;
-                positionsControl.handlerNoteZoom.ForeColor = HandlerNoteFontColor;
                 positionsControl.handlerNoteZoom.Visible = true;
                 positionsControl.textZoomContainer.Visible = true;
                 btn_magnifier.Image = new Bitmap(themePath + "\\magnifier_close.png");
@@ -2864,7 +2865,6 @@ namespace Nucleus.Coop
             }
 
         }
-
 
     }
 }

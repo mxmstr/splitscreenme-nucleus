@@ -960,6 +960,7 @@ namespace Nucleus.Coop
             this.label_StepTitle.TabIndex = 3;
             this.label_StepTitle.Text = "Select a game";
             this.label_StepTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label_StepTitle.Visible = false;
             // 
             // btnSearch
             // 
@@ -1088,7 +1089,7 @@ namespace Nucleus.Coop
             this.txt_version.Name = "txt_version";
             this.txt_version.Size = new System.Drawing.Size(28, 13);
             this.txt_version.TabIndex = 35;
-            this.txt_version.Text = "v2.1";
+            this.txt_version.Text = "vxxx";
             this.txt_version.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // closeBtn
