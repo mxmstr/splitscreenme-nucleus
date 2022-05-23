@@ -33,7 +33,7 @@ namespace Nucleus.Coop
     {
         private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         private IniFile iconsIni;
-        public string version = "v2.1";
+        public string version = "v"+ Globals.Version;
         private string faq_link = "https://www.splitscreen.me/docs/faq";
         private string gameDescription;
         protected string api = "https://hub.splitscreen.me/api/v1/";
@@ -70,7 +70,7 @@ namespace Nucleus.Coop
         private int TopMost_HotkeyID = 2;
         private int StopSession_HotkeyID = 3;
         private int currentStepIndex;
-
+        public int blurValue;
         private List<string> profilePaths = new List<string>();
         private List<Control> ctrls = new List<Control>();
         private List<Form> backgroundForms = new List<Form>();
@@ -82,6 +82,10 @@ namespace Nucleus.Coop
         private Bitmap coverImg;
         private Bitmap screenshotImg;
         public Bitmap AppButtons;
+        private Bitmap k_Icon;
+        private Bitmap xinputGamepad_Icon;
+        private Bitmap dinputGamepad_Icon;
+
         public bool connected;
         private bool currentlyUpdatingScript = false;
         private bool Splash_On;
@@ -110,8 +114,8 @@ namespace Nucleus.Coop
         public string[] rgb_ButtonsBorderColor;
         public string[] rgb_ThirdPartyToolsLinks;
         public string[] rgb_HandlerNoteBackColor;
-        public string[] rgb_HandlerNoteTitleBackColor;
-
+        public string[] rgb_HandlerNoteMagnifierTitleBackColor;
+       
         public Color TitleBarColor;
         public Color MouseOverBackColor;
         public Color MenuStripBackColor;
@@ -119,10 +123,17 @@ namespace Nucleus.Coop
         public Color ButtonsBorderColor;
         private Color HandlerNoteBackColor;
         private Color HandlerNoteFontColor;
-        private Color HandlerNoteTitleBackColor;
+        private Color HandlerNoteMagnifierTitleBackColor;
         private Color HandlerNoteTitleFont;
 
         public FileInfo fontPath;
+        private Label inputsIconsDesc;
+        private UI.InputIcons icon1;
+        private UI.InputIcons icon2;
+        private UI.InputIcons icon3;
+        private UI.InputIcons icon4;
+        private UI.InputIcons icon5;
+        private UI.InputIcons icon6;
 
         public void CheckNetCon()
         {
@@ -294,9 +305,12 @@ namespace Nucleus.Coop
 
         private void maximizeButton(object sender, EventArgs e)
         {
-            SuspendLayout();
             WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized;
+        }
 
+        private void MainForm_ClientSizeChanged(object sender, EventArgs e)
+        {
+            SuspendLayout();
             if (roundedcorners)
             {
                 if (WindowState == FormWindowState.Maximized)
@@ -309,8 +323,14 @@ namespace Nucleus.Coop
                 }
             }
 
-            positionsControl.handlerNoteZoom.Visible = false;
-            btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
+            if (settingsForm != null) settingsForm.Visible = false;
+
+            if (positionsControl != null)
+            {
+                positionsControl.textZoomContainer.Visible = false;
+                btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
+            }
+
             ResumeLayout();
         }
 
@@ -371,8 +391,9 @@ namespace Nucleus.Coop
                 rgb_HandlerNoteBackColor = theme.IniReadValue("Colors", "HandlerNoteBack").Split(',');
                 rgb_HandlerNoteFontColor = theme.IniReadValue("Colors", "HandlerNoteFont").Split(',');
                 rgb_HandlerNoteTitleFontColor = theme.IniReadValue("Colors", "HandlerNoteTitleFont").Split(',');
-                rgb_HandlerNoteTitleBackColor = theme.IniReadValue("Colors", "HandlerNoteTitleBackColor").Split(',');
                 rgb_ButtonsBorderColor = theme.IniReadValue("Colors", "ButtonsBorder").Split(',');
+                rgb_HandlerNoteMagnifierTitleBackColor = theme.IniReadValue("Colors", "HandlerNoteMagnifierTitleBackColor ").Split(',');
+                blurValue = Convert.ToInt32(ini.IniReadValue("Dev", "Blur"));
                 float fontSize = float.Parse(theme.IniReadValue("Font", "MainFontSize")); 
                
                 bool coverBorderOff = Convert.ToBoolean(theme.IniReadValue("Misc", "DisableCoverBorder"));
@@ -384,7 +405,7 @@ namespace Nucleus.Coop
                 MenuStripFontColor = Color.FromArgb(Convert.ToInt32(rgb_MenuStripFontColor[0]), Convert.ToInt32(rgb_MenuStripFontColor[1]), Convert.ToInt32(rgb_MenuStripFontColor[2]));
                 HandlerNoteBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteBackColor[0]), Convert.ToInt32(rgb_HandlerNoteBackColor[1]), Convert.ToInt32(rgb_HandlerNoteBackColor[2]));
                 HandlerNoteFontColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteFontColor[0]), Convert.ToInt32(rgb_HandlerNoteFontColor[1]), Convert.ToInt32(rgb_HandlerNoteFontColor[2]));
-                HandlerNoteTitleBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteTitleBackColor[0]), Convert.ToInt32(rgb_HandlerNoteTitleBackColor[1]), Convert.ToInt32(rgb_HandlerNoteTitleBackColor[2]));
+                HandlerNoteMagnifierTitleBackColor = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteMagnifierTitleBackColor[0]), Convert.ToInt32(rgb_HandlerNoteMagnifierTitleBackColor[1]), Convert.ToInt32(rgb_HandlerNoteMagnifierTitleBackColor[2]));
                 HandlerNoteTitleFont = Color.FromArgb(Convert.ToInt32(rgb_HandlerNoteTitleFontColor[0]), Convert.ToInt32(rgb_HandlerNoteTitleFontColor[1]), Convert.ToInt32(rgb_HandlerNoteTitleFontColor[2]));
                 ButtonsBorderColor = Color.FromArgb(Convert.ToInt32(rgb_ButtonsBorderColor[0]), Convert.ToInt32(rgb_ButtonsBorderColor[1]), Convert.ToInt32(rgb_ButtonsBorderColor[2]));
 
@@ -405,9 +426,10 @@ namespace Nucleus.Coop
                 ForeColor = Color.FromArgb(Convert.ToInt32(rgb_font[0]), Convert.ToInt32(rgb_font[1]), Convert.ToInt32(rgb_font[2]));
                 scriptAuthorTxt.BackColor = HandlerNoteBackColor;
                 scriptAuthorTxt.ForeColor = HandlerNoteFontColor;
-                scriptAuthorTxtSizer.BackColor = HandlerNoteTitleBackColor;
+                scriptAuthorTxtSizer.BackColor = Color.Transparent;// HandlerNoteTitleBackColor;
+                scriptAuthorTxtSizer.BackgroundImage =  new Bitmap(themePath + "\\handlerNote_background.png");
                 HandlerNoteTitle.ForeColor = HandlerNoteTitleFont;
-
+                
                 //Controls Pictures
 
                 AppButtons = new Bitmap(themePath + "\\button.png");
@@ -416,6 +438,8 @@ namespace Nucleus.Coop
                 mainButtonFrame.BackgroundImage = new Bitmap(themePath + "\\main_buttons_frame.png");
                 rightFrame.BackgroundImage = new Bitmap(themePath + "\\right_panel.png");
                 game_listSizer.BackgroundImage = new Bitmap(themePath + "\\game_list.png");
+                btn_textSwitcher.BackgroundImage = new Bitmap(themePath + "\\text_switcher.png");
+               
                 btnAutoSearch.BackgroundImage = AppButtons;
                 button_UpdateAvailable.BackgroundImage = AppButtons;
                 btnSearch.BackgroundImage = AppButtons;
@@ -423,8 +447,7 @@ namespace Nucleus.Coop
                 btn_Download.BackgroundImage = AppButtons;
                 btn_Play.BackgroundImage = AppButtons;
                 btn_Extract.BackgroundImage = AppButtons;
-                btn_GameDesc.BackgroundImage = AppButtons;
-                btn_scriptAuthorTxt.BackgroundImage = AppButtons;
+                btn_gameOptions.BackgroundImage = new Bitmap(themePath + "\\game_options.png");
                 btnBack.BackgroundImage = new Bitmap(themePath + "\\arrow_left.png");
                 btn_Next.BackgroundImage = new Bitmap(themePath + "\\arrow_right.png");
                 coverFrame.BackgroundImage = new Bitmap(themePath + "\\cover_layer.png");
@@ -442,11 +465,14 @@ namespace Nucleus.Coop
                 maximizeBtn.BackgroundImage = new Bitmap(themePath + "\\title_maximize.png");
                 minimizeBtn.BackgroundImage = new Bitmap(themePath + "\\title_minimize.png");
                 btn_settings.BackgroundImage = new Bitmap(themePath + "\\title_settings.png");
-                btn_dlFromHub.BackgroundImage = new Bitmap(themePath + "\\dlhub_btn.png");
+                btn_dlFromHub.BackgroundImage = AppButtons; // new Bitmap(themePath + "\\dlhub_btn.png");
                 glowingLine0.Image = new Bitmap(themePath + "\\lightbar_top.gif");
                 StepPanel.BackgroundImage = new Bitmap(themePath + "\\setup_screen.png");
                 btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
-                //
+                k_Icon = new Bitmap(themePath + "\\keyboard_icon.png");
+                xinputGamepad_Icon = new Bitmap(themePath + "\\xinput_icon.png");
+                dinputGamepad_Icon = new Bitmap(themePath + "\\dinput_icon.png");
+
                 btn_Extract.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 btnAutoSearch.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 button_UpdateAvailable.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
@@ -456,8 +482,6 @@ namespace Nucleus.Coop
                 btn_Play.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 btnBack.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 btn_Next.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-                btn_GameDesc.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
-                btn_scriptAuthorTxt.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 btn_dlFromHub.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 gameContextMenuStrip.BackColor = MenuStripBackColor;
                 gameContextMenuStrip.ForeColor = MenuStripFontColor;
@@ -466,7 +490,6 @@ namespace Nucleus.Coop
                 {
                     btnAutoSearch.FlatAppearance.BorderSize = 1;
                     btnAutoSearch.FlatAppearance.BorderColor = ButtonsBorderColor;
-
                     button_UpdateAvailable.FlatAppearance.BorderSize = 1;
                     button_UpdateAvailable.FlatAppearance.BorderColor = ButtonsBorderColor;
                     btnSearch.FlatAppearance.BorderSize = 1;
@@ -479,10 +502,6 @@ namespace Nucleus.Coop
                     btn_Play.FlatAppearance.BorderColor = ButtonsBorderColor;
                     btn_Extract.FlatAppearance.BorderSize = 1;
                     btn_Extract.FlatAppearance.BorderColor = ButtonsBorderColor;
-                    btn_GameDesc.FlatAppearance.BorderSize = 1;
-                    btn_GameDesc.FlatAppearance.BorderColor = ButtonsBorderColor;
-                    btn_scriptAuthorTxt.FlatAppearance.BorderSize = 1;
-                    btn_scriptAuthorTxt.FlatAppearance.BorderColor = ButtonsBorderColor;
                     btnBack.FlatAppearance.BorderSize = 1;
                     btnBack.FlatAppearance.BorderColor = ButtonsBorderColor;
                     btn_Next.FlatAppearance.BorderSize = 1;
@@ -491,6 +510,8 @@ namespace Nucleus.Coop
                     btn_dlFromHub.FlatAppearance.BorderColor = ButtonsBorderColor;
                 }
 
+                linksPanel.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, linksPanel.Width, linksPanel.Height, 15, 15));
+                scriptAuthorTxtSizer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, scriptAuthorTxtSizer.Width, scriptAuthorTxtSizer.Height, 20, 20));
 
                 if (coverBorderOff)
                 {
@@ -525,7 +546,8 @@ namespace Nucleus.Coop
                     }
                 }
 
-       
+                txt_version.Text = version;
+
                 ResumeLayout();
                 
                 minimizeBtn.Click += new EventHandler(this.minimizeButton);
@@ -538,7 +560,13 @@ namespace Nucleus.Coop
 
                 positionsControl = new PositionsControl();
                 
-                Settings settingsForm = new Settings(this, positionsControl);
+                positionsControl.textZoomContainer.BackColor = HandlerNoteMagnifierTitleBackColor;// Color.Black;
+                positionsControl.handlerNoteZoom.BackColor = HandlerNoteBackColor;
+                positionsControl.handlerNoteZoom.ForeColor = HandlerNoteFontColor;
+
+                settingsForm = new Settings(this, positionsControl);
+                clientAreaPanel.Controls.Add(settingsForm);
+              
                 positionsControl.Paint += PositionsControl_Paint;
 
                 settingsForm.RegHotkeys(this);
@@ -556,7 +584,18 @@ namespace Nucleus.Coop
 
                 getId = new ScriptDownloader(this);
                 downloadPrompt = new DownloadPrompt(hubHandler, this, null, true);
-               
+
+                inputsIconsDesc = new Label();
+                inputsIconsDesc.AutoSize = true;
+                inputsIconsDesc.Visible = false;
+                inputsIconsDesc.BackColor = Color.Transparent;
+                inputsIconsDesc.ForeColor = Color.FromArgb(Convert.ToInt32(rgb_font[0]), Convert.ToInt32(rgb_font[1]), Convert.ToInt32(rgb_font[2]));
+                inputsIconsDesc.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                inputsIconsDesc.Font = new Font(customFont, 9.25f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                inputsIconsDesc.Text = "";
+                rightFrame.Controls.Add(inputsIconsDesc);
+
                 hubShowcase = new HubShowcase(this)
                 {
                     Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
@@ -648,12 +687,13 @@ namespace Nucleus.Coop
           
             if (connected)
             {
-                //stepPanelPictureBox.Visible = false;             
+                           
                 btn_noHub.Visible = false;
                 btn_downloadAssets.Enabled = true;
                 btn_Download.Enabled = true;
-                DisposeTimer.Dispose();
                 //Showcase_UI();
+                DisposeTimer.Dispose();
+               
             }
             else
             {
@@ -898,6 +938,7 @@ namespace Nucleus.Coop
             try
             {
                 getId.Main_Showcase();
+                stepPanelPictureBox.Visible = false;  
             }
             catch (Exception ex)
             {
@@ -960,11 +1001,29 @@ namespace Nucleus.Coop
                     try
                     {
                         hubHandler = getId.GetHandler(game.Game.GetHubId());
+
                         string _covers = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{hubHandler.GameCover}.jpg";
 
                         if (hubHandler.Id != null)
                         {
                             getAssets.SaveCovers(_covers, game.GameGuid);
+                            try
+                            {
+                                if (!File.Exists(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + game.GameGuid + ".txt")))
+                                {
+                                    using (FileStream stream = new FileStream(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + game.GameGuid + ".txt"), FileMode.Create))
+                                    {
+                                        using (StreamWriter writer = new StreamWriter(stream))
+                                        {
+                                            string json = JsonConvert.SerializeObject(hubHandler.GameDescription);
+                                            writer.Write(json);
+                                            stream.Flush();
+                                        }
+                                    }
+                                }
+
+                            }
+                            catch { }
                         }
                     }
                     catch (Exception)
@@ -1008,6 +1067,8 @@ namespace Nucleus.Coop
             currentGameInfo = currentControl.UserGameInfo;
             positionsControl.handlerNoteZoom.Visible = false;
             btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
+            btn_textSwitcher.Visible = false;
+
             if (currentGameInfo == null)
             {
                 btn_gameOptions.Visible = false;
@@ -1017,21 +1078,20 @@ namespace Nucleus.Coop
             else
             {
                 currentGame = currentGameInfo.Game;
+                HandlerNoteTitle.Text = "Handler Notes";
                 hubShowcase.Dispose();
-
+                positionsControl.textZoomContainer.Visible = false;
                 if (!stepPanelPictureBoxDispose)
                 {
                     stepPanelPictureBox.Dispose();
                     rightFrame.Visible = true;
                     btn_gameOptions.Visible = true;
-                    btn_scriptAuthorTxt.Visible = true;
                     stepPanelPictureBoxDispose = true;
                     StepPanel.Visible = true;
                 }
 
+                icons_Container.Controls.Clear();
                 button_UpdateAvailable.Visible = false;
-
-                gameDescription = "";
 
                 string name = currentGame.GUID;
                 try
@@ -1063,52 +1123,78 @@ namespace Nucleus.Coop
                         string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, @"gui\screenshots\" + name)));
                         Random rNum = new Random();
                         int RandomIndex = rNum.Next(0, imgsPath.Count());
+                       
 
                         screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + name + "\\" + RandomIndex + "_" + name + ".jpeg"));   //name(1) => directory name ; name(2) = partial image name 
+                        var blur = new GaussianBlur(screenshotImg as Bitmap);
+                        var result = blur.Process(blurValue);
+                        clientAreaPanel.BackgroundImage = result;
                         clientAreaPanel.SuspendLayout();
-                        clientAreaPanel.BackgroundImage = screenshotImg;
+                        clientAreaPanel.BackgroundImage = result;
                         clientAreaPanel.ResumeLayout();
                     }
                     else
                     {
+                        var blur = new GaussianBlur(defBackground as Bitmap);
+                        var result = blur.Process(blurValue);
                         clientAreaPanel.SuspendLayout();
-                        clientAreaPanel.BackgroundImage = defBackground;
+                        clientAreaPanel.BackgroundImage = result;
                         clientAreaPanel.ResumeLayout();
                     }
+
+
+                    Size iconsSize = new Size(icons_Container.Height + 6, icons_Container.Height - 2);
+                    Size playersIconsSize = new Size(icons_Container.Height, icons_Container.Height);
+
+                    if ((currentGame.Hook.XInputEnabled && !currentGame.Hook.XInputReroute && !currentGame.ProtoInput.DinputDeviceHook) || currentGame.ProtoInput.XinputHook)
+                    {
+                        icon1 = new UI.InputIcons(iconsSize, xinputGamepad_Icon);
+                        icon1.MouseEnter += inputIcons_MouseEnter;
+                        icon1.MouseLeave += inputIcons_MouseLeave;
+                        icons_Container.Controls.Add(icon1);                       
+                    }
+
+                    if ((currentGame.Hook.DInputEnabled || currentGame.Hook.XInputReroute || currentGame.ProtoInput.DinputDeviceHook) && (currentGame.Hook.XInputEnabled || currentGame.ProtoInput.XinputHook))
+                    {
+                        icon2 = new UI.InputIcons(iconsSize, dinputGamepad_Icon);
+                        icon2.MouseEnter += inputIcons_MouseEnter;
+                        icon2.MouseLeave += inputIcons_MouseLeave;
+                        icons_Container.Controls.Add(icon2);                       
+                    }
+                    else if ((currentGame.Hook.DInputEnabled || currentGame.Hook.XInputReroute || currentGame.ProtoInput.DinputDeviceHook) && (!currentGame.Hook.XInputEnabled || !currentGame.ProtoInput.XinputHook))
+                    {
+                        icon3 = new UI.InputIcons(iconsSize, dinputGamepad_Icon);
+                        icon3.MouseEnter += inputIcons_MouseEnter;
+                        icon3.MouseLeave += inputIcons_MouseLeave;
+                        icons_Container.Controls.Add(icon3);                      
+                    }
+
+                    if (currentGame.SupportsKeyboard)
+                    {
+                        icon4 = new UI.InputIcons(iconsSize, k_Icon);
+                        icon4.MouseEnter += inputIcons_MouseEnter;
+                        icon4.MouseLeave += inputIcons_MouseLeave;
+                        icons_Container.Controls.Add(icon4);
+                    }
+
+                    if (currentGame.SupportsMultipleKeyboardsAndMice) //Raw mice/keyboards
+                    {
+                        icon5 = new UI.InputIcons(iconsSize, k_Icon);
+                        icon6 = new UI.InputIcons(iconsSize, k_Icon);
+                        icon5.MouseEnter += inputIcons_MouseEnter;
+                        icon5.MouseLeave += inputIcons_MouseLeave;
+                        icon6.MouseEnter += inputIcons_MouseEnter;
+                        icon6.MouseLeave += inputIcons_MouseLeave;
+                        icons_Container.Controls.Add(icon5);
+                        icons_Container.Controls.Add(icon6);                     
+                    }
+
+                    
                 }
 
                 catch (Exception)
                 { }
             }
-
-            //if (connected)
-            //{ 
-            //    try//get game description (online)
-            //    {
-            //        hubHandler = getId.GetHandler(currentGameInfo.Game.GetHubId());
-            //        gameDescription = hubHandler.GameDescription;
-
-            //        if (gameDescription.EndsWith("."))
-            //        {
-            //            txt_GameDesc.Text = hubHandler.GameDescription;
-            //            btn_GameDesc.Enabled = true;
-            //            btn_GameDesc.Visible = true;
-            //        }
-            //        else
-            //        {
-            //            btn_GameDesc.Enabled = false;
-            //            txt_GameDescSizer.Visible = false;
-            //            txt_GameDesc.Visible = false;                        
-            //        }
-            //    }
-            //    catch (Exception)
-            //    {
-            //        btn_GameDesc.Enabled = false;
-            //        txt_GameDescSizer.Visible = false;
-            //        txt_GameDesc.Visible = false;
-            //    }
-            // }
-
 
             btn_Play.Enabled = false;
 
@@ -1134,7 +1220,6 @@ namespace Nucleus.Coop
 
             if (currentGame.Description?.Length > 0)
             {
-                btn_scriptAuthorTxt.Enabled = true;
                 SuspendLayout();
                 scriptAuthorTxt.Text = currentGame.Description;
                 ResumeLayout();
@@ -1143,9 +1228,12 @@ namespace Nucleus.Coop
             }
             else
             {
-                btn_scriptAuthorTxt.Enabled = false;
                 scriptAuthorTxtSizer.Visible = false;
                 scriptAuthorTxt.Visible = false;
+            }
+            if (File.Exists(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + currentGame.GUID + ".txt")))
+            {
+                btn_textSwitcher.Visible = true;
             }
 
             if (content != null)
@@ -1157,6 +1245,36 @@ namespace Nucleus.Coop
             content = new ContentManager(currentGame);
 
             GoToStep(0);
+        }
+        private void inputIcons_MouseLeave(object sender, EventArgs e)
+        {       
+            inputsIconsDesc.Visible = false;
+            inputsIconsDesc.Text = "";
+        }
+        private void inputIcons_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox inputIcon = sender as PictureBox;
+
+            if (inputIcon.Equals(icon1))
+            {
+                inputsIconsDesc.Text = "Supports xinput gamepads (e.g., X360)";
+            }
+            else if (inputIcon.Equals(icon2) || inputIcon.Equals(icon3))
+            {
+                inputsIconsDesc.Text = "Supports dinput gamepads (e.g., Ps3)";
+            }
+            else if (inputIcon.Equals(icon4))
+            {
+                inputsIconsDesc.Text = @"Supports 1 keyboard\mouse";
+            }
+            else if (inputIcon.Equals(icon5) || inputIcon.Equals(icon6))
+            {
+                inputsIconsDesc.Text = @"Supports multiple keyboards/mice";
+            }
+
+            inputsIconsDesc.Location = new Point((int)icons_Container.Left - 5, icons_Container.Bottom);
+            inputsIconsDesc.BringToFront();
+            inputsIconsDesc.Visible = true;
         }
 
         private void EnablePlay()
@@ -1195,21 +1313,9 @@ namespace Nucleus.Coop
 
         private void KillCurrentStep()
         {
-
-            if (currentGameInfo.Game.Description?.Length > 0)
-            {
-                btn_scriptAuthorTxt.Visible = true;
-            }
-
-            if (gameDescription?.Length > 0 && connected)
-            {
-                txt_GameDesc.Text = hubHandler.GameDescription;
-                btn_GameDesc.Enabled = true;
-            }
-
             foreach (Control c in StepPanel.Controls)
             {
-                if (!c.Name.Equals("btn_GameDesc") && !c.Name.Equals("scriptAuthorTxt") && !c.Name.Equals("txt_GameDescSizer"))
+                if (!c.Name.Equals("scriptAuthorTxtSizer"))
                 {
                     StepPanel.Controls.Remove(c);
                 }
@@ -1664,16 +1770,16 @@ namespace Nucleus.Coop
 
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
-            if (!SettingsLoaded)
-            {
-                settingsForm = new Settings(this, positionsControl);
-                settingsForm.Show();
-                SettingsLoaded = true;
+            if (!settingsForm.Visible)
+            {   
+                settingsForm.Location = new Point(Width / 2 - settingsForm.Width / 2, Height / 2 - settingsForm.Height / 2);
+                settingsForm.BringToFront();
+                settingsForm.Visible = true;
             }
             else
             {
-                settingsForm.Location = new Point(Location.X + Width / 2 - settingsForm.Width / 2, Location.Y + Height / 2 - settingsForm.Height / 2);
-                settingsForm.Visible = true;
+              
+                settingsForm.Visible = false;
             }
         }
 
@@ -2293,9 +2399,11 @@ namespace Nucleus.Coop
                 }
            
             }
-            catch
+            catch(Exception ex)
             {
                 Process.Start("notepad.exe", Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName));
+                Console.WriteLine(ex);
+                Console.WriteLine($"{ini.IniReadValue("Dev", "TextEditorPath")}", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
             }
         }
 
@@ -2417,28 +2525,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private void btn_scriptAuthorTxt_Click(object sender, EventArgs e)
-        {
-            if (scriptAuthorTxtSizer.Visible)
-            {
-                scriptAuthorTxtSizer.Visible = false;
-                scriptAuthorTxt.Visible = false;
-                txt_GameDescSizer.Visible = true;
-                txt_GameDesc.Visible = true;
-            }
-        }
-
-        private void btn_GameDesc_Click(object sender, EventArgs e)
-        {
-            if (txt_GameDescSizer.Visible)
-            {
-                scriptAuthorTxtSizer.Visible = true;
-                scriptAuthorTxt.Visible = true;
-                txt_GameDescSizer.Visible = false;
-                txt_GameDesc.Visible = false;
-            }
-        }
-
         private void btn_Download_Click(object sender, EventArgs e)
         {
             getId.ShowDialog();
@@ -2528,6 +2614,7 @@ namespace Nucleus.Coop
             }
             else
             {
+                linksPanel.BringToFront();
                 linksPanel.Visible = true;
                 btn_Links.BackgroundImage = new Bitmap(themePath + "\\title_dropdown_opened.png");
             }
@@ -2542,7 +2629,6 @@ namespace Nucleus.Coop
 
         private void this_Click(object sender, System.EventArgs e)
         {
-
             linksPanel.Visible = false;
             btn_Links.BackgroundImage = new Bitmap(themePath + "\\title_dropdown_closed.png");
 
@@ -2746,19 +2832,39 @@ namespace Nucleus.Coop
 
         private void btn_magnifier_Click(object sender, EventArgs e)
         {
-            if (!positionsControl.handlerNoteZoom.Visible)
+            if (!positionsControl.textZoomContainer.Visible)
             {
-                positionsControl.handlerNoteZoom.Text = currentGame.Description;
-                positionsControl.handlerNoteZoom.Location = new Point(positionsControl.Width / 2 - positionsControl.handlerNoteZoom.Width / 2, positionsControl.instruction.Height + 10);
-                positionsControl.handlerNoteZoom.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, positionsControl.handlerNoteZoom.Width, positionsControl.handlerNoteZoom.Height, 15, 15));
+                positionsControl.textZoomContainer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, positionsControl.textZoomContainer.Width, positionsControl.textZoomContainer.Height, 15, 15));
+                positionsControl.handlerNoteZoom.Text = scriptAuthorTxt.Text;
                 positionsControl.handlerNoteZoom.Visible = true;
+                positionsControl.textZoomContainer.Visible = true;
                 btn_magnifier.Image = new Bitmap(themePath + "\\magnifier_close.png");
             }
             else
             {
-                positionsControl.handlerNoteZoom.Visible = false;
+                positionsControl.textZoomContainer.Visible = false;
                 btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
             }
         }
+
+        private void btn_textSwitcher_Click(object sender, EventArgs e)
+        {
+            if (!positionsControl.textZoomContainer.Visible && File.Exists(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + currentGame.GUID + ".txt")))
+            {
+                StreamReader desc = new StreamReader(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + currentGame.GUID + ".txt"));
+                if (HandlerNoteTitle.Text == "Handler Notes")
+                {
+                    HandlerNoteTitle.Text = "Game Description";
+                    scriptAuthorTxt.Text = desc.ReadToEnd();
+                }
+                else
+                {
+                    HandlerNoteTitle.Text = "Handler Notes";
+                    scriptAuthorTxt.Text = currentGame.Description;
+                }
+            }
+
+        }
+
     }
 }

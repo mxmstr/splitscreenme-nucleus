@@ -10,7 +10,7 @@ namespace Nucleus.Coop
 {
     internal static class StartChecks
     {
-        
+
         static bool isRunning = false;
         private static void ExportRegistry(string strKey, string filepath)
         {
@@ -32,7 +32,6 @@ namespace Nucleus.Coop
             }
             catch (Exception)
             {
-                // handle exception
             }
         }
 
@@ -75,6 +74,11 @@ namespace Nucleus.Coop
             if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\screenshots")))
             {
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\screenshots")));
+            }
+
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\descriptions")))
+            {
+                Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\descriptions")));
             }
         }
 
@@ -199,5 +203,31 @@ namespace Nucleus.Coop
             return true;
         }
 
+        public static void CheckForUpdate()
+        {
+            try
+            {
+
+                using (Process proc = new Process())
+                {
+                    proc.StartInfo.FileName = Path.Combine(Application.StartupPath, @"utils\NC_Updater\NC_Updater.exe");
+                    proc.StartInfo.UseShellExecute = false;
+                    //proc.StartInfo.RedirectStandardOutput = true;
+                   // proc.StartInfo.RedirectStandardError = true;
+                    proc.StartInfo.CreateNoWindow = false;
+                    //proc.StartInfo.Arguments = "-quiet";
+                    proc.Start();
+                    Console.WriteLine(proc.ProcessName);
+                    //string stdout = proc.StandardOutput.ReadToEnd();
+                    //string stderr = proc.StandardError.ReadToEnd();
+                    //proc.WaitForExit();
+                }
+                Console.WriteLine("Checking for update");
+
+            }
+            catch (Exception)
+            { }
+
+        }
     }
 }

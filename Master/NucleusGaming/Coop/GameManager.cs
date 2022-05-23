@@ -712,7 +712,10 @@ namespace Nucleus.Gaming
                                 proc.Dispose();
                             }
 
-                            File.Delete(regFilePath);
+                            if (!regFilePath.Contains("User Shell Folders"))
+                            {
+                                File.Delete(regFilePath);
+                            }
                         }
                     }
 
