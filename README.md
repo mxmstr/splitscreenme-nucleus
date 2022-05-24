@@ -16,7 +16,7 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
 
-View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op 2.1 here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
+View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 
 # Disclaimer
 Nucleus Co-op was originally created by Lucas Assis.
@@ -60,6 +60,7 @@ Thank you ^_^
 Additional credits to all original developers of third party utilities Nucleus uses:
 - Mr_Goldberg ([Goldberg Emulator](https://gitlab.com/Mr_Goldberg/goldberg_emulator))
 - syahmixp ([SmartSteamEmu](https://github.com/MAXBURAOT/SmartSteamEmu))
+- atom0s ([Steamless](https://github.com/MAXBURAOT/SmartSteamEmu](https://github.com/atom0s/Steamless))
 - EJocys ([x360ce](https://github.com/x360ce/x360ce))
 - 0dd14 Lab ([Xinput Plus](https://sites.google.com/site/0dd14lab/xinput-plus))
 - r1ch ([ForceBindIP](https://r1ch.net/projects/forcebindip))
