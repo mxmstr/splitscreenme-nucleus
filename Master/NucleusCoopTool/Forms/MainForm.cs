@@ -35,7 +35,6 @@ namespace Nucleus.Coop
         private IniFile iconsIni;
         public string version = "v"+ Globals.Version;
         private string faq_link = "https://www.splitscreen.me/docs/faq";
-        private string gameDescription;
         protected string api = "https://hub.splitscreen.me/api/v1/";
         private string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
