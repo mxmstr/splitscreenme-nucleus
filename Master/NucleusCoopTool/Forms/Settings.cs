@@ -11,16 +11,18 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
    
-    public partial class Settings : BaseForm, IDynamicSized
+    public partial class Settings : UserControl, IDynamicSized
     {
 
         private MainForm mainForm = null;
+        private IniFile ini;
         private PositionsControl positionsControl;
         private ComboBox[] controllerNicks;
         private List<string> nicksList = new List<string>();
@@ -36,6 +38,17 @@ namespace Nucleus.Coop
         private string epicLang;
         private string epicLangText;
         private string prevTheme;
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+       (
+          int nLeftRect,     // x-coordinate of upper-left corner
+          int nTopRect,      // y-coordinate of upper-left corner
+          int nRightRect,    // x-coordinate of lower-right corner
+          int nBottomRect,   // y-coordinate of lower-right corner
+          int nWidthEllipse, // width of ellipse
+          int nHeightEllipse // height of ellipse
+       );
         protected override CreateParams CreateParams
         {
             get
@@ -74,24 +87,28 @@ namespace Nucleus.Coop
 
         public Settings(MainForm mf, PositionsControl pc)
         {
-
+            ini = mf.ini;
             fontSize = float.Parse(mf.theme.IniReadValue("Font", "SettingsFontSize"));
-          
-            InitializeComponent();
-           
-            SuspendLayout();
             
+            InitializeComponent();
+            
+            SuspendLayout();
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            tabControl2.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, tabControl2.Width, tabControl2.Height, 5, 5));
             Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
+            Visible = false;
             //form Fore Color
             controlscollect();
+
             foreach (Control control in ctrls)
             {
-                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);              
+                control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             }
-                ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
+           
+            ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
             //
             BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-         
+          
             tabPage1.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             tabPage3.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             tabPage4.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
@@ -376,7 +393,7 @@ namespace Nucleus.Coop
             RefreshAudioList();
 
             DPIManager.Register(this);
-            DPIManager.AddForm(this);
+           // DPIManager.AddForm(this);
             DPIManager.Update(this);
 
         }
@@ -475,11 +492,11 @@ namespace Nucleus.Coop
             ResumeLayout();
         }
 
-        protected override void OnShown(EventArgs e)
-        {
-            base.OnShown(e);
-            DPIManager.Register(this);
-        }
+        //protected override void OnShown(EventArgs e)
+        //{
+        //    base.OnShown(e);
+        //    DPIManager.Register(this);
+        //}
 
         private void GetPlayersNickName()
         {

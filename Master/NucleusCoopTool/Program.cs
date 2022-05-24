@@ -29,6 +29,7 @@ namespace Nucleus.Coop
 
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
+            //StartChecks.CheckForUpdate(); //Uncomment to run Pizzo's Python nc updater on startup
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware
             DPIManager.PreInitialize();
@@ -41,7 +42,7 @@ namespace Nucleus.Coop
             DPIManager.AddForm(form);
             DPIManager.ForceUpdate();
             Settings sform = new Settings();
-            DPIManager.AddForm(sform);
+           // DPIManager.AddForm(sform);
             DPIManager.ForceUpdate();
             SearchDisksForm sdf = new SearchDisksForm(form);
             DPIManager.AddForm(sdf);

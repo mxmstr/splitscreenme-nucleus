@@ -1,4 +1,8 @@
-﻿namespace Nucleus.Gaming.Coop.InputManagement.Logging
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+
+namespace Nucleus.Gaming.Coop.InputManagement.Logging
 {
     internal static class Logger
     {

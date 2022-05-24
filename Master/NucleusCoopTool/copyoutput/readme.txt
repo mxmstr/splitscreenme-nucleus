@@ -1,4 +1,4 @@
-Nucleus Co-op - version 2.1
+Nucleus Co-op - version 2.1.1
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy.
 
@@ -173,7 +173,7 @@ Game.GoldbergNeedSteamInterface = false;		//Some older games require a steam_int
 Game.GoldbergLanguage = "english";			//Manually specify what language you want Goldberg to use for the game | by default, Goldberg will use the language you chose in Steam.
 Game.OrigSteamDllPath = "C:\full path\steam_api.dll";	//If steam_interface.txt is required, provide full path here to the original steam_api(64).dll and Nucleus will create one if it can't find an existing copy.
 Game.GoldbergIgnoreSteamAppId = false;			//When set to true, Goldberg will not create a steam_appid.txt file.
-Game.PlayerSteamIDs = [ "1234","5678" ];		//A list of steam IDs to be used instead of the pre-defined ones Nucleuses uses | IDs will be used in order they are placed, i.e. instance 1 will be first non-empty string in array.
+Game.PlayerSteamIDs = ["76561198134585131","76561198134585132"]; //A list of steam IDs to be used instead of the pre-defined ones Nucleuses uses | IDs will be used in order they are placed, i.e. instance 1 will be first non-empty string in array.
 Game.GoldbergExperimentalRename = false;		//Set to true to have Goldberg Experimental rename instanced steam_api(64).dll to cracksteam_api(64).dll.
 Game.GoldbergWriteSteamIDAndAccount = false;		//Force Goldberg to write account_name.txt and user_steam_id.txt | Requires Game.UseGoldberg;
 
@@ -243,6 +243,9 @@ NemirtingasGalxyEmu.json edition from a handler example:
 
 #################### Additional Tools ####################
 
+Game.UseSteamless = true;                               //Use atom0s' Steamless app to remove Steam Stub DRM from a protected executable.
+Game.SteamlessArgs = "--quiet --keepbind";              //Use this when using Game.UseSteamless = true; always, the command line version of Steamless allows for different launch arguments to be used.
+Game.SteamlessTiming = 2500;                            //The time in milliseconds to give Steamless to patch the game .exe. 2500 is the default value and will be applied even if the timing line has not been added in a handler.
 Game.UseSteamStubDRMPatcher = false;			//Use UberPsyX's Steam Stub DRM Patcher to remove Steam Stub DRM from a protected executable.
 Game.SteamStubDRMPatcherArch = "64";			//Force Steam Stub DRM Patcher to use either the x64 or x86 dll | Values: "64" or "86".
 Game.UseEACBypass = false;				//Replace any EasyAntiCheat_(x86)(x64).dll with a bypass dll.
@@ -369,6 +372,7 @@ Context.CreateRegKey(string baseKey, string sKey, string subKey)				//Create a r
 Context.DeleteRegKey(string baseKey, string sKey, string subKey)				//Delete a registry key for current user, baseKey can either be "HKEY_LOCAL_MACHINE" or "HKEY_CURRENT_USER".
 Context.EditRegKey(string baseKey, string sKey, string name, object data, RegType type)	//Edit a registry key for current user, baseKey can either be "HKEY_LOCAL_MACHINE" or "HKEY_CURRENT_USER".
 	EditRegKey uses a custom registry data type to use, by using Nucleus.RegType.DWord for example. The last word can be of the same name of RegistryValueKind enum.
+Context.EditRegKeyNoBackup                                                                      //Edit a registry key for current user without Nucleus creating a backup of the registry or before it creates one. Must be placed before any "Context.EditRegKey" line in handler for it to work.
 Context.Nickname										//Use this in a game handler to get the player's nickname
 Context.EpicLang                                                                                //Can be use to edit NemirtingasEpicEmu.json  //Can be use in start argument to setup user Epic language parameter //ex: Context.StartArguments = ' -AlwaysFocus -nosplash -nomoviestartup -nomouse' + Context.EpicLang; (if Epic Language is set to "en" return => "-epiclocale=en", Should not be necessary in most cases)
 Context.GamepadGuid                                                                             //Get the raw gamepad guid
@@ -450,7 +454,19 @@ Known Issues: ------------------------------------------------------------------
 
 Changelog: -----------------------------------------------------------------------------------------
 
-v2.1 - xx
+v2.1.1 - May X, 2022
+
+ - Added Steamless command line version support: "Game.UseSteamless = true;", "Game.SteamlessArgs = "";", "Game.SteamlessTiming = 2500;". 
+ - Fixed nicknames not working when using "Game.GoldbergExperimentalSteamClient = true;".
+ - Fixed Player Steam IDs setting to 0 when using "Game.PlayerSteamIDs = [];".
+ - Added game descriptions, they get downloaded to gui\descriptions.
+ - Added new line Context.EditRegKeyNoBackup, will not create a backup of the registry when editing.
+ - Fixed an unknown bug breaking the Nucleus window shape in some cases (maximizing without using the app maximizing button).
+ - Fixed changing the default text editor in Settings.ini not working.
+ - Added blur to background images, the blur can be disabled by setting Blur = 0 in Settings.ini.
+ - Other minor UI improvements and changes.
+
+v2.1 - May 5, 2022
  - Added Context.HandlersFolder (path to the root of Nucleus Co-op handlers folder: NucleusCo-op\handlers). 
  - Fixed app crash when a handler throws an error (sometimes on app close). 
  - Fixed random crashes while clicking on the game list. 
@@ -486,8 +502,11 @@ v2.1 - xx
  - Added new supported inputs UI icons, display what input devices a handler supports.
  - Added Player Steam IDs fields to the Nucleus Nicknames settings tab (now named Players), you can change the instances Player Steam IDs when a handler uses goldberg or SSE via the UI now.
  - Added new Nicknames/Player Steam IDs switcher, you can quickly switch the order of the nicknames and Player Steam IDs you set up.
+ - Fixed minor UI glitch.
+ - Last hooks prompt will show now when only using `Game.PromptBetweenInstances=true; `with` Game.SetTopMostAtEnd = true;`
+ - Added option in Settings.ini to change the default text editor.
+ - Selection not working and scaling issues fixed for Nucleus UI options that use images.
 
- 
 v2.0 - February 25, 2022
  - New overhauled and customizable user interface with support for themes, game covers and screenshots.
  - Fixed ui scaling issues at more than 100% desktop scale (and all other issues/bugs related to it).
@@ -918,16 +937,16 @@ v0.9a - August 1, 2019
 
 
 Credits: -----------------------------------------------------------------------------------------
-Official Nucleus Co-op 2.0: Mikou27/nene27.
+Official Nucleus Co-op 2.0 and Up: Mikou27/nene27.
 Original Nucleus Co-op Project: Lucas Assis (lucasassislar).
 Nucleus Co-op Alpha 8 Mod : ZeroFox.
 Proto Input, USS, multiple keyboards/mice & hooks: Ilyaki.
 Website & handler API: r-mach.
 Handlers development and general testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more.
-Nucleus Co-op 2.0 UI assets creation: dr.oldboi, Mikou27, PoundlandBacon.
+Nucleus Co-op 2.0+ UI assets creation: dr.oldboi, Mikou27, PoundlandBacon.
 
 Additional credits to all the original developers of the third party utilities Nucleus Co-op uses:
-Mr_Goldberg (Goldberg Emulator), syahmixp (SmartSteamEmu), EJocys (x360ce), 0dd14 Lab (Xinput Plus), r1ch (ForceBindIP), HaYDeN (Flawless Widescreen), briankendall (devreorder), VerGreeneyes (DirectXWrapper), wizark952 (dinput8 blocker), Nemirtingas (Epic\Galaxy Emulator & OpenXinput), Josivan88 (SplitCalculator).
+Mr_Goldberg (Goldberg Emulator), syahmixp (SmartSteamEmu), atom0s (Steamless), EJocys (x360ce), 0dd14 Lab (Xinput Plus), r1ch (ForceBindIP), HaYDeN (Flawless Widescreen), briankendall (devreorder), VerGreeneyes (DirectXWrapper), wizark952 (dinput8 blocker), Nemirtingas (Epic\Galaxy Emulator & OpenXinput), Josivan88 (SplitCalculator).
 
 Special thanks to the SplitScreenDreams discord community, this wouldn't have been possible without all your contributions.
  

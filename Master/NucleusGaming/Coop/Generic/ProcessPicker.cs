@@ -7,7 +7,6 @@ namespace Nucleus.Gaming.Coop.Generic
 { 
     public partial class ProcessPicker : Form, IDynamicSized
     {
-
         private float oldScale;
 
         public ProcessPicker()
@@ -31,6 +30,7 @@ namespace Nucleus.Gaming.Coop.Generic
             }
             if (!scaled)
             {
+                Height *= (int)scale;
                 oldScale = scale;
                 scaled = true;
             }
@@ -52,8 +52,6 @@ namespace Nucleus.Gaming.Coop.Generic
                 }
             }
         }
-
-
     }
 
 }

@@ -11,6 +11,7 @@ using System.Net;
 using System.Windows.Forms;
 using Nucleus.Gaming;
 using System.Media;
+using System.Runtime.InteropServices;
 
 namespace Nucleus.Coop.Forms
 {
@@ -45,6 +46,16 @@ namespace Nucleus.Coop.Forms
 
         private SortOrder sortOrder = SortOrder.Ascending;
 
+       [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+       private static extern IntPtr CreateRoundRectRgn
+       (
+       int nLeftRect,     // x-coordinate of upper-left corner
+       int nTopRect,      // y-coordinate of upper-left corner
+       int nRightRect,    // x-coordinate of lower-right corner
+       int nBottomRect,   // y-coordinate of lower-right corner
+       int nWidthEllipse, // width of ellipse
+       int nHeightEllipse // height of ellipse
+       );
 
         private void controlscollect()
         {
@@ -89,7 +100,7 @@ namespace Nucleus.Coop.Forms
             entriesPerPage = Convert.ToInt32(cmb_NumResults.SelectedItem);
 
             SuspendLayout();
-
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
             BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             //Controls Pictures
