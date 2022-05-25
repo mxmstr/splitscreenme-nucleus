@@ -1,6 +1,6 @@
 # Nucleus Co-op 
 
-![alt text](https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/hknucleus.png?raw=true)
+![alt text](https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/hk211.png?raw=true)
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
 
