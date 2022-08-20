@@ -70,9 +70,13 @@ namespace Nucleus.Coop
             this.debugLogCheck = new System.Windows.Forms.CheckBox();
             this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.settingsFocusCmb = new System.Windows.Forms.ComboBox();
+            this.label50 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label52 = new System.Windows.Forms.Label();
+            this.settingsFocusHKTxt = new System.Windows.Forms.TextBox();
             this.comboBox_lockKey = new System.Windows.Forms.ComboBox();
             this.label_lockKey = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
             this.settingsTopCmb = new System.Windows.Forms.ComboBox();
             this.settingsStopCmb = new System.Windows.Forms.ComboBox();
             this.settingsTopTxt = new System.Windows.Forms.TextBox();
@@ -206,12 +210,12 @@ namespace Nucleus.Coop
             this.tabControl2.Controls.Add(this.tabPage1);
             this.tabControl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl2.ItemSize = new System.Drawing.Size(52, 23);
-            this.tabControl2.Location = new System.Drawing.Point(26, 11);
+            this.tabControl2.Location = new System.Drawing.Point(17, 18);
             this.tabControl2.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl2.Multiline = true;
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(519, 271);
+            this.tabControl2.Size = new System.Drawing.Size(639, 327);
             this.tabControl2.TabIndex = 36;
             this.tabControl2.Tag = "";
             this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
@@ -243,7 +247,7 @@ namespace Nucleus.Coop
             this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage3.Size = new System.Drawing.Size(511, 240);
+            this.tabPage3.Size = new System.Drawing.Size(631, 296);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Settings";
             // 
@@ -253,7 +257,7 @@ namespace Nucleus.Coop
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.label35);
             this.panel1.Controls.Add(this.nucUserPassTxt);
-            this.panel1.Location = new System.Drawing.Point(270, 67);
+            this.panel1.Location = new System.Drawing.Point(374, 72);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(238, 45);
             this.panel1.TabIndex = 85;
@@ -288,7 +292,7 @@ namespace Nucleus.Coop
             this.scaleOptionCbx.AutoSize = true;
             this.scaleOptionCbx.Checked = true;
             this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.scaleOptionCbx.Location = new System.Drawing.Point(20, 198);
+            this.scaleOptionCbx.Location = new System.Drawing.Point(20, 216);
             this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
             this.scaleOptionCbx.Name = "scaleOptionCbx";
             this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
@@ -301,7 +305,7 @@ namespace Nucleus.Coop
             // 
             this.themeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.themeLabel.AutoSize = true;
-            this.themeLabel.Location = new System.Drawing.Point(272, 42);
+            this.themeLabel.Location = new System.Drawing.Point(373, 44);
             this.themeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.themeLabel.Name = "themeLabel";
             this.themeLabel.Size = new System.Drawing.Size(43, 13);
@@ -316,7 +320,7 @@ namespace Nucleus.Coop
             this.themeCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.themeCbx.FormattingEnabled = true;
             this.themeCbx.ItemHeight = 13;
-            this.themeCbx.Location = new System.Drawing.Point(329, 40);
+            this.themeCbx.Location = new System.Drawing.Point(430, 42);
             this.themeCbx.Margin = new System.Windows.Forms.Padding(0);
             this.themeCbx.MaxDropDownItems = 10;
             this.themeCbx.Name = "themeCbx";
@@ -328,7 +332,7 @@ namespace Nucleus.Coop
             this.splashScreenChkB.AutoSize = true;
             this.splashScreenChkB.Checked = true;
             this.splashScreenChkB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.splashScreenChkB.Location = new System.Drawing.Point(20, 156);
+            this.splashScreenChkB.Location = new System.Drawing.Point(20, 174);
             this.splashScreenChkB.Margin = new System.Windows.Forms.Padding(2);
             this.splashScreenChkB.Name = "splashScreenChkB";
             this.splashScreenChkB.Size = new System.Drawing.Size(127, 17);
@@ -341,7 +345,7 @@ namespace Nucleus.Coop
             this.clickSoundChkB.AutoSize = true;
             this.clickSoundChkB.Checked = true;
             this.clickSoundChkB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.clickSoundChkB.Location = new System.Drawing.Point(20, 177);
+            this.clickSoundChkB.Location = new System.Drawing.Point(20, 195);
             this.clickSoundChkB.Margin = new System.Windows.Forms.Padding(2);
             this.clickSoundChkB.Name = "clickSoundChkB";
             this.clickSoundChkB.Size = new System.Drawing.Size(116, 17);
@@ -381,7 +385,7 @@ namespace Nucleus.Coop
             "Thai",
             "Turkish",
             "Ukrainian"});
-            this.cmb_EpicLang.Location = new System.Drawing.Point(125, 38);
+            this.cmb_EpicLang.Location = new System.Drawing.Point(138, 42);
             this.cmb_EpicLang.Margin = new System.Windows.Forms.Padding(0);
             this.cmb_EpicLang.MaxDropDownItems = 10;
             this.cmb_EpicLang.Name = "cmb_EpicLang";
@@ -393,7 +397,7 @@ namespace Nucleus.Coop
             this.label46.AutoSize = true;
             this.label46.BackColor = System.Drawing.Color.Transparent;
             this.label46.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label46.Location = new System.Drawing.Point(4, 40);
+            this.label46.Location = new System.Drawing.Point(17, 44);
             this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(119, 15);
@@ -404,7 +408,7 @@ namespace Nucleus.Coop
             // ignoreInputLockReminderCheckbox
             // 
             this.ignoreInputLockReminderCheckbox.AutoSize = true;
-            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(20, 135);
+            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(20, 153);
             this.ignoreInputLockReminderCheckbox.Margin = new System.Windows.Forms.Padding(2);
             this.ignoreInputLockReminderCheckbox.Name = "ignoreInputLockReminderCheckbox";
             this.ignoreInputLockReminderCheckbox.Size = new System.Drawing.Size(148, 17);
@@ -415,7 +419,7 @@ namespace Nucleus.Coop
             // keepAccountsCheck
             // 
             this.keepAccountsCheck.AutoSize = true;
-            this.keepAccountsCheck.Location = new System.Drawing.Point(20, 219);
+            this.keepAccountsCheck.Location = new System.Drawing.Point(20, 237);
             this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
             this.keepAccountsCheck.Name = "keepAccountsCheck";
             this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
@@ -427,7 +431,7 @@ namespace Nucleus.Coop
             // statusCheck
             // 
             this.statusCheck.AutoSize = true;
-            this.statusCheck.Location = new System.Drawing.Point(20, 114);
+            this.statusCheck.Location = new System.Drawing.Point(20, 132);
             this.statusCheck.Margin = new System.Windows.Forms.Padding(2);
             this.statusCheck.Name = "statusCheck";
             this.statusCheck.Size = new System.Drawing.Size(197, 17);
@@ -469,7 +473,7 @@ namespace Nucleus.Coop
             "Thai",
             "Turkish",
             "Ukrainian"});
-            this.cmb_Lang.Location = new System.Drawing.Point(125, 10);
+            this.cmb_Lang.Location = new System.Drawing.Point(138, 14);
             this.cmb_Lang.Margin = new System.Windows.Forms.Padding(0);
             this.cmb_Lang.MaxDropDownItems = 10;
             this.cmb_Lang.Name = "cmb_Lang";
@@ -481,7 +485,7 @@ namespace Nucleus.Coop
             this.label34.AutoSize = true;
             this.label34.BackColor = System.Drawing.Color.Transparent;
             this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.Location = new System.Drawing.Point(4, 12);
+            this.label34.Location = new System.Drawing.Point(17, 16);
             this.label34.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(105, 15);
@@ -498,7 +502,7 @@ namespace Nucleus.Coop
             this.cmb_Network.ItemHeight = 13;
             this.cmb_Network.Items.AddRange(new object[] {
             "Automatic"});
-            this.cmb_Network.Location = new System.Drawing.Point(329, 10);
+            this.cmb_Network.Location = new System.Drawing.Point(430, 12);
             this.cmb_Network.Margin = new System.Windows.Forms.Padding(0);
             this.cmb_Network.MaxDropDownItems = 10;
             this.cmb_Network.Name = "cmb_Network";
@@ -509,7 +513,7 @@ namespace Nucleus.Coop
             // 
             this.label32.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(272, 14);
+            this.label32.Location = new System.Drawing.Point(373, 16);
             this.label32.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(50, 13);
@@ -521,7 +525,7 @@ namespace Nucleus.Coop
             // 
             this.debugLogCheck.AutoSize = true;
             this.debugLogCheck.BackColor = System.Drawing.Color.Transparent;
-            this.debugLogCheck.Location = new System.Drawing.Point(20, 93);
+            this.debugLogCheck.Location = new System.Drawing.Point(20, 111);
             this.debugLogCheck.Margin = new System.Windows.Forms.Padding(2);
             this.debugLogCheck.Name = "debugLogCheck";
             this.debugLogCheck.Size = new System.Drawing.Size(115, 17);
@@ -533,7 +537,7 @@ namespace Nucleus.Coop
             // 
             this.useNicksCheck.AutoSize = true;
             this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
-            this.useNicksCheck.Location = new System.Drawing.Point(20, 72);
+            this.useNicksCheck.Location = new System.Drawing.Point(20, 90);
             this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
             this.useNicksCheck.Name = "useNicksCheck";
             this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
@@ -544,9 +548,13 @@ namespace Nucleus.Coop
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.settingsFocusCmb);
+            this.groupBox1.Controls.Add(this.label50);
+            this.groupBox1.Controls.Add(this.label38);
+            this.groupBox1.Controls.Add(this.label52);
+            this.groupBox1.Controls.Add(this.settingsFocusHKTxt);
             this.groupBox1.Controls.Add(this.comboBox_lockKey);
             this.groupBox1.Controls.Add(this.label_lockKey);
-            this.groupBox1.Controls.Add(this.label38);
             this.groupBox1.Controls.Add(this.settingsTopCmb);
             this.groupBox1.Controls.Add(this.settingsStopCmb);
             this.groupBox1.Controls.Add(this.settingsTopTxt);
@@ -559,13 +567,74 @@ namespace Nucleus.Coop
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.settingsCloseHKTxt);
-            this.groupBox1.Location = new System.Drawing.Point(271, 114);
+            this.groupBox1.Location = new System.Drawing.Point(376, 122);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(236, 122);
+            this.groupBox1.Size = new System.Drawing.Size(236, 158);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
+            // 
+            // settingsFocusCmb
+            // 
+            this.settingsFocusCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsFocusCmb.FormattingEnabled = true;
+            this.settingsFocusCmb.Items.AddRange(new object[] {
+            "Ctrl",
+            "Alt",
+            "Shift"});
+            this.settingsFocusCmb.Location = new System.Drawing.Point(102, 31);
+            this.settingsFocusCmb.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsFocusCmb.Name = "settingsFocusCmb";
+            this.settingsFocusCmb.Size = new System.Drawing.Size(67, 21);
+            this.settingsFocusCmb.TabIndex = 31;
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.ForeColor = System.Drawing.Color.Black;
+            this.label50.Location = new System.Drawing.Point(172, 34);
+            this.label50.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(13, 13);
+            this.label50.TabIndex = 34;
+            this.label50.Text = "+";
+            this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label38.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label38.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.Location = new System.Drawing.Point(3, 10);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(59, 17);
+            this.label38.TabIndex = 28;
+            this.label38.Text = "Hotkeys ";
+            this.label38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label52
+            // 
+            this.label52.Location = new System.Drawing.Point(11, 34);
+            this.label52.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(83, 15);
+            this.label52.TabIndex = 33;
+            this.label52.Text = "Toggle Unfocus:";
+            this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // settingsFocusHKTxt
+            // 
+            this.settingsFocusHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.settingsFocusHKTxt.Location = new System.Drawing.Point(189, 32);
+            this.settingsFocusHKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsFocusHKTxt.MaxLength = 1;
+            this.settingsFocusHKTxt.Name = "settingsFocusHKTxt";
+            this.settingsFocusHKTxt.ShortcutsEnabled = false;
+            this.settingsFocusHKTxt.Size = new System.Drawing.Size(36, 20);
+            this.settingsFocusHKTxt.TabIndex = 32;
+            this.settingsFocusHKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // comboBox_lockKey
             // 
@@ -600,7 +669,7 @@ namespace Nucleus.Coop
             "Numpad 7",
             "Numpad 8",
             "Numpad 9"});
-            this.comboBox_lockKey.Location = new System.Drawing.Point(102, 92);
+            this.comboBox_lockKey.Location = new System.Drawing.Point(102, 127);
             this.comboBox_lockKey.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox_lockKey.Name = "comboBox_lockKey";
             this.comboBox_lockKey.Size = new System.Drawing.Size(123, 21);
@@ -609,24 +678,13 @@ namespace Nucleus.Coop
             // 
             // label_lockKey
             // 
-            this.label_lockKey.Location = new System.Drawing.Point(8, 93);
+            this.label_lockKey.Location = new System.Drawing.Point(8, 128);
             this.label_lockKey.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_lockKey.Name = "label_lockKey";
             this.label_lockKey.Size = new System.Drawing.Size(86, 15);
             this.label_lockKey.TabIndex = 29;
             this.label_lockKey.Text = "Lock Input Key:";
             this.label_lockKey.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label38.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label38.Location = new System.Drawing.Point(1, 7);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(57, 15);
-            this.label38.TabIndex = 28;
-            this.label38.Text = "Hotkeys ";
             // 
             // settingsTopCmb
             // 
@@ -636,7 +694,7 @@ namespace Nucleus.Coop
             "Ctrl",
             "Alt",
             "Shift"});
-            this.settingsTopCmb.Location = new System.Drawing.Point(102, 67);
+            this.settingsTopCmb.Location = new System.Drawing.Point(102, 103);
             this.settingsTopCmb.Margin = new System.Windows.Forms.Padding(2);
             this.settingsTopCmb.Name = "settingsTopCmb";
             this.settingsTopCmb.Size = new System.Drawing.Size(67, 21);
@@ -650,7 +708,7 @@ namespace Nucleus.Coop
             "Ctrl",
             "Alt",
             "Shift"});
-            this.settingsStopCmb.Location = new System.Drawing.Point(102, 45);
+            this.settingsStopCmb.Location = new System.Drawing.Point(102, 79);
             this.settingsStopCmb.Margin = new System.Windows.Forms.Padding(2);
             this.settingsStopCmb.Name = "settingsStopCmb";
             this.settingsStopCmb.Size = new System.Drawing.Size(67, 21);
@@ -659,7 +717,7 @@ namespace Nucleus.Coop
             // settingsTopTxt
             // 
             this.settingsTopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsTopTxt.Location = new System.Drawing.Point(189, 68);
+            this.settingsTopTxt.Location = new System.Drawing.Point(189, 104);
             this.settingsTopTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsTopTxt.MaxLength = 1;
             this.settingsTopTxt.Name = "settingsTopTxt";
@@ -671,7 +729,7 @@ namespace Nucleus.Coop
             // settingsStopTxt
             // 
             this.settingsStopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsStopTxt.Location = new System.Drawing.Point(189, 46);
+            this.settingsStopTxt.Location = new System.Drawing.Point(189, 80);
             this.settingsStopTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsStopTxt.MaxLength = 1;
             this.settingsStopTxt.Name = "settingsStopTxt";
@@ -688,7 +746,7 @@ namespace Nucleus.Coop
             "Ctrl",
             "Alt",
             "Shift"});
-            this.settingsCloseCmb.Location = new System.Drawing.Point(102, 23);
+            this.settingsCloseCmb.Location = new System.Drawing.Point(102, 55);
             this.settingsCloseCmb.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCloseCmb.Name = "settingsCloseCmb";
             this.settingsCloseCmb.Size = new System.Drawing.Size(67, 21);
@@ -698,7 +756,7 @@ namespace Nucleus.Coop
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(172, 69);
+            this.label6.Location = new System.Drawing.Point(172, 106);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(13, 13);
@@ -710,7 +768,7 @@ namespace Nucleus.Coop
             // 
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(172, 47);
+            this.label5.Location = new System.Drawing.Point(172, 81);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(13, 13);
@@ -722,7 +780,7 @@ namespace Nucleus.Coop
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(172, 26);
+            this.label2.Location = new System.Drawing.Point(172, 58);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(13, 13);
@@ -732,7 +790,7 @@ namespace Nucleus.Coop
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(0, 69);
+            this.label4.Location = new System.Drawing.Point(0, 105);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 15);
@@ -742,7 +800,7 @@ namespace Nucleus.Coop
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(14, 46);
+            this.label3.Location = new System.Drawing.Point(14, 81);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 15);
@@ -752,7 +810,7 @@ namespace Nucleus.Coop
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(11, 25);
+            this.label1.Location = new System.Drawing.Point(11, 57);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 15);
@@ -763,7 +821,7 @@ namespace Nucleus.Coop
             // settingsCloseHKTxt
             // 
             this.settingsCloseHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsCloseHKTxt.Location = new System.Drawing.Point(189, 24);
+            this.settingsCloseHKTxt.Location = new System.Drawing.Point(189, 56);
             this.settingsCloseHKTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCloseHKTxt.MaxLength = 1;
             this.settingsCloseHKTxt.Name = "settingsCloseHKTxt";
@@ -835,14 +893,14 @@ namespace Nucleus.Coop
             this.tabPage5.Location = new System.Drawing.Point(4, 27);
             this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(511, 240);
+            this.tabPage5.Size = new System.Drawing.Size(631, 296);
             this.tabPage5.TabIndex = 2;
             this.tabPage5.Text = "Players";
             // 
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(4, 211);
+            this.label51.Location = new System.Drawing.Point(207, 251);
             this.label51.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(223, 13);
@@ -852,7 +910,7 @@ namespace Nucleus.Coop
             // steamid16
             // 
             this.steamid16.BackColor = System.Drawing.Color.White;
-            this.steamid16.Location = new System.Drawing.Point(396, 166);
+            this.steamid16.Location = new System.Drawing.Point(492, 190);
             this.steamid16.Margin = new System.Windows.Forms.Padding(2);
             this.steamid16.MaxLength = 17;
             this.steamid16.Name = "steamid16";
@@ -862,7 +920,7 @@ namespace Nucleus.Coop
             // steamid15
             // 
             this.steamid15.BackColor = System.Drawing.Color.White;
-            this.steamid15.Location = new System.Drawing.Point(396, 147);
+            this.steamid15.Location = new System.Drawing.Point(492, 171);
             this.steamid15.Margin = new System.Windows.Forms.Padding(2);
             this.steamid15.MaxLength = 17;
             this.steamid15.Name = "steamid15";
@@ -872,7 +930,7 @@ namespace Nucleus.Coop
             // steamid14
             // 
             this.steamid14.BackColor = System.Drawing.Color.White;
-            this.steamid14.Location = new System.Drawing.Point(396, 128);
+            this.steamid14.Location = new System.Drawing.Point(492, 152);
             this.steamid14.Margin = new System.Windows.Forms.Padding(2);
             this.steamid14.MaxLength = 17;
             this.steamid14.Name = "steamid14";
@@ -882,7 +940,7 @@ namespace Nucleus.Coop
             // steamid13
             // 
             this.steamid13.BackColor = System.Drawing.Color.White;
-            this.steamid13.Location = new System.Drawing.Point(396, 109);
+            this.steamid13.Location = new System.Drawing.Point(492, 133);
             this.steamid13.Margin = new System.Windows.Forms.Padding(2);
             this.steamid13.MaxLength = 17;
             this.steamid13.Name = "steamid13";
@@ -892,7 +950,7 @@ namespace Nucleus.Coop
             // steamid12
             // 
             this.steamid12.BackColor = System.Drawing.Color.White;
-            this.steamid12.Location = new System.Drawing.Point(396, 90);
+            this.steamid12.Location = new System.Drawing.Point(492, 114);
             this.steamid12.Margin = new System.Windows.Forms.Padding(2);
             this.steamid12.MaxLength = 17;
             this.steamid12.Name = "steamid12";
@@ -902,7 +960,7 @@ namespace Nucleus.Coop
             // steamid11
             // 
             this.steamid11.BackColor = System.Drawing.Color.White;
-            this.steamid11.Location = new System.Drawing.Point(396, 71);
+            this.steamid11.Location = new System.Drawing.Point(492, 95);
             this.steamid11.Margin = new System.Windows.Forms.Padding(2);
             this.steamid11.MaxLength = 17;
             this.steamid11.Name = "steamid11";
@@ -912,7 +970,7 @@ namespace Nucleus.Coop
             // steamid10
             // 
             this.steamid10.BackColor = System.Drawing.Color.White;
-            this.steamid10.Location = new System.Drawing.Point(396, 52);
+            this.steamid10.Location = new System.Drawing.Point(492, 76);
             this.steamid10.Margin = new System.Windows.Forms.Padding(2);
             this.steamid10.MaxLength = 17;
             this.steamid10.Name = "steamid10";
@@ -922,7 +980,7 @@ namespace Nucleus.Coop
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(398, 12);
+            this.label48.Location = new System.Drawing.Point(494, 36);
             this.label48.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(83, 13);
@@ -932,7 +990,7 @@ namespace Nucleus.Coop
             // steamid9
             // 
             this.steamid9.BackColor = System.Drawing.Color.White;
-            this.steamid9.Location = new System.Drawing.Point(396, 33);
+            this.steamid9.Location = new System.Drawing.Point(492, 57);
             this.steamid9.Margin = new System.Windows.Forms.Padding(2);
             this.steamid9.MaxLength = 17;
             this.steamid9.Name = "steamid9";
@@ -942,7 +1000,7 @@ namespace Nucleus.Coop
             // steamid8
             // 
             this.steamid8.BackColor = System.Drawing.Color.White;
-            this.steamid8.Location = new System.Drawing.Point(134, 166);
+            this.steamid8.Location = new System.Drawing.Point(151, 192);
             this.steamid8.Margin = new System.Windows.Forms.Padding(2);
             this.steamid8.MaxLength = 17;
             this.steamid8.Name = "steamid8";
@@ -952,7 +1010,7 @@ namespace Nucleus.Coop
             // steamid7
             // 
             this.steamid7.BackColor = System.Drawing.Color.White;
-            this.steamid7.Location = new System.Drawing.Point(134, 147);
+            this.steamid7.Location = new System.Drawing.Point(151, 173);
             this.steamid7.Margin = new System.Windows.Forms.Padding(2);
             this.steamid7.MaxLength = 17;
             this.steamid7.Name = "steamid7";
@@ -962,7 +1020,7 @@ namespace Nucleus.Coop
             // steamid6
             // 
             this.steamid6.BackColor = System.Drawing.Color.White;
-            this.steamid6.Location = new System.Drawing.Point(134, 128);
+            this.steamid6.Location = new System.Drawing.Point(151, 154);
             this.steamid6.Margin = new System.Windows.Forms.Padding(2);
             this.steamid6.MaxLength = 17;
             this.steamid6.Name = "steamid6";
@@ -972,7 +1030,7 @@ namespace Nucleus.Coop
             // steamid5
             // 
             this.steamid5.BackColor = System.Drawing.Color.White;
-            this.steamid5.Location = new System.Drawing.Point(134, 109);
+            this.steamid5.Location = new System.Drawing.Point(151, 135);
             this.steamid5.Margin = new System.Windows.Forms.Padding(2);
             this.steamid5.MaxLength = 17;
             this.steamid5.Name = "steamid5";
@@ -982,7 +1040,7 @@ namespace Nucleus.Coop
             // steamid4
             // 
             this.steamid4.BackColor = System.Drawing.Color.White;
-            this.steamid4.Location = new System.Drawing.Point(134, 90);
+            this.steamid4.Location = new System.Drawing.Point(151, 116);
             this.steamid4.Margin = new System.Windows.Forms.Padding(2);
             this.steamid4.MaxLength = 17;
             this.steamid4.Name = "steamid4";
@@ -992,7 +1050,7 @@ namespace Nucleus.Coop
             // steamid3
             // 
             this.steamid3.BackColor = System.Drawing.Color.White;
-            this.steamid3.Location = new System.Drawing.Point(134, 71);
+            this.steamid3.Location = new System.Drawing.Point(151, 97);
             this.steamid3.Margin = new System.Windows.Forms.Padding(2);
             this.steamid3.MaxLength = 17;
             this.steamid3.Name = "steamid3";
@@ -1002,7 +1060,7 @@ namespace Nucleus.Coop
             // steamid2
             // 
             this.steamid2.BackColor = System.Drawing.Color.White;
-            this.steamid2.Location = new System.Drawing.Point(134, 52);
+            this.steamid2.Location = new System.Drawing.Point(151, 78);
             this.steamid2.Margin = new System.Windows.Forms.Padding(2);
             this.steamid2.MaxLength = 17;
             this.steamid2.Name = "steamid2";
@@ -1012,7 +1070,7 @@ namespace Nucleus.Coop
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(136, 12);
+            this.label47.Location = new System.Drawing.Point(153, 38);
             this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(83, 13);
@@ -1022,7 +1080,7 @@ namespace Nucleus.Coop
             // steamid1
             // 
             this.steamid1.BackColor = System.Drawing.Color.White;
-            this.steamid1.Location = new System.Drawing.Point(134, 33);
+            this.steamid1.Location = new System.Drawing.Point(151, 59);
             this.steamid1.Margin = new System.Windows.Forms.Padding(2);
             this.steamid1.MaxLength = 17;
             this.steamid1.Name = "steamid1";
@@ -1032,7 +1090,7 @@ namespace Nucleus.Coop
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(259, 12);
+            this.label21.Location = new System.Drawing.Point(355, 36);
             this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(50, 13);
@@ -1042,7 +1100,7 @@ namespace Nucleus.Coop
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(322, 12);
+            this.label25.Location = new System.Drawing.Point(418, 36);
             this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(55, 13);
@@ -1052,7 +1110,7 @@ namespace Nucleus.Coop
             // controllerSixteenNick
             // 
             this.controllerSixteenNick.BackColor = System.Drawing.Color.White;
-            this.controllerSixteenNick.Location = new System.Drawing.Point(320, 166);
+            this.controllerSixteenNick.Location = new System.Drawing.Point(416, 190);
             this.controllerSixteenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerSixteenNick.MaxLength = 9;
             this.controllerSixteenNick.Name = "controllerSixteenNick";
@@ -1062,7 +1120,7 @@ namespace Nucleus.Coop
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(259, 170);
+            this.label17.Location = new System.Drawing.Point(355, 194);
             this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(57, 13);
@@ -1073,7 +1131,7 @@ namespace Nucleus.Coop
             // controllerFifteenNick
             // 
             this.controllerFifteenNick.BackColor = System.Drawing.Color.White;
-            this.controllerFifteenNick.Location = new System.Drawing.Point(320, 147);
+            this.controllerFifteenNick.Location = new System.Drawing.Point(416, 171);
             this.controllerFifteenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerFifteenNick.MaxLength = 9;
             this.controllerFifteenNick.Name = "controllerFifteenNick";
@@ -1083,7 +1141,7 @@ namespace Nucleus.Coop
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(259, 150);
+            this.label18.Location = new System.Drawing.Point(355, 174);
             this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(57, 13);
@@ -1094,7 +1152,7 @@ namespace Nucleus.Coop
             // controllerFourteenNick
             // 
             this.controllerFourteenNick.BackColor = System.Drawing.Color.White;
-            this.controllerFourteenNick.Location = new System.Drawing.Point(320, 128);
+            this.controllerFourteenNick.Location = new System.Drawing.Point(416, 152);
             this.controllerFourteenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerFourteenNick.MaxLength = 9;
             this.controllerFourteenNick.Name = "controllerFourteenNick";
@@ -1104,7 +1162,7 @@ namespace Nucleus.Coop
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(259, 131);
+            this.label19.Location = new System.Drawing.Point(355, 155);
             this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(57, 13);
@@ -1115,7 +1173,7 @@ namespace Nucleus.Coop
             // controllerThirteenNick
             // 
             this.controllerThirteenNick.BackColor = System.Drawing.Color.White;
-            this.controllerThirteenNick.Location = new System.Drawing.Point(320, 109);
+            this.controllerThirteenNick.Location = new System.Drawing.Point(416, 133);
             this.controllerThirteenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerThirteenNick.MaxLength = 9;
             this.controllerThirteenNick.Name = "controllerThirteenNick";
@@ -1125,7 +1183,7 @@ namespace Nucleus.Coop
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(259, 112);
+            this.label20.Location = new System.Drawing.Point(355, 136);
             this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(57, 13);
@@ -1136,7 +1194,7 @@ namespace Nucleus.Coop
             // controllerTwelveNick
             // 
             this.controllerTwelveNick.BackColor = System.Drawing.Color.White;
-            this.controllerTwelveNick.Location = new System.Drawing.Point(320, 90);
+            this.controllerTwelveNick.Location = new System.Drawing.Point(416, 114);
             this.controllerTwelveNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerTwelveNick.MaxLength = 9;
             this.controllerTwelveNick.Name = "controllerTwelveNick";
@@ -1146,7 +1204,7 @@ namespace Nucleus.Coop
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(259, 93);
+            this.label22.Location = new System.Drawing.Point(355, 117);
             this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(57, 13);
@@ -1157,7 +1215,7 @@ namespace Nucleus.Coop
             // controllerElevenNick
             // 
             this.controllerElevenNick.BackColor = System.Drawing.Color.White;
-            this.controllerElevenNick.Location = new System.Drawing.Point(320, 71);
+            this.controllerElevenNick.Location = new System.Drawing.Point(416, 95);
             this.controllerElevenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerElevenNick.MaxLength = 9;
             this.controllerElevenNick.Name = "controllerElevenNick";
@@ -1167,7 +1225,7 @@ namespace Nucleus.Coop
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(259, 74);
+            this.label23.Location = new System.Drawing.Point(355, 98);
             this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(57, 13);
@@ -1178,7 +1236,7 @@ namespace Nucleus.Coop
             // controllerTenNick
             // 
             this.controllerTenNick.BackColor = System.Drawing.Color.White;
-            this.controllerTenNick.Location = new System.Drawing.Point(320, 52);
+            this.controllerTenNick.Location = new System.Drawing.Point(416, 76);
             this.controllerTenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerTenNick.MaxLength = 9;
             this.controllerTenNick.Name = "controllerTenNick";
@@ -1188,7 +1246,7 @@ namespace Nucleus.Coop
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(259, 54);
+            this.label24.Location = new System.Drawing.Point(355, 78);
             this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(57, 13);
@@ -1199,7 +1257,7 @@ namespace Nucleus.Coop
             // controllerNineNick
             // 
             this.controllerNineNick.BackColor = System.Drawing.Color.White;
-            this.controllerNineNick.Location = new System.Drawing.Point(320, 33);
+            this.controllerNineNick.Location = new System.Drawing.Point(416, 57);
             this.controllerNineNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerNineNick.MaxLength = 9;
             this.controllerNineNick.Name = "controllerNineNick";
@@ -1209,7 +1267,7 @@ namespace Nucleus.Coop
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(260, 36);
+            this.label26.Location = new System.Drawing.Point(356, 60);
             this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(51, 13);
@@ -1220,7 +1278,7 @@ namespace Nucleus.Coop
             // controllerEightNick
             // 
             this.controllerEightNick.BackColor = System.Drawing.Color.White;
-            this.controllerEightNick.Location = new System.Drawing.Point(58, 166);
+            this.controllerEightNick.Location = new System.Drawing.Point(75, 192);
             this.controllerEightNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerEightNick.MaxLength = 9;
             this.controllerEightNick.Name = "controllerEightNick";
@@ -1230,7 +1288,7 @@ namespace Nucleus.Coop
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(4, 170);
+            this.label16.Location = new System.Drawing.Point(21, 196);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(51, 13);
@@ -1241,7 +1299,7 @@ namespace Nucleus.Coop
             // controllerSevenNick
             // 
             this.controllerSevenNick.BackColor = System.Drawing.Color.White;
-            this.controllerSevenNick.Location = new System.Drawing.Point(58, 147);
+            this.controllerSevenNick.Location = new System.Drawing.Point(75, 173);
             this.controllerSevenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerSevenNick.MaxLength = 9;
             this.controllerSevenNick.Name = "controllerSevenNick";
@@ -1251,7 +1309,7 @@ namespace Nucleus.Coop
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(4, 150);
+            this.label15.Location = new System.Drawing.Point(21, 176);
             this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(51, 13);
@@ -1262,7 +1320,7 @@ namespace Nucleus.Coop
             // controllerSixNick
             // 
             this.controllerSixNick.BackColor = System.Drawing.Color.White;
-            this.controllerSixNick.Location = new System.Drawing.Point(58, 128);
+            this.controllerSixNick.Location = new System.Drawing.Point(75, 154);
             this.controllerSixNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerSixNick.MaxLength = 9;
             this.controllerSixNick.Name = "controllerSixNick";
@@ -1272,7 +1330,7 @@ namespace Nucleus.Coop
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(4, 131);
+            this.label11.Location = new System.Drawing.Point(21, 157);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(51, 13);
@@ -1283,7 +1341,7 @@ namespace Nucleus.Coop
             // controllerFiveNick
             // 
             this.controllerFiveNick.BackColor = System.Drawing.Color.White;
-            this.controllerFiveNick.Location = new System.Drawing.Point(58, 109);
+            this.controllerFiveNick.Location = new System.Drawing.Point(75, 135);
             this.controllerFiveNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerFiveNick.MaxLength = 9;
             this.controllerFiveNick.Name = "controllerFiveNick";
@@ -1293,7 +1351,7 @@ namespace Nucleus.Coop
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(4, 112);
+            this.label9.Location = new System.Drawing.Point(21, 138);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(51, 13);
@@ -1304,7 +1362,7 @@ namespace Nucleus.Coop
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(4, 12);
+            this.label13.Location = new System.Drawing.Point(21, 38);
             this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(50, 13);
@@ -1314,7 +1372,7 @@ namespace Nucleus.Coop
             // controllerFourNick
             // 
             this.controllerFourNick.BackColor = System.Drawing.Color.White;
-            this.controllerFourNick.Location = new System.Drawing.Point(58, 90);
+            this.controllerFourNick.Location = new System.Drawing.Point(75, 116);
             this.controllerFourNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerFourNick.MaxLength = 9;
             this.controllerFourNick.Name = "controllerFourNick";
@@ -1324,7 +1382,7 @@ namespace Nucleus.Coop
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(4, 93);
+            this.label14.Location = new System.Drawing.Point(21, 119);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(51, 13);
@@ -1335,7 +1393,7 @@ namespace Nucleus.Coop
             // controllerThreeNick
             // 
             this.controllerThreeNick.BackColor = System.Drawing.Color.White;
-            this.controllerThreeNick.Location = new System.Drawing.Point(58, 71);
+            this.controllerThreeNick.Location = new System.Drawing.Point(75, 97);
             this.controllerThreeNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerThreeNick.MaxLength = 9;
             this.controllerThreeNick.Name = "controllerThreeNick";
@@ -1345,7 +1403,7 @@ namespace Nucleus.Coop
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(4, 74);
+            this.label12.Location = new System.Drawing.Point(21, 100);
             this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(51, 13);
@@ -1356,7 +1414,7 @@ namespace Nucleus.Coop
             // controllerTwoNick
             // 
             this.controllerTwoNick.BackColor = System.Drawing.Color.White;
-            this.controllerTwoNick.Location = new System.Drawing.Point(58, 52);
+            this.controllerTwoNick.Location = new System.Drawing.Point(75, 78);
             this.controllerTwoNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerTwoNick.MaxLength = 9;
             this.controllerTwoNick.Name = "controllerTwoNick";
@@ -1366,7 +1424,7 @@ namespace Nucleus.Coop
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(4, 54);
+            this.label10.Location = new System.Drawing.Point(21, 80);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(51, 13);
@@ -1377,7 +1435,7 @@ namespace Nucleus.Coop
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(60, 12);
+            this.label8.Location = new System.Drawing.Point(77, 38);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(55, 13);
@@ -1387,7 +1445,7 @@ namespace Nucleus.Coop
             // controllerOneNick
             // 
             this.controllerOneNick.BackColor = System.Drawing.Color.White;
-            this.controllerOneNick.Location = new System.Drawing.Point(58, 33);
+            this.controllerOneNick.Location = new System.Drawing.Point(75, 59);
             this.controllerOneNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerOneNick.MaxLength = 9;
             this.controllerOneNick.Name = "controllerOneNick";
@@ -1397,7 +1455,7 @@ namespace Nucleus.Coop
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(4, 35);
+            this.label7.Location = new System.Drawing.Point(21, 61);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(51, 13);
@@ -1426,7 +1484,7 @@ namespace Nucleus.Coop
             this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage4.Size = new System.Drawing.Size(511, 240);
+            this.tabPage4.Size = new System.Drawing.Size(631, 296);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Custom Layout";
             // 
@@ -1436,7 +1494,7 @@ namespace Nucleus.Coop
             this.numMaxPlyrs.BackColor = System.Drawing.SystemColors.ControlDark;
             this.numMaxPlyrs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.numMaxPlyrs.Enabled = false;
-            this.numMaxPlyrs.Location = new System.Drawing.Point(6, 106);
+            this.numMaxPlyrs.Location = new System.Drawing.Point(16, 115);
             this.numMaxPlyrs.Maximum = new decimal(new int[] {
             999,
             0,
@@ -1457,7 +1515,7 @@ namespace Nucleus.Coop
             // 
             this.numHorDiv.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.numHorDiv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numHorDiv.Location = new System.Drawing.Point(6, 65);
+            this.numHorDiv.Location = new System.Drawing.Point(16, 74);
             this.numHorDiv.Maximum = new decimal(new int[] {
             5,
             0,
@@ -1474,7 +1532,7 @@ namespace Nucleus.Coop
             // 
             this.numVerDiv.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.numVerDiv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numVerDiv.Location = new System.Drawing.Point(6, 24);
+            this.numVerDiv.Location = new System.Drawing.Point(16, 33);
             this.numVerDiv.Maximum = new decimal(new int[] {
             5,
             0,
@@ -1491,7 +1549,7 @@ namespace Nucleus.Coop
             // 
             this.label29.AutoSize = true;
             this.label29.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label29.Location = new System.Drawing.Point(5, 87);
+            this.label29.Location = new System.Drawing.Point(11, 96);
             this.label29.Margin = new System.Windows.Forms.Padding(3);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(64, 13);
@@ -1503,7 +1561,7 @@ namespace Nucleus.Coop
             // 
             this.label27.AutoSize = true;
             this.label27.BackColor = System.Drawing.Color.Transparent;
-            this.label27.Location = new System.Drawing.Point(5, 46);
+            this.label27.Location = new System.Drawing.Point(11, 55);
             this.label27.Margin = new System.Windows.Forms.Padding(3);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(151, 13);
@@ -1514,7 +1572,7 @@ namespace Nucleus.Coop
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(5, 5);
+            this.label28.Location = new System.Drawing.Point(13, 14);
             this.label28.Margin = new System.Windows.Forms.Padding(3);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(139, 13);
@@ -1529,10 +1587,10 @@ namespace Nucleus.Coop
             this.label31.BackColor = System.Drawing.Color.Transparent;
             this.label31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label31.ForeColor = System.Drawing.Color.Red;
-            this.label31.Location = new System.Drawing.Point(4, 208);
+            this.label31.Location = new System.Drawing.Point(206, 246);
             this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(256, 28);
+            this.label31.Size = new System.Drawing.Size(376, 28);
             this.label31.TabIndex = 86;
             this.label31.Text = "Splitscreen division may not work for all games.";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1543,7 +1601,7 @@ namespace Nucleus.Coop
             this.SplitDiv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SplitDiv.AutoSize = true;
             this.SplitDiv.Cursor = System.Windows.Forms.Cursors.Default;
-            this.SplitDiv.Location = new System.Drawing.Point(6, 134);
+            this.SplitDiv.Location = new System.Drawing.Point(14, 151);
             this.SplitDiv.Margin = new System.Windows.Forms.Padding(2);
             this.SplitDiv.Name = "SplitDiv";
             this.SplitDiv.Size = new System.Drawing.Size(116, 17);
@@ -1558,7 +1616,7 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(4, 155);
+            this.label49.Location = new System.Drawing.Point(11, 173);
             this.label49.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(103, 15);
@@ -1584,7 +1642,7 @@ namespace Nucleus.Coop
             "Orange",
             "Yellow    ",
             "Green"});
-            this.SplitColors.Location = new System.Drawing.Point(7, 174);
+            this.SplitColors.Location = new System.Drawing.Point(14, 197);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.MaxDropDownItems = 10;
             this.SplitColors.Name = "SplitColors";
@@ -1598,7 +1656,7 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
-            this.layoutSizer.Location = new System.Drawing.Point(238, 28);
+            this.layoutSizer.Location = new System.Drawing.Point(332, 25);
             this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.Name = "layoutSizer";
@@ -1609,7 +1667,7 @@ namespace Nucleus.Coop
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(235, 8);
+            this.label30.Location = new System.Drawing.Point(329, 5);
             this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(48, 13);
@@ -1619,7 +1677,7 @@ namespace Nucleus.Coop
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.Black;
+            this.tabPage1.BackColor = System.Drawing.Color.Silver;
             this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tabPage1.Controls.Add(this.label39);
             this.tabPage1.Controls.Add(this.audioDefaultDevice);
@@ -1631,7 +1689,7 @@ namespace Nucleus.Coop
             this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage1.Size = new System.Drawing.Size(511, 240);
+            this.tabPage1.Size = new System.Drawing.Size(631, 296);
             this.tabPage1.TabIndex = 3;
             this.tabPage1.Text = "Audio";
             // 
@@ -1645,7 +1703,7 @@ namespace Nucleus.Coop
             this.label39.Location = new System.Drawing.Point(281, 37);
             this.label39.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(226, 15);
+            this.label39.Size = new System.Drawing.Size(346, 15);
             this.label39.TabIndex = 7;
             this.label39.Text = "This feature may not work for all games";
             this.label39.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1661,7 +1719,7 @@ namespace Nucleus.Coop
             this.audioDefaultDevice.Location = new System.Drawing.Point(281, 14);
             this.audioDefaultDevice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.audioDefaultDevice.Name = "audioDefaultDevice";
-            this.audioDefaultDevice.Size = new System.Drawing.Size(226, 15);
+            this.audioDefaultDevice.Size = new System.Drawing.Size(346, 15);
             this.audioDefaultDevice.TabIndex = 6;
             this.audioDefaultDevice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1684,11 +1742,11 @@ namespace Nucleus.Coop
             this.audioCustomSettingsBox.Controls.Add(this.AudioInstance1);
             this.audioCustomSettingsBox.Controls.Add(this.label37);
             this.audioCustomSettingsBox.Controls.Add(this.label36);
-            this.audioCustomSettingsBox.Location = new System.Drawing.Point(4, 54);
+            this.audioCustomSettingsBox.Location = new System.Drawing.Point(66, 66);
             this.audioCustomSettingsBox.Margin = new System.Windows.Forms.Padding(2);
             this.audioCustomSettingsBox.Name = "audioCustomSettingsBox";
             this.audioCustomSettingsBox.Padding = new System.Windows.Forms.Padding(2);
-            this.audioCustomSettingsBox.Size = new System.Drawing.Size(503, 151);
+            this.audioCustomSettingsBox.Size = new System.Drawing.Size(503, 121);
             this.audioCustomSettingsBox.TabIndex = 4;
             this.audioCustomSettingsBox.TabStop = false;
             // 
@@ -1892,7 +1950,7 @@ namespace Nucleus.Coop
             // audioRefresh
             // 
             this.audioRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.audioRefresh.Location = new System.Drawing.Point(215, 209);
+            this.audioRefresh.Location = new System.Drawing.Point(281, 254);
             this.audioRefresh.Margin = new System.Windows.Forms.Padding(2);
             this.audioRefresh.Name = "audioRefresh";
             this.audioRefresh.Size = new System.Drawing.Size(80, 23);
@@ -1909,7 +1967,7 @@ namespace Nucleus.Coop
             this.label33.Location = new System.Drawing.Point(0, 0);
             this.label33.Margin = new System.Windows.Forms.Padding(0);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(248, 15);
+            this.label33.Size = new System.Drawing.Size(350, 15);
             this.label33.TabIndex = 62;
             this.label33.Text = "Save settings in order for them to take effect.";
             this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1923,7 +1981,7 @@ namespace Nucleus.Coop
             this.btn_credits.FlatAppearance.BorderSize = 0;
             this.btn_credits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_credits.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_credits.Location = new System.Drawing.Point(251, 303);
+            this.btn_credits.Location = new System.Drawing.Point(302, 377);
             this.btn_credits.Margin = new System.Windows.Forms.Padding(2);
             this.btn_credits.Name = "btn_credits";
             this.btn_credits.Size = new System.Drawing.Size(80, 22);
@@ -1941,7 +1999,7 @@ namespace Nucleus.Coop
             this.settingsCloseBtn.FlatAppearance.BorderSize = 0;
             this.settingsCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsCloseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsCloseBtn.Location = new System.Drawing.Point(335, 303);
+            this.settingsCloseBtn.Location = new System.Drawing.Point(386, 377);
             this.settingsCloseBtn.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCloseBtn.Name = "settingsCloseBtn";
             this.settingsCloseBtn.Size = new System.Drawing.Size(80, 22);
@@ -1958,7 +2016,7 @@ namespace Nucleus.Coop
             this.settingsSaveBtn.FlatAppearance.BorderSize = 0;
             this.settingsSaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsSaveBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsSaveBtn.Location = new System.Drawing.Point(167, 303);
+            this.settingsSaveBtn.Location = new System.Drawing.Point(218, 377);
             this.settingsSaveBtn.Margin = new System.Windows.Forms.Padding(2);
             this.settingsSaveBtn.Name = "settingsSaveBtn";
             this.settingsSaveBtn.Size = new System.Drawing.Size(80, 22);
@@ -1974,16 +2032,16 @@ namespace Nucleus.Coop
             this.setting_Label.BackColor = System.Drawing.Color.Transparent;
             this.setting_Label.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.setting_Label.Controls.Add(this.label33);
-            this.setting_Label.Location = new System.Drawing.Point(165, 287);
+            this.setting_Label.Location = new System.Drawing.Point(165, 361);
             this.setting_Label.Name = "setting_Label";
-            this.setting_Label.Size = new System.Drawing.Size(248, 15);
+            this.setting_Label.Size = new System.Drawing.Size(350, 15);
             this.setting_Label.TabIndex = 37;
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.Transparent;
+            this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Controls.Add(this.setting_Label);
             this.Controls.Add(this.settingsSaveBtn);
@@ -1993,7 +2051,7 @@ namespace Nucleus.Coop
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Settings";
-            this.Size = new System.Drawing.Size(572, 336);
+            this.Size = new System.Drawing.Size(674, 410);
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
@@ -2023,7 +2081,6 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Button settingsCloseBtn;
         private System.Windows.Forms.Button btn_credits;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox settingsTopCmb;
@@ -2153,5 +2210,10 @@ namespace Nucleus.Coop
         private Label label48;
         private ComboBox steamid9;
         private Label label51;
+        private ComboBox settingsFocusCmb;
+        private Label label50;
+        private Label label52;
+        private TextBox settingsFocusHKTxt;
+        public TabControl tabControl2;
     }
 }

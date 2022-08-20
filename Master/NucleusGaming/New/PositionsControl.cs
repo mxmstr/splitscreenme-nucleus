@@ -30,6 +30,7 @@ namespace Nucleus.Coop
         private Font smallTextFont;
         private Font playerTextFont;
         private Font extraSmallTextFont;
+        private Font tinyTextFont;
 
         // the total bounds of all the connected monitors together
         private Rectangle totalBounds;
@@ -71,13 +72,13 @@ namespace Nucleus.Coop
         private float newplayerTextFontSize; 
         private float newsmallTextFontSize ;
         private float newextraSmallTextFontSize;
-
-
+        
         private System.Threading.Timer gamepadTimer;
         private System.Threading.Timer gamepadPollTimer;
 
         public PictureBox instruction;
         private PictureBox instructionImg;
+        public PictureBox playerSetup_btn;
 
         private ImageAttributes flashImageAttributes;
 
@@ -100,7 +101,7 @@ namespace Nucleus.Coop
         private Bitmap players8;
         private Bitmap players16;
         private Bitmap customLayout;
-
+        private Bitmap plyrsSettingsIcon; 
         private Brush[] colors;
         private SolidBrush myBrush;
         private Pen PositionPlayerScreenPen;
@@ -108,6 +109,7 @@ namespace Nucleus.Coop
 
         public RichTextBox handlerNoteZoom;
         public Panel textZoomContainer;
+        private string themePath;
 
         private string customFont;
         public override string Title => "Position Players";
@@ -118,13 +120,13 @@ namespace Nucleus.Coop
         }
 
         private void Initialize()
-        {         
+        {
             string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
             IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-            string themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
+            themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
             string[] rgb_PositionControlsFontColor = theme.IniReadValue("Colors", "SetupScreenFont").Split(',');
             string[] rgb_PositionScreenColor = theme.IniReadValue("Colors", "SetupScreenBorder").Split(',');
-            string[] rgb_PositionPlayerScreenColor = theme.IniReadValue("Colors", "SetupScreenPlayerBorder").Split(',');     
+            string[] rgb_PositionPlayerScreenColor = theme.IniReadValue("Colors", "SetupScreenPlayerBorder").Split(',');
             controllerIdentification = Convert.ToBoolean(theme.IniReadValue("Misc", "ControllerIdentificationOn"));
             UseSetupScreenBorder = Convert.ToBoolean(theme.IniReadValue("Misc", "UseSetupScreenBorder"));
             UseLayoutSelectionBorder = Convert.ToBoolean(theme.IniReadValue("Misc", "UseLayoutSelectionBorder"));
@@ -143,19 +145,19 @@ namespace Nucleus.Coop
 
             SuspendLayout();
 
-            Anchor = AnchorStyles.Top | AnchorStyles.Bottom| AnchorStyles.Left| AnchorStyles.Right;
+            Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             playerFont = new Font(customFont, 20.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
             playerCustomFont = new Font(customFont, 16.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
             playerTextFont = new Font(customFont, 12.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
             smallTextFont = new Font(customFont, 12.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
             extraSmallTextFont = new Font(customFont, 10.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-
+            tinyTextFont = new Font(customFont, 8.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
             PositionScreenPen = new Pen(Color.FromArgb(Convert.ToInt32(rgb_PositionScreenColor[0]), Convert.ToInt32(rgb_PositionScreenColor[1]), Convert.ToInt32(rgb_PositionScreenColor[2])));
             PositionPlayerScreenPen = new Pen(Color.FromArgb(Convert.ToInt32(rgb_PositionPlayerScreenColor[0]), Convert.ToInt32(rgb_PositionPlayerScreenColor[1]), Convert.ToInt32(rgb_PositionPlayerScreenColor[2])));
             myBrush = new SolidBrush(Color.FromArgb(Convert.ToInt32(rgb_PositionControlsFontColor[0]), Convert.ToInt32(rgb_PositionControlsFontColor[1]), Convert.ToInt32(rgb_PositionControlsFontColor[2])));
 
-            BackColor = Color.Transparent;
-        
+            //BackColor = Color.Transparent;
+
             BackgroundImageLayout = ImageLayout.Stretch;
             instructionCloseImg = new Bitmap(themePath + "\\instruction_closed.png");
             instructionOpenImg = new Bitmap(themePath + "\\instruction_opened.png");
@@ -176,18 +178,18 @@ namespace Nucleus.Coop
             players8 = new Bitmap(themePath + "\\8players.png");
             players16 = new Bitmap(themePath + "\\16players.png");
             customLayout = new Bitmap(themePath + "\\customLayout.png");
-
+            plyrsSettingsIcon = new Bitmap(themePath + "\\player_settings.png");
             instruction = new PictureBox();//using a button cause focus issues
             instruction.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            instruction.Size = new Size(25,25);
-            instruction.Location = new Point((Width-instruction.Width)-5,5);
+            instruction.Size = new Size(25, 25);
+            instruction.Location = new Point((Width - instruction.Width) - 5, 5);
             instruction.BackColor = Color.Transparent;
             instruction.ForeColor = Color.White;
             instruction.BackgroundImage = instructionCloseImg;
             instruction.BackgroundImageLayout = ImageLayout.Stretch;
             instruction.Cursor = Cursors.Hand;
             instruction.Click += new EventHandler(this.instruction_Click);
-          
+
             instructionImg = new PictureBox()
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
@@ -195,7 +197,7 @@ namespace Nucleus.Coop
                 Image = Resources.instructions,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Cursor = Cursors.Default,
-                 //Size\Location  see => UpdateScreens() 
+                //Size\Location  see => UpdateScreens() 
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Visible = false
             };
@@ -215,8 +217,15 @@ namespace Nucleus.Coop
             textZoomContainer.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             textZoomContainer.BorderStyle = BorderStyle.None;
             textZoomContainer.BackgroundImageLayout = ImageLayout.Stretch;
-           
 
+
+            playerSetup_btn = new PictureBox();//using a button cause focus issues
+            playerSetup_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            playerSetup_btn.BackColor = Color.Transparent;
+            playerSetup_btn.Image = plyrsSettingsIcon;
+            playerSetup_btn.SizeMode = PictureBoxSizeMode.StretchImage;
+            playerSetup_btn.Cursor = Cursors.Hand;
+            
             ResumeLayout();
 
             colors = new Brush[]
@@ -230,7 +239,7 @@ namespace Nucleus.Coop
             Controls.Add(textZoomContainer);
             Controls.Add(instruction);
             Controls.Add(instructionImg);
-
+            Controls.Add(playerSetup_btn);
             //Flash image attributes
             {
                 ColorMatrix colorMatrix = new ColorMatrix(new[]
@@ -255,6 +264,7 @@ namespace Nucleus.Coop
         {
             Process.Start(e.LinkText);
         }
+
         private void instruction_Click(object sender, EventArgs e)
         {
             if (instructionImg.Visible)
@@ -302,11 +312,12 @@ namespace Nucleus.Coop
                 playerTextFont = new Font(customFont, newplayerTextFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                 smallTextFont = new Font(customFont, 10, FontStyle.Regular, GraphicsUnit.Point, 0);
                 extraSmallTextFont = new Font(customFont, newextraSmallTextFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                tinyTextFont = new Font(customFont, 8.75f * scale, FontStyle.Regular, GraphicsUnit.Point, 0);
                 handlerNoteZoom.Font = new Font(customFont, 14f * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                
 
                 float instructionW = instruction.Width * scale;
                 float instructionH = instruction.Height * scale;
-
 
                 instruction.Width = (int)instructionW;
                 instruction.Height = (int)instructionH;
@@ -317,15 +328,19 @@ namespace Nucleus.Coop
                 handlerNoteZoom.Size = new Size(textZoomContainer.Width + (int)(18*scale), textZoomContainer.Height - 40);
                 handlerNoteZoom.Location = new Point(0, 20);
 
+                playerSetup_btn.Size = instruction.Size;
+                playerSetup_btn.Location = new Point(((instruction.Left - playerSetup_btn.Width)-5), instruction.Top);
                 appStart = true;
             }
 
             ResumeLayout();
         }
+
         public static void InvalidateFlash()
         {
             _positionsControl?.Invalidate();
         }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -818,8 +833,7 @@ namespace Nucleus.Coop
                         IsKeyboardPlayer = true,
                         GamepadId = 99,
                         IsInputUsed = true
-                };
-                    //inputPic3.Image = k_Icon;
+                    };
                     playerData.Add(kbPlayer);
                 }
 
@@ -899,7 +913,7 @@ namespace Nucleus.Coop
             }
 
             CanPlayUpdated(canProceed, false);
-           // Invalidate();
+
         }
 
         private bool GetScreenDivisionBounds(UserScreenType screenType, int index, out Rectangle? monitorBounds, out Rectangle? editorBounds, Rectangle bounds, Rectangle ebounds)
@@ -1267,7 +1281,7 @@ namespace Nucleus.Coop
 
                                         if (other.MonitorBounds == new Rectangle(0, 0, 0, 0))
                                         {
-                                            continue;
+                                           continue;
                                         }
 
                                         if (((p.IsKeyboardPlayer && !p.IsRawKeyboard && !p.IsRawMouse) || p.IsXInput || p.IsDInput || (p.IsRawKeyboard && !other.IsRawMouse) || (p.IsRawMouse && !other.IsRawKeyboard)) && (p.MonitorBounds.Y == other.MonitorBounds.Y || (p.MonitorBounds.Y < other.MonitorBounds.Height && p.MonitorBounds.Y > other.MonitorBounds.Y)))
@@ -1404,7 +1418,6 @@ namespace Nucleus.Coop
                 //Invalidate();
             }
         }
-
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
@@ -1670,8 +1683,8 @@ namespace Nucleus.Coop
                 g.DrawRectangle(PositionPlayerScreenPen, draggingScreenRec);
                 g.DrawImage(draggingScreenImg, draggingScreen);
             }
-            
-           UpdateScreens();
+
+            UpdateScreens();
         }
     }
 }

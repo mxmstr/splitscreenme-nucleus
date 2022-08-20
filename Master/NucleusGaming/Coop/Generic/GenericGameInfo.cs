@@ -32,6 +32,7 @@ namespace Nucleus.Gaming
         public string[] FileSymlinkCopyInstead;
         public string[] DirSymlinkCopyInstead;
         public string[] DirExclusions;
+        
         public bool KeepSymLinkOnExit;
 
         public double HandlerInterval;
@@ -209,6 +210,7 @@ namespace Nucleus.Gaming
         public bool UserProfileSavePathNoCopy;
         public bool LauncherExeIgnoreFileCheck;
         public bool ForceBindIPDelay;
+        public bool ForceBindIPNoDummy = false;
         public string[] CustomUserGeneralPrompts;
         public bool SaveCustomUserGeneralValues;
         public string[] CustomUserPlayerPrompts;
@@ -266,8 +268,7 @@ namespace Nucleus.Gaming
         public string ForceGameArch;
         public string[] SSEAdditionalLines;
         public string[] DeleteOnClose;
-        public int SteamlessTiming = 2500;
-        public bool KeepEditedRegKeys;
+        
         // -- From USS
         //Effectively a switch for all of USS features
         public bool SupportsMultipleKeyboardsAndMice;
@@ -303,11 +304,14 @@ namespace Nucleus.Gaming
         public int LockInputToggleKey = 0x23;//End by default. Keys: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
         public bool ForceEnvironmentUse;
         public bool ForceLauncherExeIgnoreFileCheck;
+
         public bool UseSteamless = false;
         public string SteamlessArgs;
+        public int SteamlessTiming = 2500;
         // Proto Input
         public ProtoInputOptions ProtoInput = new ProtoInputOptions();
         public bool LockInputSuspendsExplorer = false;
+        public bool ToggleUnfocusOnInputsLock = false;//v.2.1.2 see RawInputProcessor & GenericGameHandler
 
         public Type HandlerType => typeof(GenericGameHandler);
 
@@ -570,7 +574,7 @@ namespace Nucleus.Gaming
             return Hub.GetScreenshots();
         }
 
-        public string GetHubId()
+        public string GetHandlerId()
         {
             return Hub.Handler.Id;
         }

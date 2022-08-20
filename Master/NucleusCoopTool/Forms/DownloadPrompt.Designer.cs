@@ -115,7 +115,6 @@ namespace Nucleus.Coop.Forms
             this.Name = "DownloadPrompt";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Downloading Game Handler";
-            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 

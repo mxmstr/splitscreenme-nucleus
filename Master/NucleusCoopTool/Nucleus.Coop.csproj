@@ -504,6 +504,9 @@
     <Content Include="gui\theme\default\arrow_right_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\update_available.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\background.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -588,6 +591,9 @@
     <Content Include="gui\theme\default\player_screen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\player_settings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\proto_keyboard.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -624,10 +630,13 @@
     <Content Include="gui\theme\default\right_panel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\showcase_cover_layer.png">
+    <Content Include="gui\theme\default\showcase-background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\showcase_title-back.png">
+    <Content Include="gui\theme\default\showcase-labels.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\showcase_cover_layer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\splash.gif">
@@ -688,9 +697,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\title_settings_mousehover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\update_available.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\virtual_keyboard.png">

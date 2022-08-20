@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -10,7 +11,7 @@ namespace Nucleus.Coop
 {
     internal static class StartChecks
     {
-
+       
         static bool isRunning = false;
         private static void ExportRegistry(string strKey, string filepath)
         {
@@ -55,13 +56,24 @@ namespace Nucleus.Coop
             {
                 if (!File.Exists(Path.Combine(Application.StartupPath, file)))
                 {
-                    MessageBox.Show(file + " is missing from your Nucleus Co-op installation folder.", "Missing file(s)", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    Process[] processes = Process.GetProcessesByName("NucleusCoop");
-
-                    foreach (Process NucleusCoop in processes)
+                    if (MessageBox.Show(file + " is missing from your Nucleus Co-op installation folder. Check that your antivirus program is not deleting or blocking any Nucleus Co-op files. Add the Nucleus Co-op folder to your antivirus exceptions list and extract it again. Click \"OK\" for more informations", "Missing file(s)", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                     {
-                        NucleusCoop.Kill();
+                        Process.Start("https://www.splitscreen.me/docs/faq/#7--nucleus-co-op-doesnt-launchcrashes-how-do-i-fix-it");
+                        Process[] processes = Process.GetProcessesByName("NucleusCoop");
+
+                        foreach (Process NucleusCoop in processes)
+                        {
+                            NucleusCoop.Kill();
+                        }
+                    }
+                    else 
+                    {
+                        Process[] processes = Process.GetProcessesByName("NucleusCoop");
+
+                        foreach (Process NucleusCoop in processes)
+                        {
+                            NucleusCoop.Kill();
+                        }
                     }
                 }
             }
@@ -228,6 +240,38 @@ namespace Nucleus.Coop
             catch (Exception)
             { }
 
+        }
+
+        public static bool CheckNetCon()
+        {
+            bool connected;
+            try
+            {
+
+                Ping myPing = new Ping();
+                String host = "hub.splitscreen.me";
+                byte[] buffer = new byte[32];
+                int timeout = 1000;
+                PingOptions pingOptions = new PingOptions();
+                PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
+                if (reply.Status == IPStatus.Success)
+                {
+                    connected = true;
+                    myPing.Dispose();
+                    return connected;
+                }
+                else
+                {
+                    connected = false;
+                    myPing.Dispose();
+                    return connected;
+                }
+            }
+            catch (Exception)
+            {
+                connected = false;
+                return connected;
+            }
         }
     }
 }

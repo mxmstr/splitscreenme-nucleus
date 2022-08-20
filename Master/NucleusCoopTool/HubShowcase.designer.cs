@@ -49,7 +49,6 @@ namespace Nucleus.Coop
             this.last_Updated_13 = new BufferedClientAreaPanel();
             this.last_Updated_14 = new BufferedClientAreaPanel();
             this.last_Updated_15 = new BufferedClientAreaPanel();
-            this.titleBackground.SuspendLayout();
             this.Container1.SuspendLayout();
             this.showcaseBanner1.SuspendLayout();
             this.SuspendLayout();
@@ -60,9 +59,9 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.showcase_Label.BackColor = System.Drawing.Color.Transparent;
             this.showcase_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showcase_Label.Location = new System.Drawing.Point(0, 0);
+            this.showcase_Label.Location = new System.Drawing.Point(215, 40);
             this.showcase_Label.Name = "showcase_Label";
-            this.showcase_Label.Size = new System.Drawing.Size(425, 39);
+            this.showcase_Label.Size = new System.Drawing.Size(433, 39);
             this.showcase_Label.TabIndex = 68;
             this.showcase_Label.Text = "What\'s New?";
             this.showcase_Label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -71,8 +70,7 @@ namespace Nucleus.Coop
             // 
             this.titleBackground.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.titleBackground.Controls.Add(this.showcase_Label);
-            this.titleBackground.Location = new System.Drawing.Point(225, 99);
+            this.titleBackground.Location = new System.Drawing.Point(780, 23);
             this.titleBackground.Name = "titleBackground";
             this.titleBackground.Size = new System.Drawing.Size(425, 39);
             this.titleBackground.TabIndex = 71;
@@ -83,7 +81,7 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Container1.BackColor = System.Drawing.Color.Transparent;
             this.Container1.Controls.Add(this.showcaseBanner1);
-            this.Container1.Location = new System.Drawing.Point(24, 141);
+            this.Container1.Location = new System.Drawing.Point(14, 87);
             this.Container1.Name = "Container1";
             this.Container1.Size = new System.Drawing.Size(848, 242);
             this.Container1.TabIndex = 70;
@@ -112,7 +110,7 @@ namespace Nucleus.Coop
             this.showcaseBanner1.Controls.Add(this.last_Updated_15);
             this.showcaseBanner1.Location = new System.Drawing.Point(0, 3);
             this.showcaseBanner1.Name = "showcaseBanner1";
-            this.showcaseBanner1.Size = new System.Drawing.Size(824, 251);
+            this.showcaseBanner1.Size = new System.Drawing.Size(832, 251);
             this.showcaseBanner1.TabIndex = 69;
             this.showcaseBanner1.WrapContents = false;
             this.showcaseBanner1.Paint += new System.Windows.Forms.PaintEventHandler(this.showcaseBanner1_Paint);
@@ -298,12 +296,12 @@ namespace Nucleus.Coop
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Transparent;
+            this.Controls.Add(this.showcase_Label);
             this.Controls.Add(this.titleBackground);
             this.Controls.Add(this.Container1);
             this.DoubleBuffered = true;
             this.Name = "HubShowcase";
-            this.Size = new System.Drawing.Size(874, 532);
-            this.titleBackground.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(874, 346);
             this.Container1.ResumeLayout(false);
             this.showcaseBanner1.ResumeLayout(false);
             this.ResumeLayout(false);

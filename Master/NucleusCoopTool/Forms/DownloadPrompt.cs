@@ -26,6 +26,9 @@ namespace Nucleus.Coop.Forms
         private bool overwriteWithoutAsking = false;
         private readonly IniFile prompt = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         private MainForm mainForm;
+        public bool gameExeNoUpdate;
+        public string game;
+
         private void controlscollect()
         {
             foreach (Control control in Controls)
@@ -45,6 +48,7 @@ namespace Nucleus.Coop.Forms
                 }
             }
         }
+
         public DownloadPrompt(Handler handler, MainForm mf, string zipFileName)
         {
             fontSize = float.Parse(mf.theme.IniReadValue("Font", "DownloadPromptFontSize"));
@@ -88,6 +92,8 @@ namespace Nucleus.Coop.Forms
                 }
 
                 ResumeLayout();
+
+                Activate();
             }
             catch (Exception)
             {
@@ -192,28 +198,30 @@ namespace Nucleus.Coop.Forms
             string frmHandleTitle = pattern.Replace(zipFile, "");
             string exeName = null;
             int found = 0;
-            foreach (string line in File.ReadAllLines(Path.Combine(scriptTempFolder, "handler.js")))
-            {
-                if (line.ToLower().StartsWith("game.executablename"))
-                {
-                    int start = line.IndexOf("\"");
-                    int end = line.LastIndexOf("\"");
-                    exeName = line.Substring(start + 1, (end - start) - 1);
-                    found++;
-                }
-                else if (line.ToLower().StartsWith("game.gamename"))
-                {
-                    int start = line.IndexOf("\"");
-                    int end = line.LastIndexOf("\"");
-                    frmHandleTitle = pattern.Replace(line.Substring(start + 1, (end - start) - 1), "");
-                    found++;
-                }
 
-                if (found == 2)
+
+                foreach (string line in File.ReadAllLines(Path.Combine(scriptTempFolder, "handler.js")))
                 {
-                    break;
+                    if (line.ToLower().StartsWith("game.executablename"))
+                    {
+                        int start = line.IndexOf("\"");
+                        int end = line.LastIndexOf("\"");
+                        exeName = line.Substring(start + 1, (end - start) - 1);
+                        found++;
+                    }
+                    else if (line.ToLower().StartsWith("game.gamename"))
+                    {
+                        int start = line.IndexOf("\"");
+                        int end = line.LastIndexOf("\"");
+                        frmHandleTitle = pattern.Replace(line.Substring(start + 1, (end - start) - 1), "");
+                        found++;
+                    }
+
+                    if (found == 2)
+                    {
+                        break;
+                    }
                 }
-            }
 
             if (File.Exists(Path.Combine(scriptFolder, frmHandleTitle + ".js")))
             {
@@ -277,15 +285,25 @@ namespace Nucleus.Coop.Forms
             label1.Text = "Finished!";
 
             File.Delete(Path.Combine(scriptFolder, zipFile));
-
-            DialogResult dialogResult = MessageBox.Show(
-                "Downloading and extraction of " + frmHandleTitle +
-                " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it.",
-                "Download finished! Add to Nucleus?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dialogResult == DialogResult.Yes)
+            if(!gameExeNoUpdate)
             {
+                DialogResult dialogResult = MessageBox.Show(
+                    "Downloading and extraction of " + frmHandleTitle +
+                    " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it.",
+                    "Download finished! Add to Nucleus?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Gaming.GameManager.Instance.AddScript(frmHandleTitle);
+                    mainForm.SearchGame(exeName);
+                }
+            }
+            else
+            {
+               
                 Gaming.GameManager.Instance.AddScript(frmHandleTitle);
-                mainForm.SearchGame(exeName);
+                gameExeNoUpdate = false;
             }
         }
     }

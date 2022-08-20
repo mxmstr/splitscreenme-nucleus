@@ -1152,7 +1152,7 @@ namespace Nucleus.Gaming
             jsData.Add(Folder.InstancedGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
 
             timerInterval = gen.HandlerInterval;
-            
+
             LogManager.RegisterForLogCallback(this);
 
             JsFilename = gen.JsFileName;
@@ -1414,7 +1414,7 @@ namespace Nucleus.Gaming
                 profile.PlayerData.Add(firstInGroup);
             }
 
-            var reorderPlayers = profile.PlayerData.OrderBy(c => c.ScreenIndex).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X);//MonitorBounds nothing else?
+            var reorderPlayers = profile.PlayerData.OrderBy(c => c.ScreenIndex).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X);//MonitorBounds nothing else!
             List<PlayerInfo> reorderedPlyrs = new List<PlayerInfo>();
 
             foreach (var player in reorderPlayers)
@@ -1704,6 +1704,7 @@ namespace Nucleus.Gaming
                     player.Nickname = "Player" + (i + 1);
                 }
 
+                //Console.WriteLine(player.Nickname);
                 ProcessData procData = player.ProcessData;
                 bool hasSetted = procData != null && procData.Setted;
 
@@ -1944,8 +1945,8 @@ namespace Nucleus.Gaming
                 string linkBinFolder;
                 string origRootFolder = "";
 
-
-
+               
+               
 
                 if (gen.SymlinkGame || gen.HardcopyGame || gen.HardlinkGame)
                 {
@@ -1994,7 +1995,7 @@ namespace Nucleus.Gaming
                         }
                     }
 
-
+                   
                     origRootFolder = rootFolder;
                     instanceExeFolder = linkBinFolder;
 
@@ -2006,7 +2007,7 @@ namespace Nucleus.Gaming
 
                     // some games have save files inside their game folder, so we need to access them inside the loop
                     jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
-
+                    
                     Thread.Sleep(1000);
                     if (i == 0 && (gen.LauncherExe?.Length > 0 && gen.LauncherExe.EndsWith("NucleusDefined")))
                     {
@@ -2205,7 +2206,7 @@ namespace Nucleus.Gaming
                             {
                                 Log(string.Format("Symlinking game folder and files at {0} to {1}, for each instance", rootFolder, tempDir));
                                 int exitCode;
-
+                             
                                 while (!StartGameUtil.SymlinkGame(rootFolder, linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, false, gen.SymlinkFolders, players.Count))
                                 {
                                     Thread.Sleep(25);
@@ -2218,7 +2219,7 @@ namespace Nucleus.Gaming
                         skipped = true;
                         Log("Skipping linking or copying files as it is not needed");
                     }
-
+                   
                     if (gen.LauncherExe?.Length > 0)
                     {
                         if (gen.LauncherExe.Contains(':') && gen.LauncherExe.Contains('\\'))
@@ -2230,7 +2231,7 @@ namespace Nucleus.Gaming
 
                             if (!gen.LauncherExeIgnoreFileCheck)
                             {
-                                string[] launcherFiles = Directory.GetFiles(linkFolder, gen.LauncherExe, SearchOption.AllDirectories);
+                                string[] launcherFiles = Directory.GetFiles(linkFolder, gen.LauncherExe, SearchOption.AllDirectories);                            
 
                                 if (launcherFiles.Length < 1)
                                 {
@@ -2341,7 +2342,7 @@ namespace Nucleus.Gaming
                             }
                         }
                     }
-
+                   
                     if (!skipped)
                     {
                         Log("File operations complete");
@@ -2398,8 +2399,6 @@ namespace Nucleus.Gaming
                 {
                     return string.Empty;
                 }
-
-                ShowInstanceInfo(player,i);
 
                 if (gen.ChangeIPPerInstanceAlt)
                 {
@@ -2723,6 +2722,9 @@ namespace Nucleus.Gaming
                 context.OrigRootFolder = rootFolder;
                 context.UserProfileConfigPath = gen.UserProfileConfigPath;
                 context.UserProfileSavePath = gen.UserProfileSavePath;
+                context.KeepEditedRegKeys = gen.KeepEditedRegKeys;
+
+
 
                 if (gen.SymlinkFiles != null)
                 {
@@ -3246,8 +3248,6 @@ namespace Nucleus.Gaming
                     }
                 }
 
-                
-
                 string startArgs = context.StartArguments;
 
                 if (!string.IsNullOrEmpty(lobbyConnectArg) && i > 0)
@@ -3261,42 +3261,17 @@ namespace Nucleus.Gaming
                     CustomDllEnabled(context, player, playerBounds, i, setupDll);
                 }
 
-                if ((!gen.UseGoldberg && ini.IniReadValue("Misc", "UseNicksInGame") == "True"))
-                {
-                    long steamID = random_steam_id + i;
-
-                    bool useSettingsSID = false;
-
-                    if (ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
-                    {
-                        Log("Using steam ID from Nucleus settings ");
-                        steamID = Convert.ToInt64(ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));//ToString?   
-                        useSettingsSID = true;
-                    }
-
-                    if (gen.PlayerSteamIDs != null && !useSettingsSID)
-                    {
-                        if (i < gen.PlayerSteamIDs.Length && !string.IsNullOrEmpty(gen.PlayerSteamIDs[i]))
-                        {
-                            Log("Using steam ID from handler");
-                            steamID = long.Parse(gen.PlayerSteamIDs[i]);
-                        }
-
-                    }
-                }
-
-                if (gen.GoldbergWriteSteamIDAndAccount)
+                if ((!gen.UseGoldberg && ini.IniReadValue("Misc", "UseNicksInGame") == "True") || gen.GoldbergWriteSteamIDAndAccount)
                 {
                     string[] saFiles = Directory.GetFiles(linkFolder, "account_name.txt", SearchOption.AllDirectories);
                     List<string> files = saFiles.ToList();
 
                     if (saFiles.Length > 0)
                     {
-                        Log("account_name.txt file(s) were found in folder. Will update nicknames");
+                        Log("Goldberg: account_name.txt file(s) were found in folder. Will update nicknames");
                     }
 
                     string goldbergNoLocal = $@"{NucleusEnvironmentRoot}\AppData\Roaming\Goldberg SteamEmu Saves\settings\account_name.txt";
-
 
                     if (File.Exists(goldbergNoLocal))
                     {
@@ -3311,7 +3286,6 @@ namespace Nucleus.Gaming
                             files.Add(goldbergNoLocal);
                         }
                     }
-
 
                     foreach (string nameFile in files)
                     {
@@ -3333,9 +3307,8 @@ namespace Nucleus.Gaming
                     files = saFiles.ToList();
                     if (saFiles.Length > 0)
                     {
-                        Log("user_steam_id.txt file(s) were found in folder. Will update nicknames");
+                        Log("Goldberg: user_steam_id.txt file(s) were found in folder. Will update nicknames");
                     }
-
 
                     goldbergNoLocal = $@"{NucleusEnvironmentRoot}\AppData\Roaming\Goldberg SteamEmu Saves\settings\user_steam_id.txt";
                     if (File.Exists(goldbergNoLocal))
@@ -3352,13 +3325,12 @@ namespace Nucleus.Gaming
                         }
                     }
 
-
                     foreach (string nameFile in files)
                     {
                         long steamID = random_steam_id + i;
 
                         bool useSettingsSID = false;
-
+   
                         if (ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
                         {
                             Log("Using steam ID from Nucleus settings ");
@@ -3373,7 +3345,7 @@ namespace Nucleus.Gaming
                                 Log("Using steam ID from handler");
                                 steamID = long.Parse(gen.PlayerSteamIDs[i]);
                             }
-
+ 
                         }
 
                         Log("Generating user_steam_id.txt with user steam ID " + (steamID).ToString());
@@ -4278,21 +4250,11 @@ namespace Nucleus.Gaming
                                     }
 
                                     string iParam = string.Empty;
-
                                     if (gen.ForceBindIPDelay)
                                     {
                                         iParam = "-i ";
                                     }
-
-                                    string dummy = " dummy";
-
-                                    if (gen.ForceBindIPNoDummy)
-                                    {
-                                        dummy = string.Empty;
-                                    }
-
-                                   string cmdLine = "\"" + Path.Combine(GameManager.Instance.GetUtilsPath(), "ForceBindIP\\" + forceBindexe) + "\" " + iParam + "127.0.0." + (i + 2) + " \"" + exePath + "\""+ dummy + startArgs;
-                                   // string cmdLine = "\"" + Path.Combine(GameManager.Instance.GetUtilsPath(), "ForceBindIP\\" + forceBindexe) + "\" " + iParam + "127.0.0." + (i + 2) + " \"" + exePath + "\" dummy" + startArgs;
+                                    string cmdLine = "\"" + Path.Combine(GameManager.Instance.GetUtilsPath(), "ForceBindIP\\" + forceBindexe) + "\" " + iParam + "127.0.0." + (i + 2) + " \"" + exePath + "\" dummy" + startArgs;
                                     Log(string.Format("Launching game using ForceBindIP command line argument: {0}", cmdLine));
                                     cmd.StandardInput.WriteLine(cmdLine);
 
@@ -5024,7 +4986,7 @@ namespace Nucleus.Gaming
                         }
                     }
                 }
-
+    
                 //Set up raw input window
                 //if (player.IsRawKeyboard || player.IsRawMouse)
                 {
@@ -5291,23 +5253,13 @@ namespace Nucleus.Gaming
                             User32Interop.SendMessage(plyrProc.NucleusGetMainWindowHandle(), (int)FocusMessages.WM_MOUSEACTIVATE, (IntPtr)plyrProc.NucleusGetMainWindowHandle(), (IntPtr)1);
                         }
                     }
-
-                }               
+                }
 
             }
 
             if (gen.LockInputAtStart)
             {
                 Thread.Sleep(5000);
-                if (gen.ToggleUnfocusOnInputsLock)
-                {
-                    IntPtr nucHwnd = User32Interop.FindWindow(null, "Nucleus Co-op");
-                    if (nucHwnd != IntPtr.Zero)
-                    {
-                        User32Interop.SetForegroundWindow(nucHwnd);
-                    }
-                }
-
                 LockInput.Lock(gen.LockInputSuspendsExplorer, gen.ProtoInput.FreezeExternalInputWhenInputNotLocked, gen?.ProtoInput);
             }
 
@@ -5375,11 +5327,9 @@ namespace Nucleus.Gaming
                         }
                     }
                 }
-               
             }
 
-            
-                Log("All done!");
+            Log("All done!");
             try
             {
                 if (statusWinThread != null && statusWinThread.IsAlive)
@@ -5396,47 +5346,6 @@ namespace Nucleus.Gaming
             gen.OnFinishedSetup?.Invoke();
 
             return string.Empty;
-        }
-
-        private void ShowInstanceInfo(PlayerInfo player,int i)
-        {
-            System.Threading.Tasks.Task.Run(() =>
-             {
-                 Form info = new Form();
-                 info.Size = new Size(1000, 90);
-                 info.StartPosition = FormStartPosition.CenterScreen;
-                 info.FormBorderStyle = FormBorderStyle.None;
-                 info.ShowInTaskbar = false;
-                 info.TopMost = true;
-                 info.BackColor = Color.Black;
-                 info.TransparencyKey = Color.Black;
-                 info.Opacity = 0.8D;
-
-                 TextBox playerInfo = new TextBox();
-                 playerInfo.Text = "Starting " + gen.GameName + " instance for " + player.Nickname + " as player " + (i + 1);
-                 playerInfo.Size = new Size(info.Width, info.Height);
-                 playerInfo.Location = new Point(info.Width / 2 - playerInfo.Width / 2, info.Height / 2 - playerInfo.Height / 2);
-                 playerInfo.TextAlign = HorizontalAlignment.Center;
-                 playerInfo.Font = new Font("Franklin Gothic", 16.0F, FontStyle.Regular);
-                 playerInfo.ForeColor = Color.GreenYellow;
-                 playerInfo.BackColor = Color.Black;
-                 playerInfo.BorderStyle = BorderStyle.None;
-                 playerInfo.SelectionStart = playerInfo.Text.Length;
-
-                 info.Controls.Add(playerInfo);
-                 info.Show();
-                
-                 long timer = (long)8e+9;
-
-                 while(timer > 0)
-                 {
-                     timer -= (long)50000;
-                     info.BringToFront();
-                     info.TopMost = true;
-                 }
-
-                 info.Dispose();
-             });
         }
 
         private void WindowStyleChanges(ProcessData processData, int i)
@@ -5784,21 +5693,38 @@ namespace Nucleus.Gaming
             ProcessPicker ppform = new ProcessPicker(); //using ProcessPicker.cs 
             Log("Launching process picker");
 
-            ppform.pplistBox.DoubleClick += new EventHandler(SelBtn_Click);
-
+            ListBox listBox = new ListBox();
+            listBox.DoubleClick += new EventHandler(SelBtn_Click);
+            listBox.Dock = System.Windows.Forms.DockStyle.Fill;// listBox.Size = new Size(200, 143);
+            listBox.Font = new Font("Microsoft Sans Serif", 9.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             foreach (Control c in ppform.Controls)
             {
                 if (c.Name == "refrshBtn")
                 {
+                    ppform.SuspendLayout();
                     c.Click += new EventHandler(RefrshBtn_Click);
+                    ppform.ResumeLayout();
                 }
             }
 
             foreach (Control c in ppform.Controls)
             {
                 if (c.Name == "selBtn")
-                {            
+                {
+                    ppform.SuspendLayout();
                     c.Click += new EventHandler(SelBtn_Click);
+                    ppform.ResumeLayout();
+                }
+            }
+
+            foreach (Control container in ppform.Controls)
+            {
+                if (container.Name == "container")
+                {
+                    ppform.SuspendLayout();
+                    container.Controls.Add(listBox);
+                    ppform.ScaleList();
+                    ppform.ResumeLayout();
                 }
             }
 
@@ -5814,22 +5740,22 @@ namespace Nucleus.Gaming
                 {
                     if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
                     {
-                        ppform.pplistBox.Items.Insert(0, p.Id + " - (DO NOT USE - Already assigned in Nucleus) " + p.ProcessName);
+                        listBox.Items.Insert(0, p.Id + " - (DO NOT USE - Already assigned in Nucleus) " + p.ProcessName);
                     }
                     else
                     {
-                        ppform.pplistBox.Items.Add(p.Id + " - (DO NOT USE - Already assigned in Nucleus) " + p.ProcessName);
+                        listBox.Items.Add(p.Id + " - (DO NOT USE - Already assigned in Nucleus) " + p.ProcessName);
                     }
                 }
                 else
                 {
                     if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
                     {
-                        ppform.pplistBox.Items.Insert(0, p.Id + " - " + p.ProcessName);
+                        listBox.Items.Insert(0, p.Id + " - " + p.ProcessName);
                     }
                     else
                     {
-                        ppform.pplistBox.Items.Add(p.Id + " - " + p.ProcessName);
+                        listBox.Items.Add(p.Id + " - " + p.ProcessName);
                     }
                 }
 
@@ -5838,9 +5764,9 @@ namespace Nucleus.Gaming
             ppform.ShowDialog();
             WindowScrape.Static.HwndInterface.MakeTopMost(ppform.Handle);
 
-            if (ppform.pplistBox.SelectedItem != null)
+            if (listBox.SelectedItem != null)
             {
-                Process proc = Process.GetProcessById(int.Parse(ppform.pplistBox.SelectedItem.ToString().Split(' ')[0]));
+                Process proc = Process.GetProcessById(int.Parse(listBox.SelectedItem.ToString().Split(' ')[0]));
                 Log(string.Format("Obtained process {0} (pid {1}) via process picker", proc.ProcessName, proc.Id));
                 attached.Add(proc);
                 attachedIds.Add(proc.Id);
@@ -6097,7 +6023,6 @@ namespace Nucleus.Gaming
                 }
             }
         }
-
         private void ChangeGameWindow(Process proc, List<PlayerInfo> players, int playerIndex)
         {
             var hwnd = WaitForProcWindowHandleNotZero(proc);
@@ -6484,47 +6409,51 @@ namespace Nucleus.Gaming
             Control control = (Button)sender;
 
             Form ppform = control.FindForm();
-            foreach (Control l in ppform.Controls)
+            foreach (Control c in ppform.Controls)
             {
-
-                if (l.GetType() == typeof(ListBox))
+                if (c.GetType() == typeof(Panel))
                 {
-                    ListBox listBox = l as ListBox;
-                    listBox.Items.Clear();
-
-                    Process[] allProc = Process.GetProcesses();
-                    foreach (Process p in allProc)
+                    foreach (Control l in c.Controls)
                     {
-                        if (p.Id == 0 || string.IsNullOrEmpty(p.MainWindowTitle))
+                        if (l.GetType() == typeof(ListBox))
                         {
-                            continue;
-                        }
-                        if (attachedIds.Contains(p.Id))
-                        {
-                            if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
+                            ListBox listBox = l as ListBox;
+                            listBox.Items.Clear();
+
+                            Process[] allProc = Process.GetProcesses();
+                            foreach (Process p in allProc)
                             {
-                                listBox.Items.Insert(0, p.Id + " - (DO NOT USE - Already assigned in Nucleus)" + p.ProcessName);
+                                if (p.Id == 0 || string.IsNullOrEmpty(p.MainWindowTitle))
+                                {
+                                    continue;
+                                }
+                                if (attachedIds.Contains(p.Id))
+                                {
+                                    if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
+                                    {
+                                        listBox.Items.Insert(0, p.Id + " - (DO NOT USE - Already assigned in Nucleus)" + p.ProcessName);
+                                    }
+                                    else
+                                    {
+                                        listBox.Items.Add(p.Id + " - (DO NOT USE - Already assigned in Nucleus)" + p.ProcessName);
+                                    }
+                                }
+                                else
+                                {
+                                    if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
+                                    {
+                                        listBox.Items.Insert(0, p.Id + " - " + p.ProcessName);
+                                    }
+                                    else
+                                    {
+                                        listBox.Items.Add(p.Id + " - " + p.ProcessName);
+                                    }
+                                }
                             }
-                            else
-                            {
-                                listBox.Items.Add(p.Id + " - (DO NOT USE - Already assigned in Nucleus)" + p.ProcessName);
-                            }
-                        }
-                        else
-                        {
-                            if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
-                            {
-                                listBox.Items.Insert(0, p.Id + " - " + p.ProcessName);
-                            }
-                            else
-                            {
-                                listBox.Items.Add(p.Id + " - " + p.ProcessName);
-                            }
+
                         }
                     }
-
                 }
-
             }
         }
 
@@ -6642,7 +6571,6 @@ namespace Nucleus.Gaming
                 Log(string.Format("ERROR - {0}", ex.Message));
             }
         }
-
         private void SendFocusMsgs()
         {
             List<PlayerInfo> players = profile.PlayerData;
@@ -6824,7 +6752,6 @@ namespace Nucleus.Gaming
             {
                 PlayerInfo p = players[i];
                 ProcessData data = p.ProcessData;
-               
                 if (data == null)
                 {
                     continue;
@@ -6837,7 +6764,8 @@ namespace Nucleus.Gaming
                         exited++;
                     }
                     continue;
-                }          
+                }
+
 
                 if (p.SteamEmu)
                 {
@@ -6891,7 +6819,7 @@ namespace Nucleus.Gaming
                                 }
                             }
 
-                            if (data.Status == 2)//
+                            if (data.Status == 2)
                             {
 
                                 if (!gen.DontRemoveBorders)
@@ -6925,7 +6853,7 @@ namespace Nucleus.Gaming
                                         lStyle &= ~User32_WS.WS_BORDER;
                                     }
                                     int resultCode = User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
-
+                                   
                                     lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
 
                                     if (gen.ExtWindowStyleValues?.Length > 0)
@@ -6951,8 +6879,8 @@ namespace Nucleus.Gaming
                                     }
 
                                     int resultCode2 = User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE, lStyle);
-
-                                    User32Interop.SetWindowPos(data.HWnd.NativePtr, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
+                                 
+                                    User32Interop.SetWindowPos(data.HWnd.NativePtr, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));                                  
                                 }
 
                                 if (gen.EnableWindows)
@@ -7155,7 +7083,7 @@ namespace Nucleus.Gaming
                                                 Process pro = Process.GetProcessById(id);
 
                                                 if (!attached.Contains(pro))
-                                                {
+                                                {                                                   
                                                     attached.Add(pro);
                                                     attachedIds.Add(pro.Id);
                                                     p.ProcessID = pro.Id;

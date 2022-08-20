@@ -16,13 +16,14 @@ namespace Nucleus.Coop
 
         private PictureBox picture;
         private PictureBox playerIcon;
+        private PictureBox update;
         private Label title;
         private Label players;
         private ToolTip numPlayersTt;
         private Color radioSelectedBackColor;
         private Color userOverBackColor;
         private Color userLeaveBackColor;
-        
+        public bool updateAvailable;
         public string TitleText { get; set; }
         public string PlayerText { get; set; }
         protected override CreateParams CreateParams
@@ -35,9 +36,11 @@ namespace Nucleus.Coop
             }
         }
 
-        public GameControl(GenericGameInfo game, UserGameInfo userGame)
+        public GameControl(GenericGameInfo game, UserGameInfo userGame,bool updateAvailable)
         {
-            try {
+            try 
+            {
+                this.updateAvailable = updateAvailable;
                 string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
                 IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
                 string themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
@@ -89,6 +92,14 @@ namespace Nucleus.Coop
                     Font = new Font(customFont, 7, FontStyle.Regular, GraphicsUnit.Point, 0)
                 };
 
+                update = new PictureBox
+                {
+                    Visible = false,
+                    Font = new Font(customFont, 7, FontStyle.Regular, GraphicsUnit.Point, 0),
+                    Image = new Bitmap(themePath + "\\update_available.png"),
+                    SizeMode = PictureBoxSizeMode.StretchImage
+                };
+                                           
                 if (game == null)
                 {
                     title.Text = "No games";
@@ -117,6 +128,7 @@ namespace Nucleus.Coop
                 Controls.Add(picture);
                 Controls.Add(title);
                 Controls.Add(players);
+                //Controls.Add(update);
 
                 if (title.Text != "No games")
                 {
@@ -176,6 +188,11 @@ namespace Nucleus.Coop
                 Height = picture.Bottom + border;//adjust the control Height
             }
 
+            title.ForeColor = updateAvailable ? Color.PaleGreen : Color.White;
+
+            //update.Size = new Size(playerIcon.Width, playerIcon.Height);
+            //update.Location = new Point((this.Right - update.Width) - 5, players.Location.Y);         
+            //update.Visible = updateAvailable;
             ResumeLayout();
         }
 

@@ -31,6 +31,7 @@ namespace Nucleus.Coop
         public int KillProcess_HotkeyID = 1;
         public int TopMost_HotkeyID = 2;
         public int StopSession_HotkeyID = 3;
+        public int SetFocus_HotkeyID = 4;
         private float fontSize;
         private List<Control> ctrls = new List<Control>();
         private DirectInput dinput;
@@ -93,7 +94,12 @@ namespace Nucleus.Coop
             InitializeComponent();
             
             SuspendLayout();
-            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+
+            if (mf.roundedcorners)
+            {
+                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            }
+
             tabControl2.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, tabControl2.Width, tabControl2.Height, 5, 5));
             Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
             Visible = false;
@@ -139,7 +145,16 @@ namespace Nucleus.Coop
             controllerNicks = new ComboBox[] { controllerOneNick, controllerTwoNick, controllerThreeNick, controllerFourNick, controllerFiveNick, controllerSixNick, controllerSevenNick, controllerEightNick, controllerNineNick, controllerTenNick, controllerElevenNick, controllerTwelveNick, controllerThirteenNick, controllerFourteenNick, controllerFifteenNick, controllerSixteenNick };
             steamIds = new ComboBox[] { steamid1, steamid2, steamid3, steamid4, steamid5, steamid6, steamid7, steamid8, steamid9, steamid10, steamid11, steamid12, steamid13, steamid14, steamid15, steamid16};
 
+           
             ResumeLayout();
+
+            foreach (Control stmId in tabPage5.Controls)
+            {
+                if (stmId.Name.Contains("steamid") && stmId.GetType() == typeof(ComboBox))
+                {
+                    stmId.KeyPress += new KeyPressEventHandler(this.steamid_KeyPress);
+                }
+            }
 
             prevTheme = mf.ChoosenTheme;
 
@@ -333,6 +348,36 @@ namespace Nucleus.Coop
                 }
             }
 
+
+            if (ini.IniReadValue("Hotkeys", "Stop").Contains('+'))
+            {
+                string[] stopHk = ini.IniReadValue("Hotkeys", "Stop").Split('+');
+                if ((stopHk[0] == "Ctrl" || stopHk[0] == "Alt" || stopHk[0] == "Shift") && stopHk[1].Length == 1 && Regex.IsMatch(stopHk[1], @"^[a-zA-Z0-9]+$"))
+                {
+                    settingsStopCmb.SelectedItem = stopHk[0];
+                    settingsStopTxt.Text = stopHk[1];
+                }
+            }
+            else
+            {
+                ini.IniWriteValue("Hotkeys", "Stop", "");
+            }
+
+
+            if (ini.IniReadValue("Hotkeys", "SetFocus").Contains('+'))
+            {
+                string[] foreground = ini.IniReadValue("Hotkeys", "SetFocus").Split('+');
+                if ((foreground[0] == "Ctrl" || foreground[0] == "Alt" || foreground[0] == "Shift") && foreground[1].Length == 1 && Regex.IsMatch(foreground[1], @"^[a-zA-Z0-9]+$"))
+                {
+                    settingsFocusCmb.SelectedItem = foreground[0];
+                    settingsFocusHKTxt.Text = foreground[1];
+                }
+            }
+            else
+            {
+                ini.IniWriteValue("Hotkeys", "SetFocus", "");
+            }
+
             //Controll
             GetPlayersNickName();
 
@@ -391,7 +436,7 @@ namespace Nucleus.Coop
             }
            
             RefreshAudioList();
-
+            
             DPIManager.Register(this);
            // DPIManager.AddForm(this);
             DPIManager.Update(this);
@@ -498,6 +543,14 @@ namespace Nucleus.Coop
         //    DPIManager.Register(this);
         //}
 
+        private void steamid_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+        }
+
         private void GetPlayersNickName()
         {
 
@@ -529,15 +582,18 @@ namespace Nucleus.Coop
                 ini.IniWriteValue("Hotkeys", "Close", settingsCloseCmb.SelectedItem.ToString() + "+" + settingsCloseHKTxt.Text);
                 ini.IniWriteValue("Hotkeys", "Stop", settingsStopCmb.SelectedItem.ToString() + "+" + settingsStopTxt.Text);
                 ini.IniWriteValue("Hotkeys", "TopMost", settingsTopCmb.SelectedItem.ToString() + "+" + settingsTopTxt.Text);
+                ini.IniWriteValue("Hotkeys", "SetFocus", settingsFocusCmb.SelectedItem.ToString() + "+" + settingsFocusHKTxt.Text);///
 
                 User32Interop.UnregisterHotKey(mainForm.Handle, KillProcess_HotkeyID);
                 User32Interop.UnregisterHotKey(mainForm.Handle, TopMost_HotkeyID);
                 User32Interop.UnregisterHotKey(mainForm.Handle, StopSession_HotkeyID);
+                User32Interop.UnregisterHotKey(mainForm.Handle, SetFocus_HotkeyID);
 
                 User32Interop.RegisterHotKey(mainForm.Handle, KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(mainForm.Handle, TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(mainForm.Handle, StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
-
+                User32Interop.RegisterHotKey(mainForm.Handle, SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
+               
                 for (int i = 0; i < controllerNicks.Length; i++)
                 {
                     ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
@@ -545,7 +601,15 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < steamIds.Length; i++)
                 {
-                    ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
+                    if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0)
+                    {
+                        ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
+                    }
+                    else 
+                    {
+                        MessageBox.Show("Must be 17 numbers e.g. 76561199075562883 ", "Incorrect steam id format!");
+                        return;
+                    }
                 }
 
                 nicksList.Clear();
@@ -677,6 +741,7 @@ namespace Nucleus.Coop
                 User32Interop.RegisterHotKey(form.Handle, KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(form.Handle, TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(form.Handle, StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
             }
             catch (Exception ex)
             {
@@ -711,6 +776,13 @@ namespace Nucleus.Coop
              && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
+        private void SettingsFocusTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            settingsTopTxt.Text = "";
+            e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
+             && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
         private void Btn_Refresh_Click(object sender, EventArgs e)
         {
             GetPlayersNickName();
@@ -724,7 +796,7 @@ namespace Nucleus.Coop
                "\nNew Nucleus Co-op fork: ZeroFox" +
                "\nMultiple keyboards / mice & hooks: Ilyaki" +
                "\nWebsite & handler API: r - mach" +
-               "\nNew UI design & bug fixes: nene27(Mikou27)" +
+               "\nNew UI design & bug fixes: Mikou27(nene27)" +
                "\nHandlers development & testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more." +
                "\nThis new & improved Nucleus Co-op brings a ton of enhancements, such as:" +
                "\n- Massive increase to the amount of compatible games, 400 + as of now." +

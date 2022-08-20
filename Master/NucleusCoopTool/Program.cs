@@ -10,7 +10,7 @@ namespace Nucleus.Coop
     {
 
         private  static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-
+        public static bool connected;
         [STAThread]
         static void Main()
         {
@@ -22,13 +22,17 @@ namespace Nucleus.Coop
                 }
             }
 
-            if (!StartChecks.StartCheck())
+            if (Convert.ToBoolean(ini.IniReadValue("Dev", "PathCheck")))
             {
-                return;
+                if (!StartChecks.StartCheck() && Convert.ToBoolean(ini.IniReadValue("Dev", "PathCheck")) == true)
+                {
+                    return;
+                }
             }
 
+            connected = StartChecks.CheckNetCon();
             StartChecks.CheckFilesIntegrity();
-            StartChecks.CheckUserEnvironment();
+            StartChecks.CheckUserEnvironment();          
             //StartChecks.CheckForUpdate(); //Uncomment to run Pizzo's Python nc updater on startup
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware
