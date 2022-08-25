@@ -504,7 +504,16 @@
     <Content Include="gui\theme\default\arrow_right_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\update_available.png">
+    <Content Include="gui\theme\default\cursor.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\cursor_hand.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\favorite_selected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\favorite_unselected.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\background.jpg">
@@ -719,6 +728,8 @@
     <None Include="Resources\close_button.png" />
     <None Include="Resources\hform_Background.jpg" />
     <None Include="Resources\hform.gif" />
+    <EmbeddedResource Include="Resources\cursor.png" />
+    <Content Include="Resources\cursor.ico" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>

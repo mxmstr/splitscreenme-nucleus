@@ -72,6 +72,7 @@ namespace Nucleus.Coop
         private int SetFocus_HotkeyID = 4;
         private int currentStepIndex;
         public int blurValue;
+        private int checkboxSpam = 0;
         private List<string> profilePaths = new List<string>();
         private List<Control> ctrls = new List<Control>();
         private List<Form> backgroundForms = new List<Form>();
@@ -86,6 +87,8 @@ namespace Nucleus.Coop
         private Bitmap k_Icon;
         private Bitmap xinputGamepad_Icon;
         private Bitmap dinputGamepad_Icon;
+        private Bitmap favorite_Unselected;
+        private Bitmap favorite_Selected;
 
         public bool connected;
         private bool currentlyUpdatingScript = false;
@@ -97,6 +100,7 @@ namespace Nucleus.Coop
         public bool roundedcorners;
         public bool useButtonsBorder;
         private bool DisableOfflineIcon;
+        private bool showFavoriteOnly;
         private Color ChoosenColor;
 
         private System.Windows.Forms.Timer DisposeTimer;//dispose splash screen timer
@@ -136,6 +140,10 @@ namespace Nucleus.Coop
         private UI.InputIcons icon6;
 
         private Label handlerUpdateLabel;
+        private Label favoriteOnlyLabel;
+        private PictureBox favoriteOnly;
+        public Cursor hand_Cursor;
+        public Cursor default_Cursor;
 
         public void RefreshNetStatut()
         {
@@ -372,7 +380,7 @@ namespace Nucleus.Coop
                 }
             }
         }
-
+       
         public MainForm()
         {
             try
@@ -383,6 +391,7 @@ namespace Nucleus.Coop
                 iconsIni = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
                 Splash_On = Convert.ToBoolean(ini.IniReadValue("Dev", "SplashScreen_On"));
                 DisableOfflineIcon = Convert.ToBoolean(ini.IniReadValue("Dev", "DisableOfflineIcon"));
+                showFavoriteOnly = Convert.ToBoolean(ini.IniReadValue("Dev", "ShowFavoriteOnly"));
                 themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
                 mouseClick = Convert.ToBoolean(ini.IniReadValue("Dev", "MouseClick"));
                 roundedcorners = Convert.ToBoolean(theme.IniReadValue("Misc", "UseRoundedCorners"));
@@ -416,6 +425,11 @@ namespace Nucleus.Coop
                 InitializeComponent();
 
                 SuspendLayout();
+
+                default_Cursor = new Cursor(themePath + "\\cursor.ico");
+                hand_Cursor = new Cursor(themePath + "\\cursor_hand.ico");
+
+                Cursor = default_Cursor;
 
                 if (roundedcorners)
                 {
@@ -472,6 +486,8 @@ namespace Nucleus.Coop
                 k_Icon = new Bitmap(themePath + "\\keyboard_icon.png");
                 xinputGamepad_Icon = new Bitmap(themePath + "\\xinput_icon.png");
                 dinputGamepad_Icon = new Bitmap(themePath + "\\dinput_icon.png");
+                favorite_Unselected = new Bitmap(themePath + "\\favorite_unselected.png");
+                favorite_Selected = new Bitmap(themePath + "\\favorite_selected.png");
 
                 btn_Extract.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 btnAutoSearch.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
@@ -511,6 +527,13 @@ namespace Nucleus.Coop
                 linksPanel.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, linksPanel.Width, linksPanel.Height, 15, 15));
                 third_party_tools_container.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, third_party_tools_container.Width, third_party_tools_container.Height, 10, 10));
                 scriptAuthorTxtSizer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, scriptAuthorTxtSizer.Width, scriptAuthorTxtSizer.Height, 20, 20));
+                
+                btn_magnifier.Cursor = hand_Cursor;
+                linkLabel1.Cursor = hand_Cursor;
+                linkLabel2.Cursor = hand_Cursor;
+                linkLabel3.Cursor = hand_Cursor;
+                linkLabel4.Cursor = hand_Cursor;
+                gameContextMenuStrip.Cursor = hand_Cursor;
 
                 if (coverBorderOff)
                 {
@@ -535,6 +558,11 @@ namespace Nucleus.Coop
                     {
                         control.Font = new Font(customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         control.Click += new EventHandler(this.this_Click);
+                    }
+
+                    if (control.GetType() == typeof(Button))
+                    {                      
+                        control.Cursor = hand_Cursor;
                     }
 
                     control.Click += new EventHandler(button_Click);
@@ -596,7 +624,30 @@ namespace Nucleus.Coop
                 inputsIconsDesc.Text = "";
 
                 rightFrame.Controls.Add(inputsIconsDesc);
-             
+
+                favoriteOnlyLabel = new Label
+                {
+                    AutoSize = true,
+                    Text = "Favorite Games",
+                    BackgroundImage = AppButtons,
+                    BackColor = Color.Transparent,
+                    ForeColor = this.ForeColor,                  
+                };
+
+                favoriteOnly = new PictureBox
+                { 
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    BackColor = Color.Transparent,
+                    Cursor = hand_Cursor
+                };
+
+     
+                favoriteOnly.Image = showFavoriteOnly ? favorite_Selected : favorite_Unselected;
+                favoriteOnly.Click += new EventHandler(FavoriteOnly_Click);
+               
+                mainButtonFrame.Controls.Add(favoriteOnlyLabel);
+                mainButtonFrame.Controls.Add(favoriteOnly);
+
                 list_Games.Select();
                 gameManager.ReorderUserProfile();
 
@@ -606,11 +657,34 @@ namespace Nucleus.Coop
                 Log("ERROR - " + ex.Message + "\n\nSTACKTRACE: " + ex.StackTrace);
             }
 
-            CheckHandlersUpdate(false);
-            CenterToScreen();
+            if (connected)
+            {
+                CheckHandlersUpdate(false);
+            }
 
+            CenterToScreen();
+          
             DPIManager.Register(this);
             DPIManager.AddForm(this);
+        }
+
+        private void FavoriteOnly_Click(object sender, EventArgs e)
+        {
+            bool selected = favoriteOnly.Image.Equals(favorite_Selected);
+
+            if(selected)
+            {
+                favoriteOnly.Image = favorite_Unselected;
+                showFavoriteOnly = false;
+            }
+            else 
+            {
+                favoriteOnly.Image = favorite_Selected;
+                showFavoriteOnly = true;
+            }
+
+            ini.IniWriteValue("Dev", "ShowFavoriteOnly", showFavoriteOnly.ToString());          
+            RefreshGames();
         }
 
         public void UpdateSize(float scale)
@@ -637,9 +711,15 @@ namespace Nucleus.Coop
             btn_Play.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Bold, GraphicsUnit.Pixel, 0);
             scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
+            favoriteOnlyLabel.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            favoriteOnlyLabel.Location = new Point(1 ,mainButtonFrame.Height / 2 - (favoriteOnlyLabel.Height / 2) * (int)scale);
+
+            favoriteOnly.Size = new Size(favoriteOnlyLabel.Height, favoriteOnlyLabel.Height);
+            float favoriteY = favoriteOnlyLabel.Right+(5*scale);
+            favoriteOnly.Location = new Point(Convert.ToInt32(favoriteY), mainButtonFrame.Height / 2 - (favoriteOnly.Height / 2) * (int)scale);
+
             ResumeLayout();
         }
-
 
         protected override void OnShown(EventArgs e)
         {
@@ -779,6 +859,7 @@ namespace Nucleus.Coop
                         {
                             Point screenPoint = new Point(m.LParam.ToInt32());
                             Point clientPoint = this.PointToClient(screenPoint);
+
                             if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
                             {
                                 if (clientPoint.X <= RESIZE_HANDLE_SIZE)
@@ -807,8 +888,15 @@ namespace Nucleus.Coop
                                     m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
                             }
                         }
+
                         return;
                 }
+            }
+
+            if (m.Msg == 0x020)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messages handling) 
+            {
+                m.Result = IntPtr.Zero;
+                return;
             }
 
             if (m.Msg == 0x00FF)//WM_INPUT
@@ -912,7 +1000,7 @@ namespace Nucleus.Coop
                     }
                 }
             }
-
+            
             base.WndProc(ref m);
         }
 
@@ -944,20 +1032,18 @@ namespace Nucleus.Coop
                 if (games.Count == 0)
                 {
                     noGamesPresent = true;
-                    GameControl con = new GameControl(null, null, false)
+                    GameControl con = new GameControl(null, null, false,false)
                     {
                         Width = game_listSizer.Width,
                         Text = "No games",
                         Font = this.Font,
-
                     };
 
                     list_Games.Controls.Add(con);
                 }
             }
-
-            GameManager.Instance.SaveUserProfile();
-
+            
+            GameManager.Instance.SaveUserProfile();  
         }
 
         public void NewUserGame(UserGameInfo game)
@@ -977,21 +1063,34 @@ namespace Nucleus.Coop
             list_Games.SuspendLayout();
 
             bool updateAvailable = false;
+            bool favorite = game.Favorite;
             if (updateStatuts.ContainsKey(game.Game.GUID))
             {
-                updateAvailable = updateStatuts[game.Game.GUID];
+                updateAvailable = updateStatuts[game.Game.GUID];           
             }
 
-            GameControl con = new GameControl(game.Game, game, updateAvailable)
+            GameControl con = new GameControl(game.Game, game, updateAvailable, favorite)
             {
                 Width = game_listSizer.Width,
             };
+     
+            if(showFavoriteOnly)
+            { 
+                if(favorite)
+                {
+                    controls.Add(game, con);
+                    list_Games.Controls.Add(con);
+                    ThreadPool.QueueUserWorkItem(GetIcon, game);
+                }
+            }
+            else 
+            {
+                controls.Add(game, con);
+                list_Games.Controls.Add(con);
+                ThreadPool.QueueUserWorkItem(GetIcon, game);
+            }
 
-            controls.Add(game, con);
-            list_Games.Controls.Add(con);
             list_Games.ResumeLayout();
-
-            ThreadPool.QueueUserWorkItem(GetIcon, game);
         }
 
         private void GetIcon(object state)
@@ -1062,8 +1161,7 @@ namespace Nucleus.Coop
                     BackColor = Color.Transparent,
                     ForeColor = Color.White,
                     BackgroundImage = new Bitmap(themePath + "\\showcase-labels.png"),
-                    Font = new Font(customFont,7.25F),
-                    //Location = new Point(c.Right, c.Top + c.Height-10),
+                    Font = new Font(customFont, 7.25F),
                     Text = "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version."
                 };
 
@@ -1075,7 +1173,7 @@ namespace Nucleus.Coop
 
         private void gameControl_MouseLeave(object sender, EventArgs e) 
         {
-            foreach (Control updateLabel in clientAreaPanel.Controls)//Use this because for some reasons somtimes the label won't dispose.
+            foreach (Control updateLabel in clientAreaPanel.Controls)//Use this because for some reasons sometimes the label won't dispose.
             {
                 if (updateLabel.Name == "UpdateLabel")
                     updateLabel.Dispose();
@@ -1449,8 +1547,6 @@ namespace Nucleus.Coop
                 scriptAuthorTxt.Visible = false;
             }
 
-            
-
             if (content != null)
             {
                 content.Dispose();
@@ -1512,7 +1608,7 @@ namespace Nucleus.Coop
                         Log("Game content cleanup failed. One or more files can't be unlocked by Nucleus.");
                         System.Threading.Tasks.Task.Run(() =>
                         {
-                            MessageBox.Show($"One or more files from {path} has been locked by the system and Nucleus failed to unlock it, try to delete/unlock it manually or restart your computer to unlock the file because it could lead to a crash on game startup. You can ignore this message and risk a crash.", "Risk of crash!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show($"One or more files from {path} are locked by the system or used by an other program and Nucleus failed to unlock them, try to delete/unlock it manually or restart your computer to unlock the file because it could lead to a crash on game startup. You can ignore this message and risk a crash.", "Risk of crash!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         });
                     }
                 }
@@ -2577,11 +2673,12 @@ namespace Nucleus.Coop
                                     break;
                                 }
                             }
-                        }
-                    }
-                }
 
-                gameContextMenuStrip.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, gameContextMenuStrip.Width, gameContextMenuStrip.Height, 20, 20));
+                            
+                        }
+
+                    }
+                }             
             }
             else
             {
@@ -2591,7 +2688,12 @@ namespace Nucleus.Coop
                 {
                     gameContextMenuStrip.Items[i].Visible = false;
                 }
-            }
+            }           
+        }
+
+        private void gameContextMenuStrip_Opened(object sender, EventArgs e)
+        {
+            gameContextMenuStrip.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, gameContextMenuStrip.Width, gameContextMenuStrip.Height, 20, 20));
         }
 
         private void UserProfileOpenSubmenuItem_Click(object sender, EventArgs e)
@@ -3091,6 +3193,7 @@ namespace Nucleus.Coop
 
         private void MainForm_MouseHover(object sender, EventArgs e)
         {
+           
             if (!currentlyUpdatingScript)
             {
                 //button_UpdateAvailable.Visible = currentGameInfo?.Game?.IsUpdateAvailable(false) ?? button_UpdateAvailable.Visible;                              
@@ -3107,15 +3210,13 @@ namespace Nucleus.Coop
 
         private void link_faq_Click(object sender, EventArgs e) { Process.Start(faq_link); }
 
-        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/nefarius/ScpToolkit/releases"); third_party_tools_container.Visible = false; }
+        private void linkLabel4_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/nefarius/ScpToolkit/releases"); third_party_tools_container.Visible = false; }
 
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/ViGEm/HidHide/releases"); third_party_tools_container.Visible = false; }
+        private void linkLabel3_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/ViGEm/HidHide/releases"); third_party_tools_container.Visible = false; }
 
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/Ryochan7/DS4Windows/releases"); third_party_tools_container.Visible = false; }
+        private void linkLabel2_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/Ryochan7/DS4Windows/releases"); third_party_tools_container.Visible = false; }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/csutorasa/XOutput/releases"); third_party_tools_container.Visible = false; }
-
-        private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://discord.com/invite/QDUt8HpCvr"); }
+        private void linkLabel1_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/csutorasa/XOutput/releases"); third_party_tools_container.Visible = false; }
 
         private void btn_thirdPartytools_Click(object sender, EventArgs e) { if (third_party_tools_container.Visible) { third_party_tools_container.Visible = false; } else { third_party_tools_container.Visible = true; } }
 
@@ -3198,5 +3299,38 @@ namespace Nucleus.Coop
             }
         }
 
+        private void MainForm_Paint(object sender, PaintEventArgs e)
+        {
+            //if (WindowState == FormWindowState.Normal)
+            //{
+            //    Point cursor = Cursor.Position;
+            //    Graphics g = e.Graphics;
+            //    Pen pen = new Pen(Color.FromArgb(255, 50,50, 50), 4.0f);
+
+               // g.DrawLine(pen, 0, 0, 0, this.Height);//Left
+
+               // g.DrawLine(pen, (this.Width - pen.Width) + 1.5f, 0, (this.Width - pen.Width) + 1.5f, this.Height);//Right
+
+               // g.DrawLine(pen, 10, 0, this.Width-10, 0);//Top
+
+               // g.DrawLine(pen, 0, (this.Height - pen.Width), this.Width, (this.Height - pen.Width));//Bottom
+
+            //}
+        }
+
+        private int clickCount = 0;
+
+        private void stepPanelPictureBox_Click(object sender, EventArgs e)
+        { 
+            clickCount++;
+
+            if(clickCount < 3)
+            {
+                return;
+            }
+
+            if(connected)
+            TriggerHubShowCase();
+        }
     }
 }

@@ -39,6 +39,8 @@ namespace Nucleus.Coop
         private string epicLang;
         private string epicLangText;
         private string prevTheme;
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -95,6 +97,11 @@ namespace Nucleus.Coop
             
             SuspendLayout();
 
+            default_Cursor = mf.default_Cursor;
+            Cursor = default_Cursor;
+            hand_Cursor = mf.hand_Cursor;
+
+
             if (mf.roundedcorners)
             {
                 Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
@@ -109,6 +116,7 @@ namespace Nucleus.Coop
             foreach (Control control in ctrls)
             {
                 control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                control.Cursor = hand_Cursor;
             }
            
             ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));

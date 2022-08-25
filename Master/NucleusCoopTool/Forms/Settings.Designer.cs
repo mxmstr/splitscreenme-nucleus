@@ -1962,7 +1962,6 @@ namespace Nucleus.Coop
             // 
             this.label33.BackColor = System.Drawing.Color.Transparent;
             this.label33.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.label33.Cursor = System.Windows.Forms.Cursors.Default;
             this.label33.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label33.Location = new System.Drawing.Point(0, 0);
             this.label33.Margin = new System.Windows.Forms.Padding(0);
@@ -1977,7 +1976,6 @@ namespace Nucleus.Coop
             this.btn_credits.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_credits.BackColor = System.Drawing.Color.Transparent;
             this.btn_credits.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_credits.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_credits.FlatAppearance.BorderSize = 0;
             this.btn_credits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_credits.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1995,7 +1993,6 @@ namespace Nucleus.Coop
             this.settingsCloseBtn.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.settingsCloseBtn.BackColor = System.Drawing.Color.Transparent;
             this.settingsCloseBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.settingsCloseBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.settingsCloseBtn.FlatAppearance.BorderSize = 0;
             this.settingsCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsCloseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

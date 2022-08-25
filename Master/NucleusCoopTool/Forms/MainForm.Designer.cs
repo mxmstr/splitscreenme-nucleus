@@ -38,10 +38,10 @@ namespace Nucleus.Coop
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel4 = new System.Windows.Forms.Label();
+            this.linkLabel3 = new System.Windows.Forms.Label();
+            this.linkLabel2 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.Label();
             this.btn_dlFromHub = new System.Windows.Forms.Button();
             this.btn_noHub = new System.Windows.Forms.Button();
             this.btn_downloadAssets = new System.Windows.Forms.Button();
@@ -127,10 +127,11 @@ namespace Nucleus.Coop
             // 
             // linkLabel4
             // 
-            this.linkLabel4.ActiveLinkColor = System.Drawing.Color.Aqua;
+            this.linkLabel4.BackColor = System.Drawing.Color.Transparent;
+            this.linkLabel4.Cursor = System.Windows.Forms.Cursors.Default;
             this.linkLabel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.linkLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel4.LinkColor = System.Drawing.Color.DeepSkyBlue;
+            this.linkLabel4.ForeColor = System.Drawing.Color.Aqua;
             this.linkLabel4.Location = new System.Drawing.Point(0, 45);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(95, 15);
@@ -139,15 +140,14 @@ namespace Nucleus.Coop
             this.linkLabel4.Text = "ScpToolkit ";
             this.linkLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolTip1.SetToolTip(this.linkLabel4, "Xinput emulator for Ps3 controllers.");
-            this.linkLabel4.VisitedLinkColor = System.Drawing.Color.Silver;
-            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
+            this.linkLabel4.Click += new System.EventHandler(this.linkLabel4_LinkClicked);
             // 
             // linkLabel3
             // 
-            this.linkLabel3.ActiveLinkColor = System.Drawing.Color.Aqua;
+            this.linkLabel3.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.linkLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel3.LinkColor = System.Drawing.Color.DeepSkyBlue;
+            this.linkLabel3.ForeColor = System.Drawing.Color.Aqua;
             this.linkLabel3.Location = new System.Drawing.Point(0, 30);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(95, 15);
@@ -157,16 +157,14 @@ namespace Nucleus.Coop
             this.linkLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolTip1.SetToolTip(this.linkLabel3, "With HidHide it is possible to deny a specific application access to one or more " +
         "human interface devices.");
-            this.linkLabel3.VisitedLinkColor = System.Drawing.Color.Silver;
-            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            this.linkLabel3.Click += new System.EventHandler(this.linkLabel3_LinkClicked);
             // 
             // linkLabel2
             // 
-            this.linkLabel2.ActiveLinkColor = System.Drawing.Color.Aqua;
             this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.linkLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel2.LinkColor = System.Drawing.Color.DeepSkyBlue;
+            this.linkLabel2.ForeColor = System.Drawing.Color.Aqua;
             this.linkLabel2.Location = new System.Drawing.Point(0, 15);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(95, 15);
@@ -175,16 +173,14 @@ namespace Nucleus.Coop
             this.linkLabel2.Text = "DS4Windows";
             this.linkLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolTip1.SetToolTip(this.linkLabel2, "Xinput emulator for Ps4 controllers.");
-            this.linkLabel2.VisitedLinkColor = System.Drawing.Color.Silver;
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.linkLabel2.Click += new System.EventHandler(this.linkLabel2_LinkClicked);
             // 
             // linkLabel1
             // 
-            this.linkLabel1.ActiveLinkColor = System.Drawing.Color.Aqua;
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.LinkColor = System.Drawing.Color.DeepSkyBlue;
+            this.linkLabel1.ForeColor = System.Drawing.Color.Aqua;
             this.linkLabel1.Location = new System.Drawing.Point(0, 0);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(95, 15);
@@ -193,15 +189,13 @@ namespace Nucleus.Coop
             this.linkLabel1.Text = "XOutput";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolTip1.SetToolTip(this.linkLabel1, "XOutput is a software that can convert DirectInput into XInput. ");
-            this.linkLabel1.VisitedLinkColor = System.Drawing.Color.Silver;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabel1.Click += new System.EventHandler(this.linkLabel1_LinkClicked);
             // 
             // btn_dlFromHub
             // 
             this.btn_dlFromHub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_dlFromHub.BackColor = System.Drawing.Color.Transparent;
             this.btn_dlFromHub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_dlFromHub.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_dlFromHub.FlatAppearance.BorderSize = 0;
             this.btn_dlFromHub.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_dlFromHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -223,12 +217,11 @@ namespace Nucleus.Coop
             this.btn_noHub.BackColor = System.Drawing.Color.Transparent;
             this.btn_noHub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_noHub.BackgroundImage")));
             this.btn_noHub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_noHub.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_noHub.FlatAppearance.BorderSize = 0;
             this.btn_noHub.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_noHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_noHub.ForeColor = System.Drawing.Color.Transparent;
-            this.btn_noHub.Location = new System.Drawing.Point(870, 5);
+            this.btn_noHub.Location = new System.Drawing.Point(868, 7);
             this.btn_noHub.Name = "btn_noHub";
             this.btn_noHub.Size = new System.Drawing.Size(26, 25);
             this.btn_noHub.TabIndex = 41;
@@ -244,11 +237,10 @@ namespace Nucleus.Coop
             this.btn_downloadAssets.BackColor = System.Drawing.Color.Transparent;
             this.btn_downloadAssets.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_downloadAssets.BackgroundImage")));
             this.btn_downloadAssets.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_downloadAssets.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_downloadAssets.FlatAppearance.BorderSize = 0;
             this.btn_downloadAssets.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_downloadAssets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_downloadAssets.Location = new System.Drawing.Point(928, 6);
+            this.btn_downloadAssets.Location = new System.Drawing.Point(926, 8);
             this.btn_downloadAssets.Name = "btn_downloadAssets";
             this.btn_downloadAssets.Size = new System.Drawing.Size(20, 20);
             this.btn_downloadAssets.TabIndex = 23;
@@ -265,11 +257,10 @@ namespace Nucleus.Coop
             this.btn_settings.BackColor = System.Drawing.Color.Transparent;
             this.btn_settings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_settings.BackgroundImage")));
             this.btn_settings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_settings.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_settings.FlatAppearance.BorderSize = 0;
             this.btn_settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_settings.Location = new System.Drawing.Point(953, 6);
+            this.btn_settings.Location = new System.Drawing.Point(951, 8);
             this.btn_settings.Margin = new System.Windows.Forms.Padding(2);
             this.btn_settings.Name = "btn_settings";
             this.btn_settings.Size = new System.Drawing.Size(20, 20);
@@ -284,8 +275,7 @@ namespace Nucleus.Coop
             // 
             this.logo.BackColor = System.Drawing.Color.Transparent;
             this.logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.logo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.logo.Location = new System.Drawing.Point(9, 4);
+            this.logo.Location = new System.Drawing.Point(9, 6);
             this.logo.Margin = new System.Windows.Forms.Padding(0);
             this.logo.Name = "logo";
             this.logo.Size = new System.Drawing.Size(150, 26);
@@ -429,8 +419,9 @@ namespace Nucleus.Coop
             this.updateHandlerToolStripMenuItem});
             this.gameContextMenuStrip.Name = "gameContextMenuStrip";
             this.gameContextMenuStrip.ShowImageMargin = false;
-            this.gameContextMenuStrip.Size = new System.Drawing.Size(211, 440);
+            this.gameContextMenuStrip.Size = new System.Drawing.Size(211, 418);
             this.gameContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.GameContextMenuStrip_Opening);
+            this.gameContextMenuStrip.Opened += new System.EventHandler(this.gameContextMenuStrip_Opened);
             // 
             // nullToolStripMenuItem
             // 
@@ -582,10 +573,9 @@ namespace Nucleus.Coop
             this.btn_Links.BackColor = System.Drawing.Color.Black;
             this.btn_Links.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_Links.BackgroundImage")));
             this.btn_Links.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Links.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Links.FlatAppearance.BorderSize = 0;
             this.btn_Links.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Links.Location = new System.Drawing.Point(902, 8);
+            this.btn_Links.Location = new System.Drawing.Point(900, 10);
             this.btn_Links.Name = "btn_Links";
             this.btn_Links.Size = new System.Drawing.Size(20, 20);
             this.btn_Links.TabIndex = 42;
@@ -615,7 +605,6 @@ namespace Nucleus.Coop
             this.third_party_tools_container.Controls.Add(this.linkLabel3);
             this.third_party_tools_container.Controls.Add(this.linkLabel2);
             this.third_party_tools_container.Controls.Add(this.linkLabel1);
-            this.third_party_tools_container.Cursor = System.Windows.Forms.Cursors.Hand;
             this.third_party_tools_container.Location = new System.Drawing.Point(931, 136);
             this.third_party_tools_container.Name = "third_party_tools_container";
             this.third_party_tools_container.Size = new System.Drawing.Size(95, 69);
@@ -681,7 +670,6 @@ namespace Nucleus.Coop
             this.list_Games.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.list_Games.Border = 0;
             this.list_Games.ContextMenuStrip = this.gameContextMenuStrip;
-            this.list_Games.Cursor = System.Windows.Forms.Cursors.Hand;
             this.list_Games.Location = new System.Drawing.Point(0, 0);
             this.list_Games.Margin = new System.Windows.Forms.Padding(0);
             this.list_Games.Name = "list_Games";
@@ -721,7 +709,6 @@ namespace Nucleus.Coop
             this.btn_gameOptions.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btn_gameOptions.BackColor = System.Drawing.Color.Transparent;
             this.btn_gameOptions.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_gameOptions.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_gameOptions.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_gameOptions.FlatAppearance.BorderSize = 0;
             this.btn_gameOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -756,7 +743,6 @@ namespace Nucleus.Coop
             this.btn_textSwitcher.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_textSwitcher.BackColor = System.Drawing.Color.Transparent;
             this.btn_textSwitcher.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_textSwitcher.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_textSwitcher.FlatAppearance.BorderSize = 0;
             this.btn_textSwitcher.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btn_textSwitcher.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -772,7 +758,6 @@ namespace Nucleus.Coop
             // btn_magnifier
             // 
             this.btn_magnifier.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_magnifier.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_magnifier.Location = new System.Drawing.Point(2, 2);
             this.btn_magnifier.Name = "btn_magnifier";
             this.btn_magnifier.Size = new System.Drawing.Size(20, 20);
@@ -844,7 +829,6 @@ namespace Nucleus.Coop
             // 
             this.button_UpdateAvailable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.button_UpdateAvailable.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button_UpdateAvailable.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_UpdateAvailable.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.button_UpdateAvailable.FlatAppearance.BorderSize = 0;
             this.button_UpdateAvailable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -886,7 +870,6 @@ namespace Nucleus.Coop
             this.btn_Download.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Download.BackColor = System.Drawing.Color.Transparent;
             this.btn_Download.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Download.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Download.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_Download.FlatAppearance.BorderSize = 0;
             this.btn_Download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -905,7 +888,6 @@ namespace Nucleus.Coop
             this.btn_Extract.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Extract.BackColor = System.Drawing.Color.Transparent;
             this.btn_Extract.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Extract.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Extract.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_Extract.FlatAppearance.BorderSize = 0;
             this.btn_Extract.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -938,7 +920,6 @@ namespace Nucleus.Coop
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearch.BackColor = System.Drawing.Color.Transparent;
             this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSearch.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -957,7 +938,6 @@ namespace Nucleus.Coop
             this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBack.BackColor = System.Drawing.Color.Transparent;
             this.btnBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBack.Enabled = false;
             this.btnBack.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btnBack.FlatAppearance.BorderSize = 0;
@@ -975,7 +955,6 @@ namespace Nucleus.Coop
             this.btn_Play.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Play.BackColor = System.Drawing.Color.Transparent;
             this.btn_Play.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Play.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Play.Enabled = false;
             this.btn_Play.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_Play.FlatAppearance.BorderSize = 0;
@@ -997,7 +976,6 @@ namespace Nucleus.Coop
             this.btn_Next.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Next.BackColor = System.Drawing.Color.Transparent;
             this.btn_Next.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Next.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Next.Enabled = false;
             this.btn_Next.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_Next.FlatAppearance.BorderSize = 0;
@@ -1016,7 +994,6 @@ namespace Nucleus.Coop
             this.btnAutoSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAutoSearch.BackColor = System.Drawing.Color.Transparent;
             this.btnAutoSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAutoSearch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAutoSearch.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btnAutoSearch.FlatAppearance.BorderSize = 0;
             this.btnAutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -1042,6 +1019,7 @@ namespace Nucleus.Coop
             this.stepPanelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.stepPanelPictureBox.TabIndex = 15;
             this.stepPanelPictureBox.TabStop = false;
+            this.stepPanelPictureBox.Click += new System.EventHandler(this.stepPanelPictureBox_Click);
             // 
             // txt_version
             // 
@@ -1050,7 +1028,7 @@ namespace Nucleus.Coop
             this.txt_version.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.txt_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_version.ForeColor = System.Drawing.Color.White;
-            this.txt_version.Location = new System.Drawing.Point(159, 11);
+            this.txt_version.Location = new System.Drawing.Point(159, 13);
             this.txt_version.Margin = new System.Windows.Forms.Padding(0);
             this.txt_version.Name = "txt_version";
             this.txt_version.Size = new System.Drawing.Size(28, 13);
@@ -1064,11 +1042,10 @@ namespace Nucleus.Coop
             this.closeBtn.BackColor = System.Drawing.Color.Transparent;
             this.closeBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("closeBtn.BackgroundImage")));
             this.closeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.closeBtn.FlatAppearance.BorderSize = 0;
             this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeBtn.Location = new System.Drawing.Point(1025, 6);
+            this.closeBtn.Location = new System.Drawing.Point(1023, 8);
             this.closeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.closeBtn.Name = "closeBtn";
             this.closeBtn.Size = new System.Drawing.Size(20, 20);
@@ -1083,11 +1060,10 @@ namespace Nucleus.Coop
             this.minimizeBtn.BackColor = System.Drawing.Color.Transparent;
             this.minimizeBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("minimizeBtn.BackgroundImage")));
             this.minimizeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.minimizeBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.minimizeBtn.FlatAppearance.BorderSize = 0;
             this.minimizeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.minimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.minimizeBtn.Location = new System.Drawing.Point(977, 6);
+            this.minimizeBtn.Location = new System.Drawing.Point(975, 8);
             this.minimizeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.minimizeBtn.Name = "minimizeBtn";
             this.minimizeBtn.Size = new System.Drawing.Size(20, 20);
@@ -1102,11 +1078,10 @@ namespace Nucleus.Coop
             this.maximizeBtn.BackColor = System.Drawing.Color.Transparent;
             this.maximizeBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("maximizeBtn.BackgroundImage")));
             this.maximizeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.maximizeBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.maximizeBtn.FlatAppearance.BorderSize = 0;
             this.maximizeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.maximizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.maximizeBtn.Location = new System.Drawing.Point(1001, 6);
+            this.maximizeBtn.Location = new System.Drawing.Point(999, 8);
             this.maximizeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.maximizeBtn.Name = "maximizeBtn";
             this.maximizeBtn.Size = new System.Drawing.Size(20, 20);
@@ -1137,7 +1112,7 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splash.BackColor = System.Drawing.Color.Black;
             this.splash.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.splash.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.splash.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.splash.Location = new System.Drawing.Point(0, 0);
             this.splash.Margin = new System.Windows.Forms.Padding(0);
             this.splash.Name = "splash";
@@ -1169,7 +1144,6 @@ namespace Nucleus.Coop
             this.Controls.Add(this.logo);
             this.Controls.Add(this.maximizeBtn);
             this.Controls.Add(this.linksPanel);
-            this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1183,6 +1157,7 @@ namespace Nucleus.Coop
             this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.ClientSizeChanged += new System.EventHandler(this.MainForm_ClientSizeChanged);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.MouseHover += new System.EventHandler(this.MainForm_MouseHover);
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.gameContextMenuStrip.ResumeLayout(false);
@@ -1259,12 +1234,12 @@ namespace Nucleus.Coop
         private Button btn_faq;
         private Button btn_thirdPartytools;
         private Panel third_party_tools_container;
-        private LinkLabel linkLabel3;
-        private LinkLabel linkLabel2;
-        private LinkLabel linkLabel1;
+        private Label linkLabel3;
+        private Label linkLabel2;
+        private Label linkLabel1;
         private Button btn_Extract;
         private Button btn_SplitCalculator;
-        private LinkLabel linkLabel4;
+        private Label linkLabel4;
         private Button btn_Discord;
         private Button btn_reddit;
         private Button btn_noHub;

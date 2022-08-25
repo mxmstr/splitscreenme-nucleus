@@ -115,7 +115,6 @@ namespace Nucleus.Coop
             this.closeBtn.BackColor = System.Drawing.Color.Black;
             this.closeBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("closeBtn.BackgroundImage")));
             this.closeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.closeBtn.FlatAppearance.BorderSize = 0;
             this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -144,7 +143,6 @@ namespace Nucleus.Coop
             this.checkboxFoundGames.BackColor = System.Drawing.Color.White;
             this.checkboxFoundGames.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.checkboxFoundGames.CheckOnClick = true;
-            this.checkboxFoundGames.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkboxFoundGames.Enabled = false;
             this.checkboxFoundGames.FormattingEnabled = true;
             this.checkboxFoundGames.HorizontalScrollbar = true;
@@ -170,7 +168,6 @@ namespace Nucleus.Coop
             this.disksBox.BackColor = System.Drawing.Color.White;
             this.disksBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.disksBox.CheckOnClick = true;
-            this.disksBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.disksBox.FormattingEnabled = true;
             this.disksBox.HorizontalScrollbar = true;
             this.disksBox.IntegralHeight = false;
@@ -222,7 +219,6 @@ namespace Nucleus.Coop
             this.btn_deselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_deselectAll.BackColor = System.Drawing.Color.Transparent;
             this.btn_deselectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_deselectAll.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_deselectAll.Enabled = false;
             this.btn_deselectAll.FlatAppearance.BorderSize = 0;
             this.btn_deselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -239,7 +235,6 @@ namespace Nucleus.Coop
             this.btn_selectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_selectAll.BackColor = System.Drawing.Color.Transparent;
             this.btn_selectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_selectAll.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_selectAll.Enabled = false;
             this.btn_selectAll.FlatAppearance.BorderSize = 0;
             this.btn_selectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -256,7 +251,6 @@ namespace Nucleus.Coop
             this.btn_delPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_delPath.BackColor = System.Drawing.Color.Transparent;
             this.btn_delPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_delPath.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_delPath.FlatAppearance.BorderSize = 0;
             this.btn_delPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_delPath.Location = new System.Drawing.Point(9, 306);
@@ -272,7 +266,6 @@ namespace Nucleus.Coop
             this.btn_addSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_addSelection.BackColor = System.Drawing.Color.Transparent;
             this.btn_addSelection.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_addSelection.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_addSelection.Enabled = false;
             this.btn_addSelection.FlatAppearance.BorderSize = 0;
             this.btn_addSelection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -289,7 +282,6 @@ namespace Nucleus.Coop
             this.btn_customPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_customPath.BackColor = System.Drawing.Color.Transparent;
             this.btn_customPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_customPath.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_customPath.FlatAppearance.BorderSize = 0;
             this.btn_customPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_customPath.Location = new System.Drawing.Point(9, 271);
@@ -305,7 +297,6 @@ namespace Nucleus.Coop
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSearch.BackColor = System.Drawing.Color.Transparent;
             this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Location = new System.Drawing.Point(121, 271);

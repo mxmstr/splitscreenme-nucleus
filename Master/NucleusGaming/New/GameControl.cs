@@ -13,10 +13,11 @@ namespace Nucleus.Coop
         private readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         public GenericGameInfo GameInfo { get; private set; }
         public UserGameInfo UserGameInfo { get; private set; }
-
+       // private GameManager GameManager;
+        private CheckBox favoriteRadio;
         private PictureBox picture;
         private PictureBox playerIcon;
-        private PictureBox update;
+        private PictureBox favoriteBox;
         private Label title;
         private Label players;
         private ToolTip numPlayersTt;
@@ -24,8 +25,12 @@ namespace Nucleus.Coop
         private Color userOverBackColor;
         private Color userLeaveBackColor;
         public bool updateAvailable;
+        public bool favorite;
         public string TitleText { get; set; }
         public string PlayerText { get; set; }
+        //private UserGameInfo currentControl;
+        private Bitmap favorite_Unselected;
+        private Bitmap favorite_Selected;
         protected override CreateParams CreateParams
         {
             get
@@ -36,10 +41,11 @@ namespace Nucleus.Coop
             }
         }
 
-        public GameControl(GenericGameInfo game, UserGameInfo userGame,bool updateAvailable)
+        public GameControl(GenericGameInfo game, UserGameInfo userGame,bool updateAvailable,bool favorite)
         {
             try 
             {
+                this.favorite = favorite;
                 this.updateAvailable = updateAvailable;
                 string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
                 IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
@@ -50,20 +56,26 @@ namespace Nucleus.Coop
                 radioSelectedBackColor = Color.FromArgb(Convert.ToInt32(Convert.ToInt32(rgb_SelectionColor[0])), Convert.ToInt32(rgb_SelectionColor[1]), Convert.ToInt32(rgb_SelectionColor[2]));
                 userOverBackColor = Color.FromArgb(Convert.ToInt32(Convert.ToInt32(rgb_MouseOverColor[0])), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
                 userLeaveBackColor = Color.FromArgb(Convert.ToInt32(rgb_SelectionColor[0]), Convert.ToInt32(rgb_SelectionColor[1]), Convert.ToInt32(rgb_SelectionColor[2]));
+                favorite_Unselected = new Bitmap(themePath + "\\favorite_unselected.png");
+                favorite_Selected = new Bitmap(themePath + "\\favorite_selected.png");
 
                 SuspendLayout();
                 AutoScaleDimensions = new SizeF(96F, 96F);
                 AutoScaleMode = AutoScaleMode.Dpi;
                 AutoSize = false;
                 Name = "GameControl";
-                Size = new Size(203, 42);
+                Size = new Size(209, 42);
                 ResumeLayout(false);
 
                 GameInfo = game;
                 UserGameInfo = userGame;
 
                 SuspendLayout();
-
+                Cursor default_Cursor = new Cursor(themePath + "\\cursor.ico");
+                Cursor = default_Cursor;
+                Cursor  hand_Cursor = new Cursor(themePath + "\\cursor_hand.ico");
+                
+                //Cursor.Current = new Cursor(themePath + "\\cursor_hand.ico");
                 picture = new PictureBox
                 {
                     SizeMode = PictureBoxSizeMode.StretchImage,
@@ -81,9 +93,7 @@ namespace Nucleus.Coop
                 title = new Label
                 {
                     AutoSize = false,
-                    
                     Font = new Font(customFont, 8, FontStyle.Bold, GraphicsUnit.Point, 0),
-
                 };
 
                 players = new Label
@@ -92,14 +102,6 @@ namespace Nucleus.Coop
                     Font = new Font(customFont, 7, FontStyle.Regular, GraphicsUnit.Point, 0)
                 };
 
-                update = new PictureBox
-                {
-                    Visible = false,
-                    Font = new Font(customFont, 7, FontStyle.Regular, GraphicsUnit.Point, 0),
-                    Image = new Bitmap(themePath + "\\update_available.png"),
-                    SizeMode = PictureBoxSizeMode.StretchImage
-                };
-                                           
                 if (game == null)
                 {
                     title.Text = "No games";
@@ -119,6 +121,16 @@ namespace Nucleus.Coop
                     }
                 }
 
+                favoriteBox = new PictureBox
+                {
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    BackColor = Color.Transparent,
+                    Cursor = hand_Cursor
+                };
+
+                favoriteBox.Image = favorite ? favorite_Selected : favorite_Unselected;
+                favoriteBox.Click += new EventHandler(FavoriteBox_Click);
+
                 TitleText = title.Text;
                 PlayerText = players.Text;
                 BackColor = BackColor = Color.Transparent;
@@ -128,12 +140,13 @@ namespace Nucleus.Coop
                 Controls.Add(picture);
                 Controls.Add(title);
                 Controls.Add(players);
-                //Controls.Add(update);
-
+               
                 if (title.Text != "No games")
                 {
                     Controls.Add(playerIcon);
+                    Controls.Add(favoriteBox);
                 }
+                             
                 DPIManager.Register(this);
             }
             catch (Exception ex)
@@ -173,7 +186,6 @@ namespace Nucleus.Coop
             players.Size = plabelSize;
             playerIcon.Size = new Size(players.Size.Height, players.Size.Height);
 
-
             title.Location = new Point(picture.Right + border, picture.Location.Y);
             playerIcon.Location = new Point(picture.Right + border, title.Bottom);
             players.Location = new Point(picture.Right + border + playerIcon.Width, playerIcon.Bottom - players.Height);
@@ -190,9 +202,10 @@ namespace Nucleus.Coop
 
             title.ForeColor = updateAvailable ? Color.PaleGreen : Color.White;
 
-            //update.Size = new Size(playerIcon.Width, playerIcon.Height);
-            //update.Location = new Point((this.Right - update.Width) - 5, players.Location.Y);         
-            //update.Visible = updateAvailable;
+            favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
+            float favoriteY = (209 - playerIcon.Width) * scale;
+            favoriteBox.Location = new Point(Convert.ToInt32(favoriteY), players.Location.Y+3);
+
             ResumeLayout();
         }
 
@@ -204,6 +217,24 @@ namespace Nucleus.Coop
             c.MouseEnter += C_MouseEnter;
             c.MouseLeave += C_MouseLeave;
             DPIManager.Update(this);
+        }
+
+        private void FavoriteBox_Click(object sender, EventArgs e)
+        {
+            bool selected = favoriteBox.Image.Equals(favorite_Selected);
+
+            if (selected)
+            {
+                favoriteBox.Image = favorite_Unselected;
+                UserGameInfo.Favorite = false;
+            }
+            else
+            {
+                favoriteBox.Image = favorite_Selected;
+                UserGameInfo.Favorite = true;
+            }
+
+            GameManager.Instance.SaveUserProfile();
         }
 
         private void C_MouseEnter(object sender, EventArgs e)
@@ -219,7 +250,6 @@ namespace Nucleus.Coop
         private void C_Click(object sender, EventArgs e)
         {
             OnClick(e);
-
         }
 
         public Image Image

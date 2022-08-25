@@ -106,7 +106,8 @@ namespace Nucleus.Coop
         private SolidBrush myBrush;
         private Pen PositionPlayerScreenPen;
         private Pen PositionScreenPen;
-
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
         public RichTextBox handlerNoteZoom;
         public Panel textZoomContainer;
         private string themePath;
@@ -144,6 +145,10 @@ namespace Nucleus.Coop
             }
 
             SuspendLayout();
+
+            default_Cursor = new Cursor(themePath + "\\cursor.ico");
+            Cursor = default_Cursor;
+            hand_Cursor = new Cursor(themePath + "\\cursor_hand.ico");
 
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             playerFont = new Font(customFont, 20.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -187,7 +192,7 @@ namespace Nucleus.Coop
             instruction.ForeColor = Color.White;
             instruction.BackgroundImage = instructionCloseImg;
             instruction.BackgroundImageLayout = ImageLayout.Stretch;
-            instruction.Cursor = Cursors.Hand;
+            instruction.Cursor = hand_Cursor;
             instruction.Click += new EventHandler(this.instruction_Click);
 
             instructionImg = new PictureBox()
@@ -196,7 +201,7 @@ namespace Nucleus.Coop
                 BackColor = Color.Black,
                 Image = Resources.instructions,
                 BackgroundImageLayout = ImageLayout.Stretch,
-                Cursor = Cursors.Default,
+                Cursor = hand_Cursor,
                 //Size\Location  see => UpdateScreens() 
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Visible = false
@@ -224,7 +229,7 @@ namespace Nucleus.Coop
             playerSetup_btn.BackColor = Color.Transparent;
             playerSetup_btn.Image = plyrsSettingsIcon;
             playerSetup_btn.SizeMode = PictureBoxSizeMode.StretchImage;
-            playerSetup_btn.Cursor = Cursors.Hand;
+            playerSetup_btn.Cursor = hand_Cursor;
             
             ResumeLayout();
 
@@ -1116,7 +1121,7 @@ namespace Nucleus.Coop
         {
             base.OnMouseDown(e);
 
-            Cursor = Cursors.Hand;
+            Cursor = hand_Cursor;
 
             List<PlayerInfo> players = profile.PlayerData;
 
@@ -1422,12 +1427,13 @@ namespace Nucleus.Coop
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
-            Cursor = Cursors.Default;
+            Cursor = hand_Cursor;
 
             if (e.Button == MouseButtons.Left)
             {
                 if (dragging)
                 {
+                    
                     PlayerInfo p = profile.PlayerData[draggingIndex];
                     dragging = false;
 
@@ -1452,8 +1458,11 @@ namespace Nucleus.Coop
                     UpdatePlayers(); // force a player update                    
 
                     Invalidate();
+                   
                 }
+               
             }
+            Cursor = default_Cursor;
         }
       
         private Rectangle GetDefaultBounds(int index)

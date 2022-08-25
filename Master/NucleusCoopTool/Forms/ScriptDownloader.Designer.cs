@@ -383,7 +383,6 @@
             this.Controls.Add(this.btn_Download);
             this.Controls.Add(this.txt_Search);
             this.Controls.Add(this.label4);
-            this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

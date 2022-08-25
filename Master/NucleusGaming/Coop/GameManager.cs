@@ -471,7 +471,7 @@ namespace Nucleus.Gaming
         {
             lock (user.Games)
             {
-                user.Games.Sort(Compare);
+               user.Games.Sort(Compare);
             }
 
             string userProfile = GetUserProfilePath();

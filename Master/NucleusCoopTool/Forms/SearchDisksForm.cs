@@ -37,6 +37,9 @@ namespace Nucleus.Coop
         private MainForm main;
         private float fontSize;
 
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
+
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
         (
@@ -83,9 +86,15 @@ namespace Nucleus.Coop
         public SearchDisksForm(MainForm main)
         {
             this.main = main;
+
             InitializeComponent();
 
             SuspendLayout();
+
+            default_Cursor = main.default_Cursor;
+            Cursor.Current = default_Cursor;
+            hand_Cursor = main.hand_Cursor;
+
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             fontSize = float.Parse(main.theme.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(Convert.ToInt32(main.rgb_font[0]), Convert.ToInt32(main.rgb_font[1]), Convert.ToInt32(main.rgb_font[2]));
@@ -136,11 +145,30 @@ namespace Nucleus.Coop
 
             ResumeLayout();
 
-            if (main.mouseClick)
+
+            foreach (Control button in this.Controls)
             {
-               foreach (Control button in this.Controls) { if (button is Button) { button.Click += new System.EventHandler(this.button_Click);}}
+                if (button.Name != "panel1")
+                {
+                    button.Cursor = hand_Cursor;
+                }
+                else 
+                {
+                    button.Cursor = default_Cursor;
+                }
+
+                if (main.mouseClick)
+                {
+                    if (button is Button)
+                    {
+                        button.Click += new System.EventHandler(this.button_Click);
+                    }
+                }
             }
-            
+
+            closeBtn.Cursor = hand_Cursor;
+
+
             for (int x = 1; x <= 100; x++)
             {
                 if (ini.IniReadValue("SearchPaths", x.ToString()) == "")
@@ -218,6 +246,17 @@ namespace Nucleus.Coop
 
             ResumeLayout();
 
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x020 || m.Msg == 0x0a0)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messges handling) 
+            {
+                Cursor.Current = default_Cursor;
+                return;
+            }
+
+            base.WndProc(ref m);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)

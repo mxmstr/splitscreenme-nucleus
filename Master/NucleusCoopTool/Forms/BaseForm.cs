@@ -25,7 +25,6 @@ namespace Nucleus.Coop
             // 12 * 300% = 36
             // 12 * 125% = 15
             // 12 * 150% = 18
-     
             DPIManager.Register(this);
         }
 

@@ -50,7 +50,7 @@ namespace Nucleus.Gaming
         public string SteamID;
         public string GUID;
         public string GameName;
-        public int MaxPlayers;
+        public int MaxPlayers;            
         public int MaxPlayersOneMonitor;
         public int PauseBetweenStarts;
         public DPIHandling DPIHandling = DPIHandling.True;
@@ -64,7 +64,7 @@ namespace Nucleus.Gaming
         public bool SendFakeFocusMsg;
         public bool SplitDivCompatibility = true;
         public bool SetTopMostAtEnd;
-
+        public bool Favorite;
 
         public void AddOption(string name, string desc, string key, object value, object defaultValue)
         {

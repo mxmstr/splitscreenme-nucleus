@@ -47,7 +47,10 @@ namespace Nucleus.Coop.Forms
 
         private SortOrder sortOrder = SortOrder.Ascending;
 
-       [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
        private static extern IntPtr CreateRoundRectRgn
        (
        int nLeftRect,     // x-coordinate of upper-left corner
@@ -90,7 +93,8 @@ namespace Nucleus.Coop.Forms
         private void ScriptDownloader_ResizeEnd(object sender, EventArgs e)
         {
             foreach (Control c in ctrls)
-            {
+            { 
+                if(c.Name!= "chkBox_Verified")
                 c.Visible = true;
             }
             Opacity = 1.0D;
@@ -107,6 +111,10 @@ namespace Nucleus.Coop.Forms
             fontSize = float.Parse(mf.theme.IniReadValue("Font", "HandlerDownloaderFontSize"));
             
             InitializeComponent();
+
+            default_Cursor = mf.default_Cursor;
+            Cursor.Current = default_Cursor;
+            hand_Cursor = mf.hand_Cursor;
 
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -149,12 +157,21 @@ namespace Nucleus.Coop.Forms
             btn_Close.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Download.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Extract.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            
+            //list_Games.Cursor = hand_Cursor;
             controlscollect();
 
             foreach (Control control in ctrls)
             {
                 control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                if (control.GetType() == typeof(Button))
+                {
+                    control.Cursor = hand_Cursor;
+                }
+                else
+                {
+                    control.Cursor = default_Cursor;
+                }
             }
 
             if (mf.useButtonsBorder)
@@ -221,17 +238,14 @@ namespace Nucleus.Coop.Forms
 
             ResumeLayout();
         }
-        //private int cover_index = 0;
 
         protected override void WndProc(ref Message m)
         {
-            const int RESIZE_HANDLE_SIZE = 10;
-
+            const int RESIZE_HANDLE_SIZE = 20;
             if (this.WindowState == FormWindowState.Normal)
             {
                 switch (m.Msg)
                 {
-
                     case 0x0084/*NCHITTEST*/ :
                         base.WndProc(ref m);
 
@@ -267,8 +281,15 @@ namespace Nucleus.Coop.Forms
                                     m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
                             }
                         }
+  
                         return;
                 }
+            }
+
+            if (m.Msg == 0x020 || m.Msg == 0x0a0)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messges handling) 
+            {
+                Cursor.Current = default_Cursor;
+                return;
             }
 
             base.WndProc(ref m);
