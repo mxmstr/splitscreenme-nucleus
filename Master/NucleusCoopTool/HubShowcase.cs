@@ -129,7 +129,7 @@ namespace Nucleus.Coop
                             Dock = DockStyle.Fill,
                             BackColor = Color.Transparent,
                             BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase_cover_layer.png"),
-                            Cursor = Cursors.Hand
+                            Cursor = mainForm.hand_Cursor
                         };
 
                         coverLayer.Click += new EventHandler(this.coverBoxClick);
