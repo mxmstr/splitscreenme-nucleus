@@ -1157,6 +1157,7 @@ namespace Nucleus.Gaming
 
             JsFilename = gen.JsFileName;
             HandlerGUID = gen.GUID;
+
             if (gen.LaunchAsDifferentUsers || gen.LaunchAsDifferentUsersAlt)
             {
                 UsingNucleusAccounts = true;
@@ -2726,7 +2727,7 @@ namespace Nucleus.Gaming
 
                 if (gen.SymlinkFiles != null)
                 {
-                    Log("Symlinking " + gen.SymlinkFiles.Length + " files in Game.SymlinkFiles");                                    
+                    Log("Symlinking " + gen.SymlinkFiles.Length + " files list from \"Game.SymlinkFiles\"");                                    
                     context.SymlinkFiles = gen.SymlinkFiles;
                 }
  
@@ -3312,7 +3313,6 @@ namespace Nucleus.Gaming
                         }
                     }
 
-
                     foreach (string nameFile in files)
                     {
                         if (!string.IsNullOrEmpty(player.Nickname))
@@ -3336,7 +3336,6 @@ namespace Nucleus.Gaming
                         Log("user_steam_id.txt file(s) were found in folder. Will update nicknames");
                     }
 
-
                     goldbergNoLocal = $@"{NucleusEnvironmentRoot}\AppData\Roaming\Goldberg SteamEmu Saves\settings\user_steam_id.txt";
                     if (File.Exists(goldbergNoLocal))
                     {
@@ -3351,7 +3350,6 @@ namespace Nucleus.Gaming
                             files.Add(goldbergNoLocal);
                         }
                     }
-
 
                     foreach (string nameFile in files)
                     {

@@ -1248,7 +1248,7 @@ namespace Nucleus.Coop
 
                         if (hubHandler.Id != null)
                         {
-                            getAssets.SaveCovers(_covers, game.GameGuid);
+                            getAssets.DownloadCovers(_covers, game.GameGuid);
                             try
                             {
                                 if (!File.Exists(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + game.GameGuid + ".txt")))
@@ -1292,7 +1292,7 @@ namespace Nucleus.Coop
 
                         if (hubHandler.Id != null)
                         {
-                            getAssets.SaveScreenshots(_screenshots, game.GameGuid);
+                            getAssets.DownloadScreenshots(_screenshots, game.GameGuid);
                         }
                     }
                     catch (Exception)

@@ -11,7 +11,7 @@ namespace Nucleus.Gaming.Coop.Generic
     
     class AssetsScraper  //Download game covers & screenshots from igdb through the hub api.
     {      
-        public void SaveCovers(string urls, string name)
+        public void DownloadCovers(string urls, string name)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Nucleus.Gaming.Coop.Generic
         }
 
         private int max;
-        public void SaveScreenshots(string json, string gameName)
+        public void DownloadScreenshots(string json, string gameName)
         {
             try
             {
