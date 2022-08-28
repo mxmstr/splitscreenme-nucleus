@@ -131,8 +131,14 @@
   <ItemGroup>
     <Compile Include="AssetsScraper.cs" />
     <Compile Include="blur.cs" />
-    <Compile Include="BufferedClientAreaPanel.cs">
+    <Compile Include="Controls\BufferedClientAreaPanel.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HubShowcase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HubShowcase.designer.cs">
+      <DependentUpon>HubShowcase.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
@@ -183,16 +189,10 @@
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="HubShowcase.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="HubShowcase.designer.cs">
-      <DependentUpon>HubShowcase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InputIcons.cs">
+    <Compile Include="Controls\InputIcons.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="InputIcons.designer.cs">
+    <Compile Include="Controls\InputIcons.designer.cs">
       <DependentUpon>InputIcons.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -202,10 +202,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RoundedButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="StartChecks.cs" />
+    <EmbeddedResource Include="Controls\HubShowcase.resx">
+      <DependentUpon>HubShowcase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -232,9 +232,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HubShowcase.resx">
-      <DependentUpon>HubShowcase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
