@@ -1157,7 +1157,6 @@ namespace Nucleus.Coop
             this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.ClientSizeChanged += new System.EventHandler(this.MainForm_ClientSizeChanged);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.MouseHover += new System.EventHandler(this.MainForm_MouseHover);
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.gameContextMenuStrip.ResumeLayout(false);

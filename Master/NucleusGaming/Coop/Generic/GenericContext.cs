@@ -1955,6 +1955,7 @@ namespace Nucleus.Gaming
             }
             key.Close();
         }
+
         public void EditRegKeyNoBackup(string baseKey, string sKey, string subKey, object value, RegType regType)
         {
             if ((baseKey != "HKEY_LOCAL_MACHINE" && baseKey != "HKEY_CURRENT_USER" && baseKey != "HKEY_USERS") || value == null)

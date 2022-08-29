@@ -3299,24 +3299,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private void MainForm_Paint(object sender, PaintEventArgs e)
-        {
-            //if (WindowState == FormWindowState.Normal)
-            //{
-            //    Point cursor = Cursor.Position;
-            //    Graphics g = e.Graphics;
-            //    Pen pen = new Pen(Color.FromArgb(255, 50,50, 50), 4.0f);
-
-               // g.DrawLine(pen, 0, 0, 0, this.Height);//Left
-
-               // g.DrawLine(pen, (this.Width - pen.Width) + 1.5f, 0, (this.Width - pen.Width) + 1.5f, this.Height);//Right
-
-               // g.DrawLine(pen, 10, 0, this.Width-10, 0);//Top
-
-               // g.DrawLine(pen, 0, (this.Height - pen.Width), this.Width, (this.Height - pen.Width));//Bottom
-
-            //}
-        }
 
         private int clickCount = 0;
 
