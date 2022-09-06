@@ -1460,7 +1460,7 @@ namespace Nucleus.Gaming
             File.WriteAllBytes(patchedFile, fileContent);
         }
 
-        public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, string patchPattern, bool patchall) //Custom 2.1.1
+        public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, string patchPattern, bool patchall) // 2.1.2
         {
             Log("Patching file");
             //Format original hex pattern
@@ -1525,11 +1525,12 @@ namespace Nucleus.Gaming
 
             }
 
-            File.WriteAllBytes(patchedFile, fileContent);//patch our file
+            // Save it to another location.
+            File.WriteAllBytes(patchedFile, fileContent);
             Log("Patching finished");
         }
 
-       public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, int insert, int offset, bool patchall) //string patchPattern, bool patchall) //Custom 2.1.1
+       public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, int insert, int offset, bool patchall) // 2.1.2
         {
             Log("Patching file");
             //Format original hex pattern
@@ -1614,7 +1615,8 @@ namespace Nucleus.Gaming
 
             }
 
-            File.WriteAllBytes(patchedFile, fileContent);//patch our file
+            // Save it to another location.
+            File.WriteAllBytes(patchedFile, fileContent);
             Log("Patching finished");
         }
 

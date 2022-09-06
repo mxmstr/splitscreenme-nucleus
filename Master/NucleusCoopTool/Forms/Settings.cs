@@ -107,7 +107,7 @@ namespace Nucleus.Coop
                 Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
-            tabControl2.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, tabControl2.Width, tabControl2.Height, 5, 5));
+            settingsTab_Group.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, settingsTab_Group.Width, settingsTab_Group.Height, 5, 5));
             Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
             Visible = false;
             //form Fore Color
@@ -120,13 +120,17 @@ namespace Nucleus.Coop
             }
            
             ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
+            plus1.ForeColor = ForeColor;
+            plus2.ForeColor = ForeColor;
+            plus3.ForeColor = ForeColor;
+            plus4.ForeColor = ForeColor;
             //
             BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
           
-            tabPage1.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-            tabPage3.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-            tabPage4.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-            tabPage5.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
+            audioTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
+            settingsTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
+            layoutTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
+            playerTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             //setting_Label.BackgroundImage = mf.AppButtons;
             btn_credits.BackgroundImage = mf.AppButtons;
             settingsCloseBtn.BackgroundImage = mf.AppButtons;
@@ -156,7 +160,7 @@ namespace Nucleus.Coop
            
             ResumeLayout();
 
-            foreach (Control stmId in tabPage5.Controls)
+            foreach (Control stmId in playerTab.Controls)
             {
                 if (stmId.Name.Contains("steamid") && stmId.GetType() == typeof(ComboBox))
                 {
@@ -446,7 +450,6 @@ namespace Nucleus.Coop
             RefreshAudioList();
             
             DPIManager.Register(this);
-           // DPIManager.AddForm(this);
             DPIManager.Update(this);
 
         }
@@ -463,29 +466,40 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
+
             SuspendLayout();
 
             if (scale > 1.0F)
             {
-
                 float newTabsSize = (Font.Size - 2.0f) * scale;
                 float newFontSize = Font.Size * scale;
 
-                tabControl2.Font = new Font(mainForm.customFont, newTabsSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                settingsTab_Group.Font = new Font(mainForm.customFont, newTabsSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
-
-                foreach (Control c in tabPage3.Controls)
+                foreach (Control c in playerTab.Controls)
                 {
-                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox))
+                    if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
                     }
+                    else if (c.GetType() == typeof(Button))
+                    {
+                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
                 }
 
-                foreach (Control c in tabPage1.Controls)
+                foreach (Control c in settingsTab.Controls)
                 {
-                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox))
+                    if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox)|| c.GetType() == typeof(GroupBox))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+
+                foreach (Control c in audioTab.Controls)
+                {
+                    if (c.GetType() == typeof(NumericUpDown)|| c.GetType() == typeof(ComboBox)|| c.GetType() == typeof(TextBox)|| c.GetType() == typeof(GroupBox))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
@@ -495,61 +509,62 @@ namespace Nucleus.Coop
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
 
-                    else if (c.GetType() == typeof(Label) ^ c.GetType() == typeof(RadioButton) ^ c.GetType() == typeof(Button))
+                    else if (c.GetType() == typeof(Label)|| c.GetType() == typeof(RadioButton)|| c.GetType() == typeof(Button))
                     {
                         c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
                 }
+
                 foreach (Control c in audioCustomSettingsBox.Controls)
                 {
                     if (c.GetType() == typeof(Label))
                     {
                         c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
+
+                    if (c.GetType() == typeof(ComboBox))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
                 }
 
-                foreach (Control c in groupBox1.Controls)
+                foreach (Control c in hotkeyBox.Controls)
                 {
                     if (c.GetType() == typeof(Label))
                     {
                         c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
-                }
 
-
-                foreach (Control c in tabPage4.Controls)
-                {
-                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox) ^ c.GetType() == typeof(Panel))
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
+                        c.Size = new Size(c.Width , (c.Height + 25) * (int)scale);
                     }
-
                 }
-                foreach (Control c in tabPage5.Controls)
+
+                foreach (Control c in layoutTab.Controls)
                 {
-                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox))
+                    if ( c.GetType() == typeof(ComboBox)|| c.GetType() == typeof(TextBox)|| c.GetType() == typeof(GroupBox)|| c.GetType() == typeof(Panel))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
                     }
 
-                    else if (c.GetType() == typeof(Button))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    if (c.GetType() == typeof(NumericUpDown))
+                    {                    
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Bold, GraphicsUnit.Point, 0);
                     }
-
                 }
+                
+                nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);             
             }
+            settingLabel_Container.Location = new Point((Width / 2) - (settingLabel_Container.Width / 2), settingLabel_Container.Location.Y);
+            IdExample_Label.Location = new Point((playerTab.Width / 2) - (IdExample_Label.Width / 2), IdExample_Label.Location.Y);
+            slitWarning_Label.Location = new Point((settingsTab_Group.Width / 2) - (slitWarning_Label.Width / 2), slitWarning_Label.Location.Y);
+            audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
+            password_Label.Location = new Point((passwordPanel.Width / 2) - (password_Label.Width / 2), password_Label.Location.Y);
 
             ResumeLayout();
         }
-
-        //protected override void OnShown(EventArgs e)
-        //{
-        //    base.OnShown(e);
-        //    DPIManager.Register(this);
-        //}
 
         private void steamid_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -817,14 +832,14 @@ namespace Nucleus.Coop
         private void NumHorDiv_ValueChanged(object sender, EventArgs e)
         {    
             layoutSizer.Invalidate();
-            tabControl2.TabPages[1].Invalidate();
+            settingsTab_Group.TabPages[1].Invalidate();
             numMaxPlyrs.Value = (numHorDiv.Value + 1) * (numVerDiv.Value + 1);
         }
 
         private void NumVerDiv_ValueChanged(object sender, EventArgs e)
         {         
             layoutSizer.Invalidate();
-            tabControl2.TabPages[1].Invalidate();
+            settingsTab_Group.TabPages[1].Invalidate();
             numMaxPlyrs.Value = (numHorDiv.Value + 1) * (numVerDiv.Value + 1);
         }
 
@@ -948,7 +963,7 @@ namespace Nucleus.Coop
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl2.SelectedTab.Text == "Audio")
+            if (settingsTab_Group.SelectedTab.Text == "Audio")
             {
                 RefreshAudioList();
                 MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
@@ -1036,6 +1051,11 @@ namespace Nucleus.Coop
             {
                 ini.IniWriteValue("Misc", "AutoDesktopScaling", "False");
             }
+
+        }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
 
         }
     }

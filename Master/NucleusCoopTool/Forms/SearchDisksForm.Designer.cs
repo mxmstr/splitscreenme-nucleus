@@ -148,7 +148,6 @@ namespace Nucleus.Coop
             this.checkboxFoundGames.HorizontalScrollbar = true;
             this.checkboxFoundGames.IntegralHeight = false;
             this.checkboxFoundGames.Location = new System.Drawing.Point(0, 0);
-            this.checkboxFoundGames.Margin = new System.Windows.Forms.Padding(0);
             this.checkboxFoundGames.Name = "checkboxFoundGames";
             this.checkboxFoundGames.Size = new System.Drawing.Size(221, 236);
             this.checkboxFoundGames.TabIndex = 10;
@@ -158,7 +157,6 @@ namespace Nucleus.Coop
             this.checkBoxSizer1.BackColor = System.Drawing.Color.Transparent;
             this.checkBoxSizer1.Controls.Add(this.disksBox);
             this.checkBoxSizer1.Location = new System.Drawing.Point(9, 33);
-            this.checkBoxSizer1.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxSizer1.Name = "checkBoxSizer1";
             this.checkBoxSizer1.Size = new System.Drawing.Size(220, 234);
             this.checkBoxSizer1.TabIndex = 17;
@@ -171,8 +169,7 @@ namespace Nucleus.Coop
             this.disksBox.FormattingEnabled = true;
             this.disksBox.HorizontalScrollbar = true;
             this.disksBox.IntegralHeight = false;
-            this.disksBox.Location = new System.Drawing.Point(0, 1);
-            this.disksBox.Margin = new System.Windows.Forms.Padding(0);
+            this.disksBox.Location = new System.Drawing.Point(0, 0);
             this.disksBox.Name = "disksBox";
             this.disksBox.Size = new System.Drawing.Size(220, 236);
             this.disksBox.TabIndex = 0;
@@ -184,10 +181,12 @@ namespace Nucleus.Coop
             this.txt_Path.BackColor = System.Drawing.Color.Black;
             this.txt_Path.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txt_Path.Enabled = false;
+            this.txt_Path.Font = new System.Drawing.Font("Franklin Gothic Medium", 6.25F);
             this.txt_Path.Location = new System.Drawing.Point(9, 370);
             this.txt_Path.Name = "txt_Path";
-            this.txt_Path.Size = new System.Drawing.Size(462, 20);
+            this.txt_Path.Size = new System.Drawing.Size(462, 17);
             this.txt_Path.TabIndex = 16;
+            this.txt_Path.Visible = false;
             // 
             // progressBar1
             // 
@@ -198,6 +197,7 @@ namespace Nucleus.Coop
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(350, 21);
             this.progressBar1.TabIndex = 6;
+            this.progressBar1.Visible = false;
             // 
             // txt_Stage
             // 
@@ -213,6 +213,7 @@ namespace Nucleus.Coop
             this.txt_Stage.Size = new System.Drawing.Size(105, 19);
             this.txt_Stage.TabIndex = 15;
             this.txt_Stage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txt_Stage.Visible = false;
             // 
             // btn_deselectAll
             // 
@@ -313,8 +314,6 @@ namespace Nucleus.Coop
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.DimGray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(479, 399);
-            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.checkBoxSizer2);
             this.Controls.Add(this.checkBoxSizer1);
@@ -329,16 +328,8 @@ namespace Nucleus.Coop
             this.Controls.Add(this.btnSearch);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "SearchDisksForm";
-            this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Search for Games";
-            this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SearchDisksForm_FormClosing);
+            this.Size = new System.Drawing.Size(479, 399);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.checkBoxSizer2.ResumeLayout(false);

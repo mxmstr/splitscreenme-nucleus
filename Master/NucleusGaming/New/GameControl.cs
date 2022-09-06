@@ -13,8 +13,6 @@ namespace Nucleus.Coop
         private readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         public GenericGameInfo GameInfo { get; private set; }
         public UserGameInfo UserGameInfo { get; private set; }
-       // private GameManager GameManager;
-        private CheckBox favoriteRadio;
         private PictureBox picture;
         private PictureBox playerIcon;
         private PictureBox favoriteBox;
@@ -28,7 +26,6 @@ namespace Nucleus.Coop
         public bool favorite;
         public string TitleText { get; set; }
         public string PlayerText { get; set; }
-        //private UserGameInfo currentControl;
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
         protected override CreateParams CreateParams
@@ -75,7 +72,6 @@ namespace Nucleus.Coop
                 Cursor = default_Cursor;
                 Cursor  hand_Cursor = new Cursor(themePath + "\\cursor_hand.ico");
                 
-                //Cursor.Current = new Cursor(themePath + "\\cursor_hand.ico");
                 picture = new PictureBox
                 {
                     SizeMode = PictureBoxSizeMode.StretchImage,

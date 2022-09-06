@@ -53,9 +53,9 @@ namespace Nucleus.Coop
         private bool UseSetupScreenBorder;
         private bool UseLayoutSelectionBorder;
         private bool UseSetupScreenImage;
+        private bool appStart = false;
         public override bool CanProceed => canProceed;
         public override bool CanPlay => false;
-
 
         private Point draggingOffset;
         private Point mousePos;
@@ -65,18 +65,12 @@ namespace Nucleus.Coop
 
         // the factor to scale all screens to fit them inside the edit area
         private float scale;
-        private float fontMinus;
-        private float fontScale;
-        private float newplayerFontSize ;
         private float newplayerCustomFontSize;
-        private float newplayerTextFontSize; 
-        private float newsmallTextFontSize ;
-        private float newextraSmallTextFontSize;
-        
-        private System.Threading.Timer gamepadTimer;
-        private System.Threading.Timer gamepadPollTimer;
+    
+        public System.Threading.Timer gamepadTimer;
+        public System.Threading.Timer gamepadPollTimer;
 
-        public PictureBox instruction;
+        public PictureBox instruction_btn;
         private PictureBox instructionImg;
         public PictureBox playerSetup_btn;
 
@@ -184,16 +178,17 @@ namespace Nucleus.Coop
             players16 = new Bitmap(themePath + "\\16players.png");
             customLayout = new Bitmap(themePath + "\\customLayout.png");
             plyrsSettingsIcon = new Bitmap(themePath + "\\player_settings.png");
-            instruction = new PictureBox();//using a button cause focus issues
-            instruction.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            instruction.Size = new Size(25, 25);
-            instruction.Location = new Point((Width - instruction.Width) - 5, 5);
-            instruction.BackColor = Color.Transparent;
-            instruction.ForeColor = Color.White;
-            instruction.BackgroundImage = instructionCloseImg;
-            instruction.BackgroundImageLayout = ImageLayout.Stretch;
-            instruction.Cursor = hand_Cursor;
-            instruction.Click += new EventHandler(this.instruction_Click);
+
+             instruction_btn = new PictureBox();//using a button cause focus issues
+             instruction_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+             instruction_btn.Size = new Size(25, 25);
+             instruction_btn.Location = new Point((Width -  instruction_btn.Width) - 5, 5);
+             instruction_btn.BackColor = Color.Transparent;
+             instruction_btn.ForeColor = Color.White;
+             instruction_btn.BackgroundImage = instructionCloseImg;
+             instruction_btn.BackgroundImageLayout = ImageLayout.Stretch;
+             instruction_btn.Cursor = hand_Cursor;
+             instruction_btn.Click += new EventHandler(this.instruction_Click);
 
             instructionImg = new PictureBox()
             {
@@ -223,7 +218,6 @@ namespace Nucleus.Coop
             textZoomContainer.BorderStyle = BorderStyle.None;
             textZoomContainer.BackgroundImageLayout = ImageLayout.Stretch;
 
-
             playerSetup_btn = new PictureBox();//using a button cause focus issues
             playerSetup_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             playerSetup_btn.BackColor = Color.Transparent;
@@ -242,7 +236,7 @@ namespace Nucleus.Coop
 
             textZoomContainer.Controls.Add(handlerNoteZoom);
             Controls.Add(textZoomContainer);
-            Controls.Add(instruction);
+            Controls.Add(instruction_btn);
             Controls.Add(instructionImg);
             Controls.Add(playerSetup_btn);
             //Flash image attributes
@@ -275,20 +269,18 @@ namespace Nucleus.Coop
             if (instructionImg.Visible)
             {
                 SuspendLayout();
-                instruction.BackgroundImage = instructionCloseImg;
+                 instruction_btn.BackgroundImage = instructionCloseImg;
                 ResumeLayout();
                 instructionImg.Visible = false;
             }
             else
             {
                 SuspendLayout();
-                instruction.BackgroundImage = instructionOpenImg;
+                 instruction_btn.BackgroundImage = instructionOpenImg;
                 ResumeLayout();
                 instructionImg.Visible = true;
             }
         }
-
-        private bool appStart = false;
 
         public void UpdateSize(float scale)
         {       
@@ -299,42 +291,26 @@ namespace Nucleus.Coop
             }
 
             SuspendLayout();
-           
+
             if (!appStart)
             {
-                if (fontScale > 1.0F || fontScale < 2.0F){fontMinus = 0.3f;}
-
-                if (fontScale >= 2.0F){fontMinus = 0.8f;}
-
-                newplayerFontSize = (playerFont.Size - fontMinus);
-                newplayerCustomFontSize = (playerCustomFont.Size - fontMinus);
-                newplayerTextFontSize = (playerTextFont.Size - fontMinus);
-                newsmallTextFontSize = (smallTextFont.Size - fontMinus);
-                newextraSmallTextFontSize = (extraSmallTextFont.Size - fontMinus);
-
-                playerFont = new Font(customFont, newplayerFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                playerCustomFont = new Font(customFont, newplayerCustomFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                playerTextFont = new Font(customFont, newplayerTextFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                smallTextFont = new Font(customFont, 10, FontStyle.Regular, GraphicsUnit.Point, 0);
-                extraSmallTextFont = new Font(customFont, newextraSmallTextFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                tinyTextFont = new Font(customFont, 8.75f * scale, FontStyle.Regular, GraphicsUnit.Point, 0);
+                newplayerCustomFontSize = playerCustomFont.Size;
                 handlerNoteZoom.Font = new Font(customFont, 14f * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                
 
-                float instructionW = instruction.Width * scale;
-                float instructionH = instruction.Height * scale;
+                float instructionW = instruction_btn.Width * scale;
+                float instructionH = instruction_btn.Height * scale;
 
-                instruction.Width = (int)instructionW;
-                instruction.Height = (int)instructionH;
-                instruction.Location = new Point((Width - instruction.Width) - 5, 5);
-               
+                instruction_btn.Width = (int)instructionW;
+                instruction_btn.Height = (int)instructionH;
+                instruction_btn.Location = new Point((Width - instruction_btn.Width) - 5, 5);
+
                 textZoomContainer.Size = new Size(Width - (int)(60 * scale), Height - (int)(50 * scale));
-                textZoomContainer.Location = new Point(Width / 2 - textZoomContainer.Width / 2, instruction.Height + (int)(10 * scale));
-                handlerNoteZoom.Size = new Size(textZoomContainer.Width + (int)(18*scale), textZoomContainer.Height - 40);
+                textZoomContainer.Location = new Point(Width / 2 - textZoomContainer.Width / 2, instruction_btn.Height + (int)(10 * scale));
+                handlerNoteZoom.Size = new Size(textZoomContainer.Width + (int)(18 * scale), textZoomContainer.Height - 40);
                 handlerNoteZoom.Location = new Point(0, 20);
 
-                playerSetup_btn.Size = instruction.Size;
-                playerSetup_btn.Location = new Point(((instruction.Left - playerSetup_btn.Width)-5), instruction.Top);
+                playerSetup_btn.Size = instruction_btn.Size;
+                playerSetup_btn.Location = new Point(((instruction_btn.Left - playerSetup_btn.Width) - 5), instruction_btn.Top);
                 appStart = true;
             }
 
@@ -376,12 +352,12 @@ namespace Nucleus.Coop
                     player.DInputJoystick.Dispose();
                 }
             }
-
+         
             gamepadTimer.Dispose();
             gamepadPollTimer.Dispose();
         }
 
-        private void GamepadPollTimer_Tick(object state)
+        public void GamepadPollTimer_Tick(object state)
         {
             if (profile == null)
             {
@@ -460,7 +436,7 @@ namespace Nucleus.Coop
         }
 
 
-        private void GamepadTimer_Tick(object state)
+        public void GamepadTimer_Tick(object state)
         {
             if (insideGamepadTick)
             {
@@ -1559,7 +1535,7 @@ namespace Nucleus.Coop
                     Rectangle gamepadRect = RectangleUtil.ScaleAndCenter(xinputPic.Size, s);
                    
                     string str = (i + 1).ToString();
-                    SizeF size = g.MeasureString(str, playerFont);
+                    SizeF size = g.MeasureString(str, playerCustomFont);
                     PointF loc = RectangleUtil.Center(size, s);
 
                     if (gamePadPressed == -1)
@@ -1578,7 +1554,7 @@ namespace Nucleus.Coop
 
                     if (info.IsXInput)
                     {
-                        loc.Y -= gamepadRect.Height * 0.1f;
+                        loc.Y -= gamepadRect.Height * 0.2f;
                         var playerColor = colors[info.GamepadId];
                         gamepadCount++;
                         str = Convert.ToString(gamepadCount);

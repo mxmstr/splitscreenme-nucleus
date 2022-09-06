@@ -30,7 +30,7 @@ namespace Nucleus.Coop.Forms
         private List<Control> ctrls = new List<Control>();
 
         private bool grabAll = false;
-
+        private bool canResize;
         private JArray handlers;
 
         private int entriesPerPage;
@@ -201,6 +201,7 @@ namespace Nucleus.Coop.Forms
                 btn_Search.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
 
             }
+
             ResumeLayout();
 
             if (mf.mouseClick)
@@ -285,13 +286,31 @@ namespace Nucleus.Coop.Forms
                         return;
                 }
             }
+            Point cursorPos = PointToClient(Cursor.Position);
+            Rectangle inRect = new Rectangle(10, 10, Width - 20, Height - 20);
 
-            if (m.Msg == 0x020 || m.Msg == 0x0a0)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messges handling) 
+            if (!inRect.Contains(cursorPos))
             {
-                Cursor.Current = default_Cursor;
-                return;
+                canResize = true;
+            }
+            else
+            {
+                if (Cursor.Current != default_Cursor)
+                {
+                    Cursor.Current = default_Cursor;
+
+                }
+                canResize = false;
             }
 
+            if (!canResize)
+            {
+                if (m.Msg == 0x020 || m.Msg == 0x0a0)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messges handling) 
+                {
+                    Cursor.Current = default_Cursor;
+                    return;
+                }
+            }
             base.WndProc(ref m);
         }
 

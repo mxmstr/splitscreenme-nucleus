@@ -48,10 +48,10 @@ namespace Nucleus.Coop
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label35 = new System.Windows.Forms.Label();
+            this.settingsTab_Group = new System.Windows.Forms.TabControl();
+            this.settingsTab = new System.Windows.Forms.TabPage();
+            this.passwordPanel = new System.Windows.Forms.Panel();
+            this.password_Label = new System.Windows.Forms.Label();
             this.nucUserPassTxt = new System.Windows.Forms.TextBox();
             this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
             this.themeLabel = new System.Windows.Forms.Label();
@@ -69,9 +69,9 @@ namespace Nucleus.Coop
             this.label32 = new System.Windows.Forms.Label();
             this.debugLogCheck = new System.Windows.Forms.CheckBox();
             this.useNicksCheck = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.hotkeyBox = new System.Windows.Forms.GroupBox();
             this.settingsFocusCmb = new System.Windows.Forms.ComboBox();
-            this.label50 = new System.Windows.Forms.Label();
+            this.plus1 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.label52 = new System.Windows.Forms.Label();
             this.settingsFocusHKTxt = new System.Windows.Forms.TextBox();
@@ -82,15 +82,15 @@ namespace Nucleus.Coop
             this.settingsTopTxt = new System.Windows.Forms.TextBox();
             this.settingsStopTxt = new System.Windows.Forms.TextBox();
             this.settingsCloseCmb = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.plus4 = new System.Windows.Forms.Label();
+            this.plus3 = new System.Windows.Forms.Label();
+            this.plus2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.settingsCloseHKTxt = new System.Windows.Forms.TextBox();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.label51 = new System.Windows.Forms.Label();
+            this.playerTab = new System.Windows.Forms.TabPage();
+            this.IdExample_Label = new System.Windows.Forms.Label();
             this.steamid16 = new System.Windows.Forms.ComboBox();
             this.steamid15 = new System.Windows.Forms.ComboBox();
             this.steamid14 = new System.Windows.Forms.ComboBox();
@@ -145,20 +145,20 @@ namespace Nucleus.Coop
             this.label8 = new System.Windows.Forms.Label();
             this.controllerOneNick = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.layoutTab = new System.Windows.Forms.TabPage();
+            this.numVerDiv = new System.Windows.Forms.NumericUpDown();
             this.numMaxPlyrs = new System.Windows.Forms.NumericUpDown();
             this.numHorDiv = new System.Windows.Forms.NumericUpDown();
-            this.numVerDiv = new System.Windows.Forms.NumericUpDown();
             this.label29 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
+            this.slitWarning_Label = new System.Windows.Forms.Label();
             this.SplitDiv = new System.Windows.Forms.CheckBox();
             this.label49 = new System.Windows.Forms.Label();
             this.SplitColors = new System.Windows.Forms.ComboBox();
             this.layoutSizer = new System.Windows.Forms.Panel();
             this.label30 = new System.Windows.Forms.Label();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.audioTab = new System.Windows.Forms.TabPage();
             this.label39 = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
             this.audioCustomSettingsBox = new System.Windows.Forms.GroupBox();
@@ -181,111 +181,112 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioRefresh = new System.Windows.Forms.Button();
-            this.label33 = new System.Windows.Forms.Label();
+            this.save_Label = new System.Windows.Forms.Label();
             this.btn_credits = new System.Windows.Forms.Button();
             this.settingsCloseBtn = new System.Windows.Forms.Button();
             this.settingsSaveBtn = new System.Windows.Forms.Button();
-            this.setting_Label = new System.Windows.Forms.Panel();
-            this.tabControl2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.tabPage5.SuspendLayout();
-            this.tabPage4.SuspendLayout();
+            this.settingLabel_Container = new System.Windows.Forms.Panel();
+            this.settingsTab_Group.SuspendLayout();
+            this.settingsTab.SuspendLayout();
+            this.passwordPanel.SuspendLayout();
+            this.hotkeyBox.SuspendLayout();
+            this.playerTab.SuspendLayout();
+            this.layoutTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxPlyrs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHorDiv)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).BeginInit();
-            this.tabPage1.SuspendLayout();
+            this.audioTab.SuspendLayout();
             this.audioCustomSettingsBox.SuspendLayout();
-            this.setting_Label.SuspendLayout();
+            this.settingLabel_Container.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl2
+            // settingsTab_Group
             // 
-            this.tabControl2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tabControl2.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControl2.Controls.Add(this.tabPage3);
-            this.tabControl2.Controls.Add(this.tabPage5);
-            this.tabControl2.Controls.Add(this.tabPage4);
-            this.tabControl2.Controls.Add(this.tabPage1);
-            this.tabControl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl2.ItemSize = new System.Drawing.Size(52, 23);
-            this.tabControl2.Location = new System.Drawing.Point(17, 18);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(2);
-            this.tabControl2.Multiline = true;
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(639, 327);
-            this.tabControl2.TabIndex = 36;
-            this.tabControl2.Tag = "";
-            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
+            this.settingsTab_Group.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.settingsTab_Group.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.settingsTab_Group.Controls.Add(this.settingsTab);
+            this.settingsTab_Group.Controls.Add(this.playerTab);
+            this.settingsTab_Group.Controls.Add(this.layoutTab);
+            this.settingsTab_Group.Controls.Add(this.audioTab);
+            this.settingsTab_Group.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.settingsTab_Group.ItemSize = new System.Drawing.Size(52, 23);
+            this.settingsTab_Group.Location = new System.Drawing.Point(17, 18);
+            this.settingsTab_Group.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsTab_Group.Multiline = true;
+            this.settingsTab_Group.Name = "settingsTab_Group";
+            this.settingsTab_Group.SelectedIndex = 0;
+            this.settingsTab_Group.Size = new System.Drawing.Size(639, 327);
+            this.settingsTab_Group.TabIndex = 36;
+            this.settingsTab_Group.Tag = "";
+            this.settingsTab_Group.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
             // 
-            // tabPage3
+            // settingsTab
             // 
-            this.tabPage3.BackColor = System.Drawing.Color.Transparent;
-            this.tabPage3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tabPage3.Controls.Add(this.panel1);
-            this.tabPage3.Controls.Add(this.scaleOptionCbx);
-            this.tabPage3.Controls.Add(this.themeLabel);
-            this.tabPage3.Controls.Add(this.themeCbx);
-            this.tabPage3.Controls.Add(this.splashScreenChkB);
-            this.tabPage3.Controls.Add(this.clickSoundChkB);
-            this.tabPage3.Controls.Add(this.cmb_EpicLang);
-            this.tabPage3.Controls.Add(this.label46);
-            this.tabPage3.Controls.Add(this.ignoreInputLockReminderCheckbox);
-            this.tabPage3.Controls.Add(this.keepAccountsCheck);
-            this.tabPage3.Controls.Add(this.statusCheck);
-            this.tabPage3.Controls.Add(this.cmb_Lang);
-            this.tabPage3.Controls.Add(this.label34);
-            this.tabPage3.Controls.Add(this.cmb_Network);
-            this.tabPage3.Controls.Add(this.label32);
-            this.tabPage3.Controls.Add(this.debugLogCheck);
-            this.tabPage3.Controls.Add(this.useNicksCheck);
-            this.tabPage3.Controls.Add(this.groupBox1);
-            this.tabPage3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage3.Location = new System.Drawing.Point(4, 27);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage3.Size = new System.Drawing.Size(631, 296);
-            this.tabPage3.TabIndex = 0;
-            this.tabPage3.Text = "Settings";
+            this.settingsTab.BackColor = System.Drawing.Color.Transparent;
+            this.settingsTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.settingsTab.Controls.Add(this.passwordPanel);
+            this.settingsTab.Controls.Add(this.scaleOptionCbx);
+            this.settingsTab.Controls.Add(this.themeLabel);
+            this.settingsTab.Controls.Add(this.themeCbx);
+            this.settingsTab.Controls.Add(this.splashScreenChkB);
+            this.settingsTab.Controls.Add(this.clickSoundChkB);
+            this.settingsTab.Controls.Add(this.cmb_EpicLang);
+            this.settingsTab.Controls.Add(this.label46);
+            this.settingsTab.Controls.Add(this.ignoreInputLockReminderCheckbox);
+            this.settingsTab.Controls.Add(this.keepAccountsCheck);
+            this.settingsTab.Controls.Add(this.statusCheck);
+            this.settingsTab.Controls.Add(this.cmb_Lang);
+            this.settingsTab.Controls.Add(this.label34);
+            this.settingsTab.Controls.Add(this.cmb_Network);
+            this.settingsTab.Controls.Add(this.label32);
+            this.settingsTab.Controls.Add(this.debugLogCheck);
+            this.settingsTab.Controls.Add(this.useNicksCheck);
+            this.settingsTab.Controls.Add(this.hotkeyBox);
+            this.settingsTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.settingsTab.Location = new System.Drawing.Point(4, 27);
+            this.settingsTab.Margin = new System.Windows.Forms.Padding(2);
+            this.settingsTab.Name = "settingsTab";
+            this.settingsTab.Padding = new System.Windows.Forms.Padding(2);
+            this.settingsTab.Size = new System.Drawing.Size(631, 296);
+            this.settingsTab.TabIndex = 0;
+            this.settingsTab.Text = "Settings";
             // 
-            // panel1
+            // passwordPanel
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label35);
-            this.panel1.Controls.Add(this.nucUserPassTxt);
-            this.panel1.Location = new System.Drawing.Point(374, 72);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(238, 45);
-            this.panel1.TabIndex = 85;
+            this.passwordPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.passwordPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.passwordPanel.Controls.Add(this.password_Label);
+            this.passwordPanel.Controls.Add(this.nucUserPassTxt);
+            this.passwordPanel.Location = new System.Drawing.Point(376, 81);
+            this.passwordPanel.Name = "passwordPanel";
+            this.passwordPanel.Size = new System.Drawing.Size(238, 36);
+            this.passwordPanel.TabIndex = 85;
             // 
-            // label35
+            // password_Label
             // 
-            this.label35.AutoSize = true;
-            this.label35.BackColor = System.Drawing.Color.Transparent;
-            this.label35.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label35.Location = new System.Drawing.Point(0, 0);
-            this.label35.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(120, 13);
-            this.label35.TabIndex = 85;
-            this.label35.Text = "Nucleus User Password";
-            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.password_Label.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.password_Label.AutoSize = true;
+            this.password_Label.BackColor = System.Drawing.Color.Transparent;
+            this.password_Label.Location = new System.Drawing.Point(0, 0);
+            this.password_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.password_Label.Name = "password_Label";
+            this.password_Label.Size = new System.Drawing.Size(120, 13);
+            this.password_Label.TabIndex = 85;
+            this.password_Label.Text = "Nucleus User Password";
+            this.password_Label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // nucUserPassTxt
             // 
             this.nucUserPassTxt.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.nucUserPassTxt.Location = new System.Drawing.Point(0, 23);
+            this.nucUserPassTxt.Location = new System.Drawing.Point(0, 14);
             this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
             this.nucUserPassTxt.MaxLength = 127;
             this.nucUserPassTxt.Name = "nucUserPassTxt";
             this.nucUserPassTxt.PasswordChar = '*';
             this.nucUserPassTxt.Size = new System.Drawing.Size(236, 20);
             this.nucUserPassTxt.TabIndex = 74;
-            this.nucUserPassTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nucUserPassTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // scaleOptionCbx
             // 
@@ -545,35 +546,35 @@ namespace Nucleus.Coop
             this.useNicksCheck.Text = "Use Nicknames In-Game";
             this.useNicksCheck.UseVisualStyleBackColor = false;
             // 
-            // groupBox1
+            // hotkeyBox
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.settingsFocusCmb);
-            this.groupBox1.Controls.Add(this.label50);
-            this.groupBox1.Controls.Add(this.label38);
-            this.groupBox1.Controls.Add(this.label52);
-            this.groupBox1.Controls.Add(this.settingsFocusHKTxt);
-            this.groupBox1.Controls.Add(this.comboBox_lockKey);
-            this.groupBox1.Controls.Add(this.label_lockKey);
-            this.groupBox1.Controls.Add(this.settingsTopCmb);
-            this.groupBox1.Controls.Add(this.settingsStopCmb);
-            this.groupBox1.Controls.Add(this.settingsTopTxt);
-            this.groupBox1.Controls.Add(this.settingsStopTxt);
-            this.groupBox1.Controls.Add(this.settingsCloseCmb);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.settingsCloseHKTxt);
-            this.groupBox1.Location = new System.Drawing.Point(376, 122);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(236, 158);
-            this.groupBox1.TabIndex = 20;
-            this.groupBox1.TabStop = false;
+            this.hotkeyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hotkeyBox.Controls.Add(this.settingsFocusCmb);
+            this.hotkeyBox.Controls.Add(this.plus1);
+            this.hotkeyBox.Controls.Add(this.label38);
+            this.hotkeyBox.Controls.Add(this.label52);
+            this.hotkeyBox.Controls.Add(this.settingsFocusHKTxt);
+            this.hotkeyBox.Controls.Add(this.comboBox_lockKey);
+            this.hotkeyBox.Controls.Add(this.label_lockKey);
+            this.hotkeyBox.Controls.Add(this.settingsTopCmb);
+            this.hotkeyBox.Controls.Add(this.settingsStopCmb);
+            this.hotkeyBox.Controls.Add(this.settingsTopTxt);
+            this.hotkeyBox.Controls.Add(this.settingsStopTxt);
+            this.hotkeyBox.Controls.Add(this.settingsCloseCmb);
+            this.hotkeyBox.Controls.Add(this.plus4);
+            this.hotkeyBox.Controls.Add(this.plus3);
+            this.hotkeyBox.Controls.Add(this.plus2);
+            this.hotkeyBox.Controls.Add(this.label4);
+            this.hotkeyBox.Controls.Add(this.label3);
+            this.hotkeyBox.Controls.Add(this.label1);
+            this.hotkeyBox.Controls.Add(this.settingsCloseHKTxt);
+            this.hotkeyBox.Location = new System.Drawing.Point(376, 122);
+            this.hotkeyBox.Margin = new System.Windows.Forms.Padding(2);
+            this.hotkeyBox.Name = "hotkeyBox";
+            this.hotkeyBox.Padding = new System.Windows.Forms.Padding(2);
+            this.hotkeyBox.Size = new System.Drawing.Size(236, 158);
+            this.hotkeyBox.TabIndex = 20;
+            this.hotkeyBox.TabStop = false;
             // 
             // settingsFocusCmb
             // 
@@ -589,17 +590,17 @@ namespace Nucleus.Coop
             this.settingsFocusCmb.Size = new System.Drawing.Size(67, 21);
             this.settingsFocusCmb.TabIndex = 31;
             // 
-            // label50
+            // plus1
             // 
-            this.label50.AutoSize = true;
-            this.label50.ForeColor = System.Drawing.Color.Black;
-            this.label50.Location = new System.Drawing.Point(172, 34);
-            this.label50.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(13, 13);
-            this.label50.TabIndex = 34;
-            this.label50.Text = "+";
-            this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plus1.AutoSize = true;
+            this.plus1.ForeColor = System.Drawing.Color.Black;
+            this.plus1.Location = new System.Drawing.Point(173, 34);
+            this.plus1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus1.Name = "plus1";
+            this.plus1.Size = new System.Drawing.Size(13, 13);
+            this.plus1.TabIndex = 34;
+            this.plus1.Text = "+";
+            this.plus1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label38
             // 
@@ -627,7 +628,7 @@ namespace Nucleus.Coop
             // settingsFocusHKTxt
             // 
             this.settingsFocusHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsFocusHKTxt.Location = new System.Drawing.Point(189, 32);
+            this.settingsFocusHKTxt.Location = new System.Drawing.Point(190, 32);
             this.settingsFocusHKTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsFocusHKTxt.MaxLength = 1;
             this.settingsFocusHKTxt.Name = "settingsFocusHKTxt";
@@ -717,7 +718,7 @@ namespace Nucleus.Coop
             // settingsTopTxt
             // 
             this.settingsTopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsTopTxt.Location = new System.Drawing.Point(189, 104);
+            this.settingsTopTxt.Location = new System.Drawing.Point(190, 104);
             this.settingsTopTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsTopTxt.MaxLength = 1;
             this.settingsTopTxt.Name = "settingsTopTxt";
@@ -729,7 +730,7 @@ namespace Nucleus.Coop
             // settingsStopTxt
             // 
             this.settingsStopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsStopTxt.Location = new System.Drawing.Point(189, 80);
+            this.settingsStopTxt.Location = new System.Drawing.Point(190, 80);
             this.settingsStopTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsStopTxt.MaxLength = 1;
             this.settingsStopTxt.Name = "settingsStopTxt";
@@ -752,41 +753,41 @@ namespace Nucleus.Coop
             this.settingsCloseCmb.Size = new System.Drawing.Size(67, 21);
             this.settingsCloseCmb.TabIndex = 1;
             // 
-            // label6
+            // plus4
             // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(172, 106);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(13, 13);
-            this.label6.TabIndex = 27;
-            this.label6.Text = "+";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plus4.AutoSize = true;
+            this.plus4.ForeColor = System.Drawing.Color.Black;
+            this.plus4.Location = new System.Drawing.Point(173, 106);
+            this.plus4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus4.Name = "plus4";
+            this.plus4.Size = new System.Drawing.Size(13, 13);
+            this.plus4.TabIndex = 27;
+            this.plus4.Text = "+";
+            this.plus4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // plus3
             // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(172, 81);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(13, 13);
-            this.label5.TabIndex = 26;
-            this.label5.Text = "+";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plus3.AutoSize = true;
+            this.plus3.ForeColor = System.Drawing.Color.Black;
+            this.plus3.Location = new System.Drawing.Point(173, 81);
+            this.plus3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus3.Name = "plus3";
+            this.plus3.Size = new System.Drawing.Size(13, 13);
+            this.plus3.TabIndex = 26;
+            this.plus3.Text = "+";
+            this.plus3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // plus2
             // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(172, 58);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(13, 13);
-            this.label2.TabIndex = 25;
-            this.label2.Text = "+";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plus2.AutoSize = true;
+            this.plus2.ForeColor = System.Drawing.Color.Black;
+            this.plus2.Location = new System.Drawing.Point(173, 58);
+            this.plus2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus2.Name = "plus2";
+            this.plus2.Size = new System.Drawing.Size(13, 13);
+            this.plus2.TabIndex = 25;
+            this.plus2.Text = "+";
+            this.plus2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label4
             // 
@@ -821,7 +822,7 @@ namespace Nucleus.Coop
             // settingsCloseHKTxt
             // 
             this.settingsCloseHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsCloseHKTxt.Location = new System.Drawing.Point(189, 56);
+            this.settingsCloseHKTxt.Location = new System.Drawing.Point(190, 56);
             this.settingsCloseHKTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCloseHKTxt.MaxLength = 1;
             this.settingsCloseHKTxt.Name = "settingsCloseHKTxt";
@@ -830,86 +831,87 @@ namespace Nucleus.Coop
             this.settingsCloseHKTxt.TabIndex = 2;
             this.settingsCloseHKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // tabPage5
+            // playerTab
             // 
-            this.tabPage5.BackColor = System.Drawing.Color.Transparent;
-            this.tabPage5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tabPage5.Controls.Add(this.label51);
-            this.tabPage5.Controls.Add(this.steamid16);
-            this.tabPage5.Controls.Add(this.steamid15);
-            this.tabPage5.Controls.Add(this.steamid14);
-            this.tabPage5.Controls.Add(this.steamid13);
-            this.tabPage5.Controls.Add(this.steamid12);
-            this.tabPage5.Controls.Add(this.steamid11);
-            this.tabPage5.Controls.Add(this.steamid10);
-            this.tabPage5.Controls.Add(this.label48);
-            this.tabPage5.Controls.Add(this.steamid9);
-            this.tabPage5.Controls.Add(this.steamid8);
-            this.tabPage5.Controls.Add(this.steamid7);
-            this.tabPage5.Controls.Add(this.steamid6);
-            this.tabPage5.Controls.Add(this.steamid5);
-            this.tabPage5.Controls.Add(this.steamid4);
-            this.tabPage5.Controls.Add(this.steamid3);
-            this.tabPage5.Controls.Add(this.steamid2);
-            this.tabPage5.Controls.Add(this.label47);
-            this.tabPage5.Controls.Add(this.steamid1);
-            this.tabPage5.Controls.Add(this.label21);
-            this.tabPage5.Controls.Add(this.label25);
-            this.tabPage5.Controls.Add(this.controllerSixteenNick);
-            this.tabPage5.Controls.Add(this.label17);
-            this.tabPage5.Controls.Add(this.controllerFifteenNick);
-            this.tabPage5.Controls.Add(this.label18);
-            this.tabPage5.Controls.Add(this.controllerFourteenNick);
-            this.tabPage5.Controls.Add(this.label19);
-            this.tabPage5.Controls.Add(this.controllerThirteenNick);
-            this.tabPage5.Controls.Add(this.label20);
-            this.tabPage5.Controls.Add(this.controllerTwelveNick);
-            this.tabPage5.Controls.Add(this.label22);
-            this.tabPage5.Controls.Add(this.controllerElevenNick);
-            this.tabPage5.Controls.Add(this.label23);
-            this.tabPage5.Controls.Add(this.controllerTenNick);
-            this.tabPage5.Controls.Add(this.label24);
-            this.tabPage5.Controls.Add(this.controllerNineNick);
-            this.tabPage5.Controls.Add(this.label26);
-            this.tabPage5.Controls.Add(this.controllerEightNick);
-            this.tabPage5.Controls.Add(this.label16);
-            this.tabPage5.Controls.Add(this.controllerSevenNick);
-            this.tabPage5.Controls.Add(this.label15);
-            this.tabPage5.Controls.Add(this.controllerSixNick);
-            this.tabPage5.Controls.Add(this.label11);
-            this.tabPage5.Controls.Add(this.controllerFiveNick);
-            this.tabPage5.Controls.Add(this.label9);
-            this.tabPage5.Controls.Add(this.label13);
-            this.tabPage5.Controls.Add(this.controllerFourNick);
-            this.tabPage5.Controls.Add(this.label14);
-            this.tabPage5.Controls.Add(this.controllerThreeNick);
-            this.tabPage5.Controls.Add(this.label12);
-            this.tabPage5.Controls.Add(this.controllerTwoNick);
-            this.tabPage5.Controls.Add(this.label10);
-            this.tabPage5.Controls.Add(this.label8);
-            this.tabPage5.Controls.Add(this.controllerOneNick);
-            this.tabPage5.Controls.Add(this.label7);
-            this.tabPage5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage5.Location = new System.Drawing.Point(4, 27);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(631, 296);
-            this.tabPage5.TabIndex = 2;
-            this.tabPage5.Text = "Players";
+            this.playerTab.BackColor = System.Drawing.Color.Transparent;
+            this.playerTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.playerTab.Controls.Add(this.IdExample_Label);
+            this.playerTab.Controls.Add(this.steamid16);
+            this.playerTab.Controls.Add(this.steamid15);
+            this.playerTab.Controls.Add(this.steamid14);
+            this.playerTab.Controls.Add(this.steamid13);
+            this.playerTab.Controls.Add(this.steamid12);
+            this.playerTab.Controls.Add(this.steamid11);
+            this.playerTab.Controls.Add(this.steamid10);
+            this.playerTab.Controls.Add(this.label48);
+            this.playerTab.Controls.Add(this.steamid9);
+            this.playerTab.Controls.Add(this.steamid8);
+            this.playerTab.Controls.Add(this.steamid7);
+            this.playerTab.Controls.Add(this.steamid6);
+            this.playerTab.Controls.Add(this.steamid5);
+            this.playerTab.Controls.Add(this.steamid4);
+            this.playerTab.Controls.Add(this.steamid3);
+            this.playerTab.Controls.Add(this.steamid2);
+            this.playerTab.Controls.Add(this.label47);
+            this.playerTab.Controls.Add(this.steamid1);
+            this.playerTab.Controls.Add(this.label21);
+            this.playerTab.Controls.Add(this.label25);
+            this.playerTab.Controls.Add(this.controllerSixteenNick);
+            this.playerTab.Controls.Add(this.label17);
+            this.playerTab.Controls.Add(this.controllerFifteenNick);
+            this.playerTab.Controls.Add(this.label18);
+            this.playerTab.Controls.Add(this.controllerFourteenNick);
+            this.playerTab.Controls.Add(this.label19);
+            this.playerTab.Controls.Add(this.controllerThirteenNick);
+            this.playerTab.Controls.Add(this.label20);
+            this.playerTab.Controls.Add(this.controllerTwelveNick);
+            this.playerTab.Controls.Add(this.label22);
+            this.playerTab.Controls.Add(this.controllerElevenNick);
+            this.playerTab.Controls.Add(this.label23);
+            this.playerTab.Controls.Add(this.controllerTenNick);
+            this.playerTab.Controls.Add(this.label24);
+            this.playerTab.Controls.Add(this.controllerNineNick);
+            this.playerTab.Controls.Add(this.label26);
+            this.playerTab.Controls.Add(this.controllerEightNick);
+            this.playerTab.Controls.Add(this.label16);
+            this.playerTab.Controls.Add(this.controllerSevenNick);
+            this.playerTab.Controls.Add(this.label15);
+            this.playerTab.Controls.Add(this.controllerSixNick);
+            this.playerTab.Controls.Add(this.label11);
+            this.playerTab.Controls.Add(this.controllerFiveNick);
+            this.playerTab.Controls.Add(this.label9);
+            this.playerTab.Controls.Add(this.label13);
+            this.playerTab.Controls.Add(this.controllerFourNick);
+            this.playerTab.Controls.Add(this.label14);
+            this.playerTab.Controls.Add(this.controllerThreeNick);
+            this.playerTab.Controls.Add(this.label12);
+            this.playerTab.Controls.Add(this.controllerTwoNick);
+            this.playerTab.Controls.Add(this.label10);
+            this.playerTab.Controls.Add(this.label8);
+            this.playerTab.Controls.Add(this.controllerOneNick);
+            this.playerTab.Controls.Add(this.label7);
+            this.playerTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playerTab.Location = new System.Drawing.Point(4, 27);
+            this.playerTab.Margin = new System.Windows.Forms.Padding(2);
+            this.playerTab.Name = "playerTab";
+            this.playerTab.Size = new System.Drawing.Size(631, 296);
+            this.playerTab.TabIndex = 2;
+            this.playerTab.Text = "Players";
             // 
-            // label51
+            // IdExample_Label
             // 
-            this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(207, 251);
-            this.label51.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(223, 13);
-            this.label51.TabIndex = 129;
-            this.label51.Text = "Player Steam ID format: 76561199075562883";
+            this.IdExample_Label.AutoSize = true;
+            this.IdExample_Label.Location = new System.Drawing.Point(207, 251);
+            this.IdExample_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.IdExample_Label.Name = "IdExample_Label";
+            this.IdExample_Label.Size = new System.Drawing.Size(223, 13);
+            this.IdExample_Label.TabIndex = 129;
+            this.IdExample_Label.Text = "Player Steam ID format: 76561199075562883";
             // 
             // steamid16
             // 
             this.steamid16.BackColor = System.Drawing.Color.White;
+            this.steamid16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid16.Location = new System.Drawing.Point(492, 190);
             this.steamid16.Margin = new System.Windows.Forms.Padding(2);
             this.steamid16.MaxLength = 17;
@@ -920,6 +922,7 @@ namespace Nucleus.Coop
             // steamid15
             // 
             this.steamid15.BackColor = System.Drawing.Color.White;
+            this.steamid15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid15.Location = new System.Drawing.Point(492, 171);
             this.steamid15.Margin = new System.Windows.Forms.Padding(2);
             this.steamid15.MaxLength = 17;
@@ -930,6 +933,7 @@ namespace Nucleus.Coop
             // steamid14
             // 
             this.steamid14.BackColor = System.Drawing.Color.White;
+            this.steamid14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid14.Location = new System.Drawing.Point(492, 152);
             this.steamid14.Margin = new System.Windows.Forms.Padding(2);
             this.steamid14.MaxLength = 17;
@@ -940,6 +944,7 @@ namespace Nucleus.Coop
             // steamid13
             // 
             this.steamid13.BackColor = System.Drawing.Color.White;
+            this.steamid13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid13.Location = new System.Drawing.Point(492, 133);
             this.steamid13.Margin = new System.Windows.Forms.Padding(2);
             this.steamid13.MaxLength = 17;
@@ -950,6 +955,7 @@ namespace Nucleus.Coop
             // steamid12
             // 
             this.steamid12.BackColor = System.Drawing.Color.White;
+            this.steamid12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid12.Location = new System.Drawing.Point(492, 114);
             this.steamid12.Margin = new System.Windows.Forms.Padding(2);
             this.steamid12.MaxLength = 17;
@@ -960,6 +966,7 @@ namespace Nucleus.Coop
             // steamid11
             // 
             this.steamid11.BackColor = System.Drawing.Color.White;
+            this.steamid11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid11.Location = new System.Drawing.Point(492, 95);
             this.steamid11.Margin = new System.Windows.Forms.Padding(2);
             this.steamid11.MaxLength = 17;
@@ -970,6 +977,7 @@ namespace Nucleus.Coop
             // steamid10
             // 
             this.steamid10.BackColor = System.Drawing.Color.White;
+            this.steamid10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid10.Location = new System.Drawing.Point(492, 76);
             this.steamid10.Margin = new System.Windows.Forms.Padding(2);
             this.steamid10.MaxLength = 17;
@@ -990,6 +998,7 @@ namespace Nucleus.Coop
             // steamid9
             // 
             this.steamid9.BackColor = System.Drawing.Color.White;
+            this.steamid9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid9.Location = new System.Drawing.Point(492, 57);
             this.steamid9.Margin = new System.Windows.Forms.Padding(2);
             this.steamid9.MaxLength = 17;
@@ -1000,6 +1009,7 @@ namespace Nucleus.Coop
             // steamid8
             // 
             this.steamid8.BackColor = System.Drawing.Color.White;
+            this.steamid8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid8.Location = new System.Drawing.Point(151, 192);
             this.steamid8.Margin = new System.Windows.Forms.Padding(2);
             this.steamid8.MaxLength = 17;
@@ -1010,6 +1020,7 @@ namespace Nucleus.Coop
             // steamid7
             // 
             this.steamid7.BackColor = System.Drawing.Color.White;
+            this.steamid7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid7.Location = new System.Drawing.Point(151, 173);
             this.steamid7.Margin = new System.Windows.Forms.Padding(2);
             this.steamid7.MaxLength = 17;
@@ -1020,6 +1031,7 @@ namespace Nucleus.Coop
             // steamid6
             // 
             this.steamid6.BackColor = System.Drawing.Color.White;
+            this.steamid6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid6.Location = new System.Drawing.Point(151, 154);
             this.steamid6.Margin = new System.Windows.Forms.Padding(2);
             this.steamid6.MaxLength = 17;
@@ -1030,6 +1042,7 @@ namespace Nucleus.Coop
             // steamid5
             // 
             this.steamid5.BackColor = System.Drawing.Color.White;
+            this.steamid5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid5.Location = new System.Drawing.Point(151, 135);
             this.steamid5.Margin = new System.Windows.Forms.Padding(2);
             this.steamid5.MaxLength = 17;
@@ -1040,6 +1053,7 @@ namespace Nucleus.Coop
             // steamid4
             // 
             this.steamid4.BackColor = System.Drawing.Color.White;
+            this.steamid4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid4.Location = new System.Drawing.Point(151, 116);
             this.steamid4.Margin = new System.Windows.Forms.Padding(2);
             this.steamid4.MaxLength = 17;
@@ -1050,6 +1064,7 @@ namespace Nucleus.Coop
             // steamid3
             // 
             this.steamid3.BackColor = System.Drawing.Color.White;
+            this.steamid3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid3.Location = new System.Drawing.Point(151, 97);
             this.steamid3.Margin = new System.Windows.Forms.Padding(2);
             this.steamid3.MaxLength = 17;
@@ -1060,6 +1075,7 @@ namespace Nucleus.Coop
             // steamid2
             // 
             this.steamid2.BackColor = System.Drawing.Color.White;
+            this.steamid2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid2.Location = new System.Drawing.Point(151, 78);
             this.steamid2.Margin = new System.Windows.Forms.Padding(2);
             this.steamid2.MaxLength = 17;
@@ -1080,6 +1096,7 @@ namespace Nucleus.Coop
             // steamid1
             // 
             this.steamid1.BackColor = System.Drawing.Color.White;
+            this.steamid1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.steamid1.Location = new System.Drawing.Point(151, 59);
             this.steamid1.Margin = new System.Windows.Forms.Padding(2);
             this.steamid1.MaxLength = 17;
@@ -1110,6 +1127,7 @@ namespace Nucleus.Coop
             // controllerSixteenNick
             // 
             this.controllerSixteenNick.BackColor = System.Drawing.Color.White;
+            this.controllerSixteenNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerSixteenNick.Location = new System.Drawing.Point(416, 190);
             this.controllerSixteenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerSixteenNick.MaxLength = 9;
@@ -1131,6 +1149,7 @@ namespace Nucleus.Coop
             // controllerFifteenNick
             // 
             this.controllerFifteenNick.BackColor = System.Drawing.Color.White;
+            this.controllerFifteenNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerFifteenNick.Location = new System.Drawing.Point(416, 171);
             this.controllerFifteenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerFifteenNick.MaxLength = 9;
@@ -1152,6 +1171,7 @@ namespace Nucleus.Coop
             // controllerFourteenNick
             // 
             this.controllerFourteenNick.BackColor = System.Drawing.Color.White;
+            this.controllerFourteenNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerFourteenNick.Location = new System.Drawing.Point(416, 152);
             this.controllerFourteenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerFourteenNick.MaxLength = 9;
@@ -1173,6 +1193,7 @@ namespace Nucleus.Coop
             // controllerThirteenNick
             // 
             this.controllerThirteenNick.BackColor = System.Drawing.Color.White;
+            this.controllerThirteenNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerThirteenNick.Location = new System.Drawing.Point(416, 133);
             this.controllerThirteenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerThirteenNick.MaxLength = 9;
@@ -1194,6 +1215,7 @@ namespace Nucleus.Coop
             // controllerTwelveNick
             // 
             this.controllerTwelveNick.BackColor = System.Drawing.Color.White;
+            this.controllerTwelveNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerTwelveNick.Location = new System.Drawing.Point(416, 114);
             this.controllerTwelveNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerTwelveNick.MaxLength = 9;
@@ -1215,6 +1237,7 @@ namespace Nucleus.Coop
             // controllerElevenNick
             // 
             this.controllerElevenNick.BackColor = System.Drawing.Color.White;
+            this.controllerElevenNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerElevenNick.Location = new System.Drawing.Point(416, 95);
             this.controllerElevenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerElevenNick.MaxLength = 9;
@@ -1236,6 +1259,7 @@ namespace Nucleus.Coop
             // controllerTenNick
             // 
             this.controllerTenNick.BackColor = System.Drawing.Color.White;
+            this.controllerTenNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerTenNick.Location = new System.Drawing.Point(416, 76);
             this.controllerTenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerTenNick.MaxLength = 9;
@@ -1257,6 +1281,7 @@ namespace Nucleus.Coop
             // controllerNineNick
             // 
             this.controllerNineNick.BackColor = System.Drawing.Color.White;
+            this.controllerNineNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerNineNick.Location = new System.Drawing.Point(416, 57);
             this.controllerNineNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerNineNick.MaxLength = 9;
@@ -1278,6 +1303,7 @@ namespace Nucleus.Coop
             // controllerEightNick
             // 
             this.controllerEightNick.BackColor = System.Drawing.Color.White;
+            this.controllerEightNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerEightNick.Location = new System.Drawing.Point(75, 192);
             this.controllerEightNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerEightNick.MaxLength = 9;
@@ -1299,6 +1325,7 @@ namespace Nucleus.Coop
             // controllerSevenNick
             // 
             this.controllerSevenNick.BackColor = System.Drawing.Color.White;
+            this.controllerSevenNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerSevenNick.Location = new System.Drawing.Point(75, 173);
             this.controllerSevenNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerSevenNick.MaxLength = 9;
@@ -1320,6 +1347,7 @@ namespace Nucleus.Coop
             // controllerSixNick
             // 
             this.controllerSixNick.BackColor = System.Drawing.Color.White;
+            this.controllerSixNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerSixNick.Location = new System.Drawing.Point(75, 154);
             this.controllerSixNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerSixNick.MaxLength = 9;
@@ -1341,6 +1369,7 @@ namespace Nucleus.Coop
             // controllerFiveNick
             // 
             this.controllerFiveNick.BackColor = System.Drawing.Color.White;
+            this.controllerFiveNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerFiveNick.Location = new System.Drawing.Point(75, 135);
             this.controllerFiveNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerFiveNick.MaxLength = 9;
@@ -1372,6 +1401,7 @@ namespace Nucleus.Coop
             // controllerFourNick
             // 
             this.controllerFourNick.BackColor = System.Drawing.Color.White;
+            this.controllerFourNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerFourNick.Location = new System.Drawing.Point(75, 116);
             this.controllerFourNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerFourNick.MaxLength = 9;
@@ -1393,6 +1423,7 @@ namespace Nucleus.Coop
             // controllerThreeNick
             // 
             this.controllerThreeNick.BackColor = System.Drawing.Color.White;
+            this.controllerThreeNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerThreeNick.Location = new System.Drawing.Point(75, 97);
             this.controllerThreeNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerThreeNick.MaxLength = 9;
@@ -1414,6 +1445,7 @@ namespace Nucleus.Coop
             // controllerTwoNick
             // 
             this.controllerTwoNick.BackColor = System.Drawing.Color.White;
+            this.controllerTwoNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerTwoNick.Location = new System.Drawing.Point(75, 78);
             this.controllerTwoNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerTwoNick.MaxLength = 9;
@@ -1445,6 +1477,7 @@ namespace Nucleus.Coop
             // controllerOneNick
             // 
             this.controllerOneNick.BackColor = System.Drawing.Color.White;
+            this.controllerOneNick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.controllerOneNick.Location = new System.Drawing.Point(75, 59);
             this.controllerOneNick.Margin = new System.Windows.Forms.Padding(2);
             this.controllerOneNick.MaxLength = 9;
@@ -1463,37 +1496,55 @@ namespace Nucleus.Coop
             this.label7.Text = "Player 1 :";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // tabPage4
+            // layoutTab
             // 
-            this.tabPage4.BackColor = System.Drawing.Color.Transparent;
-            this.tabPage4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tabPage4.Controls.Add(this.numMaxPlyrs);
-            this.tabPage4.Controls.Add(this.numHorDiv);
-            this.tabPage4.Controls.Add(this.numVerDiv);
-            this.tabPage4.Controls.Add(this.label29);
-            this.tabPage4.Controls.Add(this.label27);
-            this.tabPage4.Controls.Add(this.label28);
-            this.tabPage4.Controls.Add(this.label31);
-            this.tabPage4.Controls.Add(this.SplitDiv);
-            this.tabPage4.Controls.Add(this.label49);
-            this.tabPage4.Controls.Add(this.SplitColors);
-            this.tabPage4.Controls.Add(this.layoutSizer);
-            this.tabPage4.Controls.Add(this.label30);
-            this.tabPage4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage4.Location = new System.Drawing.Point(4, 27);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage4.Size = new System.Drawing.Size(631, 296);
-            this.tabPage4.TabIndex = 1;
-            this.tabPage4.Text = "Custom Layout";
+            this.layoutTab.BackColor = System.Drawing.Color.Transparent;
+            this.layoutTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.layoutTab.Controls.Add(this.numVerDiv);
+            this.layoutTab.Controls.Add(this.numMaxPlyrs);
+            this.layoutTab.Controls.Add(this.numHorDiv);
+            this.layoutTab.Controls.Add(this.label29);
+            this.layoutTab.Controls.Add(this.label27);
+            this.layoutTab.Controls.Add(this.label28);
+            this.layoutTab.Controls.Add(this.slitWarning_Label);
+            this.layoutTab.Controls.Add(this.SplitDiv);
+            this.layoutTab.Controls.Add(this.label49);
+            this.layoutTab.Controls.Add(this.SplitColors);
+            this.layoutTab.Controls.Add(this.layoutSizer);
+            this.layoutTab.Controls.Add(this.label30);
+            this.layoutTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.layoutTab.Location = new System.Drawing.Point(4, 27);
+            this.layoutTab.Margin = new System.Windows.Forms.Padding(2);
+            this.layoutTab.Name = "layoutTab";
+            this.layoutTab.Padding = new System.Windows.Forms.Padding(2);
+            this.layoutTab.Size = new System.Drawing.Size(631, 296);
+            this.layoutTab.TabIndex = 1;
+            this.layoutTab.Text = "Custom Layout";
+            this.layoutTab.Click += new System.EventHandler(this.tabPage4_Click);
+            // 
+            // numVerDiv
+            // 
+            this.numVerDiv.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numVerDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numVerDiv.Location = new System.Drawing.Point(16, 31);
+            this.numVerDiv.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numVerDiv.Name = "numVerDiv";
+            this.numVerDiv.ReadOnly = true;
+            this.numVerDiv.Size = new System.Drawing.Size(46, 22);
+            this.numVerDiv.TabIndex = 32;
+            this.numVerDiv.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numVerDiv.ValueChanged += new System.EventHandler(this.NumVerDiv_ValueChanged);
             // 
             // numMaxPlyrs
             // 
-            this.numMaxPlyrs.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.numMaxPlyrs.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.numMaxPlyrs.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.numMaxPlyrs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.numMaxPlyrs.Enabled = false;
+            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numMaxPlyrs.Location = new System.Drawing.Point(16, 115);
             this.numMaxPlyrs.Maximum = new decimal(new int[] {
             999,
@@ -1502,7 +1553,7 @@ namespace Nucleus.Coop
             0});
             this.numMaxPlyrs.Name = "numMaxPlyrs";
             this.numMaxPlyrs.ReadOnly = true;
-            this.numMaxPlyrs.Size = new System.Drawing.Size(46, 16);
+            this.numMaxPlyrs.Size = new System.Drawing.Size(46, 22);
             this.numMaxPlyrs.TabIndex = 33;
             this.numMaxPlyrs.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numMaxPlyrs.Value = new decimal(new int[] {
@@ -1513,9 +1564,9 @@ namespace Nucleus.Coop
             // 
             // numHorDiv
             // 
-            this.numHorDiv.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.numHorDiv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numHorDiv.Location = new System.Drawing.Point(16, 74);
+            this.numHorDiv.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numHorDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numHorDiv.Location = new System.Drawing.Point(16, 72);
             this.numHorDiv.Maximum = new decimal(new int[] {
             5,
             0,
@@ -1523,27 +1574,10 @@ namespace Nucleus.Coop
             0});
             this.numHorDiv.Name = "numHorDiv";
             this.numHorDiv.ReadOnly = true;
-            this.numHorDiv.Size = new System.Drawing.Size(46, 16);
+            this.numHorDiv.Size = new System.Drawing.Size(46, 22);
             this.numHorDiv.TabIndex = 31;
             this.numHorDiv.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numHorDiv.ValueChanged += new System.EventHandler(this.NumHorDiv_ValueChanged);
-            // 
-            // numVerDiv
-            // 
-            this.numVerDiv.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.numVerDiv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numVerDiv.Location = new System.Drawing.Point(16, 33);
-            this.numVerDiv.Maximum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.numVerDiv.Name = "numVerDiv";
-            this.numVerDiv.ReadOnly = true;
-            this.numVerDiv.Size = new System.Drawing.Size(46, 16);
-            this.numVerDiv.TabIndex = 32;
-            this.numVerDiv.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numVerDiv.ValueChanged += new System.EventHandler(this.NumVerDiv_ValueChanged);
             // 
             // label29
             // 
@@ -1580,21 +1614,22 @@ namespace Nucleus.Coop
             this.label28.Text = "Number of Vertical Divisions";
             this.label28.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // label31
+            // slitWarning_Label
             // 
-            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.slitWarning_Label.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label31.BackColor = System.Drawing.Color.Transparent;
-            this.label31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label31.ForeColor = System.Drawing.Color.Red;
-            this.label31.Location = new System.Drawing.Point(206, 246);
-            this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(376, 28);
-            this.label31.TabIndex = 86;
-            this.label31.Text = "Splitscreen division may not work for all games.";
-            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label31.UseMnemonic = false;
+            this.slitWarning_Label.AutoSize = true;
+            this.slitWarning_Label.BackColor = System.Drawing.Color.Transparent;
+            this.slitWarning_Label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.slitWarning_Label.ForeColor = System.Drawing.Color.Red;
+            this.slitWarning_Label.Location = new System.Drawing.Point(206, 246);
+            this.slitWarning_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.slitWarning_Label.Name = "slitWarning_Label";
+            this.slitWarning_Label.Size = new System.Drawing.Size(228, 13);
+            this.slitWarning_Label.TabIndex = 86;
+            this.slitWarning_Label.Text = "Splitscreen division may not work for all games.";
+            this.slitWarning_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.slitWarning_Label.UseMnemonic = false;
             // 
             // SplitDiv
             // 
@@ -1675,23 +1710,23 @@ namespace Nucleus.Coop
             this.label30.Text = "Preview:";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // tabPage1
+            // audioTab
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.Silver;
-            this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tabPage1.Controls.Add(this.label39);
-            this.tabPage1.Controls.Add(this.audioDefaultDevice);
-            this.tabPage1.Controls.Add(this.audioCustomSettingsBox);
-            this.tabPage1.Controls.Add(this.audioCustomSettingsRadio);
-            this.tabPage1.Controls.Add(this.audioDefaultSettingsRadio);
-            this.tabPage1.Controls.Add(this.audioRefresh);
-            this.tabPage1.Location = new System.Drawing.Point(4, 27);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage1.Size = new System.Drawing.Size(631, 296);
-            this.tabPage1.TabIndex = 3;
-            this.tabPage1.Text = "Audio";
+            this.audioTab.BackColor = System.Drawing.Color.Silver;
+            this.audioTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.audioTab.Controls.Add(this.label39);
+            this.audioTab.Controls.Add(this.audioDefaultDevice);
+            this.audioTab.Controls.Add(this.audioCustomSettingsBox);
+            this.audioTab.Controls.Add(this.audioCustomSettingsRadio);
+            this.audioTab.Controls.Add(this.audioDefaultSettingsRadio);
+            this.audioTab.Controls.Add(this.audioRefresh);
+            this.audioTab.Location = new System.Drawing.Point(4, 27);
+            this.audioTab.Margin = new System.Windows.Forms.Padding(2);
+            this.audioTab.Name = "audioTab";
+            this.audioTab.Padding = new System.Windows.Forms.Padding(2);
+            this.audioTab.Size = new System.Drawing.Size(631, 296);
+            this.audioTab.TabIndex = 3;
+            this.audioTab.Text = "Audio";
             // 
             // label39
             // 
@@ -1958,18 +1993,18 @@ namespace Nucleus.Coop
             this.audioRefresh.Text = "Refresh";
             this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
             // 
-            // label33
+            // save_Label
             // 
-            this.label33.BackColor = System.Drawing.Color.Transparent;
-            this.label33.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.label33.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label33.Location = new System.Drawing.Point(0, 0);
-            this.label33.Margin = new System.Windows.Forms.Padding(0);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(350, 15);
-            this.label33.TabIndex = 62;
-            this.label33.Text = "Save settings in order for them to take effect.";
-            this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.save_Label.BackColor = System.Drawing.Color.Transparent;
+            this.save_Label.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.save_Label.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.save_Label.Location = new System.Drawing.Point(0, 0);
+            this.save_Label.Margin = new System.Windows.Forms.Padding(0);
+            this.save_Label.Name = "save_Label";
+            this.save_Label.Size = new System.Drawing.Size(350, 15);
+            this.save_Label.TabIndex = 62;
+            this.save_Label.Text = "Save settings in order for them to take effect.";
+            this.save_Label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btn_credits
             // 
@@ -1979,7 +2014,7 @@ namespace Nucleus.Coop
             this.btn_credits.FlatAppearance.BorderSize = 0;
             this.btn_credits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_credits.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_credits.Location = new System.Drawing.Point(302, 377);
+            this.btn_credits.Location = new System.Drawing.Point(302, 373);
             this.btn_credits.Margin = new System.Windows.Forms.Padding(2);
             this.btn_credits.Name = "btn_credits";
             this.btn_credits.Size = new System.Drawing.Size(80, 22);
@@ -1996,7 +2031,7 @@ namespace Nucleus.Coop
             this.settingsCloseBtn.FlatAppearance.BorderSize = 0;
             this.settingsCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsCloseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsCloseBtn.Location = new System.Drawing.Point(386, 377);
+            this.settingsCloseBtn.Location = new System.Drawing.Point(386, 373);
             this.settingsCloseBtn.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCloseBtn.Name = "settingsCloseBtn";
             this.settingsCloseBtn.Size = new System.Drawing.Size(80, 22);
@@ -2013,7 +2048,7 @@ namespace Nucleus.Coop
             this.settingsSaveBtn.FlatAppearance.BorderSize = 0;
             this.settingsSaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsSaveBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsSaveBtn.Location = new System.Drawing.Point(218, 377);
+            this.settingsSaveBtn.Location = new System.Drawing.Point(218, 373);
             this.settingsSaveBtn.Margin = new System.Windows.Forms.Padding(2);
             this.settingsSaveBtn.Name = "settingsSaveBtn";
             this.settingsSaveBtn.Size = new System.Drawing.Size(80, 22);
@@ -2022,17 +2057,17 @@ namespace Nucleus.Coop
             this.settingsSaveBtn.UseVisualStyleBackColor = false;
             this.settingsSaveBtn.Click += new System.EventHandler(this.SettingsSaveBtn_Click);
             // 
-            // setting_Label
+            // settingLabel_Container
             // 
-            this.setting_Label.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.settingLabel_Container.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.setting_Label.BackColor = System.Drawing.Color.Transparent;
-            this.setting_Label.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.setting_Label.Controls.Add(this.label33);
-            this.setting_Label.Location = new System.Drawing.Point(165, 361);
-            this.setting_Label.Name = "setting_Label";
-            this.setting_Label.Size = new System.Drawing.Size(350, 15);
-            this.setting_Label.TabIndex = 37;
+            this.settingLabel_Container.BackColor = System.Drawing.Color.Transparent;
+            this.settingLabel_Container.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.settingLabel_Container.Controls.Add(this.save_Label);
+            this.settingLabel_Container.Location = new System.Drawing.Point(165, 351);
+            this.settingLabel_Container.Name = "settingLabel_Container";
+            this.settingLabel_Container.Size = new System.Drawing.Size(350, 15);
+            this.settingLabel_Container.TabIndex = 37;
             // 
             // Settings
             // 
@@ -2040,34 +2075,35 @@ namespace Nucleus.Coop
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Controls.Add(this.setting_Label);
+            this.Controls.Add(this.settingLabel_Container);
             this.Controls.Add(this.settingsSaveBtn);
-            this.Controls.Add(this.tabControl2);
+            this.Controls.Add(this.settingsTab_Group);
             this.Controls.Add(this.settingsCloseBtn);
             this.Controls.Add(this.btn_credits);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Settings";
             this.Size = new System.Drawing.Size(674, 410);
-            this.tabControl2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
-            this.tabPage5.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
+            this.settingsTab_Group.ResumeLayout(false);
+            this.settingsTab.ResumeLayout(false);
+            this.settingsTab.PerformLayout();
+            this.passwordPanel.ResumeLayout(false);
+            this.passwordPanel.PerformLayout();
+            this.hotkeyBox.ResumeLayout(false);
+            this.hotkeyBox.PerformLayout();
+            this.playerTab.ResumeLayout(false);
+            this.playerTab.PerformLayout();
+            this.layoutTab.ResumeLayout(false);
+            this.layoutTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxPlyrs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHorDiv)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).EndInit();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.audioTab.ResumeLayout(false);
+            this.audioTab.PerformLayout();
             this.audioCustomSettingsBox.ResumeLayout(false);
             this.audioCustomSettingsBox.PerformLayout();
-            this.setting_Label.ResumeLayout(false);
+            this.settingLabel_Container.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2077,22 +2113,22 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Button settingsSaveBtn;
         private System.Windows.Forms.Button settingsCloseBtn;
         private System.Windows.Forms.Button btn_credits;
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label save_Label;
+        private System.Windows.Forms.TabPage settingsTab;
+        private System.Windows.Forms.GroupBox hotkeyBox;
         private System.Windows.Forms.ComboBox settingsTopCmb;
         private System.Windows.Forms.ComboBox settingsStopCmb;
         private System.Windows.Forms.TextBox settingsTopTxt;
         private System.Windows.Forms.TextBox settingsStopTxt;
         private System.Windows.Forms.ComboBox settingsCloseCmb;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label plus4;
+        private System.Windows.Forms.Label plus3;
+        private System.Windows.Forms.Label plus2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox settingsCloseHKTxt;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage layoutTab;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.NumericUpDown numMaxPlyrs;
         private System.Windows.Forms.NumericUpDown numVerDiv;
@@ -2100,7 +2136,7 @@ namespace Nucleus.Coop
         private System.Windows.Forms.NumericUpDown numHorDiv;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage playerTab;
         private System.Windows.Forms.ComboBox controllerSixteenNick;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.ComboBox controllerFifteenNick;
@@ -2145,7 +2181,7 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.CheckBox keepAccountsCheck;
         private System.Windows.Forms.TextBox nucUserPassTxt;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage audioTab;
         private System.Windows.Forms.RadioButton audioCustomSettingsRadio;
         private System.Windows.Forms.RadioButton audioDefaultSettingsRadio;
         private System.Windows.Forms.ComboBox AudioInstance1;
@@ -2171,13 +2207,13 @@ namespace Nucleus.Coop
         private System.Windows.Forms.CheckBox ignoreInputLockReminderCheckbox;
         private Panel layoutSizer;
         private Label label38;
-        private Panel setting_Label;
+        private Panel settingLabel_Container;
         private ComboBox cmb_EpicLang;
         private Label label46;
         private CheckBox SplitDiv;
         private Label label49;
         private ComboBox SplitColors;
-        private Label label31;
+        private Label slitWarning_Label;
         private ComboBox comboBox_lockKey;
         private Label label_lockKey;
         private CheckBox clickSoundChkB;
@@ -2186,8 +2222,8 @@ namespace Nucleus.Coop
         private ComboBox themeCbx;
         private Label label32;
         private CheckBox scaleOptionCbx;
-        private Panel panel1;
-        private Label label35;
+        private Panel passwordPanel;
+        private Label password_Label;
         private ComboBox steamid8;
         private ComboBox steamid7;
         private ComboBox steamid6;
@@ -2206,11 +2242,11 @@ namespace Nucleus.Coop
         private ComboBox steamid10;
         private Label label48;
         private ComboBox steamid9;
-        private Label label51;
+        private Label IdExample_Label;
         private ComboBox settingsFocusCmb;
-        private Label label50;
+        private Label plus1;
         private Label label52;
         private TextBox settingsFocusHKTxt;
-        public TabControl tabControl2;
+        public TabControl settingsTab_Group;
     }
 }

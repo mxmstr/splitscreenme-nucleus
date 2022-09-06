@@ -8,7 +8,6 @@ namespace Nucleus.Coop
 {
     static class Program
     {
-
         private  static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         public static bool connected;
         [STAThread]
@@ -45,13 +44,6 @@ namespace Nucleus.Coop
             MainForm form = new MainForm();
             DPIManager.AddForm(form);
             DPIManager.ForceUpdate();
-            Settings sform = new Settings();
-           // DPIManager.AddForm(sform);
-            DPIManager.ForceUpdate();
-            SearchDisksForm sdf = new SearchDisksForm(form);
-            DPIManager.AddForm(sdf);
-            DPIManager.ForceUpdate();
-
             Application.Run(form);
         }
     }

@@ -178,7 +178,7 @@
       <DependentUpon>ScriptDownloader.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchDisksForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\SearchDisksForm.Designer.cs">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
@@ -270,6 +270,7 @@
     <None Include="gui\icons\icons.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="gui\theme\classic\theme.ini" />
     <None Include="gui\theme\default\theme.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -472,6 +473,88 @@
     <Content Include="gui\icons\default.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\classic\16players.png" />
+    <Content Include="gui\theme\classic\2horizontal.png" />
+    <Content Include="gui\theme\classic\2vertical.png" />
+    <Content Include="gui\theme\classic\4players.png" />
+    <Content Include="gui\theme\classic\6players.png" />
+    <Content Include="gui\theme\classic\8players.png" />
+    <Content Include="gui\theme\classic\arrow_left.png" />
+    <Content Include="gui\theme\classic\arrow_left_mousehover.png" />
+    <Content Include="gui\theme\classic\arrow_right.png" />
+    <Content Include="gui\theme\classic\arrow_right_mousehover.png" />
+    <Content Include="gui\theme\classic\background.jpg" />
+    <Content Include="gui\theme\classic\button.png" />
+    <Content Include="gui\theme\classic\button_click.wav" />
+    <Content Include="gui\theme\classic\cover_layer.png" />
+    <Content Include="gui\theme\classic\cursor.ico" />
+    <Content Include="gui\theme\classic\cursor_hand.ico" />
+    <Content Include="gui\theme\classic\customLayout.png" />
+    <Content Include="gui\theme\classic\dinput.png" />
+    <Content Include="gui\theme\classic\dinput_icon.png" />
+    <Content Include="gui\theme\classic\discord.png" />
+    <Content Include="gui\theme\classic\discord_mousehover.png" />
+    <Content Include="gui\theme\classic\download_bar.gif" />
+    <Content Include="gui\theme\classic\dragging_indicator.png" />
+    <Content Include="gui\theme\classic\faq.png" />
+    <Content Include="gui\theme\classic\faq_mousehover.png" />
+    <Content Include="gui\theme\classic\favorite_selected.png" />
+    <Content Include="gui\theme\classic\favorite_unselected.png" />
+    <Content Include="gui\theme\classic\fullscreen.png" />
+    <Content Include="gui\theme\classic\game_list.png" />
+    <Content Include="gui\theme\classic\game_options.png" />
+    <Content Include="gui\theme\classic\handlernote_background.png" />
+    <Content Include="gui\theme\classic\instruction_closed.png" />
+    <Content Include="gui\theme\classic\instruction_opened .png" />
+    <Content Include="gui\theme\classic\instruction_opened.png" />
+    <Content Include="gui\theme\classic\intro.wav" />
+    <Content Include="gui\theme\classic\keyboard.png" />
+    <Content Include="gui\theme\classic\keyboard_icon.png" />
+    <Content Include="gui\theme\classic\lightbar_top.gif" />
+    <Content Include="gui\theme\classic\logo.png" />
+    <Content Include="gui\theme\classic\magnifier.png" />
+    <Content Include="gui\theme\classic\magnifier_close.png" />
+    <Content Include="gui\theme\classic\main_buttons_frame.png" />
+    <Content Include="gui\theme\classic\no_cover.png" />
+    <Content Include="gui\theme\classic\other_backgrounds.jpg" />
+    <Content Include="gui\theme\classic\players.png" />
+    <Content Include="gui\theme\classic\player_screen.png" />
+    <Content Include="gui\theme\classic\player_settings.png" />
+    <Content Include="gui\theme\classic\proto_keyboard.png" />
+    <Content Include="gui\theme\classic\proto_mouse.png" />
+    <Content Include="gui\theme\classic\reddit.png" />
+    <Content Include="gui\theme\classic\reddit_mousehover.png" />
+    <Content Include="gui\theme\classic\right_panel.png" />
+    <Content Include="gui\theme\classic\screen.png" />
+    <Content Include="gui\theme\classic\setup_screen.png" />
+    <Content Include="gui\theme\classic\showcase-background.png" />
+    <Content Include="gui\theme\classic\showcase-labels.png" />
+    <Content Include="gui\theme\classic\showcase_cover_layer.png" />
+    <Content Include="gui\theme\classic\showcase_title-back.png" />
+    <Content Include="gui\theme\classic\splash.gif" />
+    <Content Include="gui\theme\classic\splitcalculator.png" />
+    <Content Include="gui\theme\classic\splitcalculator_mousehover.png" />
+    <Content Include="gui\theme\classic\text_switcher.png" />
+    <Content Include="gui\theme\classic\thirdpartytools.png" />
+    <Content Include="gui\theme\classic\thirdpartytools_mousehover.png" />
+    <Content Include="gui\theme\classic\title_close.png" />
+    <Content Include="gui\theme\classic\title_close_mousehover.png" />
+    <Content Include="gui\theme\classic\title_download_assets.png" />
+    <Content Include="gui\theme\classic\title_download_assets_mousehover.png" />
+    <Content Include="gui\theme\classic\title_dropdown_closed.png" />
+    <Content Include="gui\theme\classic\title_dropdown_opened.png" />
+    <Content Include="gui\theme\classic\title_logo.png" />
+    <Content Include="gui\theme\classic\title_maximize.png" />
+    <Content Include="gui\theme\classic\title_maximize_mousehover.png" />
+    <Content Include="gui\theme\classic\title_minimize.png" />
+    <Content Include="gui\theme\classic\title_minimize_mousehover.png" />
+    <Content Include="gui\theme\classic\title_no_hub.png" />
+    <Content Include="gui\theme\classic\title_settings.png" />
+    <Content Include="gui\theme\classic\title_settings_mousehover.png" />
+    <Content Include="gui\theme\classic\virtual_keyboard.png" />
+    <Content Include="gui\theme\classic\virtual_mouse.png" />
+    <Content Include="gui\theme\classic\xinput.png" />
+    <Content Include="gui\theme\classic\xinput_icon.png" />
     <Content Include="gui\theme\default\16players.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

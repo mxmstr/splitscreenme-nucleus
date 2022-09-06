@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 
 namespace Nucleus.Coop
 {
-    public partial class SearchDisksForm : BaseForm, IDynamicSized
+    public partial class SearchDisksForm : UserControl, IDynamicSized
     {
         public struct SearchDriveInfo
         {
@@ -79,7 +79,9 @@ namespace Nucleus.Coop
 
         private void closeButton(object sender, EventArgs e)
 		{
-            closing = true;
+            txt_Stage.Visible = false;
+            progressBar1.Visible = false;
+            txt_Path.Visible = false;
             this.Visible = false;
 		}
 
@@ -94,6 +96,7 @@ namespace Nucleus.Coop
             default_Cursor = main.default_Cursor;
             Cursor.Current = default_Cursor;
             hand_Cursor = main.hand_Cursor;
+            Location = new Point(main.Location.X + main.Width / 2 - Width / 2, main.Location.Y + main.Height / 2 - Height / 2);
 
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             fontSize = float.Parse(main.theme.IniReadValue("Font", "AutoSearchFontSize"));
@@ -168,28 +171,21 @@ namespace Nucleus.Coop
 
             closeBtn.Cursor = hand_Cursor;
 
-
             for (int x = 1; x <= 100; x++)
             {
-                if (ini.IniReadValue("SearchPaths", x.ToString()) == "")
+                if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
                 {
                     break;
                 }
                 else
                 {
-                    disksBox.Items.Add(ini.IniReadValue("SearchPaths", x.ToString()), true);                  
+                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);                  
                 }
             }
 
-            Location = new Point(main.Location.X + main.Width / 2 - Width / 2, main.Location.Y + main.Height / 2 - Height / 2);
+           
             DPIManager.Register(this);
-            DPIManager.AddForm(this);
             DPIManager.Update(this);
-        }
-
-        ~SearchDisksForm()
-        {
-           // DPIManager.Unregister(this);
         }
 
         public void UpdateSize(float scale)
@@ -209,7 +205,7 @@ namespace Nucleus.Coop
                 BindingFlags.NonPublic | BindingFlags.Instance
                 );
 
-                var addedHeight = 26;
+                var addedHeight = 10*(int)scale;
 
                 heightField.SetValue(disksBox, addedHeight);
                 heightField.SetValue(checkboxFoundGames, addedHeight);
@@ -259,13 +255,6 @@ namespace Nucleus.Coop
             base.WndProc(ref m);
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-            DPIManager.Unregister(this);
-            closed = true;
-        }
-
         private bool IsElevated => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -286,7 +275,9 @@ namespace Nucleus.Coop
             {
                 return;
             }
-
+            txt_Stage.Visible = true;
+            progressBar1.Visible = true;
+            txt_Path.Visible = true;
             btnSearch.Text = "Cancel";
             btn_customPath.Enabled = false;
             btn_delPath.Enabled = false;
@@ -413,6 +404,9 @@ namespace Nucleus.Coop
             label1.Enabled = true;
             txt_Stage.Text = "Cancelled";
             txt_Path.Text = "";
+            txt_Stage.Visible = false;
+            progressBar1.Visible = false;
+            txt_Path.Visible = false;
         }
 
         private void SearchDrive(object state)
@@ -558,13 +552,13 @@ namespace Nucleus.Coop
                     int freeIndex = 1;
                     for (int x = 1; x <= 100; x++)
                     {
-                        if (ini.IniReadValue("SearchPaths", x.ToString()) == "")
+                        if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
                         {
                             freeIndex = x;
                             break;
                         }
                     }
-                    ini.IniWriteValue("SearchPaths", freeIndex.ToString(), fbd.SelectedPath);
+                    main.ini.IniWriteValue("SearchPaths", freeIndex.ToString(), fbd.SelectedPath);
                 }
             }
         }
@@ -638,9 +632,9 @@ namespace Nucleus.Coop
                     disksBox.Items.Remove(item);
                     for (int x = 1; x <= 100; x++)
                     {
-                        if (ini.IniReadValue("SearchPaths", x.ToString()) == item)
+                        if (main.ini.IniReadValue("SearchPaths", x.ToString()) == item)
                         {
-                            ini.IniWriteValue("SearchPaths", x.ToString(), "");
+                            main.ini.IniWriteValue("SearchPaths", x.ToString(), "");
                             break;
                         }
                     }
