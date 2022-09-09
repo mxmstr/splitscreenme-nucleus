@@ -24,6 +24,7 @@ using System.Linq;
 using Microsoft.Win32;
 using System.Drawing.Text;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 
 namespace Nucleus.Coop
 {
@@ -89,7 +90,7 @@ namespace Nucleus.Coop
         private Bitmap dinputGamepad_Icon;
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
-
+        private Image cloneBitmap;
         public bool connected;
         private bool currentlyUpdatingScript = false;
         private bool Splash_On;
@@ -788,7 +789,7 @@ namespace Nucleus.Coop
             {
                 if (!DisableOfflineIcon) { btn_noHub.Visible = true; }
                 btn_downloadAssets.Enabled = false;
-                btn_Download.Enabled = false;
+                btn_Download.Enabled = false;               
             }
 
         }
@@ -821,6 +822,7 @@ namespace Nucleus.Coop
 
             if (refresh)
             {
+                gameManager.ReorderUserProfile();
                 RefreshGames();
             }
         }
@@ -1270,6 +1272,7 @@ namespace Nucleus.Coop
                     getAssets = new AssetsScraper();
                     UserGameInfo game = games[i];
                     this.BeginInvoke(new CheckForAssets(DelegateCheckForAssets), dllabel, true, "Checking Cover for : " + game.GameGuid);
+                    dllabel.ForeColor = Color.Green;
                     try
                     {
                         hubHandler = scriptDownloader.GetHandler(game.Game.GetHandlerId());
@@ -1283,6 +1286,7 @@ namespace Nucleus.Coop
                             {
                                 if (!File.Exists(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + game.GameGuid + ".txt")))
                                 {
+                                    this.BeginInvoke(new CheckForAssets(DelegateCheckForAssets), dllabel, true, "Checking description: " + game.GameGuid);
                                     using (FileStream stream = new FileStream(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + game.GameGuid + ".txt"), FileMode.Create))
                                     {
                                         using (StreamWriter writer = new StreamWriter(stream))
@@ -1290,9 +1294,9 @@ namespace Nucleus.Coop
                                             string json = JsonConvert.SerializeObject(hubHandler.GameDescription);
                                             writer.Write(json);
                                             stream.Flush();
-                                            stream.Dispose();
                                             writer.Dispose();
                                         }
+                                        stream.Dispose();                                     
                                     }
                                 }
 
@@ -1334,10 +1338,21 @@ namespace Nucleus.Coop
             });
         }
 
-        private Image ApplyBlur(Image screenshot)
+        private Bitmap ApplyBlur(Bitmap screenshot)
         {
             var blur = new GaussianBlur(screenshot as Bitmap);
-            var result = blur.Process(blurValue);
+           
+            Bitmap result = blur.Process(blurValue);
+           
+            if (screenshot == null)
+            {
+                return defBackground;
+            }
+            if (screenshotImg != null)
+            {
+                screenshotImg.Dispose();
+            }
+            blur = null;
             return result;
         }
 
@@ -1357,9 +1372,6 @@ namespace Nucleus.Coop
             else
             {
                 cover.BackgroundImage = new Bitmap(themePath + "\\no_cover.png");
-                clientAreaPanel.SuspendLayout();
-                clientAreaPanel.BackgroundImage = defBackground;
-                clientAreaPanel.ResumeLayout();
                 cover.Visible = true;
                 coverFrame.Visible = true;
             }
@@ -1370,7 +1382,7 @@ namespace Nucleus.Coop
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + name + "\\" + RandomIndex + "_" + name + ".jpeg"));   //name(1) => directory name ; name(2) = partial image name 
+                screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + name + "\\" + RandomIndex + "_" + name + ".jpeg"));//name(1) => directory name ; name(2) = partial image name 
                 clientAreaPanel.SuspendLayout();
                 clientAreaPanel.BackgroundImage = ApplyBlur(screenshotImg);
                 clientAreaPanel.ResumeLayout();
@@ -1523,6 +1535,14 @@ namespace Nucleus.Coop
                     icons_Container.Controls.Add(icon6);
                 }
             }
+
+
+            //Rectangle cloneRect = new Rectangle(StepPanel.Location.X, StepPanel.Location.Y, StepPanel.Width, StepPanel.Height);
+            //Bitmap bmpToClone = new Bitmap(clientAreaPanel.BackgroundImage);
+            //cloneBitmap = bmpToClone.Clone(cloneRect, bmpToClone.PixelFormat);
+            //StepPanel.BackgroundImage = cloneBitmap;
+            //bmpToClone.Dispose();       
+            //cloneBitmap.Save(Path.Combine(Application.StartupPath, $@"clone.jpeg"), ImageFormat.Jpeg);
 
             icons_Container.Visible = true;
 
@@ -1867,8 +1887,6 @@ namespace Nucleus.Coop
                 return;
             }
 
-           
-
             rightFrame.Visible = false;
             StepPanel.Visible = false;           
             clientAreaPanel.BackgroundImage = defBackground;
@@ -1983,8 +2001,12 @@ namespace Nucleus.Coop
             {
                stepPanelPictureBox.Focus();
             }
-            
-            WindowState = FormWindowState.Minimized;
+
+            if(!currentGame.ToggleUnfocusOnInputsLock)
+            {
+                WindowState = FormWindowState.Minimized;
+            }
+         
         }
 
         private void slideshowTick(Object myObject, EventArgs myEventArgs)

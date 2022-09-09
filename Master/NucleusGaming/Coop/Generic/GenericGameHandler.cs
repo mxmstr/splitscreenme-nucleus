@@ -1415,29 +1415,20 @@ namespace Nucleus.Gaming
                 profile.PlayerData.Add(firstInGroup);
             }
 
-            var reorderPlayers = profile.PlayerData.OrderBy(c => c.Owner.display.Y).ThenBy(c => c.Owner.display.X).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X);//MonitorBounds nothing else?
-            List<PlayerInfo> reorderedPlyrs = new List<PlayerInfo>();
+            List<PlayerInfo> players = profile.PlayerData.OrderBy(c => c.screenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();
 
-            foreach (var player in reorderPlayers)
-            {              
-                reorderedPlyrs.Add(player);
-            }
-
-            if (ini.IniReadValue("CustomLayout", "SplitDiv") == "True" && gen.SplitDivCompatibility == true && reorderedPlyrs.Count != 1)
+            if (ini.IniReadValue("CustomLayout", "SplitDiv") == "True" && gen.SplitDivCompatibility == true && players.Count != 1)
             {
                 Log("Setup splitscreen division");
-                for (int i = 0; i < reorderedPlyrs.Count; i++)
+                for (int i = 0; i < players.Count; i++)
                 {
-                    //int SplitDivThickness = Convert.ToInt32(ini.IniReadValue("CustomLayout", "SplitDivThickness"));
-                    var player = reorderedPlyrs[i];
+                    var player = players[i];
                     Point XY = new Point(player.MonitorBounds.X + 1, player.MonitorBounds.Y + 1);
                     Size WH = new Size(player.MonitorBounds.Width - 2, player.MonitorBounds.Height - 2);
                     Rectangle bounds = new Rectangle(XY, WH);
                     player.MonitorBounds = bounds;
                 }
             }
-
-            List<PlayerInfo> players = reorderedPlyrs;
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -1448,9 +1439,8 @@ namespace Nucleus.Gaming
                 {
                     //if (players[i].ScreenIndex != (dp.DisplayIndex - 1) && !screensInUse.Contains(dp))
                     //{
-                        //A voir pour split div  //dp.Bounds.Bottom/Top etc.
-                        screensInUse.Add(dp);
-                   // }
+                    screensInUse.Add(dp);
+                    // }
                 }
             }
          
@@ -5402,7 +5392,15 @@ namespace Nucleus.Gaming
              {
                  Form info = new Form();
                  info.Size = new Size(1000, 90);
-                 info.StartPosition = FormStartPosition.CenterScreen;
+                 info.StartPosition = FormStartPosition.Manual;
+                 foreach (Screen screen in Screen.AllScreens)
+                 {
+                     if((screen.WorkingArea.X + screen.WorkingArea.Y) == player.screenPriority)
+                     {                         
+                         info.Location = new Point((screen.WorkingArea.X + (screen.WorkingArea.Width/2)) - (info.Size.Width / 2), (screen.WorkingArea.Y + (screen.WorkingArea.Height / 2)) - (info.Size.Height / 2));
+                     }
+                 }
+
                  info.FormBorderStyle = FormBorderStyle.None;
                  info.ShowInTaskbar = false;
                  info.TopMost = true;
