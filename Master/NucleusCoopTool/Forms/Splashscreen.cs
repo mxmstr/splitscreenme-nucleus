@@ -30,12 +30,14 @@ namespace Nucleus.Coop.Forms
         private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         private SoundPlayer splayer;
         private string themePath;
+
         public void SoundPlayer(string filePath)
         {
             splayer = new SoundPlayer(filePath);
             splayer.Play();
             splayer.Dispose();
         }
+
         public Splashscreen()
         {
             string ChoosenTheme = ini.IniReadValue("Theme", "Theme");

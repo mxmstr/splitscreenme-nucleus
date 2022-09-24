@@ -21,7 +21,7 @@ namespace Nucleus.Coop
                     return;
             }
 
-            if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=true" under [Dev] in Settings.ini to disable admin rights & unsafe path checks.
+            if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
             {
                 if (!StartChecks.StartCheck(true))
                     forcedBadPath = true;

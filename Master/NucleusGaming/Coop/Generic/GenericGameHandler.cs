@@ -1325,40 +1325,7 @@ namespace Nucleus.Gaming
 
         public string Play()
         {
-            //WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            //WindowsPrincipal principal = new WindowsPrincipal(identity);
 
-            //if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
-            //{
-            //    MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //}
-
-            //if ((gen.RequiresAdmin || gen.LaunchAsDifferentUsersAlt || gen.LaunchAsDifferentUsers || gen.ChangeIPPerInstanceAlt) && !principal.IsInRole(WindowsBuiltInRole.Administrator) || ((gen.RequiresAdmin || gen.LaunchAsDifferentUsersAlt || gen.LaunchAsDifferentUsers || gen.ChangeIPPerInstanceAlt) && (gen.forcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))))
-            //{
-            //    earlyExit = true;
-            //    string message = string.Empty;
-
-            //    if (gen.forcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))
-            //    {
-            //        message = "This game handler do not supports the current Nucleus Co-op installation path.\n\n" +
-            //              "Do NOT install in any of these folders:\n" +
-            //              "- A folder containing any game files\n" +
-            //              "- C:\\Program Files or C:\\Program Files (x86)\n" +
-            //              "- C:\\Users (including Documents, Desktop, or Downloads)\n" +
-            //              "- Any folder with security settings like C:\\Windows\n" +
-            //              "\n" +
-            //              "A good place is C:\\Nucleus\\NucleusCoop.exe";
-            //    }
-            //    else
-            //    {
-            //        message = "This handler requires you to run Nucleus as administrator.";
-            //    }
-
-            //    MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    Application.Exit();
-            //}
-
-            //bool gameIs64 = false;
             garch = "x86";
             if (Is64Bit(userGame.ExePath) == true)
             {
