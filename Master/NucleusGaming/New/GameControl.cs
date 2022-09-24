@@ -229,7 +229,7 @@ namespace Nucleus.Coop
                 favoriteBox.Image = favorite_Selected;
                 UserGameInfo.Favorite = true;
             }
-
+           
             GameManager.Instance.SaveUserProfile();
         }
 
