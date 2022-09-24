@@ -556,6 +556,7 @@ namespace Nucleus.Coop
                 
                 nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
             }
 
 
@@ -567,7 +568,7 @@ namespace Nucleus.Coop
             password_Label.Location = new Point((passwordPanel.Width / 2) - (password_Label.Width / 2), password_Label.Location.Y);
             label38.Location = new Point((hotkeyBox.Width / 2) - (label38.Width / 2), label38.Location.Y);
             //default_sid_list_label.Location = new Point(0, (def_sid_textBox_container.Height / 2) - default_sid_list_label.Height / 2);
-            def_sid_comboBox.Location = new Point(default_sid_list_label.Right, (default_sid_list_label.Location.Y + default_sid_list_label.Height/2 ) - def_sid_comboBox.Height/2);
+            
             ResumeLayout();
         }
 

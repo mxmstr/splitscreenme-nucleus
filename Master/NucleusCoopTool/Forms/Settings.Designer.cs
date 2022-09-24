@@ -916,11 +916,10 @@ namespace Nucleus.Coop
             // 
             // default_sid_list_label
             // 
-            this.default_sid_list_label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.default_sid_list_label.AutoSize = true;
+            this.default_sid_list_label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.default_sid_list_label.Location = new System.Drawing.Point(2, 4);
-            this.default_sid_list_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.default_sid_list_label.Margin = new System.Windows.Forms.Padding(0);
             this.default_sid_list_label.Name = "default_sid_list_label";
             this.default_sid_list_label.Size = new System.Drawing.Size(99, 13);
             this.default_sid_list_label.TabIndex = 131;
@@ -954,9 +953,9 @@ namespace Nucleus.Coop
             "Player 14: 76561199023125451",
             "Player 15: 76561199023125452",
             "Player 16: 76561199023125453"});
-            this.def_sid_comboBox.Location = new System.Drawing.Point(108, 0);
-            this.def_sid_comboBox.Margin = new System.Windows.Forms.Padding(2);
-            this.def_sid_comboBox.MaxLength = 17;
+            this.def_sid_comboBox.Location = new System.Drawing.Point(108, 1);
+            this.def_sid_comboBox.Margin = new System.Windows.Forms.Padding(0);
+            this.def_sid_comboBox.MaxLength = 30;
             this.def_sid_comboBox.Name = "def_sid_comboBox";
             this.def_sid_comboBox.Size = new System.Drawing.Size(175, 21);
             this.def_sid_comboBox.TabIndex = 135;
@@ -2159,6 +2158,7 @@ namespace Nucleus.Coop
             this.playerTab.ResumeLayout(false);
             this.playerTab.PerformLayout();
             this.def_sid_textBox_container.ResumeLayout(false);
+            this.def_sid_textBox_container.PerformLayout();
             this.layoutTab.ResumeLayout(false);
             this.layoutTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).EndInit();
