@@ -182,12 +182,12 @@ namespace Nucleus.Coop
             });
         }
 
-        public static bool StartCheck()
-        {
-            return CheckInstallFolder();
+        public static bool StartCheck(bool warningMessage)
+        { 
+            return CheckInstallFolder(warningMessage);
         }
 
-        private static bool CheckInstallFolder()
+        private static bool CheckInstallFolder(bool warningMessage)
         {
             string exePath = System.Reflection.Assembly.GetExecutingAssembly().Location.ToLower();
 
@@ -207,9 +207,15 @@ namespace Nucleus.Coop
                                 "- Any folder with security settings like C:\\Windows\n" +
                                 "\n" +
                                 "A good place is C:\\Nucleus\\NucleusCoop.exe";
-
-                return MessageBox.Show(message, "Warning", MessageBoxButtons.OKCancel) == DialogResult.OK;
-
+                if (warningMessage)
+                {
+                    MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false; 
+                }
+                else
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -247,7 +253,6 @@ namespace Nucleus.Coop
             bool connected;
             try
             {
-
                 Ping myPing = new Ping();
                 String host = "hub.splitscreen.me";
                 byte[] buffer = new byte[32];

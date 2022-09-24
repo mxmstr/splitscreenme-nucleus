@@ -113,7 +113,7 @@ namespace Nucleus.Gaming
         public int NumControllers = 0;
         public int NumKeyboards = 0;
         public bool KeepEditedRegKeys;
-        
+
         private List<string> regKeyPaths = new List<string>();
 
         public string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -337,6 +337,15 @@ namespace Nucleus.Gaming
                     }
                 }
                 return epicLang;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+               Environment.UserName.Trim('\\').Last();
+               return Environment.UserName.Trim();
             }
         }
 
@@ -2018,6 +2027,12 @@ namespace Nucleus.Gaming
             {
                 p.Kill();
             }
+        }
+
+        public void Wait(int wait)
+        {
+            Log(string.Format("Pausing for "+ (double)wait/(double)1000 +" seconds"));
+            Thread.Sleep(wait);
         }
 
         public void KillProcessesMatchingProcessName(string name)

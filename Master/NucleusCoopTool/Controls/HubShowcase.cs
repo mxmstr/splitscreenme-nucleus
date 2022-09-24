@@ -206,7 +206,7 @@ namespace Nucleus.Coop
 
         private void coverBoxClick(object sender, EventArgs e)
         {
-            Panel _sender = sender as Panel;
+            Panel _sender = (Panel)sender;
             string link = _sender.Name;
             Process.Start(link);
         }

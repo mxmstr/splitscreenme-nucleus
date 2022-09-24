@@ -90,6 +90,9 @@ namespace Nucleus.Coop
             this.label1 = new System.Windows.Forms.Label();
             this.settingsCloseHKTxt = new System.Windows.Forms.TextBox();
             this.playerTab = new System.Windows.Forms.TabPage();
+            this.def_sid_textBox_container = new System.Windows.Forms.Panel();
+            this.default_sid_list_label = new System.Windows.Forms.Label();
+            this.def_sid_comboBox = new System.Windows.Forms.ComboBox();
             this.IdExample_Label = new System.Windows.Forms.Label();
             this.steamid16 = new System.Windows.Forms.ComboBox();
             this.steamid15 = new System.Windows.Forms.ComboBox();
@@ -191,6 +194,7 @@ namespace Nucleus.Coop
             this.passwordPanel.SuspendLayout();
             this.hotkeyBox.SuspendLayout();
             this.playerTab.SuspendLayout();
+            this.def_sid_textBox_container.SuspendLayout();
             this.layoutTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxPlyrs)).BeginInit();
@@ -257,9 +261,9 @@ namespace Nucleus.Coop
             this.passwordPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.passwordPanel.Controls.Add(this.password_Label);
             this.passwordPanel.Controls.Add(this.nucUserPassTxt);
-            this.passwordPanel.Location = new System.Drawing.Point(376, 81);
+            this.passwordPanel.Location = new System.Drawing.Point(376, 77);
             this.passwordPanel.Name = "passwordPanel";
-            this.passwordPanel.Size = new System.Drawing.Size(238, 36);
+            this.passwordPanel.Size = new System.Drawing.Size(238, 40);
             this.passwordPanel.TabIndex = 85;
             // 
             // password_Label
@@ -279,7 +283,7 @@ namespace Nucleus.Coop
             // nucUserPassTxt
             // 
             this.nucUserPassTxt.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.nucUserPassTxt.Location = new System.Drawing.Point(0, 14);
+            this.nucUserPassTxt.Location = new System.Drawing.Point(0, 18);
             this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
             this.nucUserPassTxt.MaxLength = 127;
             this.nucUserPassTxt.Name = "nucUserPassTxt";
@@ -605,12 +609,11 @@ namespace Nucleus.Coop
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label38.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label38.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label38.Location = new System.Drawing.Point(3, 10);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(59, 17);
+            this.label38.Size = new System.Drawing.Size(57, 15);
             this.label38.TabIndex = 28;
             this.label38.Text = "Hotkeys ";
             this.label38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -835,6 +838,7 @@ namespace Nucleus.Coop
             // 
             this.playerTab.BackColor = System.Drawing.Color.Transparent;
             this.playerTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.playerTab.Controls.Add(this.def_sid_textBox_container);
             this.playerTab.Controls.Add(this.IdExample_Label);
             this.playerTab.Controls.Add(this.steamid16);
             this.playerTab.Controls.Add(this.steamid15);
@@ -898,6 +902,65 @@ namespace Nucleus.Coop
             this.playerTab.TabIndex = 2;
             this.playerTab.Text = "Players";
             // 
+            // def_sid_textBox_container
+            // 
+            this.def_sid_textBox_container.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.def_sid_textBox_container.Controls.Add(this.default_sid_list_label);
+            this.def_sid_textBox_container.Controls.Add(this.def_sid_comboBox);
+            this.def_sid_textBox_container.Location = new System.Drawing.Point(190, 252);
+            this.def_sid_textBox_container.Name = "def_sid_textBox_container";
+            this.def_sid_textBox_container.Size = new System.Drawing.Size(283, 21);
+            this.def_sid_textBox_container.TabIndex = 134;
+            // 
+            // default_sid_list_label
+            // 
+            this.default_sid_list_label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.default_sid_list_label.Location = new System.Drawing.Point(2, 4);
+            this.default_sid_list_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.default_sid_list_label.Name = "default_sid_list_label";
+            this.default_sid_list_label.Size = new System.Drawing.Size(99, 13);
+            this.default_sid_list_label.TabIndex = 131;
+            this.default_sid_list_label.Text = "Default Steam IDs :";
+            this.default_sid_list_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // def_sid_comboBox
+            // 
+            this.def_sid_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.def_sid_comboBox.BackColor = System.Drawing.Color.Black;
+            this.def_sid_comboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.def_sid_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.def_sid_comboBox.ForeColor = System.Drawing.Color.White;
+            this.def_sid_comboBox.ItemHeight = 13;
+            this.def_sid_comboBox.Items.AddRange(new object[] {
+            "Player 1 : 76561199023125438",
+            "Player 2 : 76561199023125439",
+            "Player 3 : 76561199023125440",
+            "Player 4 : 76561199023125441",
+            "Player 5 : 76561199023125442",
+            "Player 6 : 76561199023125443",
+            "Player 7 : 76561199023125444",
+            "Player 8 : 76561199023125445",
+            "Player 9 : 76561199023125446",
+            "Player 10: 76561199023125447",
+            "Player 11: 76561199023125448",
+            "Player 12: 76561199023125449",
+            "Player 13: 76561199023125450",
+            "Player 14: 76561199023125451",
+            "Player 15: 76561199023125452",
+            "Player 16: 76561199023125453"});
+            this.def_sid_comboBox.Location = new System.Drawing.Point(108, 0);
+            this.def_sid_comboBox.Margin = new System.Windows.Forms.Padding(2);
+            this.def_sid_comboBox.MaxLength = 17;
+            this.def_sid_comboBox.Name = "def_sid_comboBox";
+            this.def_sid_comboBox.Size = new System.Drawing.Size(175, 21);
+            this.def_sid_comboBox.TabIndex = 135;
+            // 
             // IdExample_Label
             // 
             this.IdExample_Label.AutoSize = true;
@@ -907,6 +970,7 @@ namespace Nucleus.Coop
             this.IdExample_Label.Size = new System.Drawing.Size(223, 13);
             this.IdExample_Label.TabIndex = 129;
             this.IdExample_Label.Text = "Player Steam ID format: 76561199075562883";
+            this.IdExample_Label.Visible = false;
             // 
             // steamid16
             // 
@@ -916,7 +980,7 @@ namespace Nucleus.Coop
             this.steamid16.Margin = new System.Windows.Forms.Padding(2);
             this.steamid16.MaxLength = 17;
             this.steamid16.Name = "steamid16";
-            this.steamid16.Size = new System.Drawing.Size(113, 21);
+            this.steamid16.Size = new System.Drawing.Size(133, 21);
             this.steamid16.TabIndex = 127;
             // 
             // steamid15
@@ -927,7 +991,7 @@ namespace Nucleus.Coop
             this.steamid15.Margin = new System.Windows.Forms.Padding(2);
             this.steamid15.MaxLength = 17;
             this.steamid15.Name = "steamid15";
-            this.steamid15.Size = new System.Drawing.Size(113, 21);
+            this.steamid15.Size = new System.Drawing.Size(133, 21);
             this.steamid15.TabIndex = 126;
             // 
             // steamid14
@@ -938,7 +1002,7 @@ namespace Nucleus.Coop
             this.steamid14.Margin = new System.Windows.Forms.Padding(2);
             this.steamid14.MaxLength = 17;
             this.steamid14.Name = "steamid14";
-            this.steamid14.Size = new System.Drawing.Size(113, 21);
+            this.steamid14.Size = new System.Drawing.Size(133, 21);
             this.steamid14.TabIndex = 125;
             // 
             // steamid13
@@ -949,7 +1013,7 @@ namespace Nucleus.Coop
             this.steamid13.Margin = new System.Windows.Forms.Padding(2);
             this.steamid13.MaxLength = 17;
             this.steamid13.Name = "steamid13";
-            this.steamid13.Size = new System.Drawing.Size(113, 21);
+            this.steamid13.Size = new System.Drawing.Size(133, 21);
             this.steamid13.TabIndex = 124;
             // 
             // steamid12
@@ -960,7 +1024,7 @@ namespace Nucleus.Coop
             this.steamid12.Margin = new System.Windows.Forms.Padding(2);
             this.steamid12.MaxLength = 17;
             this.steamid12.Name = "steamid12";
-            this.steamid12.Size = new System.Drawing.Size(113, 21);
+            this.steamid12.Size = new System.Drawing.Size(133, 21);
             this.steamid12.TabIndex = 123;
             // 
             // steamid11
@@ -971,7 +1035,7 @@ namespace Nucleus.Coop
             this.steamid11.Margin = new System.Windows.Forms.Padding(2);
             this.steamid11.MaxLength = 17;
             this.steamid11.Name = "steamid11";
-            this.steamid11.Size = new System.Drawing.Size(113, 21);
+            this.steamid11.Size = new System.Drawing.Size(133, 21);
             this.steamid11.TabIndex = 122;
             // 
             // steamid10
@@ -982,7 +1046,7 @@ namespace Nucleus.Coop
             this.steamid10.Margin = new System.Windows.Forms.Padding(2);
             this.steamid10.MaxLength = 17;
             this.steamid10.Name = "steamid10";
-            this.steamid10.Size = new System.Drawing.Size(113, 21);
+            this.steamid10.Size = new System.Drawing.Size(133, 21);
             this.steamid10.TabIndex = 121;
             // 
             // label48
@@ -1003,7 +1067,7 @@ namespace Nucleus.Coop
             this.steamid9.Margin = new System.Windows.Forms.Padding(2);
             this.steamid9.MaxLength = 17;
             this.steamid9.Name = "steamid9";
-            this.steamid9.Size = new System.Drawing.Size(113, 21);
+            this.steamid9.Size = new System.Drawing.Size(133, 21);
             this.steamid9.TabIndex = 120;
             // 
             // steamid8
@@ -1014,7 +1078,7 @@ namespace Nucleus.Coop
             this.steamid8.Margin = new System.Windows.Forms.Padding(2);
             this.steamid8.MaxLength = 17;
             this.steamid8.Name = "steamid8";
-            this.steamid8.Size = new System.Drawing.Size(113, 21);
+            this.steamid8.Size = new System.Drawing.Size(133, 21);
             this.steamid8.TabIndex = 118;
             // 
             // steamid7
@@ -1025,7 +1089,7 @@ namespace Nucleus.Coop
             this.steamid7.Margin = new System.Windows.Forms.Padding(2);
             this.steamid7.MaxLength = 17;
             this.steamid7.Name = "steamid7";
-            this.steamid7.Size = new System.Drawing.Size(113, 21);
+            this.steamid7.Size = new System.Drawing.Size(133, 21);
             this.steamid7.TabIndex = 117;
             // 
             // steamid6
@@ -1036,7 +1100,7 @@ namespace Nucleus.Coop
             this.steamid6.Margin = new System.Windows.Forms.Padding(2);
             this.steamid6.MaxLength = 17;
             this.steamid6.Name = "steamid6";
-            this.steamid6.Size = new System.Drawing.Size(113, 21);
+            this.steamid6.Size = new System.Drawing.Size(133, 21);
             this.steamid6.TabIndex = 116;
             // 
             // steamid5
@@ -1047,7 +1111,7 @@ namespace Nucleus.Coop
             this.steamid5.Margin = new System.Windows.Forms.Padding(2);
             this.steamid5.MaxLength = 17;
             this.steamid5.Name = "steamid5";
-            this.steamid5.Size = new System.Drawing.Size(113, 21);
+            this.steamid5.Size = new System.Drawing.Size(133, 21);
             this.steamid5.TabIndex = 115;
             // 
             // steamid4
@@ -1058,7 +1122,7 @@ namespace Nucleus.Coop
             this.steamid4.Margin = new System.Windows.Forms.Padding(2);
             this.steamid4.MaxLength = 17;
             this.steamid4.Name = "steamid4";
-            this.steamid4.Size = new System.Drawing.Size(113, 21);
+            this.steamid4.Size = new System.Drawing.Size(133, 21);
             this.steamid4.TabIndex = 114;
             // 
             // steamid3
@@ -1069,7 +1133,7 @@ namespace Nucleus.Coop
             this.steamid3.Margin = new System.Windows.Forms.Padding(2);
             this.steamid3.MaxLength = 17;
             this.steamid3.Name = "steamid3";
-            this.steamid3.Size = new System.Drawing.Size(113, 21);
+            this.steamid3.Size = new System.Drawing.Size(133, 21);
             this.steamid3.TabIndex = 113;
             // 
             // steamid2
@@ -1080,7 +1144,7 @@ namespace Nucleus.Coop
             this.steamid2.Margin = new System.Windows.Forms.Padding(2);
             this.steamid2.MaxLength = 17;
             this.steamid2.Name = "steamid2";
-            this.steamid2.Size = new System.Drawing.Size(113, 21);
+            this.steamid2.Size = new System.Drawing.Size(133, 21);
             this.steamid2.TabIndex = 112;
             // 
             // label47
@@ -1101,7 +1165,7 @@ namespace Nucleus.Coop
             this.steamid1.Margin = new System.Windows.Forms.Padding(2);
             this.steamid1.MaxLength = 17;
             this.steamid1.Name = "steamid1";
-            this.steamid1.Size = new System.Drawing.Size(113, 21);
+            this.steamid1.Size = new System.Drawing.Size(133, 21);
             this.steamid1.TabIndex = 111;
             // 
             // label21
@@ -1520,12 +1584,12 @@ namespace Nucleus.Coop
             this.layoutTab.Size = new System.Drawing.Size(631, 296);
             this.layoutTab.TabIndex = 1;
             this.layoutTab.Text = "Custom Layout";
-            this.layoutTab.Click += new System.EventHandler(this.tabPage4_Click);
             // 
             // numVerDiv
             // 
             this.numVerDiv.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.numVerDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numVerDiv.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.numVerDiv.Location = new System.Drawing.Point(16, 31);
             this.numVerDiv.Maximum = new decimal(new int[] {
             5,
@@ -2094,6 +2158,7 @@ namespace Nucleus.Coop
             this.hotkeyBox.PerformLayout();
             this.playerTab.ResumeLayout(false);
             this.playerTab.PerformLayout();
+            this.def_sid_textBox_container.ResumeLayout(false);
             this.layoutTab.ResumeLayout(false);
             this.layoutTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVerDiv)).EndInit();
@@ -2248,5 +2313,8 @@ namespace Nucleus.Coop
         private Label label52;
         private TextBox settingsFocusHKTxt;
         public TabControl settingsTab_Group;
+        private Label default_sid_list_label;
+        private Panel def_sid_textBox_container;
+        private ComboBox def_sid_comboBox;
     }
 }

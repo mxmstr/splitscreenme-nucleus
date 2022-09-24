@@ -38,9 +38,9 @@ namespace Nucleus.Coop
             }
         }
 
-        public GameControl(GenericGameInfo game, UserGameInfo userGame,bool updateAvailable,bool favorite)
+        public GameControl(GenericGameInfo game, UserGameInfo userGame, bool updateAvailable, bool favorite)
         {
-            try 
+            try
             {
                 this.favorite = favorite;
                 this.updateAvailable = updateAvailable;
@@ -70,8 +70,8 @@ namespace Nucleus.Coop
                 SuspendLayout();
                 Cursor default_Cursor = new Cursor(themePath + "\\cursor.ico");
                 Cursor = default_Cursor;
-                Cursor  hand_Cursor = new Cursor(themePath + "\\cursor_hand.ico");
-                
+                Cursor hand_Cursor = new Cursor(themePath + "\\cursor_hand.ico");
+
                 picture = new PictureBox
                 {
                     SizeMode = PictureBoxSizeMode.StretchImage,
@@ -136,13 +136,13 @@ namespace Nucleus.Coop
                 Controls.Add(picture);
                 Controls.Add(title);
                 Controls.Add(players);
-               
+
                 if (title.Text != "No games")
                 {
                     Controls.Add(playerIcon);
                     Controls.Add(favoriteBox);
                 }
-                             
+
                 DPIManager.Register(this);
             }
             catch (Exception ex)
@@ -200,7 +200,7 @@ namespace Nucleus.Coop
 
             favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
             float favoriteY = (209 - playerIcon.Width) * scale;
-            favoriteBox.Location = new Point(Convert.ToInt32(favoriteY), players.Location.Y+3);
+            favoriteBox.Location = new Point(Convert.ToInt32(favoriteY), players.Location.Y + 3);
 
             ResumeLayout();
         }
@@ -282,7 +282,7 @@ namespace Nucleus.Coop
         {
             if (isSelected)
             {
-                BackColor = userLeaveBackColor; 				
+                BackColor = userLeaveBackColor;
             }
             else
             {

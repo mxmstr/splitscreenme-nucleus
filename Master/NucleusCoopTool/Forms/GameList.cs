@@ -42,5 +42,6 @@ namespace Nucleus.Coop.Forms
             DialogResult = DialogResult.OK;
             Close();
         }
+     
     }
 }

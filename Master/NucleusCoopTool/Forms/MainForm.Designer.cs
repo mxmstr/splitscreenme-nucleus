@@ -107,7 +107,6 @@ namespace Nucleus.Coop
             this.minimizeBtn = new System.Windows.Forms.Button();
             this.maximizeBtn = new System.Windows.Forms.Button();
             this.linksPanel = new BufferedClientAreaPanel();
-            this.splash = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.gameContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.glowingLine0)).BeginInit();
@@ -122,7 +121,6 @@ namespace Nucleus.Coop
             this.mainButtonFrame.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.stepPanelPictureBox)).BeginInit();
             this.linksPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splash)).BeginInit();
             this.SuspendLayout();
             // 
             // linkLabel4
@@ -656,7 +654,7 @@ namespace Nucleus.Coop
             this.game_listSizer.Location = new System.Drawing.Point(0, 33);
             this.game_listSizer.Margin = new System.Windows.Forms.Padding(0);
             this.game_listSizer.Name = "game_listSizer";
-            this.game_listSizer.Size = new System.Drawing.Size(209, 533);
+            this.game_listSizer.Size = new System.Drawing.Size(209, 531);
             this.game_listSizer.TabIndex = 35;
             // 
             // list_Games
@@ -675,7 +673,7 @@ namespace Nucleus.Coop
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 0);
             this.list_Games.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.list_Games.Size = new System.Drawing.Size(230, 534);
+            this.list_Games.Size = new System.Drawing.Size(230, 531);
             this.list_Games.TabIndex = 2;
             this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.list_Games_SelectedChanged);
             // 
@@ -967,7 +965,6 @@ namespace Nucleus.Coop
             this.btn_Play.Size = new System.Drawing.Size(100, 25);
             this.btn_Play.TabIndex = 4;
             this.btn_Play.Text = "PLAY";
-            this.btn_Play.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btn_Play.UseVisualStyleBackColor = false;
             this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
             // 
@@ -1028,7 +1025,7 @@ namespace Nucleus.Coop
             this.txt_version.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.txt_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_version.ForeColor = System.Drawing.Color.White;
-            this.txt_version.Location = new System.Drawing.Point(159, 10);
+            this.txt_version.Location = new System.Drawing.Point(159, 11);
             this.txt_version.Margin = new System.Windows.Forms.Padding(0);
             this.txt_version.Name = "txt_version";
             this.txt_version.Size = new System.Drawing.Size(28, 13);
@@ -1105,23 +1102,6 @@ namespace Nucleus.Coop
             this.linksPanel.TabIndex = 0;
             this.linksPanel.Visible = false;
             // 
-            // splash
-            // 
-            this.splash.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splash.BackColor = System.Drawing.Color.Black;
-            this.splash.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.splash.Cursor = System.Windows.Forms.Cursors.AppStarting;
-            this.splash.Location = new System.Drawing.Point(0, 0);
-            this.splash.Margin = new System.Windows.Forms.Padding(0);
-            this.splash.Name = "splash";
-            this.splash.Size = new System.Drawing.Size(1050, 602);
-            this.splash.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.splash.TabIndex = 1;
-            this.splash.TabStop = false;
-            this.splash.Click += new System.EventHandler(this.splash_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1130,7 +1110,6 @@ namespace Nucleus.Coop
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1050, 602);
             this.ControlBox = false;
-            this.Controls.Add(this.splash);
             this.Controls.Add(this.btn_Links);
             this.Controls.Add(this.glowingLine0);
             this.Controls.Add(this.third_party_tools_container);
@@ -1157,7 +1136,6 @@ namespace Nucleus.Coop
             this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.ClientSizeChanged += new System.EventHandler(this.MainForm_ClientSizeChanged);
-            this.MouseHover += new System.EventHandler(this.MainForm_MouseHover);
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.gameContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.glowingLine0)).EndInit();
@@ -1173,7 +1151,6 @@ namespace Nucleus.Coop
             this.mainButtonFrame.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.stepPanelPictureBox)).EndInit();
             this.linksPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splash)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1220,7 +1197,6 @@ namespace Nucleus.Coop
         private Button closeBtn;
         private Button btn_settings;
         private PictureBox logo;
-        private PictureBox splash;
         private BufferedClientAreaPanel coverFrame;
         private BufferedClientAreaPanel scriptAuthorTxtSizer;
         private BufferedClientAreaPanel mainButtonFrame;

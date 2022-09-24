@@ -10,28 +10,26 @@ namespace Nucleus.Coop
     {
         private  static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         public static bool connected;
+        public static bool forcedBadPath;
+
         [STAThread]
         static void Main()
         {
             if (!Convert.ToBoolean(ini.IniReadValue("Misc", "NucleusMultiInstances")))
             {
                 if (StartChecks.IsAlredyRunning())
-                {
                     return;
-                }
             }
 
-            if (Convert.ToBoolean(ini.IniReadValue("Dev", "PathCheck")))
+            if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=true" under [Dev] in Settings.ini to disable admin rights & unsafe path checks.
             {
-                if (!StartChecks.StartCheck() && Convert.ToBoolean(ini.IniReadValue("Dev", "PathCheck")) == true)
-                {
-                    return;
-                }
+                if (!StartChecks.StartCheck(true))
+                    forcedBadPath = true;
             }
 
             connected = StartChecks.CheckNetCon();
             StartChecks.CheckFilesIntegrity();
-            StartChecks.CheckUserEnvironment();          
+            StartChecks.CheckUserEnvironment();
             //StartChecks.CheckForUpdate(); //Uncomment to run Pizzo's Python nc updater on startup
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware

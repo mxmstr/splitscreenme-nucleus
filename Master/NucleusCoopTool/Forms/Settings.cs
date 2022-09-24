@@ -13,6 +13,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -101,7 +102,6 @@ namespace Nucleus.Coop
             Cursor = default_Cursor;
             hand_Cursor = mf.hand_Cursor;
 
-
             if (mf.roundedcorners)
             {
                 Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
@@ -110,7 +110,7 @@ namespace Nucleus.Coop
             settingsTab_Group.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, settingsTab_Group.Width, settingsTab_Group.Height, 5, 5));
             Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
             Visible = false;
-            //form Fore Color
+           
             controlscollect();
 
             foreach (Control control in ctrls)
@@ -124,14 +124,12 @@ namespace Nucleus.Coop
             plus2.ForeColor = ForeColor;
             plus3.ForeColor = ForeColor;
             plus4.ForeColor = ForeColor;
-            //
-            BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-          
+   
+            BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");          
             audioTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             settingsTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             layoutTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             playerTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-            //setting_Label.BackgroundImage = mf.AppButtons;
             btn_credits.BackgroundImage = mf.AppButtons;
             settingsCloseBtn.BackgroundImage = mf.AppButtons;
             settingsSaveBtn.BackgroundImage = mf.AppButtons;
@@ -141,7 +139,6 @@ namespace Nucleus.Coop
             btn_credits.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             settingsCloseBtn.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             settingsSaveBtn.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            //btn_Refresh.BackColor = mf.MouseOverBackColor;
             audioRefresh.BackColor = mf.MouseOverBackColor;
 
             if (mf.useButtonsBorder)
@@ -156,8 +153,7 @@ namespace Nucleus.Coop
 
             controllerNicks = new ComboBox[] { controllerOneNick, controllerTwoNick, controllerThreeNick, controllerFourNick, controllerFiveNick, controllerSixNick, controllerSevenNick, controllerEightNick, controllerNineNick, controllerTenNick, controllerElevenNick, controllerTwelveNick, controllerThirteenNick, controllerFourteenNick, controllerFifteenNick, controllerSixteenNick };
             steamIds = new ComboBox[] { steamid1, steamid2, steamid3, steamid4, steamid5, steamid6, steamid7, steamid8, steamid9, steamid10, steamid11, steamid12, steamid13, steamid14, steamid15, steamid16};
-
-           
+         
             ResumeLayout();
 
             foreach (Control stmId in playerTab.Controls)
@@ -303,7 +299,7 @@ namespace Nucleus.Coop
             {
                 cmb_Network.SelectedIndex = 0;
             }
-
+         
             if (ini.IniReadValue("Misc", "SteamLang") != "")
             {
                 cmb_Lang.Text = ini.IniReadValue("Misc", "SteamLang");
@@ -321,7 +317,7 @@ namespace Nucleus.Coop
             {
                 cmb_EpicLang.SelectedIndex = 0;
             }
-
+            
             if (ini.IniReadValue("Hotkeys", "Close").Contains('+'))
             {
                 string[] closeHk = ini.IniReadValue("Hotkeys", "Close").Split('+');
@@ -446,7 +442,10 @@ namespace Nucleus.Coop
             {
                 audioCustomSettingsRadio.Checked = true;
             }
-           
+
+            //default steam id list
+            def_sid_comboBox.Text = "Player 1 : 76561199023125438";
+
             RefreshAudioList();
             
             DPIManager.Register(this);
@@ -475,10 +474,10 @@ namespace Nucleus.Coop
                 float newFontSize = Font.Size * scale;
 
                 settingsTab_Group.Font = new Font(mainForm.customFont, newTabsSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
+                
                 foreach (Control c in playerTab.Controls)
                 {
-                    if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
+                    if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
@@ -555,14 +554,20 @@ namespace Nucleus.Coop
                     }
                 }
                 
-                nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);             
+                nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             }
+
+
             settingLabel_Container.Location = new Point((Width / 2) - (settingLabel_Container.Width / 2), settingLabel_Container.Location.Y);
             IdExample_Label.Location = new Point((playerTab.Width / 2) - (IdExample_Label.Width / 2), IdExample_Label.Location.Y);
+            def_sid_textBox_container.Location = new Point((playerTab.Width / 2) - (def_sid_textBox_container.Width / 2), def_sid_textBox_container.Location.Y);
             slitWarning_Label.Location = new Point((settingsTab_Group.Width / 2) - (slitWarning_Label.Width / 2), slitWarning_Label.Location.Y);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             password_Label.Location = new Point((passwordPanel.Width / 2) - (password_Label.Width / 2), password_Label.Location.Y);
-
+            label38.Location = new Point((hotkeyBox.Width / 2) - (label38.Width / 2), label38.Location.Y);
+            //default_sid_list_label.Location = new Point(0, (def_sid_textBox_container.Height / 2) - default_sid_list_label.Height / 2);
+            def_sid_comboBox.Location = new Point(default_sid_list_label.Right, (default_sid_list_label.Location.Y + default_sid_list_label.Height/2 ) - def_sid_comboBox.Height/2);
             ResumeLayout();
         }
 
@@ -717,7 +722,8 @@ namespace Nucleus.Coop
                 if (themeCbx.SelectedItem.ToString() != prevTheme)
                 {
                     ini.IniWriteValue("Theme", "Theme", themeCbx.SelectedItem.ToString());
-                    
+                    mainForm.themeSwith = true;
+                    Thread.Sleep(200);
                     Application.Restart();
                 }
             }
@@ -854,7 +860,6 @@ namespace Nucleus.Coop
             int LayoutWidth = layoutSizer.Size.Width - 20;
             int LayoutPosX = layoutSizer.Location.X + 10;
             int LayoutPosY = layoutSizer.Location.Y + 10;
-
 
             Rectangle outline = new Rectangle(10, 10, LayoutWidth, LayoutHeight);
             // Rectangle outline = new Rectangle(370, 45, 360, 240);
@@ -1051,12 +1056,6 @@ namespace Nucleus.Coop
             {
                 ini.IniWriteValue("Misc", "AutoDesktopScaling", "False");
             }
-
-        }
-
-        private void tabPage4_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -24,6 +24,8 @@ using System.Linq;
 using Microsoft.Win32;
 using System.Drawing.Text;
 using System.ComponentModel;
+using System.Drawing.Imaging;
+using System.Security.Principal;
 
 namespace Nucleus.Coop
 {
@@ -35,7 +37,7 @@ namespace Nucleus.Coop
         private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         private IniFile iconsIni;
         public string version = "v" + Globals.Version;
-        private string faq_link = "https://www.splitscreen.me/docs/faq";
+        protected string faq_link = "https://www.splitscreen.me/docs/faq";
         protected string api = "https://hub.splitscreen.me/api/v1/";
         private string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -44,7 +46,7 @@ namespace Nucleus.Coop
         public string customFont;
         private string currentGameSetup;
         public IniFile theme;
-
+        public Form splashscreen = new Splashscreen();
         public Form backgroundForm;
         private Settings settingsForm = null;
         private ContentManager content;
@@ -89,8 +91,8 @@ namespace Nucleus.Coop
         private Bitmap dinputGamepad_Icon;
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
-
         public bool connected;
+        public bool themeSwith = false;
         private bool currentlyUpdatingScript = false;
         private bool Splash_On;
         private bool TopMostToggle = true;
@@ -103,7 +105,7 @@ namespace Nucleus.Coop
         private bool showFavoriteOnly;
         private bool canResize = false;
         private Color ChoosenColor;
-
+        public float cursScale;
         private System.Windows.Forms.Timer DisposeTimer;//dispose splash screen timer
         private System.Windows.Forms.Timer slideshow;
         private System.Windows.Forms.Timer loadTimer;
@@ -159,24 +161,23 @@ namespace Nucleus.Coop
                 PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
                 if (reply.Status == IPStatus.Success)
                 {
-                    this.connected = true;
+                    connected = true;
                     CheckHandlersUpdate(true);
                     myPing.Dispose();
                     return;
                 }
                 else
                 {
-                    this.connected = false;
+                    connected = false;
                     myPing.Dispose();
                     return;
                 }
             }
             catch (Exception)
             {
-                this.connected = false;
+                connected = false;
                 return;
             }
-
         }
 
         [DllImport("user32.dll")]
@@ -391,7 +392,6 @@ namespace Nucleus.Coop
         {
             try
             {
-                
                 connected = Program.connected;
                 ChoosenTheme = ini.IniReadValue("Theme", "Theme");
                 theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
@@ -456,7 +456,6 @@ namespace Nucleus.Coop
 
                 //Controls Pictures
                 AppButtons = new Bitmap(themePath + "\\button.png");
-                splash.Image = new Bitmap(themePath + "\\splash.gif");
                 clientAreaPanel.BackgroundImage = new Bitmap(themePath + "\\background.jpg");
                 mainButtonFrame.BackgroundImage = new Bitmap(themePath + "\\main_buttons_frame.png");
                 rightFrame.BackgroundImage = new Bitmap(themePath + "\\right_panel.png");
@@ -615,10 +614,10 @@ namespace Nucleus.Coop
 
                 optionsControl = new PlayerOptionsControl();
                 jsControl = new JSUserInputControl();
-               
+
                 optionsControl.OnCanPlayUpdated += StepCanPlay;
                 jsControl.OnCanPlayUpdated += StepCanPlay;
-              
+
                 scriptDownloader = new ScriptDownloader(this);
                 downloadPrompt = new DownloadPrompt(hubHandler, this, null, true);
 
@@ -657,7 +656,7 @@ namespace Nucleus.Coop
 
                 mainButtonFrame.Controls.Add(favoriteOnlyLabel);
                 mainButtonFrame.Controls.Add(favoriteOnly);
-               
+
                 list_Games.Select();
                 gameManager.ReorderUserProfile();
 
@@ -673,7 +672,7 @@ namespace Nucleus.Coop
             }
 
             CenterToScreen();
-           
+
             DPIManager.Register(this);
             DPIManager.AddForm(this);
         }
@@ -720,14 +719,12 @@ namespace Nucleus.Coop
 
             btn_Play.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Bold, GraphicsUnit.Pixel, 0);
             scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
             favoriteOnlyLabel.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             favoriteOnlyLabel.Location = new Point(1, mainButtonFrame.Height / 2 - (favoriteOnlyLabel.Height / 2) * (int)scale);
-
             favoriteOnly.Size = new Size(favoriteOnlyLabel.Height, favoriteOnlyLabel.Height);
             float favoriteY = favoriteOnlyLabel.Right + (5 * scale);
             favoriteOnly.Location = new Point(Convert.ToInt32(favoriteY), mainButtonFrame.Height / 2 - (favoriteOnly.Height / 2) * (int)scale);
-
+            cursScale = scale;
             ResumeLayout();
         }
 
@@ -735,32 +732,17 @@ namespace Nucleus.Coop
         {
             base.OnShown(e);
             RefreshGames();
-            splashTimer();
-
-            if (Splash_On)//Play intro sound
-            {
-                SoundPlayer(themePath + "\\intro.wav");
-            }
-
-            DPIManager.ForceUpdate();
-        }
-
-        private void splashTimer()
-        {
-            DisposeTimer = new System.Windows.Forms.Timer();//dispose splash screen timer
+            DisposeTimer = new System.Windows.Forms.Timer();//dispose splash screen and keep track on hub ping statut( refresh )
+            DisposeTimer.Interval = (2900); //millisecond
+            DisposeTimer.Tick += new EventHandler(MainTimerTick);
+            DisposeTimer.Start();
 
             if (Splash_On)
             {
-                DisposeTimer.Interval = (3500); //millisecond                   
-            }
-            else
-            {
-                DisposeTimer.Interval = (1); //millisecond
-                splash.Dispose();
+                splashscreen.Show();
             }
 
-            DisposeTimer.Tick += new EventHandler(SplashTimerTick);
-            DisposeTimer.Start();
+            DPIManager.ForceUpdate();
         }
 
         public void handleClickSound(bool enable)
@@ -768,12 +750,11 @@ namespace Nucleus.Coop
             mouseClick = enable;
         }
 
-        private void SplashTimerTick(Object Object, EventArgs EventArgs)
+        private void MainTimerTick(Object Object, EventArgs EventArgs)
         {
             if (Splash_On)
             {
-                splash.Dispose();
-                splayer.Dispose();
+                splashscreen.Dispose();
             }
 
             if (connected)
@@ -782,7 +763,6 @@ namespace Nucleus.Coop
                 btn_downloadAssets.Enabled = true;
                 btn_Download.Enabled = true;
                 DisposeTimer.Dispose();
-                // TriggerHubShowCase();
             }
             else
             {
@@ -790,7 +770,6 @@ namespace Nucleus.Coop
                 btn_downloadAssets.Enabled = false;
                 btn_Download.Enabled = false;
             }
-
         }
 
         private void CheckHandlersUpdate(bool refresh)
@@ -821,6 +800,7 @@ namespace Nucleus.Coop
 
             if (refresh)
             {
+                gameManager.ReorderUserProfile();
                 RefreshGames();
             }
         }
@@ -851,11 +831,9 @@ namespace Nucleus.Coop
 
         protected override Size DefaultSize => new Size(1050, 701);
 
-
-        //private Rectangle inRect;
         protected override void WndProc(ref Message m)
         {
-            //TODO: if close message, kill application not just window
+            //TODO: if close message, kill application not just window// Guess no since we need to catch the form closing event
             const int RESIZE_HANDLE_SIZE = 10;
 
             if (this.WindowState == FormWindowState.Normal)
@@ -912,7 +890,7 @@ namespace Nucleus.Coop
             }
             else
             {
-                if(Cursor.Current != default_Cursor)
+                if (Cursor.Current != default_Cursor)
                 {
                     Cursor.Current = default_Cursor;
 
@@ -920,7 +898,7 @@ namespace Nucleus.Coop
                 canResize = false;
             }
 
-            if (!canResize)
+            if (!canResize )
             {
                 if (m.Msg == 0x020)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messages handling) 
                 {
@@ -1188,9 +1166,8 @@ namespace Nucleus.Coop
                 {
                     Name = "UpdateLabel",
                     AutoSize = true,
-                    BackColor = Color.Transparent,
+                    BackColor = Color.Black,
                     ForeColor = Color.White,
-                    BackgroundImage = new Bitmap(themePath + "\\showcase-labels.png"),
                     Font = new Font(customFont, 7.25F),
                     Text = "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version."
                 };
@@ -1270,8 +1247,14 @@ namespace Nucleus.Coop
                     getAssets = new AssetsScraper();
                     UserGameInfo game = games[i];
                     this.BeginInvoke(new CheckForAssets(DelegateCheckForAssets), dllabel, true, "Checking Cover for : " + game.GameGuid);
+                    dllabel.ForeColor = Color.Green;
                     try
                     {
+                        if (game.Game == null)
+                        {
+                            continue;
+                        }
+
                         hubHandler = scriptDownloader.GetHandler(game.Game.GetHandlerId());
 
                         string _covers = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{hubHandler.GameCover}.jpg";
@@ -1283,6 +1266,7 @@ namespace Nucleus.Coop
                             {
                                 if (!File.Exists(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + game.GameGuid + ".txt")))
                                 {
+                                    this.BeginInvoke(new CheckForAssets(DelegateCheckForAssets), dllabel, true, "Checking description: " + game.GameGuid);
                                     using (FileStream stream = new FileStream(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + game.GameGuid + ".txt"), FileMode.Create))
                                     {
                                         using (StreamWriter writer = new StreamWriter(stream))
@@ -1290,12 +1274,11 @@ namespace Nucleus.Coop
                                             string json = JsonConvert.SerializeObject(hubHandler.GameDescription);
                                             writer.Write(json);
                                             stream.Flush();
-                                            stream.Dispose();
                                             writer.Dispose();
                                         }
+                                        stream.Dispose();
                                     }
                                 }
-
                             }
                             catch { }
                         }
@@ -1319,6 +1302,10 @@ namespace Nucleus.Coop
                     this.BeginInvoke(new CheckForAssets(DelegateCheckForAssets), dllabel, true, "Checking Screenshots for : " + game.GameGuid);
                     try
                     {
+                        if (game.Game == null)
+                        {
+                            continue;
+                        }
                         hubHandler = scriptDownloader.GetHandler(game.Game.GetHandlerId());
                         string _screenshots = game.Game.GetScreenshots();
 
@@ -1334,10 +1321,21 @@ namespace Nucleus.Coop
             });
         }
 
-        private Image ApplyBlur(Image screenshot)
+        private Bitmap ApplyBlur(Bitmap screenshot)
         {
             var blur = new GaussianBlur(screenshot as Bitmap);
-            var result = blur.Process(blurValue);
+
+            Bitmap result = blur.Process(blurValue);
+
+            if (screenshot == null)
+            {
+                return defBackground;
+            }
+            if (screenshotImg != null)
+            {
+                screenshotImg.Dispose();
+            }
+            blur = null;
             return result;
         }
 
@@ -1357,9 +1355,6 @@ namespace Nucleus.Coop
             else
             {
                 cover.BackgroundImage = new Bitmap(themePath + "\\no_cover.png");
-                clientAreaPanel.SuspendLayout();
-                clientAreaPanel.BackgroundImage = defBackground;
-                clientAreaPanel.ResumeLayout();
                 cover.Visible = true;
                 coverFrame.Visible = true;
             }
@@ -1370,7 +1365,7 @@ namespace Nucleus.Coop
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + name + "\\" + RandomIndex + "_" + name + ".jpeg"));   //name(1) => directory name ; name(2) = partial image name 
+                screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + name + "\\" + RandomIndex + "_" + name + ".jpeg"));//name(1) => directory name ; name(2) = partial image name 
                 clientAreaPanel.SuspendLayout();
                 clientAreaPanel.BackgroundImage = ApplyBlur(screenshotImg);
                 clientAreaPanel.ResumeLayout();
@@ -1422,11 +1417,71 @@ namespace Nucleus.Coop
 
         private bool rainbowTimerRunning = false;
 
+        private bool MatchRequirements(GenericGameInfo game)
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+
+            if ((game.RequiresAdmin || game.LaunchAsDifferentUsersAlt || game.LaunchAsDifferentUsers || game.ChangeIPPerInstanceAlt) && !principal.IsInRole(WindowsBuiltInRole.Administrator) || 
+               ((game.LaunchAsDifferentUsersAlt || game.LaunchAsDifferentUsers || game.ChangeIPPerInstanceAlt) && (Program.forcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))))
+            {
+                string message;
+
+                if (Program.forcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))
+                {
+                    message = "This game handler does not support the current Nucleus Co-op installation path.\n\n" +
+                          "Do NOT install in any of these folders:\n" +
+                          "- A folder containing any game files\n" +
+                          "- C:\\Program Files or C:\\Program Files (x86)\n" +
+                          "- C:\\Users (including Documents, Desktop, or Downloads)\n" +
+                          "- Any folder with security settings like C:\\Windows\n" +
+                          "\n" +
+                          "A good place is C:\\Nucleus\\NucleusCoop.exe";
+                }
+                else
+                {
+                    message = "This handler requires you to run Nucleus as administrator.";
+                }
+
+                MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                rightFrame.Visible = false;
+                StepPanel.Visible = false;
+                clientAreaPanel.BackgroundImage = defBackground;
+                stepPanelPictureBox.Visible = true;                
+                if (cover.BackgroundImage != null)
+                {
+                    cover.BackgroundImage.Dispose();
+                }
+
+                if (rainbowTimer != null)
+                {
+                    rainbowTimer.Dispose();
+                    rainbowTimerRunning = false;
+                }
+
+                if (hubShowcase != null)
+                {
+                    hubShowcase.Dispose();
+                }
+
+                return false;
+            }
+            else 
+            {
+                return true;
+            }
+        }
+
         private void list_Games_SelectedChanged(object arg1, Control arg2)
         {
             currentControl = (GameControl)arg1;
-
             currentGameInfo = currentControl.UserGameInfo;
+
+            if (!MatchRequirements(currentGameInfo.Game))
+            {
+                return;
+            }
+
             positionsControl.handlerNoteZoom.Visible = false;
             btn_magnifier.Image = new Bitmap(themePath + "\\magnifier.png");
             btn_textSwitcher.Visible = false;
@@ -1444,8 +1499,7 @@ namespace Nucleus.Coop
             }
             else
             {
-                currentGame = currentGameInfo.Game;
-
+                currentGame = currentGameInfo.Game;               
                 currentGameSetup = currentControl.UserGameInfo.Game.GameName;
 
                 HandlerNoteTitle.Text = "Handler Notes";
@@ -1826,6 +1880,16 @@ namespace Nucleus.Coop
             }
 
             User32Util.ShowTaskBar();
+         
+            if (!themeSwith)
+            {
+                Process[] processes = Process.GetProcessesByName("NucleusCoop");
+                foreach (Process NucleusCoop in processes)
+                {
+                    NucleusCoop.Kill();
+                }
+            }
+            themeSwith = false;
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
@@ -1843,7 +1907,7 @@ namespace Nucleus.Coop
 
                         handler.End(true);
                     }
-
+                  
                     foreach (Form openForm in Application.OpenForms)
                     {
                         if (openForm.Name == "Hide Desktop" || openForm.Name == "SplitForm")
@@ -1858,22 +1922,17 @@ namespace Nucleus.Coop
                 positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
                 positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
 
-                list_Games.Enabled = true;
                 User32Util.ShowTaskBar();
                 SetBtnToPlay();
                 btn_Play.Enabled = false;
-                //RefreshGames();
                 GoToStep(0);
                 return;
             }
-
-           
 
             rightFrame.Visible = false;
             StepPanel.Visible = false;           
             clientAreaPanel.BackgroundImage = defBackground;
             stepPanelPictureBox.Visible = true;            
-            list_Games.Enabled = false;
             cover.BackgroundImage.Dispose();
             rainbowTimer.Dispose();
             rainbowTimerRunning = false;
@@ -1888,7 +1947,7 @@ namespace Nucleus.Coop
 
             currentGame = gameManager.GetGame(currentGameInfo.ExePath);
             currentGameInfo.InitializeDefault(currentGame, currentGameInfo.ExePath);
-
+           
             handler = gameManager.MakeHandler(currentGame);
             handler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile));
             handler.Ended += handler_Ended;
@@ -1983,8 +2042,11 @@ namespace Nucleus.Coop
             {
                stepPanelPictureBox.Focus();
             }
-            
-            WindowState = FormWindowState.Minimized;
+
+            if(!currentGame.ToggleUnfocusOnInputsLock)
+            {
+                WindowState = FormWindowState.Minimized;
+            }        
         }
 
         private void slideshowTick(Object myObject, EventArgs myEventArgs)
@@ -2630,8 +2692,6 @@ namespace Nucleus.Coop
 
                                     }
                                 }
-
-
                             }
 
                             if (!docConfigPathExists)
@@ -2888,6 +2948,7 @@ namespace Nucleus.Coop
                     }
                 }
             }
+
             return null;
         }
 
@@ -3214,13 +3275,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private void splash_Click(object sender, EventArgs e)
-        {
-            splayer.Stop();
-            splayer.Dispose();
-            splash.Dispose();
-        }
-
         private void this_Click(object sender, System.EventArgs e)
         {
             linksPanel.Visible = false;
@@ -3229,14 +3283,6 @@ namespace Nucleus.Coop
             if (third_party_tools_container.Visible)
             {
                 third_party_tools_container.Visible = false;
-            }
-        }
-
-        private void MainForm_MouseHover(object sender, EventArgs e)
-        {
-            if (!currentlyUpdatingScript)
-            {
-                //button_UpdateAvailable.Visible = currentGameInfo?.Game?.IsUpdateAvailable(false) ?? button_UpdateAvailable.Visible;                              
             }
         }
 
@@ -3339,7 +3385,6 @@ namespace Nucleus.Coop
             }
         }
 
-
         private int clickCount = 0;
 
         private void stepPanelPictureBox_Click(object sender, EventArgs e)
@@ -3352,7 +3397,7 @@ namespace Nucleus.Coop
             }
 
             if (connected)
-                TriggerHubShowCase();
+                TriggerHubShowCase();               
         }
     }
 }

@@ -433,9 +433,19 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     Debug.WriteLine("Lock input key pressed");
                     if (!LockInput.IsLocked)
                     {
+                        if (CurrentGameInfo == null || CurrentGameInfo.Play == null)
+                        {
+                            return;
+                        }
+
                         LockInput.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
+                        
                         if (CurrentGameInfo.ToggleUnfocusOnInputsLock)
+                        {
                             ToggleUnfocus();
+                            Debug.WriteLine("Toggle Unfocus");
+                        }
+                          
                     }
                     else
                     {

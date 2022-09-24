@@ -14,9 +14,8 @@ namespace Nucleus.Gaming.Coop.Generic
 
         public bool IsUpdateAvailable(bool fetch)
         {
-            if (fetch )//&& !checkedUpdate)
-            {
-                //checkedUpdate = true;
+            if (fetch )
+            {          
                 updateAvailable = CheckUpdateAvailable();
             }
           

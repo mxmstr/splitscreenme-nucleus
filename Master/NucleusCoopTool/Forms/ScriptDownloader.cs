@@ -157,7 +157,7 @@ namespace Nucleus.Coop.Forms
             btn_Close.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Download.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Extract.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            //list_Games.Cursor = hand_Cursor;
+
             controlscollect();
 
             foreach (Control control in ctrls)
