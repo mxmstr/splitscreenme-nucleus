@@ -132,8 +132,8 @@ namespace Nucleus.Gaming
             {
                 help = "Nucleus Co-op doesn't have the necessary permissions or is trying to access a file that is already in use,\n " +
                        "please make sure Nucleus Co-op is outside any game files or protected folders,\n" +
-                       " placing Nucleus Co-op app folder in the root of your main drive is recommended to avoid permission issues: C:\\NucleusCo-op.\n" +
-                       " Make sure other apps are not using any of the files Nucleus is trying to access. If all else fails run Nucleus Co-op with admin rights.";
+                       "placing Nucleus Co-op app folder in the root of your main drive is recommended to avoid permission issues: C:\\NucleusCo-op.\n" +
+                       "Make sure other apps are not using any of the files Nucleus is trying to access. If all else fails run Nucleus Co-op with admin rights.";
             }
 #if RELEASE
 

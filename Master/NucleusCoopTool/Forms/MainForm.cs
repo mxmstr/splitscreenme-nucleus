@@ -1693,7 +1693,7 @@ namespace Nucleus.Coop
                         Log("Game content cleanup failed. One or more files can't be unlocked by Nucleus.");
                         System.Threading.Tasks.Task.Run(() =>
                         {
-                            MessageBox.Show($"One or more files from {path} are locked by the system or used by an other program and Nucleus failed to unlock them, try to delete/unlock it manually or restart your computer to unlock the file because it could lead to a crash on game startup. You can ignore this message and risk a crash.", "Risk of crash!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show($"One or more files from {path} are locked by the system or used by an other program and Nucleus failed to unlock them, try to delete/unlock it manually or restart your computer to unlock the file because it could lead to a crash on game startup. You can ignore this message and risk a crash or unexpected behaviors.", "Risk of crash!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         });
                     }
                 }
