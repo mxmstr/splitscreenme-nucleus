@@ -444,7 +444,7 @@ namespace Nucleus.Coop
             }
 
             //default steam id list
-            def_sid_comboBox.Text = "Player 1 : 76561199023125438";
+            def_sid_comboBox.SelectedIndex = 0;
 
             RefreshAudioList();
             
