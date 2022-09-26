@@ -620,10 +620,10 @@ namespace Nucleus.Coop
             // 
             // label52
             // 
-            this.label52.Location = new System.Drawing.Point(11, 34);
+            this.label52.Location = new System.Drawing.Point(8, 34);
             this.label52.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(83, 15);
+            this.label52.Size = new System.Drawing.Size(87, 15);
             this.label52.TabIndex = 33;
             this.label52.Text = "Toggle Unfocus:";
             this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

@@ -1476,6 +1476,7 @@ namespace Nucleus.Coop
         {
             currentControl = (GameControl)arg1;
             currentGameInfo = currentControl.UserGameInfo;
+
             if (currentGameInfo != null)
             {
                 if (!MatchRequirements(currentGameInfo.Game))
