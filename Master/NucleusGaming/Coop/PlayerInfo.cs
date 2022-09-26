@@ -18,7 +18,7 @@ namespace Nucleus.Gaming.Coop
         private object tag;
 
         private ProcessData processData;
-        private bool assigned;
+        public bool assigned;
 
         public UserScreen Owner;
 
@@ -69,7 +69,7 @@ namespace Nucleus.Gaming.Coop
         public Display Display;
 
         public uint ProtoInputInstanceHandle = 0;
-
+        public int screenPriority;
         // Serialized
 
         /// <summary>

@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 
 namespace Nucleus.Coop
 {
-    public partial class SearchDisksForm : BaseForm, IDynamicSized
+    public partial class SearchDisksForm : UserControl, IDynamicSized
     {
         public struct SearchDriveInfo
         {
@@ -36,6 +36,9 @@ namespace Nucleus.Coop
         private bool closed;
         private MainForm main;
         private float fontSize;
+
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -76,16 +79,25 @@ namespace Nucleus.Coop
 
         private void closeButton(object sender, EventArgs e)
 		{
-            closing = true;
+            txt_Stage.Visible = false;
+            progressBar1.Visible = false;
+            txt_Path.Visible = false;
             this.Visible = false;
 		}
 
         public SearchDisksForm(MainForm main)
         {
             this.main = main;
+
             InitializeComponent();
 
             SuspendLayout();
+
+            default_Cursor = main.default_Cursor;
+            Cursor.Current = default_Cursor;
+            hand_Cursor = main.hand_Cursor;
+            Location = new Point(main.Location.X + main.Width / 2 - Width / 2, main.Location.Y + main.Height / 2 - Height / 2);
+
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             fontSize = float.Parse(main.theme.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(Convert.ToInt32(main.rgb_font[0]), Convert.ToInt32(main.rgb_font[1]), Convert.ToInt32(main.rgb_font[2]));
@@ -136,32 +148,44 @@ namespace Nucleus.Coop
 
             ResumeLayout();
 
-            if (main.mouseClick)
+
+            foreach (Control button in this.Controls)
             {
-               foreach (Control button in this.Controls) { if (button is Button) { button.Click += new System.EventHandler(this.button_Click);}}
+                if (button.Name != "panel1")
+                {
+                    button.Cursor = hand_Cursor;
+                }
+                else 
+                {
+                    button.Cursor = default_Cursor;
+                }
+
+                if (main.mouseClick)
+                {
+                    if (button is Button)
+                    {
+                        button.Click += new System.EventHandler(this.button_Click);
+                    }
+                }
             }
-            
+
+            closeBtn.Cursor = hand_Cursor;
+
             for (int x = 1; x <= 100; x++)
             {
-                if (ini.IniReadValue("SearchPaths", x.ToString()) == "")
+                if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
                 {
                     break;
                 }
                 else
                 {
-                    disksBox.Items.Add(ini.IniReadValue("SearchPaths", x.ToString()), true);                  
+                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);                  
                 }
             }
 
-            Location = new Point(main.Location.X + main.Width / 2 - Width / 2, main.Location.Y + main.Height / 2 - Height / 2);
+           
             DPIManager.Register(this);
-            DPIManager.AddForm(this);
             DPIManager.Update(this);
-        }
-
-        ~SearchDisksForm()
-        {
-           // DPIManager.Unregister(this);
         }
 
         public void UpdateSize(float scale)
@@ -181,7 +205,7 @@ namespace Nucleus.Coop
                 BindingFlags.NonPublic | BindingFlags.Instance
                 );
 
-                var addedHeight = 26;
+                var addedHeight = 10*(int)scale;
 
                 heightField.SetValue(disksBox, addedHeight);
                 heightField.SetValue(checkboxFoundGames, addedHeight);
@@ -220,11 +244,15 @@ namespace Nucleus.Coop
 
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        protected override void WndProc(ref Message m)
         {
-            base.OnFormClosing(e);
-            DPIManager.Unregister(this);
-            closed = true;
+            if (m.Msg == 0x020 || m.Msg == 0x0a0)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messges handling) 
+            {
+                Cursor.Current = default_Cursor;
+                return;
+            }
+
+            base.WndProc(ref m);
         }
 
         private bool IsElevated => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
@@ -247,7 +275,9 @@ namespace Nucleus.Coop
             {
                 return;
             }
-
+            txt_Stage.Visible = true;
+            progressBar1.Visible = true;
+            txt_Path.Visible = true;
             btnSearch.Text = "Cancel";
             btn_customPath.Enabled = false;
             btn_delPath.Enabled = false;
@@ -374,6 +404,9 @@ namespace Nucleus.Coop
             label1.Enabled = true;
             txt_Stage.Text = "Cancelled";
             txt_Path.Text = "";
+            txt_Stage.Visible = false;
+            progressBar1.Visible = false;
+            txt_Path.Visible = false;
         }
 
         private void SearchDrive(object state)
@@ -519,13 +552,13 @@ namespace Nucleus.Coop
                     int freeIndex = 1;
                     for (int x = 1; x <= 100; x++)
                     {
-                        if (ini.IniReadValue("SearchPaths", x.ToString()) == "")
+                        if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
                         {
                             freeIndex = x;
                             break;
                         }
                     }
-                    ini.IniWriteValue("SearchPaths", freeIndex.ToString(), fbd.SelectedPath);
+                    main.ini.IniWriteValue("SearchPaths", freeIndex.ToString(), fbd.SelectedPath);
                 }
             }
         }
@@ -599,9 +632,9 @@ namespace Nucleus.Coop
                     disksBox.Items.Remove(item);
                     for (int x = 1; x <= 100; x++)
                     {
-                        if (ini.IniReadValue("SearchPaths", x.ToString()) == item)
+                        if (main.ini.IniReadValue("SearchPaths", x.ToString()) == item)
                         {
-                            ini.IniWriteValue("SearchPaths", x.ToString(), "");
+                            main.ini.IniWriteValue("SearchPaths", x.ToString(), "");
                             break;
                         }
                     }

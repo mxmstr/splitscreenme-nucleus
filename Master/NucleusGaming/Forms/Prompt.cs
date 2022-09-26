@@ -9,8 +9,23 @@ namespace Nucleus.Gaming.Forms
     {
         private bool hasOpenFileDialog = false;
         private string exeName;
-
+        public bool onpaint = false;
         public Prompt(string message)
+        {
+            onpaint = false;
+            InitializeComponent();
+            lbl_Msg.Text = message;
+
+            hasOpenFileDialog = false;
+
+            TopMost = true;
+            TopMost = false;
+            TopMost = true;
+
+            WindowScrape.Static.HwndInterface.MakeTopMost(Handle);
+        }
+
+        public Prompt(string message,bool onpaint)
         {
             InitializeComponent();
             lbl_Msg.Text = message;
@@ -26,6 +41,7 @@ namespace Nucleus.Gaming.Forms
 
         public Prompt(string message, bool isOFD, string launcherFileName)
         {
+            onpaint = false;
             InitializeComponent();
             lbl_Msg.Text = message;
 

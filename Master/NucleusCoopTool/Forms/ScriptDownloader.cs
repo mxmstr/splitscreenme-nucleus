@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Nucleus.Gaming;
 using System.Media;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace Nucleus.Coop.Forms
 {
@@ -29,7 +30,7 @@ namespace Nucleus.Coop.Forms
         private List<Control> ctrls = new List<Control>();
 
         private bool grabAll = false;
-
+        private bool canResize;
         private JArray handlers;
 
         private int entriesPerPage;
@@ -46,7 +47,10 @@ namespace Nucleus.Coop.Forms
 
         private SortOrder sortOrder = SortOrder.Ascending;
 
-       [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
        private static extern IntPtr CreateRoundRectRgn
        (
        int nLeftRect,     // x-coordinate of upper-left corner
@@ -76,6 +80,26 @@ namespace Nucleus.Coop.Forms
                 }
             }
         }
+
+        private void ScriptDownloader_ResizeBegin(object sender, EventArgs e)
+        {
+            foreach (Control c in ctrls)
+            {
+                c.Visible = false;
+            }
+            Opacity = 0.6D;
+        }
+
+        private void ScriptDownloader_ResizeEnd(object sender, EventArgs e)
+        {
+            foreach (Control c in ctrls)
+            { 
+                if(c.Name!= "chkBox_Verified")
+                c.Visible = true;
+            }
+            Opacity = 1.0D;
+        }
+
         public void button_Click(object sender, EventArgs e)
         {
            if(mainForm.mouseClick)
@@ -85,7 +109,12 @@ namespace Nucleus.Coop.Forms
         public ScriptDownloader(MainForm mf)
         {
             fontSize = float.Parse(mf.theme.IniReadValue("Font", "HandlerDownloaderFontSize"));
+            
             InitializeComponent();
+
+            default_Cursor = mf.default_Cursor;
+            Cursor.Current = default_Cursor;
+            hand_Cursor = mf.hand_Cursor;
 
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -100,7 +129,12 @@ namespace Nucleus.Coop.Forms
             entriesPerPage = Convert.ToInt32(cmb_NumResults.SelectedItem);
 
             SuspendLayout();
-            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+
+            if (mf.roundedcorners)
+            {
+                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            }
+
             ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
             BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             //Controls Pictures
@@ -123,12 +157,21 @@ namespace Nucleus.Coop.Forms
             btn_Close.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Download.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Extract.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            
+
             controlscollect();
 
             foreach (Control control in ctrls)
             {
                 control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                if (control.GetType() == typeof(Button))
+                {
+                    control.Cursor = hand_Cursor;
+                }
+                else
+                {
+                    control.Cursor = default_Cursor;
+                }
             }
 
             if (mf.useButtonsBorder)
@@ -158,6 +201,7 @@ namespace Nucleus.Coop.Forms
                 btn_Search.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
 
             }
+
             ResumeLayout();
 
             if (mf.mouseClick)
@@ -195,83 +239,79 @@ namespace Nucleus.Coop.Forms
 
             ResumeLayout();
         }
-        private int cover_index = 0;
-        public void Main_Showcase()
+
+        protected override void WndProc(ref Message m)
         {
-            ImageList showcaseCovers = new ImageList
+            const int RESIZE_HANDLE_SIZE = 20;
+            if (this.WindowState == FormWindowState.Normal)
             {
-                ImageSize = new Size(170, 227)
-            };
-
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            ServicePointManager.DefaultConnectionLimit = 9999;
-
-            string rawHandlers = null;
-
-            rawHandlers = Get(api + "allhandlers");
-
-            if (rawHandlers == null)
-            {
-                return;
-            }
-            else if (rawHandlers == "{}")
-            {
-                return;
-            }
-
-            JObject jObject = JsonConvert.DeserializeObject(rawHandlers) as JObject;
-
-            JArray array = jObject["Handlers"] as JArray;
-            handlers = new JArray(array.OrderByDescending(obj => (DateTime)obj["createdAt"]));
-            sortColumn = 0;
-            sortOrder = SortOrder.Ascending;
-
-            for (int i = 0; i < 16; i++)
-            {
-                string GameCover = handlers[i]["gameCover"].ToString();
-                Bitmap bmp = new Bitmap(Properties.Resources.no_image);
-
-                string _cover = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{GameCover}.jpg";
-
-                try
+                switch (m.Msg)
                 {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_cover);
-                    WebResponse resp = request.GetResponse();
-                    Stream respStream = resp.GetResponseStream();
-                    bmp = new Bitmap(respStream);
-                    respStream.Dispose();
-                    showcaseCovers.Images.Add(bmp);
-                }
-                catch (Exception) { }
-            }
-            
-            foreach (Control parent in mainForm.hubShowcase.Controls)
-            {
-                foreach (Control childCon in parent.Controls)
-                {
-                    foreach (Control coverBox in childCon.Controls)
-                    {
-                        Panel coverLayer = new Panel()
+                    case 0x0084/*NCHITTEST*/ :
+                        base.WndProc(ref m);
+
+                        if ((int)m.Result == 0x01/*HTCLIENT*/)
                         {
-                            Location = new Point(0, 0),
-                            Size = new Size(170, 227),
-                            BackgroundImageLayout = ImageLayout.Stretch,
-                            Dock = DockStyle.Fill,
-                            BackColor = Color.Transparent,
-                            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase_cover_layer.png")
-                        };
-
-                        coverBox.BackgroundImage = showcaseCovers.Images[cover_index];
-                        coverBox.Controls.Add(coverLayer);
-                        cover_index++;
-                    }
+                            Point screenPoint = new Point(m.LParam.ToInt32());
+                            Point clientPoint = this.PointToClient(screenPoint);
+                            if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
+                            {
+                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                                    m.Result = (IntPtr)13/*HTTOPLEFT*/ ;
+                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                    m.Result = (IntPtr)12/*HTTOP*/ ;
+                                else
+                                    m.Result = (IntPtr)14/*HTTOPRIGHT*/ ;
+                            }
+                            else if (clientPoint.Y <= (Size.Height - RESIZE_HANDLE_SIZE))
+                            {
+                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                                    m.Result = (IntPtr)10/*HTLEFT*/ ;
+                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                    m.Result = (IntPtr)2/*HTCAPTION*/ ;
+                                else
+                                    m.Result = (IntPtr)11/*HTRIGHT*/ ;
+                            }
+                            else
+                            {
+                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                                    m.Result = (IntPtr)16/*HTBOTTOMLEFT*/ ;
+                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                    m.Result = (IntPtr)15/*HTBOTTOM*/ ;
+                                else
+                                    m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
+                            }
+                        }
+  
+                        return;
                 }
             }
+            Point cursorPos = PointToClient(Cursor.Position);
+            Rectangle inRect = new Rectangle(10, 10, Width - 20, Height - 20);
 
-            mainForm.hubShowcase.Visible = true;
-            handlers.Clear();
+            if (!inRect.Contains(cursorPos))
+            {
+                canResize = true;
+            }
+            else
+            {
+                if (Cursor.Current != default_Cursor)
+                {
+                    Cursor.Current = default_Cursor;
+
+                }
+                canResize = false;
+            }
+
+            if (!canResize)
+            {
+                if (m.Msg == 0x020 || m.Msg == 0x0a0)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messges handling) 
+                {
+                    Cursor.Current = default_Cursor;
+                    return;
+                }
+            }
+            base.WndProc(ref m);
         }
 
         public Handler GetHandler(string id)
@@ -329,7 +369,7 @@ namespace Nucleus.Coop.Forms
                 CurrentVersion = array[0]["currentVersion"].ToString(),
                 CurrentPackage = array[0]["currentPackage"].ToString()
             };
-
+           
             return handler;
         }
 
@@ -438,7 +478,7 @@ namespace Nucleus.Coop.Forms
             return stream;
         }
 
-        private void FetchHandlers(int startIndex)
+        public void FetchHandlers(int startIndex)
         {
             ImageList imageList = new ImageList
             {
@@ -911,5 +951,21 @@ namespace Nucleus.Coop.Forms
                 downloadPrompt.ShowDialog();
             }
         }
+
+        private void ScriptDownloader_ClientSizeChanged(object sender, EventArgs e)
+        {
+            Invalidate();
+            if (mainForm != null)
+           
+            if (mainForm.roundedcorners)
+            {
+                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            }
+            else 
+            {
+                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+            }
+        }
+     
     }
 }

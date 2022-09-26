@@ -21,7 +21,7 @@ namespace Nucleus.Coop.Forms
             GameManager manager = GameManager.Instance;
             foreach (GenericGameInfo game in games)
             {
-                GameControl con = new GameControl(game, null)
+                GameControl con = new GameControl(game, null, false, false)
                 {
                     Width = listGames.Width
                 };
@@ -29,7 +29,7 @@ namespace Nucleus.Coop.Forms
 
                 listGames.Controls.Add(con);
             }
-        }
+        }      
 
         private void Con_Click(object sender, EventArgs e)
         {
@@ -42,5 +42,6 @@ namespace Nucleus.Coop.Forms
             DialogResult = DialogResult.OK;
             Close();
         }
+     
     }
 }

@@ -59,7 +59,7 @@
             // 
             // btn_Extract
             // 
-            this.btn_Extract.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Extract.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_Extract.BackColor = System.Drawing.Color.Transparent;
             this.btn_Extract.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Extract.FlatAppearance.BorderSize = 0;
@@ -74,7 +74,6 @@
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Location = new System.Drawing.Point(12, 53);
@@ -86,7 +85,6 @@
             // 
             // cmb_Sort
             // 
-            this.cmb_Sort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cmb_Sort.BackColor = System.Drawing.Color.White;
             this.cmb_Sort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_Sort.FormattingEnabled = true;
@@ -104,7 +102,6 @@
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Location = new System.Drawing.Point(252, 53);
@@ -116,7 +113,6 @@
             // 
             // cmb_NumResults
             // 
-            this.cmb_NumResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cmb_NumResults.BackColor = System.Drawing.Color.White;
             this.cmb_NumResults.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_NumResults.FormattingEnabled = true;
@@ -134,7 +130,7 @@
             // 
             // btn_Next
             // 
-            this.btn_Next.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Next.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_Next.BackColor = System.Drawing.Color.Transparent;
             this.btn_Next.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Next.Enabled = false;
@@ -150,7 +146,7 @@
             // 
             // btn_Prev
             // 
-            this.btn_Prev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Prev.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_Prev.BackColor = System.Drawing.Color.Transparent;
             this.btn_Prev.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Prev.Enabled = false;
@@ -166,7 +162,6 @@
             // 
             // btn_ViewAll
             // 
-            this.btn_ViewAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_ViewAll.BackColor = System.Drawing.Color.Transparent;
             this.btn_ViewAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_ViewAll.FlatAppearance.BorderSize = 0;
@@ -181,7 +176,6 @@
             // 
             // lbl_Status
             // 
-            this.lbl_Status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_Status.AutoSize = true;
             this.lbl_Status.BackColor = System.Drawing.Color.Transparent;
             this.lbl_Status.Location = new System.Drawing.Point(583, 53);
@@ -192,7 +186,6 @@
             // 
             // chkBox_Verified
             // 
-            this.chkBox_Verified.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkBox_Verified.AutoSize = true;
             this.chkBox_Verified.BackColor = System.Drawing.Color.Transparent;
             this.chkBox_Verified.Checked = true;
@@ -209,7 +202,7 @@
             // 
             // btn_Info
             // 
-            this.btn_Info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Info.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_Info.BackColor = System.Drawing.Color.Transparent;
             this.btn_Info.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Info.Enabled = false;
@@ -225,7 +218,9 @@
             // 
             // list_Games
             // 
-            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.list_Games.AutoArrange = false;
             this.list_Games.BackColor = System.Drawing.Color.Black;
             this.list_Games.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -303,7 +298,6 @@
             // 
             // btn_Search
             // 
-            this.btn_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Search.BackColor = System.Drawing.Color.Transparent;
             this.btn_Search.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Search.FlatAppearance.BorderSize = 0;
@@ -318,7 +312,7 @@
             // 
             // btn_Close
             // 
-            this.btn_Close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Close.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_Close.BackColor = System.Drawing.Color.Transparent;
             this.btn_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Close.FlatAppearance.BorderSize = 0;
@@ -333,7 +327,7 @@
             // 
             // btn_Download
             // 
-            this.btn_Download.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Download.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_Download.BackColor = System.Drawing.Color.Transparent;
             this.btn_Download.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Download.Enabled = false;
@@ -349,7 +343,6 @@
             // 
             // txt_Search
             // 
-            this.txt_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txt_Search.Location = new System.Drawing.Point(56, 12);
             this.txt_Search.Name = "txt_Search";
             this.txt_Search.Size = new System.Drawing.Size(707, 20);
@@ -358,7 +351,6 @@
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Location = new System.Drawing.Point(17, 14);
@@ -391,16 +383,19 @@
             this.Controls.Add(this.btn_Download);
             this.Controls.Add(this.txt_Search);
             this.Controls.Add(this.label4);
-            this.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MinimumSize = new System.Drawing.Size(420, 244);
+            this.MinimumSize = new System.Drawing.Size(862, 472);
             this.Name = "ScriptDownloader";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Download Game Handlers";
+            this.ResizeBegin += new System.EventHandler(this.ScriptDownloader_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.ScriptDownloader_ResizeEnd);
+            this.ClientSizeChanged += new System.EventHandler(this.ScriptDownloader_ClientSizeChanged);
             this.Resize += new System.EventHandler(this.ScriptDownloader_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();

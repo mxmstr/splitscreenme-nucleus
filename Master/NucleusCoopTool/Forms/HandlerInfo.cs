@@ -20,7 +20,8 @@ namespace Nucleus.Coop.Forms
         private MainForm mainForm;
         private List<Control> ctrls = new List<Control>();
         private float fontSize;
-
+        private Cursor  default_Cursor;
+        private Cursor hand_Cursor;
         public void button_Click(object sender, EventArgs e)
         {
             if (mainForm.mouseClick)
@@ -55,7 +56,12 @@ namespace Nucleus.Coop.Forms
 			
             InitializeComponent();
             SuspendLayout();
-			ForeColor = label_foreColor;
+            default_Cursor = mf.default_Cursor;
+            hand_Cursor = mf.hand_Cursor;
+
+            Cursor = default_Cursor;
+
+            ForeColor = label_foreColor;
 
 			btn_Download.BackgroundImage = mf.AppButtons;
             btn_Close.BackgroundImage = new Bitmap(mf.themePath + "\\title_close.png");
@@ -99,6 +105,10 @@ namespace Nucleus.Coop.Forms
             foreach (Control control in ctrls)
             {
                 control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                if(control.GetType() == typeof(Button) || control.Name == "linkLabel_MoreInfo")
+                {
+                    control.Cursor = hand_Cursor;
+                }
             }
 
             ResumeLayout();
@@ -238,7 +248,7 @@ namespace Nucleus.Coop.Forms
             downloadPrompt.ShowDialog();
         }
 
-        private void LinkLabel_MoreInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void Label_MoreInfo_LinkClicked(object sender, EventArgs e)
         {
             Process.Start(Handler.GameUrl);
         }

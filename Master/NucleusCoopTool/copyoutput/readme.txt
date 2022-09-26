@@ -1,4 +1,4 @@
-Nucleus Co-op - version 2.1.1
+Nucleus Co-op - version 2.1.2
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy.
 
@@ -8,7 +8,7 @@ This is a new and improved official version of the Nucleus Co-op application and
 
 1. New and improved options in game handlers:
 
-Note: If you want to create your own handler see the MasterHandler.js inside Nucleus handlers folder and this info.
+Note: If you want to create your own handler also read the MasterHandler.js in Nucleus Co-op handlers folder alongside this info.
 
 #################### Game Info ####################
 
@@ -142,6 +142,7 @@ Game.ExtWindowStyleEndChanges = [ "~0xC00000", "0x8000000" ]; 	//Override Nucleu
 Game.IgnoreWindowBordercheck = false;			//Ignore logic at end to check if any game window still has a border.
 Game.DontRemoveBorders = false;				//Prevents Nucleus from removing game window borders.
 Game.SetTopMostAtEnd = true;                            //Set the game windows to top most at the very end.
+Game.ToggleUnfocusOnInputsLock = true;                  //Automatically unfocus the game windows (gives the focus to the Nucleus window). Works with "Game.LockInputAtStart = true;" too.
 
 #################### Input ####################
 
@@ -256,6 +257,7 @@ Game.FlawlessWidescreenPluginPath 			//(undocumented)
 #################### Network ####################
 
 Game.UseForceBindIP = false;				//Set up game instances with ForceBindIP; each instance having their own IP.
+Game.ForceBindIPNoDummy = false;                        //ForceBindIP will be used without the "dummy" launch argument, the argument prevents crashes but it causes issues in other games.
 Game.ChangeIPPerInstance = false;			//Highly experimental feature, will change your existing network to a static IP for each instance | option in settings to choose your network.
 Game.ChangeIPPerInstanceAlt;				//An alternative method to changing IP per instance | this method will create loopback adapters for each player and assign them a static ip on the same subnet mask as your main network interface.
 
@@ -297,6 +299,7 @@ Game.CMDBatchClose ["cmd1", "cmd2"];			//Run command lines upon exiting Nucleus.
 Game.CMDStartArgsInside = false;			//When using CMDLaunch, should the game's starting arguments be inside the same quotations as the game path?
 Game.ForceGameArch = "x86" (or "x64");			//Force Nucleus to treat the game as 32 or 64-bit architecture.
 Game.SplitDivCompatibility = false;                     //Explicitly disable splitscreen divisons if the game is known to be imcompatible with it.(Does not require to be true for compatible game)Default = true.
+DisablePathCheck=True                                   //Add it to the Nucleus .ini to disable the unsafe installation path warnings.
 
 ~ Custom prompts - Prompt user for input, which can be then used in handlers logic
 
@@ -313,7 +316,7 @@ Game.SaveCustomUserInstanceValues = false;
 Game.SaveAndEditCustomUserInstanceValues = false;
 Access the user input values via Context.CustomUser(General/Player/Instance)Values[index]
 
-2. Support for multiple mice and keyboards (These options are deprecated, see the new Proto Input guide: https://www.splitscreen.me/docs/proto)
+2. Support for multiple mice and keyboards (These are deprecated, see the new Proto Input guide: https://www.splitscreen.me/docs/proto)
 
 Game.SupportsMultipleKeyboardsAndMice = true;
 Game.SendNormalMouseInput = true;
@@ -345,8 +348,9 @@ Game.UpdateFakeMouseWithInternalInput = false;
 #################### Path variables ####################
 
 Context.RootInstallFolder                                   //Path to the source game root folder.
+Context.RootFolder                                          //Path to the Nucleus Co-op instances folders.
 Context.NucleusFolder                                       //Path to the Nucleus Co-op root folder (Nucleus-Coop\).
-Context.ScriptFolder					    //Path to the Nucleus Co-op handlers root folder (Nucleus-Coop\handlers).
+Context.ScriptFolder					    //Path to the game handler folder (Nucleus-Coop\handlers\handler_folder).
 Game.Folder                                                 //Path to the game handler folder (Nucleus-Coop\handlers\handler_folder).
 Context.GetFolder(Nucleus.Folder.InstancedGameFolder)       //Path to the Nucleus Co-op current instance root folder (Nucleus-Coop\content\GUID\Instance#).
 Context.EnvironmentPlayer				    //Path to current players Nucleus environment.
@@ -357,8 +361,9 @@ Context.DocumentsPlayer                                     //Path to current pl
 Context.DocumentsRoot                                       //Path to Nucleus documents environment root folder.
 Context.DocumentsConfigPath                                 //Relative path from user profile to game's config path | requires Game.DocumentsConfigPath be set.
 Context.DocumentsSavePath                                   //Relative path from user profile to game's save path | requires Game.DocumentsSavePath be set.
-Context.NucleusUserRoot                                     //Path to current players Nucleus environment Windows User root folder.
-Context.HandlersFolder                                      //return "NucleusCo-op\handlers" path.
+Context.NucleusUserRoot                                     //Path to current players Nucleus Windows User root folder.
+Context.HandlersFolder                                      //Path to the Nucleus Co-op handlers root folder (Nucleus-Coop\handlers).
+Context.UserName                                            //Current Windows username without the path.
 
 Context.ChangeXmlNodeInnerTextValue(string path, string nodeName, string newValue)		//Edit an XML element (previously only nodes and attributes).
 Context.ReplaceLinesInTextFile(string path, string[] lineNumAndnewValues)			//Replace an entire line; for string array use the format: "lineNum|newValue", the | is required.
@@ -396,6 +401,10 @@ Context.RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, string cus
 Context.ReadRegKey(string baseKey, string sKey, string subKey)					//Return the value of a provided key as a string.
 Context.HandlerGUID
 Context.StartArguments = "";                                                                    //Adds whatever you put into the field as starting parameters for the game's executable in context. For example, in most cases '-windowed' will force windowed mode. Parameters can be chained.
+Context.ProceedSymlink();                                                                       //To use with Game.SymlinkFiles = ["file"]; Can now symlink files inside "Game.Play = function() {}".
+Context.HideDesktop();                                                                          //Same as "Game.HideDesktop = true;" but usable inside "Game.Play = function() {}".
+Context.HideTaskBar();                                                                          //Same as "Game.HideTaskbar = true;" but usable inside "Game.Play = function() {}".
+Context.Wait(int milliseconds);                                                                 //Time to wait between two functions inside "Game.Play = function() {}".
 
 Context.NumberOfPlayers
 
@@ -454,7 +463,47 @@ Known Issues: ------------------------------------------------------------------
 
 Changelog: -----------------------------------------------------------------------------------------
 
-v2.1.1 - May X, 2022
+v2.1.2 - September 26, 2022
+
+ - Fixed (for good) goldberg user_steam_id.txt and account_name.txt being edited when goldberg is not used.
+ - Fixed the process picker list, it was not fully visible/scrollable.
+ - New patching methods using patterns, see MasterHandler.js inside Nucleus Co-op handlers folder.
+ - Reworked the arrows and play button highlighting (buttons will be highlighted now accordingly to the current config step).
+ - Sizable/movable main Nucleus/downloader windows.
+ - Set the settings window a little bit bigger, it was a bit cluttered after the last additions.
+ - Added "Game.ForceBindIPNoDummy" => default false. ForceBindIP will start without the "dummy" launch argument.
+ - Added player steam id format check in settings, can now only type numbers and a message pop up shows if the player steam id length is too short.
+ - Delete cover/screenshots/description/icon path (icons.ini) when a game is deleted from the game list.
+ - Cover and background images will now be updated (on screen) when a game has been selected before downloading the assets instead of keeping the default cover and background until another game is selected.
+ - New "Unfocus" hotkey combo "Ctrl+H".
+ - Added shortcut on the setup screen to access the player settings faster (player steam ids & nicknames).
+ - Added a message when each instance starts showing game name, player nickname, and player number (id+1). Will show for a few seconds and automatically close.
+ - The nickname tab in settings will now be populated with the default nicknames (player1, players2 etc).
+ - Added app version in the crash report window + error report enhancements.
+ - Added new line "Game.ToggleUnfocusOnInputsLock = true;" to automatically unfocus the game windows (gives focus to the Nucleus window), works with "Game.LockInputAtStart = true;" too.
+ - Merged "split division" background window and the "Hide desktop" window will now be minimized/restored when using the CTRL+T shortcut (Toggle top most hotkey) accordingly to the game windows.
+ - Added new line "Context.HideDesktop();" same as "Game.HideDesktop = true;" but usable in "Game.Play = function() {}". The PlayerID is checked in the function so no need to worry about it in the handler.
+ - Added Context.HideTaskBar(); same as the regular one but usable in "Game.Play = function() {}".
+ - Nucleus will now delete the game content folder on game selection (if `Game.KeepSymLinkOnExit` is false or not present in the handler) to avoid crashing after a previous crash, it will also check if any file has been locked (set to read only) and try to unlock it, if it fails a prompt will show and explain what to do to fix it.
+ - New handler update method. Handlers can now be updated from the game options menu without having to re-select the game exe path. 
+ - Moved the connection state check (hub) earlier so the app will take fewer seconds to appear on screen.
+ - Some UI changes.
+ - Added Favorite Games feature.
+ - Added classic and macstyle themes, select between them in Nucleus Co-op settings theme option and click save, macstyle theme by V and classic theme by Vortex and Talos91 with cover by Altissimo. 
+ - Unfocus the Nucleus Co-op "Stop" button when a handler starts to avoid stopping the session accidentally.
+ - Disabled lock key until a game instance starts.
+ - Changed input dropping order to reflect the instances (players) launch order.
+ - Changed the input icons sorting in the setup screen (now dynamic & by input type).
+ - Fixed the screen "priority" issue when starting a handler using multiple screens setup. There's a number at top right of each screen to show the startup order. The index on the screen will only show if there is more than one connected screen. 
+ - Some scaling improvements (auto search game window, settings). 
+ - Added Context.Wait(int milliseconds); time to wait between two functions inside "Game.Play = function() {}".
+ - Fixed Nucleus Co-op not closing correctly with Ctrl+Q in some cases.
+ - Added Context.UserName, gets the current Windows username. 
+ - Added a list of the default Player Steam IDs used by Nucleus to the settings "Players" tab.
+ - New customizable cursors.
+ - New unsafe path warning for handlers that use Game.LaunchAsDifferentUsers = true; will show in the setup screen, same for the admin rights warning now.
+
+v2.1.1 - May 24, 2022
 
  - Added Steamless command line version support: "Game.UseSteamless = true;", "Game.SteamlessArgs = "";", "Game.SteamlessTiming = 2500;". 
  - Fixed nicknames not working when using "Game.GoldbergExperimentalSteamClient = true;".
@@ -619,12 +668,10 @@ v0.9.9.9 r4 - April 12, 2020
 - Number of other bug fixes
 - Minor tweaks/changes
 
-
 v0.9.9.9 r3 - March 26, 2020
 - Fixes and improvements to Game.LaunchAsDifferentUsers
 - Fixed error message on the controller layout screen when using dinput / xinput reroute
 - Fixed context aspect ratio decimals
-
 
 v0.9.9.9 r2 - March 25, 2020
 - Can now view all public scripts in Script Downloader and sort columns by ascending/descending order
@@ -647,7 +694,6 @@ v0.9.9.9 r2 - March 25, 2020
 - Fix for raw input filter / reregister raw input not working [thanks to @Ilyaki]
 - Fixed some objects weren't being properly disposed
 
-
 v0.9.9.9 f1 - March 15, 2020
 - Added an option in game scripts to create only one file for HID devices per instance (the assigned HID device). This is a workaround for Unity games that use default input
 - Added an option in game scripts to enable the minimize, and restore of game window at the end (now off by default, only few games are known to need it atm)
@@ -657,7 +703,6 @@ v0.9.9.9 f1 - March 15, 2020
 - Only copy from AppData folder to Nucleus Environment if Nucleus Environment is being used
 - Re-enabled debug log header
 - Minor tweaks/bug fixes
-
 
 v0.9.9.9 - March 7, 2020
 - Nucleus now supports multiple Mice and Keyboards [thanks to @Ilyaki]
@@ -698,7 +743,6 @@ v0.9.9.9 - March 7, 2020
 - Fixed a bug with PreventWindowDeactivation causing input to not work for some users
 - Fixed some bugs with HexEditFileAddress and HexEditExeAddress
 - Fixed architecture displayed in UI script details
-
 
 v0.9.9.1 - February 5, 2020
 - Updated logic for LauncherExe. The file name in this field will now be launched via Nucleus but ExecutableName will be used to resize, reposition and hook. Launchers will no longer be looked for when grabbing process to manipulate. LauncherExe will be used for hex editing exes and change exes.
@@ -748,7 +792,6 @@ v0.9.9 - January 22, 2020
 - Fixed "Process is not running" crashes when using start up hooks
 - Fixed KeepAspectRatio not resizing correctly, windows will now be horizontally centered as well (to player bounds)
 - Fixed crash when SymlinkGame is false
-
 
 v0.9.8.2 - December 8, 2019
 - Hook code has been cleaned up and some lingering issues with Easyhook in the past have been resolved *Thanks to @Ilyaki
@@ -942,8 +985,8 @@ Original Nucleus Co-op Project: Lucas Assis (lucasassislar).
 Nucleus Co-op Alpha 8 Mod : ZeroFox.
 Proto Input, USS, multiple keyboards/mice & hooks: Ilyaki.
 Website & handler API: r-mach.
-Handlers development and general testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more.
-Nucleus Co-op 2.0+ UI assets creation: dr.oldboi, Mikou27, PoundlandBacon.
+Handlers development, Nucleus Co-op general testing, feedback and improvement: Talos91, PoundlandBacon, Pizzo, Maxine, Zensuu and many more.
+Nucleus Co-op 2.0+ UI assets creation: Maxine, Mikou27, PoundlandBacon.
 
 Additional credits to all the original developers of the third party utilities Nucleus Co-op uses:
 Mr_Goldberg (Goldberg Emulator), syahmixp (SmartSteamEmu), atom0s (Steamless), EJocys (x360ce), 0dd14 Lab (Xinput Plus), r1ch (ForceBindIP), HaYDeN (Flawless Widescreen), briankendall (devreorder), VerGreeneyes (DirectXWrapper), wizark952 (dinput8 blocker), Nemirtingas (Epic\Galaxy Emulator & OpenXinput), Josivan88 (SplitCalculator).

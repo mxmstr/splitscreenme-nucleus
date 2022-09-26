@@ -20,7 +20,6 @@ namespace Nucleus.Gaming
 
         protected virtual void RemoveFlicker()
         {
-                
                 SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.UserPaint |

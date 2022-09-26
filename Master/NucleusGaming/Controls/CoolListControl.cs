@@ -16,6 +16,8 @@ namespace SplitTool.Controls
         private Color userLeaveBackColor;
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
 
         public string Title
         {
@@ -39,14 +41,16 @@ namespace SplitTool.Controls
 
             string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
             IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-
+            string themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
             string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
             string[] rgb_CoollistInitialColor = theme.IniReadValue("Colors", "Selection").Split(',');
             string customFont = theme.IniReadValue("Font", "FontFamily");
-
             userOverBackColor = Color.FromArgb(Convert.ToInt32(Convert.ToInt32(rgb_MouseOverColor[0])), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
             userLeaveBackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
-          
+
+            default_Cursor = new Cursor(themePath + "\\cursor.ico");
+            Cursor = default_Cursor;
+
             Anchor = AnchorStyles.Top|AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
            
@@ -64,6 +68,7 @@ namespace SplitTool.Controls
             Controls.Add(descLabel);
             DPIManager.Register(this);
         }
+
         public void UpdateSize(float scale)
         {
             if (IsDisposed)

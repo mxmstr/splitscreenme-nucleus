@@ -11,7 +11,8 @@ namespace Nucleus.Gaming.Coop
         private List<GameProfile> profiles;
         private string exePath;
         private string gameGuid = "";
-      
+        private bool favorite = false;
+
         [JsonIgnore]
         public GenericGameInfo Game
         {
@@ -49,6 +50,12 @@ namespace Nucleus.Gaming.Coop
         {  
             get => exePath;
             set => exePath = value;
+        }
+
+        public bool Favorite
+        {
+            get => favorite;
+            set => favorite = value;
         }
 
         public UserGameInfo()

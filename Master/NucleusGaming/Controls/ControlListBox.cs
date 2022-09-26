@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Nucleus.Coop;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
@@ -12,7 +15,7 @@ namespace Nucleus.Gaming
         public event Action<object, Control> SelectedChanged;
         public Size Offset { get; set; }
         public Control SelectedControl { get; protected set; }
-
+        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         public int Border
         {
             get => border;
@@ -21,12 +24,14 @@ namespace Nucleus.Gaming
 
         public ControlListBox()
         {
+            
             AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             HorizontalScroll.Maximum = 0;
             VerticalScroll.Visible = false;
             AutoScroll = true;
             DoubleBuffered = true;
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+           
         }
 
         public override bool AutoScroll
@@ -86,7 +91,6 @@ namespace Nucleus.Gaming
                 UpdateSizes(); // need to update again
                 VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
             }
-
         }
 
         private void C_SizeChanged(object sender, EventArgs e)
@@ -120,8 +124,6 @@ namespace Nucleus.Gaming
                 totalHeight += s.Height + border;
             }
         }
-
-
 
         private void C_ControlAdded(object sender, ControlEventArgs e)
         {

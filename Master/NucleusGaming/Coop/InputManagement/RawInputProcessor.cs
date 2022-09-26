@@ -1,6 +1,7 @@
 ﻿using Nucleus.Gaming.Coop.BasicTypes;
 using Nucleus.Gaming.Coop.InputManagement.Enums;
 using Nucleus.Gaming.Coop.InputManagement.Structs;
+using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -380,6 +381,16 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
         }
 
+        private void ToggleUnfocus()
+        {
+            IntPtr nucHwnd = User32Interop.FindWindow(null, "Nucleus Co-op");
+
+            if (nucHwnd != IntPtr.Zero)
+            {
+                User32Interop.SetForegroundWindow(nucHwnd);
+            }
+        }
+
         public void Process(IntPtr hRawInput)
         {
             if (-1 == WinApi.GetRawInputData(hRawInput, DataCommand.RID_INPUT, out rawBuffer, ref rawBufferSize, rawInputHeaderSize))
@@ -408,7 +419,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
             catch (Exception)// ex)
             {
-                Console.WriteLine("Iteration failed");
+                //Console.WriteLine("Iteration failed");
                 return;
             }
 
@@ -422,7 +433,19 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     Debug.WriteLine("Lock input key pressed");
                     if (!LockInput.IsLocked)
                     {
+                        if (CurrentGameInfo == null || CurrentGameInfo.Play == null)
+                        {
+                            return;
+                        }
+
                         LockInput.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
+                        
+                        if (CurrentGameInfo.ToggleUnfocusOnInputsLock)
+                        {
+                            ToggleUnfocus();
+                            Debug.WriteLine("Toggle Unfocus");
+                        }
+                          
                     }
                     else
                     {

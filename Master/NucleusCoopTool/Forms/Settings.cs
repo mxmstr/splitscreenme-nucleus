@@ -13,6 +13,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -31,6 +32,7 @@ namespace Nucleus.Coop
         public int KillProcess_HotkeyID = 1;
         public int TopMost_HotkeyID = 2;
         public int StopSession_HotkeyID = 3;
+        public int SetFocus_HotkeyID = 4;
         private float fontSize;
         private List<Control> ctrls = new List<Control>();
         private DirectInput dinput;
@@ -38,6 +40,8 @@ namespace Nucleus.Coop
         private string epicLang;
         private string epicLangText;
         private string prevTheme;
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -93,27 +97,39 @@ namespace Nucleus.Coop
             InitializeComponent();
             
             SuspendLayout();
-            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-            tabControl2.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, tabControl2.Width, tabControl2.Height, 5, 5));
+
+            default_Cursor = mf.default_Cursor;
+            Cursor = default_Cursor;
+            hand_Cursor = mf.hand_Cursor;
+
+            if (mf.roundedcorners)
+            {
+                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            }
+
+            settingsTab_Group.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, settingsTab_Group.Width, settingsTab_Group.Height, 5, 5));
             Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
             Visible = false;
-            //form Fore Color
+           
             controlscollect();
 
             foreach (Control control in ctrls)
             {
                 control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                control.Cursor = hand_Cursor;
             }
            
             ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
-            //
-            BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-          
-            tabPage1.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-            tabPage3.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-            tabPage4.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-            tabPage5.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
-            //setting_Label.BackgroundImage = mf.AppButtons;
+            plus1.ForeColor = ForeColor;
+            plus2.ForeColor = ForeColor;
+            plus3.ForeColor = ForeColor;
+            plus4.ForeColor = ForeColor;
+   
+            BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");          
+            audioTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
+            settingsTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
+            layoutTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
+            playerTab.BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
             btn_credits.BackgroundImage = mf.AppButtons;
             settingsCloseBtn.BackgroundImage = mf.AppButtons;
             settingsSaveBtn.BackgroundImage = mf.AppButtons;
@@ -123,7 +139,6 @@ namespace Nucleus.Coop
             btn_credits.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             settingsCloseBtn.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             settingsSaveBtn.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            //btn_Refresh.BackColor = mf.MouseOverBackColor;
             audioRefresh.BackColor = mf.MouseOverBackColor;
 
             if (mf.useButtonsBorder)
@@ -138,8 +153,16 @@ namespace Nucleus.Coop
 
             controllerNicks = new ComboBox[] { controllerOneNick, controllerTwoNick, controllerThreeNick, controllerFourNick, controllerFiveNick, controllerSixNick, controllerSevenNick, controllerEightNick, controllerNineNick, controllerTenNick, controllerElevenNick, controllerTwelveNick, controllerThirteenNick, controllerFourteenNick, controllerFifteenNick, controllerSixteenNick };
             steamIds = new ComboBox[] { steamid1, steamid2, steamid3, steamid4, steamid5, steamid6, steamid7, steamid8, steamid9, steamid10, steamid11, steamid12, steamid13, steamid14, steamid15, steamid16};
-
+         
             ResumeLayout();
+
+            foreach (Control stmId in playerTab.Controls)
+            {
+                if (stmId.Name.Contains("steamid") && stmId.GetType() == typeof(ComboBox))
+                {
+                    stmId.KeyPress += new KeyPressEventHandler(this.steamid_KeyPress);
+                }
+            }
 
             prevTheme = mf.ChoosenTheme;
 
@@ -276,7 +299,7 @@ namespace Nucleus.Coop
             {
                 cmb_Network.SelectedIndex = 0;
             }
-
+         
             if (ini.IniReadValue("Misc", "SteamLang") != "")
             {
                 cmb_Lang.Text = ini.IniReadValue("Misc", "SteamLang");
@@ -294,7 +317,7 @@ namespace Nucleus.Coop
             {
                 cmb_EpicLang.SelectedIndex = 0;
             }
-
+            
             if (ini.IniReadValue("Hotkeys", "Close").Contains('+'))
             {
                 string[] closeHk = ini.IniReadValue("Hotkeys", "Close").Split('+');
@@ -331,6 +354,36 @@ namespace Nucleus.Coop
                     settingsTopCmb.SelectedItem = topHk[0];
                     settingsTopTxt.Text = topHk[1];
                 }
+            }
+
+
+            if (ini.IniReadValue("Hotkeys", "Stop").Contains('+'))
+            {
+                string[] stopHk = ini.IniReadValue("Hotkeys", "Stop").Split('+');
+                if ((stopHk[0] == "Ctrl" || stopHk[0] == "Alt" || stopHk[0] == "Shift") && stopHk[1].Length == 1 && Regex.IsMatch(stopHk[1], @"^[a-zA-Z0-9]+$"))
+                {
+                    settingsStopCmb.SelectedItem = stopHk[0];
+                    settingsStopTxt.Text = stopHk[1];
+                }
+            }
+            else
+            {
+                ini.IniWriteValue("Hotkeys", "Stop", "");
+            }
+
+
+            if (ini.IniReadValue("Hotkeys", "SetFocus").Contains('+'))
+            {
+                string[] foreground = ini.IniReadValue("Hotkeys", "SetFocus").Split('+');
+                if ((foreground[0] == "Ctrl" || foreground[0] == "Alt" || foreground[0] == "Shift") && foreground[1].Length == 1 && Regex.IsMatch(foreground[1], @"^[a-zA-Z0-9]+$"))
+                {
+                    settingsFocusCmb.SelectedItem = foreground[0];
+                    settingsFocusHKTxt.Text = foreground[1];
+                }
+            }
+            else
+            {
+                ini.IniWriteValue("Hotkeys", "SetFocus", "");
             }
 
             //Controll
@@ -389,11 +442,13 @@ namespace Nucleus.Coop
             {
                 audioCustomSettingsRadio.Checked = true;
             }
-           
-            RefreshAudioList();
 
+            //default steam id list
+            def_sid_comboBox.SelectedIndex = 0;
+
+            RefreshAudioList();
+            
             DPIManager.Register(this);
-           // DPIManager.AddForm(this);
             DPIManager.Update(this);
 
         }
@@ -410,29 +465,40 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
+
             SuspendLayout();
 
             if (scale > 1.0F)
             {
-
                 float newTabsSize = (Font.Size - 2.0f) * scale;
                 float newFontSize = Font.Size * scale;
 
-                tabControl2.Font = new Font(mainForm.customFont, newTabsSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-
-                foreach (Control c in tabPage3.Controls)
+                settingsTab_Group.Font = new Font(mainForm.customFont, newTabsSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                
+                foreach (Control c in playerTab.Controls)
                 {
-                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox))
+                    if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
                     }
+                    else if (c.GetType() == typeof(Button))
+                    {
+                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
                 }
 
-                foreach (Control c in tabPage1.Controls)
+                foreach (Control c in settingsTab.Controls)
                 {
-                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox))
+                    if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox)|| c.GetType() == typeof(GroupBox))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+
+                foreach (Control c in audioTab.Controls)
+                {
+                    if (c.GetType() == typeof(NumericUpDown)|| c.GetType() == typeof(ComboBox)|| c.GetType() == typeof(TextBox)|| c.GetType() == typeof(GroupBox))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
@@ -442,61 +508,76 @@ namespace Nucleus.Coop
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
 
-                    else if (c.GetType() == typeof(Label) ^ c.GetType() == typeof(RadioButton) ^ c.GetType() == typeof(Button))
+                    else if (c.GetType() == typeof(Label)|| c.GetType() == typeof(RadioButton)|| c.GetType() == typeof(Button))
                     {
                         c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
                 }
+
                 foreach (Control c in audioCustomSettingsBox.Controls)
                 {
                     if (c.GetType() == typeof(Label))
                     {
                         c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
+
+                    if (c.GetType() == typeof(ComboBox))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
                 }
 
-                foreach (Control c in groupBox1.Controls)
+                foreach (Control c in hotkeyBox.Controls)
                 {
                     if (c.GetType() == typeof(Label))
                     {
                         c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
-                }
 
-
-                foreach (Control c in tabPage4.Controls)
-                {
-                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox) ^ c.GetType() == typeof(Panel))
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
+                        c.Size = new Size(c.Width , (c.Height + 25) * (int)scale);
                     }
-
                 }
-                foreach (Control c in tabPage5.Controls)
+
+                foreach (Control c in layoutTab.Controls)
                 {
-                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox))
+                    if ( c.GetType() == typeof(ComboBox)|| c.GetType() == typeof(TextBox)|| c.GetType() == typeof(GroupBox)|| c.GetType() == typeof(Panel))
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
                     }
 
-                    else if (c.GetType() == typeof(Button))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    if (c.GetType() == typeof(NumericUpDown))
+                    {                    
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Bold, GraphicsUnit.Point, 0);
                     }
-
                 }
+                
+                nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
             }
+
+
+            settingLabel_Container.Location = new Point((Width / 2) - (settingLabel_Container.Width / 2), settingLabel_Container.Location.Y);
+            IdExample_Label.Location = new Point((playerTab.Width / 2) - (IdExample_Label.Width / 2), IdExample_Label.Location.Y);
+            def_sid_textBox_container.Location = new Point((playerTab.Width / 2) - (def_sid_textBox_container.Width / 2), def_sid_textBox_container.Location.Y);
+            slitWarning_Label.Location = new Point((settingsTab_Group.Width / 2) - (slitWarning_Label.Width / 2), slitWarning_Label.Location.Y);
+            audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
+            password_Label.Location = new Point((passwordPanel.Width / 2) - (password_Label.Width / 2), password_Label.Location.Y);
+            label38.Location = new Point((hotkeyBox.Width / 2) - (label38.Width / 2), label38.Location.Y);
 
             ResumeLayout();
         }
 
-        //protected override void OnShown(EventArgs e)
-        //{
-        //    base.OnShown(e);
-        //    DPIManager.Register(this);
-        //}
+        private void steamid_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+        }
 
         private void GetPlayersNickName()
         {
@@ -529,15 +610,18 @@ namespace Nucleus.Coop
                 ini.IniWriteValue("Hotkeys", "Close", settingsCloseCmb.SelectedItem.ToString() + "+" + settingsCloseHKTxt.Text);
                 ini.IniWriteValue("Hotkeys", "Stop", settingsStopCmb.SelectedItem.ToString() + "+" + settingsStopTxt.Text);
                 ini.IniWriteValue("Hotkeys", "TopMost", settingsTopCmb.SelectedItem.ToString() + "+" + settingsTopTxt.Text);
+                ini.IniWriteValue("Hotkeys", "SetFocus", settingsFocusCmb.SelectedItem.ToString() + "+" + settingsFocusHKTxt.Text);///
 
                 User32Interop.UnregisterHotKey(mainForm.Handle, KillProcess_HotkeyID);
                 User32Interop.UnregisterHotKey(mainForm.Handle, TopMost_HotkeyID);
                 User32Interop.UnregisterHotKey(mainForm.Handle, StopSession_HotkeyID);
+                User32Interop.UnregisterHotKey(mainForm.Handle, SetFocus_HotkeyID);
 
                 User32Interop.RegisterHotKey(mainForm.Handle, KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(mainForm.Handle, TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(mainForm.Handle, StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
-
+                User32Interop.RegisterHotKey(mainForm.Handle, SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
+               
                 for (int i = 0; i < controllerNicks.Length; i++)
                 {
                     ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
@@ -545,7 +629,15 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < steamIds.Length; i++)
                 {
-                    ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
+                    if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0)
+                    {
+                        ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
+                    }
+                    else 
+                    {
+                        MessageBox.Show("Must be 17 numbers e.g. 76561199075562883 ", "Incorrect steam id format!");
+                        return;
+                    }
                 }
 
                 nicksList.Clear();
@@ -630,7 +722,8 @@ namespace Nucleus.Coop
                 if (themeCbx.SelectedItem.ToString() != prevTheme)
                 {
                     ini.IniWriteValue("Theme", "Theme", themeCbx.SelectedItem.ToString());
-                    
+                    mainForm.themeSwith = true;
+                    Thread.Sleep(200);
                     Application.Restart();
                 }
             }
@@ -677,6 +770,7 @@ namespace Nucleus.Coop
                 User32Interop.RegisterHotKey(form.Handle, KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(form.Handle, TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(form.Handle, StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
             }
             catch (Exception ex)
             {
@@ -711,6 +805,13 @@ namespace Nucleus.Coop
              && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
+        private void SettingsFocusTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            settingsTopTxt.Text = "";
+            e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
+             && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
         private void Btn_Refresh_Click(object sender, EventArgs e)
         {
             GetPlayersNickName();
@@ -724,7 +825,7 @@ namespace Nucleus.Coop
                "\nNew Nucleus Co-op fork: ZeroFox" +
                "\nMultiple keyboards / mice & hooks: Ilyaki" +
                "\nWebsite & handler API: r - mach" +
-               "\nNew UI design & bug fixes: nene27(Mikou27)" +
+               "\nNew UI design & bug fixes: Mikou27(nene27)" +
                "\nHandlers development & testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more." +
                "\nThis new & improved Nucleus Co-op brings a ton of enhancements, such as:" +
                "\n- Massive increase to the amount of compatible games, 400 + as of now." +
@@ -737,14 +838,14 @@ namespace Nucleus.Coop
         private void NumHorDiv_ValueChanged(object sender, EventArgs e)
         {    
             layoutSizer.Invalidate();
-            tabControl2.TabPages[1].Invalidate();
+            settingsTab_Group.TabPages[1].Invalidate();
             numMaxPlyrs.Value = (numHorDiv.Value + 1) * (numVerDiv.Value + 1);
         }
 
         private void NumVerDiv_ValueChanged(object sender, EventArgs e)
         {         
             layoutSizer.Invalidate();
-            tabControl2.TabPages[1].Invalidate();
+            settingsTab_Group.TabPages[1].Invalidate();
             numMaxPlyrs.Value = (numHorDiv.Value + 1) * (numVerDiv.Value + 1);
         }
 
@@ -759,7 +860,6 @@ namespace Nucleus.Coop
             int LayoutWidth = layoutSizer.Size.Width - 20;
             int LayoutPosX = layoutSizer.Location.X + 10;
             int LayoutPosY = layoutSizer.Location.Y + 10;
-
 
             Rectangle outline = new Rectangle(10, 10, LayoutWidth, LayoutHeight);
             // Rectangle outline = new Rectangle(370, 45, 360, 240);
@@ -868,7 +968,7 @@ namespace Nucleus.Coop
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl2.SelectedTab.Text == "Audio")
+            if (settingsTab_Group.SelectedTab.Text == "Audio")
             {
                 RefreshAudioList();
                 MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
@@ -956,7 +1056,6 @@ namespace Nucleus.Coop
             {
                 ini.IniWriteValue("Misc", "AutoDesktopScaling", "False");
             }
-
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.ProtoInput;
+using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,6 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace Nucleus.Gaming
@@ -75,7 +79,7 @@ namespace Nucleus.Gaming
         //public bool UseAlpha8CustomDll;
         public bool bHasKeyboardPlayer;
         public bool KeepAspectRatio;
-        public bool HideDesktop;
+        //public bool HideDesktop;
         //public int FakeFocusInterval;
         public bool ResetWindows;
         public bool UseGoldberg;
@@ -275,6 +279,17 @@ namespace Nucleus.Gaming
             }
         }
 
+        public bool _hideTaskBar;
+        public void HideTaskBar()
+        {
+            if (PlayerID > 0)
+            {
+                return;
+            }
+
+            User32Util.HideTaskbar();
+            _hideTaskBar = true;
+        }
 
         private string epicLang;
         public string EpicLang
@@ -322,6 +337,15 @@ namespace Nucleus.Gaming
                     }
                 }
                 return epicLang;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+               Environment.UserName.Trim('\\').Last();
+               return Environment.UserName.Trim();
             }
         }
 
@@ -501,6 +525,60 @@ namespace Nucleus.Gaming
             pInfo.ProtoController4 = controller4;
         }
 
+        public void HideDesktop()
+        {
+            if (PlayerID > 0)
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+                string splitDivisionBackColor = ini.IniReadValue("CustomLayout", "SplitDivColor");
+                Color ChoosenColor = Color.Black;
+
+                IDictionary<string, Color> splitColors = new Dictionary<string, Color>();
+
+                splitColors.Add("Black", Color.Black);
+                splitColors.Add("Gray", Color.DimGray);
+                splitColors.Add("White", Color.White);
+                splitColors.Add("Dark Blue", Color.DarkBlue);
+                splitColors.Add("Blue", Color.Blue);
+                splitColors.Add("Purple", Color.Purple);
+                splitColors.Add("Pink", Color.Pink);
+                splitColors.Add("Red", Color.Red);
+                splitColors.Add("Orange", Color.Orange);
+                splitColors.Add("Yellow", Color.Yellow);
+                splitColors.Add("Green", Color.Green);
+
+                foreach (KeyValuePair<string, Color> color in splitColors)
+                {
+                    if (color.Key == splitDivisionBackColor)
+                    {
+                        ChoosenColor = color.Value;
+                    }
+                }
+
+                foreach (Screen screen in Screen.AllScreens)
+                {
+                    Form backgroundForm = new Form
+                    {
+                        Name = "SplitForm",
+                        Text = "SplitForm",
+                        BackColor = ChoosenColor,
+                        Location = new Point(0, 0),
+                        Width = screen.WorkingArea.Size.Width,
+                        Height = screen.WorkingArea.Size.Height + 50,
+                        FormBorderStyle = FormBorderStyle.None,
+                        StartPosition = FormStartPosition.Manual
+                    };
+
+                    backgroundForm.ShowDialog();//Show() make it crash
+                }
+            });
+        }
+
         public void BackupFile(string filePath, bool overwrite)
         {
             if (pInfo.PlayerID == 0)
@@ -592,7 +670,7 @@ namespace Nucleus.Gaming
         {
             return BitConverter.GetBytes(num);
         }
-
+       
         public byte[] ConvertToBytes(int num)
         {
             return BitConverter.GetBytes(num);
@@ -719,6 +797,7 @@ namespace Nucleus.Gaming
                 }
             }
         }
+
         public void RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, string customText, int secondsToPauseInbetween, bool showFilePath, bool runAsAdmin, bool promptBetween, bool confirm)
         {
             for (int fileIndex = 0; fileIndex < filePaths.Length; fileIndex++)
@@ -1337,6 +1416,8 @@ namespace Nucleus.Gaming
             }
         }
 
+      
+
         public void PatchFileFindAll(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
         {
             // Read file bytes.
@@ -1387,6 +1468,167 @@ namespace Nucleus.Gaming
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);
         }
+
+        public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, string patchPattern, bool patchall) // 2.1.2
+        {
+            Log("Patching file");
+            //Format original hex pattern
+            string formatedOrigPattern = origPattern.Replace(" ", "");
+
+            byte[] origBytePattern = new byte[formatedOrigPattern.Length / 2];
+
+            for (int i = 0, h = 0; h < formatedOrigPattern.Length; i++, h += 2)
+            {
+                origBytePattern[i] = (byte)Int32.Parse(formatedOrigPattern.Substring(h, 2), System.Globalization.NumberStyles.HexNumber);
+            }
+
+            //Format patch hex pattern
+            string formatedPatchPattern = patchPattern.Replace(" ", "");
+
+            byte[] patchBytePattern = new byte[formatedPatchPattern.Length / 2];
+
+            for (int i = 0, h = 0; h < formatedPatchPattern.Length; i++, h += 2)
+            {
+                patchBytePattern[i] = (byte)Int32.Parse(formatedPatchPattern.Substring(h, 2), System.Globalization.NumberStyles.HexNumber);
+            }
+            
+            string checkpatchBytePattern = BitConverter.ToString(patchBytePattern).Replace("-", " ");
+
+            byte[] fileContent = File.ReadAllBytes(originalFile);
+
+            for (int p = 0; p < fileContent.Length; p++)
+            {
+
+                if (p + origBytePattern.Length > fileContent.Length)
+                {
+                    continue;
+                }
+
+                bool toContinue = false;
+                for (int i = 0; i < origBytePattern.Length; i++)
+                {
+                    if (origBytePattern[i] != fileContent[p + i])
+                    {
+                        toContinue = true;
+                        break;
+                    }
+                }
+
+                if (toContinue)
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < origBytePattern.Length; i++)
+                {
+                    if (fileContent[p + i] == origBytePattern[i])
+                    {
+                        fileContent[p + i] = patchBytePattern[i];
+
+                        if (!patchall)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            // Save it to another location.
+            File.WriteAllBytes(patchedFile, fileContent);
+            Log("Patching finished");
+        }
+
+       public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, int insert, int offset, bool patchall) // 2.1.2
+        {
+            Log("Patching file");
+            //Format original hex pattern
+            string formatedOrigPattern = origPattern.Replace(" ", "");
+
+            byte[] origBytePattern = new byte[formatedOrigPattern.Length / 2];
+
+            for (int i = 0, h = 0; h < formatedOrigPattern.Length; i++, h += 2)
+            {
+                origBytePattern[i] = (byte)Int32.Parse(formatedOrigPattern.Substring(h, 2), System.Globalization.NumberStyles.HexNumber);
+            }
+
+            //Format patch hex pattern
+            string formatedPatchPattern = origPattern.Replace(" ", "");
+
+            byte[] patchBytePattern = new byte[formatedPatchPattern.Length / 2];
+
+            for (int i = 0, h = 0; h < formatedPatchPattern.Length; i++, h += 2)
+            {
+                patchBytePattern[i] = (byte)Int32.Parse(formatedPatchPattern.Substring(h, 2), System.Globalization.NumberStyles.HexNumber);
+            }
+
+            byte[] insertdef = BitConverter.GetBytes(insert);
+            byte[] formatedInsert = new byte[] {insertdef[0], insertdef[1]};
+            
+            string insertStr = BitConverter.ToString(formatedInsert).Replace("-", " ");
+
+            int _offset = offset - 1;
+
+            for (int i = 0; i < formatedInsert.Length; i++)
+            {
+                patchBytePattern[_offset] = formatedInsert[i];
+                _offset++;
+            }
+
+            string checkpatchBytePattern = BitConverter.ToString(patchBytePattern).Replace("-", " ");
+           
+            byte[] fileContent = File.ReadAllBytes(originalFile);
+
+            for (int p = 0; p < fileContent.Length; p++)
+            {
+
+                if (p + origBytePattern.Length > fileContent.Length)
+                {
+                    continue;
+                }
+
+                bool toContinue = false;
+                for (int i = 0; i < origBytePattern.Length; i++)
+                {
+                    if (origBytePattern[i] != fileContent[p + i])
+                    {
+                        toContinue = true;
+                        break;
+                    }
+                }
+
+                if (toContinue)
+                {
+                    continue;
+                }
+
+                bool patchFirst = false;
+                for (int i = 0; i < origBytePattern.Length; i++)
+                {
+                    if (fileContent[p + i] == origBytePattern[i])
+                    {
+                        fileContent[p + i] = patchBytePattern[i];
+
+                        if (!patchall && i == origBytePattern.Length - 1)
+                        {
+                            patchFirst = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (patchFirst)
+                {
+                    break;
+                }
+
+            }
+
+            // Save it to another location.
+            File.WriteAllBytes(patchedFile, fileContent);
+            Log("Patching finished");
+        }
+
 
         public void PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
         {
@@ -1724,6 +1966,7 @@ namespace Nucleus.Gaming
             }
             key.Close();
         }
+
         public void EditRegKeyNoBackup(string baseKey, string sKey, string subKey, object value, RegType regType)
         {
             if ((baseKey != "HKEY_LOCAL_MACHINE" && baseKey != "HKEY_CURRENT_USER" && baseKey != "HKEY_USERS") || value == null)
@@ -1784,6 +2027,12 @@ namespace Nucleus.Gaming
             {
                 p.Kill();
             }
+        }
+
+        public void Wait(int wait)
+        {
+            Log(string.Format("Pausing for "+ (double)wait/(double)1000 +" seconds"));
+            Thread.Sleep(wait);
         }
 
         public void KillProcessesMatchingProcessName(string name)

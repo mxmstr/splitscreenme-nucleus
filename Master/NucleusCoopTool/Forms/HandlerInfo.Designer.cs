@@ -36,7 +36,7 @@ namespace Nucleus.Coop.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HandlerInfo));
-            this.linkLabel_MoreInfo = new System.Windows.Forms.LinkLabel();
+            this.linkLabel_MoreInfo = new System.Windows.Forms.Label();
             this.txt_Updated = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.txt_Created = new System.Windows.Forms.TextBox();
@@ -64,11 +64,10 @@ namespace Nucleus.Coop.Forms
             // 
             // linkLabel_MoreInfo
             // 
-            this.linkLabel_MoreInfo.ActiveLinkColor = System.Drawing.Color.LawnGreen;
             this.linkLabel_MoreInfo.AutoSize = true;
-            this.linkLabel_MoreInfo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkLabel_MoreInfo.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel_MoreInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel_MoreInfo.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.linkLabel_MoreInfo.ForeColor = System.Drawing.Color.Aqua;
             this.linkLabel_MoreInfo.Location = new System.Drawing.Point(504, 25);
             this.linkLabel_MoreInfo.Name = "linkLabel_MoreInfo";
             this.linkLabel_MoreInfo.Size = new System.Drawing.Size(58, 13);
@@ -76,7 +75,7 @@ namespace Nucleus.Coop.Forms
             this.linkLabel_MoreInfo.TabStop = true;
             this.linkLabel_MoreInfo.Text = "More Info";
             this.linkLabel_MoreInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkLabel_MoreInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_MoreInfo_LinkClicked);
+            this.linkLabel_MoreInfo.Click += new System.EventHandler(this.Label_MoreInfo_LinkClicked);
             // 
             // txt_Updated
             // 
@@ -417,6 +416,6 @@ namespace Nucleus.Coop.Forms
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txt_Updated;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.LinkLabel linkLabel_MoreInfo;
+        private System.Windows.Forms.Label linkLabel_MoreInfo;
     }
 }

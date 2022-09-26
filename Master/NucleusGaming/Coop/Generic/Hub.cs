@@ -14,9 +14,8 @@ namespace Nucleus.Gaming.Coop.Generic
 
         public bool IsUpdateAvailable(bool fetch)
         {
-            if (fetch && !checkedUpdate)
-            {
-                checkedUpdate = true;
+            if (fetch )
+            {          
                 updateAvailable = CheckUpdateAvailable();
             }
           
@@ -83,7 +82,9 @@ namespace Nucleus.Gaming.Coop.Generic
             }
 
             newVersion = int.TryParse(array[0]["currentVersion"].ToString(), out int _v) ? _v : -1;
+           
             return newVersion > Handler.Version;
+            
         }
 
 
@@ -123,7 +124,7 @@ namespace Nucleus.Gaming.Coop.Generic
             catch (Exception)
             {
                 //MessageBox.Show(string.Format("{0}: {1}", ex.ToString(), ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                return string.Empty;
             }
         }
     }
