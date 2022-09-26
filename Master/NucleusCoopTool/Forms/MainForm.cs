@@ -1476,10 +1476,12 @@ namespace Nucleus.Coop
         {
             currentControl = (GameControl)arg1;
             currentGameInfo = currentControl.UserGameInfo;
-
-            if (!MatchRequirements(currentGameInfo.Game))
+            if (currentGameInfo != null)
             {
-                return;
+                if (!MatchRequirements(currentGameInfo.Game))
+                {
+                    return;
+                }
             }
 
             positionsControl.handlerNoteZoom.Visible = false;
