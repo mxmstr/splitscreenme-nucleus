@@ -567,8 +567,7 @@ namespace Nucleus.Coop
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             password_Label.Location = new Point((passwordPanel.Width / 2) - (password_Label.Width / 2), password_Label.Location.Y);
             label38.Location = new Point((hotkeyBox.Width / 2) - (label38.Width / 2), label38.Location.Y);
-            //default_sid_list_label.Location = new Point(0, (def_sid_textBox_container.Height / 2) - default_sid_list_label.Height / 2);
-            
+
             ResumeLayout();
         }
 

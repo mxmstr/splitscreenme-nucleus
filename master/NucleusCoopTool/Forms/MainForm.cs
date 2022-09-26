@@ -2170,6 +2170,7 @@ namespace Nucleus.Coop
                 currentStepIndex = 0;
                 return;
             }
+
             GoToStep(currentStepIndex);
         }
 
@@ -2414,7 +2415,6 @@ namespace Nucleus.Coop
 
                                     File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
                                 }
-
                             }
                         }
                     }
@@ -2775,9 +2775,7 @@ namespace Nucleus.Coop
                                 }
                             }
 
-
                         }
-
                     }
                 }
             }
