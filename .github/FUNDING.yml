@@ -1,7 +1,8 @@
 # These are supported funding model platforms
 
 
-ko_fi: talos91
+ko_fi: talos91 #talos910 -> https://github.com/Talos910
+patreon: distro # lucas assislar -> https://github.com/lucasassislar
 custom: 
   - 'https://www.paypal.com/donate/?hosted_button_id=P3NVBYRQ4Z45L' #Ilyaki -> ttps://github.com/Ilyaki
   - 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WUXKHLAD3A3LE&source=url' #Zerofox5866 -> https://github.com/ZeroFox5866
