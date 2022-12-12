@@ -25,7 +25,7 @@ namespace Nucleus.Gaming.Forms
             WindowScrape.Static.HwndInterface.MakeTopMost(Handle);
         }
 
-        public Prompt(string message,bool onpaint)
+        public Prompt(string message, bool onpaint)
         {
             InitializeComponent();
             lbl_Msg.Text = message;

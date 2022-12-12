@@ -6,7 +6,6 @@ using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Generic.Step;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,7 +31,7 @@ namespace Nucleus.Gaming
         public string[] FileSymlinkCopyInstead;
         public string[] DirSymlinkCopyInstead;
         public string[] DirExclusions;
-        
+
         public bool KeepSymLinkOnExit;
 
         public double HandlerInterval;
@@ -50,7 +49,7 @@ namespace Nucleus.Gaming
         public string SteamID;
         public string GUID;
         public string GameName;
-        public int MaxPlayers;            
+        public int MaxPlayers;
         public int MaxPlayersOneMonitor;
         public int PauseBetweenStarts;
         public DPIHandling DPIHandling = DPIHandling.True;
@@ -65,7 +64,7 @@ namespace Nucleus.Gaming
         public bool SplitDivCompatibility = true;
         public bool SetTopMostAtEnd;
         public bool Favorite;
-
+        
         public void AddOption(string name, string desc, string key, object value, object defaultValue)
         {
             Options.Add(new GameOption(name, desc, key, value, defaultValue));
@@ -288,7 +287,7 @@ namespace Nucleus.Gaming
         public bool HookReRegisterRawInputKeyboard = true;
         public bool InjectHookXinput = false;
         public bool InjectDinputToXinputTranslation = false;
-     
+
         //Not hooks
         public bool SendNormalMouseInput = true;
         public bool SendNormalKeyboardInput = true;
@@ -463,7 +462,7 @@ namespace Nucleus.Gaming
 
         public string GetEpicLanguage()
         {
-            IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+            IniFile ini = Globals.ini;
 
             IDictionary<string, string> epiclangs = new Dictionary<string, string>();
             epiclangs.Add("Arabic", "ar");
@@ -507,7 +506,7 @@ namespace Nucleus.Gaming
         private string GogLang;
         public string GetGogLanguage()
         {
-            IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+            IniFile ini = Globals.ini;
 
             IDictionary<string, string> epiclangs = new Dictionary<string, string>();
             epiclangs.Add("Arabic", "ar");

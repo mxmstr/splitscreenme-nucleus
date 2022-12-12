@@ -1,6 +1,7 @@
 ﻿using ListViewSorter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Gaming;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,11 +9,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms;
-using Nucleus.Gaming;
-using System.Media;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
 {
@@ -34,15 +32,10 @@ namespace Nucleus.Coop.Forms
         private JArray handlers;
 
         private int entriesPerPage;
-
         private int entryIndex = 0;
-
         private int sortColumn = 0;
-
         private int verCount = 0;
-
         private int lastVer = 0;
-
         private float fontSize;
 
         private SortOrder sortOrder = SortOrder.Ascending;
@@ -51,7 +44,7 @@ namespace Nucleus.Coop.Forms
         private Cursor default_Cursor;
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-       private static extern IntPtr CreateRoundRectRgn
+        private static extern IntPtr CreateRoundRectRgn
        (
        int nLeftRect,     // x-coordinate of upper-left corner
        int nTopRect,      // y-coordinate of upper-left corner
@@ -93,23 +86,23 @@ namespace Nucleus.Coop.Forms
         private void ScriptDownloader_ResizeEnd(object sender, EventArgs e)
         {
             foreach (Control c in ctrls)
-            { 
-                if(c.Name!= "chkBox_Verified")
-                c.Visible = true;
+            {
+                if (c.Name != "chkBox_Verified")
+                    c.Visible = true;
             }
             Opacity = 1.0D;
         }
 
         public void button_Click(object sender, EventArgs e)
         {
-           if(mainForm.mouseClick)
-            mainForm.SoundPlayer(mainForm.themePath + "\\button_click.wav");
+            if (mainForm.mouseClick)
+                mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
         }
 
         public ScriptDownloader(MainForm mf)
         {
-            fontSize = float.Parse(mf.theme.IniReadValue("Font", "HandlerDownloaderFontSize"));
-            
+            fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "HandlerDownloaderFontSize"));
+
             InitializeComponent();
 
             default_Cursor = mf.default_Cursor;
@@ -135,8 +128,8 @@ namespace Nucleus.Coop.Forms
                 Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
-            ForeColor = Color.FromArgb(Convert.ToInt32(mf.rgb_font[0]), Convert.ToInt32(mf.rgb_font[1]), Convert.ToInt32(mf.rgb_font[2]));
-            BackgroundImage = new Bitmap(mf.themePath + "\\other_backgrounds.jpg");
+            ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
+            BackgroundImage = new Bitmap(mf.theme + "other_backgrounds.jpg");
             //Controls Pictures
             btn_Next.BackgroundImage = mf.AppButtons;
             btn_Prev.BackgroundImage = mf.AppButtons;
@@ -210,7 +203,7 @@ namespace Nucleus.Coop.Forms
             }
 
             mainForm = mf;
-           
+
             DPIManager.Register(this);
             DPIManager.Update(this);
 
@@ -282,7 +275,7 @@ namespace Nucleus.Coop.Forms
                                     m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
                             }
                         }
-  
+
                         return;
                 }
             }
@@ -323,7 +316,7 @@ namespace Nucleus.Coop.Forms
                 ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
                 ServicePointManager.DefaultConnectionLimit = 9999;
             }
-            catch(Exception)
+            catch (Exception)
             { }
 
             string resp = Get(api + "handler/" + id);
@@ -369,7 +362,7 @@ namespace Nucleus.Coop.Forms
                 CurrentVersion = array[0]["currentVersion"].ToString(),
                 CurrentPackage = array[0]["currentPackage"].ToString()
             };
-           
+
             return handler;
         }
 
@@ -576,7 +569,7 @@ namespace Nucleus.Coop.Forms
                     vSymb = string.Empty;
                 }
 
-                Bitmap bmp = new Bitmap(Properties.Resources.no_image);
+                Bitmap bmp = new Bitmap(mainForm.theme + "no_cover.png");
                 string _cover = $@"https://images.igdb.com/igdb/image/upload/t_micro/{handler.GameCover}.jpg";
 
                 try
@@ -956,16 +949,16 @@ namespace Nucleus.Coop.Forms
         {
             Invalidate();
             if (mainForm != null)
-           
-            if (mainForm.roundedcorners)
-            {
-                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-            }
-            else 
-            {
-                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
-            }
+
+                if (mainForm.roundedcorners)
+                {
+                    Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                }
+                else
+                {
+                    Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+                }
         }
-     
+
     }
 }

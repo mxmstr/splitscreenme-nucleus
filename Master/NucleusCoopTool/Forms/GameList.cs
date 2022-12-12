@@ -29,7 +29,7 @@ namespace Nucleus.Coop.Forms
 
                 listGames.Controls.Add(con);
             }
-        }      
+        }
 
         private void Con_Click(object sender, EventArgs e)
         {
@@ -42,6 +42,6 @@ namespace Nucleus.Coop.Forms
             DialogResult = DialogResult.OK;
             Close();
         }
-     
+
     }
 }

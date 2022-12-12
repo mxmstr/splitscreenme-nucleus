@@ -8,7 +8,7 @@ namespace Nucleus.Coop
 {
     static class Program
     {
-        private  static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         public static bool connected;
         public static bool forcedBadPath;
 
@@ -30,6 +30,7 @@ namespace Nucleus.Coop
             connected = StartChecks.CheckNetCon();
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
+           // StartChecks.CheckAppUpdate();//a decommenter
             //StartChecks.CheckForUpdate(); //Uncomment to run Pizzo's Python nc updater on startup
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware

@@ -4,15 +4,12 @@ using Nucleus.Coop.Forms;
 using Nucleus.Gaming;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -43,7 +40,7 @@ namespace Nucleus.Coop
             InitializeComponent();
             this.mainForm = mainForm;
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase-background.png");
+            BackgroundImage = new Bitmap(mainForm.theme + "showcase-background.png");
             BackgroundImageLayout = ImageLayout.Stretch;
             labels = new List<Label>();
             rainbowTimer = new System.Windows.Forms.Timer();
@@ -97,7 +94,7 @@ namespace Nucleus.Coop
                 hubLink.Add(handlers[i]["_id"].ToString());
                 hotness.Add(handlers[i]["stars"].ToString());
 
-                Bitmap bmp = new Bitmap(Properties.Resources.no_image);
+                Bitmap bmp = new Bitmap(Globals.Theme + "no_cover.png");
 
                 string _cover = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{GameCover}.jpg";
 
@@ -128,7 +125,7 @@ namespace Nucleus.Coop
                             BackgroundImageLayout = ImageLayout.Stretch,
                             Dock = DockStyle.Fill,
                             BackColor = Color.Transparent,
-                            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase_cover_layer.png"),
+                            BackgroundImage = new Bitmap(mainForm.theme + "showcase_cover_layer.png"),
                             Cursor = mainForm.hand_Cursor
                         };
 
@@ -138,7 +135,7 @@ namespace Nucleus.Coop
                         {
                             Font = new Font("Franklin Gothic", 8, FontStyle.Bold, GraphicsUnit.Point, 0),
                             BackColor = Color.Transparent,
-                            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase-labels.png"),
+                            BackgroundImage = new Bitmap(mainForm.theme + "showcase-labels.png"),
                             BackgroundImageLayout = ImageLayout.Stretch,
                             TextAlign = ContentAlignment.TopLeft,
                             Dock = DockStyle.Bottom
@@ -148,7 +145,7 @@ namespace Nucleus.Coop
                         {
                             Font = new Font("Franklin Gothic", 8, FontStyle.Regular, GraphicsUnit.Point, 0),
                             BackColor = Color.Transparent,//Color.DimGray,
-                            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase-labels.png"),
+                            BackgroundImage = new Bitmap(mainForm.theme + "showcase-labels.png"),
                             BackgroundImageLayout = ImageLayout.Stretch,
                             TextAlign = ContentAlignment.TopLeft,
                             Dock = DockStyle.Bottom
@@ -189,13 +186,13 @@ namespace Nucleus.Coop
             {
                 if (r < 200 && g < 200 && b < 200) { r += 3; g += 3; b += 3; };
                 if (r >= 200 && g >= 200 && b >= 200)
-                loop = true;
+                    loop = true;
             }
             else
             {
                 if (r > 125 && g > 125 && b > 125) { r -= 3; g -= 3; b -= 3; }
                 if (r <= 125 && g <= 125 && b <= 125)
-                loop = false;
+                    loop = false;
             }
 
             foreach (Control label in labels)

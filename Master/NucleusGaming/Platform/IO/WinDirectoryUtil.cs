@@ -6,25 +6,7 @@ namespace Nucleus.Gaming.Platform.Windows.IO
 {
     public static class WinDirectoryUtil
     {
-        //public static void CopyFile(string source, string dest)
-        //{
-        //    using (FileStream sourceStream = new FileStream(source, FileMode.Open))
-        //    {
-        //        byte[] buffer = new byte[64 * 1024]; // Change to suitable size after testing performance
-        //        using (FileStream destStream = new FileStream(dest, FileMode.Create))
-        //        {
-        //            int i;
-        //            while ((i = sourceStream.Read(buffer, 0, buffer.Length)) > 0)
-        //            {
-        //                destStream.Write(buffer, 0, i);
-        //            }
-        //        }
-        //    }
-        //}
-
-
-        private static readonly IniFile
-            ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private static readonly IniFile ini = Globals.ini;
 
         private static void Log(string logMessage)
         {

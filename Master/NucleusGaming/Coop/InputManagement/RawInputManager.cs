@@ -103,6 +103,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     IntPtr pData = Marshal.AllocHGlobal((int)pcbSize);
                     WinApi.GetRawInputDeviceInfo(rid.hDevice, 0x2000000b, pData, ref pcbSize);
                     RID_DEVICE_INFO device = (RID_DEVICE_INFO)Marshal.PtrToStructure(pData, typeof(RID_DEVICE_INFO));
+                  
+
                     if (device.dwType == 0)
                     {
                         //Mouse
@@ -112,7 +114,9 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     {
                         //Keyboard
                         Logger.WriteLine($"Found keyboard. Keyboard type = {device.keyboard.dwType}, keyboard subtype = {device.keyboard.dwSubType}, scan code mode = {device.keyboard.dwKeyboardMode}, number of keys = {device.keyboard.dwNumberOfKeysTotal}");
+                        //Logger.WriteLine(rid.hDevice);
                     }
+
                     yield return (device, rid.hDevice);
                 }
 
@@ -122,12 +126,11 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public static IEnumerable<PlayerInfo> GetDeviceInputInfos()
         {
-            //TODO: Add device handle zero mouse & keyboard w/ special icon
-
             int i = 100;
 
             foreach ((RID_DEVICE_INFO deviceInfo, IntPtr deviceHandle) device in GetDeviceList().Where(x => x.deviceInfo.dwType <= 1))
             {
+                
                 PlayerInfo player = new PlayerInfo
                 {
                     GamepadId = i++,
@@ -137,13 +140,17 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 };
 
                 if (player.IsRawMouse)
-                {
+                {                  
                     player.RawMouseDeviceHandle = device.deviceHandle;
+                  //  player.test = device.deviceInfo.mouse.dwId.ToString();
+                   // Logger.WriteLine("Mouse " + player.test);
                 }
 
                 if (player.IsRawKeyboard)
-                {
+                {        
                     player.RawKeyboardDeviceHandle = device.deviceHandle;
+                    //player.test = device.deviceInfo.keyboard.;
+                    //Logger.WriteLine("Keyboard " + player.test);
                 };
 
                 player.IsKeyboardPlayer = true;

@@ -12,7 +12,7 @@ namespace Nucleus.Gaming
 {
     public class JSUserInputControl : UserInputControl
     {
-        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private readonly IniFile ini = Globals.ini;
         private bool canProceed;
         private bool canPlay;
 
@@ -26,7 +26,7 @@ namespace Nucleus.Gaming
         public override bool CanProceed => canProceed;
         public override string Title => CustomStep.Title;
         public override bool CanPlay => canPlay;
-
+        private CoolListControl toSelect;
         public bool HasProperty(IDictionary<string, object> expando, string key)
         {
             return expando.ContainsKey(key);
@@ -37,12 +37,12 @@ namespace Nucleus.Gaming
         public override void Initialize(UserGameInfo game, GameProfile profile)
         {
             base.Initialize(game, profile);
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
+
+            IniFile theme = Globals.ThemeIni;
 
             string[] rgb_CoollistInitialColor = theme.IniReadValue("Colors", "Selection").Split(',');
-            _BackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
-
+            _BackColor = Color.FromArgb(int.Parse(rgb_CoollistInitialColor[0]), int.Parse(rgb_CoollistInitialColor[1]), int.Parse(rgb_CoollistInitialColor[2]));
+            toSelect = null;
             Controls.Clear();
 
             // grab the CustomStep and extract what we have to show from it
@@ -86,7 +86,6 @@ namespace Nucleus.Gaming
 
                     control.Title = name;
 
-
                     string details = "";
                     if (value.TryGetValue("Details", out object detailsObj))
                     {
@@ -116,18 +115,42 @@ namespace Nucleus.Gaming
                     }
 
                     list.Controls.Add(control);
+
+                    foreach (KeyValuePair<string, object> opt in profile.Options)
+                    {
+                        if (opt.Value.ToString().Contains(control.Title))
+                        {
+                            toSelect = control;
+                        }
+                    }
+
                 }
+
+                if(toSelect != null)
+                Control_AutoSelect();
             }
+        }
+
+        private void Control_AutoSelect()
+        {
+            toSelect.BackColor = Color.DodgerBlue;        
+            toSelect.Title = toSelect.Title + " " + "(Auto selected)";
+            toSelect.Select();
+
+            canProceed = true;
+            CanPlayUpdated(true, true);
+            this.Refresh();
         }
 
         private void Control_OnSelected(object obj)
         {
+            CoolListControl c = obj as CoolListControl;
+           
             profile.Options[CustomStep.Option.Key] = obj;
 
             canProceed = true;
             CanPlayUpdated(true, true);
         }
-
 
     }
 }

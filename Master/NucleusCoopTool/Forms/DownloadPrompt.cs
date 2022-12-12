@@ -24,7 +24,7 @@ namespace Nucleus.Coop.Forms
         private int entriesDone = 0;
         private float fontSize;
         private bool overwriteWithoutAsking = false;
-        private readonly IniFile prompt = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private readonly IniFile prompt = Globals.ini;
         private MainForm mainForm;
         public bool gameExeNoUpdate;
         public string game;
@@ -51,12 +51,12 @@ namespace Nucleus.Coop.Forms
 
         public DownloadPrompt(Handler handler, MainForm mf, string zipFileName)
         {
-            fontSize = float.Parse(mf.theme.IniReadValue("Font", "DownloadPromptFontSize"));
+            fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "DownloadPromptFontSize"));
 
             try
             {
                 InitializeComponent();
-                
+
                 Handler = handler;
                 mainForm = mf;
 
@@ -64,7 +64,7 @@ namespace Nucleus.Coop.Forms
 
                 SuspendLayout();
 
-                BackgroundImage = new Bitmap(mainForm.themePath + "\\other_backgrounds.jpg");
+                BackgroundImage = new Bitmap(mainForm.theme + "other_backgrounds.jpg");
 
                 if (zipFileName == null)
                 {
@@ -200,28 +200,28 @@ namespace Nucleus.Coop.Forms
             int found = 0;
 
 
-                foreach (string line in File.ReadAllLines(Path.Combine(scriptTempFolder, "handler.js")))
+            foreach (string line in File.ReadAllLines(Path.Combine(scriptTempFolder, "handler.js")))
+            {
+                if (line.ToLower().StartsWith("game.executablename"))
                 {
-                    if (line.ToLower().StartsWith("game.executablename"))
-                    {
-                        int start = line.IndexOf("\"");
-                        int end = line.LastIndexOf("\"");
-                        exeName = line.Substring(start + 1, (end - start) - 1);
-                        found++;
-                    }
-                    else if (line.ToLower().StartsWith("game.gamename"))
-                    {
-                        int start = line.IndexOf("\"");
-                        int end = line.LastIndexOf("\"");
-                        frmHandleTitle = pattern.Replace(line.Substring(start + 1, (end - start) - 1), "");
-                        found++;
-                    }
-
-                    if (found == 2)
-                    {
-                        break;
-                    }
+                    int start = line.IndexOf("\"");
+                    int end = line.LastIndexOf("\"");
+                    exeName = line.Substring(start + 1, (end - start) - 1);
+                    found++;
                 }
+                else if (line.ToLower().StartsWith("game.gamename"))
+                {
+                    int start = line.IndexOf("\"");
+                    int end = line.LastIndexOf("\"");
+                    frmHandleTitle = pattern.Replace(line.Substring(start + 1, (end - start) - 1), "");
+                    found++;
+                }
+
+                if (found == 2)
+                {
+                    break;
+                }
+            }
 
             if (File.Exists(Path.Combine(scriptFolder, frmHandleTitle + ".js")))
             {
@@ -285,7 +285,7 @@ namespace Nucleus.Coop.Forms
             label1.Text = "Finished!";
 
             File.Delete(Path.Combine(scriptFolder, zipFile));
-            if(!gameExeNoUpdate)
+            if (!gameExeNoUpdate)
             {
                 DialogResult dialogResult = MessageBox.Show(
                     "Downloading and extraction of " + frmHandleTitle +
@@ -301,7 +301,7 @@ namespace Nucleus.Coop.Forms
             }
             else
             {
-               
+
                 Gaming.GameManager.Instance.AddScript(frmHandleTitle);
                 gameExeNoUpdate = false;
             }

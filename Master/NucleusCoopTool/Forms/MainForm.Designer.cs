@@ -82,6 +82,7 @@ namespace Nucleus.Coop
             this.game_listSizer = new BufferedClientAreaPanel();
             this.list_Games = new Nucleus.Gaming.ControlListBox();
             this.rightFrame = new BufferedClientAreaPanel();
+            this.inputsIconsDesc = new System.Windows.Forms.Label();
             this.icons_Container = new System.Windows.Forms.FlowLayoutPanel();
             this.btn_gameOptions = new System.Windows.Forms.Button();
             this.scriptAuthorTxtSizer = new BufferedClientAreaPanel();
@@ -683,6 +684,7 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rightFrame.BackColor = System.Drawing.Color.Transparent;
             this.rightFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.rightFrame.Controls.Add(this.inputsIconsDesc);
             this.rightFrame.Controls.Add(this.icons_Container);
             this.rightFrame.Controls.Add(this.btn_gameOptions);
             this.rightFrame.Controls.Add(this.scriptAuthorTxtSizer);
@@ -693,6 +695,18 @@ namespace Nucleus.Coop
             this.rightFrame.Size = new System.Drawing.Size(195, 534);
             this.rightFrame.TabIndex = 34;
             this.rightFrame.Visible = false;
+            // 
+            // inputsIconsDesc
+            // 
+            this.inputsIconsDesc.AutoSize = true;
+            this.inputsIconsDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.inputsIconsDesc.Location = new System.Drawing.Point(11, 28);
+            this.inputsIconsDesc.Margin = new System.Windows.Forms.Padding(0);
+            this.inputsIconsDesc.Name = "inputsIconsDesc";
+            this.inputsIconsDesc.Size = new System.Drawing.Size(41, 15);
+            this.inputsIconsDesc.TabIndex = 33;
+            this.inputsIconsDesc.Text = "label1";
+            this.inputsIconsDesc.Visible = false;
             // 
             // icons_Container
             // 
@@ -721,8 +735,8 @@ namespace Nucleus.Coop
             // 
             // scriptAuthorTxtSizer
             // 
-            this.scriptAuthorTxtSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.scriptAuthorTxtSizer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.scriptAuthorTxtSizer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptAuthorTxtSizer.BackColor = System.Drawing.Color.Transparent;
             this.scriptAuthorTxtSizer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.scriptAuthorTxtSizer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -777,16 +791,16 @@ namespace Nucleus.Coop
             // 
             // scriptAuthorTxt
             // 
-            this.scriptAuthorTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.scriptAuthorTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptAuthorTxt.BackColor = System.Drawing.Color.Black;
             this.scriptAuthorTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.scriptAuthorTxt.BulletIndent = 1;
             this.scriptAuthorTxt.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.scriptAuthorTxt.ForeColor = System.Drawing.Color.White;
-            this.scriptAuthorTxt.Location = new System.Drawing.Point(0, 24);
+            this.scriptAuthorTxt.Location = new System.Drawing.Point(2, 24);
             this.scriptAuthorTxt.Margin = new System.Windows.Forms.Padding(0);
+            this.scriptAuthorTxt.MaximumSize = new System.Drawing.Size(187, 191);
             this.scriptAuthorTxt.Name = "scriptAuthorTxt";
             this.scriptAuthorTxt.ReadOnly = true;
             this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
@@ -907,7 +921,7 @@ namespace Nucleus.Coop
             this.label_StepTitle.Location = new System.Drawing.Point(6, 9);
             this.label_StepTitle.Margin = new System.Windows.Forms.Padding(0);
             this.label_StepTitle.Name = "label_StepTitle";
-            this.label_StepTitle.Size = new System.Drawing.Size(75, 13);
+            this.label_StepTitle.Size = new System.Drawing.Size(86, 15);
             this.label_StepTitle.TabIndex = 3;
             this.label_StepTitle.Text = "Select a game";
             this.label_StepTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1124,6 +1138,7 @@ namespace Nucleus.Coop
             this.Controls.Add(this.maximizeBtn);
             this.Controls.Add(this.linksPanel);
             this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -1143,6 +1158,7 @@ namespace Nucleus.Coop
             this.clientAreaPanel.ResumeLayout(false);
             this.game_listSizer.ResumeLayout(false);
             this.rightFrame.ResumeLayout(false);
+            this.rightFrame.PerformLayout();
             this.scriptAuthorTxtSizer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btn_magnifier)).EndInit();
             this.cover.ResumeLayout(false);
@@ -1194,8 +1210,6 @@ namespace Nucleus.Coop
 		private System.Windows.Forms.PictureBox stepPanelPictureBox;
         private Button minimizeBtn;
         private Button maximizeBtn;
-        private Button closeBtn;
-        private Button btn_settings;
         private PictureBox logo;
         private BufferedClientAreaPanel coverFrame;
         private BufferedClientAreaPanel scriptAuthorTxtSizer;
@@ -1225,7 +1239,10 @@ namespace Nucleus.Coop
         private Label HandlerNoteTitle;
         private PictureBox btn_magnifier;
         private Button btn_textSwitcher;
-        private FlowLayoutPanel icons_Container;
         private ToolStripMenuItem updateHandlerToolStripMenuItem;
+        public FlowLayoutPanel icons_Container;
+        public Label inputsIconsDesc;
+        private Button closeBtn;
+        public Button btn_settings;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Net;
 
@@ -14,11 +13,11 @@ namespace Nucleus.Gaming.Coop.Generic
 
         public bool IsUpdateAvailable(bool fetch)
         {
-            if (fetch )
-            {          
+            if (fetch)
+            {
                 updateAvailable = CheckUpdateAvailable();
             }
-          
+
             return updateAvailable;
         }
 
@@ -52,7 +51,7 @@ namespace Nucleus.Gaming.Coop.Generic
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.DefaultConnectionLimit = 9999;
 
-            string resp = Get("https://hub.splitscreen.me/api/v1/"+"handler/"+id);
+            string resp = Get("https://hub.splitscreen.me/api/v1/" + "handler/" + id);
 
             if (resp == null)
             {
@@ -82,9 +81,9 @@ namespace Nucleus.Gaming.Coop.Generic
             }
 
             newVersion = int.TryParse(array[0]["currentVersion"].ToString(), out int _v) ? _v : -1;
-           
+
             return newVersion > Handler.Version;
-            
+
         }
 
 
@@ -110,7 +109,7 @@ namespace Nucleus.Gaming.Coop.Generic
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.DefaultConnectionLimit = 9999;
-       
+
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);

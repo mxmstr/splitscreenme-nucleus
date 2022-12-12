@@ -1,22 +1,136 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Interop;
+using Nucleus.Gaming.Tools.SteamMethods;
+using Nucleus.Gaming.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Windows.Forms;
 
 namespace Nucleus
 {
     public static class ProcessUtil
     {
-        private static readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private static readonly IniFile ini = Globals.ini;
         private static string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private static string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        private static void Log(string logMessage)
+        {
+            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            {
+                using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
+                {
+                    writer.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]PROCESSUTIL: {logMessage}");
+                    writer.Close();
+                }
+            }
+        }
+        
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern bool CreateProcessWithLogonW(
+           String userName,
+           String domain,
+           String password,
+           LogonFlags logonFlags,
+           String applicationName,
+           String commandLine,
+           ProcessCreationFlags creationFlags,
+           UInt32 environment,
+           String currentDirectory,
+           ref STARTUPINFO startupInfo,
+           out PROCESS_INFORMATION processInformation);
+
+        [Flags]
+
+        public enum LogonFlags
+        {
+            LOGON_WITH_PROFILE = 0x00000001,
+            LOGON_NETCREDENTIALS_ONLY = 0x00000002
+        }
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool CreateProcess(
+            string lpApplicationName,
+            string lpCommandLine,
+            IntPtr lpProcessAttributes,
+            IntPtr lpThreadAttributes,
+            bool bInheritHandles,
+            uint dwCreationFlags,
+            IntPtr lpEnvironment,
+            string lpCurrentDirectory,
+            [In] ref STARTUPINFO lpStartupInfo,
+            out PROCESS_INFORMATION lpProcessInformation);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool WriteProcessMemory(
+            IntPtr hProcess,
+            Int64 lpBaseAddress,
+            [In, Out] Byte[] lpBuffer,
+            UInt64 dwSize,
+            out IntPtr lpNumberOfBytesWritten);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct STARTUPINFO
+        {
+            public Int32 cb;
+            public string lpReserved;
+            public string lpDesktop;
+            public string lpTitle;
+            public Int32 dwX;
+            public Int32 dwY;
+            public Int32 dwXSize;
+            public Int32 dwYSize;
+            public Int32 dwXCountChars;
+            public Int32 dwYCountChars;
+            public Int32 dwFillAttribute;
+            public Int32 dwFlags;
+            public Int16 wShowWindow;
+            public Int16 cbReserved2;
+            public IntPtr lpReserved2;
+            public IntPtr hStdInput;
+            public IntPtr hStdOutput;
+            public IntPtr hStdError;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct PROCESS_INFORMATION
+        {
+            public IntPtr hProcess;
+            public IntPtr hThread;
+            public int dwProcessId;
+            public int dwThreadId;
+        }
+
+        public enum ProcessCreationFlags : uint
+        {
+            ZERO_FLAG = 0x00000000,
+            CREATE_BREAKAWAY_FROM_JOB = 0x01000000,
+            CREATE_DEFAULT_ERROR_MODE = 0x04000000,
+            CREATE_NEW_CONSOLE = 0x00000010,
+            CREATE_NEW_PROCESS_GROUP = 0x00000200,
+            CREATE_NO_WINDOW = 0x08000000,
+            CREATE_PROTECTED_PROCESS = 0x00040000,
+            CREATE_PRESERVE_CODE_AUTHZ_LEVEL = 0x02000000,
+            CREATE_SEPARATE_WOW_VDM = 0x00001000,
+            CREATE_SHARED_WOW_VDM = 0x00001000,
+            CREATE_SUSPENDED = 0x00000004,
+            CREATE_UNICODE_ENVIRONMENT = 0x00000400,
+            DEBUG_ONLY_THIS_PROCESS = 0x00000002,
+            DEBUG_PROCESS = 0x00000001,
+            DETACHED_PROCESS = 0x00000008,
+            EXTENDED_STARTUPINFO_PRESENT = 0x00080000,
+            INHERIT_PARENT_AFFINITY = 0x00010000
+        }
 
         public static bool RunOrphanProcess(string path, /*bool runAdmin,*/ bool useNucleusEnvironment, string playerNickname, string arguments = "")
         {
@@ -61,7 +175,7 @@ namespace Nucleus
                 if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
                 {
                     //string mydocPath = key.GetValue("Personal").ToString();
-                    ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg"));
+                    RegistryUtil.ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg"));
                 }
 
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
@@ -88,52 +202,12 @@ namespace Nucleus
             ////ThreadPool.QueueUserWorkItem(KillParent, p);
         }
 
-        private static void ExportRegistry(string strKey, string filepath)
-        {
-            try
-            {
-                using (Process proc = new Process())
-                {
-                    proc.StartInfo.FileName = "reg.exe";
-                    proc.StartInfo.UseShellExecute = false;
-                    proc.StartInfo.RedirectStandardOutput = true;
-                    proc.StartInfo.RedirectStandardError = true;
-                    proc.StartInfo.CreateNoWindow = true;
-                    proc.StartInfo.Arguments = "export \"" + strKey + "\" \"" + filepath + "\" /y";
-                    proc.Start();
-                    string stdout = proc.StandardOutput.ReadToEnd();
-                    string stderr = proc.StandardError.ReadToEnd();
-                    proc.WaitForExit();
-                }
-            }
-            catch (Exception)
-            {
-                // handle exception
-            }
-        }
-
+       
         private static void KillParent(object state)
         {
             Process p = (Process)state;
-
         }
-        private static void Log(string logMessage)
-        {
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
-            {
-                //StreamWriter w = new StreamWriter("debug-log.txt", true);
-                //w.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]PROCESSUTIL: {logMessage}");
-                //w.Flush();
-                //w.Close();
-                //w.Dispose();
-
-                using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
-                {
-                    writer.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]PROCESSUTIL: {logMessage}");
-                    writer.Close();
-                }
-            }
-        }
+        
         public static bool KillMutex(Process process, string mutexType, string mutexName, bool partial)
         {
             if (mutexName.ToLower().StartsWith("type:") && mutexName.Contains("|"))
@@ -141,7 +215,6 @@ namespace Nucleus
                 mutexType = mutexName.Substring("type:".Length, mutexName.IndexOf('|') - "type:".Length);
                 mutexName = mutexName.Substring(mutexName.IndexOf('|') + 1);
             }
-
 
             Log(string.Format("Attempting to kill mutex"));
             // 4 tries
@@ -297,87 +370,160 @@ namespace Nucleus
             return ids;
         }
 
+        public static bool IsRunning(Process process)
+        {
+            try { Process.GetProcessById(process.Id); }
+            catch (InvalidOperationException) { return false; }
+            catch (ArgumentException) { return false; }
+            return true;
+        }
+
+        public static void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(e.Data))
+                {
+                    SteamMethods.readToEnd = true;
+                    return;
+                }
+
+                if (e.Data.Contains("+connect_lobby") && string.IsNullOrEmpty(SteamMethods.lobbyConnectArg))
+                {
+                    string toFind1 = "+connect_lobby ";
+                    int start = e.Data.IndexOf(toFind1);
+                    string string2 = e.Data.Substring(start);
+                    SteamMethods.lobbyConnectArg = string2;
+                    SteamMethods.readToEnd = true;
+                    return;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Goldberg Lobby Connect output data error. " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void WriteToProcessMemory(GenericGameInfo gen,Process proc)
+        {
+            string[] writeSplit = gen.WriteToProcessMemory.Split('|');
+            long baseAddr = long.Parse(writeSplit[0], NumberStyles.HexNumber);
+
+            List<byte> bytesConv = new List<byte>();
+            for (int s = 0; s < writeSplit[1].Length; s += 2)
+            {
+                bytesConv.Add(Convert.ToByte(writeSplit[1].Substring(s, 2), 16));
+            }
+            byte[] bArray = bytesConv.ToArray();
+
+            bool result = WriteProcessMemory(proc.NucleusGetMainWindowHandle(), baseAddr, bArray, (ulong)bArray.Length, out _);
+            Log(string.Format("WriteToProcessMemory - baseaddr: {0} result: {1}", baseAddr, result));
+        }
+
+        public static void SetProcessorPriorityClass(GenericGameInfo gen, Process proc)
+        {
+            Log(string.Format("Setting process priority to {0}", gen.ProcessorPriorityClass));
+            switch (gen.ProcessorPriorityClass)
+            {
+                case "AboveNormal":
+                    proc.PriorityClass = ProcessPriorityClass.AboveNormal;
+                    break;
+                case "High":
+                    proc.PriorityClass = ProcessPriorityClass.High;
+                    break;
+                case "RealTime":
+                    proc.PriorityClass = ProcessPriorityClass.RealTime;
+                    break;
+                default:
+                    proc.PriorityClass = ProcessPriorityClass.Normal;
+                    break;
+            }
+        }
+
+        public static void SetIdealProcessor(GenericGameInfo gen, Process proc)
+        {
+            Log(string.Format("Setting ideal processor to {0}", gen.IdealProcessor));
+            ProcessThreadCollection threads = proc.Threads;
+            for (int t = 0; t < threads.Count; t++)
+            {
+                threads[t].IdealProcessor = (gen.IdealProcessor + 1);
+            }
+        }
+
+        public static void SetProcessorProcessorAffinity(GenericGameInfo gen, Process proc)
+        {
+            Log(string.Format("Assigning processors {0}", gen.UseProcessor));
+            string[] strArray = gen.UseProcessor.Split(',');
+            int num2 = 0;
+            foreach (string s in strArray)
+            {
+                num2 |= 1 << int.Parse(s) - 1;
+            }
+
+            proc.ProcessorAffinity = (IntPtr)num2;
+        }
+
+        public static void SetProcessorAffinityPerInstance(GenericGameInfo gen, Process proc,int i)
+        {
+            string[] processorsPerInstance = gen.UseProcessorsPerInstance;
+            if ((processorsPerInstance != null ? ((uint)processorsPerInstance.Length > 0U ? 1 : 0) : 0) != 0)
+            {
+                foreach (string str7 in gen.UseProcessorsPerInstance)
+                {
+                    int num2 = int.Parse(str7.Split('|')[0]);
+                    string str8 = str7.Split('|')[1];
+                    if (num2 == i + 1)
+                    {
+                        Log(string.Format("Assigning processors {0} for instance {1}", (object)str8, i));
+                        string[] strArray = str8.Split(',');
+                        int num3 = 0;
+                        foreach (string s in strArray)
+                        {
+                            num3 |= 1 << int.Parse(s) - 1;
+                        }
+
+                        proc.ProcessorAffinity = (IntPtr)num3;
+                    }
+                }
+            }
+        }
+
+        public static void KillRemainingProcess(GenericGameHandler genericGameHandler, GenericGameInfo gen)
+        {
+            // search for game instances left behind
+            try
+            {
+                Process[] procs = Process.GetProcesses();
+
+                List<string> addtlProcsToKill = new List<string>();
+                if (gen.KillProcessesOnClose?.Length > 0)
+                {
+                    addtlProcsToKill = gen.KillProcessesOnClose.ToList();
+                }
+
+                foreach (Process proc in procs)
+                {
+                    try
+                    {
+                        if ((gen.LauncherExe != null && !gen.LauncherExe.Contains("NucleusDefined") && proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(gen.LauncherExe.ToLower())) || addtlProcsToKill.Contains(proc.ProcessName, StringComparer.OrdinalIgnoreCase) || proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()) || (proc.Id != 0 && genericGameHandler.attachedIds.Contains(proc.Id)) || (gen.Hook.ForceFocusWindowName != "" && proc.MainWindowTitle == gen.Hook.ForceFocusWindowName))
+                        {
+                            Log(string.Format("Killing process {0} (pid {1})", proc.ProcessName, proc.Id));
+                            proc.Kill();
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Log(ex.InnerException + " " + ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log(ex.InnerException + " " + ex.Message);
+            }
+        }
 
     }
 }
-//        [DllImport("ntdll.dll")]
-//        public static extern uint NtQuerySystemInformation(int
-//            SystemInformationClass, IntPtr SystemInformation, int SystemInformationLength,
-//            ref int returnLength);
-
-//        [DllImport("kernel32.dll", EntryPoint = "RtlCopyMemory")]
-//        static extern void CopyMemory(byte[] Destination, IntPtr Source, uint Length);
-
-//        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-//        public struct SYSTEM_HANDLE_INFORMATION
-//        { // Information Class 16
-//            public int ProcessID;
-//            public byte ObjectTypeNumber;
-//            public byte Flags; // 0x01 = PROTECT_FROM_CLOSE, 0x02 = INHERIT
-//            public ushort Handle;
-//            public int Object_Pointer;
-//            public UInt32 GrantedAccess;
-//        }
-
-//        const int CNST_SYSTEM_HANDLE_INFORMATION = 16;
-//        const uint STATUS_INFO_LENGTH_MISMATCH = 0xc0000004;
-
-//        public static List<SYSTEM_HANDLE_INFORMATION> GetHandles(Process process)
-//        {
-//            uint nStatus;
-//            int nHandleInfoSize = 0x10000;
-//            IntPtr ipHandlePointer = Marshal.AllocHGlobal(nHandleInfoSize);
-//            int nLength = 0;
-//            IntPtr ipHandle = IntPtr.Zero;
-
-//            while ((nStatus = NtQuerySystemInformation(CNST_SYSTEM_HANDLE_INFORMATION, ipHandlePointer, nHandleInfoSize, ref nLength)) == STATUS_INFO_LENGTH_MISMATCH)
-//            {
-//                nHandleInfoSize = nLength;
-//                Marshal.FreeHGlobal(ipHandlePointer);
-//                ipHandlePointer = Marshal.AllocHGlobal(nLength);
-//            }
-
-//            byte[] baTemp = new byte[nLength];
-//            CopyMemory(baTemp, ipHandlePointer, (uint)nLength);
-
-//            long lHandleCount = 0;
-//            if (Is64Bits())
-//            {
-//                lHandleCount = Marshal.ReadInt64(ipHandlePointer);
-//                ipHandle = new IntPtr(ipHandlePointer.ToInt64() + 8);
-//            }
-//            else
-//            {
-//                lHandleCount = Marshal.ReadInt32(ipHandlePointer);
-//                ipHandle = new IntPtr(ipHandlePointer.ToInt32() + 4);
-//            }
-
-//            SYSTEM_HANDLE_INFORMATION shHandle;
-//            List<SYSTEM_HANDLE_INFORMATION> lstHandles = new List<SYSTEM_HANDLE_INFORMATION>();
-
-//            for (long lIndex = 0; lIndex < lHandleCount; lIndex++)
-//            {
-//                shHandle = new SYSTEM_HANDLE_INFORMATION();
-//                if (Is64Bits())
-//                {
-//                    shHandle = (SYSTEM_HANDLE_INFORMATION)Marshal.PtrToStructure(ipHandle, shHandle.GetType());
-//                    ipHandle = new IntPtr(ipHandle.ToInt64() + Marshal.SizeOf(shHandle) + 8);
-//                }
-//                else
-//                {
-//                    ipHandle = new IntPtr(ipHandle.ToInt64() + Marshal.SizeOf(shHandle));
-//                    shHandle = (SYSTEM_HANDLE_INFORMATION)Marshal.PtrToStructure(ipHandle, shHandle.GetType());
-//                }
-//                if (shHandle.ProcessID != process.Id) continue;
-//                lstHandles.Add(shHandle);
-//            }
-//            return lstHandles;
-
-//        }
-
-//        static bool Is64Bits()
-//        {
-//            return Marshal.SizeOf(typeof(IntPtr)) == 8 ? true : false;
-//        }
-//    }
-//}

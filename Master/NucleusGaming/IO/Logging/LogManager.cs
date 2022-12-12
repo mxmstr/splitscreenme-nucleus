@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -12,7 +11,7 @@ namespace Nucleus.Gaming
     {
         public static readonly long MaxSize = 1024 * 1024 * 1024; // 1mb
 
-        private static readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private static readonly IniFile ini = Globals.ini;
 
         private static LogManager instance;
         public static LogManager Instance
@@ -128,9 +127,10 @@ namespace Nucleus.Gaming
                 help = "Nucleus Co-op can't find the game's configuration file, make you sure you ran your main game at least once without Nucleus and that you changed some graphic settings and applied them, that way you make sure the proper configuration files got generated.\n" +
                        "If you are still getting this error after doing that, select the game in the Nucleus Co-op user interface, click on Game Options and select Delete UserProfile Config Path for all players. You can also try deleting Nucleus Co-op content folder and adding the game again.";
             }
-            else if (ex.GetType().Name ==  "UnauthorizedAccessException" || ex.GetType().Name == "IOException")
+            else if (ex.GetType().Name == "UnauthorizedAccessException" || ex.GetType().Name == "IOException")
             {
-                help = "Nucleus Co-op doesn't have the necessary permissions or is trying to access a file that is already in use,\n " +
+                help = "Nucleus Co-op doesn't have the necessary permissions or is trying to access a file that is already in use,\n" +
+                       "a file could be missing(For helpers: in case of \"IOException\" check if all required files from \"Game.Play = function()\" exists.)\n" +
                        "please make sure Nucleus Co-op is outside any game files or protected folders,\n" +
                        "placing Nucleus Co-op app folder in the root of your main drive is recommended to avoid permission issues: C:\\NucleusCo-op.\n" +
                        "Make sure other apps are not using any of the files Nucleus is trying to access. If all else fails run Nucleus Co-op with admin rights.";
@@ -140,11 +140,11 @@ namespace Nucleus.Gaming
             MessageBox.Show($"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n{ex.GetType().Name}\n\n[Message]\n{ex.Message}\n\n{help}\n", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);//[Stacktrace]\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #else
 
-            MessageBox.Show($"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n{ex.GetType().Name}\n\n[Message]\n{ex.Message}\n\n{help}\n\n[Stacktrace]\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+            MessageBox.Show($"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n{ex.GetType().Name}\n\n[Message]\n{ex.Message}\n\n{help}\n\n[Stacktrace]\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
 
             Log("Attempting shut-down procedures in order to clean-up");
-  
+
             string[] regFiles = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
             if (regFiles.Length > 0)
             {
@@ -168,7 +168,7 @@ namespace Nucleus.Gaming
                         LogManager.Log($"Imported {Path.GetFileName(regFilePath)}");
                     }
                     catch (Exception)
-                    {                      
+                    {
                         proc.Dispose();
                     }
                     if (!regFilePath.Contains("User Shell Folders"))

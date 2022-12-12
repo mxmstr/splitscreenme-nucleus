@@ -8,15 +8,14 @@ namespace SplitTool.Controls
 {
     public class CoolListControl : UserControl, IDynamicSized
     {
-        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private readonly IniFile ini = Globals.ini;
 
         private Label titleLabel;
         protected Label descLabel;
-        private Color userOverBackColor;
+        public Color userOverBackColor;
         private Color userLeaveBackColor;
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
-        private Cursor hand_Cursor;
         private Cursor default_Cursor;
 
         public string Title
@@ -39,21 +38,20 @@ namespace SplitTool.Controls
         {
             EnableHighlighting = enableHightlighting;
 
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));
-            string themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
-            string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
-            string[] rgb_CoollistInitialColor = theme.IniReadValue("Colors", "Selection").Split(',');
-            string customFont = theme.IniReadValue("Font", "FontFamily");
+            string theme = Globals.Theme;
+            IniFile themeIni = Globals.ThemeIni;
+
+            string[] rgb_MouseOverColor = themeIni.IniReadValue("Colors", "MouseOver").Split(',');
+            string[] rgb_CoollistInitialColor = themeIni.IniReadValue("Colors", "Selection").Split(',');
+            string customFont = themeIni.IniReadValue("Font", "FontFamily");
             userOverBackColor = Color.FromArgb(Convert.ToInt32(Convert.ToInt32(rgb_MouseOverColor[0])), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
             userLeaveBackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
 
-            default_Cursor = new Cursor(themePath + "\\cursor.ico");
-            Cursor = default_Cursor;
+            default_Cursor = new Cursor(theme + "cursor.ico");
 
-            Anchor = AnchorStyles.Top|AnchorStyles.Left | AnchorStyles.Right;
+            Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
-           
+
             titleLabel = new Label
             {
                 Font = new Font(customFont, 10.0f, FontStyle.Bold, GraphicsUnit.Point, 0),
@@ -78,21 +76,21 @@ namespace SplitTool.Controls
             }
 
             //float labelWidth = 370 * scale;
-            
+
             titleLabel.AutoSize = true;
             titleLabel.MaximumSize = new Size(370, 0);
             titleLabel.Location = new Point(10, 10);
 
             descLabel.AutoSize = true;
-            descLabel.MaximumSize = new Size((int)370, 0);          
+            descLabel.MaximumSize = new Size((int)370, 0);
             descLabel.Location = new Point(titleLabel.Location.X, titleLabel.Bottom + 10);
 
             Height = descLabel.Location.Y + descLabel.Height + 10;
-            foreach(Control picture in Controls)
+            foreach (Control picture in Controls)
             {
-                if(picture.GetType() == typeof(PictureBox))
+                if (picture.GetType() == typeof(PictureBox))
                 {
-                    Height = picture.Height+20;
+                    Height = picture.Height + 20;
                 }
 
             }
@@ -141,7 +139,7 @@ namespace SplitTool.Controls
             base.OnMouseEnter(e);
             if (!ContainsFocus)
             {
-                BackColor = userOverBackColor;
+               // BackColor = userOverBackColor;
             }
         }
 
@@ -150,7 +148,7 @@ namespace SplitTool.Controls
             base.OnMouseLeave(e);
             if (!ContainsFocus)
             {
-                BackColor = userLeaveBackColor;
+               // BackColor = userLeaveBackColor;
             }
         }
 

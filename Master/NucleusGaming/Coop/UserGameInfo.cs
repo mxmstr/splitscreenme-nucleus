@@ -47,7 +47,7 @@ namespace Nucleus.Gaming.Coop
         }
 
         public string ExePath
-        {  
+        {
             get => exePath;
             set => exePath = value;
         }
@@ -76,7 +76,7 @@ namespace Nucleus.Gaming.Coop
         {
             this.game = game;
             gameGuid = game.GUID;
-            this.exePath = exePath.Replace("I","i"); 
+            this.exePath = exePath.Replace("I", "i");
             profiles = new List<GameProfile>();
         }
     }

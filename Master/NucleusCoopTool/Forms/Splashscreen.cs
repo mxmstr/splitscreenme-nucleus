@@ -1,21 +1,18 @@
 ﻿using Nucleus.Gaming;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Media;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
 {
     public partial class Splashscreen : Form
     {
+        IniFile themeIni = Globals.ThemeIni;
+        string theme = Globals.Theme;
+
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
            (
@@ -27,9 +24,7 @@ namespace Nucleus.Coop.Forms
               int nHeightEllipse // height of ellipse
            );
 
-        private readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         private SoundPlayer splayer;
-        private string themePath;
 
         public void SoundPlayer(string filePath)
         {
@@ -40,11 +35,8 @@ namespace Nucleus.Coop.Forms
 
         public Splashscreen()
         {
-            string ChoosenTheme = ini.IniReadValue("Theme", "Theme");
-            IniFile theme = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\theme\\" + ChoosenTheme, "theme.ini"));            
-            themePath = Path.Combine(Application.StartupPath, @"gui\theme\" + ChoosenTheme);
-            bool roundedcorners = Convert.ToBoolean(theme.IniReadValue("Misc", "UseRoundedCorners"));
-            
+            bool roundedcorners = Convert.ToBoolean(themeIni.IniReadValue("Misc", "UseRoundedCorners"));
+
             InitializeComponent();
 
             if (roundedcorners)
@@ -52,7 +44,7 @@ namespace Nucleus.Coop.Forms
                 Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
-            gif.Image = new Bitmap(themePath + "\\splash.gif");          
+            gif.Image = new Bitmap(theme + "splash.gif");
         }
 
         private void gif_Click(object sender, EventArgs e)
@@ -63,7 +55,7 @@ namespace Nucleus.Coop.Forms
 
         private void Splashscreen_Shown(object sender, EventArgs e)
         {
-            SoundPlayer(themePath + "\\intro.wav");
+            SoundPlayer(theme + "intro.wav");
         }
     }
 }

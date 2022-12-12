@@ -155,7 +155,7 @@ namespace Nucleus.Coop.Forms
             this.txt_Comm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txt_Comm.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txt_Comm.ForeColor = System.Drawing.SystemColors.Window;
-            this.txt_Comm.Location = new System.Drawing.Point(19, 371);
+            this.txt_Comm.Location = new System.Drawing.Point(19, 340);
             this.txt_Comm.Name = "txt_Comm";
             this.txt_Comm.ReadOnly = true;
             this.txt_Comm.Size = new System.Drawing.Size(533, 145);
@@ -227,7 +227,7 @@ namespace Nucleus.Coop.Forms
             // 
             this.btn_Close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Close.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Close.BackgroundImage = global::Nucleus.Coop.Properties.Resources.close_button_alpha;
+            //this.btn_Close.BackgroundImage = new Bitmap(Globals.Theme + "no_cover.png");
             this.btn_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Close.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Close.FlatAppearance.BorderSize = 0;
@@ -249,16 +249,15 @@ namespace Nucleus.Coop.Forms
             this.btn_Download.BackColor = System.Drawing.Color.Transparent;
             this.btn_Download.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Download.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Download.FlatAppearance.BorderSize = 0;
+            this.btn_Download.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_Download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Download.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Download.Location = new System.Drawing.Point(19, 989);
+            this.btn_Download.Location = new System.Drawing.Point(20, 495);
             this.btn_Download.Name = "btn_Download";
-            this.btn_Download.Size = new System.Drawing.Size(120, 35);
+            this.btn_Download.Size = new System.Drawing.Size(120, 24);
             this.btn_Download.TabIndex = 37;
-            this.btn_Download.Text = "Download";
+            this.btn_Download.Text = "Download Handler";
             this.btn_Download.UseVisualStyleBackColor = false;
-            this.btn_Download.Visible = false;
             this.btn_Download.Click += new System.EventHandler(this.btn_Download_Click);
             // 
             // label8

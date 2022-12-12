@@ -96,6 +96,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\AlphaTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\AlphaTextBox.Designer.cs">
+      <DependentUpon>AlphaTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -114,7 +120,12 @@
     <Compile Include="Controls\CoolListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Font2.cs" />
+    <Compile Include="Controls\CustomComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomComboBox.Designer.cs">
+      <DependentUpon>CustomComboBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\HotkeyListener.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,11 +152,29 @@
     <Compile Include="Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ProfilesMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ProfilesMenu.Designer.cs">
+      <DependentUpon>ProfilesMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomNumericUpDown.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomNumericUpDown.Designer.cs">
+      <DependentUpon>CustomNumericUpDown.cs</DependentUpon>
+    </Compile>
     <Compile Include="Coop\BasicTypes\IntVector2.cs" />
     <Compile Include="Coop\BasicTypes\RECT.cs" />
     <Compile Include="Coop\BasicTypes\Ref.cs" />
     <Compile Include="Coop\Generic\async.cs" />
     <Compile Include="Coop\Generic\HttpClient.cs" />
+    <Compile Include="Coop\Generic\OSD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Coop\Generic\OSD.designer.cs">
+      <DependentUpon>OSD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Coop\Generic\ProcessPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,6 +259,13 @@
     <Compile Include="Forms\CustomPrompt.Designer.cs">
       <DependentUpon>CustomPrompt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CustomPromptRuntime.cs" />
+    <Compile Include="Forms\SplitDivForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplitDivForm.Designer.cs">
+      <DependentUpon>SplitDivForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Prompt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -237,11 +273,13 @@
       <DependentUpon>Prompt.cs</DependentUpon>
     </Compile>
     <Compile Include="Globals.cs" />
-    <Compile Include="New\GameControl.cs">
+    <Compile Include="Controls\GameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PositionsControlBase.cs" />
+    <Compile Include="Controls\PositionsControlBase.cs" />
     <Compile Include="Platform\IO\WinDirectoryUtil.cs" />
+    <Compile Include="Platform\MachineSpecs\MachineSpecs.cs" />
+    <Compile Include="Platform\Windows\GetNetFrameworkVersion.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\Kernel32\Kernel32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\Kernel32\SymbolicLink.cs" />
@@ -279,23 +317,23 @@
     <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="IO\MFT\MFTReader.cs" />
     <Compile Include="Coop\GameManager.cs" />
-    <Compile Include="New\ImageButtonState.cs" />
-    <Compile Include="New\ImageButton.cs">
+    <Compile Include="Controls\ImageButtonState.cs" />
+    <Compile Include="Controls\ImageButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\UserInputControl.cs">
+    <Compile Include="Controls\UserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PlayerCountControl.cs">
+    <Compile Include="Controls\PlayerCountControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PlayerCountControl.Designer.cs">
+    <Compile Include="Controls\PlayerCountControl.Designer.cs">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\PlayerOptionsControl.cs">
+    <Compile Include="Controls\PlayerOptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PositionsControl.cs">
+    <Compile Include="Controls\PositionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -303,7 +341,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Steamless\Steamless.cs" />
+    <Compile Include="Tools\AudioReroute\AudioReroute.cs" />
+    <Compile Include="Tools\DevReorder\DevReorder.cs" />
+    <Compile Include="Tools\DInputBlocker\DInputBlocker.cs" />
+    <Compile Include="Tools\DirectX9Wrapper\DirectX9Wrapper.cs" />
+    <Compile Include="Tools\DllsInjector\DllsInjector.cs" />
+    <Compile Include="Tools\EACBypass\EACBypass.cs" />
+    <Compile Include="Tools\NucleusUsers\NucleusUsers.cs" />
+    <Compile Include="Tools\WindowFakeFocus\WindowFakeFocus.cs" />
+    <Compile Include="Tools\FlawlessWidescreen\FlawlessWidescreen.cs" />
+    <Compile Include="Tools\HexEdit\HexEdit.cs" />
+    <Compile Include="Tools\Network\Network.cs" />
+    <Compile Include="Tools\SteamMethods\SteamMethods.cs" />
+    <Compile Include="Tools\MonitorsDpiScaling\MonitorsDpiScaling.cs" />
+    <Compile Include="Tools\NemirtingasEpicEmu\NemirtingasEpicEmu.cs" />
+    <Compile Include="Tools\NemirtingasGalaxyEmu\NemirtingasGalaxyEmu.cs" />
+    <Compile Include="Tools\GlobalWindowMethods\GlobalWindowMethods.cs" />
+    <Compile Include="Tools\X360ce\X360ce.cs" />
+    <Compile Include="Tools\XInputPlusDll\XInputPlusDll.cs" />
+    <Compile Include="Util\ExecutableUtil.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />
@@ -320,12 +376,17 @@
     <Compile Include="Util\FormUtil.cs" />
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="Util\ProcessUtil.cs" />
+    <Compile Include="Util\RegistryUtil.cs" />
     <Compile Include="Util\ScreensUtil.cs" />
     <Compile Include="Tools\GameStarter\StartGameUtil.cs" />
     <Compile Include="Util\SteamUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
+    <Compile Include="Util\WindowsUsersUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\AlphaTextBox.resx">
+      <DependentUpon>AlphaTextBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlListBox.resx">
       <DependentUpon>ControlListBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -335,11 +396,26 @@
     <EmbeddedResource Include="Controls\CoolListControl.resx">
       <DependentUpon>CoolListControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CustomComboBox.resx">
+      <DependentUpon>CustomComboBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CustomNumericUpDown.resx">
+      <DependentUpon>CustomNumericUpDown.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PictureButton.resx">
       <DependentUpon>PictureButton.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ProfilesMenu.resx">
+      <DependentUpon>ProfilesMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextMessageBox.resx">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Coop\Generic\JSUserInputControl.resx">
+      <DependentUpon>JSUserInputControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Coop\Generic\OSD.resx">
+      <DependentUpon>OSD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Coop\Generic\ProcessPicker.resx">
       <DependentUpon>ProcessPicker.cs</DependentUpon>
@@ -350,23 +426,26 @@
     <EmbeddedResource Include="Forms\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\GameControl.resx">
+    <EmbeddedResource Include="Controls\GameControl.resx">
       <DependentUpon>GameControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\ImageButton.resx">
+    <EmbeddedResource Include="Controls\ImageButton.resx">
       <DependentUpon>ImageButton.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\PlayerCountControl.resx">
+    <EmbeddedResource Include="Controls\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\PlayerOptionsControl.resx">
+    <EmbeddedResource Include="Controls\PlayerOptionsControl.resx">
       <DependentUpon>PlayerOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\PositionsControl.resx">
+    <EmbeddedResource Include="Controls\PositionsControl.resx">
       <DependentUpon>PositionsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\UserInputControl.resx">
+    <EmbeddedResource Include="Controls\UserInputControl.resx">
       <DependentUpon>UserInputControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplitDivForm.resx">
+      <DependentUpon>SplitDivForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -379,21 +458,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="New\Utils\" />
     <Folder Include="Util\Extensions\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\4players.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\fullscreen.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\horizontal.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ncoop.ini" />
-    <None Include="Resources\vertical.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
@@ -402,33 +470,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\gamepad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\generic.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\16players.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\_6players.bmp" />
-    <None Include="Resources\6players.png" />
-    <None Include="Resources\8players.png" />
-    <None Include="Resources\customLayout.png" />
-    <None Include="Resources\keyboard_computer_hardware-512.png" />
-    <None Include="Resources\keyboard.png" />
-    <None Include="Resources\players.png" />
-    <None Include="Resources\icon.png" />
     <Content Include="Resources\icon.ico" />
-    <None Include="Resources\icon.ico.back" />
-    <None Include="Resources\instruction.gif" />
-    <None Include="Resources\instruction.png" />
-    <None Include="Resources\instruction-close.png" />
     <None Include="Resources\instructions.gif" />
-    <Content Include="Resources\mouse.png" />
-    <None Include="Resources\rawkeyboard.png" />
+    <None Include="Resources\title_dropdown_opened.png" />
+    <None Include="Resources\title_dropdown_closed.png" />
+    <None Include="Resources\title_dropdown_closed1.png" />
+    <None Include="Resources\title_dropdown_opened1.png" />
     <Content Include="Resources\xinput1_3.dll" />
-    <None Include="Resources\xinput1_3_a10_log.dll" />
     <None Include="Resources\xinput1_3_a10_x64.dll" />
     <None Include="Resources\xinput1_3_a10.dll" />
   </ItemGroup>
@@ -442,9 +490,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

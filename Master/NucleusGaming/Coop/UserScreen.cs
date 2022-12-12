@@ -12,7 +12,7 @@ namespace Nucleus.Gaming.Coop
         public Rectangle display;
         public bool vertical;
         public int priority;
-        private readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private readonly IniFile ini = Globals.ini;
 
         public Rectangle SwapTypeBounds
         {

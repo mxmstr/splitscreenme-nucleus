@@ -1,18 +1,18 @@
-﻿using Nucleus;
+﻿using Microsoft.Win32;
+using Nucleus;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Windows;
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Runtime.InteropServices;
-using System.Collections;
-using System.Linq;
 using System.Windows.Forms;
-using System.Security.Principal;
-using Microsoft.Win32;
 
 namespace StartGame
 {

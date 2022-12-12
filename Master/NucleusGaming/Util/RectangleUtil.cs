@@ -33,8 +33,8 @@ namespace Nucleus.Gaming
         public static Rectangle ScaleAndCenter(Size srcSize, Rectangle parent)
         {
             float width = srcSize.Width;
-            float height = srcSize.Height; 
-                                                                   
+            float height = srcSize.Height;
+
             float pwidth = parent.Width;
             float pheight = parent.Height;
 

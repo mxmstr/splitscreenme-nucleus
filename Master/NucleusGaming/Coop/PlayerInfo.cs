@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop
 {
-    public class PlayerInfo
+    public class PlayerInfo 
     {
         private Rectangle sourceEditBounds;
         private Rectangle editBounds;
         private Rectangle monitorBounds;
         private int screenIndex = -1;
         private object tag;
-
+        public string test;
         private ProcessData processData;
         public bool assigned;
 
@@ -31,11 +31,10 @@ namespace Nucleus.Gaming.Coop
         public bool IsXInput;
         public bool IsDInput;
         public bool IsFake;
-       // public bool IsInputUsed;
         public bool IsRawMouse;
         public bool IsRawKeyboard;
         public bool IsInputUsed;
-
+        //public string Identifier;
         //public IntPtr RawDeviceHandle = (IntPtr)(-1);
         public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
         public IntPtr RawKeyboardDeviceHandle = (IntPtr)(-1);
@@ -46,15 +45,15 @@ namespace Nucleus.Gaming.Coop
         public string GamepadName;
         public int GamepadMask;
         public Joystick DInputJoystick;
-
+        public long SteamID;
         // Should be set by a script, then these are sent into Proto Input.
         // Zero implies no contorller, 1 means controller 1, etc
         public int ProtoController1;
         public int ProtoController2;
         public int ProtoController3;
         public int ProtoController4;
-        public int Row;
-        public int Col;
+        //public int Row;
+        //public int Col;
         // public bool isfirstPlayer;
         public string HIDDeviceID;
         public string Nickname;

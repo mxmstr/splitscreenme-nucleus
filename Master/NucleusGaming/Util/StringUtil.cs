@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace Nucleus.Gaming
@@ -122,6 +123,44 @@ namespace Nucleus.Gaming
             size = new SizeF(maxUsedWidth, lines * font.GetHeight(graphics));
 
             return result;
+        }
+
+        public static string ReplaceCaseInsensitive(string str, string toFind, string toReplace)
+        {
+            string lowerOriginal = str.ToLower();
+            string lowerFind = toFind.ToLower();
+            string lowerRep = toReplace.ToLower();
+
+            int start = lowerOriginal.IndexOf(lowerFind);
+            if (start == -1)
+            {
+                return str;
+            }
+
+            string end = str.Remove(start, toFind.Length);
+            end = end.Insert(start, toReplace);
+
+            return end;
+        }
+
+        public static string internalGetRelativePath(DirectoryInfo dirInfo, DirectoryInfo rootInfo, string str)
+        {
+            if (dirInfo == null || dirInfo.FullName == rootInfo.FullName)
+            {
+                return str;
+            }
+
+            if (!string.IsNullOrWhiteSpace(Path.GetExtension(dirInfo.Name)))
+            {
+                str = dirInfo.Name;
+            }
+            else
+            {
+                str = dirInfo.Name + "\\" + str;
+            }
+
+            dirInfo = dirInfo.Parent;
+            return internalGetRelativePath(dirInfo, rootInfo, str);
         }
     }
 }

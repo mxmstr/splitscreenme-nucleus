@@ -5,12 +5,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
-using System.Media;
-using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace Nucleus.Coop
 {
@@ -26,7 +25,7 @@ namespace Nucleus.Coop
                 return text;
             }
         }
-        
+
         private float progress;
         private float lastProgress;
 
@@ -74,16 +73,16 @@ namespace Nucleus.Coop
         public void button_Click(object sender, EventArgs e)
         {
             if (main.mouseClick)
-            main.SoundPlayer(main.themePath + "\\button_click.wav");
+                main.SoundPlayer(main.theme + "button_click.wav");
         }
 
         private void closeButton(object sender, EventArgs e)
-		{
+        {
             txt_Stage.Visible = false;
             progressBar1.Visible = false;
             txt_Path.Visible = false;
             this.Visible = false;
-		}
+        }
 
         public SearchDisksForm(MainForm main)
         {
@@ -99,27 +98,27 @@ namespace Nucleus.Coop
             Location = new Point(main.Location.X + main.Width / 2 - Width / 2, main.Location.Y + main.Height / 2 - Height / 2);
 
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-            fontSize = float.Parse(main.theme.IniReadValue("Font", "AutoSearchFontSize"));
-            ForeColor = Color.FromArgb(Convert.ToInt32(main.rgb_font[0]), Convert.ToInt32(main.rgb_font[1]), Convert.ToInt32(main.rgb_font[2]));
+            fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
+            ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
 
-            BackgroundImage = new Bitmap(main.themePath + "\\other_backgrounds.jpg");
-            closeBtn.BackgroundImage = new Bitmap(main.themePath + "\\title_close.png");
+            BackgroundImage = new Bitmap(main.theme + "other_backgrounds.jpg");
+            closeBtn.BackgroundImage = new Bitmap(main.theme + "title_close.png");
             //Controls Image
             btn_addSelection.BackgroundImage = main.AppButtons;
-			btn_customPath.BackgroundImage = main.AppButtons;
-			btnSearch.BackgroundImage = main.AppButtons;
-			btn_delPath.BackgroundImage = main.AppButtons;
-			btn_selectAll.BackgroundImage = main.AppButtons;
-			btn_deselectAll.BackgroundImage = main.AppButtons;
-			//
-			//MouseOverColor
-			//
-			btn_addSelection.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-			btn_customPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-			btnSearch.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-			btn_delPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-			btn_selectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-			btn_deselectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+            btn_customPath.BackgroundImage = main.AppButtons;
+            btnSearch.BackgroundImage = main.AppButtons;
+            btn_delPath.BackgroundImage = main.AppButtons;
+            btn_selectAll.BackgroundImage = main.AppButtons;
+            btn_deselectAll.BackgroundImage = main.AppButtons;
+            //
+            //MouseOverColor
+            //
+            btn_addSelection.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+            btn_customPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+            btnSearch.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+            btn_delPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+            btn_selectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+            btn_deselectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
 
             controlscollect();
 
@@ -155,7 +154,7 @@ namespace Nucleus.Coop
                 {
                     button.Cursor = hand_Cursor;
                 }
-                else 
+                else
                 {
                     button.Cursor = default_Cursor;
                 }
@@ -179,11 +178,11 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);                  
+                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
                 }
             }
 
-           
+
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
@@ -205,7 +204,7 @@ namespace Nucleus.Coop
                 BindingFlags.NonPublic | BindingFlags.Instance
                 );
 
-                var addedHeight = 10*(int)scale;
+                var addedHeight = 10 * (int)scale;
 
                 heightField.SetValue(disksBox, addedHeight);
                 heightField.SetValue(checkboxFoundGames, addedHeight);
@@ -293,7 +292,7 @@ namespace Nucleus.Coop
 
             for (int i = 0; i < disksBox.CheckedItems.Count; i++)
             {
-                pathsToSearch.Add(disksBox.CheckedItems[i].ToString());             
+                pathsToSearch.Add(disksBox.CheckedItems[i].ToString());
             }
 
             ThreadPool.QueueUserWorkItem(SearchDrive, null);
@@ -660,13 +659,13 @@ namespace Nucleus.Coop
 
         private void closeBtn_MouseEnter(object sender, EventArgs e)
         {
-            closeBtn.BackgroundImage = new Bitmap(main.themePath + "\\title_close_mousehover.png");
+            closeBtn.BackgroundImage = new Bitmap(main.theme + "title_close_mousehover.png");
 
         }
 
         private void closeBtn_MouseLeave(object sender, EventArgs e)
         {
-            closeBtn.BackgroundImage = new Bitmap(main.themePath + "\\title_close.png");
+            closeBtn.BackgroundImage = new Bitmap(main.theme + "title_close.png");
         }
     }
 }

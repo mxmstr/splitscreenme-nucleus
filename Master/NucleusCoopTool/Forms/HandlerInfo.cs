@@ -1,31 +1,30 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Gaming;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
-using System.Media;
-using Nucleus.Gaming;
-using System.Collections.Generic;
 
 namespace Nucleus.Coop.Forms
 {
     public partial class HandlerInfo : BaseForm, IDynamicSized
     {
         protected string api = "https://hub.splitscreen.me/api/v1/";
-             
-		private readonly Handler Handler;
+
+        private readonly Handler Handler;
         private MainForm mainForm;
         private List<Control> ctrls = new List<Control>();
         private float fontSize;
-        private Cursor  default_Cursor;
+        private Cursor default_Cursor;
         private Cursor hand_Cursor;
         public void button_Click(object sender, EventArgs e)
         {
             if (mainForm.mouseClick)
-            mainForm.SoundPlayer(mainForm.themePath + "\\button_click.wav");
+                mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
         }
 
         private void controlscollect()
@@ -50,10 +49,10 @@ namespace Nucleus.Coop.Forms
 
         public HandlerInfo(Handler handler, MainForm mf)
         {
-            fontSize = float.Parse(mf.theme.IniReadValue("Font", "HandlerInfoFontSize"));
-            Color label_backColor = Color.FromArgb(0, 0, 0); 
-            Color label_foreColor = Color.FromArgb(255,255,255);
-			
+            fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "HandlerInfoFontSize"));
+            Color label_backColor = Color.FromArgb(0, 0, 0);
+            Color label_foreColor = Color.FromArgb(255, 255, 255);
+
             InitializeComponent();
             SuspendLayout();
             default_Cursor = mf.default_Cursor;
@@ -63,49 +62,49 @@ namespace Nucleus.Coop.Forms
 
             ForeColor = label_foreColor;
 
-			btn_Download.BackgroundImage = mf.AppButtons;
-            btn_Close.BackgroundImage = new Bitmap(mf.themePath + "\\title_close.png");
+            btn_Download.BackgroundImage = mf.AppButtons;
+            btn_Close.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
             btn_Close.FlatAppearance.MouseOverBackColor = Color.Transparent;
-			
-			BackColor = label_backColor;
-			txt_Updated.BackColor = label_backColor;
-			label10.BackColor = label_backColor;
-			txt_Created.BackColor = label_backColor;
-			label9.BackColor = label_backColor;
-			txt_GameDesc.BackColor = label_backColor;
-			txt_AuthDesc.BackColor = label_backColor;
-			txt_Comm.BackColor = label_backColor;
-			txt_Verified.BackColor = label_backColor;
-			txt_Likes.BackColor = label_backColor;
-			txt_Down.BackColor = label_backColor;
-			txt_Version.BackColor = label_backColor;
-			txt_GameName.BackColor = label_backColor;
-			label8.BackColor = label_backColor;
-			label7.BackColor = label_backColor;
-			label6.BackColor = label_backColor;
-			label5.BackColor = label_backColor;
-			label3.BackColor = label_backColor;
-			label2.BackColor = label_backColor;
-			label1.BackColor = label_backColor;
-			linkLabel_MoreInfo.BackColor = label_backColor;
-			
-			txt_Updated.ForeColor = label_foreColor;
-			label10.ForeColor = label_foreColor;
-			label9.ForeColor = label_foreColor;
-			label8.ForeColor = label_foreColor;
-			label7.ForeColor = label_foreColor;
-			label6.ForeColor = label_foreColor;
-			label5.ForeColor = label_foreColor;
-			label3.ForeColor = label_foreColor;
-			label2.ForeColor = label_foreColor;
-			label1.ForeColor = label_foreColor;
+
+            BackColor = label_backColor;
+            txt_Updated.BackColor = label_backColor;
+            label10.BackColor = label_backColor;
+            txt_Created.BackColor = label_backColor;
+            label9.BackColor = label_backColor;
+            txt_GameDesc.BackColor = label_backColor;
+            txt_AuthDesc.BackColor = label_backColor;
+            txt_Comm.BackColor = label_backColor;
+            txt_Verified.BackColor = label_backColor;
+            txt_Likes.BackColor = label_backColor;
+            txt_Down.BackColor = label_backColor;
+            txt_Version.BackColor = label_backColor;
+            txt_GameName.BackColor = label_backColor;
+            label8.BackColor = label_backColor;
+            label7.BackColor = label_backColor;
+            label6.BackColor = label_backColor;
+            label5.BackColor = label_backColor;
+            label3.BackColor = label_backColor;
+            label2.BackColor = label_backColor;
+            label1.BackColor = label_backColor;
+            linkLabel_MoreInfo.BackColor = label_backColor;
+
+            txt_Updated.ForeColor = label_foreColor;
+            label10.ForeColor = label_foreColor;
+            label9.ForeColor = label_foreColor;
+            label8.ForeColor = label_foreColor;
+            label7.ForeColor = label_foreColor;
+            label6.ForeColor = label_foreColor;
+            label5.ForeColor = label_foreColor;
+            label3.ForeColor = label_foreColor;
+            label2.ForeColor = label_foreColor;
+            label1.ForeColor = label_foreColor;
 
             controlscollect();
 
             foreach (Control control in ctrls)
             {
                 control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                if(control.GetType() == typeof(Button) || control.Name == "linkLabel_MoreInfo")
+                if (control.GetType() == typeof(Button) || control.Name == "linkLabel_MoreInfo")
                 {
                     control.Cursor = hand_Cursor;
                 }
@@ -121,7 +120,7 @@ namespace Nucleus.Coop.Forms
             this.mainForm = mf;
 
             Handler = handler;
-            
+
             txt_GameName.Text = Handler.GameName;
             txt_GameDesc.Text = Handler.GameDescription;
             txt_Version.Text = Handler.CurrentVersion;
@@ -149,7 +148,7 @@ namespace Nucleus.Coop.Forms
 
             txt_AuthDesc.Text = Handler.Description;
 
-            Bitmap bmp = new Bitmap(Properties.Resources.no_image);
+            Bitmap bmp = new Bitmap(mf.theme + "no_cover.png");
             string _cover = $@"https://images.igdb.com/igdb/image/upload/t_cover_small/{Handler.GameCover}.jpg";
 
             ServicePointManager.Expect100Continue = true;
@@ -200,6 +199,7 @@ namespace Nucleus.Coop.Forms
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
+
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -265,12 +265,12 @@ namespace Nucleus.Coop.Forms
 
         private void btn_Close_MouseEnter(object sender, EventArgs e)
         {
-            btn_Close.BackgroundImage = new Bitmap(mainForm.themePath + "\\title_close_mousehover.png");
+            btn_Close.BackgroundImage = new Bitmap(mainForm.theme + "title_close_mousehover.png");
         }
 
         private void btn_Close_MouseLeave(object sender, EventArgs e)
         {
-            btn_Close.BackgroundImage = new Bitmap(mainForm.themePath + "\\title_close.png");
+            btn_Close.BackgroundImage = new Bitmap(mainForm.theme + "title_close.png");
         }
     }
 }

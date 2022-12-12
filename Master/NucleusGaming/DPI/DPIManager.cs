@@ -3,7 +3,6 @@ using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -53,7 +52,7 @@ namespace Nucleus.Gaming
             float newScale = val / 96.0f;
 
             float dif = Math.Abs(newScale - Scale);
- 
+
             if (dif > 0.001f)
             {
                 Scale = newScale;
@@ -89,7 +88,7 @@ namespace Nucleus.Gaming
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             IntPtr desktop = g.GetHdc();
             int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCapEnum.DeviceCap.VERTRES);
-            int PhysicalScreenHeight = GetDeviceCaps(desktop,(int)DeviceCapEnum.DeviceCap.DESKTOPVERTRES);
+            int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCapEnum.DeviceCap.DESKTOPVERTRES);
 
             float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
 
@@ -98,7 +97,7 @@ namespace Nucleus.Gaming
 
         public static void ForceUpdate()
         {
-            UpdateAll();          
+            UpdateAll();
         }
 
         private static void UpdateAll()
