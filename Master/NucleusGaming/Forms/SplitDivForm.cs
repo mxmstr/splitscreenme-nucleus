@@ -15,8 +15,8 @@ namespace Nucleus.Gaming.Forms
     public partial class SplitForm : Form
     {
         private Color ChoosenColor;
-        private System.Windows.Forms.Timer slideshow;
-        private System.Windows.Forms.Timer loadTimer;
+        private Timer slideshow;
+        private Timer loadTimer;
         private string currentGame;
 
         public SplitForm(GenericGameInfo game, GenericGameHandler handler,Screen screen)
@@ -72,7 +72,7 @@ namespace Nucleus.Gaming.Forms
                 interval += (game.PauseBetweenStarts * 1000) * handler.TotalPlayers;
             }
 
-            loadTimer = new System.Windows.Forms.Timer
+            loadTimer = new Timer
             {
                 Interval = interval //millisecond
             };
@@ -80,7 +80,7 @@ namespace Nucleus.Gaming.Forms
             loadTimer.Tick += new EventHandler(loadTimerTick);
             loadTimer.Start();
 
-            slideshow = new System.Windows.Forms.Timer
+            slideshow = new Timer
             {
                 Interval = (8000) //millisecond
             };

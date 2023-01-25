@@ -4,6 +4,7 @@ using Nucleus.Gaming.Coop.InputManagement.Structs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -104,7 +105,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     WinApi.GetRawInputDeviceInfo(rid.hDevice, 0x2000000b, pData, ref pcbSize);
                     RID_DEVICE_INFO device = (RID_DEVICE_INFO)Marshal.PtrToStructure(pData, typeof(RID_DEVICE_INFO));
                   
-
                     if (device.dwType == 0)
                     {
                         //Mouse
@@ -114,7 +114,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     {
                         //Keyboard
                         Logger.WriteLine($"Found keyboard. Keyboard type = {device.keyboard.dwType}, keyboard subtype = {device.keyboard.dwSubType}, scan code mode = {device.keyboard.dwKeyboardMode}, number of keys = {device.keyboard.dwNumberOfKeysTotal}");
-                        //Logger.WriteLine(rid.hDevice);
                     }
 
                     yield return (device, rid.hDevice);
@@ -124,13 +123,89 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
         }
 
+        //private static Dictionary<string, ManagementObject> DevicesList = new Dictionary<string, ManagementObject>();
+
+        //private static void ListDevices()
+        //{
+        //    int i = 100;
+        //    DevicesList = new Dictionary<string, ManagementObject>();
+        //    //ManagementObjectSearcher micesearcher = new ManagementObjectSearcher("Select DeviceID from Win32_Mouse");
+
+        //    //foreach (ManagementObject mouse in micesearcher.Get())
+        //    //{
+        //    //    if (!mouse.GetPropertyValue("DeviceID").Equals(""))
+        //    //    {
+        //    //        Console.WriteLine("Mouse DeviceID {0}", mouse.GetPropertyValue("DeviceID"));
+
+        //    //        if (!DevicesList.ContainsKey($"Mouse{i}"))
+        //    //            DevicesList.Add($"Mouse{i}",mouse);
+        //    //    }
+        //    //}
+
+        //    ManagementObjectSearcher kbsearcher = new ManagementObjectSearcher("Select * from Win32_Keyboard");
+
+        //    ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * from Win32_Keyboard");
+
+        //    foreach (ManagementObject keyboard in searcher.Get())
+        //    {
+        //        // if (!keyboard.GetPropertyValue("DeviceID").Equals(""))
+        //        //  {
+        //        Console.WriteLine("KB {0}", i.ToString() + " Device id " + keyboard.GetPropertyValue("DeviceID"));
+        //        Console.WriteLine("KB {0}", i.ToString() + " Pnp Device id " + keyboard.GetPropertyValue("PNPDeviceID"));
+        //        Console.WriteLine("KB {0}", i.ToString() + " StatusInfo " + keyboard.GetPropertyValue("StatusInfo"));
+        //        //Console.WriteLine("KB DeviceID {0}", keyboard.GetPropertyValue("Availability"));
+        //        if (!DevicesList.ContainsKey($"Keyboard{i++}"))
+        //            DevicesList.Add($"Keyboard{i++}", keyboard);
+
+        //    }
+        // //   }
+
+
+        //        //}
+        //   // }
+        //}
+
+        //public static IEnumerable<PlayerInfo> GetDeviceInputInfos()//not to use from there
+        //{
+        //    ListDevices();
+        //    int i = 100;
+
+        //    foreach (KeyValuePair<string, ManagementObject> device in DevicesList)
+        //    {
+        //        if (device.Key.Contains("Mouse"))
+        //        {
+        //            PlayerInfo player = new PlayerInfo
+        //            {
+        //                GamepadId = i++,
+        //                IsRawMouse = true,
+        //                IsRawKeyboard = false,
+        //                HIDDeviceID = (string)device.Value.GetPropertyValue("DeviceID")
+        //            };
+        //            yield return player;
+        //        }
+        //        else if(device.Key.Contains("Keyboard"))
+        //        {
+        //            PlayerInfo player = new PlayerInfo
+        //            {
+        //                IsInputUsed = true,
+        //                GamepadId = i++,
+        //                IsRawMouse =false,
+        //                IsRawKeyboard = true,
+        //                //HIDDeviceID = (string)device.Value.GetPropertyValue("DeviceID")
+        //            };
+        //            player.IsKeyboardPlayer = true;
+        //            yield return player;
+        //        }
+        //    }
+        //}
+
         public static IEnumerable<PlayerInfo> GetDeviceInputInfos()
         {
             int i = 100;
 
             foreach ((RID_DEVICE_INFO deviceInfo, IntPtr deviceHandle) device in GetDeviceList().Where(x => x.deviceInfo.dwType <= 1))
             {
-                
+
                 PlayerInfo player = new PlayerInfo
                 {
                     GamepadId = i++,
@@ -140,17 +215,13 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 };
 
                 if (player.IsRawMouse)
-                {                  
+                {
                     player.RawMouseDeviceHandle = device.deviceHandle;
-                  //  player.test = device.deviceInfo.mouse.dwId.ToString();
-                   // Logger.WriteLine("Mouse " + player.test);
                 }
 
                 if (player.IsRawKeyboard)
-                {        
+                {
                     player.RawKeyboardDeviceHandle = device.deviceHandle;
-                    //player.test = device.deviceInfo.keyboard.;
-                    //Logger.WriteLine("Keyboard " + player.test);
                 };
 
                 player.IsKeyboardPlayer = true;

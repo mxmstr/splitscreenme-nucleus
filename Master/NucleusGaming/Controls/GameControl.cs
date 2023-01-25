@@ -73,6 +73,7 @@ namespace Nucleus.Coop
                 picture = new PictureBox
                 {
                     SizeMode = PictureBoxSizeMode.StretchImage,
+                    BackColor = Color.Transparent,
                 };
 
                 playerIcon = new PictureBox

@@ -12,7 +12,7 @@ namespace Nucleus.Gaming.Platform.PCSpecs
 {
     public static class MachineSpecs
     {
-        public static void GetPCspecs(GenericGameHandler genericGameHandler, GenericGameInfo gen)
+        public static string GetPCspecs(GenericGameHandler genericGameHandler)
         {           
             string pcSpecs = "PC Info - ";
             var name = (from x in new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
@@ -34,7 +34,12 @@ namespace Nucleus.Gaming.Platform.PCSpecs
                 }
             }
 
-            genericGameHandler.Log(pcSpecs);
+            if(genericGameHandler != null)
+            {
+                genericGameHandler.Log(pcSpecs);
+            }
+         
+            return pcSpecs;
         }
 
         public enum MachineType : ushort

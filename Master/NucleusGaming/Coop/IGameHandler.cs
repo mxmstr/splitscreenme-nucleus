@@ -18,9 +18,9 @@ namespace Nucleus.Gaming.Coop
         int TotalPlayers { get; }
         ///bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight);
 
-        bool Initialize(UserGameInfo game, GameProfile profile, Form main);
+        bool Initialize(UserGameInfo game, GameProfile profile);
 
-        string Play();
+        string Play(int isDead);
 
         void Update(double delayMS, bool refresh);
 

@@ -100,16 +100,19 @@ namespace Nucleus.Coop
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
+            BackColor = BackColor = Color.FromArgb(int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[0]),
+                                                   int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[1]),
+                                                   int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[2]),
+                                                   int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[3]));
 
-            BackgroundImage = new Bitmap(main.theme + "other_backgrounds.jpg");
             closeBtn.BackgroundImage = new Bitmap(main.theme + "title_close.png");
             //Controls Image
-            btn_addSelection.BackgroundImage = main.AppButtons;
-            btn_customPath.BackgroundImage = main.AppButtons;
-            btnSearch.BackgroundImage = main.AppButtons;
-            btn_delPath.BackgroundImage = main.AppButtons;
-            btn_selectAll.BackgroundImage = main.AppButtons;
-            btn_deselectAll.BackgroundImage = main.AppButtons;
+            btn_addSelection.BackColor = main.buttonsBackColor;
+            btn_customPath.BackColor = main.buttonsBackColor;
+            btnSearch.BackColor = main.buttonsBackColor;
+            btn_delPath.BackColor = main.buttonsBackColor;
+            btn_selectAll.BackColor = main.buttonsBackColor;
+            btn_deselectAll.BackColor = main.buttonsBackColor;
             //
             //MouseOverColor
             //

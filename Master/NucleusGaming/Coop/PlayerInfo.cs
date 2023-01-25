@@ -2,6 +2,7 @@
 //using SlimDX.DirectInput;
 using SharpDX.DirectInput;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace Nucleus.Gaming.Coop
         private object tag;
         public string test;
         private ProcessData processData;
-        public bool assigned;
+        public bool Assigned;
 
         public UserScreen Owner;
 
@@ -34,6 +35,7 @@ namespace Nucleus.Gaming.Coop
         public bool IsRawMouse;
         public bool IsRawKeyboard;
         public bool IsInputUsed;
+        public bool IsController;//Good to do not have to loop both Xinput & DInput  
         //public string Identifier;
         //public IntPtr RawDeviceHandle = (IntPtr)(-1);
         public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
@@ -66,9 +68,11 @@ namespace Nucleus.Gaming.Coop
         public string UserProfile;
 
         public Display Display;
-
+        public List<Rectangle> OtherLayout;
+        public int CurrentLayout = 0;
         public uint ProtoInputInstanceHandle = 0;
-        public int screenPriority;
+        public int ScreenPriority;
+
         // Serialized
 
         /// <summary>

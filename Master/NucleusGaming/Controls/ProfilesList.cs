@@ -8,34 +8,56 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Controls
 {
-    public partial class ProfilesPanel : ControlListBox, IDynamicSized
+    public partial class ProfilesList : ControlListBox, IDynamicSized
     {
-        private float _scale;        
-        private OSD osd;
-        public static ProfilesPanel profilesPanel;
-
-        public ProfilesPanel()
+        private float _scale;
+        public static ProfilesList profilesList;
+        public bool Locked = false;
+        private ToolTip notesTooltip;
+        private ToolTip loadTooltip;
+        private ToolTip deleteTooltip;
+        private ToolTip unloadTooltip;
+        private IniFile themeIni = Globals.ThemeIni;
+        private Color buttonsBackColor;
+        public ProfilesList()
         {
             InitializeComponent();
 
-            profilesPanel = this;
-            Name = "ProfilePanel"; 
+            profilesList = this;
+            Name = "ProfilePanel";
             Size = new Size(100, 3);
-            Location = new Point(0,0);
+            Location = new Point(0, 0);
             Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Visible = false;
             BorderStyle = BorderStyle.FixedSingle;
+            BackColor = Color.FromArgb(150, 0, 0, 0);
+            buttonsBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[0]),
+                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
+                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
+                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[3]));
+            notesTooltip = new ToolTip();
+            loadTooltip = new ToolTip();
+            deleteTooltip = new ToolTip();
+            unloadTooltip = new ToolTip();
         }
 
         public void profileBtn_CheckedChanged(object sender, EventArgs e)
         {
+            if (Locked)
+            {
+                return;
+            }
+
             Label selected = (Label)sender;
-          
+
+            selected.BackColor = Color.Transparent;
             foreach (Control c in Controls)
             {
                 if (c != selected && c.Text != "Unload")
@@ -70,15 +92,13 @@ namespace Nucleus.Gaming.Controls
             {
                 selected.ForeColor = Color.Gray;
                 GameProfile.currentProfile.Reset();
-                Globals.MainOSD.Settings(500, Color.Yellow,"Game Profile Unloaded");
-                //osd = new OSD(Color.BlueViolet, 500, null, "Game Profile Unloaded", null, null);
-                //osd.Show();
+                Globals.MainOSD.Settings(500, Color.Yellow, "Game Profile Unloaded");
                 return;
             }
 
-            if(GameProfile.currentProfile.LoadUserProfile(int.Parse(selected.Name)))//Note GameProfile auto reset on load .
+            if (GameProfile.currentProfile.LoadUserProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
             {
-                selected.ForeColor = Color.LightGreen;             
+                selected.ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
                 unloadBtn.ForeColor = Color.Orange;
             }
@@ -88,17 +108,17 @@ namespace Nucleus.Gaming.Controls
         {
             Controls.Clear();
 
-            Size = new Size((int)(100 *_scale), (int)(3 *_scale));          
+            Size = new Size((int)(100 * _scale), (int)(3 * _scale));
 
-            Font font = new Font("Franklin Gothic", 13F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-         
-            for (int i = 0; i < GameProfile.profilesPathList.Count+1; i++)
+            Font font = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+            for (int i = 0; i < GameProfile.profilesPathList.Count + 1; i++)
             {
                 string text;
 
-                if(i != GameProfile.profilesPathList.Count)
+                if (i != GameProfile.profilesPathList.Count)
                 {
-                   text = $"Profile n°{i + 1}";
+                    text = $"Profile n°{i + 1}";
                 }
                 else
                 {
@@ -106,16 +126,17 @@ namespace Nucleus.Gaming.Controls
                 }
 
                 Label deleteBtn = new Label()
-                { 
-                    Anchor =  AnchorStyles.Right,
-                    Size = new Size((int)(20 * _scale),(int)(20 * _scale)),
-                    Font = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0),   
+                {
+                    Anchor = AnchorStyles.Right,
+                    Size = new Size((int)(20 * _scale), (int)(20 * _scale)),
+                    Font = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0),
                     ForeColor = Color.Red,
                     FlatStyle = FlatStyle.Flat,
-                    TextAlign  = ContentAlignment.MiddleCenter,                   
+                    TextAlign = ContentAlignment.MiddleCenter,
                     Text = "X"
                 };
 
+                deleteTooltip.SetToolTip(deleteBtn, "Delete this game profile.");
                 deleteBtn.Click += new EventHandler(DeleteBtn_Click);//Delete profile
 
                 Label previewBtn = new Label()
@@ -132,6 +153,7 @@ namespace Nucleus.Gaming.Controls
 
                 };
 
+                notesTooltip.SetToolTip(previewBtn, "Show profile content or user notes.");
                 previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
 
                 Label profileBtn = new Label()
@@ -140,17 +162,17 @@ namespace Nucleus.Gaming.Controls
                     Anchor = AnchorStyles.Left | AnchorStyles.Right,
                     FlatStyle = FlatStyle.Flat,
                     BackgroundImageLayout = ImageLayout.Zoom,
-                    BackgroundImage = new Bitmap(Globals.Theme + "button.png"),
                     Font = font,
-                    BackColor = Color.Transparent,
+                    BackColor = buttonsBackColor,
                     ForeColor = Color.White,
                     TextAlign = ContentAlignment.MiddleLeft,
-                    Text = text,                  
+                    Text = text,
                     Height = (int)(20 * _scale)
                 };
 
+                loadTooltip.SetToolTip(profileBtn, "Load this game profile.");
                 profileBtn.Click += new EventHandler(profileBtn_CheckedChanged);
-               
+
                 if (i != GameProfile.profilesPathList.Count)
                 {
                     deleteBtn.Location = new Point(profileBtn.Right - deleteBtn.Width, profileBtn.Location.Y);
@@ -158,54 +180,61 @@ namespace Nucleus.Gaming.Controls
                     profileBtn.Controls.Add(deleteBtn);
                     profileBtn.Controls.Add(previewBtn);
                 }
-                else 
+                else
                 {
                     profileBtn.ForeColor = Color.Gray;
+                    unloadTooltip.SetToolTip(profileBtn, "Unload current loaded game profile.");
                 }
-               
-                profileBtn.Width = Width;                  
-                Height += profileBtn.Height;
-                Controls.Add(profileBtn);                
+
+                profileBtn.Width = Width;
+                Height += profileBtn.Height + 1;
+                Controls.Add(profileBtn);
             }
 
-            Height += 3;
+            //Height += 3;
 
             if (Controls.Count == 1)
                 Controls.Clear();
-                Visible = false;
+            Visible = false;
         }
 
-        private void Profile_Preview(object sender, EventArgs e)//Show profile config in handler note textBox
+        private void Profile_Preview(object sender, EventArgs e)//Show profile config in handler note textBox (Must be improved)
         {
             Label selected = (Label)sender;
 
             Control preview = selected.Parent as Control;
 
-            if (preview.Text == "Unload" )
+            if (preview.Text == "Unload")
             {
                 return;
             }
 
-            string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(preview.Name) - 1]);
-
             Control mainform = TopLevelControl;
-            Control[] parent = mainform.Controls.Find("scriptAuthorTxt", true);
-            foreach (Control textBox in parent)
+            Control[] scriptAuthorTxt = mainform.Controls.Find("scriptAuthorTxt", true);
+            Control[] btn_textSwitcher = mainform.Controls.Find("btn_textSwitcher", true);
+            Control[] HandlerNoteTitle = mainform.Controls.Find("HandlerNoteTitle", true);
+            string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(preview.Name) - 1]);
+            JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
+
+            string text = string.Empty;
+
+            if ((string)Jprofile["Notes"] != "" && (string)Jprofile["Notes"] != null)
             {
-                textBox.Text = jsonString.Replace("{", "").
-                                          Replace("}", "").
-                                          Replace(",", "").
-                                          Replace("\"", "").
-                                          Replace("[", "").
-                                          Replace("]", "").
-                                          Replace(" ", "");
+                text = (string)Jprofile["Notes"];
+            }
+            else
+            {
+                text = Jprofile.ToString();//jsonString.Replace(" ", "").                                
+                                           //Replace(",", "").
+                                           //Replace("\"", "").
+                                           //Replace("{", "").
+                                           //Replace("}", "");
             }
 
-            Control[] HandlerNoteTitle = mainform.Controls.Find("HandlerNoteTitle", true);
-            foreach (Control title in HandlerNoteTitle)
-            {             
-                title.Text = preview.Text;
-            }       
+            scriptAuthorTxt[0].Text = text;
+            btn_textSwitcher[0].Visible = true;
+
+            HandlerNoteTitle[0].Text = preview.Text;
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
@@ -217,7 +246,8 @@ namespace Nucleus.Gaming.Controls
             if (dialogResult == DialogResult.Yes)
             {
                 File.Delete(GameProfile.profilesPathList[int.Parse(deleteBtn.Parent.Name) - 1]);
-                var profilesPath = Directory.GetParent(GameProfile.profilesPathList[int.Parse(deleteBtn.Parent.Name) - 1]).EnumerateFiles().ToList();
+                List<FileInfo> profilesPath = Directory.GetParent(GameProfile.profilesPathList[int.Parse(deleteBtn.Parent.Name) - 1]).
+                                              EnumerateFiles().OrderBy(s => int.Parse(Regex.Match(s.Name, @"\d+").Value)).ToList();
 
                 for (int i = 0; i < profilesPath.Count(); i++)
                 {
@@ -231,8 +261,6 @@ namespace Nucleus.Gaming.Controls
 
                 GameProfile.currentProfile.Reset();
                 Update_ProfilesList();
-                //osd = new OSD(Color.Yellow,500, null, "Game Profile Deleted", null, null);
-                //osd.Show();
                 Globals.MainOSD.Settings(500, Color.Yellow, "Game Profile Deleted");
             }
         }

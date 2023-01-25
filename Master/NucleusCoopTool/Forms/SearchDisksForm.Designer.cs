@@ -75,7 +75,7 @@ namespace Nucleus.Coop
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.closeBtn);
@@ -112,7 +112,7 @@ namespace Nucleus.Coop
             // 
             // closeBtn
             // 
-            this.closeBtn.BackColor = System.Drawing.Color.Black;
+            this.closeBtn.BackColor = System.Drawing.Color.Transparent;
             this.closeBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("closeBtn.BackgroundImage")));
             this.closeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.closeBtn.FlatAppearance.BorderSize = 0;
@@ -131,6 +131,7 @@ namespace Nucleus.Coop
             // 
             this.checkBoxSizer2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxSizer2.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxSizer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.checkBoxSizer2.Controls.Add(this.checkboxFoundGames);
             this.checkBoxSizer2.Location = new System.Drawing.Point(250, 34);
             this.checkBoxSizer2.Margin = new System.Windows.Forms.Padding(0);
@@ -140,10 +141,11 @@ namespace Nucleus.Coop
             // 
             // checkboxFoundGames
             // 
-            this.checkboxFoundGames.BackColor = System.Drawing.Color.White;
+            this.checkboxFoundGames.BackColor = System.Drawing.Color.Black;
             this.checkboxFoundGames.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.checkboxFoundGames.CheckOnClick = true;
             this.checkboxFoundGames.Enabled = false;
+            this.checkboxFoundGames.ForeColor = System.Drawing.Color.White;
             this.checkboxFoundGames.FormattingEnabled = true;
             this.checkboxFoundGames.HorizontalScrollbar = true;
             this.checkboxFoundGames.IntegralHeight = false;
@@ -155,6 +157,7 @@ namespace Nucleus.Coop
             // checkBoxSizer1
             // 
             this.checkBoxSizer1.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxSizer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.checkBoxSizer1.Controls.Add(this.disksBox);
             this.checkBoxSizer1.Location = new System.Drawing.Point(9, 33);
             this.checkBoxSizer1.Name = "checkBoxSizer1";
@@ -163,9 +166,10 @@ namespace Nucleus.Coop
             // 
             // disksBox
             // 
-            this.disksBox.BackColor = System.Drawing.Color.White;
+            this.disksBox.BackColor = System.Drawing.Color.Black;
             this.disksBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.disksBox.CheckOnClick = true;
+            this.disksBox.ForeColor = System.Drawing.Color.White;
             this.disksBox.FormattingEnabled = true;
             this.disksBox.HorizontalScrollbar = true;
             this.disksBox.IntegralHeight = false;

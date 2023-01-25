@@ -8,15 +8,20 @@ namespace SplitTool.Controls
 {
     public class CoolListControl : UserControl, IDynamicSized
     {
-        private readonly IniFile ini = Globals.ini;
-
         private Label titleLabel;
         protected Label descLabel;
-        public Color userOverBackColor;
-        private Color userLeaveBackColor;
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
-        private Cursor default_Cursor;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleparams = base.CreateParams;
+                handleparams.ExStyle = 0x02000000;
+                return handleparams;
+            }
+        }
 
         public string Title
         {
@@ -38,28 +43,21 @@ namespace SplitTool.Controls
         {
             EnableHighlighting = enableHightlighting;
 
-            string theme = Globals.Theme;
-            IniFile themeIni = Globals.ThemeIni;
-
-            string[] rgb_MouseOverColor = themeIni.IniReadValue("Colors", "MouseOver").Split(',');
-            string[] rgb_CoollistInitialColor = themeIni.IniReadValue("Colors", "Selection").Split(',');
-            string customFont = themeIni.IniReadValue("Font", "FontFamily");
-            userOverBackColor = Color.FromArgb(Convert.ToInt32(Convert.ToInt32(rgb_MouseOverColor[0])), Convert.ToInt32(rgb_MouseOverColor[1]), Convert.ToInt32(rgb_MouseOverColor[2]));
-            userLeaveBackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
-
-            default_Cursor = new Cursor(theme + "cursor.ico");
+            string customFont = Globals.ThemeIni.IniReadValue("Font", "FontFamily");
 
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            BackColor = Color.FromArgb(Convert.ToInt32(rgb_CoollistInitialColor[0]), Convert.ToInt32(rgb_CoollistInitialColor[1]), Convert.ToInt32(rgb_CoollistInitialColor[2]));
+            BackColor = Color.Transparent;
 
             titleLabel = new Label
             {
                 Font = new Font(customFont, 10.0f, FontStyle.Bold, GraphicsUnit.Point, 0),
+                BackColor = Color.Transparent
             };
 
             descLabel = new Label
             {
                 Font = new Font(customFont, 9.25f, FontStyle.Regular, GraphicsUnit.Point, 0),
+                BackColor = Color.Transparent
             };
 
             Controls.Add(titleLabel);
@@ -75,8 +73,6 @@ namespace SplitTool.Controls
                 return;
             }
 
-            //float labelWidth = 370 * scale;
-
             titleLabel.AutoSize = true;
             titleLabel.MaximumSize = new Size(370, 0);
             titleLabel.Location = new Point(10, 10);
@@ -91,6 +87,7 @@ namespace SplitTool.Controls
                 if (picture.GetType() == typeof(PictureBox))
                 {
                     Height = picture.Height + 20;
+                    picture.BackColor = Color.Transparent;
                 }
 
             }
@@ -105,58 +102,60 @@ namespace SplitTool.Controls
             Control c = e.Control;
             c.Click += C_Click;
 
-            if (EnableHighlighting)
-            {
-                c.MouseEnter += C_MouseEnter;
-                c.MouseLeave += C_MouseLeave;
-            }
+            //if (EnableHighlighting)
+            //{
+            //    c.MouseEnter += C_MouseEnter;
+            //    c.MouseLeave += C_MouseLeave;
+            //}                
             DPIManager.Update(this);
         }
 
-        private void C_MouseEnter(object sender, EventArgs e)
-        {
-            OnMouseEnter(e);
-        }
+        //private void C_MouseEnter(object sender, EventArgs e)
+        //{
+        //    OnMouseEnter(e);
+        //}
 
-        private void C_MouseLeave(object sender, EventArgs e)
-        {
-            OnMouseLeave(e);
-        }
+        //private void C_MouseLeave(object sender, EventArgs e)
+        //{
+        //    OnMouseLeave(e);
+        //}
 
         private void C_Click(object sender, EventArgs e)
         {
             OnClick(e);
         }
 
-        protected override void OnLostFocus(EventArgs e)
-        {
-            base.OnLostFocus(e);
-            BackColor = userLeaveBackColor;
-        }
+        //protected override void OnLostFocus(EventArgs e)
+        //{
+        //    base.OnLostFocus(e);
+        //}
 
-        protected override void OnMouseEnter(EventArgs e)
-        {
-            base.OnMouseEnter(e);
-            if (!ContainsFocus)
-            {
-               // BackColor = userOverBackColor;
-            }
-        }
+        //protected override void OnMouseEnter(EventArgs e)
+        //{
+        //    base.OnMouseEnter(e);
+        //    if (!ContainsFocus)
+        //    {
+        //        //BackColor = SelectionColor;
+        //        //titleLabel.BackColor = SelectionColor;
+        //        //descLabel.BackColor = SelectionColor;
+        //    }
+        //}
 
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            base.OnMouseLeave(e);
-            if (!ContainsFocus)
-            {
-               // BackColor = userLeaveBackColor;
-            }
-        }
+        //protected override void OnMouseLeave(EventArgs e)
+        //{
+        //    base.OnMouseLeave(e);
+        //    if (!ContainsFocus)
+        //    {
+        //        //BackColor = userOverBackColor;
+        //        //titleLabel.BackColor = userOverBackColor;
+        //        //descLabel.BackColor = userOverBackColor;
+        //    }
+        //}
 
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
-
-            BackColor = userOverBackColor;
+            
             if (OnSelected != null)
             {
                 OnSelected(Data);

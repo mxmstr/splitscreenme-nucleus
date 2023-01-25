@@ -20,8 +20,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
     {
         private static RawInputProcessor rawInputProcessor = null;
 
-        public static Form main;
-
         private static int LockInputKey;
         public static int ToggleLockInputKey
         {
@@ -455,7 +453,11 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 if (!splitScreenRunning() && PlayerInfos != null)
                 {
-                    foreach (PlayerInfo toFlash in PlayerInfos.Where(x => x != null && ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
+                    List<PlayerInfo> copy = new List<PlayerInfo>(CurrentProfile?.PlayerData);
+                    copy.Capacity = 100;
+
+
+                    foreach (PlayerInfo toFlash in copy.Where(x => x != null && ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
                     {
                         toFlash.FlashIcon();
                     }

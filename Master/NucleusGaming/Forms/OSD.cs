@@ -28,14 +28,20 @@ namespace Nucleus.Gaming.Coop.Generic
         {
             timer.Stop();
             timer.Interval = (timing); //millisecond
-            timer.Tick += new EventHandler(RefreshWindowsTimerTick);
+            timer.Tick += new EventHandler(TimerTick);
+            Opacity = 1.0D;
             Show();
             timer.Start();
         }
 
-        private void RefreshWindowsTimerTick(Object Object, EventArgs EventArgs)
+        private void TimerTick(Object Object, EventArgs EventArgs)
         {
+            this.Invoke((MethodInvoker)delegate ()
+            {
+                Value.Text = "";
+            });
             timer.Stop();
+            Opacity = 0.0D;
             Hide();
             return;
         }

@@ -25,7 +25,7 @@ namespace Nucleus.Gaming
 
         public SaveType SaveType;
         public string SavePath;
-
+        public bool UpdateAvailable;
         public string[] DirSymlinkExclusions;
         public string[] FileSymlinkExclusions;
         public string[] FileSymlinkCopyInstead;
@@ -287,7 +287,6 @@ namespace Nucleus.Gaming
         public bool HookReRegisterRawInputKeyboard = true;
         public bool InjectHookXinput = false;
         public bool InjectDinputToXinputTranslation = false;
-
         //Not hooks
         public bool SendNormalMouseInput = true;
         public bool SendNormalKeyboardInput = true;
@@ -355,11 +354,12 @@ namespace Nucleus.Gaming
             }
 
             // Run this in another thread to not block UI
-            System.Threading.Tasks.Task.Run(() =>
-            {
-                bool update = Hub.IsUpdateAvailable(true);
-            });
 
+                //System.Threading.Tasks.Task.Run(() =>
+                //{
+                    UpdateAvailable = Hub.IsUpdateAvailable(true);
+                //});
+  
             engine.SetValue("Game", (object)null);
         }
 
@@ -569,7 +569,7 @@ namespace Nucleus.Gaming
 
         public string GetScreenshots()
         {
-            return Hub.GetScreenshots();
+            return Hub.GetScreenshotsUri();
         }
 
         public string GetHandlerId()

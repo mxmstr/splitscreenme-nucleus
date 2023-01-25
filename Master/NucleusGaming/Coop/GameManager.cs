@@ -635,7 +635,7 @@ namespace Nucleus.Gaming
 #if RELEASE || true
             try
             {
-                error = ((IGameHandler)state).Play();
+                error = ((IGameHandler)state).Play(-1);
             }
             catch (Exception ex)
             {

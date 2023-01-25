@@ -69,5 +69,35 @@ namespace Nucleus.Coop.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap xboxControllerFront {
+            get {
+                object obj = ResourceManager.GetObject("xboxControllerFront", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap xboxControllerTop {
+            get {
+                object obj = ResourceManager.GetObject("xboxControllerTop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Icon semblable à (Icône).
+        /// </summary>
+        internal static System.Drawing.Icon xinput {
+            get {
+                object obj = ResourceManager.GetObject("xinput", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

@@ -43,8 +43,7 @@ namespace Nucleus.Coop
                 Size = Size,
                 AutoScroll = true,
             };
-
-            
+         
             List<GameOption> options = game.Game.Options;
             Dictionary<string, object> vals = profile.Options;
 

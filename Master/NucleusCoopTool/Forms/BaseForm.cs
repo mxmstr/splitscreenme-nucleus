@@ -61,5 +61,17 @@ namespace Nucleus.Coop
             f.SetDesktopLocation(desktop.X + 100, desktop.Y + 100);
         }
 
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // BaseForm
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.DoubleBuffered = true;
+            this.Name = "BaseForm";
+            this.ResumeLayout(false);
+
+        }
     }
 }

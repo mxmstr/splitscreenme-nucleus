@@ -1,6 +1,7 @@
 ﻿using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.ProtoInput;
+using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
 using Nucleus.Interop.User32;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -38,7 +40,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool GetWindowRect(IntPtr hWnd, out RECT Rect);
-        
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
@@ -73,6 +75,13 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
         public static void ResetWindows(GenericGameHandler genericGameHandler, GenericGameInfo genericGameInfo, ProcessData processData, int x, int y, int w, int h, int i)
         {
+            if (processData.HWnd == null)
+            {
+                profile.PlayerData[i - 1].ProcessData.HWnd = new HwndObject(profile.PlayerData[i - 1].ProcessData.Process.NucleusGetMainWindowHandle());
+                processData.HWnd = profile.PlayerData[i - 1].ProcessData.HWnd;
+                Thread.Sleep(1000);
+            }
+
             genericGameHandler.Log("Attempting to reposition, resize and strip borders for instance " + (i - 1) + $" - {processData.Process.ProcessName} (pid {processData.Process.Id})");
             try
             {
@@ -167,8 +176,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
         public static void ChangeGameWindow(GenericGameHandler genericGameHandler, GenericGameInfo gen, Process proc, List<PlayerInfo> players, int playerIndex)
         {
-            var hwnd = WaitForProcWindowHandleNotZero(genericGameHandler,proc);
-
+            var hwnd = WaitForProcWindowHandleNotZero(genericGameHandler, proc);
+           
             Point loc = new Point(players[playerIndex].MonitorBounds.X, players[playerIndex].MonitorBounds.Y);
             Size size = new Size(players[playerIndex].MonitorBounds.Width, players[playerIndex].MonitorBounds.Height);
 
@@ -365,8 +374,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         public static Window CreateRawInputWindow(GenericGameHandler genericGameHandler, GenericGameInfo gen, Process proc, PlayerInfo player)//probably not the best class where to place this :/
         {
             genericGameHandler.Log("Creating raw input window");
-  
-            var hWnd = GlobalWindowMethods.WaitForProcWindowHandleNotZero(genericGameHandler,proc);
+
+            var hWnd = GlobalWindowMethods.WaitForProcWindowHandleNotZero(genericGameHandler, proc);
 
             var mouseHdev = player.IsRawKeyboard ? player.RawMouseDeviceHandle : (IntPtr)(-1);
             var keyboardHdev = player.IsRawMouse ? player.RawKeyboardDeviceHandle : (IntPtr)(-1);
@@ -384,7 +393,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             return window;
         }
 
-        public static IntPtr WaitForProcWindowHandleNotZero(GenericGameHandler genericGameHandler,Process proc)
+        public static IntPtr WaitForProcWindowHandleNotZero(GenericGameHandler genericGameHandler, Process proc)
         {
             try
             {
@@ -400,7 +409,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                         if (times == 199 && (int)proc.NucleusGetMainWindowHandle() == 0)
                         {
-                            genericGameHandler.Log(string.Format("ERROR - WaitForProcWindowHandleNotZero could not find main window handle for {0} (pid {1})", proc.ProcessName, proc.Id));
+                            if (!proc.HasExited)
+                                genericGameHandler.Log(string.Format("ERROR - WaitForProcWindowHandleNotZero could not find main window handle for {0} (pid {1})", proc.ProcessName, proc.Id));
                         }
                     }
                 }
@@ -413,26 +423,251 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 return (IntPtr)(-1);
             }
         }
-
-        public static void UpdateAndRefreshGameWindows(GenericGameHandler genericGameHandler, GenericGameInfo gen, GameProfile profile,double delayMS, bool refresh)
+        /// https://stackoverflow.com/questions/20938934/controlling-applications-volume-by-process-id/25584074#25584074
+        public class VolumeMixer//Need to be moved to the "audio" class
         {
-            if (profile == null)
+            public static float? GetApplicationVolume(int pid)
             {
+                ISimpleAudioVolume volume = GetVolumeObject(pid);
+                if (volume == null)
+                    return null;
+
+                float level;
+                volume.GetMasterVolume(out level);
+                Marshal.ReleaseComObject(volume);
+                return level * 100;
+            }
+
+            public static bool? GetApplicationMute(int pid)
+            {
+                ISimpleAudioVolume volume = GetVolumeObject(pid);
+                if (volume == null)
+                    return null;
+
+                bool mute;
+                volume.GetMute(out mute);
+                Marshal.ReleaseComObject(volume);
+                return mute;
+            }
+
+            public static void SetApplicationVolume(int pid, float level)
+            {
+                ISimpleAudioVolume volume = GetVolumeObject(pid);
+                if (volume == null)
+                    return;
+
+                Guid guid = Guid.Empty;
+                volume.SetMasterVolume(level / 100, ref guid);
+                Marshal.ReleaseComObject(volume);
+            }
+
+            public static void SetApplicationMute(int pid, bool mute)
+            {
+                ISimpleAudioVolume volume = GetVolumeObject(pid);
+                if (volume == null)
+                    return;
+
+                Guid guid = Guid.Empty;
+                volume.SetMute(mute, ref guid);
+                Marshal.ReleaseComObject(volume);
+            }
+
+            private static ISimpleAudioVolume GetVolumeObject(int pid)
+            {
+                // get the speakers (1st render + multimedia) device
+                IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)(new MMDeviceEnumerator());
+                IMMDevice speakers;
+                deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out speakers);
+
+                // activate the session manager. we need the enumerator
+                Guid IID_IAudioSessionManager2 = typeof(IAudioSessionManager2).GUID;
+                object o;
+                speakers.Activate(ref IID_IAudioSessionManager2, 0, IntPtr.Zero, out o);
+                IAudioSessionManager2 mgr = (IAudioSessionManager2)o;
+
+                // enumerate sessions for on this device
+                IAudioSessionEnumerator sessionEnumerator;
+                mgr.GetSessionEnumerator(out sessionEnumerator);
+                int count;
+                sessionEnumerator.GetCount(out count);
+
+                // search for an audio session with the required name
+                // NOTE: we could also use the process id instead of the app name (with IAudioSessionControl2)
+                ISimpleAudioVolume volumeControl = null;
+                for (int i = 0; i < count; i++)
+                {
+                    IAudioSessionControl2 ctl;
+                    sessionEnumerator.GetSession(i, out ctl);
+                    int cpid;
+                    ctl.GetProcessId(out cpid);
+
+                    if (cpid == pid)
+                    {
+                        volumeControl = ctl as ISimpleAudioVolume;
+                        break;
+                    }
+                    Marshal.ReleaseComObject(ctl);
+                }
+                Marshal.ReleaseComObject(sessionEnumerator);
+                Marshal.ReleaseComObject(mgr);
+                Marshal.ReleaseComObject(speakers);
+                Marshal.ReleaseComObject(deviceEnumerator);
+                return volumeControl;
+            }
+        }
+
+        [ComImport]
+        [Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
+        internal class MMDeviceEnumerator
+        {
+        }
+
+        internal enum EDataFlow
+        {
+            eRender,
+            eCapture,
+            eAll,
+            EDataFlow_enum_count
+        }
+
+        internal enum ERole
+        {
+            eConsole,
+            eMultimedia,
+            eCommunications,
+            ERole_enum_count
+        }
+
+        [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        internal interface IMMDeviceEnumerator
+        {
+            int NotImpl1();
+
+            [PreserveSig]
+            int GetDefaultAudioEndpoint(EDataFlow dataFlow, ERole role, out IMMDevice ppDevice);
+
+            // the rest is not implemented
+        }
+
+        [Guid("D666063F-1587-4E43-81F1-B948E807363F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        internal interface IMMDevice
+        {
+            [PreserveSig]
+            int Activate(ref Guid iid, int dwClsCtx, IntPtr pActivationParams, [MarshalAs(UnmanagedType.IUnknown)] out object ppInterface);
+
+            // the rest is not implemented
+        }
+
+        [Guid("77AA99A0-1BD6-484F-8BC7-2C654C9A9B6F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        internal interface IAudioSessionManager2
+        {
+            int NotImpl1();
+            int NotImpl2();
+
+            [PreserveSig]
+            int GetSessionEnumerator(out IAudioSessionEnumerator SessionEnum);
+
+            // the rest is not implemented
+        }
+
+        [Guid("E2F5BB11-0570-40CA-ACDD-3AA01277DEE8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        internal interface IAudioSessionEnumerator
+        {
+            [PreserveSig]
+            int GetCount(out int SessionCount);
+
+            [PreserveSig]
+            int GetSession(int SessionCount, out IAudioSessionControl2 Session);
+        }
+
+        [Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        internal interface ISimpleAudioVolume
+        {
+            [PreserveSig]
+            int SetMasterVolume(float fLevel, ref Guid EventContext);
+
+            [PreserveSig]
+            int GetMasterVolume(out float pfLevel);
+
+            [PreserveSig]
+            int SetMute(bool bMute, ref Guid EventContext);
+
+            [PreserveSig]
+            int GetMute(out bool pbMute);
+        }
+
+        [Guid("bfb7ff88-7239-4fc9-8fa2-07c950be9c6d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        internal interface IAudioSessionControl2
+        {
+            // IAudioSessionControl
+            [PreserveSig]
+            int NotImpl0();
+
+            [PreserveSig]
+            int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
+
+            [PreserveSig]
+            int SetDisplayName([MarshalAs(UnmanagedType.LPWStr)] string Value, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
+            [PreserveSig]
+            int GetIconPath([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
+
+            [PreserveSig]
+            int SetIconPath([MarshalAs(UnmanagedType.LPWStr)] string Value, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
+            [PreserveSig]
+            int GetGroupingParam(out Guid pRetVal);
+
+            [PreserveSig]
+            int SetGroupingParam([MarshalAs(UnmanagedType.LPStruct)] Guid Override, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
+            [PreserveSig]
+            int NotImpl1();
+
+            [PreserveSig]
+            int NotImpl2();
+
+            // IAudioSessionControl2
+            [PreserveSig]
+            int GetSessionIdentifier([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
+
+            [PreserveSig]
+            int GetSessionInstanceIdentifier([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
+
+            [PreserveSig]
+            int GetProcessId(out int pRetVal);
+
+            [PreserveSig]
+            int IsSystemSoundsSession();
+
+            [PreserveSig]
+            int SetDuckingPreference(bool optOut);
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+
+        public static void Refresh()
+        {         
+            finish = false;
+        }
+
+        private static bool finish = false;
+        public static GameProfile profile;
+        private static bool canSwitch = true;
+
+        //Calcul and switch possible layouts(up to 4 players)
+        public static void SwitchLayout()
+        {
+            if (profile == null || !GameProfile.Saved || !canSwitch)
+            {
+                Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Can't Be Used For Now");
                 return;
             }
 
-            genericGameHandler.exited = 0;
-            List<PlayerInfo> players = profile.PlayerData;
-            genericGameHandler.timer += delayMS;
-
-            bool updatedHwnd = false;
-            if (genericGameHandler.timer > genericGameHandler.HWndInterval)
-            {
-                updatedHwnd = true;
-                genericGameHandler.timer = 0;
-            }
-
-            Application.DoEvents();
+            List<PlayerInfo> players = profile.PlayerData.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();//Current new default
+            bool adjust = GameProfile.UseSplitDiv;
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -444,15 +679,432 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     continue;
                 }
 
+                if (p.OtherLayout == null)
+                {
+                    p.OtherLayout = new List<Rectangle>();
+                }
+
+               // data.HWnd.TopMost = true;//To Remove
+
+                Rectangle localizeFirstOfScr = new Rectangle(p.Owner.display.Location.X, p.Owner.display.Location.Y, 20, 20);
+                Rectangle playerWindow = new Rectangle(data.HWnd.Location.X, data.HWnd.Location.Y, data.HWnd.Size.Width, data.HWnd.Size.Height);
+                bool fisrtOfScr = localizeFirstOfScr.IntersectsWith(playerWindow);
+
+                if (data.HWnd.Location.X <= -32000)//if minimized or in cutscenes mode
+                {
+                    return;
+                }
+
+                if (p.Owner.Type == UserScreenType.DualHorizontal)
+                {
+                    if (fisrtOfScr)
+                    {
+                        Rectangle Win = new Rectangle(adjust ? p.Owner.display.Location.X + 1 : p.Owner.display.Location.X,
+                                                        adjust ? p.Owner.display.Location.Y + 1 : p.Owner.display.Location.Y,
+                                                        adjust ? (p.Owner.display.Width / 2) - 3 : p.Owner.display.Width / 2,
+                                                        adjust ? p.Owner.display.Height - 2 : p.Owner.display.Height);
+                        data.HWnd.Size = Win.Size;
+                        data.HWnd.Location = Win.Location;
+                        p.MonitorBounds = Win;
+
+                        continue;
+                    }
+                    else
+                    {
+                        if (!p.OtherLayout.Contains(p.MonitorBounds))
+                        {
+                            p.OtherLayout.Add(p.MonitorBounds);
+                        }
+
+                        Rectangle Win = new Rectangle(adjust ? (p.Owner.display.Width / 2) + 1 : p.Owner.display.Width / 2,
+                                                        adjust ? p.Owner.display.Y + 1 : p.Owner.display.Y,
+                                                        adjust ? (p.Owner.display.Width / 2) - 4 : p.Owner.display.Width / 2,
+                                                        adjust ? p.Owner.display.Height - 2 : p.Owner.display.Height);
+                        data.HWnd.Size = Win.Size;
+                        data.HWnd.Location = Win.Location;
+                        p.MonitorBounds = Win;
+                    }
+
+                    p.Owner.Type = UserScreenType.DualVertical;
+                }
+                else if (p.Owner.Type == UserScreenType.DualVertical)
+                {
+                    if (fisrtOfScr)
+                    {
+                        Rectangle Win = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                       adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                       adjust ? p.Owner.display.Width - 4 : p.Owner.display.Width,
+                                                       adjust ? (p.Owner.display.Height / 2) - 2 : p.Owner.display.Height / 2);
+                        data.HWnd.Size = Win.Size;
+                        data.HWnd.Location = Win.Location;
+                        p.MonitorBounds = Win;
+
+
+                        continue;
+                    }
+                    else
+                    {
+                        Rectangle Win = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                       adjust ? (p.Owner.display.Height / 2) + 2 : p.Owner.display.Height / 2,
+                                                       adjust ? p.Owner.display.Width - 4: p.Owner.display.Width,
+                                                       adjust ? (p.Owner.display.Height / 2) - 4 : p.Owner.display.Height / 2);
+
+                        data.HWnd.Size = Win.Size;
+                        data.HWnd.Location = Win.Location;
+                        p.MonitorBounds = Win;
+                    }
+
+                    p.Owner.Type = UserScreenType.DualHorizontal;
+                }
+                else if (p.Owner.Type == UserScreenType.FourPlayers && !finish)
+                {
+
+                    p.OtherLayout.Add(p.MonitorBounds);
+                    p.CurrentLayout++;//Skip Original default bounds on first swap
+                  
+
+                    if (fisrtOfScr)//Player 0
+                    {
+                        //All Vertical
+                        Rectangle avail1 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                         adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                         adjust ? (p.Owner.display.Width / p.Owner.PlayerOnScreen) - 3 : p.Owner.display.Width / p.Owner.PlayerOnScreen,
+                                                         adjust ? p.Owner.display.Height - 4 : p.Owner.display.Height);
+
+                        p.OtherLayout.Add(avail1);
+
+                        //All Horizontal
+                        Rectangle avail2 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                         adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                         adjust ? p.Owner.display.Width - 4 : p.Owner.display.Width,
+                                                         adjust ? (p.Owner.display.Height / p.Owner.PlayerOnScreen) - 3 : p.Owner.display.Height / p.Owner.PlayerOnScreen);
+
+
+                        p.OtherLayout.Add(avail2);
+
+                        //Four player Layout but with only 3 players
+                        if (p.Owner.PlayerOnScreen == 3)
+                        {
+
+                            // Top player full Width
+                            Rectangle avail3 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                             adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                             adjust ? p.Owner.display.Width - 4 : p.Owner.display.Width,
+                                                             adjust ? (p.Owner.display.Height / 2) - 2 : p.Owner.display.Height / 2);
+
+                            p.OtherLayout.Add(avail3);
+
+                            //Full height vertical left
+                            Rectangle avail4 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                             adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                             adjust ? (p.Owner.display.Width / 2 ) - 2 : p.Owner.display.Width/2,
+                                                             adjust ? p.Owner.display.Height - 3 : p.Owner.display.Height);
+
+                            p.OtherLayout.Add(avail4);
+
+
+                            //Top left
+                            Rectangle avail5 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                             adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                             adjust ? (p.Owner.display.Width / 2) - 2 : p.Owner.display.Width / 2,
+                                                             adjust ? (p.Owner.display.Height / 2) - 2 : p.Owner.display.Height / 2);
+
+                            p.OtherLayout.Add(avail5);
+
+                            //Top left
+                            Rectangle avail6 = avail5;
+
+                            p.OtherLayout.Add(avail6);
+
+                        }
+                        continue;
+                    }
+                    else//All players above 0
+                    {
+                        PlayerInfo prev = players[i - 1];
+                        //All Vertical
+
+                        Rectangle avail1 = new Rectangle(adjust ? prev.OtherLayout[1].Right + 3 : prev.OtherLayout[1].Right,
+                                                         adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                         adjust ? prev.OtherLayout[1].Width : prev.OtherLayout[1].Width,
+                                                         adjust ? prev.OtherLayout[1].Height : prev.OtherLayout[1].Height);
+
+                        p.OtherLayout.Add(avail1);
+
+                        //All Horizontal
+                        Rectangle avail2 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                         adjust ? prev.OtherLayout[2].Bottom + 2: prev.OtherLayout[2].Bottom,
+                                                         adjust ? prev.OtherLayout[2].Width : prev.OtherLayout[2].Width,
+                                                         adjust ? prev.OtherLayout[2].Height : prev.OtherLayout[2].Height);
+
+                        p.OtherLayout.Add(avail2);
+
+                        //Four player Layout but with only 3 players//
+                        // Top player full Width
+                        if (p.Owner.PlayerOnScreen == 3)
+                        {
+                            if (i == 1)
+                            {
+                                //Bottom left
+                                Rectangle avail3 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                                 adjust ? (p.Owner.display.Height/2) + 2 : p.Owner.display.Height / 2,
+                                                                 adjust ? (p.Owner.display.Width / 2) - 3 : p.Owner.display.Width / 2,
+                                                                 adjust ? (p.Owner.display.Height/2) - 4 : p.Owner.display.Height / 2);
+
+                                p.OtherLayout.Add(avail3);
+
+                                //Top right
+                                Rectangle avail4 = new Rectangle(adjust ? (p.Owner.display.Width / 2) + 2 : p.Owner.display.Width / 2,
+                                                                 adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                                 adjust ? (p.Owner.display.Width / 2) - 4 : p.Owner.display.Width / 2,
+                                                                 adjust ? (p.Owner.display.Height/2) - 2 : p.Owner.display.Height / 2);
+
+                                p.OtherLayout.Add(avail4);
+
+                                //Top right
+                                Rectangle avail5 = avail4;
+
+                                p.OtherLayout.Add(avail5);
+
+                                //Right full height
+                                Rectangle avail6 = new Rectangle(adjust ? (p.Owner.display.Width / 2) + 2 : p.Owner.display.Width / 2,
+                                                                 adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
+                                                                 adjust ? (p.Owner.display.Width / 2 ) - 3 : p.Owner.display.Width / 2,
+                                                                 adjust ? p.Owner.display.Height - 3 : p.Owner.display.Height);
+
+                                p.OtherLayout.Add(avail6);
+                            }
+                            else if (i == 2)
+                            {
+                                //Bottom right
+                                Rectangle avail3 = new Rectangle(adjust ?( p.Owner.display.Width / 2) + 2 : p.Owner.display.Width / 2,
+                                                                 adjust ? (p.Owner.display.Height / 2) + 2 : p.Owner.display.Height / 2,
+                                                                 adjust ? (p.Owner.display.Width / 2) - 4 : p.Owner.display.Width / 2,
+                                                                 adjust ? (p.Owner.display.Height / 2) - 4 : p.Owner.display.Height / 2);
+
+                                p.OtherLayout.Add(avail3);
+
+                                //Bottom right
+                                Rectangle avail4 = avail3;
+                                                                
+                                p.OtherLayout.Add(avail4);
+
+                                //Bottom full width
+                                Rectangle avail5 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                                 adjust ?(p.Owner.display.Height/2) + 2 : p.Owner.display.Height / 2,
+                                                                 adjust ? p.Owner.display.Width - 4 : p.Owner.display.Width,
+                                                                 adjust ? (p.Owner.display.Height/2) - 3 : p.Owner.display.Height / 2);
+
+                                p.OtherLayout.Add(avail5);
+
+                                //Bottom left
+                                Rectangle avail6 = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
+                                                                 adjust ? (p.Owner.display.Height / 2 ) + 2 : p.Owner.display.Height / 2,
+                                                                 adjust ? (p.Owner.display.Width/2) - 2 : p.Owner.display.Width / 2,
+                                                                 adjust ? (p.Owner.display.Height / 2) - 3 : p.Owner.display.Height / 2);
+
+                                p.OtherLayout.Add(avail6);
+
+                            }
+
+                        }
+                    }
+
+                    if (i == players.Count - 1)
+                    {
+                        finish = true;
+                    }
+                }
+            }
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo p = players[i];
+                ProcessData data = p.ProcessData;
+
+                //Swaping layout here
+                if (p.Owner.Type == UserScreenType.FourPlayers)
+                {
+                    data.HWnd.Size = p.OtherLayout[p.CurrentLayout].Size;
+                    data.HWnd.Location = p.OtherLayout[p.CurrentLayout].Location;
+                    p.MonitorBounds = new Rectangle(data.HWnd.Location, data.HWnd.Size);
+
+                    if (p.CurrentLayout == p.OtherLayout.Count() - 1)
+                    {
+                        p.CurrentLayout = 0;
+                    }
+                    else
+                    {
+                        p.CurrentLayout++;
+                    }
+                }
+            }
+            
+            //Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Switching Layouts");
+        }
+
+
+        public static void ToggleCutScenesMode(bool on)
+        {
+            if (profile == null || !GameProfile.Saved)
+            {
+                Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Can't Be Used For Now");
+                return;
+            }
+
+            List<PlayerInfo> players = profile.PlayerData;
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo p = players[i];
+                ProcessData data = p.ProcessData;
+
+                if (data == null)
+                {
+                    continue;
+                }
+
+                Rectangle localizeFirstOfScr = new Rectangle(p.Owner.display.Location.X, p.Owner.display.Location.Y, 20, 20);
+                Rectangle playerWindow = new Rectangle(data.HWnd.Location.X, data.HWnd.Location.Y, data.HWnd.Size.Width, data.HWnd.Size.Height);
+                bool fisrtOfScr = localizeFirstOfScr.IntersectsWith(playerWindow);
+
+                Console.WriteLine(fisrtOfScr + " " + p.PlayerID);
+
+                if (on)
+                {
+                    ///need now to not mute sound for only one instance between all screens  it could be a profile setting need to buy a displayport to hdmi adaptator.
+
+                    //monitorcbounds ne peut pas etre utiliser pour localiser la position de la fenetre sur un ecran donné (peut etre negatif)                  
+                    if (fisrtOfScr)//(p.PlayerID == 0)
+                    {
+                        if (!GameProfile.Cts_KeepAspectRatio && !GameProfile.Cts_MuteAudioOnly)//will set player 0 window fullscreened.
+                        {
+                            Console.WriteLine($"Set player {p.PlayerID} window fullsceened.");
+                            Rectangle setfullScreen = new Rectangle(p.Owner.display.X, p.Owner.display.Y, p.Owner.display.Width, p.Owner.display.Height);
+
+                            data.HWnd.Size = setfullScreen.Size;
+                            data.HWnd.Location = new Point(setfullScreen.X, setfullScreen.Y);
+                        }
+                        else if (!GameProfile.Cts_MuteAudioOnly) //will keep player window size and center it on screen.
+                        {
+                            Console.WriteLine($"Set player {p.PlayerID} centered without resizing it.");
+                            Rectangle centeredOnly = RectangleUtil.Center(p.MonitorBounds, p.Owner.display);
+
+                            data.HWnd.Size = centeredOnly.Size;
+                            data.HWnd.Location = centeredOnly.Location;
+                        }
+                    }
+                    else//Move all other player windows in the wild and mute sound 
+                    {
+                        if (!GameProfile.Cts_MuteAudioOnly)
+                        {
+                            Rectangle hiddenWindow = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
+
+                            data.HWnd.Location = new Point(-32000, -32000);//Minizing is probably a better option
+                            data.HWnd.Size = hiddenWindow.Size;
+                        }
+
+                        VolumeMixer.SetApplicationVolume(data.Process.Id, 0.0f);
+                    }
+                }
+                else//Reset all player windows and unmute
+                {
+                    if (fisrtOfScr)//(p.PlayerID == 0)
+                    {
+                        if (!GameProfile.Cts_MuteAudioOnly)//Reset player 0 window
+                        {
+                            Rectangle resizeReposition = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
+
+                            data.HWnd.Location = resizeReposition.Location;
+                            data.HWnd.Size = resizeReposition.Size;
+                        }
+                    }
+                    else
+                    {
+                        if (!GameProfile.Cts_MuteAudioOnly)//Reset all other player window
+                        {
+                            Rectangle reposition = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
+
+                            data.HWnd.Location = reposition.Location;
+                            data.HWnd.Size = reposition.Size;
+                        }
+
+                        VolumeMixer.SetApplicationVolume(data.Process.Id, 100.0f);
+                    }
+                }
+            }
+
+            if (on)
+            {
+                canSwitch = false;
+                Globals.MainOSD.Settings(1600, Color.YellowGreen, "Cutscenes Mode On");
+            }
+            else
+            {
+                canSwitch = true;
+                Globals.MainOSD.Settings(1600, Color.YellowGreen, "Cutscenes Mode Off");
+                if (GameProfile.Cts_Unfocus)
+                {
+                    ChangeForegroundWindow();
+                }
+            }
+        }
+
+        public static void RevivePlayer(GenericGameHandler genericGameHandler, GenericGameInfo gen,GameProfile profile,PlayerInfo p)
+        { 
+            genericGameHandler.Play(p.PlayerID);
+            Console.WriteLine(p.PlayerID);                    
+        }
+
+        public static void UpdateAndRefreshGameWindows(GenericGameHandler genericGameHandler, GenericGameInfo gen, GameProfile profile, double delayMS, bool refresh)
+        { 
+            if (profile == null)
+            { 
+                return;
+            }
+                    
+            genericGameHandler.exited = 0;
+            List<PlayerInfo> players = profile.PlayerData;
+            genericGameHandler.timer += delayMS;
+
+            bool updatedHwnd = false;
+            if (genericGameHandler.timer > genericGameHandler.HWndInterval)
+            {
+                updatedHwnd = true;
+                genericGameHandler.timer = 0;
+            }
+            
+            Application.DoEvents();
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo p = players[i];
+                ProcessData data = p.ProcessData;            
+
+                if (data == null)
+                {
+                    continue;
+                }
+
+                if (!ProcessUtil.IsRunning(data.Process) && !genericGameHandler.processingExit)
+                {
+                    p.ProcessData = null;
+                    p.ProcessID = 0;
+
+                    //RevivePlayer(genericGameHandler,gen, profile, p);
+                    continue;
+                }
+
                 if (refresh)
                 {
+                    genericGameHandler.TriggerOSD(100000, "Reseting game windows. Please wait...");
                     data.HWNDRetry = false;
                     // data.HWnd = null;
                     //updatedHwnd = false;
                     data.Setted = false;
                     data.Finished = false;
-                    data.Status = 0;
-                    resetingWindows = true;
+                    data.Status = 0;               
+                    resetingWindows = true;                  
                 }
 
                 if (data.Finished)
@@ -518,7 +1170,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                             if (data.Status == 2)//
                             {
-
                                 if (!gen.DontRemoveBorders)
                                 {
                                     genericGameHandler.Log("(Update) Removing game window border for pid " + data.Process.Id);
@@ -549,6 +1200,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                         lStyle &= ~User32_WS.WS_DLGFRAME;
                                         lStyle &= ~User32_WS.WS_BORDER;
                                     }
+
                                     int resultCode = User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
 
                                     lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
@@ -618,7 +1270,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                                     if (resetingWindows)
                                     {
-                                        genericGameHandler.TriggerOSD(2000,"Game Windows Reseted");
+                                        if (gen.SetForegroundWindowElsewhere)
+                                        {
+                                            ChangeForegroundWindow();
+                                        }
+                                        genericGameHandler.TriggerOSD(2000, "Game Windows Reseted");
                                         resetingWindows = false;
                                     }
                                 }
@@ -660,6 +1316,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 {
                                     if (resetingWindows)
                                     {
+                                        if (gen.SetForegroundWindowElsewhere)
+                                        {
+                                            ChangeForegroundWindow();
+                                        }
                                         genericGameHandler.TriggerOSD(2000,"Game Windows Reseted");
                                         resetingWindows = false;
                                     }

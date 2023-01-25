@@ -86,10 +86,10 @@ namespace Nucleus.Coop
             this.icons_Container = new System.Windows.Forms.FlowLayoutPanel();
             this.btn_gameOptions = new System.Windows.Forms.Button();
             this.scriptAuthorTxtSizer = new BufferedClientAreaPanel();
+            this.scriptAuthorTxt = new System.Windows.Forms.RichTextBox();
             this.btn_textSwitcher = new System.Windows.Forms.Button();
             this.btn_magnifier = new System.Windows.Forms.PictureBox();
             this.HandlerNoteTitle = new System.Windows.Forms.Label();
-            this.scriptAuthorTxt = new System.Windows.Forms.RichTextBox();
             this.cover = new BufferedClientAreaPanel();
             this.coverFrame = new BufferedClientAreaPanel();
             this.button_UpdateAvailable = new System.Windows.Forms.Button();
@@ -393,6 +393,7 @@ namespace Nucleus.Coop
             // gameContextMenuStrip
             // 
             this.gameContextMenuStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.gameContextMenuStrip.DropShadowEnabled = false;
             this.gameContextMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.gameContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.nullToolStripMenuItem,
@@ -735,20 +736,40 @@ namespace Nucleus.Coop
             // 
             // scriptAuthorTxtSizer
             // 
-            this.scriptAuthorTxtSizer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.scriptAuthorTxtSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptAuthorTxtSizer.BackColor = System.Drawing.Color.Transparent;
             this.scriptAuthorTxtSizer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.scriptAuthorTxtSizer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.scriptAuthorTxtSizer.Controls.Add(this.scriptAuthorTxt);
             this.scriptAuthorTxtSizer.Controls.Add(this.btn_textSwitcher);
             this.scriptAuthorTxtSizer.Controls.Add(this.btn_magnifier);
             this.scriptAuthorTxtSizer.Controls.Add(this.HandlerNoteTitle);
-            this.scriptAuthorTxtSizer.Controls.Add(this.scriptAuthorTxt);
             this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(11, 283);
             this.scriptAuthorTxtSizer.Margin = new System.Windows.Forms.Padding(5);
             this.scriptAuthorTxtSizer.Name = "scriptAuthorTxtSizer";
             this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(172, 237);
             this.scriptAuthorTxtSizer.TabIndex = 31;
+            // 
+            // scriptAuthorTxt
+            // 
+            this.scriptAuthorTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scriptAuthorTxt.BackColor = System.Drawing.Color.Black;
+            this.scriptAuthorTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.scriptAuthorTxt.BulletIndent = 1;
+            this.scriptAuthorTxt.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.scriptAuthorTxt.ForeColor = System.Drawing.Color.White;
+            this.scriptAuthorTxt.Location = new System.Drawing.Point(0, 24);
+            this.scriptAuthorTxt.Margin = new System.Windows.Forms.Padding(0);
+            this.scriptAuthorTxt.MaximumSize = new System.Drawing.Size(188, 191);
+            this.scriptAuthorTxt.Name = "scriptAuthorTxt";
+            this.scriptAuthorTxt.ReadOnly = true;
+            this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 191);
+            this.scriptAuthorTxt.TabIndex = 13;
+            this.scriptAuthorTxt.Text = "";
+            this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.scriptAuthorTxt_LinkClicked);
             // 
             // btn_textSwitcher
             // 
@@ -759,7 +780,7 @@ namespace Nucleus.Coop
             this.btn_textSwitcher.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btn_textSwitcher.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_textSwitcher.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_textSwitcher.Location = new System.Drawing.Point(150, 3);
+            this.btn_textSwitcher.Location = new System.Drawing.Point(152, 3);
             this.btn_textSwitcher.Name = "btn_textSwitcher";
             this.btn_textSwitcher.Size = new System.Drawing.Size(17, 18);
             this.btn_textSwitcher.TabIndex = 44;
@@ -781,33 +802,14 @@ namespace Nucleus.Coop
             // HandlerNoteTitle
             // 
             this.HandlerNoteTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HandlerNoteTitle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.HandlerNoteTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HandlerNoteTitle.Location = new System.Drawing.Point(0, 0);
             this.HandlerNoteTitle.Name = "HandlerNoteTitle";
-            this.HandlerNoteTitle.Size = new System.Drawing.Size(170, 20);
+            this.HandlerNoteTitle.Size = new System.Drawing.Size(172, 20);
             this.HandlerNoteTitle.TabIndex = 33;
             this.HandlerNoteTitle.Text = "Handler Notes";
             this.HandlerNoteTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // scriptAuthorTxt
-            // 
-            this.scriptAuthorTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scriptAuthorTxt.BackColor = System.Drawing.Color.Black;
-            this.scriptAuthorTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.scriptAuthorTxt.BulletIndent = 1;
-            this.scriptAuthorTxt.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.scriptAuthorTxt.ForeColor = System.Drawing.Color.White;
-            this.scriptAuthorTxt.Location = new System.Drawing.Point(2, 24);
-            this.scriptAuthorTxt.Margin = new System.Windows.Forms.Padding(0);
-            this.scriptAuthorTxt.MaximumSize = new System.Drawing.Size(187, 191);
-            this.scriptAuthorTxt.Name = "scriptAuthorTxt";
-            this.scriptAuthorTxt.ReadOnly = true;
-            this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.scriptAuthorTxt.Size = new System.Drawing.Size(187, 191);
-            this.scriptAuthorTxt.TabIndex = 13;
-            this.scriptAuthorTxt.Text = "";
-            this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.scriptAuthorTxt_LinkClicked);
             // 
             // cover
             // 
@@ -1120,6 +1122,7 @@ namespace Nucleus.Coop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1050, 602);

@@ -372,10 +372,17 @@ namespace Nucleus
 
         public static bool IsRunning(Process process)
         {
-            try { Process.GetProcessById(process.Id); }
-            catch (InvalidOperationException) { return false; }
-            catch (ArgumentException) { return false; }
-            return true;
+            if (process != null)
+            {
+                if (!process.HasExited)
+                {
+                    return true;
+                }
+            }
+            //try { Process.GetProcessById(process.Id); }
+            //catch (InvalidOperationException) { return false; }
+            //catch (ArgumentException) { return false; }
+            return false;
         }
 
         public static void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
@@ -447,7 +454,10 @@ namespace Nucleus
             ProcessThreadCollection threads = proc.Threads;
             for (int t = 0; t < threads.Count; t++)
             {
-                threads[t].IdealProcessor = (gen.IdealProcessor + 1);
+                if (threads[t].ThreadState == ThreadState.Running)
+                {
+                    threads[t].IdealProcessor = (gen.IdealProcessor + 1);
+                }
             }
         }
 

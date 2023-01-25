@@ -1,6 +1,6 @@
 ﻿namespace Nucleus.Gaming.Controls
 {
-    partial class ProfilesPanel
+    partial class ProfilesList
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.
@@ -32,11 +32,11 @@
             // 
             // ProfilesPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+           // this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            //this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "ProfilesPanel";
-            this.Size = new System.Drawing.Size(3925, 2268);
+            this.Size = new System.Drawing.Size(7655, 4308);
             this.ResumeLayout(false);
 
         }

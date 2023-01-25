@@ -62,7 +62,7 @@ namespace Nucleus.Coop.Forms
 
             ForeColor = label_foreColor;
 
-            btn_Download.BackgroundImage = mf.AppButtons;
+            btn_Download.BackColor = mf.buttonsBackColor;
             btn_Close.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
             btn_Close.FlatAppearance.MouseOverBackColor = Color.Transparent;
 

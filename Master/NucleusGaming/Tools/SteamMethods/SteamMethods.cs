@@ -470,7 +470,6 @@ namespace Nucleus.Gaming.Tools.SteamMethods
 
         public static void GoldbergWriteSteamIDAndAccount(GenericGameHandler genericGameHandler, GenericGameInfo genericGameInfo, string linkFolder, int i, PlayerInfo player)
         {
-
             string[] saFiles = Directory.GetFiles(linkFolder, "account_name.txt", SearchOption.AllDirectories);
             List<string> files = saFiles.ToList();
 
@@ -934,7 +933,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
             {
                 steamlessExePath = Path.Combine(Directory.GetCurrentDirectory() + @"\utils\Steamless\Steamless.CLI.exe");
 
-                string steamlessArgs = $"{args}" + " \"" + symlinkedGamePath + "\"";
+                string steamlessArgs = $"{args} {symlinkedGameFolder} \\ {exeName}";
 
                 ProcessStartInfo sl = new ProcessStartInfo(steamlessExePath);
                 sl.WorkingDirectory = symlinkedGameFolder;
@@ -944,10 +943,10 @@ namespace Nucleus.Gaming.Tools.SteamMethods
                 Process.Start(sl);
                 Thread.Sleep(timing);
 
-                if (System.IO.File.Exists(symlinkedGameFolder + @"\" + exeName + ".unpacked.exe"))
+                if (File.Exists(symlinkedGameFolder + @"\" + exeName + ".unpacked.exe"))
                 {
-                    System.IO.File.Delete(symlinkedGameFolder + @"\" + exeName);
-                    System.IO.File.Move(symlinkedGameFolder + @"\" + exeName + ".unpacked.exe", symlinkedGameFolder + @"\" + exeName);
+                    File.Delete(symlinkedGameFolder + @"\" + exeName);
+                    File.Move(symlinkedGameFolder + @"\" + exeName + ".unpacked.exe", symlinkedGameFolder + @"\" + exeName);
                 }
             }
             catch (Exception ex)

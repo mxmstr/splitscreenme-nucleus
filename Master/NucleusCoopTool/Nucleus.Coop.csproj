@@ -135,6 +135,12 @@
     <Compile Include="Forms\ProfileSettings.Designer.cs">
       <DependentUpon>ProfileSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\XInputShortcutsSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\XInputShortcutsSetup.Designer.cs">
+      <DependentUpon>XInputShortcutsSetup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\AssetsScraper.cs" />
     <Compile Include="Tools\blur.cs" />
     <Compile Include="Tools\CleanGameContent.cs" />
@@ -246,6 +252,9 @@
     <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\XInputShortcutsSetup.resx">
+      <DependentUpon>XInputShortcutsSetup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -341,6 +350,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\xinput.ico" />
+    <None Include="Resources\XInput.png" />
+    <None Include="Resources\xboxControllerFront.png" />
+    <None Include="Resources\xboxControllerTop.png" />
     <None Include="Resources\linksArrowOpen.png" />
     <None Include="Resources\linksArrow.png" />
     <None Include="Resources\logo.png" />
@@ -634,9 +647,6 @@
     <Content Include="gui\theme\default\background.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\button.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="gui\theme\default\button_click.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -718,7 +728,7 @@
     <Content Include="gui\theme\default\player_settings.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\priorities.png">
+    <Content Include="gui\theme\default\processor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\proto_keyboard.png">
@@ -749,9 +759,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\main_buttons_frame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\no_cover.png">

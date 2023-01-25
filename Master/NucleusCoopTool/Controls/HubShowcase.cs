@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Forms;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,6 +25,7 @@ namespace Nucleus.Coop
         private Label downloadLabel;
         private System.Windows.Forms.Timer rainbowTimer;
         private List<Label> labels;
+        private Hub hub = new Hub();
 
         protected override CreateParams CreateParams
         {
@@ -65,7 +67,7 @@ namespace Nucleus.Coop
 
             string rawHandlers = null;
 
-            rawHandlers = scriptDownloader.Get(api + "allhandlers");
+            rawHandlers = hub.Get(api + "allhandlers");
 
             if (rawHandlers == null)
             {

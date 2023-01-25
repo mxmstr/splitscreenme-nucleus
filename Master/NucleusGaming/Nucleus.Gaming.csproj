@@ -87,6 +87,7 @@
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -152,11 +153,11 @@
     <Compile Include="Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ProfilesMenu.cs">
+    <Compile Include="Controls\ProfilesList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ProfilesMenu.Designer.cs">
-      <DependentUpon>ProfilesMenu.cs</DependentUpon>
+    <Compile Include="Controls\ProfilesList.Designer.cs">
+      <DependentUpon>ProfilesList.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomNumericUpDown.cs">
       <SubType>UserControl</SubType>
@@ -169,10 +170,11 @@
     <Compile Include="Coop\BasicTypes\Ref.cs" />
     <Compile Include="Coop\Generic\async.cs" />
     <Compile Include="Coop\Generic\HttpClient.cs" />
-    <Compile Include="Coop\Generic\OSD.cs">
+    <Compile Include="Coop\InputManagement\ControllersShortcuts.cs" />
+    <Compile Include="Forms\OSD.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Coop\Generic\OSD.designer.cs">
+    <Compile Include="Forms\OSD.designer.cs">
       <DependentUpon>OSD.cs</DependentUpon>
     </Compile>
     <Compile Include="Coop\Generic\ProcessPicker.cs">
@@ -245,7 +247,7 @@
     <Compile Include="Coop\Generic\Step\CustomStepType.cs" />
     <Compile Include="Coop\Generic\UserInfo.cs" />
     <Compile Include="Coop\Generic\GameHookInfo.cs" />
-    <Compile Include="Coop\Generic\JSUserInputControl.cs">
+    <Compile Include="Controls\JSUserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Coop\Generic\DPIHandling.cs" />
@@ -405,16 +407,16 @@
     <EmbeddedResource Include="Controls\PictureButton.resx">
       <DependentUpon>PictureButton.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ProfilesMenu.resx">
-      <DependentUpon>ProfilesMenu.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\ProfilesList.resx">
+      <DependentUpon>ProfilesList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextMessageBox.resx">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Coop\Generic\JSUserInputControl.resx">
+    <EmbeddedResource Include="Controls\JSUserInputControl.resx">
       <DependentUpon>JSUserInputControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Coop\Generic\OSD.resx">
+    <EmbeddedResource Include="Forms\OSD.resx">
       <DependentUpon>OSD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Coop\Generic\ProcessPicker.resx">

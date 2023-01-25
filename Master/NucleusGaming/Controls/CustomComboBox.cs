@@ -165,7 +165,13 @@ namespace Nucleus.Gaming.Controls
             Opened = true;
             Refresh();          
         }
-    
+
+
+        private void ReadOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         private void Item_Click(object sender, EventArgs e)
         {
             Label item = sender as Label;

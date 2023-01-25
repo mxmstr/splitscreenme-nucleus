@@ -8,11 +8,16 @@ namespace Nucleus.Gaming.Coop.Generic
 {
     public class Hub
     {
-        private bool checkedUpdate = false;
         private bool updateAvailable = false;
+        public static bool Connected;
 
         public bool IsUpdateAvailable(bool fetch)
         {
+            if(!Connected)
+            {
+                return false;
+            }
+
             if (fetch)
             {
                 updateAvailable = CheckUpdateAvailable();
@@ -45,11 +50,6 @@ namespace Nucleus.Gaming.Coop.Generic
 
             string id = Handler.Id;
             int newVersion = -1;
-
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            ServicePointManager.DefaultConnectionLimit = 9999;
 
             string resp = Get("https://hub.splitscreen.me/api/v1/" + "handler/" + id);
 
@@ -86,8 +86,7 @@ namespace Nucleus.Gaming.Coop.Generic
 
         }
 
-
-        public string GetScreenshots()
+        public string GetScreenshotsUri()
         {
             string id = Handler.Id;
             if (id == null)
@@ -109,10 +108,14 @@ namespace Nucleus.Gaming.Coop.Generic
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.DefaultConnectionLimit = 9999;
-
+             
             try
             {
+
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                request.Timeout = 1000;
+                request.Method = "Get"; // As per Lasse's comment
+
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
                 using (StreamReader reader = new StreamReader(stream))
@@ -120,10 +123,13 @@ namespace Nucleus.Gaming.Coop.Generic
                     return reader.ReadToEnd();
                 }
             }
-            catch (Exception)
+            //catch (Exception)
+            //{
+            //    return string.Empty;
+            //}
+            catch (WebException)
             {
-                //MessageBox.Show(string.Format("{0}: {1}", ex.ToString(), ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return string.Empty;
+                return null;
             }
         }
     }

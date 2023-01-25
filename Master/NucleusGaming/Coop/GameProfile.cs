@@ -2,11 +2,14 @@
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Coop
@@ -24,7 +27,7 @@ namespace Nucleus.Gaming.Coop
         private List<UserScreen> screens;
         public List<PlayerInfo> PlayerData => playerData;
         public static GameProfile currentProfile;
-        private GenericGameInfo _game;
+        public static GenericGameInfo _game;
         private PositionsControl positionsControl = null;
         public static List<Rectangle> MonitorBounds = new List<Rectangle>();
         public static List<Rectangle> OwnerDisplays = new List<Rectangle>();
@@ -36,9 +39,18 @@ namespace Nucleus.Gaming.Coop
         public static List<int> ScreenIndexes = new List<int>();
         public static List<int> PlayerIDs = new List<int>();
         public static List<int> OwnerType = new List<int>();
-        public static List<int> CustomLayout = new List<int>(); private static int playersCount = 0;
-       
-        private static int profilesCount = 0;//Used to check if we need to create a new profile with more players
+        public static List<int> CustomLayout = new List<int>();
+
+        private static int totalPlayers = 0;
+        public static int TotalPlayers
+        {
+            get
+            {
+                return totalPlayers;
+            }
+        }
+
+        private static int profilesCount = 0;//Used to check if we need to create a new profile 
         private static int profileToSave;
         public static string ModeText = "Creation Mode";
         public static string GameGUID;
@@ -46,23 +58,30 @@ namespace Nucleus.Gaming.Coop
         public static List<string> profilesPathList = new List<string>();
         public static List<string> Nicknames = new List<string>();
 
+        public static List<string> IdealProcessors = new List<string>();
+        public static List<string> Affinitys = new List<string>();
+        public static List<string> PriorityClasses = new List<string>();
+
         public static List<long> SteamIDs = new List<long>();
 
+        public static bool Ready = false;
         public static bool createNewProfile = true;
 
         public static List<bool> IsDInputs = new List<bool>();
         public static List<bool> IsXInputs = new List<bool>();
         public static List<bool> IsKeyboardPlayer = new List<bool>();
+        public static List<bool> IsRawMouses = new List<bool>();//mice
 
         /// <summary>
         /// Options set by the user
         /// </summary>
         public Dictionary<string, object> Options => options;
         private Dictionary<string, object> options;
-        public static IDictionary<string,string> AudioInstances = new Dictionary<string, string>();
-        // public static List<string> RawKeyboardDeviceHandles = new List<string>();
-        // public static List<bool> IsRawMouses = new List<bool>();//mice
-        // public static List<string> RawMouseDeviceHandles = new List<string>();
+        public static IDictionary<string, string> AudioInstances = new Dictionary<string, string>();
+
+        public static List<string> RawKeyboardDeviceHandles = new List<string>();
+
+        public static List<string> RawMouseDeviceHandles = new List<string>();
 
         private static bool isNew = true;
         public static bool IsNew
@@ -133,7 +152,7 @@ namespace Nucleus.Gaming.Coop
             get => keepSymLink;
             set => keepSymLink = value;
         }
-        
+
         private static string splitDivColor = "Black";
         public static string SplitDivColor
         {
@@ -148,6 +167,12 @@ namespace Nucleus.Gaming.Coop
             set => network = value;
         }
 
+        private static string notes;
+        public static string Notes
+        {
+            get => notes;
+            set => notes = value;
+        }
         private static int pauseBetweenInstanceLaunch;
         public static int PauseBetweenInstanceLaunch
         {
@@ -176,6 +201,34 @@ namespace Nucleus.Gaming.Coop
             set => audioCustomSettings = value;
         }
 
+        private static bool cts_MuteAudioOnly = false;
+        public static bool Cts_MuteAudioOnly
+        {
+            get => cts_MuteAudioOnly;
+            set => cts_MuteAudioOnly = value;
+        }
+
+        private static bool cts_KeepAspectRatio = false;
+        public static bool Cts_KeepAspectRatio
+        {
+            get => cts_KeepAspectRatio;
+            set => cts_KeepAspectRatio = value;
+        }
+
+        private static bool cts_Unfocus = false;
+        public static bool Cts_Unfocus
+        {
+            get => cts_Unfocus;
+            set => cts_Unfocus = value;
+        }
+
+        private static bool saved = false;
+        public static bool Saved
+        {
+            get => saved;
+            //set => saved = value;
+        }
+
         public GameProfile()
         {
 
@@ -185,10 +238,10 @@ namespace Nucleus.Gaming.Coop
         {
             string path = GetProfilesPath();
             profilesPathList.Clear();
-
+            profilesCount = 0;
             if (path != null)
             {
-                profilesPathList = Directory.EnumerateFiles(path).ToList();
+                profilesPathList = Directory.EnumerateFiles(path).OrderBy(s => int.Parse(Regex.Match(s, @"\d+").Value)).ToList();
                 profilesCount = profilesPathList.Count();
                 Console.WriteLine($"Found {profilesCount} Game profile(s)");
             }
@@ -206,7 +259,7 @@ namespace Nucleus.Gaming.Coop
         }
 
         public void Reset()
-        {           
+        {
             PlayerIDs.Clear();
             Nicknames.Clear();
             SteamIDs.Clear();
@@ -215,16 +268,23 @@ namespace Nucleus.Gaming.Coop
             IsDInputs.Clear();
             IsXInputs.Clear();
             IsKeyboardPlayer.Clear();
+            IsRawMouses.Clear();
             CustomLayout.Clear();
             AudioInstances.Clear();
             ScreenIndexes.Clear();
             EditBounds.Clear();
             OwnerDisplays.Clear();
             MonitorBounds.Clear();
+
+            IdealProcessors.Clear();
+            Affinitys.Clear();
+            PriorityClasses.Clear();
+
             if (PlayerData != null)
             {
                 PlayerData.Clear();
             }
+
             autoPlay = false;
             keepSymLink = false;
             keepAccounts = false;
@@ -233,18 +293,23 @@ namespace Nucleus.Gaming.Coop
             useSplitDiv = false;
             audioDefaultSettings = true;
             audioCustomSettings = false;
+            cts_KeepAspectRatio = false;
+            cts_MuteAudioOnly = false;
+            Cts_Unfocus = false;
+            Ready = false;
+            saved = false;
             splitDivColor = "Black";
             network = "Automatic";
             ModeText = "Creation Mode";
+            notes = string.Empty;
             isNew = true;
             hWndInterval = 0;
             profileToSave = 0;
-            playersCount = 0;
+            totalPlayers = 0;
             pauseBetweenInstanceLaunch = 0;
             customLayout_Ver = 0;
             customLayout_Hor = 0;
             customLayout_Max = 1;
-            ListGameProfiles();
 
             options = new Dictionary<string, object>();
 
@@ -256,18 +321,20 @@ namespace Nucleus.Gaming.Coop
             createNewProfile = true;
 
             Label unload = new Label();
-            //unload.Text = "UnloadPC";
-            positionsControl.gameProfilesPanel.profileBtn_CheckedChanged(unload, null);
+
+            positionsControl.ResetScreensTotalPlayers();
+            positionsControl.gameProfilesMenu.profileBtn_CheckedChanged(unload, null);
             positionsControl.loadedProfilePlayers.Clear();
-            positionsControl.GamepadTimer_Tick(null);
+
             positionsControl.UpdatePlayers();
-           
-           
+
             positionsControl.CanUpdate = true;
             Console.WriteLine("Game Profile Unloaded");
+
+            ListGameProfiles();
         }
 
-        public void InitializeDefault(GenericGameInfo game,PositionsControl pc)
+        public void InitializeDefault(GenericGameInfo game, PositionsControl pc)
         {
             currentProfile = this;
             _game = game;
@@ -297,12 +364,12 @@ namespace Nucleus.Gaming.Coop
         }
 
         public bool LoadUserProfile(int _profileToLoad)
-        {            
+        {
             string path = Path.Combine(Application.StartupPath, $"Content\\_Games Profiles_\\{GameGUID}\\Profile[{_profileToLoad}].json");
 
             string jsonString = File.ReadAllText(path);
             Console.WriteLine(jsonString);
-   
+
             JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
             Reset();
@@ -311,6 +378,7 @@ namespace Nucleus.Gaming.Coop
 
             if (Jprofile == null)
             {
+                Ready = false;
                 return false;
             }
 
@@ -338,12 +406,16 @@ namespace Nucleus.Gaming.Coop
             AutoDesktopScaling = (bool)Jprofile["AutoDesktopScaling"]["Enabled"];
             KeepAccounts = (bool)Jprofile["KeepAccounts"]["Keep"];
             UseNicknames = (bool)Jprofile["UseNicknames"]["Use"];
+            Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
+            Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
+            Cts_Unfocus = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"];
             KeepSymLink = (bool)Jprofile["KeepSymLink"]["Keep"];
             Network = (string)Jprofile["Network"]["Type"];
             CustomLayout_Ver = (int)Jprofile["CustomLayout"]["Ver"];
             CustomLayout_Hor = (int)Jprofile["CustomLayout"]["Hor"];
             CustomLayout_Max = (int)Jprofile["CustomLayout"]["Max"];
             AutoPlay = (bool)Jprofile["AutoPlay"]["Enabled"];
+            Notes = (string)Jprofile["Notes"];
 
             JToken JplayersInfos = Jprofile["Data"] as JToken;
 
@@ -361,11 +433,11 @@ namespace Nucleus.Gaming.Coop
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Width"],
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Height"]));
 
-                MonitorBounds.Add(new Rectangle(
-                                               (int)JplayersInfos[i]["MonitorBounds"]["X"],
-                                               (int)JplayersInfos[i]["MonitorBounds"]["Y"],
-                                               (int)JplayersInfos[i]["MonitorBounds"]["Width"],
-                                               (int)JplayersInfos[i]["MonitorBounds"]["Height"]));
+                //MonitorBounds.Add(new Rectangle(
+                //                               (int)JplayersInfos[i]["MonitorBounds"]["X"],
+                //                               (int)JplayersInfos[i]["MonitorBounds"]["Y"],
+                //                               (int)JplayersInfos[i]["MonitorBounds"]["Width"],
+                //                               (int)JplayersInfos[i]["MonitorBounds"]["Height"]));
 
                 EditBounds.Add(new Rectangle(
                                                (int)JplayersInfos[i]["EditBounds"]["X"],
@@ -376,25 +448,31 @@ namespace Nucleus.Gaming.Coop
 
                 IsDInputs.Add((bool)JplayersInfos[i]["IsDInput"]);
                 IsXInputs.Add((bool)JplayersInfos[i]["IsXInput"]);
+
                 IsKeyboardPlayer.Add((bool)JplayersInfos[i]["IsKeyboardPlayer"]);
-                //RawKeyboardDeviceHandles.Add((string)playersInfos[i]["RawKeyboardDeviceHandle"]);
-                //IsRawMouses.Add((bool)playersInfos[i]["IsRawMouse"]);
-                // RawMouseDeviceHandles.Add((string)playersInfos[i]["RawMouseDeviceHandle"]);
+                RawKeyboardDeviceHandles.Add((string)JplayersInfos[i]["RawKeyboardDeviceHandle"]);
+                IsRawMouses.Add((bool)JplayersInfos[i]["IsRawMouse"]);
+                RawMouseDeviceHandles.Add((string)JplayersInfos[i]["RawMouseDeviceHandle"]);
+
                 ScreenPrioritys.Add((int)JplayersInfos[i]["ScreenPriority"]);
                 ScreenIndexes.Add((int)JplayersInfos[i]["ScreenIndex"]);
+
+                IdealProcessors.Add((string)JplayersInfos[i]["Processor"]["IdealProcessor"]);
+                Affinitys.Add((string)JplayersInfos[i]["Processor"]["ProcessorAffinity"]);
+                PriorityClasses.Add((string)JplayersInfos[i]["Processor"]["ProcessorPriorityClass"]);
             }
 
             JToken JaudioSettings = Jprofile["AudioSettings"] as JToken;
 
             foreach (JProperty JaudioSetting in JaudioSettings)
             {
-                if(JaudioSetting.Name.Contains("Custom"))
+                if (JaudioSetting.Name.Contains("Custom"))
                 {
                     AudioCustomSettings = (bool)JaudioSetting.Value;
                 }
                 else
                 {
-                   AudioDefaultSettings = (bool)JaudioSetting.Value;
+                    AudioDefaultSettings = (bool)JaudioSetting.Value;
                 }
             }
 
@@ -403,39 +481,61 @@ namespace Nucleus.Gaming.Coop
             {
                 AudioInstances.Add((string)JaudioDevice.Name, (string)JaudioDevice.Value);
             }
-          
-            foreach(int index in ScreenIndexes)//Check if there is enough screens
+
+            bool hasKeyboard = false;
+
+            if (AutoPlay)
             {
-                if (index > ScreensUtil.AllScreens().Length - 1)
+                positionsControl.GamepadTimer_Tick(null);
+
+                foreach (int index in ScreenIndexes)//Check if there is enough screens
                 {
-                    Globals.MainOSD.Settings(2000, Color.Orange, $"Requires {index + 1} Screens");
-                    Reset();
-                    return false;
+                    if (index > ScreensUtil.AllScreens().Length - 1)
+                    {
+                        Globals.MainOSD.Settings(2000, Color.Orange, $"Requires {index + 1} Screens");
+                        Reset();
+                        return false;
+                    }
+                }
+
+                int allPlayers = 0;
+
+                foreach (PlayerInfo player in PlayerData)
+                {
+                    if (IsKeyboardPlayer.Contains(true))
+                    {
+                        hasKeyboard = true;
+                        break;
+                    }
+
+                    if (GamepadsGuid.Contains(player.GamepadGuid))
+                    {
+                        allPlayers++;
+                    }
+                }
+
+                if (hasKeyboard)
+                {
+                    Globals.MainOSD.Settings(2000, Color.Orange, $"Game Profile N°{_profileToLoad} Loaded\nThe Auto Play Option Is Not Compatible With Keyboards");
+                    AutoPlay = false;
+                    positionsControl.UpdatePlayers();
+                }
+
+                if (allPlayers < PlayerIDs.Count && !hasKeyboard)
+                {
+                   // Globals.MainOSD.Settings(2000, Color.Orange, $"Requires {PlayerIDs.Count} Controller(s).\nMaybe All The Controllers Used To Create This Profile Are Not Plugged?");
+                    //Reset();
+                    //return false;
+                    AutoPlay = false;
+                    positionsControl.UpdatePlayers();
                 }
             }
 
-            int allPlayers = 0; 
-            foreach(PlayerInfo player in PlayerData)
-            {
-                if(GamepadsGuid.Contains(player.GamepadGuid))
-                {
-                    allPlayers++;
-                }
-            }
-
-            if(allPlayers < PlayerIDs.Count)
-            {
-                Globals.MainOSD.Settings(2000, Color.Orange, $"Requires {PlayerIDs.Count} Controller(s).\nMaybe All The Controllers Used To Create This Profile Are Not Plugged?");
-                Reset();
-                return false;
-            }
-
-            playersCount = JplayersInfos.Count();
-            PlayerData.Count();
+            totalPlayers = JplayersInfos.Count();
             createNewProfile = false;
             ModeText = "Edition Mode";
             isNew = false;
-           
+
             string mod1 = string.Empty;
             string mod2 = " Loaded";
 
@@ -445,17 +545,21 @@ namespace Nucleus.Gaming.Coop
                 mod2 = string.Empty;
             }
 
-            Globals.MainOSD.Settings(2000, Color.YellowGreen, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
-
+            if (!hasKeyboard && !autoPlay)
+            {
+                Globals.MainOSD.Settings(2000, Color.YellowGreen, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
+            }
+                        
             LogManager.Log($"Game profile n°{_profileToLoad} Loaded");
+            Ready = true;
             return true;
         }
 
-        public static void saveUserProfile(GameProfile profile)//A voir pour utiliser default nucleus profiles 
+        public static void saveUserProfile(GameProfile profile)
         {
             string path;
 
-            if (profile.PlayerData.Count != playersCount || createNewProfile || profilesCount == 0)
+            if (profile.PlayerData.Count != totalPlayers || createNewProfile || profilesCount == 0)
             {
                 profilesCount++;//increase to set new profile name
                 path = Path.Combine(Application.StartupPath, $"Content\\_Games Profiles_\\{GameGUID}\\Profile[{profilesCount}].json");
@@ -514,83 +618,104 @@ namespace Nucleus.Gaming.Coop
                 JPauseBetweenInstanceLaunch.Add(new JProperty("Time", "0"));
             }
 
-            JObject JCustomLayout = new JObject(new JProperty("Ver", customLayout_Ver), new JProperty("Hor", customLayout_Hor), new JProperty("Max", CustomLayout_Max));
-            JObject JUseSplitDiv = new JObject(new JProperty("Enabled", useSplitDiv), new JProperty("Color", splitDivColor));
+            JObject JCustomLayout = new JObject(new JProperty("Ver", customLayout_Ver),
+                                                new JProperty("Hor", customLayout_Hor),
+                                                new JProperty("Max", CustomLayout_Max));
+            JObject JUseSplitDiv = new JObject(new JProperty("Enabled", useSplitDiv),
+                                               new JProperty("Color", splitDivColor));
+
             JObject JAutoDesktopScaling = new JObject(new JProperty("Enabled", autoDesktopScaling));
             JObject JkeepAccounts = new JObject(new JProperty("Keep", keepAccounts));
             JObject JUseNicknames = new JObject(new JProperty("Use", useNicknames));
             JObject JKeepSymLink = new JObject(new JProperty("Keep", keepSymLink));
             JObject JNetwork = new JObject(new JProperty("Type", network));
             JObject JAutoPlay = new JObject(new JProperty("Enabled", autoPlay));
-            JObject JAudioInstances = new JObject();    
-            
+            JObject JAudioInstances = new JObject();
+            JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
+                                                new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
+                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus));
+
+            //JObject JNotes = new JObject(new JProperty("User", Notes));
+
             foreach (KeyValuePair<string, string> JaudioDevice in AudioInstances)
             {
-                JAudioInstances.Add(new JProperty(JaudioDevice.Key,JaudioDevice.Value));
+                JAudioInstances.Add(new JProperty(JaudioDevice.Key, JaudioDevice.Value));
             }
 
             JObject JAudioSettings = new JObject(new JProperty("CustomSettings", audioCustomSettings), new JProperty("DefaultSettings", audioDefaultSettings));
-            
-            IOrderedEnumerable<PlayerInfo> players = profile.PlayerData.OrderBy(c => c.PlayerID);//need to do this cause sometimes it's reversed
-            List<JObject> playersInfos = new List<JObject>();
-            
-            for (int i = 0; i < profile.playerData.Count; i++)
-            {
-                profile.playerData[i].ScreenIndex = ScreenIndexes[i];
-                profile.playerData[i].EditBounds = EditBounds[i];
-            }
 
-            if (players != null)
+            List<PlayerInfo> players = (List<PlayerInfo>)profile.PlayerData.OrderBy(c => c.PlayerID).ToList();//need to do this cause sometimes it's reversed
+            List<JObject> playersInfos = new List<JObject>();//Players object
+
+            for (int i = 0; i < players.Count(); i++)//build per players object
             {
-                foreach (PlayerInfo player in players)
+                players[i].ScreenIndex = ScreenIndexes[i];
+                players[i].EditBounds = EditBounds[i];//!!!Pose probleme avec k&m(index dans la list) mais a était ajouter parce qu'il y a un probleme avec editbounds(valeurs bizares) quand il ya plusieaurs ecrans a re-tester des que possible
+
+                JObject JOwner = new JObject(
+                                   new JProperty("Type", players[i].Owner.Type),
+                                   new JProperty("Display", new JObject(
+                                                            new JProperty("X", players[i].Owner.display.X),
+                                                            new JProperty("Y", players[i].Owner.display.Y),
+                                                            new JProperty("Width", players[i].Owner.display.Width),
+                                                            new JProperty("Height", players[i].Owner.display.Height))));
+
+
+                //JObject JMonitorBounds = new JObject(
+                //                         new JProperty("X", players[i].ProcessData.HWnd.Location.X),
+                //                         new JProperty("Y", players[i].ProcessData.HWnd.Location.Y),
+                //                         new JProperty("Width", players[i].ProcessData.HWnd.Size.Width),
+                //                         new JProperty("Height", players[i].ProcessData.HWnd.Size.Height));
+
+
+                JObject JEditBounds = new JObject(
+                                      new JProperty("X", players[i].EditBounds.X),
+                                      new JProperty("Y", players[i].EditBounds.Y),
+                                      new JProperty("Width", players[i].EditBounds.Width),
+                                      new JProperty("Height", players[i].EditBounds.Height));
+
+                JObject JProcessor = new JObject();
+
+                if (i < IdealProcessors.Count)
                 {
-
-                    JObject JOwner = new JObject(
-                                     new JProperty("Type", player.Owner.Type),
-                                     new JProperty("Display", new JObject(
-                                                              new JProperty("X", player.Owner.display.X),
-                                                              new JProperty("Y", player.Owner.display.Y),
-                                                              new JProperty("Width", player.Owner.display.Width),
-                                                              new JProperty("Height", player.Owner.display.Height))));
-
-                    JObject JMonitorBounds = new JObject(
-                                             new JProperty("X", player.MonitorBounds.X),
-                                             new JProperty("Y", player.MonitorBounds.Y),
-                                             new JProperty("Width", player.MonitorBounds.Width),
-                                             new JProperty("Height", player.MonitorBounds.Height));
-
-
-                    JObject JEditBounds = new JObject(
-                                          new JProperty("X", player.EditBounds.X),
-                                          new JProperty("Y", player.EditBounds.Y),
-                                          new JProperty("Width", player.EditBounds.Width),
-                                          new JProperty("Height", player.EditBounds.Height));
-
-                    JObject JPData = new JObject(
-                                     new JProperty("PlayerID", player.PlayerID),
-                                     new JProperty("Nickname", player.Nickname),
-                                     new JProperty("SteamID", player.SteamID),
-                                     new JProperty("GamepadGuid", player.GamepadGuid),
-                                     new JProperty("IsDInput", player.IsDInput),
-                                     new JProperty("IsXInput", player.IsXInput),
-                                     new JProperty("IsKeyboardPlayer", player.IsKeyboardPlayer),
-                                     //new JProperty("RawKeyboardDeviceHandle", (string)player.HIDDeviceID),
-                                     //new JProperty("IsRawMouse", player.IsRawMouse),
-                                     //new JProperty("RawMouseDeviceHandle", (string)player.HIDDeviceID),
-                                     new JProperty("ScreenPriority", player.screenPriority),
-                                     new JProperty("ScreenIndex", player.ScreenIndex),
-                                     new JProperty("EditBounds", JEditBounds),
-                                     new JProperty("MonitorBounds", JMonitorBounds),
-                                     new JProperty("Owner", JOwner)
-
-                        );
-
-                    playersInfos.Add(JPData);
+                    JProcessor.Add(new JProperty("IdealProcessor", IdealProcessors[i]));
                 }
+
+                if (i < Affinitys.Count)
+                {
+                    JProcessor.Add(new JProperty("ProcessorAffinity", Affinitys[i]));
+                }
+
+                if (i < PriorityClasses.Count)
+                {
+                    JProcessor.Add(new JProperty("ProcessorPriorityClass", PriorityClasses[i]));
+                }
+
+                JObject JPData = new JObject(//build all individual player datas object
+                                 new JProperty("PlayerID", players[i].PlayerID),
+                                 new JProperty("Nickname", players[i].Nickname),
+                                 new JProperty("SteamID", players[i].SteamID),
+                                 new JProperty("GamepadGuid", players[i].GamepadGuid),
+                                 new JProperty("IsDInput", players[i].IsDInput),
+                                 new JProperty("IsXInput", players[i].IsXInput),
+                                 new JProperty("Processor", JProcessor),
+                                 new JProperty("IsKeyboardPlayer", players[i].IsKeyboardPlayer),
+                                 new JProperty("RawKeyboardDeviceHandle", (string)players[i].HIDDeviceID),
+                                 new JProperty("IsRawMouse", players[i].IsRawMouse),
+                                 new JProperty("RawMouseDeviceHandle", (string)players[i].HIDDeviceID),
+                                 new JProperty("ScreenPriority", players[i].ScreenPriority),
+                                 new JProperty("ScreenIndex", players[i].ScreenIndex),
+                                 new JProperty("EditBounds", JEditBounds),
+                                 //  new JProperty("MonitorBounds", JMonitorBounds),
+                                 new JProperty("Owner", JOwner)
+                    );
+
+                playersInfos.Add(JPData);
             }
 
-            JObject profileJson = new JObject
+            JObject profileJson = new JObject//shared settings object
             (
+                new JProperty("Notes", Notes),
                new JProperty("Player(s)", profile.PlayerData.Count),
                new JProperty("AutoPlay", JAutoPlay),
                new JProperty("Data", playersInfos),
@@ -601,11 +726,12 @@ namespace Nucleus.Gaming.Coop
                new JProperty("UseSplitDiv", JUseSplitDiv),
                new JProperty("CustomLayout", JCustomLayout),
                new JProperty("WindowsSetupTiming", JHWndInterval),
-               new JProperty("PauseBetweenInstanceLaunch", JPauseBetweenInstanceLaunch),          
+               new JProperty("PauseBetweenInstanceLaunch", JPauseBetweenInstanceLaunch),
                new JProperty("KeepSymLink", JKeepSymLink),
-               new JProperty("Network", JNetwork),      
+               new JProperty("Network", JNetwork),
                new JProperty("AudioSettings", JAudioSettings),
-               new JProperty("AudioInstances", JAudioInstances)
+               new JProperty("AudioInstances", JAudioInstances),
+               new JProperty("CutscenesModeSettings", JCts_Settings)
             );
 
             using (FileStream stream = new FileStream(path, FileMode.Create))
@@ -618,7 +744,8 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 
-            LogManager.Log("Game profile Saved");
+            saved = true;
+            LogManager.Log("Game Profile Saved");
         }
 
         public static GameProfile CleanClone(GameProfile profile)
@@ -631,22 +758,16 @@ namespace Nucleus.Gaming.Coop
 
             List<PlayerInfo> source;
 
-            if (!isNew)
-            {
-               source = profile.PlayerData.OrderBy(c => c.PlayerID).ToList();//reoder so it follow the current loaded game profile player order.
-            }
-            else
-            {
-               source = profile.playerData;
-            }
+            source = profile.playerData;
 
             for (int i = 0; i < source.Count; i++)
             {
                 PlayerInfo player = source[i];
-                
+
                 if (player.ScreenIndex != -1)
                 {
                     // only add valid players to the clean version
+                    GameProfile.MonitorBounds.Add(player.MonitorBounds);///for splitdiv compatibility
                     nprof.playerData.Add(player);
                 }
             }

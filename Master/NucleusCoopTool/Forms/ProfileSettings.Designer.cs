@@ -50,151 +50,49 @@ namespace Nucleus.Coop
         {
             this.closeBtn = new System.Windows.Forms.Button();
             this.saveBtn = new System.Windows.Forms.Button();
-            this.sharedBtn = new System.Windows.Forms.Button();
-            this.playersBtn = new System.Windows.Forms.Button();
-            this.audioBtn = new System.Windows.Forms.Button();
-            this.prioritiesBtn = new System.Windows.Forms.Button();
+            this.sharedTabBtn = new System.Windows.Forms.Button();
+            this.playersTabBtn = new System.Windows.Forms.Button();
+            this.audioTabBtn = new System.Windows.Forms.Button();
+            this.processorTabBtn = new System.Windows.Forms.Button();
             this.saveBtnPicture = new System.Windows.Forms.PictureBox();
             this.audioBtnPicture = new System.Windows.Forms.PictureBox();
             this.playersBtnPicture = new System.Windows.Forms.PictureBox();
             this.sharedBtnPicture = new System.Windows.Forms.PictureBox();
-            this.prioritiesBtnPicture = new System.Windows.Forms.PictureBox();
+            this.processorBtnPicture = new System.Windows.Forms.PictureBox();
             this.closeBtnPicture = new System.Windows.Forms.PictureBox();
             this.modeLabel = new System.Windows.Forms.Label();
-            this.priorities = new BufferedClientAreaPanel();
-            this.PriorityClass32 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass31 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass30 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass29 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass28 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass27 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass26 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass25 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass16 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass15 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass14 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass13 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass12 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass11 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass10 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass9 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass24 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass23 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass22 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass21 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass20 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass19 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass18 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass17 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass8 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass7 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass6 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass5 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass4 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass3 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass2 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass1 = new System.Windows.Forms.ComboBox();
-            this.Affinity32 = new System.Windows.Forms.ComboBox();
-            this.Affinity31 = new System.Windows.Forms.ComboBox();
-            this.Affinity30 = new System.Windows.Forms.ComboBox();
-            this.Affinity29 = new System.Windows.Forms.ComboBox();
-            this.Affinity28 = new System.Windows.Forms.ComboBox();
-            this.Affinity27 = new System.Windows.Forms.ComboBox();
-            this.Affinity26 = new System.Windows.Forms.ComboBox();
-            this.Affinity25 = new System.Windows.Forms.ComboBox();
-            this.Affinity24 = new System.Windows.Forms.ComboBox();
-            this.Affinity23 = new System.Windows.Forms.ComboBox();
-            this.Affinity22 = new System.Windows.Forms.ComboBox();
-            this.Affinity21 = new System.Windows.Forms.ComboBox();
-            this.Affinity20 = new System.Windows.Forms.ComboBox();
-            this.Affinity19 = new System.Windows.Forms.ComboBox();
-            this.Affinity18 = new System.Windows.Forms.ComboBox();
-            this.Affinity17 = new System.Windows.Forms.ComboBox();
-            this.IdealProcessor32 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.IdealProcessor31 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.IdealProcessor30 = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.IdealProcessor29 = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.IdealProcessor28 = new System.Windows.Forms.ComboBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.IdealProcessor27 = new System.Windows.Forms.ComboBox();
-            this.label56 = new System.Windows.Forms.Label();
-            this.IdealProcessor26 = new System.Windows.Forms.ComboBox();
-            this.label60 = new System.Windows.Forms.Label();
-            this.IdealProcessor25 = new System.Windows.Forms.ComboBox();
-            this.label62 = new System.Windows.Forms.Label();
-            this.IdealProcessor24 = new System.Windows.Forms.ComboBox();
-            this.label63 = new System.Windows.Forms.Label();
-            this.IdealProcessor23 = new System.Windows.Forms.ComboBox();
-            this.label64 = new System.Windows.Forms.Label();
-            this.IdealProcessor22 = new System.Windows.Forms.ComboBox();
-            this.label65 = new System.Windows.Forms.Label();
-            this.IdealProcessor21 = new System.Windows.Forms.ComboBox();
-            this.label66 = new System.Windows.Forms.Label();
-            this.IdealProcessor20 = new System.Windows.Forms.ComboBox();
-            this.label67 = new System.Windows.Forms.Label();
-            this.IdealProcessor19 = new System.Windows.Forms.ComboBox();
-            this.label68 = new System.Windows.Forms.Label();
-            this.IdealProcessor18 = new System.Windows.Forms.ComboBox();
-            this.label69 = new System.Windows.Forms.Label();
-            this.IdealProcessor17 = new System.Windows.Forms.ComboBox();
-            this.label70 = new System.Windows.Forms.Label();
-            this.Affinity16 = new System.Windows.Forms.ComboBox();
-            this.Affinity15 = new System.Windows.Forms.ComboBox();
-            this.Affinity14 = new System.Windows.Forms.ComboBox();
-            this.Affinity13 = new System.Windows.Forms.ComboBox();
-            this.Affinity12 = new System.Windows.Forms.ComboBox();
-            this.Affinity11 = new System.Windows.Forms.ComboBox();
-            this.Affinity10 = new System.Windows.Forms.ComboBox();
-            this.Affinity9 = new System.Windows.Forms.ComboBox();
-            this.Affinity8 = new System.Windows.Forms.ComboBox();
-            this.Affinity7 = new System.Windows.Forms.ComboBox();
-            this.Affinity6 = new System.Windows.Forms.ComboBox();
-            this.Affinity5 = new System.Windows.Forms.ComboBox();
-            this.Affinity4 = new System.Windows.Forms.ComboBox();
-            this.Affinity3 = new System.Windows.Forms.ComboBox();
-            this.Affinity2 = new System.Windows.Forms.ComboBox();
-            this.Affinity_Label = new System.Windows.Forms.Label();
-            this.Affinity1 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass_Label = new System.Windows.Forms.Label();
-            this.IdealProcessor16 = new System.Windows.Forms.ComboBox();
-            this.label76 = new System.Windows.Forms.Label();
-            this.IdealProcessor15 = new System.Windows.Forms.ComboBox();
-            this.label77 = new System.Windows.Forms.Label();
-            this.IdealProcessor14 = new System.Windows.Forms.ComboBox();
-            this.label78 = new System.Windows.Forms.Label();
-            this.IdealProcessor13 = new System.Windows.Forms.ComboBox();
-            this.label79 = new System.Windows.Forms.Label();
-            this.IdealProcessor12 = new System.Windows.Forms.ComboBox();
-            this.label80 = new System.Windows.Forms.Label();
-            this.IdealProcessor11 = new System.Windows.Forms.ComboBox();
-            this.label81 = new System.Windows.Forms.Label();
-            this.IdealProcessor10 = new System.Windows.Forms.ComboBox();
-            this.label82 = new System.Windows.Forms.Label();
-            this.IdealProcessor9 = new System.Windows.Forms.ComboBox();
-            this.label83 = new System.Windows.Forms.Label();
-            this.IdealProcessor8 = new System.Windows.Forms.ComboBox();
-            this.label84 = new System.Windows.Forms.Label();
-            this.IdealProcessor7 = new System.Windows.Forms.ComboBox();
-            this.label85 = new System.Windows.Forms.Label();
-            this.IdealProcessor6 = new System.Windows.Forms.ComboBox();
-            this.label86 = new System.Windows.Forms.Label();
-            this.IdealProcessor5 = new System.Windows.Forms.ComboBox();
-            this.label87 = new System.Windows.Forms.Label();
-            this.Instance_Label = new System.Windows.Forms.Label();
-            this.IdealProcessor4 = new System.Windows.Forms.ComboBox();
-            this.label89 = new System.Windows.Forms.Label();
-            this.IdealProcessor3 = new System.Windows.Forms.ComboBox();
-            this.label90 = new System.Windows.Forms.Label();
-            this.IdealProcessor2 = new System.Windows.Forms.ComboBox();
-            this.label91 = new System.Windows.Forms.Label();
-            this.IdealProcessor_Label = new System.Windows.Forms.Label();
-            this.IdealProcessor1 = new System.Windows.Forms.ComboBox();
-            this.label93 = new System.Windows.Forms.Label();
-            this.Panel2 = new BufferedClientAreaPanel();
+            this.sharedTab = new BufferedClientAreaPanel();
+            this.label72 = new System.Windows.Forms.Label();
+            this.notes_text = new System.Windows.Forms.TextBox();
+            this.label71 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.cts_unfocus = new System.Windows.Forms.CheckBox();
+            this.cts_kar = new System.Windows.Forms.CheckBox();
+            this.cts_Mute = new System.Windows.Forms.CheckBox();
+            this.SplitColors = new System.Windows.Forms.ComboBox();
+            this.cmb_Network = new System.Windows.Forms.ComboBox();
+            this.autoPlay = new System.Windows.Forms.CheckBox();
+            this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.SplitDiv = new System.Windows.Forms.CheckBox();
+            this.label49 = new System.Windows.Forms.Label();
+            this.layoutSizer = new System.Windows.Forms.Panel();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.KeepSymLinkCheckBox = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.WIndowsSetupTiming_Label = new System.Windows.Forms.Label();
+            this.WindowsSetupTiming_TextBox = new System.Windows.Forms.TextBox();
+            this.pauseBetweenInstanceLaunch_TxtBox = new System.Windows.Forms.TextBox();
+            this.pauseBetweenInstanceLauch_Label = new System.Windows.Forms.Label();
+            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
+            this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.useNicksCheck = new System.Windows.Forms.CheckBox();
+            this.playersTab = new BufferedClientAreaPanel();
             this.steamid32 = new System.Windows.Forms.ComboBox();
             this.steamid31 = new System.Windows.Forms.ComboBox();
             this.steamid30 = new System.Windows.Forms.ComboBox();
@@ -300,32 +198,7 @@ namespace Nucleus.Coop
             this.label8 = new System.Windows.Forms.Label();
             this.player1N = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.Panel1 = new BufferedClientAreaPanel();
-            this.SplitColors = new Nucleus.Gaming.Controls.CustomComboBox();
-            this.cmb_Network = new Nucleus.Gaming.Controls.CustomComboBox();
-            this.autoPlay = new System.Windows.Forms.CheckBox();
-            this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.SplitDiv = new System.Windows.Forms.CheckBox();
-            this.label49 = new System.Windows.Forms.Label();
-            this.slitWarning_Label = new System.Windows.Forms.Label();
-            this.layoutSizer = new System.Windows.Forms.Panel();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.KeepSymLinkCheckBox = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.WIndowsSetupTiming_Label = new System.Windows.Forms.Label();
-            this.WindowsSetupTiming_TextBox = new System.Windows.Forms.TextBox();
-            this.pauseBetweenInstanceLaunch_TxtBox = new System.Windows.Forms.TextBox();
-            this.pauseBetweenInstanceLauch_Label = new System.Windows.Forms.Label();
-            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
-            this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
-            this.label32 = new System.Windows.Forms.Label();
-            this.useNicksCheck = new System.Windows.Forms.CheckBox();
-            this.Panel3 = new BufferedClientAreaPanel();
+            this.audioTab = new BufferedClientAreaPanel();
             this.label39 = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
             this.audioCustomSettingsBox = new System.Windows.Forms.GroupBox();
@@ -348,18 +221,153 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioRefresh = new System.Windows.Forms.Button();
+            this.processorTab = new BufferedClientAreaPanel();
+            this.coreCountLabel = new System.Windows.Forms.Label();
+            this.PriorityClass32 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass31 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass30 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass29 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass28 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass27 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass26 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass25 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass16 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass15 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass14 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass13 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass12 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass11 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass10 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass9 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass24 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass23 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass22 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass21 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass20 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass19 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass18 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass17 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass8 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass7 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass6 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass5 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass4 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass3 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass2 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass1 = new System.Windows.Forms.ComboBox();
+            this.Affinity32 = new System.Windows.Forms.TextBox();
+            this.Affinity31 = new System.Windows.Forms.TextBox();
+            this.Affinity30 = new System.Windows.Forms.TextBox();
+            this.Affinity29 = new System.Windows.Forms.TextBox();
+            this.Affinity28 = new System.Windows.Forms.TextBox();
+            this.Affinity27 = new System.Windows.Forms.TextBox();
+            this.Affinity26 = new System.Windows.Forms.TextBox();
+            this.Affinity25 = new System.Windows.Forms.TextBox();
+            this.Affinity24 = new System.Windows.Forms.TextBox();
+            this.Affinity23 = new System.Windows.Forms.TextBox();
+            this.Affinity22 = new System.Windows.Forms.TextBox();
+            this.Affinity21 = new System.Windows.Forms.TextBox();
+            this.Affinity20 = new System.Windows.Forms.TextBox();
+            this.Affinity19 = new System.Windows.Forms.TextBox();
+            this.Affinity18 = new System.Windows.Forms.TextBox();
+            this.Affinity17 = new System.Windows.Forms.TextBox();
+            this.IdealProcessor32 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.IdealProcessor31 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.IdealProcessor30 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.IdealProcessor29 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.IdealProcessor28 = new System.Windows.Forms.ComboBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.IdealProcessor27 = new System.Windows.Forms.ComboBox();
+            this.label56 = new System.Windows.Forms.Label();
+            this.IdealProcessor26 = new System.Windows.Forms.ComboBox();
+            this.label60 = new System.Windows.Forms.Label();
+            this.IdealProcessor25 = new System.Windows.Forms.ComboBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.IdealProcessor24 = new System.Windows.Forms.ComboBox();
+            this.label63 = new System.Windows.Forms.Label();
+            this.IdealProcessor23 = new System.Windows.Forms.ComboBox();
+            this.label64 = new System.Windows.Forms.Label();
+            this.IdealProcessor22 = new System.Windows.Forms.ComboBox();
+            this.label65 = new System.Windows.Forms.Label();
+            this.IdealProcessor21 = new System.Windows.Forms.ComboBox();
+            this.label66 = new System.Windows.Forms.Label();
+            this.IdealProcessor20 = new System.Windows.Forms.ComboBox();
+            this.label67 = new System.Windows.Forms.Label();
+            this.IdealProcessor19 = new System.Windows.Forms.ComboBox();
+            this.label68 = new System.Windows.Forms.Label();
+            this.IdealProcessor18 = new System.Windows.Forms.ComboBox();
+            this.label69 = new System.Windows.Forms.Label();
+            this.IdealProcessor17 = new System.Windows.Forms.ComboBox();
+            this.label70 = new System.Windows.Forms.Label();
+            this.Affinity16 = new System.Windows.Forms.TextBox();
+            this.Affinity15 = new System.Windows.Forms.TextBox();
+            this.Affinity14 = new System.Windows.Forms.TextBox();
+            this.Affinity13 = new System.Windows.Forms.TextBox();
+            this.Affinity12 = new System.Windows.Forms.TextBox();
+            this.Affinity11 = new System.Windows.Forms.TextBox();
+            this.Affinity10 = new System.Windows.Forms.TextBox();
+            this.Affinity9 = new System.Windows.Forms.TextBox();
+            this.Affinity8 = new System.Windows.Forms.TextBox();
+            this.Affinity7 = new System.Windows.Forms.TextBox();
+            this.Affinity6 = new System.Windows.Forms.TextBox();
+            this.Affinity5 = new System.Windows.Forms.TextBox();
+            this.Affinity4 = new System.Windows.Forms.TextBox();
+            this.Affinity3 = new System.Windows.Forms.TextBox();
+            this.Affinity2 = new System.Windows.Forms.TextBox();
+            this.Affinity_Label = new System.Windows.Forms.Label();
+            this.Affinity1 = new System.Windows.Forms.TextBox();
+            this.PriorityClass_Label = new System.Windows.Forms.Label();
+            this.IdealProcessor16 = new System.Windows.Forms.ComboBox();
+            this.label76 = new System.Windows.Forms.Label();
+            this.IdealProcessor15 = new System.Windows.Forms.ComboBox();
+            this.label77 = new System.Windows.Forms.Label();
+            this.IdealProcessor14 = new System.Windows.Forms.ComboBox();
+            this.label78 = new System.Windows.Forms.Label();
+            this.IdealProcessor13 = new System.Windows.Forms.ComboBox();
+            this.label79 = new System.Windows.Forms.Label();
+            this.IdealProcessor12 = new System.Windows.Forms.ComboBox();
+            this.label80 = new System.Windows.Forms.Label();
+            this.IdealProcessor11 = new System.Windows.Forms.ComboBox();
+            this.label81 = new System.Windows.Forms.Label();
+            this.IdealProcessor10 = new System.Windows.Forms.ComboBox();
+            this.label82 = new System.Windows.Forms.Label();
+            this.IdealProcessor9 = new System.Windows.Forms.ComboBox();
+            this.label83 = new System.Windows.Forms.Label();
+            this.IdealProcessor8 = new System.Windows.Forms.ComboBox();
+            this.label84 = new System.Windows.Forms.Label();
+            this.IdealProcessor7 = new System.Windows.Forms.ComboBox();
+            this.label85 = new System.Windows.Forms.Label();
+            this.IdealProcessor6 = new System.Windows.Forms.ComboBox();
+            this.label86 = new System.Windows.Forms.Label();
+            this.IdealProcessor5 = new System.Windows.Forms.ComboBox();
+            this.label87 = new System.Windows.Forms.Label();
+            this.Instance_Label = new System.Windows.Forms.Label();
+            this.IdealProcessor4 = new System.Windows.Forms.ComboBox();
+            this.label89 = new System.Windows.Forms.Label();
+            this.IdealProcessor3 = new System.Windows.Forms.ComboBox();
+            this.label90 = new System.Windows.Forms.Label();
+            this.IdealProcessor2 = new System.Windows.Forms.ComboBox();
+            this.label91 = new System.Windows.Forms.Label();
+            this.IdealProcessor_Label = new System.Windows.Forms.Label();
+            this.IdealProcessor1 = new System.Windows.Forms.ComboBox();
+            this.label93 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.saveBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharedBtnPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.prioritiesBtnPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.processorBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).BeginInit();
-            this.priorities.SuspendLayout();
-            this.Panel2.SuspendLayout();
+            this.sharedTab.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.playersTab.SuspendLayout();
             this.def_sid_textBox_container.SuspendLayout();
-            this.Panel1.SuspendLayout();
-            this.Panel3.SuspendLayout();
+            this.audioTab.SuspendLayout();
             this.audioCustomSettingsBox.SuspendLayout();
+            this.processorTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // closeBtn
@@ -369,7 +377,7 @@ namespace Nucleus.Coop
             this.closeBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.closeBtn.Location = new System.Drawing.Point(438, 2);
+            this.closeBtn.Location = new System.Drawing.Point(478, 2);
             this.closeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.closeBtn.Name = "closeBtn";
             this.closeBtn.Size = new System.Drawing.Size(52, 23);
@@ -388,7 +396,7 @@ namespace Nucleus.Coop
             this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.saveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.saveBtn.Location = new System.Drawing.Point(365, 2);
+            this.saveBtn.Location = new System.Drawing.Point(405, 2);
             this.saveBtn.Margin = new System.Windows.Forms.Padding(0);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(52, 23);
@@ -399,74 +407,74 @@ namespace Nucleus.Coop
             this.saveBtn.UseVisualStyleBackColor = false;
             this.saveBtn.Click += new System.EventHandler(this.SettingsSaveBtn_Click);
             // 
-            // sharedBtn
+            // sharedTabBtn
             // 
-            this.sharedBtn.BackColor = System.Drawing.Color.Transparent;
-            this.sharedBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.sharedBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.sharedBtn.Location = new System.Drawing.Point(1, 2);
-            this.sharedBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.sharedBtn.Name = "sharedBtn";
-            this.sharedBtn.Size = new System.Drawing.Size(70, 23);
-            this.sharedBtn.TabIndex = 38;
-            this.sharedBtn.Text = "Shared";
-            this.sharedBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.sharedBtn.UseVisualStyleBackColor = false;
-            this.sharedBtn.Click += new System.EventHandler(this.button1_Click);
+            this.sharedTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.sharedTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.sharedTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.sharedTabBtn.Location = new System.Drawing.Point(1, 2);
+            this.sharedTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.sharedTabBtn.Name = "sharedTabBtn";
+            this.sharedTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.sharedTabBtn.TabIndex = 38;
+            this.sharedTabBtn.Text = "Shared";
+            this.sharedTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.sharedTabBtn.UseVisualStyleBackColor = false;
+            this.sharedTabBtn.Click += new System.EventHandler(this.button1_Click);
             // 
-            // playersBtn
+            // playersTabBtn
             // 
-            this.playersBtn.BackColor = System.Drawing.Color.Transparent;
-            this.playersBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.playersBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.playersBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playersBtn.Location = new System.Drawing.Point(92, 2);
-            this.playersBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.playersBtn.Name = "playersBtn";
-            this.playersBtn.Size = new System.Drawing.Size(70, 23);
-            this.playersBtn.TabIndex = 43;
-            this.playersBtn.Text = "Players";
-            this.playersBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.playersBtn.UseVisualStyleBackColor = false;
-            this.playersBtn.Click += new System.EventHandler(this.button2_Click);
+            this.playersTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.playersTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.playersTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.playersTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playersTabBtn.Location = new System.Drawing.Point(102, 2);
+            this.playersTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.playersTabBtn.Name = "playersTabBtn";
+            this.playersTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.playersTabBtn.TabIndex = 43;
+            this.playersTabBtn.Text = "Players";
+            this.playersTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.playersTabBtn.UseVisualStyleBackColor = false;
+            this.playersTabBtn.Click += new System.EventHandler(this.button2_Click);
             // 
-            // audioBtn
+            // audioTabBtn
             // 
-            this.audioBtn.BackColor = System.Drawing.Color.Transparent;
-            this.audioBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.audioBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.audioBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.audioBtn.Location = new System.Drawing.Point(183, 2);
-            this.audioBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.audioBtn.Name = "audioBtn";
-            this.audioBtn.Size = new System.Drawing.Size(70, 23);
-            this.audioBtn.TabIndex = 44;
-            this.audioBtn.Text = "Audio";
-            this.audioBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.audioBtn.UseVisualStyleBackColor = false;
-            this.audioBtn.Click += new System.EventHandler(this.button3_Click);
+            this.audioTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.audioTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.audioTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.audioTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.audioTabBtn.Location = new System.Drawing.Point(203, 2);
+            this.audioTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.audioTabBtn.Name = "audioTabBtn";
+            this.audioTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.audioTabBtn.TabIndex = 44;
+            this.audioTabBtn.Text = "Audio";
+            this.audioTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.audioTabBtn.UseVisualStyleBackColor = false;
+            this.audioTabBtn.Click += new System.EventHandler(this.button3_Click);
             // 
-            // prioritiesBtn
+            // processorTabBtn
             // 
-            this.prioritiesBtn.BackColor = System.Drawing.Color.Transparent;
-            this.prioritiesBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.prioritiesBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.prioritiesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.prioritiesBtn.Location = new System.Drawing.Point(274, 2);
-            this.prioritiesBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.prioritiesBtn.Name = "prioritiesBtn";
-            this.prioritiesBtn.Size = new System.Drawing.Size(70, 23);
-            this.prioritiesBtn.TabIndex = 45;
-            this.prioritiesBtn.Text = "Priorities";
-            this.prioritiesBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.prioritiesBtn.UseVisualStyleBackColor = false;
-            this.prioritiesBtn.Click += new System.EventHandler(this.button4_Click);
+            this.processorTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.processorTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.processorTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.processorTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.processorTabBtn.Location = new System.Drawing.Point(304, 2);
+            this.processorTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.processorTabBtn.Name = "processorTabBtn";
+            this.processorTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.processorTabBtn.TabIndex = 45;
+            this.processorTabBtn.Text = "Processor";
+            this.processorTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.processorTabBtn.UseVisualStyleBackColor = false;
+            this.processorTabBtn.Click += new System.EventHandler(this.button4_Click);
             // 
             // saveBtnPicture
             // 
             this.saveBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.saveBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.saveBtnPicture.Location = new System.Drawing.Point(418, 4);
+            this.saveBtnPicture.Location = new System.Drawing.Point(458, 4);
             this.saveBtnPicture.Name = "saveBtnPicture";
             this.saveBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.saveBtnPicture.TabIndex = 293;
@@ -476,7 +484,7 @@ namespace Nucleus.Coop
             // 
             this.audioBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.audioBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.audioBtnPicture.Location = new System.Drawing.Point(254, 4);
+            this.audioBtnPicture.Location = new System.Drawing.Point(284, 4);
             this.audioBtnPicture.Name = "audioBtnPicture";
             this.audioBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.audioBtnPicture.TabIndex = 294;
@@ -486,7 +494,7 @@ namespace Nucleus.Coop
             // 
             this.playersBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.playersBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.playersBtnPicture.Location = new System.Drawing.Point(163, 4);
+            this.playersBtnPicture.Location = new System.Drawing.Point(183, 4);
             this.playersBtnPicture.Name = "playersBtnPicture";
             this.playersBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.playersBtnPicture.TabIndex = 295;
@@ -496,27 +504,27 @@ namespace Nucleus.Coop
             // 
             this.sharedBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.sharedBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.sharedBtnPicture.Location = new System.Drawing.Point(72, 4);
+            this.sharedBtnPicture.Location = new System.Drawing.Point(82, 4);
             this.sharedBtnPicture.Name = "sharedBtnPicture";
             this.sharedBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.sharedBtnPicture.TabIndex = 296;
             this.sharedBtnPicture.TabStop = false;
             // 
-            // prioritiesBtnPicture
+            // processorBtnPicture
             // 
-            this.prioritiesBtnPicture.BackColor = System.Drawing.Color.Transparent;
-            this.prioritiesBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.prioritiesBtnPicture.Location = new System.Drawing.Point(345, 4);
-            this.prioritiesBtnPicture.Name = "prioritiesBtnPicture";
-            this.prioritiesBtnPicture.Size = new System.Drawing.Size(19, 19);
-            this.prioritiesBtnPicture.TabIndex = 297;
-            this.prioritiesBtnPicture.TabStop = false;
+            this.processorBtnPicture.BackColor = System.Drawing.Color.Transparent;
+            this.processorBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.processorBtnPicture.Location = new System.Drawing.Point(385, 4);
+            this.processorBtnPicture.Name = "processorBtnPicture";
+            this.processorBtnPicture.Size = new System.Drawing.Size(19, 19);
+            this.processorBtnPicture.TabIndex = 297;
+            this.processorBtnPicture.TabStop = false;
             // 
             // closeBtnPicture
             // 
             this.closeBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.closeBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtnPicture.Location = new System.Drawing.Point(491, 4);
+            this.closeBtnPicture.Location = new System.Drawing.Point(531, 4);
             this.closeBtnPicture.Name = "closeBtnPicture";
             this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.closeBtnPicture.TabIndex = 298;
@@ -524,1873 +532,506 @@ namespace Nucleus.Coop
             // 
             // modeLabel
             // 
-            this.modeLabel.AutoSize = true;
             this.modeLabel.BackColor = System.Drawing.Color.Transparent;
+            this.modeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.modeLabel.ForeColor = System.Drawing.Color.Orange;
-            this.modeLabel.Location = new System.Drawing.Point(546, 4);
+            this.modeLabel.Location = new System.Drawing.Point(565, 3);
             this.modeLabel.Name = "modeLabel";
             this.modeLabel.Size = new System.Drawing.Size(95, 16);
             this.modeLabel.TabIndex = 299;
             this.modeLabel.Text = "Creation Mode";
-            // 
-            // priorities
-            // 
-            this.priorities.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.priorities.Controls.Add(this.PriorityClass32);
-            this.priorities.Controls.Add(this.PriorityClass31);
-            this.priorities.Controls.Add(this.PriorityClass30);
-            this.priorities.Controls.Add(this.PriorityClass29);
-            this.priorities.Controls.Add(this.PriorityClass28);
-            this.priorities.Controls.Add(this.PriorityClass27);
-            this.priorities.Controls.Add(this.PriorityClass26);
-            this.priorities.Controls.Add(this.PriorityClass25);
-            this.priorities.Controls.Add(this.PriorityClass16);
-            this.priorities.Controls.Add(this.PriorityClass15);
-            this.priorities.Controls.Add(this.PriorityClass14);
-            this.priorities.Controls.Add(this.PriorityClass13);
-            this.priorities.Controls.Add(this.PriorityClass12);
-            this.priorities.Controls.Add(this.PriorityClass11);
-            this.priorities.Controls.Add(this.PriorityClass10);
-            this.priorities.Controls.Add(this.PriorityClass9);
-            this.priorities.Controls.Add(this.PriorityClass24);
-            this.priorities.Controls.Add(this.PriorityClass23);
-            this.priorities.Controls.Add(this.PriorityClass22);
-            this.priorities.Controls.Add(this.PriorityClass21);
-            this.priorities.Controls.Add(this.PriorityClass20);
-            this.priorities.Controls.Add(this.PriorityClass19);
-            this.priorities.Controls.Add(this.PriorityClass18);
-            this.priorities.Controls.Add(this.PriorityClass17);
-            this.priorities.Controls.Add(this.PriorityClass8);
-            this.priorities.Controls.Add(this.PriorityClass7);
-            this.priorities.Controls.Add(this.PriorityClass6);
-            this.priorities.Controls.Add(this.PriorityClass5);
-            this.priorities.Controls.Add(this.PriorityClass4);
-            this.priorities.Controls.Add(this.PriorityClass3);
-            this.priorities.Controls.Add(this.PriorityClass2);
-            this.priorities.Controls.Add(this.PriorityClass1);
-            this.priorities.Controls.Add(this.Affinity32);
-            this.priorities.Controls.Add(this.Affinity31);
-            this.priorities.Controls.Add(this.Affinity30);
-            this.priorities.Controls.Add(this.Affinity29);
-            this.priorities.Controls.Add(this.Affinity28);
-            this.priorities.Controls.Add(this.Affinity27);
-            this.priorities.Controls.Add(this.Affinity26);
-            this.priorities.Controls.Add(this.Affinity25);
-            this.priorities.Controls.Add(this.Affinity24);
-            this.priorities.Controls.Add(this.Affinity23);
-            this.priorities.Controls.Add(this.Affinity22);
-            this.priorities.Controls.Add(this.Affinity21);
-            this.priorities.Controls.Add(this.Affinity20);
-            this.priorities.Controls.Add(this.Affinity19);
-            this.priorities.Controls.Add(this.Affinity18);
-            this.priorities.Controls.Add(this.Affinity17);
-            this.priorities.Controls.Add(this.IdealProcessor32);
-            this.priorities.Controls.Add(this.label1);
-            this.priorities.Controls.Add(this.IdealProcessor31);
-            this.priorities.Controls.Add(this.label3);
-            this.priorities.Controls.Add(this.IdealProcessor30);
-            this.priorities.Controls.Add(this.label4);
-            this.priorities.Controls.Add(this.IdealProcessor29);
-            this.priorities.Controls.Add(this.label5);
-            this.priorities.Controls.Add(this.IdealProcessor28);
-            this.priorities.Controls.Add(this.label30);
-            this.priorities.Controls.Add(this.IdealProcessor27);
-            this.priorities.Controls.Add(this.label56);
-            this.priorities.Controls.Add(this.IdealProcessor26);
-            this.priorities.Controls.Add(this.label60);
-            this.priorities.Controls.Add(this.IdealProcessor25);
-            this.priorities.Controls.Add(this.label62);
-            this.priorities.Controls.Add(this.IdealProcessor24);
-            this.priorities.Controls.Add(this.label63);
-            this.priorities.Controls.Add(this.IdealProcessor23);
-            this.priorities.Controls.Add(this.label64);
-            this.priorities.Controls.Add(this.IdealProcessor22);
-            this.priorities.Controls.Add(this.label65);
-            this.priorities.Controls.Add(this.IdealProcessor21);
-            this.priorities.Controls.Add(this.label66);
-            this.priorities.Controls.Add(this.IdealProcessor20);
-            this.priorities.Controls.Add(this.label67);
-            this.priorities.Controls.Add(this.IdealProcessor19);
-            this.priorities.Controls.Add(this.label68);
-            this.priorities.Controls.Add(this.IdealProcessor18);
-            this.priorities.Controls.Add(this.label69);
-            this.priorities.Controls.Add(this.IdealProcessor17);
-            this.priorities.Controls.Add(this.label70);
-            this.priorities.Controls.Add(this.Affinity16);
-            this.priorities.Controls.Add(this.Affinity15);
-            this.priorities.Controls.Add(this.Affinity14);
-            this.priorities.Controls.Add(this.Affinity13);
-            this.priorities.Controls.Add(this.Affinity12);
-            this.priorities.Controls.Add(this.Affinity11);
-            this.priorities.Controls.Add(this.Affinity10);
-            this.priorities.Controls.Add(this.Affinity9);
-            this.priorities.Controls.Add(this.Affinity8);
-            this.priorities.Controls.Add(this.Affinity7);
-            this.priorities.Controls.Add(this.Affinity6);
-            this.priorities.Controls.Add(this.Affinity5);
-            this.priorities.Controls.Add(this.Affinity4);
-            this.priorities.Controls.Add(this.Affinity3);
-            this.priorities.Controls.Add(this.Affinity2);
-            this.priorities.Controls.Add(this.Affinity_Label);
-            this.priorities.Controls.Add(this.Affinity1);
-            this.priorities.Controls.Add(this.PriorityClass_Label);
-            this.priorities.Controls.Add(this.IdealProcessor16);
-            this.priorities.Controls.Add(this.label76);
-            this.priorities.Controls.Add(this.IdealProcessor15);
-            this.priorities.Controls.Add(this.label77);
-            this.priorities.Controls.Add(this.IdealProcessor14);
-            this.priorities.Controls.Add(this.label78);
-            this.priorities.Controls.Add(this.IdealProcessor13);
-            this.priorities.Controls.Add(this.label79);
-            this.priorities.Controls.Add(this.IdealProcessor12);
-            this.priorities.Controls.Add(this.label80);
-            this.priorities.Controls.Add(this.IdealProcessor11);
-            this.priorities.Controls.Add(this.label81);
-            this.priorities.Controls.Add(this.IdealProcessor10);
-            this.priorities.Controls.Add(this.label82);
-            this.priorities.Controls.Add(this.IdealProcessor9);
-            this.priorities.Controls.Add(this.label83);
-            this.priorities.Controls.Add(this.IdealProcessor8);
-            this.priorities.Controls.Add(this.label84);
-            this.priorities.Controls.Add(this.IdealProcessor7);
-            this.priorities.Controls.Add(this.label85);
-            this.priorities.Controls.Add(this.IdealProcessor6);
-            this.priorities.Controls.Add(this.label86);
-            this.priorities.Controls.Add(this.IdealProcessor5);
-            this.priorities.Controls.Add(this.label87);
-            this.priorities.Controls.Add(this.Instance_Label);
-            this.priorities.Controls.Add(this.IdealProcessor4);
-            this.priorities.Controls.Add(this.label89);
-            this.priorities.Controls.Add(this.IdealProcessor3);
-            this.priorities.Controls.Add(this.label90);
-            this.priorities.Controls.Add(this.IdealProcessor2);
-            this.priorities.Controls.Add(this.label91);
-            this.priorities.Controls.Add(this.IdealProcessor_Label);
-            this.priorities.Controls.Add(this.IdealProcessor1);
-            this.priorities.Controls.Add(this.label93);
-            this.priorities.Location = new System.Drawing.Point(6, 38);
-            this.priorities.Name = "priorities";
-            this.priorities.Size = new System.Drawing.Size(671, 401);
-            this.priorities.TabIndex = 300;
-            // 
-            // PriorityClass32
-            // 
-            this.PriorityClass32.BackColor = System.Drawing.Color.White;
-            this.PriorityClass32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass32.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass32.Location = new System.Drawing.Point(560, 342);
-            this.PriorityClass32.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass32.MaxLength = 17;
-            this.PriorityClass32.Name = "PriorityClass32";
-            this.PriorityClass32.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass32.TabIndex = 323;
-            // 
-            // PriorityClass31
-            // 
-            this.PriorityClass31.BackColor = System.Drawing.Color.White;
-            this.PriorityClass31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass31.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass31.Location = new System.Drawing.Point(560, 323);
-            this.PriorityClass31.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass31.MaxLength = 17;
-            this.PriorityClass31.Name = "PriorityClass31";
-            this.PriorityClass31.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass31.TabIndex = 322;
-            // 
-            // PriorityClass30
-            // 
-            this.PriorityClass30.BackColor = System.Drawing.Color.White;
-            this.PriorityClass30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass30.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass30.Location = new System.Drawing.Point(560, 304);
-            this.PriorityClass30.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass30.MaxLength = 17;
-            this.PriorityClass30.Name = "PriorityClass30";
-            this.PriorityClass30.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass30.TabIndex = 321;
-            // 
-            // PriorityClass29
-            // 
-            this.PriorityClass29.BackColor = System.Drawing.Color.White;
-            this.PriorityClass29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass29.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass29.Location = new System.Drawing.Point(560, 285);
-            this.PriorityClass29.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass29.MaxLength = 17;
-            this.PriorityClass29.Name = "PriorityClass29";
-            this.PriorityClass29.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass29.TabIndex = 320;
-            // 
-            // PriorityClass28
-            // 
-            this.PriorityClass28.BackColor = System.Drawing.Color.White;
-            this.PriorityClass28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass28.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass28.Location = new System.Drawing.Point(560, 266);
-            this.PriorityClass28.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass28.MaxLength = 17;
-            this.PriorityClass28.Name = "PriorityClass28";
-            this.PriorityClass28.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass28.TabIndex = 319;
-            // 
-            // PriorityClass27
-            // 
-            this.PriorityClass27.BackColor = System.Drawing.Color.White;
-            this.PriorityClass27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass27.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass27.Location = new System.Drawing.Point(560, 247);
-            this.PriorityClass27.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass27.MaxLength = 17;
-            this.PriorityClass27.Name = "PriorityClass27";
-            this.PriorityClass27.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass27.TabIndex = 318;
-            // 
-            // PriorityClass26
-            // 
-            this.PriorityClass26.BackColor = System.Drawing.Color.White;
-            this.PriorityClass26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass26.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass26.Location = new System.Drawing.Point(560, 228);
-            this.PriorityClass26.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass26.MaxLength = 17;
-            this.PriorityClass26.Name = "PriorityClass26";
-            this.PriorityClass26.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass26.TabIndex = 317;
-            // 
-            // PriorityClass25
-            // 
-            this.PriorityClass25.BackColor = System.Drawing.Color.White;
-            this.PriorityClass25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass25.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass25.Location = new System.Drawing.Point(560, 209);
-            this.PriorityClass25.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass25.MaxLength = 17;
-            this.PriorityClass25.Name = "PriorityClass25";
-            this.PriorityClass25.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass25.TabIndex = 316;
-            // 
-            // PriorityClass16
-            // 
-            this.PriorityClass16.BackColor = System.Drawing.Color.White;
-            this.PriorityClass16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass16.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass16.Location = new System.Drawing.Point(560, 175);
-            this.PriorityClass16.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass16.MaxLength = 17;
-            this.PriorityClass16.Name = "PriorityClass16";
-            this.PriorityClass16.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass16.TabIndex = 315;
-            // 
-            // PriorityClass15
-            // 
-            this.PriorityClass15.BackColor = System.Drawing.Color.White;
-            this.PriorityClass15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass15.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass15.Location = new System.Drawing.Point(560, 156);
-            this.PriorityClass15.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass15.MaxLength = 17;
-            this.PriorityClass15.Name = "PriorityClass15";
-            this.PriorityClass15.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass15.TabIndex = 314;
-            // 
-            // PriorityClass14
-            // 
-            this.PriorityClass14.BackColor = System.Drawing.Color.White;
-            this.PriorityClass14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass14.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass14.Location = new System.Drawing.Point(560, 137);
-            this.PriorityClass14.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass14.MaxLength = 17;
-            this.PriorityClass14.Name = "PriorityClass14";
-            this.PriorityClass14.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass14.TabIndex = 313;
-            // 
-            // PriorityClass13
-            // 
-            this.PriorityClass13.BackColor = System.Drawing.Color.White;
-            this.PriorityClass13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass13.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass13.Location = new System.Drawing.Point(560, 118);
-            this.PriorityClass13.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass13.MaxLength = 17;
-            this.PriorityClass13.Name = "PriorityClass13";
-            this.PriorityClass13.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass13.TabIndex = 312;
-            // 
-            // PriorityClass12
-            // 
-            this.PriorityClass12.BackColor = System.Drawing.Color.White;
-            this.PriorityClass12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass12.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass12.Location = new System.Drawing.Point(560, 99);
-            this.PriorityClass12.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass12.MaxLength = 17;
-            this.PriorityClass12.Name = "PriorityClass12";
-            this.PriorityClass12.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass12.TabIndex = 311;
-            // 
-            // PriorityClass11
-            // 
-            this.PriorityClass11.BackColor = System.Drawing.Color.White;
-            this.PriorityClass11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass11.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass11.Location = new System.Drawing.Point(560, 80);
-            this.PriorityClass11.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass11.MaxLength = 17;
-            this.PriorityClass11.Name = "PriorityClass11";
-            this.PriorityClass11.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass11.TabIndex = 310;
-            // 
-            // PriorityClass10
-            // 
-            this.PriorityClass10.BackColor = System.Drawing.Color.White;
-            this.PriorityClass10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass10.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass10.Location = new System.Drawing.Point(560, 61);
-            this.PriorityClass10.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass10.MaxLength = 17;
-            this.PriorityClass10.Name = "PriorityClass10";
-            this.PriorityClass10.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass10.TabIndex = 309;
-            // 
-            // PriorityClass9
-            // 
-            this.PriorityClass9.BackColor = System.Drawing.Color.White;
-            this.PriorityClass9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass9.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass9.Location = new System.Drawing.Point(560, 42);
-            this.PriorityClass9.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass9.MaxLength = 17;
-            this.PriorityClass9.Name = "PriorityClass9";
-            this.PriorityClass9.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass9.TabIndex = 308;
-            // 
-            // PriorityClass24
-            // 
-            this.PriorityClass24.BackColor = System.Drawing.Color.White;
-            this.PriorityClass24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass24.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass24.Location = new System.Drawing.Point(158, 344);
-            this.PriorityClass24.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass24.MaxLength = 17;
-            this.PriorityClass24.Name = "PriorityClass24";
-            this.PriorityClass24.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass24.TabIndex = 307;
-            // 
-            // PriorityClass23
-            // 
-            this.PriorityClass23.BackColor = System.Drawing.Color.White;
-            this.PriorityClass23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass23.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass23.Location = new System.Drawing.Point(158, 325);
-            this.PriorityClass23.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass23.MaxLength = 17;
-            this.PriorityClass23.Name = "PriorityClass23";
-            this.PriorityClass23.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass23.TabIndex = 306;
-            // 
-            // PriorityClass22
-            // 
-            this.PriorityClass22.BackColor = System.Drawing.Color.White;
-            this.PriorityClass22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass22.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass22.Location = new System.Drawing.Point(158, 306);
-            this.PriorityClass22.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass22.MaxLength = 17;
-            this.PriorityClass22.Name = "PriorityClass22";
-            this.PriorityClass22.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass22.TabIndex = 305;
-            // 
-            // PriorityClass21
-            // 
-            this.PriorityClass21.BackColor = System.Drawing.Color.White;
-            this.PriorityClass21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass21.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass21.Location = new System.Drawing.Point(158, 287);
-            this.PriorityClass21.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass21.MaxLength = 17;
-            this.PriorityClass21.Name = "PriorityClass21";
-            this.PriorityClass21.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass21.TabIndex = 304;
-            // 
-            // PriorityClass20
-            // 
-            this.PriorityClass20.BackColor = System.Drawing.Color.White;
-            this.PriorityClass20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass20.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass20.Location = new System.Drawing.Point(158, 268);
-            this.PriorityClass20.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass20.MaxLength = 17;
-            this.PriorityClass20.Name = "PriorityClass20";
-            this.PriorityClass20.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass20.TabIndex = 303;
-            // 
-            // PriorityClass19
-            // 
-            this.PriorityClass19.BackColor = System.Drawing.Color.White;
-            this.PriorityClass19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass19.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass19.Location = new System.Drawing.Point(158, 249);
-            this.PriorityClass19.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass19.MaxLength = 17;
-            this.PriorityClass19.Name = "PriorityClass19";
-            this.PriorityClass19.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass19.TabIndex = 302;
-            // 
-            // PriorityClass18
-            // 
-            this.PriorityClass18.BackColor = System.Drawing.Color.White;
-            this.PriorityClass18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass18.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass18.Location = new System.Drawing.Point(158, 230);
-            this.PriorityClass18.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass18.MaxLength = 17;
-            this.PriorityClass18.Name = "PriorityClass18";
-            this.PriorityClass18.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass18.TabIndex = 301;
-            // 
-            // PriorityClass17
-            // 
-            this.PriorityClass17.BackColor = System.Drawing.Color.White;
-            this.PriorityClass17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass17.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass17.Location = new System.Drawing.Point(158, 211);
-            this.PriorityClass17.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass17.MaxLength = 17;
-            this.PriorityClass17.Name = "PriorityClass17";
-            this.PriorityClass17.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass17.TabIndex = 300;
-            // 
-            // PriorityClass8
-            // 
-            this.PriorityClass8.BackColor = System.Drawing.Color.White;
-            this.PriorityClass8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass8.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass8.Location = new System.Drawing.Point(158, 177);
-            this.PriorityClass8.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass8.MaxLength = 17;
-            this.PriorityClass8.Name = "PriorityClass8";
-            this.PriorityClass8.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass8.TabIndex = 299;
-            // 
-            // PriorityClass7
-            // 
-            this.PriorityClass7.BackColor = System.Drawing.Color.White;
-            this.PriorityClass7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass7.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass7.Location = new System.Drawing.Point(158, 158);
-            this.PriorityClass7.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass7.MaxLength = 17;
-            this.PriorityClass7.Name = "PriorityClass7";
-            this.PriorityClass7.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass7.TabIndex = 298;
-            // 
-            // PriorityClass6
-            // 
-            this.PriorityClass6.BackColor = System.Drawing.Color.White;
-            this.PriorityClass6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass6.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass6.Location = new System.Drawing.Point(158, 139);
-            this.PriorityClass6.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass6.MaxLength = 17;
-            this.PriorityClass6.Name = "PriorityClass6";
-            this.PriorityClass6.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass6.TabIndex = 297;
-            // 
-            // PriorityClass5
-            // 
-            this.PriorityClass5.BackColor = System.Drawing.Color.White;
-            this.PriorityClass5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass5.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass5.Location = new System.Drawing.Point(158, 120);
-            this.PriorityClass5.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass5.MaxLength = 17;
-            this.PriorityClass5.Name = "PriorityClass5";
-            this.PriorityClass5.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass5.TabIndex = 296;
-            // 
-            // PriorityClass4
-            // 
-            this.PriorityClass4.BackColor = System.Drawing.Color.White;
-            this.PriorityClass4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass4.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass4.Location = new System.Drawing.Point(158, 101);
-            this.PriorityClass4.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass4.MaxLength = 17;
-            this.PriorityClass4.Name = "PriorityClass4";
-            this.PriorityClass4.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass4.TabIndex = 295;
-            // 
-            // PriorityClass3
-            // 
-            this.PriorityClass3.BackColor = System.Drawing.Color.White;
-            this.PriorityClass3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass3.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass3.Location = new System.Drawing.Point(158, 82);
-            this.PriorityClass3.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass3.MaxLength = 17;
-            this.PriorityClass3.Name = "PriorityClass3";
-            this.PriorityClass3.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass3.TabIndex = 294;
-            // 
-            // PriorityClass2
-            // 
-            this.PriorityClass2.BackColor = System.Drawing.Color.White;
-            this.PriorityClass2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass2.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass2.Location = new System.Drawing.Point(158, 63);
-            this.PriorityClass2.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass2.MaxLength = 17;
-            this.PriorityClass2.Name = "PriorityClass2";
-            this.PriorityClass2.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass2.TabIndex = 293;
-            // 
-            // PriorityClass1
-            // 
-            this.PriorityClass1.BackColor = System.Drawing.Color.White;
-            this.PriorityClass1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass1.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass1.Location = new System.Drawing.Point(158, 44);
-            this.PriorityClass1.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass1.MaxLength = 17;
-            this.PriorityClass1.Name = "PriorityClass1";
-            this.PriorityClass1.Size = new System.Drawing.Size(86, 24);
-            this.PriorityClass1.TabIndex = 292;
-            // 
-            // Affinity32
-            // 
-            this.Affinity32.BackColor = System.Drawing.Color.White;
-            this.Affinity32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity32.Location = new System.Drawing.Point(508, 342);
-            this.Affinity32.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity32.MaxLength = 17;
-            this.Affinity32.Name = "Affinity32";
-            this.Affinity32.Size = new System.Drawing.Size(48, 24);
-            this.Affinity32.TabIndex = 291;
-            // 
-            // Affinity31
-            // 
-            this.Affinity31.BackColor = System.Drawing.Color.White;
-            this.Affinity31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity31.Location = new System.Drawing.Point(508, 323);
-            this.Affinity31.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity31.MaxLength = 17;
-            this.Affinity31.Name = "Affinity31";
-            this.Affinity31.Size = new System.Drawing.Size(48, 24);
-            this.Affinity31.TabIndex = 290;
-            // 
-            // Affinity30
-            // 
-            this.Affinity30.BackColor = System.Drawing.Color.White;
-            this.Affinity30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity30.Location = new System.Drawing.Point(508, 304);
-            this.Affinity30.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity30.MaxLength = 17;
-            this.Affinity30.Name = "Affinity30";
-            this.Affinity30.Size = new System.Drawing.Size(48, 24);
-            this.Affinity30.TabIndex = 289;
-            // 
-            // Affinity29
-            // 
-            this.Affinity29.BackColor = System.Drawing.Color.White;
-            this.Affinity29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity29.Location = new System.Drawing.Point(508, 285);
-            this.Affinity29.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity29.MaxLength = 17;
-            this.Affinity29.Name = "Affinity29";
-            this.Affinity29.Size = new System.Drawing.Size(48, 24);
-            this.Affinity29.TabIndex = 288;
-            // 
-            // Affinity28
-            // 
-            this.Affinity28.BackColor = System.Drawing.Color.White;
-            this.Affinity28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity28.Location = new System.Drawing.Point(508, 266);
-            this.Affinity28.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity28.MaxLength = 17;
-            this.Affinity28.Name = "Affinity28";
-            this.Affinity28.Size = new System.Drawing.Size(48, 24);
-            this.Affinity28.TabIndex = 287;
-            // 
-            // Affinity27
-            // 
-            this.Affinity27.BackColor = System.Drawing.Color.White;
-            this.Affinity27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity27.Location = new System.Drawing.Point(508, 247);
-            this.Affinity27.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity27.MaxLength = 17;
-            this.Affinity27.Name = "Affinity27";
-            this.Affinity27.Size = new System.Drawing.Size(48, 24);
-            this.Affinity27.TabIndex = 286;
-            // 
-            // Affinity26
-            // 
-            this.Affinity26.BackColor = System.Drawing.Color.White;
-            this.Affinity26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity26.Location = new System.Drawing.Point(508, 228);
-            this.Affinity26.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity26.MaxLength = 17;
-            this.Affinity26.Name = "Affinity26";
-            this.Affinity26.Size = new System.Drawing.Size(48, 24);
-            this.Affinity26.TabIndex = 285;
-            // 
-            // Affinity25
-            // 
-            this.Affinity25.BackColor = System.Drawing.Color.White;
-            this.Affinity25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity25.Location = new System.Drawing.Point(508, 209);
-            this.Affinity25.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity25.MaxLength = 17;
-            this.Affinity25.Name = "Affinity25";
-            this.Affinity25.Size = new System.Drawing.Size(48, 24);
-            this.Affinity25.TabIndex = 284;
-            // 
-            // Affinity24
-            // 
-            this.Affinity24.BackColor = System.Drawing.Color.White;
-            this.Affinity24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity24.Location = new System.Drawing.Point(106, 344);
-            this.Affinity24.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity24.MaxLength = 2;
-            this.Affinity24.Name = "Affinity24";
-            this.Affinity24.Size = new System.Drawing.Size(48, 24);
-            this.Affinity24.TabIndex = 283;
-            // 
-            // Affinity23
-            // 
-            this.Affinity23.BackColor = System.Drawing.Color.White;
-            this.Affinity23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity23.Location = new System.Drawing.Point(106, 325);
-            this.Affinity23.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity23.MaxLength = 2;
-            this.Affinity23.Name = "Affinity23";
-            this.Affinity23.Size = new System.Drawing.Size(48, 24);
-            this.Affinity23.TabIndex = 282;
-            // 
-            // Affinity22
-            // 
-            this.Affinity22.BackColor = System.Drawing.Color.White;
-            this.Affinity22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity22.Location = new System.Drawing.Point(106, 306);
-            this.Affinity22.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity22.MaxLength = 2;
-            this.Affinity22.Name = "Affinity22";
-            this.Affinity22.Size = new System.Drawing.Size(48, 24);
-            this.Affinity22.TabIndex = 281;
-            // 
-            // Affinity21
-            // 
-            this.Affinity21.BackColor = System.Drawing.Color.White;
-            this.Affinity21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity21.Location = new System.Drawing.Point(106, 287);
-            this.Affinity21.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity21.MaxLength = 2;
-            this.Affinity21.Name = "Affinity21";
-            this.Affinity21.Size = new System.Drawing.Size(48, 24);
-            this.Affinity21.TabIndex = 280;
-            // 
-            // Affinity20
-            // 
-            this.Affinity20.BackColor = System.Drawing.Color.White;
-            this.Affinity20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity20.Location = new System.Drawing.Point(106, 268);
-            this.Affinity20.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity20.MaxLength = 2;
-            this.Affinity20.Name = "Affinity20";
-            this.Affinity20.Size = new System.Drawing.Size(48, 24);
-            this.Affinity20.TabIndex = 279;
-            // 
-            // Affinity19
-            // 
-            this.Affinity19.BackColor = System.Drawing.Color.White;
-            this.Affinity19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity19.Location = new System.Drawing.Point(106, 249);
-            this.Affinity19.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity19.MaxLength = 2;
-            this.Affinity19.Name = "Affinity19";
-            this.Affinity19.Size = new System.Drawing.Size(48, 24);
-            this.Affinity19.TabIndex = 278;
-            // 
-            // Affinity18
-            // 
-            this.Affinity18.BackColor = System.Drawing.Color.White;
-            this.Affinity18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity18.Location = new System.Drawing.Point(106, 230);
-            this.Affinity18.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity18.MaxLength = 2;
-            this.Affinity18.Name = "Affinity18";
-            this.Affinity18.Size = new System.Drawing.Size(48, 24);
-            this.Affinity18.TabIndex = 277;
-            // 
-            // Affinity17
-            // 
-            this.Affinity17.BackColor = System.Drawing.Color.White;
-            this.Affinity17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity17.Location = new System.Drawing.Point(106, 211);
-            this.Affinity17.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity17.MaxLength = 2;
-            this.Affinity17.Name = "Affinity17";
-            this.Affinity17.Size = new System.Drawing.Size(48, 24);
-            this.Affinity17.TabIndex = 276;
-            // 
-            // IdealProcessor32
-            // 
-            this.IdealProcessor32.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor32.Location = new System.Drawing.Point(456, 342);
-            this.IdealProcessor32.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor32.MaxLength = 9;
-            this.IdealProcessor32.Name = "IdealProcessor32";
-            this.IdealProcessor32.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor32.TabIndex = 274;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(424, 347);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(27, 16);
-            this.label1.TabIndex = 275;
-            this.label1.Text = "32 :";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor31
-            // 
-            this.IdealProcessor31.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor31.Location = new System.Drawing.Point(456, 323);
-            this.IdealProcessor31.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor31.MaxLength = 9;
-            this.IdealProcessor31.Name = "IdealProcessor31";
-            this.IdealProcessor31.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor31.TabIndex = 272;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(424, 327);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(27, 16);
-            this.label3.TabIndex = 273;
-            this.label3.Text = "31 :";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor30
-            // 
-            this.IdealProcessor30.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor30.Location = new System.Drawing.Point(456, 304);
-            this.IdealProcessor30.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor30.MaxLength = 9;
-            this.IdealProcessor30.Name = "IdealProcessor30";
-            this.IdealProcessor30.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor30.TabIndex = 270;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(424, 308);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(27, 16);
-            this.label4.TabIndex = 271;
-            this.label4.Text = "30 :";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor29
-            // 
-            this.IdealProcessor29.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor29.Location = new System.Drawing.Point(456, 285);
-            this.IdealProcessor29.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor29.MaxLength = 9;
-            this.IdealProcessor29.Name = "IdealProcessor29";
-            this.IdealProcessor29.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor29.TabIndex = 268;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(424, 289);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(24, 16);
-            this.label5.TabIndex = 269;
-            this.label5.Text = "29:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor28
-            // 
-            this.IdealProcessor28.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor28.Location = new System.Drawing.Point(456, 266);
-            this.IdealProcessor28.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor28.MaxLength = 9;
-            this.IdealProcessor28.Name = "IdealProcessor28";
-            this.IdealProcessor28.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor28.TabIndex = 266;
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(424, 270);
-            this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(27, 16);
-            this.label30.TabIndex = 267;
-            this.label30.Text = "28 :";
-            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor27
-            // 
-            this.IdealProcessor27.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor27.Location = new System.Drawing.Point(456, 247);
-            this.IdealProcessor27.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor27.MaxLength = 9;
-            this.IdealProcessor27.Name = "IdealProcessor27";
-            this.IdealProcessor27.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor27.TabIndex = 265;
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(424, 251);
-            this.label56.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(27, 16);
-            this.label56.TabIndex = 264;
-            this.label56.Text = "27 :";
-            this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor26
-            // 
-            this.IdealProcessor26.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor26.Location = new System.Drawing.Point(456, 228);
-            this.IdealProcessor26.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor26.MaxLength = 9;
-            this.IdealProcessor26.Name = "IdealProcessor26";
-            this.IdealProcessor26.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor26.TabIndex = 263;
-            // 
-            // label60
-            // 
-            this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(424, 231);
-            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(27, 16);
-            this.label60.TabIndex = 261;
-            this.label60.Text = "26 :";
-            this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor25
-            // 
-            this.IdealProcessor25.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor25.Location = new System.Drawing.Point(456, 209);
-            this.IdealProcessor25.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor25.MaxLength = 9;
-            this.IdealProcessor25.Name = "IdealProcessor25";
-            this.IdealProcessor25.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor25.TabIndex = 262;
-            // 
-            // label62
-            // 
-            this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(425, 213);
-            this.label62.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(27, 16);
-            this.label62.TabIndex = 260;
-            this.label62.Text = "25 :";
-            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor24
-            // 
-            this.IdealProcessor24.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor24.Location = new System.Drawing.Point(54, 344);
-            this.IdealProcessor24.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor24.MaxLength = 2;
-            this.IdealProcessor24.Name = "IdealProcessor24";
-            this.IdealProcessor24.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor24.TabIndex = 258;
-            // 
-            // label63
-            // 
-            this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(20, 349);
-            this.label63.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(27, 16);
-            this.label63.TabIndex = 259;
-            this.label63.Text = "24 :";
-            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor23
-            // 
-            this.IdealProcessor23.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor23.Location = new System.Drawing.Point(54, 325);
-            this.IdealProcessor23.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor23.MaxLength = 2;
-            this.IdealProcessor23.Name = "IdealProcessor23";
-            this.IdealProcessor23.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor23.TabIndex = 256;
-            // 
-            // label64
-            // 
-            this.label64.AutoSize = true;
-            this.label64.Location = new System.Drawing.Point(20, 329);
-            this.label64.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(27, 16);
-            this.label64.TabIndex = 257;
-            this.label64.Text = "23 :";
-            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor22
-            // 
-            this.IdealProcessor22.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor22.Location = new System.Drawing.Point(54, 306);
-            this.IdealProcessor22.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor22.MaxLength = 2;
-            this.IdealProcessor22.Name = "IdealProcessor22";
-            this.IdealProcessor22.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor22.TabIndex = 254;
-            // 
-            // label65
-            // 
-            this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(20, 310);
-            this.label65.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(27, 16);
-            this.label65.TabIndex = 255;
-            this.label65.Text = "22 :";
-            this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor21
-            // 
-            this.IdealProcessor21.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor21.Location = new System.Drawing.Point(54, 287);
-            this.IdealProcessor21.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor21.MaxLength = 2;
-            this.IdealProcessor21.Name = "IdealProcessor21";
-            this.IdealProcessor21.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor21.TabIndex = 252;
-            // 
-            // label66
-            // 
-            this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(20, 291);
-            this.label66.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(27, 16);
-            this.label66.TabIndex = 253;
-            this.label66.Text = "21 :";
-            this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor20
-            // 
-            this.IdealProcessor20.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor20.Location = new System.Drawing.Point(54, 268);
-            this.IdealProcessor20.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor20.MaxLength = 2;
-            this.IdealProcessor20.Name = "IdealProcessor20";
-            this.IdealProcessor20.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor20.TabIndex = 250;
-            // 
-            // label67
-            // 
-            this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(20, 272);
-            this.label67.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(27, 16);
-            this.label67.TabIndex = 251;
-            this.label67.Text = "20 :";
-            this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor19
-            // 
-            this.IdealProcessor19.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor19.Location = new System.Drawing.Point(54, 249);
-            this.IdealProcessor19.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor19.MaxLength = 2;
-            this.IdealProcessor19.Name = "IdealProcessor19";
-            this.IdealProcessor19.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor19.TabIndex = 249;
-            // 
-            // label68
-            // 
-            this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(20, 253);
-            this.label68.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(27, 16);
-            this.label68.TabIndex = 248;
-            this.label68.Text = "19 :";
-            this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor18
-            // 
-            this.IdealProcessor18.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor18.Location = new System.Drawing.Point(54, 230);
-            this.IdealProcessor18.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor18.MaxLength = 2;
-            this.IdealProcessor18.Name = "IdealProcessor18";
-            this.IdealProcessor18.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor18.TabIndex = 247;
-            // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(20, 236);
-            this.label69.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(27, 16);
-            this.label69.TabIndex = 245;
-            this.label69.Text = "18 :";
-            this.label69.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor17
-            // 
-            this.IdealProcessor17.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor17.Location = new System.Drawing.Point(54, 211);
-            this.IdealProcessor17.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor17.MaxLength = 2;
-            this.IdealProcessor17.Name = "IdealProcessor17";
-            this.IdealProcessor17.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor17.TabIndex = 246;
-            // 
-            // label70
-            // 
-            this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(20, 217);
-            this.label70.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(27, 16);
-            this.label70.TabIndex = 244;
-            this.label70.Text = "17 :";
-            this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // Affinity16
-            // 
-            this.Affinity16.BackColor = System.Drawing.Color.White;
-            this.Affinity16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity16.Location = new System.Drawing.Point(508, 175);
-            this.Affinity16.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity16.MaxLength = 17;
-            this.Affinity16.Name = "Affinity16";
-            this.Affinity16.Size = new System.Drawing.Size(48, 24);
-            this.Affinity16.TabIndex = 242;
-            // 
-            // Affinity15
-            // 
-            this.Affinity15.BackColor = System.Drawing.Color.White;
-            this.Affinity15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity15.Location = new System.Drawing.Point(508, 156);
-            this.Affinity15.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity15.MaxLength = 17;
-            this.Affinity15.Name = "Affinity15";
-            this.Affinity15.Size = new System.Drawing.Size(48, 24);
-            this.Affinity15.TabIndex = 241;
-            // 
-            // Affinity14
-            // 
-            this.Affinity14.BackColor = System.Drawing.Color.White;
-            this.Affinity14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity14.Location = new System.Drawing.Point(508, 137);
-            this.Affinity14.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity14.MaxLength = 17;
-            this.Affinity14.Name = "Affinity14";
-            this.Affinity14.Size = new System.Drawing.Size(48, 24);
-            this.Affinity14.TabIndex = 240;
-            // 
-            // Affinity13
-            // 
-            this.Affinity13.BackColor = System.Drawing.Color.White;
-            this.Affinity13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity13.Location = new System.Drawing.Point(508, 118);
-            this.Affinity13.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity13.MaxLength = 17;
-            this.Affinity13.Name = "Affinity13";
-            this.Affinity13.Size = new System.Drawing.Size(48, 24);
-            this.Affinity13.TabIndex = 239;
-            // 
-            // Affinity12
-            // 
-            this.Affinity12.BackColor = System.Drawing.Color.White;
-            this.Affinity12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity12.Location = new System.Drawing.Point(508, 99);
-            this.Affinity12.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity12.MaxLength = 17;
-            this.Affinity12.Name = "Affinity12";
-            this.Affinity12.Size = new System.Drawing.Size(48, 24);
-            this.Affinity12.TabIndex = 238;
-            // 
-            // Affinity11
-            // 
-            this.Affinity11.BackColor = System.Drawing.Color.White;
-            this.Affinity11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity11.Location = new System.Drawing.Point(508, 80);
-            this.Affinity11.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity11.MaxLength = 17;
-            this.Affinity11.Name = "Affinity11";
-            this.Affinity11.Size = new System.Drawing.Size(48, 24);
-            this.Affinity11.TabIndex = 237;
-            // 
-            // Affinity10
-            // 
-            this.Affinity10.BackColor = System.Drawing.Color.White;
-            this.Affinity10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity10.Location = new System.Drawing.Point(508, 61);
-            this.Affinity10.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity10.MaxLength = 17;
-            this.Affinity10.Name = "Affinity10";
-            this.Affinity10.Size = new System.Drawing.Size(48, 24);
-            this.Affinity10.TabIndex = 236;
-            // 
-            // Affinity9
-            // 
-            this.Affinity9.BackColor = System.Drawing.Color.White;
-            this.Affinity9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity9.Location = new System.Drawing.Point(508, 42);
-            this.Affinity9.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity9.MaxLength = 17;
-            this.Affinity9.Name = "Affinity9";
-            this.Affinity9.Size = new System.Drawing.Size(48, 24);
-            this.Affinity9.TabIndex = 235;
-            // 
-            // Affinity8
-            // 
-            this.Affinity8.BackColor = System.Drawing.Color.White;
-            this.Affinity8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity8.Location = new System.Drawing.Point(106, 177);
-            this.Affinity8.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity8.MaxLength = 2;
-            this.Affinity8.Name = "Affinity8";
-            this.Affinity8.Size = new System.Drawing.Size(48, 24);
-            this.Affinity8.TabIndex = 233;
-            // 
-            // Affinity7
-            // 
-            this.Affinity7.BackColor = System.Drawing.Color.White;
-            this.Affinity7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity7.Location = new System.Drawing.Point(106, 158);
-            this.Affinity7.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity7.MaxLength = 2;
-            this.Affinity7.Name = "Affinity7";
-            this.Affinity7.Size = new System.Drawing.Size(48, 24);
-            this.Affinity7.TabIndex = 232;
-            // 
-            // Affinity6
-            // 
-            this.Affinity6.BackColor = System.Drawing.Color.White;
-            this.Affinity6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity6.Location = new System.Drawing.Point(106, 139);
-            this.Affinity6.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity6.MaxLength = 2;
-            this.Affinity6.Name = "Affinity6";
-            this.Affinity6.Size = new System.Drawing.Size(48, 24);
-            this.Affinity6.TabIndex = 231;
-            // 
-            // Affinity5
-            // 
-            this.Affinity5.BackColor = System.Drawing.Color.White;
-            this.Affinity5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity5.Location = new System.Drawing.Point(106, 120);
-            this.Affinity5.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity5.MaxLength = 2;
-            this.Affinity5.Name = "Affinity5";
-            this.Affinity5.Size = new System.Drawing.Size(48, 24);
-            this.Affinity5.TabIndex = 230;
-            // 
-            // Affinity4
-            // 
-            this.Affinity4.BackColor = System.Drawing.Color.White;
-            this.Affinity4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity4.Location = new System.Drawing.Point(106, 101);
-            this.Affinity4.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity4.MaxLength = 2;
-            this.Affinity4.Name = "Affinity4";
-            this.Affinity4.Size = new System.Drawing.Size(48, 24);
-            this.Affinity4.TabIndex = 229;
-            // 
-            // Affinity3
-            // 
-            this.Affinity3.BackColor = System.Drawing.Color.White;
-            this.Affinity3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity3.Location = new System.Drawing.Point(106, 82);
-            this.Affinity3.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity3.MaxLength = 2;
-            this.Affinity3.Name = "Affinity3";
-            this.Affinity3.Size = new System.Drawing.Size(48, 24);
-            this.Affinity3.TabIndex = 228;
-            // 
-            // Affinity2
-            // 
-            this.Affinity2.BackColor = System.Drawing.Color.White;
-            this.Affinity2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity2.Location = new System.Drawing.Point(106, 63);
-            this.Affinity2.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity2.MaxLength = 2;
-            this.Affinity2.Name = "Affinity2";
-            this.Affinity2.Size = new System.Drawing.Size(48, 24);
-            this.Affinity2.TabIndex = 227;
-            // 
-            // Affinity_Label
-            // 
-            this.Affinity_Label.AutoSize = true;
-            this.Affinity_Label.Location = new System.Drawing.Point(189, 7);
-            this.Affinity_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Affinity_Label.Name = "Affinity_Label";
-            this.Affinity_Label.Size = new System.Drawing.Size(45, 16);
-            this.Affinity_Label.TabIndex = 225;
-            this.Affinity_Label.Text = "Affinity";
-            // 
-            // Affinity1
-            // 
-            this.Affinity1.BackColor = System.Drawing.Color.White;
-            this.Affinity1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Affinity1.Location = new System.Drawing.Point(106, 44);
-            this.Affinity1.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity1.MaxLength = 2;
-            this.Affinity1.Name = "Affinity1";
-            this.Affinity1.Size = new System.Drawing.Size(48, 24);
-            this.Affinity1.TabIndex = 226;
-            // 
-            // PriorityClass_Label
-            // 
-            this.PriorityClass_Label.AutoSize = true;
-            this.PriorityClass_Label.Location = new System.Drawing.Point(241, 7);
-            this.PriorityClass_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.PriorityClass_Label.Name = "PriorityClass_Label";
-            this.PriorityClass_Label.Size = new System.Drawing.Size(85, 16);
-            this.PriorityClass_Label.TabIndex = 224;
-            this.PriorityClass_Label.Text = "Priority Class";
-            // 
-            // IdealProcessor16
-            // 
-            this.IdealProcessor16.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor16.Location = new System.Drawing.Point(456, 175);
-            this.IdealProcessor16.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor16.MaxLength = 9;
-            this.IdealProcessor16.Name = "IdealProcessor16";
-            this.IdealProcessor16.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor16.TabIndex = 221;
-            // 
-            // label76
-            // 
-            this.label76.AutoSize = true;
-            this.label76.Location = new System.Drawing.Point(424, 180);
-            this.label76.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(27, 16);
-            this.label76.TabIndex = 222;
-            this.label76.Text = "16 :";
-            this.label76.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor15
-            // 
-            this.IdealProcessor15.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor15.Location = new System.Drawing.Point(456, 156);
-            this.IdealProcessor15.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor15.MaxLength = 9;
-            this.IdealProcessor15.Name = "IdealProcessor15";
-            this.IdealProcessor15.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor15.TabIndex = 219;
-            // 
-            // label77
-            // 
-            this.label77.AutoSize = true;
-            this.label77.Location = new System.Drawing.Point(424, 160);
-            this.label77.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(27, 16);
-            this.label77.TabIndex = 220;
-            this.label77.Text = "15 :";
-            this.label77.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor14
-            // 
-            this.IdealProcessor14.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor14.Location = new System.Drawing.Point(456, 137);
-            this.IdealProcessor14.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor14.MaxLength = 9;
-            this.IdealProcessor14.Name = "IdealProcessor14";
-            this.IdealProcessor14.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor14.TabIndex = 217;
-            // 
-            // label78
-            // 
-            this.label78.AutoSize = true;
-            this.label78.Location = new System.Drawing.Point(424, 141);
-            this.label78.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(27, 16);
-            this.label78.TabIndex = 218;
-            this.label78.Text = "14 :";
-            this.label78.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor13
-            // 
-            this.IdealProcessor13.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor13.Location = new System.Drawing.Point(456, 118);
-            this.IdealProcessor13.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor13.MaxLength = 9;
-            this.IdealProcessor13.Name = "IdealProcessor13";
-            this.IdealProcessor13.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor13.TabIndex = 215;
-            // 
-            // label79
-            // 
-            this.label79.AutoSize = true;
-            this.label79.Location = new System.Drawing.Point(424, 122);
-            this.label79.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(27, 16);
-            this.label79.TabIndex = 216;
-            this.label79.Text = "13 :";
-            this.label79.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor12
-            // 
-            this.IdealProcessor12.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor12.Location = new System.Drawing.Point(456, 99);
-            this.IdealProcessor12.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor12.MaxLength = 9;
-            this.IdealProcessor12.Name = "IdealProcessor12";
-            this.IdealProcessor12.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor12.TabIndex = 213;
-            // 
-            // label80
-            // 
-            this.label80.AutoSize = true;
-            this.label80.Location = new System.Drawing.Point(424, 103);
-            this.label80.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(27, 16);
-            this.label80.TabIndex = 214;
-            this.label80.Text = "12 :";
-            this.label80.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor11
-            // 
-            this.IdealProcessor11.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor11.Location = new System.Drawing.Point(456, 80);
-            this.IdealProcessor11.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor11.MaxLength = 9;
-            this.IdealProcessor11.Name = "IdealProcessor11";
-            this.IdealProcessor11.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor11.TabIndex = 212;
-            // 
-            // label81
-            // 
-            this.label81.AutoSize = true;
-            this.label81.Location = new System.Drawing.Point(424, 84);
-            this.label81.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(27, 16);
-            this.label81.TabIndex = 211;
-            this.label81.Text = "11 :";
-            this.label81.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor10
-            // 
-            this.IdealProcessor10.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor10.Location = new System.Drawing.Point(456, 61);
-            this.IdealProcessor10.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor10.MaxLength = 9;
-            this.IdealProcessor10.Name = "IdealProcessor10";
-            this.IdealProcessor10.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor10.TabIndex = 210;
-            // 
-            // label82
-            // 
-            this.label82.AutoSize = true;
-            this.label82.Location = new System.Drawing.Point(424, 64);
-            this.label82.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label82.Name = "label82";
-            this.label82.Size = new System.Drawing.Size(27, 16);
-            this.label82.TabIndex = 208;
-            this.label82.Text = "10 :";
-            this.label82.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor9
-            // 
-            this.IdealProcessor9.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor9.Location = new System.Drawing.Point(456, 42);
-            this.IdealProcessor9.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor9.MaxLength = 9;
-            this.IdealProcessor9.Name = "IdealProcessor9";
-            this.IdealProcessor9.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor9.TabIndex = 209;
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(425, 46);
-            this.label83.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(20, 16);
-            this.label83.TabIndex = 207;
-            this.label83.Text = "9 :";
-            this.label83.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor8
-            // 
-            this.IdealProcessor8.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor8.Location = new System.Drawing.Point(54, 177);
-            this.IdealProcessor8.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor8.MaxLength = 2;
-            this.IdealProcessor8.Name = "IdealProcessor8";
-            this.IdealProcessor8.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor8.TabIndex = 205;
-            // 
-            // label84
-            // 
-            this.label84.AutoSize = true;
-            this.label84.Location = new System.Drawing.Point(24, 182);
-            this.label84.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(20, 16);
-            this.label84.TabIndex = 206;
-            this.label84.Text = "8 :";
-            this.label84.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor7
-            // 
-            this.IdealProcessor7.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor7.Location = new System.Drawing.Point(54, 158);
-            this.IdealProcessor7.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor7.MaxLength = 2;
-            this.IdealProcessor7.Name = "IdealProcessor7";
-            this.IdealProcessor7.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor7.TabIndex = 203;
-            // 
-            // label85
-            // 
-            this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(24, 166);
-            this.label85.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(20, 16);
-            this.label85.TabIndex = 204;
-            this.label85.Text = "7 :";
-            this.label85.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor6
-            // 
-            this.IdealProcessor6.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor6.Location = new System.Drawing.Point(54, 139);
-            this.IdealProcessor6.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor6.MaxLength = 2;
-            this.IdealProcessor6.Name = "IdealProcessor6";
-            this.IdealProcessor6.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor6.TabIndex = 201;
-            // 
-            // label86
-            // 
-            this.label86.AutoSize = true;
-            this.label86.Location = new System.Drawing.Point(24, 148);
-            this.label86.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label86.Name = "label86";
-            this.label86.Size = new System.Drawing.Size(20, 16);
-            this.label86.TabIndex = 202;
-            this.label86.Text = "6 :";
-            this.label86.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor5
-            // 
-            this.IdealProcessor5.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor5.Location = new System.Drawing.Point(54, 120);
-            this.IdealProcessor5.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor5.MaxLength = 2;
-            this.IdealProcessor5.Name = "IdealProcessor5";
-            this.IdealProcessor5.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor5.TabIndex = 199;
-            // 
-            // label87
-            // 
-            this.label87.AutoSize = true;
-            this.label87.Location = new System.Drawing.Point(24, 129);
-            this.label87.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(20, 16);
-            this.label87.TabIndex = 200;
-            this.label87.Text = "5 :";
-            this.label87.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // Instance_Label
-            // 
-            this.Instance_Label.AutoSize = true;
-            this.Instance_Label.Location = new System.Drawing.Point(12, 7);
-            this.Instance_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Instance_Label.Name = "Instance_Label";
-            this.Instance_Label.Size = new System.Drawing.Size(57, 16);
-            this.Instance_Label.TabIndex = 198;
-            this.Instance_Label.Text = "Instance";
-            // 
-            // IdealProcessor4
-            // 
-            this.IdealProcessor4.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor4.Location = new System.Drawing.Point(54, 101);
-            this.IdealProcessor4.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor4.MaxLength = 2;
-            this.IdealProcessor4.Name = "IdealProcessor4";
-            this.IdealProcessor4.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor4.TabIndex = 196;
-            // 
-            // label89
-            // 
-            this.label89.AutoSize = true;
-            this.label89.Location = new System.Drawing.Point(24, 111);
-            this.label89.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(20, 16);
-            this.label89.TabIndex = 197;
-            this.label89.Text = "4 :";
-            this.label89.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor3
-            // 
-            this.IdealProcessor3.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor3.Location = new System.Drawing.Point(54, 82);
-            this.IdealProcessor3.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor3.MaxLength = 2;
-            this.IdealProcessor3.Name = "IdealProcessor3";
-            this.IdealProcessor3.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor3.TabIndex = 195;
-            // 
-            // label90
-            // 
-            this.label90.AutoSize = true;
-            this.label90.Location = new System.Drawing.Point(24, 90);
-            this.label90.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(20, 16);
-            this.label90.TabIndex = 194;
-            this.label90.Text = "3 :";
-            this.label90.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor2
-            // 
-            this.IdealProcessor2.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor2.Location = new System.Drawing.Point(54, 63);
-            this.IdealProcessor2.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor2.MaxLength = 2;
-            this.IdealProcessor2.Name = "IdealProcessor2";
-            this.IdealProcessor2.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor2.TabIndex = 193;
-            // 
-            // label91
-            // 
-            this.label91.AutoSize = true;
-            this.label91.Location = new System.Drawing.Point(24, 69);
-            this.label91.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(20, 16);
-            this.label91.TabIndex = 191;
-            this.label91.Text = "2 :";
-            this.label91.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor_Label
-            // 
-            this.IdealProcessor_Label.AutoSize = true;
-            this.IdealProcessor_Label.Location = new System.Drawing.Point(77, 7);
-            this.IdealProcessor_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.IdealProcessor_Label.Name = "IdealProcessor_Label";
-            this.IdealProcessor_Label.Size = new System.Drawing.Size(102, 16);
-            this.IdealProcessor_Label.TabIndex = 190;
-            this.IdealProcessor_Label.Text = "Ideal Processor";
-            // 
-            // IdealProcessor1
-            // 
-            this.IdealProcessor1.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor1.Location = new System.Drawing.Point(54, 44);
-            this.IdealProcessor1.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor1.MaxLength = 2;
-            this.IdealProcessor1.Name = "IdealProcessor1";
-            this.IdealProcessor1.Size = new System.Drawing.Size(48, 24);
-            this.IdealProcessor1.TabIndex = 192;
-            // 
-            // label93
-            // 
-            this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(24, 47);
-            this.label93.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(20, 16);
-            this.label93.TabIndex = 189;
-            this.label93.Text = "1 :";
-            this.label93.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // Panel2
-            // 
-            this.Panel2.BackColor = System.Drawing.Color.PaleGreen;
-            this.Panel2.Controls.Add(this.steamid32);
-            this.Panel2.Controls.Add(this.steamid31);
-            this.Panel2.Controls.Add(this.steamid30);
-            this.Panel2.Controls.Add(this.steamid29);
-            this.Panel2.Controls.Add(this.steamid28);
-            this.Panel2.Controls.Add(this.steamid27);
-            this.Panel2.Controls.Add(this.steamid26);
-            this.Panel2.Controls.Add(this.steamid25);
-            this.Panel2.Controls.Add(this.steamid24);
-            this.Panel2.Controls.Add(this.steamid23);
-            this.Panel2.Controls.Add(this.steamid22);
-            this.Panel2.Controls.Add(this.steamid21);
-            this.Panel2.Controls.Add(this.steamid20);
-            this.Panel2.Controls.Add(this.steamid19);
-            this.Panel2.Controls.Add(this.steamid18);
-            this.Panel2.Controls.Add(this.steamid17);
-            this.Panel2.Controls.Add(this.player32N);
-            this.Panel2.Controls.Add(this.label31);
-            this.Panel2.Controls.Add(this.player31N);
-            this.Panel2.Controls.Add(this.label33);
-            this.Panel2.Controls.Add(this.player30N);
-            this.Panel2.Controls.Add(this.label34);
-            this.Panel2.Controls.Add(this.player29N);
-            this.Panel2.Controls.Add(this.label35);
-            this.Panel2.Controls.Add(this.player28N);
-            this.Panel2.Controls.Add(this.label38);
-            this.Panel2.Controls.Add(this.player27N);
-            this.Panel2.Controls.Add(this.label46);
-            this.Panel2.Controls.Add(this.player26N);
-            this.Panel2.Controls.Add(this.label50);
-            this.Panel2.Controls.Add(this.player25N);
-            this.Panel2.Controls.Add(this.label51);
-            this.Panel2.Controls.Add(this.player24N);
-            this.Panel2.Controls.Add(this.label52);
-            this.Panel2.Controls.Add(this.player23N);
-            this.Panel2.Controls.Add(this.label53);
-            this.Panel2.Controls.Add(this.player22N);
-            this.Panel2.Controls.Add(this.label54);
-            this.Panel2.Controls.Add(this.player21N);
-            this.Panel2.Controls.Add(this.label55);
-            this.Panel2.Controls.Add(this.player20N);
-            this.Panel2.Controls.Add(this.label57);
-            this.Panel2.Controls.Add(this.player19N);
-            this.Panel2.Controls.Add(this.label58);
-            this.Panel2.Controls.Add(this.player18N);
-            this.Panel2.Controls.Add(this.label59);
-            this.Panel2.Controls.Add(this.player17N);
-            this.Panel2.Controls.Add(this.label61);
-            this.Panel2.Controls.Add(this.def_sid_textBox_container);
-            this.Panel2.Controls.Add(this.steamid16);
-            this.Panel2.Controls.Add(this.steamid15);
-            this.Panel2.Controls.Add(this.steamid14);
-            this.Panel2.Controls.Add(this.steamid13);
-            this.Panel2.Controls.Add(this.steamid12);
-            this.Panel2.Controls.Add(this.steamid11);
-            this.Panel2.Controls.Add(this.steamid10);
-            this.Panel2.Controls.Add(this.label48);
-            this.Panel2.Controls.Add(this.steamid9);
-            this.Panel2.Controls.Add(this.steamid8);
-            this.Panel2.Controls.Add(this.steamid7);
-            this.Panel2.Controls.Add(this.steamid6);
-            this.Panel2.Controls.Add(this.steamid5);
-            this.Panel2.Controls.Add(this.steamid4);
-            this.Panel2.Controls.Add(this.steamid3);
-            this.Panel2.Controls.Add(this.steamid2);
-            this.Panel2.Controls.Add(this.label47);
-            this.Panel2.Controls.Add(this.steamid1);
-            this.Panel2.Controls.Add(this.label21);
-            this.Panel2.Controls.Add(this.label25);
-            this.Panel2.Controls.Add(this.player16N);
-            this.Panel2.Controls.Add(this.label17);
-            this.Panel2.Controls.Add(this.player15N);
-            this.Panel2.Controls.Add(this.label18);
-            this.Panel2.Controls.Add(this.player14N);
-            this.Panel2.Controls.Add(this.label19);
-            this.Panel2.Controls.Add(this.player13N);
-            this.Panel2.Controls.Add(this.label20);
-            this.Panel2.Controls.Add(this.player12N);
-            this.Panel2.Controls.Add(this.label22);
-            this.Panel2.Controls.Add(this.player11N);
-            this.Panel2.Controls.Add(this.label23);
-            this.Panel2.Controls.Add(this.player10N);
-            this.Panel2.Controls.Add(this.label24);
-            this.Panel2.Controls.Add(this.player9N);
-            this.Panel2.Controls.Add(this.label26);
-            this.Panel2.Controls.Add(this.player8N);
-            this.Panel2.Controls.Add(this.label16);
-            this.Panel2.Controls.Add(this.player7N);
-            this.Panel2.Controls.Add(this.label15);
-            this.Panel2.Controls.Add(this.player6N);
-            this.Panel2.Controls.Add(this.label11);
-            this.Panel2.Controls.Add(this.player5N);
-            this.Panel2.Controls.Add(this.label9);
-            this.Panel2.Controls.Add(this.label13);
-            this.Panel2.Controls.Add(this.player4N);
-            this.Panel2.Controls.Add(this.label14);
-            this.Panel2.Controls.Add(this.player3N);
-            this.Panel2.Controls.Add(this.label12);
-            this.Panel2.Controls.Add(this.player2N);
-            this.Panel2.Controls.Add(this.label10);
-            this.Panel2.Controls.Add(this.label8);
-            this.Panel2.Controls.Add(this.player1N);
-            this.Panel2.Controls.Add(this.label7);
-            this.Panel2.Location = new System.Drawing.Point(58, 30);
-            this.Panel2.Name = "Panel2";
-            this.Panel2.Size = new System.Drawing.Size(671, 401);
-            this.Panel2.TabIndex = 132;
+            this.modeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // sharedTab
+            // 
+            this.sharedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.sharedTab.Controls.Add(this.label72);
+            this.sharedTab.Controls.Add(this.notes_text);
+            this.sharedTab.Controls.Add(this.label71);
+            this.sharedTab.Controls.Add(this.panel1);
+            this.sharedTab.Controls.Add(this.SplitColors);
+            this.sharedTab.Controls.Add(this.cmb_Network);
+            this.sharedTab.Controls.Add(this.autoPlay);
+            this.sharedTab.Controls.Add(this.numMaxPlyrs);
+            this.sharedTab.Controls.Add(this.numUpDownHor);
+            this.sharedTab.Controls.Add(this.numUpDownVer);
+            this.sharedTab.Controls.Add(this.SplitDiv);
+            this.sharedTab.Controls.Add(this.label49);
+            this.sharedTab.Controls.Add(this.layoutSizer);
+            this.sharedTab.Controls.Add(this.label29);
+            this.sharedTab.Controls.Add(this.label27);
+            this.sharedTab.Controls.Add(this.label28);
+            this.sharedTab.Controls.Add(this.KeepSymLinkCheckBox);
+            this.sharedTab.Controls.Add(this.label6);
+            this.sharedTab.Controls.Add(this.label2);
+            this.sharedTab.Controls.Add(this.WIndowsSetupTiming_Label);
+            this.sharedTab.Controls.Add(this.WindowsSetupTiming_TextBox);
+            this.sharedTab.Controls.Add(this.pauseBetweenInstanceLaunch_TxtBox);
+            this.sharedTab.Controls.Add(this.pauseBetweenInstanceLauch_Label);
+            this.sharedTab.Controls.Add(this.scaleOptionCbx);
+            this.sharedTab.Controls.Add(this.keepAccountsCheck);
+            this.sharedTab.Controls.Add(this.label32);
+            this.sharedTab.Controls.Add(this.useNicksCheck);
+            this.sharedTab.Location = new System.Drawing.Point(8, 33);
+            this.sharedTab.Name = "sharedTab";
+            this.sharedTab.Size = new System.Drawing.Size(671, 401);
+            this.sharedTab.TabIndex = 42;
+            // 
+            // label72
+            // 
+            this.label72.AutoSize = true;
+            this.label72.Location = new System.Drawing.Point(405, 291);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(75, 16);
+            this.label72.TabIndex = 145;
+            this.label72.Text = "User Notes";
+            // 
+            // notes_text
+            // 
+            this.notes_text.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.notes_text.BackColor = System.Drawing.SystemColors.InfoText;
+            this.notes_text.ForeColor = System.Drawing.Color.White;
+            this.notes_text.Location = new System.Drawing.Point(407, 308);
+            this.notes_text.MaximumSize = new System.Drawing.Size(260, 81);
+            this.notes_text.Multiline = true;
+            this.notes_text.Name = "notes_text";
+            this.notes_text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.notes_text.Size = new System.Drawing.Size(260, 81);
+            this.notes_text.TabIndex = 144;
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(402, 186);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(159, 16);
+            this.label71.TabIndex = 143;
+            this.label71.Text = "Cutscenes Mode Settings";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.cts_unfocus);
+            this.panel1.Controls.Add(this.cts_kar);
+            this.panel1.Controls.Add(this.cts_Mute);
+            this.panel1.Location = new System.Drawing.Point(401, 205);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 82);
+            this.panel1.TabIndex = 142;
+            // 
+            // cts_unfocus
+            // 
+            this.cts_unfocus.AutoSize = true;
+            this.cts_unfocus.Location = new System.Drawing.Point(6, 54);
+            this.cts_unfocus.Name = "cts_unfocus";
+            this.cts_unfocus.Size = new System.Drawing.Size(163, 20);
+            this.cts_unfocus.TabIndex = 142;
+            this.cts_unfocus.Text = "Auto Unfocus Windows";
+            this.cts_unfocus.UseVisualStyleBackColor = true;
+            // 
+            // cts_kar
+            // 
+            this.cts_kar.AutoSize = true;
+            this.cts_kar.Location = new System.Drawing.Point(6, 29);
+            this.cts_kar.Name = "cts_kar";
+            this.cts_kar.Size = new System.Drawing.Size(187, 20);
+            this.cts_kar.TabIndex = 141;
+            this.cts_kar.Text = "Keep Original Window Size";
+            this.cts_kar.UseVisualStyleBackColor = true;
+            // 
+            // cts_Mute
+            // 
+            this.cts_Mute.AutoSize = true;
+            this.cts_Mute.Location = new System.Drawing.Point(6, 4);
+            this.cts_Mute.Name = "cts_Mute";
+            this.cts_Mute.Size = new System.Drawing.Size(123, 20);
+            this.cts_Mute.TabIndex = 140;
+            this.cts_Mute.Text = "Mute Audio Only";
+            this.cts_Mute.UseVisualStyleBackColor = true;
+            this.cts_Mute.CheckedChanged += new System.EventHandler(this.cts_settings1_CheckedChanged);
+            // 
+            // SplitColors
+            // 
+            this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SplitColors.Location = new System.Drawing.Point(14, 342);
+            this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
+            this.SplitColors.Name = "SplitColors";
+            this.SplitColors.Size = new System.Drawing.Size(119, 24);
+            this.SplitColors.TabIndex = 137;
+            // 
+            // cmb_Network
+            // 
+            this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmb_Network.Location = new System.Drawing.Point(14, 156);
+            this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.cmb_Network.Name = "cmb_Network";
+            this.cmb_Network.Size = new System.Drawing.Size(198, 21);
+            this.cmb_Network.TabIndex = 136;
+            // 
+            // autoPlay
+            // 
+            this.autoPlay.AutoSize = true;
+            this.autoPlay.Location = new System.Drawing.Point(14, 108);
+            this.autoPlay.Margin = new System.Windows.Forms.Padding(2);
+            this.autoPlay.Name = "autoPlay";
+            this.autoPlay.Size = new System.Drawing.Size(303, 20);
+            this.autoPlay.TabIndex = 135;
+            this.autoPlay.Text = "Auto Play On Profile Selection(Controllers only)";
+            this.autoPlay.UseVisualStyleBackColor = true;
+            // 
+            // numMaxPlyrs
+            // 
+            this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
+            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numMaxPlyrs.Location = new System.Drawing.Point(294, 128);
+            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
+            this.numMaxPlyrs.Name = "numMaxPlyrs";
+            this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
+            this.numMaxPlyrs.TabIndex = 134;
+            this.numMaxPlyrs.Value = 0;
+            // 
+            // numUpDownHor
+            // 
+            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownHor.Location = new System.Drawing.Point(294, 77);
+            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownHor.Name = "numUpDownHor";
+            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownHor.TabIndex = 133;
+            this.numUpDownHor.Value = 0;
+            // 
+            // numUpDownVer
+            // 
+            this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownVer.Location = new System.Drawing.Point(294, 30);
+            this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownVer.Name = "numUpDownVer";
+            this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownVer.TabIndex = 132;
+            this.numUpDownVer.Value = 0;
+            // 
+            // SplitDiv
+            // 
+            this.SplitDiv.AutoSize = true;
+            this.SplitDiv.Cursor = System.Windows.Forms.Cursors.Default;
+            this.SplitDiv.Location = new System.Drawing.Point(15, 294);
+            this.SplitDiv.Margin = new System.Windows.Forms.Padding(0);
+            this.SplitDiv.Name = "SplitDiv";
+            this.SplitDiv.Size = new System.Drawing.Size(311, 20);
+            this.SplitDiv.TabIndex = 131;
+            this.SplitDiv.Text = "Splitscreen division (May not work for all games)";
+            this.SplitDiv.UseVisualStyleBackColor = true;
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.BackColor = System.Drawing.Color.Transparent;
+            this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label49.Location = new System.Drawing.Point(15, 320);
+            this.label49.Margin = new System.Windows.Forms.Padding(0);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(103, 15);
+            this.label49.TabIndex = 130;
+            this.label49.Text = "Background color";
+            this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // layoutSizer
+            // 
+            this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
+            this.layoutSizer.Location = new System.Drawing.Point(416, 6);
+            this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
+            this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
+            this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
+            this.layoutSizer.Name = "layoutSizer";
+            this.layoutSizer.Size = new System.Drawing.Size(245, 170);
+            this.layoutSizer.TabIndex = 127;
+            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
+            // 
+            // label29
+            // 
+            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label29.AutoSize = true;
+            this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label29.Location = new System.Drawing.Point(287, 106);
+            this.label29.Margin = new System.Windows.Forms.Padding(0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(81, 16);
+            this.label29.TabIndex = 122;
+            this.label29.Text = "Max Players";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label27
+            // 
+            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.Transparent;
+            this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label27.Location = new System.Drawing.Point(287, 58);
+            this.label27.Margin = new System.Windows.Forms.Padding(0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(125, 16);
+            this.label27.TabIndex = 120;
+            this.label27.Text = "Horizontal Divisions";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label28
+            // 
+            this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label28.AutoSize = true;
+            this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label28.Location = new System.Drawing.Point(287, 12);
+            this.label28.Margin = new System.Windows.Forms.Padding(0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(113, 16);
+            this.label28.TabIndex = 121;
+            this.label28.Text = " Vertical Divisions";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // KeepSymLinkCheckBox
+            // 
+            this.KeepSymLinkCheckBox.AutoSize = true;
+            this.KeepSymLinkCheckBox.BackColor = System.Drawing.Color.Transparent;
+            this.KeepSymLinkCheckBox.Location = new System.Drawing.Point(15, 58);
+            this.KeepSymLinkCheckBox.Margin = new System.Windows.Forms.Padding(2);
+            this.KeepSymLinkCheckBox.Name = "KeepSymLinkCheckBox";
+            this.KeepSymLinkCheckBox.Size = new System.Drawing.Size(156, 20);
+            this.KeepSymLinkCheckBox.TabIndex = 119;
+            this.KeepSymLinkCheckBox.Text = "Keep SymLink On Exit";
+            this.KeepSymLinkCheckBox.UseVisualStyleBackColor = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(75, 264);
+            this.label6.Margin = new System.Windows.Forms.Padding(0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(90, 16);
+            this.label6.TabIndex = 118;
+            this.label6.Text = "(milliseconds)";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(53, 214);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(67, 16);
+            this.label2.TabIndex = 117;
+            this.label2.Text = "(seconds)";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // WIndowsSetupTiming_Label
+            // 
+            this.WIndowsSetupTiming_Label.AutoSize = true;
+            this.WIndowsSetupTiming_Label.Location = new System.Drawing.Point(15, 240);
+            this.WIndowsSetupTiming_Label.Margin = new System.Windows.Forms.Padding(0);
+            this.WIndowsSetupTiming_Label.Name = "WIndowsSetupTiming_Label";
+            this.WIndowsSetupTiming_Label.Size = new System.Drawing.Size(335, 16);
+            this.WIndowsSetupTiming_Label.TabIndex = 116;
+            this.WIndowsSetupTiming_Label.Text = "Windows Setup Timing (Can break positioning/resizing)";
+            this.WIndowsSetupTiming_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // WindowsSetupTiming_TextBox
+            // 
+            this.WindowsSetupTiming_TextBox.Location = new System.Drawing.Point(15, 261);
+            this.WindowsSetupTiming_TextBox.Margin = new System.Windows.Forms.Padding(0);
+            this.WindowsSetupTiming_TextBox.MaxLength = 5;
+            this.WindowsSetupTiming_TextBox.Name = "WindowsSetupTiming_TextBox";
+            this.WindowsSetupTiming_TextBox.Size = new System.Drawing.Size(57, 22);
+            this.WindowsSetupTiming_TextBox.TabIndex = 115;
+            this.WindowsSetupTiming_TextBox.Text = "0";
+            this.WindowsSetupTiming_TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // pauseBetweenInstanceLaunch_TxtBox
+            // 
+            this.pauseBetweenInstanceLaunch_TxtBox.Location = new System.Drawing.Point(15, 211);
+            this.pauseBetweenInstanceLaunch_TxtBox.Margin = new System.Windows.Forms.Padding(0);
+            this.pauseBetweenInstanceLaunch_TxtBox.MaxLength = 3;
+            this.pauseBetweenInstanceLaunch_TxtBox.Name = "pauseBetweenInstanceLaunch_TxtBox";
+            this.pauseBetweenInstanceLaunch_TxtBox.Size = new System.Drawing.Size(37, 22);
+            this.pauseBetweenInstanceLaunch_TxtBox.TabIndex = 113;
+            this.pauseBetweenInstanceLaunch_TxtBox.Text = "0";
+            this.pauseBetweenInstanceLaunch_TxtBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // pauseBetweenInstanceLauch_Label
+            // 
+            this.pauseBetweenInstanceLauch_Label.AutoSize = true;
+            this.pauseBetweenInstanceLauch_Label.Location = new System.Drawing.Point(15, 190);
+            this.pauseBetweenInstanceLauch_Label.Margin = new System.Windows.Forms.Padding(0);
+            this.pauseBetweenInstanceLauch_Label.Name = "pauseBetweenInstanceLauch_Label";
+            this.pauseBetweenInstanceLauch_Label.Size = new System.Drawing.Size(376, 16);
+            this.pauseBetweenInstanceLauch_Label.TabIndex = 114;
+            this.pauseBetweenInstanceLauch_Label.Text = "Pause Between Game Startup (Can break hooks or xinputplus)";
+            this.pauseBetweenInstanceLauch_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // scaleOptionCbx
+            // 
+            this.scaleOptionCbx.AutoSize = true;
+            this.scaleOptionCbx.Checked = true;
+            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.scaleOptionCbx.Location = new System.Drawing.Point(15, 83);
+            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
+            this.scaleOptionCbx.Name = "scaleOptionCbx";
+            this.scaleOptionCbx.Size = new System.Drawing.Size(212, 20);
+            this.scaleOptionCbx.TabIndex = 112;
+            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
+            this.scaleOptionCbx.UseVisualStyleBackColor = true;
+            // 
+            // keepAccountsCheck
+            // 
+            this.keepAccountsCheck.AutoSize = true;
+            this.keepAccountsCheck.Location = new System.Drawing.Point(15, 35);
+            this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.keepAccountsCheck.Name = "keepAccountsCheck";
+            this.keepAccountsCheck.Size = new System.Drawing.Size(200, 20);
+            this.keepAccountsCheck.TabIndex = 111;
+            this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
+            this.keepAccountsCheck.UseVisualStyleBackColor = true;
+            this.keepAccountsCheck.Click += new System.EventHandler(this.keepAccountsCheck_Click);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(15, 134);
+            this.label32.Margin = new System.Windows.Forms.Padding(0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(56, 16);
+            this.label32.TabIndex = 109;
+            this.label32.Text = "Network";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // useNicksCheck
+            // 
+            this.useNicksCheck.AutoSize = true;
+            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
+            this.useNicksCheck.Location = new System.Drawing.Point(15, 11);
+            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.useNicksCheck.Name = "useNicksCheck";
+            this.useNicksCheck.Size = new System.Drawing.Size(176, 20);
+            this.useNicksCheck.TabIndex = 108;
+            this.useNicksCheck.Text = "Use Nicknames In-Game";
+            this.useNicksCheck.UseVisualStyleBackColor = false;
+            // 
+            // playersTab
+            // 
+            this.playersTab.BackColor = System.Drawing.Color.PaleGreen;
+            this.playersTab.Controls.Add(this.steamid32);
+            this.playersTab.Controls.Add(this.steamid31);
+            this.playersTab.Controls.Add(this.steamid30);
+            this.playersTab.Controls.Add(this.steamid29);
+            this.playersTab.Controls.Add(this.steamid28);
+            this.playersTab.Controls.Add(this.steamid27);
+            this.playersTab.Controls.Add(this.steamid26);
+            this.playersTab.Controls.Add(this.steamid25);
+            this.playersTab.Controls.Add(this.steamid24);
+            this.playersTab.Controls.Add(this.steamid23);
+            this.playersTab.Controls.Add(this.steamid22);
+            this.playersTab.Controls.Add(this.steamid21);
+            this.playersTab.Controls.Add(this.steamid20);
+            this.playersTab.Controls.Add(this.steamid19);
+            this.playersTab.Controls.Add(this.steamid18);
+            this.playersTab.Controls.Add(this.steamid17);
+            this.playersTab.Controls.Add(this.player32N);
+            this.playersTab.Controls.Add(this.label31);
+            this.playersTab.Controls.Add(this.player31N);
+            this.playersTab.Controls.Add(this.label33);
+            this.playersTab.Controls.Add(this.player30N);
+            this.playersTab.Controls.Add(this.label34);
+            this.playersTab.Controls.Add(this.player29N);
+            this.playersTab.Controls.Add(this.label35);
+            this.playersTab.Controls.Add(this.player28N);
+            this.playersTab.Controls.Add(this.label38);
+            this.playersTab.Controls.Add(this.player27N);
+            this.playersTab.Controls.Add(this.label46);
+            this.playersTab.Controls.Add(this.player26N);
+            this.playersTab.Controls.Add(this.label50);
+            this.playersTab.Controls.Add(this.player25N);
+            this.playersTab.Controls.Add(this.label51);
+            this.playersTab.Controls.Add(this.player24N);
+            this.playersTab.Controls.Add(this.label52);
+            this.playersTab.Controls.Add(this.player23N);
+            this.playersTab.Controls.Add(this.label53);
+            this.playersTab.Controls.Add(this.player22N);
+            this.playersTab.Controls.Add(this.label54);
+            this.playersTab.Controls.Add(this.player21N);
+            this.playersTab.Controls.Add(this.label55);
+            this.playersTab.Controls.Add(this.player20N);
+            this.playersTab.Controls.Add(this.label57);
+            this.playersTab.Controls.Add(this.player19N);
+            this.playersTab.Controls.Add(this.label58);
+            this.playersTab.Controls.Add(this.player18N);
+            this.playersTab.Controls.Add(this.label59);
+            this.playersTab.Controls.Add(this.player17N);
+            this.playersTab.Controls.Add(this.label61);
+            this.playersTab.Controls.Add(this.def_sid_textBox_container);
+            this.playersTab.Controls.Add(this.steamid16);
+            this.playersTab.Controls.Add(this.steamid15);
+            this.playersTab.Controls.Add(this.steamid14);
+            this.playersTab.Controls.Add(this.steamid13);
+            this.playersTab.Controls.Add(this.steamid12);
+            this.playersTab.Controls.Add(this.steamid11);
+            this.playersTab.Controls.Add(this.steamid10);
+            this.playersTab.Controls.Add(this.label48);
+            this.playersTab.Controls.Add(this.steamid9);
+            this.playersTab.Controls.Add(this.steamid8);
+            this.playersTab.Controls.Add(this.steamid7);
+            this.playersTab.Controls.Add(this.steamid6);
+            this.playersTab.Controls.Add(this.steamid5);
+            this.playersTab.Controls.Add(this.steamid4);
+            this.playersTab.Controls.Add(this.steamid3);
+            this.playersTab.Controls.Add(this.steamid2);
+            this.playersTab.Controls.Add(this.label47);
+            this.playersTab.Controls.Add(this.steamid1);
+            this.playersTab.Controls.Add(this.label21);
+            this.playersTab.Controls.Add(this.label25);
+            this.playersTab.Controls.Add(this.player16N);
+            this.playersTab.Controls.Add(this.label17);
+            this.playersTab.Controls.Add(this.player15N);
+            this.playersTab.Controls.Add(this.label18);
+            this.playersTab.Controls.Add(this.player14N);
+            this.playersTab.Controls.Add(this.label19);
+            this.playersTab.Controls.Add(this.player13N);
+            this.playersTab.Controls.Add(this.label20);
+            this.playersTab.Controls.Add(this.player12N);
+            this.playersTab.Controls.Add(this.label22);
+            this.playersTab.Controls.Add(this.player11N);
+            this.playersTab.Controls.Add(this.label23);
+            this.playersTab.Controls.Add(this.player10N);
+            this.playersTab.Controls.Add(this.label24);
+            this.playersTab.Controls.Add(this.player9N);
+            this.playersTab.Controls.Add(this.label26);
+            this.playersTab.Controls.Add(this.player8N);
+            this.playersTab.Controls.Add(this.label16);
+            this.playersTab.Controls.Add(this.player7N);
+            this.playersTab.Controls.Add(this.label15);
+            this.playersTab.Controls.Add(this.player6N);
+            this.playersTab.Controls.Add(this.label11);
+            this.playersTab.Controls.Add(this.player5N);
+            this.playersTab.Controls.Add(this.label9);
+            this.playersTab.Controls.Add(this.label13);
+            this.playersTab.Controls.Add(this.player4N);
+            this.playersTab.Controls.Add(this.label14);
+            this.playersTab.Controls.Add(this.player3N);
+            this.playersTab.Controls.Add(this.label12);
+            this.playersTab.Controls.Add(this.player2N);
+            this.playersTab.Controls.Add(this.label10);
+            this.playersTab.Controls.Add(this.label8);
+            this.playersTab.Controls.Add(this.player1N);
+            this.playersTab.Controls.Add(this.label7);
+            this.playersTab.Location = new System.Drawing.Point(92, 55);
+            this.playersTab.Name = "playersTab";
+            this.playersTab.Size = new System.Drawing.Size(671, 401);
+            this.playersTab.TabIndex = 132;
             // 
             // steamid32
             // 
@@ -3565,347 +2206,19 @@ namespace Nucleus.Coop
             this.label7.Text = "Player 1 :";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // Panel1
+            // audioTab
             // 
-            this.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Panel1.Controls.Add(this.SplitColors);
-            this.Panel1.Controls.Add(this.cmb_Network);
-            this.Panel1.Controls.Add(this.autoPlay);
-            this.Panel1.Controls.Add(this.numMaxPlyrs);
-            this.Panel1.Controls.Add(this.numUpDownHor);
-            this.Panel1.Controls.Add(this.numUpDownVer);
-            this.Panel1.Controls.Add(this.SplitDiv);
-            this.Panel1.Controls.Add(this.label49);
-            this.Panel1.Controls.Add(this.slitWarning_Label);
-            this.Panel1.Controls.Add(this.layoutSizer);
-            this.Panel1.Controls.Add(this.label29);
-            this.Panel1.Controls.Add(this.label27);
-            this.Panel1.Controls.Add(this.label28);
-            this.Panel1.Controls.Add(this.KeepSymLinkCheckBox);
-            this.Panel1.Controls.Add(this.label6);
-            this.Panel1.Controls.Add(this.label2);
-            this.Panel1.Controls.Add(this.WIndowsSetupTiming_Label);
-            this.Panel1.Controls.Add(this.WindowsSetupTiming_TextBox);
-            this.Panel1.Controls.Add(this.pauseBetweenInstanceLaunch_TxtBox);
-            this.Panel1.Controls.Add(this.pauseBetweenInstanceLauch_Label);
-            this.Panel1.Controls.Add(this.scaleOptionCbx);
-            this.Panel1.Controls.Add(this.keepAccountsCheck);
-            this.Panel1.Controls.Add(this.label32);
-            this.Panel1.Controls.Add(this.useNicksCheck);
-            this.Panel1.Location = new System.Drawing.Point(3, 116);
-            this.Panel1.Name = "Panel1";
-            this.Panel1.Size = new System.Drawing.Size(671, 401);
-            this.Panel1.TabIndex = 42;
-            // 
-            // SplitColors
-            // 
-            this.SplitColors.BackColor = System.Drawing.Color.Transparent;
-            this.SplitColors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(14, 342);
-            this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
-            this.SplitColors.Name = "SplitColors";
-            this.SplitColors.ScrollOffset = 2;
-            this.SplitColors.SelectedItem = null;
-            this.SplitColors.Size = new System.Drawing.Size(119, 19);
-            this.SplitColors.TabIndex = 137;
-            // 
-            // cmb_Network
-            // 
-            this.cmb_Network.BackColor = System.Drawing.Color.Transparent;
-            this.cmb_Network.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmb_Network.Location = new System.Drawing.Point(14, 156);
-            this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.cmb_Network.Name = "cmb_Network";
-            this.cmb_Network.ScrollOffset = 2;
-            this.cmb_Network.SelectedItem = null;
-            this.cmb_Network.Size = new System.Drawing.Size(198, 19);
-            this.cmb_Network.TabIndex = 136;
-            // 
-            // autoPlay
-            // 
-            this.autoPlay.AutoSize = true;
-            this.autoPlay.Location = new System.Drawing.Point(14, 108);
-            this.autoPlay.Margin = new System.Windows.Forms.Padding(2);
-            this.autoPlay.Name = "autoPlay";
-            this.autoPlay.Size = new System.Drawing.Size(203, 20);
-            this.autoPlay.TabIndex = 135;
-            this.autoPlay.Text = "Auto Play On Profile Selection";
-            this.autoPlay.UseVisualStyleBackColor = true;
-            // 
-            // numMaxPlyrs
-            // 
-            this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
-            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(294, 128);
-            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
-            this.numMaxPlyrs.Name = "numMaxPlyrs";
-            this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
-            this.numMaxPlyrs.TabIndex = 134;
-            this.numMaxPlyrs.Value = 0;
-            // 
-            // numUpDownHor
-            // 
-            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(294, 77);
-            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownHor.Name = "numUpDownHor";
-            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownHor.TabIndex = 133;
-            this.numUpDownHor.Value = 0;
-            // 
-            // numUpDownVer
-            // 
-            this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(294, 30);
-            this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownVer.Name = "numUpDownVer";
-            this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownVer.TabIndex = 132;
-            this.numUpDownVer.Value = 0;
-            // 
-            // SplitDiv
-            // 
-            this.SplitDiv.AutoSize = true;
-            this.SplitDiv.Cursor = System.Windows.Forms.Cursors.Default;
-            this.SplitDiv.Location = new System.Drawing.Point(15, 294);
-            this.SplitDiv.Margin = new System.Windows.Forms.Padding(0);
-            this.SplitDiv.Name = "SplitDiv";
-            this.SplitDiv.Size = new System.Drawing.Size(142, 20);
-            this.SplitDiv.TabIndex = 131;
-            this.SplitDiv.Text = "Splitscreen division";
-            this.SplitDiv.UseVisualStyleBackColor = true;
-            // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.BackColor = System.Drawing.Color.Transparent;
-            this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(15, 320);
-            this.label49.Margin = new System.Windows.Forms.Padding(0);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(103, 15);
-            this.label49.TabIndex = 130;
-            this.label49.Text = "Background color";
-            this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // slitWarning_Label
-            // 
-            this.slitWarning_Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.slitWarning_Label.AutoSize = true;
-            this.slitWarning_Label.BackColor = System.Drawing.Color.Transparent;
-            this.slitWarning_Label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.slitWarning_Label.ForeColor = System.Drawing.Color.Red;
-            this.slitWarning_Label.Location = new System.Drawing.Point(195, 357);
-            this.slitWarning_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.slitWarning_Label.Name = "slitWarning_Label";
-            this.slitWarning_Label.Size = new System.Drawing.Size(287, 16);
-            this.slitWarning_Label.TabIndex = 128;
-            this.slitWarning_Label.Text = "Splitscreen division may not work for all games.";
-            this.slitWarning_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.slitWarning_Label.UseMnemonic = false;
-            // 
-            // layoutSizer
-            // 
-            this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
-            this.layoutSizer.Location = new System.Drawing.Point(416, 6);
-            this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
-            this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
-            this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
-            this.layoutSizer.Name = "layoutSizer";
-            this.layoutSizer.Size = new System.Drawing.Size(245, 170);
-            this.layoutSizer.TabIndex = 127;
-            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
-            // 
-            // label29
-            // 
-            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label29.AutoSize = true;
-            this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(287, 106);
-            this.label29.Margin = new System.Windows.Forms.Padding(0);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(81, 16);
-            this.label29.TabIndex = 122;
-            this.label29.Text = "Max Players";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label27
-            // 
-            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.Color.Transparent;
-            this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(287, 58);
-            this.label27.Margin = new System.Windows.Forms.Padding(0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(125, 16);
-            this.label27.TabIndex = 120;
-            this.label27.Text = "Horizontal Divisions";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // label28
-            // 
-            this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label28.AutoSize = true;
-            this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(287, 12);
-            this.label28.Margin = new System.Windows.Forms.Padding(0);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(113, 16);
-            this.label28.TabIndex = 121;
-            this.label28.Text = " Vertical Divisions";
-            this.label28.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // KeepSymLinkCheckBox
-            // 
-            this.KeepSymLinkCheckBox.AutoSize = true;
-            this.KeepSymLinkCheckBox.BackColor = System.Drawing.Color.Transparent;
-            this.KeepSymLinkCheckBox.Location = new System.Drawing.Point(15, 58);
-            this.KeepSymLinkCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this.KeepSymLinkCheckBox.Name = "KeepSymLinkCheckBox";
-            this.KeepSymLinkCheckBox.Size = new System.Drawing.Size(156, 20);
-            this.KeepSymLinkCheckBox.TabIndex = 119;
-            this.KeepSymLinkCheckBox.Text = "Keep SymLink On Exit";
-            this.KeepSymLinkCheckBox.UseVisualStyleBackColor = false;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(75, 264);
-            this.label6.Margin = new System.Windows.Forms.Padding(0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(90, 16);
-            this.label6.TabIndex = 118;
-            this.label6.Text = "(milliseconds)";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(53, 214);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 16);
-            this.label2.TabIndex = 117;
-            this.label2.Text = "(seconds)";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // WIndowsSetupTiming_Label
-            // 
-            this.WIndowsSetupTiming_Label.AutoSize = true;
-            this.WIndowsSetupTiming_Label.Location = new System.Drawing.Point(15, 240);
-            this.WIndowsSetupTiming_Label.Margin = new System.Windows.Forms.Padding(0);
-            this.WIndowsSetupTiming_Label.Name = "WIndowsSetupTiming_Label";
-            this.WIndowsSetupTiming_Label.Size = new System.Drawing.Size(147, 16);
-            this.WIndowsSetupTiming_Label.TabIndex = 116;
-            this.WIndowsSetupTiming_Label.Text = "Windows Setup Timing ";
-            this.WIndowsSetupTiming_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // WindowsSetupTiming_TextBox
-            // 
-            this.WindowsSetupTiming_TextBox.Location = new System.Drawing.Point(15, 261);
-            this.WindowsSetupTiming_TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.WindowsSetupTiming_TextBox.MaxLength = 5;
-            this.WindowsSetupTiming_TextBox.Name = "WindowsSetupTiming_TextBox";
-            this.WindowsSetupTiming_TextBox.Size = new System.Drawing.Size(57, 22);
-            this.WindowsSetupTiming_TextBox.TabIndex = 115;
-            this.WindowsSetupTiming_TextBox.Text = "0";
-            this.WindowsSetupTiming_TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // pauseBetweenInstanceLaunch_TxtBox
-            // 
-            this.pauseBetweenInstanceLaunch_TxtBox.Location = new System.Drawing.Point(15, 211);
-            this.pauseBetweenInstanceLaunch_TxtBox.Margin = new System.Windows.Forms.Padding(0);
-            this.pauseBetweenInstanceLaunch_TxtBox.MaxLength = 3;
-            this.pauseBetweenInstanceLaunch_TxtBox.Name = "pauseBetweenInstanceLaunch_TxtBox";
-            this.pauseBetweenInstanceLaunch_TxtBox.Size = new System.Drawing.Size(37, 22);
-            this.pauseBetweenInstanceLaunch_TxtBox.TabIndex = 113;
-            this.pauseBetweenInstanceLaunch_TxtBox.Text = "0";
-            this.pauseBetweenInstanceLaunch_TxtBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // pauseBetweenInstanceLauch_Label
-            // 
-            this.pauseBetweenInstanceLauch_Label.AutoSize = true;
-            this.pauseBetweenInstanceLauch_Label.Location = new System.Drawing.Point(15, 190);
-            this.pauseBetweenInstanceLauch_Label.Margin = new System.Windows.Forms.Padding(0);
-            this.pauseBetweenInstanceLauch_Label.Name = "pauseBetweenInstanceLauch_Label";
-            this.pauseBetweenInstanceLauch_Label.Size = new System.Drawing.Size(189, 16);
-            this.pauseBetweenInstanceLauch_Label.TabIndex = 114;
-            this.pauseBetweenInstanceLauch_Label.Text = "Pause Between Game Startup ";
-            this.pauseBetweenInstanceLauch_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // scaleOptionCbx
-            // 
-            this.scaleOptionCbx.AutoSize = true;
-            this.scaleOptionCbx.Checked = true;
-            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.scaleOptionCbx.Location = new System.Drawing.Point(15, 83);
-            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
-            this.scaleOptionCbx.Name = "scaleOptionCbx";
-            this.scaleOptionCbx.Size = new System.Drawing.Size(212, 20);
-            this.scaleOptionCbx.TabIndex = 112;
-            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
-            this.scaleOptionCbx.UseVisualStyleBackColor = true;
-            // 
-            // keepAccountsCheck
-            // 
-            this.keepAccountsCheck.AutoSize = true;
-            this.keepAccountsCheck.Location = new System.Drawing.Point(15, 35);
-            this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.keepAccountsCheck.Name = "keepAccountsCheck";
-            this.keepAccountsCheck.Size = new System.Drawing.Size(200, 20);
-            this.keepAccountsCheck.TabIndex = 111;
-            this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
-            this.keepAccountsCheck.UseVisualStyleBackColor = true;
-            this.keepAccountsCheck.Click += new System.EventHandler(this.keepAccountsCheck_Click);
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(15, 134);
-            this.label32.Margin = new System.Windows.Forms.Padding(0);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(56, 16);
-            this.label32.TabIndex = 109;
-            this.label32.Text = "Network";
-            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // useNicksCheck
-            // 
-            this.useNicksCheck.AutoSize = true;
-            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
-            this.useNicksCheck.Location = new System.Drawing.Point(15, 11);
-            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.useNicksCheck.Name = "useNicksCheck";
-            this.useNicksCheck.Size = new System.Drawing.Size(176, 20);
-            this.useNicksCheck.TabIndex = 108;
-            this.useNicksCheck.Text = "Use Nicknames In-Game";
-            this.useNicksCheck.UseVisualStyleBackColor = false;
-            // 
-            // Panel3
-            // 
-            this.Panel3.BackColor = System.Drawing.Color.RosyBrown;
-            this.Panel3.Controls.Add(this.label39);
-            this.Panel3.Controls.Add(this.audioDefaultDevice);
-            this.Panel3.Controls.Add(this.audioCustomSettingsBox);
-            this.Panel3.Controls.Add(this.audioCustomSettingsRadio);
-            this.Panel3.Controls.Add(this.audioDefaultSettingsRadio);
-            this.Panel3.Controls.Add(this.audioRefresh);
-            this.Panel3.Location = new System.Drawing.Point(149, 30);
-            this.Panel3.Name = "Panel3";
-            this.Panel3.Size = new System.Drawing.Size(671, 401);
-            this.Panel3.TabIndex = 292;
+            this.audioTab.BackColor = System.Drawing.Color.RosyBrown;
+            this.audioTab.Controls.Add(this.label39);
+            this.audioTab.Controls.Add(this.audioDefaultDevice);
+            this.audioTab.Controls.Add(this.audioCustomSettingsBox);
+            this.audioTab.Controls.Add(this.audioCustomSettingsRadio);
+            this.audioTab.Controls.Add(this.audioDefaultSettingsRadio);
+            this.audioTab.Controls.Add(this.audioRefresh);
+            this.audioTab.Location = new System.Drawing.Point(149, 30);
+            this.audioTab.Name = "audioTab";
+            this.audioTab.Size = new System.Drawing.Size(671, 401);
+            this.audioTab.TabIndex = 292;
             // 
             // label39
             // 
@@ -4181,26 +2494,1775 @@ namespace Nucleus.Coop
             this.audioRefresh.UseVisualStyleBackColor = false;
             this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
             // 
+            // processorTab
+            // 
+            this.processorTab.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.processorTab.Controls.Add(this.coreCountLabel);
+            this.processorTab.Controls.Add(this.PriorityClass32);
+            this.processorTab.Controls.Add(this.PriorityClass31);
+            this.processorTab.Controls.Add(this.PriorityClass30);
+            this.processorTab.Controls.Add(this.PriorityClass29);
+            this.processorTab.Controls.Add(this.PriorityClass28);
+            this.processorTab.Controls.Add(this.PriorityClass27);
+            this.processorTab.Controls.Add(this.PriorityClass26);
+            this.processorTab.Controls.Add(this.PriorityClass25);
+            this.processorTab.Controls.Add(this.PriorityClass16);
+            this.processorTab.Controls.Add(this.PriorityClass15);
+            this.processorTab.Controls.Add(this.PriorityClass14);
+            this.processorTab.Controls.Add(this.PriorityClass13);
+            this.processorTab.Controls.Add(this.PriorityClass12);
+            this.processorTab.Controls.Add(this.PriorityClass11);
+            this.processorTab.Controls.Add(this.PriorityClass10);
+            this.processorTab.Controls.Add(this.PriorityClass9);
+            this.processorTab.Controls.Add(this.PriorityClass24);
+            this.processorTab.Controls.Add(this.PriorityClass23);
+            this.processorTab.Controls.Add(this.PriorityClass22);
+            this.processorTab.Controls.Add(this.PriorityClass21);
+            this.processorTab.Controls.Add(this.PriorityClass20);
+            this.processorTab.Controls.Add(this.PriorityClass19);
+            this.processorTab.Controls.Add(this.PriorityClass18);
+            this.processorTab.Controls.Add(this.PriorityClass17);
+            this.processorTab.Controls.Add(this.PriorityClass8);
+            this.processorTab.Controls.Add(this.PriorityClass7);
+            this.processorTab.Controls.Add(this.PriorityClass6);
+            this.processorTab.Controls.Add(this.PriorityClass5);
+            this.processorTab.Controls.Add(this.PriorityClass4);
+            this.processorTab.Controls.Add(this.PriorityClass3);
+            this.processorTab.Controls.Add(this.PriorityClass2);
+            this.processorTab.Controls.Add(this.PriorityClass1);
+            this.processorTab.Controls.Add(this.Affinity32);
+            this.processorTab.Controls.Add(this.Affinity31);
+            this.processorTab.Controls.Add(this.Affinity30);
+            this.processorTab.Controls.Add(this.Affinity29);
+            this.processorTab.Controls.Add(this.Affinity28);
+            this.processorTab.Controls.Add(this.Affinity27);
+            this.processorTab.Controls.Add(this.Affinity26);
+            this.processorTab.Controls.Add(this.Affinity25);
+            this.processorTab.Controls.Add(this.Affinity24);
+            this.processorTab.Controls.Add(this.Affinity23);
+            this.processorTab.Controls.Add(this.Affinity22);
+            this.processorTab.Controls.Add(this.Affinity21);
+            this.processorTab.Controls.Add(this.Affinity20);
+            this.processorTab.Controls.Add(this.Affinity19);
+            this.processorTab.Controls.Add(this.Affinity18);
+            this.processorTab.Controls.Add(this.Affinity17);
+            this.processorTab.Controls.Add(this.IdealProcessor32);
+            this.processorTab.Controls.Add(this.label1);
+            this.processorTab.Controls.Add(this.IdealProcessor31);
+            this.processorTab.Controls.Add(this.label3);
+            this.processorTab.Controls.Add(this.IdealProcessor30);
+            this.processorTab.Controls.Add(this.label4);
+            this.processorTab.Controls.Add(this.IdealProcessor29);
+            this.processorTab.Controls.Add(this.label5);
+            this.processorTab.Controls.Add(this.IdealProcessor28);
+            this.processorTab.Controls.Add(this.label30);
+            this.processorTab.Controls.Add(this.IdealProcessor27);
+            this.processorTab.Controls.Add(this.label56);
+            this.processorTab.Controls.Add(this.IdealProcessor26);
+            this.processorTab.Controls.Add(this.label60);
+            this.processorTab.Controls.Add(this.IdealProcessor25);
+            this.processorTab.Controls.Add(this.label62);
+            this.processorTab.Controls.Add(this.IdealProcessor24);
+            this.processorTab.Controls.Add(this.label63);
+            this.processorTab.Controls.Add(this.IdealProcessor23);
+            this.processorTab.Controls.Add(this.label64);
+            this.processorTab.Controls.Add(this.IdealProcessor22);
+            this.processorTab.Controls.Add(this.label65);
+            this.processorTab.Controls.Add(this.IdealProcessor21);
+            this.processorTab.Controls.Add(this.label66);
+            this.processorTab.Controls.Add(this.IdealProcessor20);
+            this.processorTab.Controls.Add(this.label67);
+            this.processorTab.Controls.Add(this.IdealProcessor19);
+            this.processorTab.Controls.Add(this.label68);
+            this.processorTab.Controls.Add(this.IdealProcessor18);
+            this.processorTab.Controls.Add(this.label69);
+            this.processorTab.Controls.Add(this.IdealProcessor17);
+            this.processorTab.Controls.Add(this.label70);
+            this.processorTab.Controls.Add(this.Affinity16);
+            this.processorTab.Controls.Add(this.Affinity15);
+            this.processorTab.Controls.Add(this.Affinity14);
+            this.processorTab.Controls.Add(this.Affinity13);
+            this.processorTab.Controls.Add(this.Affinity12);
+            this.processorTab.Controls.Add(this.Affinity11);
+            this.processorTab.Controls.Add(this.Affinity10);
+            this.processorTab.Controls.Add(this.Affinity9);
+            this.processorTab.Controls.Add(this.Affinity8);
+            this.processorTab.Controls.Add(this.Affinity7);
+            this.processorTab.Controls.Add(this.Affinity6);
+            this.processorTab.Controls.Add(this.Affinity5);
+            this.processorTab.Controls.Add(this.Affinity4);
+            this.processorTab.Controls.Add(this.Affinity3);
+            this.processorTab.Controls.Add(this.Affinity2);
+            this.processorTab.Controls.Add(this.Affinity_Label);
+            this.processorTab.Controls.Add(this.Affinity1);
+            this.processorTab.Controls.Add(this.PriorityClass_Label);
+            this.processorTab.Controls.Add(this.IdealProcessor16);
+            this.processorTab.Controls.Add(this.label76);
+            this.processorTab.Controls.Add(this.IdealProcessor15);
+            this.processorTab.Controls.Add(this.label77);
+            this.processorTab.Controls.Add(this.IdealProcessor14);
+            this.processorTab.Controls.Add(this.label78);
+            this.processorTab.Controls.Add(this.IdealProcessor13);
+            this.processorTab.Controls.Add(this.label79);
+            this.processorTab.Controls.Add(this.IdealProcessor12);
+            this.processorTab.Controls.Add(this.label80);
+            this.processorTab.Controls.Add(this.IdealProcessor11);
+            this.processorTab.Controls.Add(this.label81);
+            this.processorTab.Controls.Add(this.IdealProcessor10);
+            this.processorTab.Controls.Add(this.label82);
+            this.processorTab.Controls.Add(this.IdealProcessor9);
+            this.processorTab.Controls.Add(this.label83);
+            this.processorTab.Controls.Add(this.IdealProcessor8);
+            this.processorTab.Controls.Add(this.label84);
+            this.processorTab.Controls.Add(this.IdealProcessor7);
+            this.processorTab.Controls.Add(this.label85);
+            this.processorTab.Controls.Add(this.IdealProcessor6);
+            this.processorTab.Controls.Add(this.label86);
+            this.processorTab.Controls.Add(this.IdealProcessor5);
+            this.processorTab.Controls.Add(this.label87);
+            this.processorTab.Controls.Add(this.Instance_Label);
+            this.processorTab.Controls.Add(this.IdealProcessor4);
+            this.processorTab.Controls.Add(this.label89);
+            this.processorTab.Controls.Add(this.IdealProcessor3);
+            this.processorTab.Controls.Add(this.label90);
+            this.processorTab.Controls.Add(this.IdealProcessor2);
+            this.processorTab.Controls.Add(this.label91);
+            this.processorTab.Controls.Add(this.IdealProcessor_Label);
+            this.processorTab.Controls.Add(this.IdealProcessor1);
+            this.processorTab.Controls.Add(this.label93);
+            this.processorTab.Location = new System.Drawing.Point(36, 63);
+            this.processorTab.Name = "processorTab";
+            this.processorTab.Size = new System.Drawing.Size(671, 401);
+            this.processorTab.TabIndex = 300;
+            // 
+            // coreCountLabel
+            // 
+            this.coreCountLabel.AutoSize = true;
+            this.coreCountLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.coreCountLabel.Location = new System.Drawing.Point(485, 7);
+            this.coreCountLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.coreCountLabel.Name = "coreCountLabel";
+            this.coreCountLabel.Size = new System.Drawing.Size(184, 16);
+            this.coreCountLabel.TabIndex = 324;
+            this.coreCountLabel.Text = "Cores/Threads     (Max Value)";
+            this.coreCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // PriorityClass32
+            // 
+            this.PriorityClass32.BackColor = System.Drawing.Color.White;
+            this.PriorityClass32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass32.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass32.Location = new System.Drawing.Point(557, 346);
+            this.PriorityClass32.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass32.MaxLength = 17;
+            this.PriorityClass32.Name = "PriorityClass32";
+            this.PriorityClass32.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass32.TabIndex = 323;
+            // 
+            // PriorityClass31
+            // 
+            this.PriorityClass31.BackColor = System.Drawing.Color.White;
+            this.PriorityClass31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass31.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass31.Location = new System.Drawing.Point(557, 327);
+            this.PriorityClass31.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass31.MaxLength = 17;
+            this.PriorityClass31.Name = "PriorityClass31";
+            this.PriorityClass31.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass31.TabIndex = 322;
+            // 
+            // PriorityClass30
+            // 
+            this.PriorityClass30.BackColor = System.Drawing.Color.White;
+            this.PriorityClass30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass30.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass30.Location = new System.Drawing.Point(557, 308);
+            this.PriorityClass30.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass30.MaxLength = 17;
+            this.PriorityClass30.Name = "PriorityClass30";
+            this.PriorityClass30.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass30.TabIndex = 321;
+            // 
+            // PriorityClass29
+            // 
+            this.PriorityClass29.BackColor = System.Drawing.Color.White;
+            this.PriorityClass29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass29.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass29.Location = new System.Drawing.Point(557, 289);
+            this.PriorityClass29.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass29.MaxLength = 17;
+            this.PriorityClass29.Name = "PriorityClass29";
+            this.PriorityClass29.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass29.TabIndex = 320;
+            // 
+            // PriorityClass28
+            // 
+            this.PriorityClass28.BackColor = System.Drawing.Color.White;
+            this.PriorityClass28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass28.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass28.Location = new System.Drawing.Point(557, 270);
+            this.PriorityClass28.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass28.MaxLength = 17;
+            this.PriorityClass28.Name = "PriorityClass28";
+            this.PriorityClass28.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass28.TabIndex = 319;
+            // 
+            // PriorityClass27
+            // 
+            this.PriorityClass27.BackColor = System.Drawing.Color.White;
+            this.PriorityClass27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass27.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass27.Location = new System.Drawing.Point(557, 251);
+            this.PriorityClass27.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass27.MaxLength = 17;
+            this.PriorityClass27.Name = "PriorityClass27";
+            this.PriorityClass27.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass27.TabIndex = 318;
+            // 
+            // PriorityClass26
+            // 
+            this.PriorityClass26.BackColor = System.Drawing.Color.White;
+            this.PriorityClass26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass26.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass26.Location = new System.Drawing.Point(557, 232);
+            this.PriorityClass26.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass26.MaxLength = 17;
+            this.PriorityClass26.Name = "PriorityClass26";
+            this.PriorityClass26.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass26.TabIndex = 317;
+            // 
+            // PriorityClass25
+            // 
+            this.PriorityClass25.BackColor = System.Drawing.Color.White;
+            this.PriorityClass25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass25.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass25.Location = new System.Drawing.Point(557, 213);
+            this.PriorityClass25.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass25.MaxLength = 17;
+            this.PriorityClass25.Name = "PriorityClass25";
+            this.PriorityClass25.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass25.TabIndex = 316;
+            // 
+            // PriorityClass16
+            // 
+            this.PriorityClass16.BackColor = System.Drawing.Color.White;
+            this.PriorityClass16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass16.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass16.Location = new System.Drawing.Point(557, 179);
+            this.PriorityClass16.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass16.MaxLength = 17;
+            this.PriorityClass16.Name = "PriorityClass16";
+            this.PriorityClass16.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass16.TabIndex = 315;
+            // 
+            // PriorityClass15
+            // 
+            this.PriorityClass15.BackColor = System.Drawing.Color.White;
+            this.PriorityClass15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass15.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass15.Location = new System.Drawing.Point(557, 160);
+            this.PriorityClass15.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass15.MaxLength = 17;
+            this.PriorityClass15.Name = "PriorityClass15";
+            this.PriorityClass15.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass15.TabIndex = 314;
+            // 
+            // PriorityClass14
+            // 
+            this.PriorityClass14.BackColor = System.Drawing.Color.White;
+            this.PriorityClass14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass14.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass14.Location = new System.Drawing.Point(557, 141);
+            this.PriorityClass14.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass14.MaxLength = 17;
+            this.PriorityClass14.Name = "PriorityClass14";
+            this.PriorityClass14.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass14.TabIndex = 313;
+            // 
+            // PriorityClass13
+            // 
+            this.PriorityClass13.BackColor = System.Drawing.Color.White;
+            this.PriorityClass13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass13.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass13.Location = new System.Drawing.Point(557, 122);
+            this.PriorityClass13.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass13.MaxLength = 17;
+            this.PriorityClass13.Name = "PriorityClass13";
+            this.PriorityClass13.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass13.TabIndex = 312;
+            // 
+            // PriorityClass12
+            // 
+            this.PriorityClass12.BackColor = System.Drawing.Color.White;
+            this.PriorityClass12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass12.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass12.Location = new System.Drawing.Point(557, 103);
+            this.PriorityClass12.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass12.MaxLength = 17;
+            this.PriorityClass12.Name = "PriorityClass12";
+            this.PriorityClass12.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass12.TabIndex = 311;
+            // 
+            // PriorityClass11
+            // 
+            this.PriorityClass11.BackColor = System.Drawing.Color.White;
+            this.PriorityClass11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass11.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass11.Location = new System.Drawing.Point(557, 84);
+            this.PriorityClass11.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass11.MaxLength = 17;
+            this.PriorityClass11.Name = "PriorityClass11";
+            this.PriorityClass11.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass11.TabIndex = 310;
+            // 
+            // PriorityClass10
+            // 
+            this.PriorityClass10.BackColor = System.Drawing.Color.White;
+            this.PriorityClass10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass10.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass10.Location = new System.Drawing.Point(557, 65);
+            this.PriorityClass10.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass10.MaxLength = 17;
+            this.PriorityClass10.Name = "PriorityClass10";
+            this.PriorityClass10.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass10.TabIndex = 309;
+            // 
+            // PriorityClass9
+            // 
+            this.PriorityClass9.BackColor = System.Drawing.Color.White;
+            this.PriorityClass9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass9.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass9.Location = new System.Drawing.Point(557, 46);
+            this.PriorityClass9.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass9.MaxLength = 17;
+            this.PriorityClass9.Name = "PriorityClass9";
+            this.PriorityClass9.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass9.TabIndex = 308;
+            // 
+            // PriorityClass24
+            // 
+            this.PriorityClass24.BackColor = System.Drawing.Color.White;
+            this.PriorityClass24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass24.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass24.Location = new System.Drawing.Point(196, 344);
+            this.PriorityClass24.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass24.MaxLength = 17;
+            this.PriorityClass24.Name = "PriorityClass24";
+            this.PriorityClass24.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass24.TabIndex = 307;
+            // 
+            // PriorityClass23
+            // 
+            this.PriorityClass23.BackColor = System.Drawing.Color.White;
+            this.PriorityClass23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass23.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass23.Location = new System.Drawing.Point(196, 325);
+            this.PriorityClass23.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass23.MaxLength = 17;
+            this.PriorityClass23.Name = "PriorityClass23";
+            this.PriorityClass23.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass23.TabIndex = 306;
+            // 
+            // PriorityClass22
+            // 
+            this.PriorityClass22.BackColor = System.Drawing.Color.White;
+            this.PriorityClass22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass22.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass22.Location = new System.Drawing.Point(196, 306);
+            this.PriorityClass22.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass22.MaxLength = 17;
+            this.PriorityClass22.Name = "PriorityClass22";
+            this.PriorityClass22.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass22.TabIndex = 305;
+            // 
+            // PriorityClass21
+            // 
+            this.PriorityClass21.BackColor = System.Drawing.Color.White;
+            this.PriorityClass21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass21.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass21.Location = new System.Drawing.Point(196, 287);
+            this.PriorityClass21.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass21.MaxLength = 17;
+            this.PriorityClass21.Name = "PriorityClass21";
+            this.PriorityClass21.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass21.TabIndex = 304;
+            // 
+            // PriorityClass20
+            // 
+            this.PriorityClass20.BackColor = System.Drawing.Color.White;
+            this.PriorityClass20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass20.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass20.Location = new System.Drawing.Point(196, 268);
+            this.PriorityClass20.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass20.MaxLength = 17;
+            this.PriorityClass20.Name = "PriorityClass20";
+            this.PriorityClass20.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass20.TabIndex = 303;
+            // 
+            // PriorityClass19
+            // 
+            this.PriorityClass19.BackColor = System.Drawing.Color.White;
+            this.PriorityClass19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass19.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass19.Location = new System.Drawing.Point(196, 249);
+            this.PriorityClass19.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass19.MaxLength = 17;
+            this.PriorityClass19.Name = "PriorityClass19";
+            this.PriorityClass19.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass19.TabIndex = 302;
+            // 
+            // PriorityClass18
+            // 
+            this.PriorityClass18.BackColor = System.Drawing.Color.White;
+            this.PriorityClass18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass18.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass18.Location = new System.Drawing.Point(196, 230);
+            this.PriorityClass18.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass18.MaxLength = 17;
+            this.PriorityClass18.Name = "PriorityClass18";
+            this.PriorityClass18.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass18.TabIndex = 301;
+            // 
+            // PriorityClass17
+            // 
+            this.PriorityClass17.BackColor = System.Drawing.Color.White;
+            this.PriorityClass17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass17.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass17.Location = new System.Drawing.Point(196, 211);
+            this.PriorityClass17.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass17.MaxLength = 17;
+            this.PriorityClass17.Name = "PriorityClass17";
+            this.PriorityClass17.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass17.TabIndex = 300;
+            // 
+            // PriorityClass8
+            // 
+            this.PriorityClass8.BackColor = System.Drawing.Color.White;
+            this.PriorityClass8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass8.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass8.Location = new System.Drawing.Point(196, 177);
+            this.PriorityClass8.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass8.MaxLength = 17;
+            this.PriorityClass8.Name = "PriorityClass8";
+            this.PriorityClass8.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass8.TabIndex = 299;
+            // 
+            // PriorityClass7
+            // 
+            this.PriorityClass7.BackColor = System.Drawing.Color.White;
+            this.PriorityClass7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass7.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass7.Location = new System.Drawing.Point(196, 158);
+            this.PriorityClass7.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass7.MaxLength = 17;
+            this.PriorityClass7.Name = "PriorityClass7";
+            this.PriorityClass7.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass7.TabIndex = 298;
+            // 
+            // PriorityClass6
+            // 
+            this.PriorityClass6.BackColor = System.Drawing.Color.White;
+            this.PriorityClass6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass6.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass6.Location = new System.Drawing.Point(196, 139);
+            this.PriorityClass6.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass6.MaxLength = 17;
+            this.PriorityClass6.Name = "PriorityClass6";
+            this.PriorityClass6.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass6.TabIndex = 297;
+            // 
+            // PriorityClass5
+            // 
+            this.PriorityClass5.BackColor = System.Drawing.Color.White;
+            this.PriorityClass5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass5.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass5.Location = new System.Drawing.Point(196, 120);
+            this.PriorityClass5.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass5.MaxLength = 17;
+            this.PriorityClass5.Name = "PriorityClass5";
+            this.PriorityClass5.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass5.TabIndex = 296;
+            // 
+            // PriorityClass4
+            // 
+            this.PriorityClass4.BackColor = System.Drawing.Color.White;
+            this.PriorityClass4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass4.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass4.Location = new System.Drawing.Point(196, 101);
+            this.PriorityClass4.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass4.MaxLength = 17;
+            this.PriorityClass4.Name = "PriorityClass4";
+            this.PriorityClass4.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass4.TabIndex = 295;
+            // 
+            // PriorityClass3
+            // 
+            this.PriorityClass3.BackColor = System.Drawing.Color.White;
+            this.PriorityClass3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass3.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass3.Location = new System.Drawing.Point(196, 82);
+            this.PriorityClass3.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass3.MaxLength = 17;
+            this.PriorityClass3.Name = "PriorityClass3";
+            this.PriorityClass3.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass3.TabIndex = 294;
+            // 
+            // PriorityClass2
+            // 
+            this.PriorityClass2.BackColor = System.Drawing.Color.White;
+            this.PriorityClass2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass2.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass2.Location = new System.Drawing.Point(196, 63);
+            this.PriorityClass2.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass2.MaxLength = 17;
+            this.PriorityClass2.Name = "PriorityClass2";
+            this.PriorityClass2.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass2.TabIndex = 293;
+            // 
+            // PriorityClass1
+            // 
+            this.PriorityClass1.BackColor = System.Drawing.Color.White;
+            this.PriorityClass1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass1.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass1.Location = new System.Drawing.Point(196, 44);
+            this.PriorityClass1.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass1.MaxLength = 17;
+            this.PriorityClass1.Name = "PriorityClass1";
+            this.PriorityClass1.Size = new System.Drawing.Size(86, 24);
+            this.PriorityClass1.TabIndex = 292;
+            // 
+            // Affinity32
+            // 
+            this.Affinity32.BackColor = System.Drawing.Color.White;
+            this.Affinity32.Location = new System.Drawing.Point(467, 346);
+            this.Affinity32.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity32.MaxLength = 100;
+            this.Affinity32.Name = "Affinity32";
+            this.Affinity32.Size = new System.Drawing.Size(86, 22);
+            this.Affinity32.TabIndex = 291;
+            // 
+            // Affinity31
+            // 
+            this.Affinity31.BackColor = System.Drawing.Color.White;
+            this.Affinity31.Location = new System.Drawing.Point(467, 327);
+            this.Affinity31.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity31.MaxLength = 100;
+            this.Affinity31.Name = "Affinity31";
+            this.Affinity31.Size = new System.Drawing.Size(86, 22);
+            this.Affinity31.TabIndex = 290;
+            // 
+            // Affinity30
+            // 
+            this.Affinity30.BackColor = System.Drawing.Color.White;
+            this.Affinity30.Location = new System.Drawing.Point(467, 308);
+            this.Affinity30.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity30.MaxLength = 100;
+            this.Affinity30.Name = "Affinity30";
+            this.Affinity30.Size = new System.Drawing.Size(86, 22);
+            this.Affinity30.TabIndex = 289;
+            // 
+            // Affinity29
+            // 
+            this.Affinity29.BackColor = System.Drawing.Color.White;
+            this.Affinity29.Location = new System.Drawing.Point(467, 289);
+            this.Affinity29.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity29.MaxLength = 100;
+            this.Affinity29.Name = "Affinity29";
+            this.Affinity29.Size = new System.Drawing.Size(86, 22);
+            this.Affinity29.TabIndex = 288;
+            // 
+            // Affinity28
+            // 
+            this.Affinity28.BackColor = System.Drawing.Color.White;
+            this.Affinity28.Location = new System.Drawing.Point(467, 270);
+            this.Affinity28.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity28.MaxLength = 100;
+            this.Affinity28.Name = "Affinity28";
+            this.Affinity28.Size = new System.Drawing.Size(86, 22);
+            this.Affinity28.TabIndex = 287;
+            // 
+            // Affinity27
+            // 
+            this.Affinity27.BackColor = System.Drawing.Color.White;
+            this.Affinity27.Location = new System.Drawing.Point(467, 251);
+            this.Affinity27.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity27.MaxLength = 100;
+            this.Affinity27.Name = "Affinity27";
+            this.Affinity27.Size = new System.Drawing.Size(86, 22);
+            this.Affinity27.TabIndex = 286;
+            // 
+            // Affinity26
+            // 
+            this.Affinity26.BackColor = System.Drawing.Color.White;
+            this.Affinity26.Location = new System.Drawing.Point(467, 232);
+            this.Affinity26.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity26.MaxLength = 100;
+            this.Affinity26.Name = "Affinity26";
+            this.Affinity26.Size = new System.Drawing.Size(86, 22);
+            this.Affinity26.TabIndex = 285;
+            // 
+            // Affinity25
+            // 
+            this.Affinity25.BackColor = System.Drawing.Color.White;
+            this.Affinity25.Location = new System.Drawing.Point(467, 213);
+            this.Affinity25.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity25.MaxLength = 100;
+            this.Affinity25.Name = "Affinity25";
+            this.Affinity25.Size = new System.Drawing.Size(86, 22);
+            this.Affinity25.TabIndex = 284;
+            // 
+            // Affinity24
+            // 
+            this.Affinity24.BackColor = System.Drawing.Color.White;
+            this.Affinity24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity24.Location = new System.Drawing.Point(106, 344);
+            this.Affinity24.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity24.MaxLength = 100;
+            this.Affinity24.Name = "Affinity24";
+            this.Affinity24.Size = new System.Drawing.Size(86, 22);
+            this.Affinity24.TabIndex = 283;
+            // 
+            // Affinity23
+            // 
+            this.Affinity23.BackColor = System.Drawing.Color.White;
+            this.Affinity23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity23.Location = new System.Drawing.Point(106, 325);
+            this.Affinity23.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity23.MaxLength = 100;
+            this.Affinity23.Name = "Affinity23";
+            this.Affinity23.Size = new System.Drawing.Size(86, 22);
+            this.Affinity23.TabIndex = 282;
+            // 
+            // Affinity22
+            // 
+            this.Affinity22.BackColor = System.Drawing.Color.White;
+            this.Affinity22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity22.Location = new System.Drawing.Point(106, 306);
+            this.Affinity22.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity22.MaxLength = 100;
+            this.Affinity22.Name = "Affinity22";
+            this.Affinity22.Size = new System.Drawing.Size(86, 22);
+            this.Affinity22.TabIndex = 281;
+            // 
+            // Affinity21
+            // 
+            this.Affinity21.BackColor = System.Drawing.Color.White;
+            this.Affinity21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity21.Location = new System.Drawing.Point(106, 287);
+            this.Affinity21.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity21.MaxLength = 100;
+            this.Affinity21.Name = "Affinity21";
+            this.Affinity21.Size = new System.Drawing.Size(86, 22);
+            this.Affinity21.TabIndex = 280;
+            // 
+            // Affinity20
+            // 
+            this.Affinity20.BackColor = System.Drawing.Color.White;
+            this.Affinity20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity20.Location = new System.Drawing.Point(106, 268);
+            this.Affinity20.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity20.MaxLength = 100;
+            this.Affinity20.Name = "Affinity20";
+            this.Affinity20.Size = new System.Drawing.Size(86, 22);
+            this.Affinity20.TabIndex = 279;
+            // 
+            // Affinity19
+            // 
+            this.Affinity19.BackColor = System.Drawing.Color.White;
+            this.Affinity19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity19.Location = new System.Drawing.Point(106, 249);
+            this.Affinity19.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity19.MaxLength = 100;
+            this.Affinity19.Name = "Affinity19";
+            this.Affinity19.Size = new System.Drawing.Size(86, 22);
+            this.Affinity19.TabIndex = 278;
+            // 
+            // Affinity18
+            // 
+            this.Affinity18.BackColor = System.Drawing.Color.White;
+            this.Affinity18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity18.Location = new System.Drawing.Point(106, 230);
+            this.Affinity18.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity18.MaxLength = 100;
+            this.Affinity18.Name = "Affinity18";
+            this.Affinity18.Size = new System.Drawing.Size(86, 22);
+            this.Affinity18.TabIndex = 277;
+            // 
+            // Affinity17
+            // 
+            this.Affinity17.BackColor = System.Drawing.Color.White;
+            this.Affinity17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity17.Location = new System.Drawing.Point(106, 211);
+            this.Affinity17.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity17.MaxLength = 100;
+            this.Affinity17.Name = "Affinity17";
+            this.Affinity17.Size = new System.Drawing.Size(86, 22);
+            this.Affinity17.TabIndex = 276;
+            // 
+            // IdealProcessor32
+            // 
+            this.IdealProcessor32.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor32.Location = new System.Drawing.Point(415, 346);
+            this.IdealProcessor32.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor32.MaxLength = 9;
+            this.IdealProcessor32.Name = "IdealProcessor32";
+            this.IdealProcessor32.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor32.TabIndex = 274;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(383, 351);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(27, 16);
+            this.label1.TabIndex = 275;
+            this.label1.Text = "32 :";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor31
+            // 
+            this.IdealProcessor31.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor31.Location = new System.Drawing.Point(415, 327);
+            this.IdealProcessor31.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor31.MaxLength = 9;
+            this.IdealProcessor31.Name = "IdealProcessor31";
+            this.IdealProcessor31.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor31.TabIndex = 272;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(383, 331);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(27, 16);
+            this.label3.TabIndex = 273;
+            this.label3.Text = "31 :";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor30
+            // 
+            this.IdealProcessor30.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor30.Location = new System.Drawing.Point(415, 308);
+            this.IdealProcessor30.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor30.MaxLength = 9;
+            this.IdealProcessor30.Name = "IdealProcessor30";
+            this.IdealProcessor30.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor30.TabIndex = 270;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(383, 312);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(27, 16);
+            this.label4.TabIndex = 271;
+            this.label4.Text = "30 :";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor29
+            // 
+            this.IdealProcessor29.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor29.Location = new System.Drawing.Point(415, 289);
+            this.IdealProcessor29.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor29.MaxLength = 9;
+            this.IdealProcessor29.Name = "IdealProcessor29";
+            this.IdealProcessor29.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor29.TabIndex = 268;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(383, 293);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(24, 16);
+            this.label5.TabIndex = 269;
+            this.label5.Text = "29:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor28
+            // 
+            this.IdealProcessor28.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor28.Location = new System.Drawing.Point(415, 270);
+            this.IdealProcessor28.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor28.MaxLength = 9;
+            this.IdealProcessor28.Name = "IdealProcessor28";
+            this.IdealProcessor28.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor28.TabIndex = 266;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(383, 274);
+            this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(27, 16);
+            this.label30.TabIndex = 267;
+            this.label30.Text = "28 :";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor27
+            // 
+            this.IdealProcessor27.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor27.Location = new System.Drawing.Point(415, 251);
+            this.IdealProcessor27.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor27.MaxLength = 9;
+            this.IdealProcessor27.Name = "IdealProcessor27";
+            this.IdealProcessor27.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor27.TabIndex = 265;
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(383, 255);
+            this.label56.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(27, 16);
+            this.label56.TabIndex = 264;
+            this.label56.Text = "27 :";
+            this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor26
+            // 
+            this.IdealProcessor26.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor26.Location = new System.Drawing.Point(415, 232);
+            this.IdealProcessor26.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor26.MaxLength = 9;
+            this.IdealProcessor26.Name = "IdealProcessor26";
+            this.IdealProcessor26.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor26.TabIndex = 263;
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(383, 235);
+            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(27, 16);
+            this.label60.TabIndex = 261;
+            this.label60.Text = "26 :";
+            this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor25
+            // 
+            this.IdealProcessor25.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor25.Location = new System.Drawing.Point(415, 213);
+            this.IdealProcessor25.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor25.MaxLength = 9;
+            this.IdealProcessor25.Name = "IdealProcessor25";
+            this.IdealProcessor25.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor25.TabIndex = 262;
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Location = new System.Drawing.Point(384, 217);
+            this.label62.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(27, 16);
+            this.label62.TabIndex = 260;
+            this.label62.Text = "25 :";
+            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor24
+            // 
+            this.IdealProcessor24.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor24.Location = new System.Drawing.Point(54, 344);
+            this.IdealProcessor24.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor24.MaxLength = 2;
+            this.IdealProcessor24.Name = "IdealProcessor24";
+            this.IdealProcessor24.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor24.TabIndex = 258;
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Location = new System.Drawing.Point(20, 349);
+            this.label63.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(27, 16);
+            this.label63.TabIndex = 259;
+            this.label63.Text = "24 :";
+            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor23
+            // 
+            this.IdealProcessor23.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor23.Location = new System.Drawing.Point(54, 325);
+            this.IdealProcessor23.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor23.MaxLength = 2;
+            this.IdealProcessor23.Name = "IdealProcessor23";
+            this.IdealProcessor23.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor23.TabIndex = 256;
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(20, 329);
+            this.label64.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(27, 16);
+            this.label64.TabIndex = 257;
+            this.label64.Text = "23 :";
+            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor22
+            // 
+            this.IdealProcessor22.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor22.Location = new System.Drawing.Point(54, 306);
+            this.IdealProcessor22.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor22.MaxLength = 2;
+            this.IdealProcessor22.Name = "IdealProcessor22";
+            this.IdealProcessor22.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor22.TabIndex = 254;
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(20, 310);
+            this.label65.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(27, 16);
+            this.label65.TabIndex = 255;
+            this.label65.Text = "22 :";
+            this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor21
+            // 
+            this.IdealProcessor21.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor21.Location = new System.Drawing.Point(54, 287);
+            this.IdealProcessor21.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor21.MaxLength = 2;
+            this.IdealProcessor21.Name = "IdealProcessor21";
+            this.IdealProcessor21.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor21.TabIndex = 252;
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(20, 291);
+            this.label66.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(27, 16);
+            this.label66.TabIndex = 253;
+            this.label66.Text = "21 :";
+            this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor20
+            // 
+            this.IdealProcessor20.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor20.Location = new System.Drawing.Point(54, 268);
+            this.IdealProcessor20.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor20.MaxLength = 2;
+            this.IdealProcessor20.Name = "IdealProcessor20";
+            this.IdealProcessor20.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor20.TabIndex = 250;
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Location = new System.Drawing.Point(20, 272);
+            this.label67.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(27, 16);
+            this.label67.TabIndex = 251;
+            this.label67.Text = "20 :";
+            this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor19
+            // 
+            this.IdealProcessor19.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor19.Location = new System.Drawing.Point(54, 249);
+            this.IdealProcessor19.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor19.MaxLength = 2;
+            this.IdealProcessor19.Name = "IdealProcessor19";
+            this.IdealProcessor19.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor19.TabIndex = 249;
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Location = new System.Drawing.Point(20, 253);
+            this.label68.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(27, 16);
+            this.label68.TabIndex = 248;
+            this.label68.Text = "19 :";
+            this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor18
+            // 
+            this.IdealProcessor18.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor18.Location = new System.Drawing.Point(54, 230);
+            this.IdealProcessor18.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor18.MaxLength = 2;
+            this.IdealProcessor18.Name = "IdealProcessor18";
+            this.IdealProcessor18.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor18.TabIndex = 247;
+            // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(20, 236);
+            this.label69.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(27, 16);
+            this.label69.TabIndex = 245;
+            this.label69.Text = "18 :";
+            this.label69.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor17
+            // 
+            this.IdealProcessor17.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor17.Location = new System.Drawing.Point(54, 211);
+            this.IdealProcessor17.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor17.MaxLength = 2;
+            this.IdealProcessor17.Name = "IdealProcessor17";
+            this.IdealProcessor17.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor17.TabIndex = 246;
+            // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Location = new System.Drawing.Point(20, 217);
+            this.label70.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(27, 16);
+            this.label70.TabIndex = 244;
+            this.label70.Text = "17 :";
+            this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // Affinity16
+            // 
+            this.Affinity16.BackColor = System.Drawing.Color.White;
+            this.Affinity16.Location = new System.Drawing.Point(467, 179);
+            this.Affinity16.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity16.MaxLength = 100;
+            this.Affinity16.Name = "Affinity16";
+            this.Affinity16.Size = new System.Drawing.Size(86, 22);
+            this.Affinity16.TabIndex = 242;
+            // 
+            // Affinity15
+            // 
+            this.Affinity15.BackColor = System.Drawing.Color.White;
+            this.Affinity15.Location = new System.Drawing.Point(467, 160);
+            this.Affinity15.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity15.MaxLength = 100;
+            this.Affinity15.Name = "Affinity15";
+            this.Affinity15.Size = new System.Drawing.Size(86, 22);
+            this.Affinity15.TabIndex = 241;
+            // 
+            // Affinity14
+            // 
+            this.Affinity14.BackColor = System.Drawing.Color.White;
+            this.Affinity14.Location = new System.Drawing.Point(467, 141);
+            this.Affinity14.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity14.MaxLength = 100;
+            this.Affinity14.Name = "Affinity14";
+            this.Affinity14.Size = new System.Drawing.Size(86, 22);
+            this.Affinity14.TabIndex = 240;
+            // 
+            // Affinity13
+            // 
+            this.Affinity13.BackColor = System.Drawing.Color.White;
+            this.Affinity13.Location = new System.Drawing.Point(467, 122);
+            this.Affinity13.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity13.MaxLength = 100;
+            this.Affinity13.Name = "Affinity13";
+            this.Affinity13.Size = new System.Drawing.Size(86, 22);
+            this.Affinity13.TabIndex = 239;
+            // 
+            // Affinity12
+            // 
+            this.Affinity12.BackColor = System.Drawing.Color.White;
+            this.Affinity12.Location = new System.Drawing.Point(467, 103);
+            this.Affinity12.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity12.MaxLength = 100;
+            this.Affinity12.Name = "Affinity12";
+            this.Affinity12.Size = new System.Drawing.Size(86, 22);
+            this.Affinity12.TabIndex = 238;
+            // 
+            // Affinity11
+            // 
+            this.Affinity11.BackColor = System.Drawing.Color.White;
+            this.Affinity11.Location = new System.Drawing.Point(467, 84);
+            this.Affinity11.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity11.MaxLength = 100;
+            this.Affinity11.Name = "Affinity11";
+            this.Affinity11.Size = new System.Drawing.Size(86, 22);
+            this.Affinity11.TabIndex = 237;
+            // 
+            // Affinity10
+            // 
+            this.Affinity10.BackColor = System.Drawing.Color.White;
+            this.Affinity10.Location = new System.Drawing.Point(467, 65);
+            this.Affinity10.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity10.MaxLength = 100;
+            this.Affinity10.Name = "Affinity10";
+            this.Affinity10.Size = new System.Drawing.Size(86, 22);
+            this.Affinity10.TabIndex = 236;
+            // 
+            // Affinity9
+            // 
+            this.Affinity9.BackColor = System.Drawing.Color.White;
+            this.Affinity9.Location = new System.Drawing.Point(467, 46);
+            this.Affinity9.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity9.MaxLength = 100;
+            this.Affinity9.Name = "Affinity9";
+            this.Affinity9.Size = new System.Drawing.Size(86, 22);
+            this.Affinity9.TabIndex = 235;
+            // 
+            // Affinity8
+            // 
+            this.Affinity8.BackColor = System.Drawing.Color.White;
+            this.Affinity8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity8.Location = new System.Drawing.Point(106, 177);
+            this.Affinity8.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity8.MaxLength = 100;
+            this.Affinity8.Name = "Affinity8";
+            this.Affinity8.Size = new System.Drawing.Size(86, 22);
+            this.Affinity8.TabIndex = 233;
+            // 
+            // Affinity7
+            // 
+            this.Affinity7.BackColor = System.Drawing.Color.White;
+            this.Affinity7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity7.Location = new System.Drawing.Point(106, 158);
+            this.Affinity7.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity7.MaxLength = 100;
+            this.Affinity7.Name = "Affinity7";
+            this.Affinity7.Size = new System.Drawing.Size(86, 22);
+            this.Affinity7.TabIndex = 232;
+            // 
+            // Affinity6
+            // 
+            this.Affinity6.BackColor = System.Drawing.Color.White;
+            this.Affinity6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity6.Location = new System.Drawing.Point(106, 139);
+            this.Affinity6.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity6.MaxLength = 100;
+            this.Affinity6.Name = "Affinity6";
+            this.Affinity6.Size = new System.Drawing.Size(86, 22);
+            this.Affinity6.TabIndex = 231;
+            // 
+            // Affinity5
+            // 
+            this.Affinity5.BackColor = System.Drawing.Color.White;
+            this.Affinity5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity5.Location = new System.Drawing.Point(106, 120);
+            this.Affinity5.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity5.MaxLength = 100;
+            this.Affinity5.Name = "Affinity5";
+            this.Affinity5.Size = new System.Drawing.Size(86, 22);
+            this.Affinity5.TabIndex = 230;
+            // 
+            // Affinity4
+            // 
+            this.Affinity4.BackColor = System.Drawing.Color.White;
+            this.Affinity4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity4.Location = new System.Drawing.Point(106, 101);
+            this.Affinity4.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity4.MaxLength = 100;
+            this.Affinity4.Name = "Affinity4";
+            this.Affinity4.Size = new System.Drawing.Size(86, 22);
+            this.Affinity4.TabIndex = 229;
+            // 
+            // Affinity3
+            // 
+            this.Affinity3.BackColor = System.Drawing.Color.White;
+            this.Affinity3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity3.Location = new System.Drawing.Point(106, 82);
+            this.Affinity3.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity3.MaxLength = 100;
+            this.Affinity3.Name = "Affinity3";
+            this.Affinity3.Size = new System.Drawing.Size(86, 22);
+            this.Affinity3.TabIndex = 228;
+            // 
+            // Affinity2
+            // 
+            this.Affinity2.BackColor = System.Drawing.Color.White;
+            this.Affinity2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity2.Location = new System.Drawing.Point(106, 63);
+            this.Affinity2.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity2.MaxLength = 100;
+            this.Affinity2.Name = "Affinity2";
+            this.Affinity2.Size = new System.Drawing.Size(86, 22);
+            this.Affinity2.TabIndex = 227;
+            // 
+            // Affinity_Label
+            // 
+            this.Affinity_Label.AutoSize = true;
+            this.Affinity_Label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Affinity_Label.Location = new System.Drawing.Point(180, 7);
+            this.Affinity_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Affinity_Label.Name = "Affinity_Label";
+            this.Affinity_Label.Size = new System.Drawing.Size(121, 16);
+            this.Affinity_Label.TabIndex = 225;
+            this.Affinity_Label.Text = "Affinity  (e.g. 1,2,3,4)";
+            // 
+            // Affinity1
+            // 
+            this.Affinity1.BackColor = System.Drawing.Color.White;
+            this.Affinity1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity1.Location = new System.Drawing.Point(106, 44);
+            this.Affinity1.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity1.MaxLength = 100;
+            this.Affinity1.Name = "Affinity1";
+            this.Affinity1.Size = new System.Drawing.Size(86, 22);
+            this.Affinity1.TabIndex = 226;
+            // 
+            // PriorityClass_Label
+            // 
+            this.PriorityClass_Label.AutoSize = true;
+            this.PriorityClass_Label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass_Label.Location = new System.Drawing.Point(305, 7);
+            this.PriorityClass_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.PriorityClass_Label.Name = "PriorityClass_Label";
+            this.PriorityClass_Label.Size = new System.Drawing.Size(85, 16);
+            this.PriorityClass_Label.TabIndex = 224;
+            this.PriorityClass_Label.Text = "Priority Class";
+            // 
+            // IdealProcessor16
+            // 
+            this.IdealProcessor16.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor16.Location = new System.Drawing.Point(415, 179);
+            this.IdealProcessor16.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor16.MaxLength = 9;
+            this.IdealProcessor16.Name = "IdealProcessor16";
+            this.IdealProcessor16.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor16.TabIndex = 221;
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.Location = new System.Drawing.Point(383, 184);
+            this.label76.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(27, 16);
+            this.label76.TabIndex = 222;
+            this.label76.Text = "16 :";
+            this.label76.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor15
+            // 
+            this.IdealProcessor15.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor15.Location = new System.Drawing.Point(415, 160);
+            this.IdealProcessor15.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor15.MaxLength = 9;
+            this.IdealProcessor15.Name = "IdealProcessor15";
+            this.IdealProcessor15.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor15.TabIndex = 219;
+            // 
+            // label77
+            // 
+            this.label77.AutoSize = true;
+            this.label77.Location = new System.Drawing.Point(383, 164);
+            this.label77.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(27, 16);
+            this.label77.TabIndex = 220;
+            this.label77.Text = "15 :";
+            this.label77.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor14
+            // 
+            this.IdealProcessor14.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor14.Location = new System.Drawing.Point(415, 141);
+            this.IdealProcessor14.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor14.MaxLength = 9;
+            this.IdealProcessor14.Name = "IdealProcessor14";
+            this.IdealProcessor14.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor14.TabIndex = 217;
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.Location = new System.Drawing.Point(383, 145);
+            this.label78.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(27, 16);
+            this.label78.TabIndex = 218;
+            this.label78.Text = "14 :";
+            this.label78.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor13
+            // 
+            this.IdealProcessor13.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor13.Location = new System.Drawing.Point(415, 122);
+            this.IdealProcessor13.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor13.MaxLength = 9;
+            this.IdealProcessor13.Name = "IdealProcessor13";
+            this.IdealProcessor13.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor13.TabIndex = 215;
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Location = new System.Drawing.Point(383, 126);
+            this.label79.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(27, 16);
+            this.label79.TabIndex = 216;
+            this.label79.Text = "13 :";
+            this.label79.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor12
+            // 
+            this.IdealProcessor12.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor12.Location = new System.Drawing.Point(415, 103);
+            this.IdealProcessor12.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor12.MaxLength = 9;
+            this.IdealProcessor12.Name = "IdealProcessor12";
+            this.IdealProcessor12.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor12.TabIndex = 213;
+            // 
+            // label80
+            // 
+            this.label80.AutoSize = true;
+            this.label80.Location = new System.Drawing.Point(383, 107);
+            this.label80.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(27, 16);
+            this.label80.TabIndex = 214;
+            this.label80.Text = "12 :";
+            this.label80.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor11
+            // 
+            this.IdealProcessor11.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor11.Location = new System.Drawing.Point(415, 84);
+            this.IdealProcessor11.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor11.MaxLength = 9;
+            this.IdealProcessor11.Name = "IdealProcessor11";
+            this.IdealProcessor11.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor11.TabIndex = 212;
+            // 
+            // label81
+            // 
+            this.label81.AutoSize = true;
+            this.label81.Location = new System.Drawing.Point(383, 88);
+            this.label81.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(27, 16);
+            this.label81.TabIndex = 211;
+            this.label81.Text = "11 :";
+            this.label81.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor10
+            // 
+            this.IdealProcessor10.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor10.Location = new System.Drawing.Point(415, 65);
+            this.IdealProcessor10.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor10.MaxLength = 9;
+            this.IdealProcessor10.Name = "IdealProcessor10";
+            this.IdealProcessor10.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor10.TabIndex = 210;
+            // 
+            // label82
+            // 
+            this.label82.AutoSize = true;
+            this.label82.Location = new System.Drawing.Point(383, 68);
+            this.label82.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(27, 16);
+            this.label82.TabIndex = 208;
+            this.label82.Text = "10 :";
+            this.label82.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor9
+            // 
+            this.IdealProcessor9.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor9.Location = new System.Drawing.Point(415, 46);
+            this.IdealProcessor9.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor9.MaxLength = 9;
+            this.IdealProcessor9.Name = "IdealProcessor9";
+            this.IdealProcessor9.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor9.TabIndex = 209;
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(384, 50);
+            this.label83.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(20, 16);
+            this.label83.TabIndex = 207;
+            this.label83.Text = "9 :";
+            this.label83.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor8
+            // 
+            this.IdealProcessor8.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor8.Location = new System.Drawing.Point(54, 177);
+            this.IdealProcessor8.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor8.MaxLength = 2;
+            this.IdealProcessor8.Name = "IdealProcessor8";
+            this.IdealProcessor8.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor8.TabIndex = 205;
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(24, 182);
+            this.label84.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(20, 16);
+            this.label84.TabIndex = 206;
+            this.label84.Text = "8 :";
+            this.label84.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor7
+            // 
+            this.IdealProcessor7.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor7.Location = new System.Drawing.Point(54, 158);
+            this.IdealProcessor7.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor7.MaxLength = 2;
+            this.IdealProcessor7.Name = "IdealProcessor7";
+            this.IdealProcessor7.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor7.TabIndex = 203;
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.Location = new System.Drawing.Point(24, 166);
+            this.label85.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(20, 16);
+            this.label85.TabIndex = 204;
+            this.label85.Text = "7 :";
+            this.label85.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor6
+            // 
+            this.IdealProcessor6.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor6.Location = new System.Drawing.Point(54, 139);
+            this.IdealProcessor6.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor6.MaxLength = 2;
+            this.IdealProcessor6.Name = "IdealProcessor6";
+            this.IdealProcessor6.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor6.TabIndex = 201;
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.Location = new System.Drawing.Point(24, 148);
+            this.label86.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(20, 16);
+            this.label86.TabIndex = 202;
+            this.label86.Text = "6 :";
+            this.label86.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor5
+            // 
+            this.IdealProcessor5.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor5.Location = new System.Drawing.Point(54, 120);
+            this.IdealProcessor5.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor5.MaxLength = 2;
+            this.IdealProcessor5.Name = "IdealProcessor5";
+            this.IdealProcessor5.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor5.TabIndex = 199;
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.Location = new System.Drawing.Point(24, 129);
+            this.label87.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(20, 16);
+            this.label87.TabIndex = 200;
+            this.label87.Text = "5 :";
+            this.label87.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // Instance_Label
+            // 
+            this.Instance_Label.AutoSize = true;
+            this.Instance_Label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Instance_Label.Location = new System.Drawing.Point(12, 7);
+            this.Instance_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Instance_Label.Name = "Instance_Label";
+            this.Instance_Label.Size = new System.Drawing.Size(57, 16);
+            this.Instance_Label.TabIndex = 198;
+            this.Instance_Label.Text = "Instance";
+            // 
+            // IdealProcessor4
+            // 
+            this.IdealProcessor4.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor4.Location = new System.Drawing.Point(54, 101);
+            this.IdealProcessor4.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor4.MaxLength = 2;
+            this.IdealProcessor4.Name = "IdealProcessor4";
+            this.IdealProcessor4.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor4.TabIndex = 196;
+            // 
+            // label89
+            // 
+            this.label89.AutoSize = true;
+            this.label89.Location = new System.Drawing.Point(24, 111);
+            this.label89.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label89.Name = "label89";
+            this.label89.Size = new System.Drawing.Size(20, 16);
+            this.label89.TabIndex = 197;
+            this.label89.Text = "4 :";
+            this.label89.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor3
+            // 
+            this.IdealProcessor3.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor3.Location = new System.Drawing.Point(54, 82);
+            this.IdealProcessor3.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor3.MaxLength = 2;
+            this.IdealProcessor3.Name = "IdealProcessor3";
+            this.IdealProcessor3.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor3.TabIndex = 195;
+            // 
+            // label90
+            // 
+            this.label90.AutoSize = true;
+            this.label90.Location = new System.Drawing.Point(24, 90);
+            this.label90.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label90.Name = "label90";
+            this.label90.Size = new System.Drawing.Size(20, 16);
+            this.label90.TabIndex = 194;
+            this.label90.Text = "3 :";
+            this.label90.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor2
+            // 
+            this.IdealProcessor2.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor2.Location = new System.Drawing.Point(54, 63);
+            this.IdealProcessor2.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor2.MaxLength = 2;
+            this.IdealProcessor2.Name = "IdealProcessor2";
+            this.IdealProcessor2.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor2.TabIndex = 193;
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(24, 69);
+            this.label91.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(20, 16);
+            this.label91.TabIndex = 191;
+            this.label91.Text = "2 :";
+            this.label91.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor_Label
+            // 
+            this.IdealProcessor_Label.AutoSize = true;
+            this.IdealProcessor_Label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor_Label.Location = new System.Drawing.Point(74, 7);
+            this.IdealProcessor_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.IdealProcessor_Label.Name = "IdealProcessor_Label";
+            this.IdealProcessor_Label.Size = new System.Drawing.Size(102, 16);
+            this.IdealProcessor_Label.TabIndex = 190;
+            this.IdealProcessor_Label.Text = "Ideal Processor";
+            // 
+            // IdealProcessor1
+            // 
+            this.IdealProcessor1.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor1.Location = new System.Drawing.Point(54, 44);
+            this.IdealProcessor1.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor1.MaxLength = 2;
+            this.IdealProcessor1.Name = "IdealProcessor1";
+            this.IdealProcessor1.Size = new System.Drawing.Size(48, 24);
+            this.IdealProcessor1.TabIndex = 192;
+            // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.Location = new System.Drawing.Point(24, 47);
+            this.label93.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(20, 16);
+            this.label93.TabIndex = 189;
+            this.label93.Text = "1 :";
+            this.label93.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // ProfileSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Controls.Add(this.priorities);
-            this.Controls.Add(this.Panel2);
-            this.Controls.Add(this.Panel1);
-            this.Controls.Add(this.Panel3);
+            this.Controls.Add(this.sharedTab);
+            this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.processorTab);
             this.Controls.Add(this.modeLabel);
             this.Controls.Add(this.closeBtnPicture);
-            this.Controls.Add(this.prioritiesBtnPicture);
+            this.Controls.Add(this.processorBtnPicture);
             this.Controls.Add(this.sharedBtnPicture);
             this.Controls.Add(this.playersBtnPicture);
             this.Controls.Add(this.audioBtnPicture);
-            this.Controls.Add(this.prioritiesBtn);
-            this.Controls.Add(this.audioBtn);
-            this.Controls.Add(this.playersBtn);
-            this.Controls.Add(this.sharedBtn);
+            this.Controls.Add(this.processorTabBtn);
+            this.Controls.Add(this.audioTabBtn);
+            this.Controls.Add(this.playersTabBtn);
+            this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.saveBtnPicture);
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.closeBtn);
@@ -4214,22 +4276,23 @@ namespace Nucleus.Coop
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharedBtnPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.prioritiesBtnPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.processorBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).EndInit();
-            this.priorities.ResumeLayout(false);
-            this.priorities.PerformLayout();
-            this.Panel2.ResumeLayout(false);
-            this.Panel2.PerformLayout();
+            this.sharedTab.ResumeLayout(false);
+            this.sharedTab.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.playersTab.ResumeLayout(false);
+            this.playersTab.PerformLayout();
             this.def_sid_textBox_container.ResumeLayout(false);
             this.def_sid_textBox_container.PerformLayout();
-            this.Panel1.ResumeLayout(false);
-            this.Panel1.PerformLayout();
-            this.Panel3.ResumeLayout(false);
-            this.Panel3.PerformLayout();
+            this.audioTab.ResumeLayout(false);
+            this.audioTab.PerformLayout();
             this.audioCustomSettingsBox.ResumeLayout(false);
             this.audioCustomSettingsBox.PerformLayout();
+            this.processorTab.ResumeLayout(false);
+            this.processorTab.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -4237,10 +4300,10 @@ namespace Nucleus.Coop
 
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button closeBtn;
-        private Button sharedBtn;
-        private Button playersBtn;
-        private Button audioBtn;
-        private Button prioritiesBtn;
+        private Button sharedTabBtn;
+        private Button playersTabBtn;
+        private Button audioTabBtn;
+        private Button processorTabBtn;
         private ComboBox steamid32;
         private ComboBox steamid31;
         private ComboBox steamid30;
@@ -4346,7 +4409,7 @@ namespace Nucleus.Coop
         private Label label8;
         private ComboBox player1N;
         private Label label7;
-        private BufferedClientAreaPanel Panel3;
+        private BufferedClientAreaPanel audioTab;
         private Label label39;
         private Label audioDefaultDevice;
         private GroupBox audioCustomSettingsBox;
@@ -4373,11 +4436,10 @@ namespace Nucleus.Coop
         private PictureBox audioBtnPicture;
         private PictureBox playersBtnPicture;
         private PictureBox sharedBtnPicture;
-        private PictureBox prioritiesBtnPicture;
-        private BufferedClientAreaPanel Panel1;
+        private PictureBox processorBtnPicture;
+        private BufferedClientAreaPanel sharedTab;
         private CheckBox SplitDiv;
         private Label label49;
-        private Label slitWarning_Label;
         public Panel layoutSizer;
         private Label label29;
         private Label label27;
@@ -4393,16 +4455,16 @@ namespace Nucleus.Coop
         private CheckBox keepAccountsCheck;
         private Label label32;
         private CheckBox useNicksCheck;
-        private BufferedClientAreaPanel Panel2;
+        private BufferedClientAreaPanel playersTab;
         private PictureBox closeBtnPicture;
         private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
         private Gaming.Controls.CustomNumericUpDown numUpDownHor;
         private Gaming.Controls.CustomNumericUpDown numUpDownVer;
         private Label modeLabel;
         private CheckBox autoPlay;
-        private Gaming.Controls.CustomComboBox cmb_Network;
-        private Gaming.Controls.CustomComboBox SplitColors;
-        private BufferedClientAreaPanel priorities;
+        private ComboBox cmb_Network;
+        private ComboBox SplitColors;
+        private BufferedClientAreaPanel processorTab;
         private ComboBox PriorityClass32;
         private ComboBox PriorityClass31;
         private ComboBox PriorityClass30;
@@ -4435,22 +4497,22 @@ namespace Nucleus.Coop
         private ComboBox PriorityClass3;
         private ComboBox PriorityClass2;
         private ComboBox PriorityClass1;
-        private ComboBox Affinity32;
-        private ComboBox Affinity31;
-        private ComboBox Affinity30;
-        private ComboBox Affinity29;
-        private ComboBox Affinity28;
-        private ComboBox Affinity27;
-        private ComboBox Affinity26;
-        private ComboBox Affinity25;
-        private ComboBox Affinity24;
-        private ComboBox Affinity23;
-        private ComboBox Affinity22;
-        private ComboBox Affinity21;
-        private ComboBox Affinity20;
-        private ComboBox Affinity19;
-        private ComboBox Affinity18;
-        private ComboBox Affinity17;
+        private TextBox Affinity32;
+        private TextBox  Affinity31;
+        private TextBox Affinity30;
+        private TextBox Affinity29;
+        private TextBox Affinity28;
+        private TextBox Affinity27;
+        private TextBox Affinity26;
+        private TextBox Affinity25;
+        private TextBox Affinity24;
+        private TextBox Affinity23;
+        private TextBox Affinity22;
+        private TextBox Affinity21;
+        private TextBox Affinity20;
+        private TextBox Affinity19;
+        private TextBox Affinity18;
+        private TextBox Affinity17;
         private ComboBox IdealProcessor32;
         private Label label1;
         private ComboBox IdealProcessor31;
@@ -4483,23 +4545,23 @@ namespace Nucleus.Coop
         private Label label69;
         private ComboBox IdealProcessor17;
         private Label label70;
-        private ComboBox Affinity16;
-        private ComboBox Affinity15;
-        private ComboBox Affinity14;
-        private ComboBox Affinity13;
-        private ComboBox Affinity12;
-        private ComboBox Affinity11;
-        private ComboBox Affinity10;
-        private ComboBox Affinity9;
-        private ComboBox Affinity8;
-        private ComboBox Affinity7;
-        private ComboBox Affinity6;
-        private ComboBox Affinity5;
-        private ComboBox Affinity4;
-        private ComboBox Affinity3;
-        private ComboBox Affinity2;
+        private TextBox Affinity16;
+        private TextBox Affinity15;
+        private TextBox Affinity14;
+        private TextBox Affinity13;
+        private TextBox Affinity12;
+        private TextBox Affinity11;
+        private TextBox Affinity10;
+        private TextBox Affinity9;
+        private TextBox Affinity8;
+        private TextBox Affinity7;
+        private TextBox Affinity6;
+        private TextBox Affinity5;
+        private TextBox Affinity4;
+        private TextBox Affinity3;
+        private TextBox Affinity2;
         private Label Affinity_Label;
-        private ComboBox Affinity1;
+        private TextBox Affinity1;
         private Label PriorityClass_Label;
         private ComboBox IdealProcessor16;
         private Label label76;
@@ -4535,5 +4597,13 @@ namespace Nucleus.Coop
         private Label IdealProcessor_Label;
         private ComboBox IdealProcessor1;
         private Label label93;
+        private Label coreCountLabel;
+        private Label label71;
+        private Panel panel1;
+        private CheckBox cts_kar;
+        private CheckBox cts_Mute;
+        private CheckBox cts_unfocus;
+        private Label label72;
+        private TextBox notes_text;
     }
 }

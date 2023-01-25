@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Threading;
@@ -59,21 +60,13 @@ namespace Nucleus.Coop
                     if (MessageBox.Show(file + " is missing from your Nucleus Co-op installation folder. Check that your antivirus program is not deleting or blocking any Nucleus Co-op files. Add the Nucleus Co-op folder to your antivirus exceptions list and extract it again. Click \"OK\" for more information", "Missing file(s)", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                     {
                         Process.Start("https://www.splitscreen.me/docs/faq/#7--nucleus-co-op-doesnt-launchcrashes-how-do-i-fix-it");
-                        Process[] processes = Process.GetProcessesByName("NucleusCoop");
-
-                        foreach (Process NucleusCoop in processes)
-                        {
-                            NucleusCoop.Kill();
-                        }
+                        Process nc = Process.GetCurrentProcess();
+                        nc.Kill();
                     }
                     else
                     {
-                        Process[] processes = Process.GetProcessesByName("NucleusCoop");
-
-                        foreach (Process NucleusCoop in processes)
-                        {
-                            NucleusCoop.Kill();
-                        }
+                        Process nc = Process.GetCurrentProcess();
+                        nc.Kill();
                     }
                 }
             }
@@ -250,39 +243,31 @@ namespace Nucleus.Coop
 
         public static bool CheckNetCon()
         {
-            bool connected;
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.DefaultConnectionLimit = 9999;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://hub.splitscreen.me/");
+            request.Timeout = 5000;
+            request.Method = "HEAD"; // As per Lasse's comment
             try
             {
-                Ping myPing = new Ping();
-                String host = "hub.splitscreen.me";
-                byte[] buffer = new byte[32];
-                int timeout = 1000;
-                PingOptions pingOptions = new PingOptions();
-                PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
-                if (reply.Status == IPStatus.Success)
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
-                    connected = true;
-                    myPing.Dispose();
-                    return connected;
-                }
-                else
-                {
-                    connected = false;
-                    myPing.Dispose();
-                    return connected;
+                    return response.StatusCode == HttpStatusCode.OK;
                 }
             }
-            catch (Exception)
+            catch (WebException)
             {
-                connected = false;
-                return connected;
+                return false;
             }
         }
 
         public static void CheckAppUpdate()
         {
-            if(File.Exists(Path.Combine(Application.StartupPath, "Updater.exe")))
-            Process.Start(Path.Combine(Application.StartupPath, "Updater.exe"));
+            if (File.Exists(Path.Combine(Application.StartupPath, "Updater.exe")))
+                Process.Start(Path.Combine(Application.StartupPath, "Updater.exe"));
         }
     }
 }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Nucleus.Coop.Forms
 {
@@ -37,7 +39,7 @@ namespace Nucleus.Coop.Forms
         private int verCount = 0;
         private int lastVer = 0;
         private float fontSize;
-
+        private static Hub hub = new Hub();    
         private SortOrder sortOrder = SortOrder.Ascending;
 
         private Cursor hand_Cursor;
@@ -74,12 +76,14 @@ namespace Nucleus.Coop.Forms
             }
         }
 
+        private int prevWidth;
         private void ScriptDownloader_ResizeBegin(object sender, EventArgs e)
         {
             foreach (Control c in ctrls)
             {
                 c.Visible = false;
             }
+            prevWidth = Width;
             Opacity = 0.6D;
         }
 
@@ -90,6 +94,8 @@ namespace Nucleus.Coop.Forms
                 if (c.Name != "chkBox_Verified")
                     c.Visible = true;
             }
+
+            list_Games.Columns[7].Width += Width - prevWidth;
             Opacity = 1.0D;
         }
 
@@ -116,11 +122,13 @@ namespace Nucleus.Coop.Forms
 
             lvwColumnSorter = new ListViewColumnSorter();
             list_Games.ListViewItemSorter = lvwColumnSorter;
+            list_Games.DrawItem += (sender, e) => { e.DrawDefault = true; };
+            list_Games.DrawSubItem += (sender, e) => { e.DrawDefault = true; };
 
             cmb_Sort.SelectedIndex = 0;
             cmb_NumResults.SelectedIndex = 1;
             entriesPerPage = Convert.ToInt32(cmb_NumResults.SelectedItem);
-
+   
             SuspendLayout();
 
             if (mf.roundedcorners)
@@ -131,14 +139,14 @@ namespace Nucleus.Coop.Forms
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
             BackgroundImage = new Bitmap(mf.theme + "other_backgrounds.jpg");
             //Controls Pictures
-            btn_Next.BackgroundImage = mf.AppButtons;
-            btn_Prev.BackgroundImage = mf.AppButtons;
-            btn_ViewAll.BackgroundImage = mf.AppButtons;
-            btn_Info.BackgroundImage = mf.AppButtons;
-            btn_Search.BackgroundImage = mf.AppButtons;
-            btn_Close.BackgroundImage = mf.AppButtons;
-            btn_Download.BackgroundImage = mf.AppButtons;
-            btn_Extract.BackgroundImage = mf.AppButtons;
+            btn_Next.BackColor = mf.buttonsBackColor;
+            btn_Prev.BackColor = mf.buttonsBackColor;
+            btn_ViewAll.BackColor = mf.buttonsBackColor;
+            btn_Info.BackColor = mf.buttonsBackColor;
+            btn_Search.BackColor = mf.buttonsBackColor;
+            btn_Close.BackColor = mf.buttonsBackColor;
+            btn_Download.BackColor = mf.buttonsBackColor;
+            btn_Extract.BackColor = mf.buttonsBackColor;
             //
             //MouseOverColor
             //
@@ -192,7 +200,6 @@ namespace Nucleus.Coop.Forms
 
                 btn_Search.FlatAppearance.BorderSize = 1;
                 btn_Search.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
-
             }
 
             ResumeLayout();
@@ -206,7 +213,6 @@ namespace Nucleus.Coop.Forms
 
             DPIManager.Register(this);
             DPIManager.Update(this);
-
         }
         public void UpdateSize(float scale)
         {
@@ -304,6 +310,7 @@ namespace Nucleus.Coop.Forms
                     return;
                 }
             }
+
             base.WndProc(ref m);
         }
 
@@ -319,7 +326,7 @@ namespace Nucleus.Coop.Forms
             catch (Exception)
             { }
 
-            string resp = Get(api + "handler/" + id);
+            string resp = hub.Get(api + "handler/" + id);// A voir
 
             if (resp == null || resp == "{}")
             {
@@ -398,12 +405,12 @@ namespace Nucleus.Coop.Forms
                 string rawHandlers = null;
                 if (grabAll)
                 {
-                    rawHandlers = Get(api + "allhandlers");
+                    rawHandlers = hub.Get(api + "allhandlers");// A voir
                     grabAll = false;
                 }
                 else
                 {
-                    rawHandlers = Get(api + "handlers/" + searchParam);
+                    rawHandlers = hub.Get(api + "handlers/" + searchParam);// A voir
                 }
 
                 txt_Search.Clear();
@@ -606,10 +613,10 @@ namespace Nucleus.Coop.Forms
                     list_Games.Items[(list_Games.Items.Count - 1)].SubItems[6].Text = string.Empty;
                 }
 
-                if (list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text.Length > 50)
-                {
-                    list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text = list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text.Substring(0, 50) + "...";
-                }
+                //if (list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text.Length > 50)
+                //{
+                //    list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text = list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text.Substring(0, 50) + "...";
+                //}
 
                 foreach (ListViewItem lvi in list_Games.Items)
                 {
@@ -621,10 +628,6 @@ namespace Nucleus.Coop.Forms
 
 
             }
-
-            list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-            list_Games.Columns[8].Width = 0;
 
             lvwColumnSorter.SortColumn = sortColumn;
             lvwColumnSorter.Order = sortOrder;
@@ -662,31 +665,6 @@ namespace Nucleus.Coop.Forms
             lbl_Status.Text = string.Format("Viewing results {0}-{1}. Total: {2}", (startIndex + 1), entriesToView + startIndex, tot);
         }
 
-        public string Get(string uri)
-        {
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            ServicePointManager.DefaultConnectionLimit = 9999;
-
-
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
-            catch (Exception)//ex)
-            {
-                //MessageBox.Show(string.Format("{0}: {1}", ex.ToString(), ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
-        }
-
         private void btn_Close_Click(object sender, EventArgs e)
         {
             Close();
@@ -698,15 +676,6 @@ namespace Nucleus.Coop.Forms
             {
                 btn_Search_Click(this, new EventArgs());
             }
-        }
-
-        private void ScriptDownloader_Resize(object sender, EventArgs e)
-        {
-            list_Games.BeginUpdate();
-            list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-            list_Games.Columns[8].Width = 0;
-            list_Games.EndUpdate();
         }
 
         private void list_Games_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -960,5 +929,14 @@ namespace Nucleus.Coop.Forms
                 }
         }
 
+        private void list_Games_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255,0,0,0)), e.Bounds);
+            
+            string text = e.Header.Text;
+            int width = TextRenderer.MeasureText(" ", e.Font).Width;
+            Rectangle rectangle = Rectangle.Inflate(e.Bounds, -width, 0);
+            TextRenderer.DrawText(e.Graphics, text, new Font(mainForm.customFont,8.25F), rectangle.Location,Color.White,Color.Black);
+        }
     }
 }
