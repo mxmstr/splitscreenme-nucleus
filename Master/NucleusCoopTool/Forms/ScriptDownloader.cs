@@ -1,8 +1,6 @@
 ﻿using ListViewSorter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Nucleus.Gaming;
-using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,14 +8,18 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
+using Nucleus.Gaming;
+using System.Media;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using Nucleus.Gaming.Coop.Generic;
 
 namespace Nucleus.Coop.Forms
 {
     public partial class ScriptDownloader : BaseForm, IDynamicSized
     {
+
         private const string api = "https://hub.splitscreen.me/api/v1/";
 
         private readonly List<Handler> searchHandlers = new List<Handler>();
@@ -39,9 +41,9 @@ namespace Nucleus.Coop.Forms
         private int verCount = 0;
         private int lastVer = 0;
         private float fontSize;
-        private static Hub hub = new Hub();    
+        private static Hub hub = new Hub();
         private SortOrder sortOrder = SortOrder.Ascending;
-
+        private float scale;
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
 
@@ -122,13 +124,13 @@ namespace Nucleus.Coop.Forms
 
             lvwColumnSorter = new ListViewColumnSorter();
             list_Games.ListViewItemSorter = lvwColumnSorter;
-            list_Games.DrawItem += (sender, e) => { e.DrawDefault = true; };
-            list_Games.DrawSubItem += (sender, e) => { e.DrawDefault = true; };
+            //list_Games.DrawItem += (sender, e) => { e.DrawDefault = true; };
+            //list_Games.DrawSubItem += (sender, e) => { e.DrawDefault = true; };
 
             cmb_Sort.SelectedIndex = 0;
             cmb_NumResults.SelectedIndex = 1;
             entriesPerPage = Convert.ToInt32(cmb_NumResults.SelectedItem);
-   
+
             SuspendLayout();
 
             if (mf.roundedcorners)
@@ -238,14 +240,17 @@ namespace Nucleus.Coop.Forms
 
             ResumeLayout();
         }
+        //private int cover_index = 0;
 
         protected override void WndProc(ref Message m)
         {
-            const int RESIZE_HANDLE_SIZE = 20;
+            const int RESIZE_HANDLE_SIZE = 10;
+
             if (this.WindowState == FormWindowState.Normal)
             {
                 switch (m.Msg)
                 {
+
                     case 0x0084/*NCHITTEST*/ :
                         base.WndProc(ref m);
 
@@ -281,33 +286,7 @@ namespace Nucleus.Coop.Forms
                                     m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
                             }
                         }
-
                         return;
-                }
-            }
-            Point cursorPos = PointToClient(Cursor.Position);
-            Rectangle inRect = new Rectangle(10, 10, Width - 20, Height - 20);
-
-            if (!inRect.Contains(cursorPos))
-            {
-                canResize = true;
-            }
-            else
-            {
-                if (Cursor.Current != default_Cursor)
-                {
-                    Cursor.Current = default_Cursor;
-
-                }
-                canResize = false;
-            }
-
-            if (!canResize)
-            {
-                if (m.Msg == 0x020 || m.Msg == 0x0a0)//Do not reset our custom cursor when mouse hover over the Form background(needed because of the custom resizing/moving messges handling) 
-                {
-                    Cursor.Current = default_Cursor;
-                    return;
                 }
             }
 
@@ -326,7 +305,7 @@ namespace Nucleus.Coop.Forms
             catch (Exception)
             { }
 
-            string resp = hub.Get(api + "handler/" + id);// A voir
+            string resp = Get(api + "handler/" + id);
 
             if (resp == null || resp == "{}")
             {
@@ -405,12 +384,12 @@ namespace Nucleus.Coop.Forms
                 string rawHandlers = null;
                 if (grabAll)
                 {
-                    rawHandlers = hub.Get(api + "allhandlers");// A voir
+                    rawHandlers = Get(api + "allhandlers");
                     grabAll = false;
                 }
                 else
                 {
-                    rawHandlers = hub.Get(api + "handlers/" + searchParam);// A voir
+                    rawHandlers = Get(api + "handlers/" + searchParam);
                 }
 
                 txt_Search.Clear();
@@ -613,10 +592,10 @@ namespace Nucleus.Coop.Forms
                     list_Games.Items[(list_Games.Items.Count - 1)].SubItems[6].Text = string.Empty;
                 }
 
-                //if (list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text.Length > 50)
-                //{
-                //    list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text = list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text.Substring(0, 50) + "...";
-                //}
+                if (list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text.Length > 50)
+                {
+                    list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text = list_Games.Items[(list_Games.Items.Count - 1)].SubItems[7].Text.Substring(0, 50) + "...";
+                }
 
                 foreach (ListViewItem lvi in list_Games.Items)
                 {
@@ -628,6 +607,10 @@ namespace Nucleus.Coop.Forms
 
 
             }
+
+            list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            list_Games.Columns[8].Width = 0;
 
             lvwColumnSorter.SortColumn = sortColumn;
             lvwColumnSorter.Order = sortOrder;
@@ -665,6 +648,31 @@ namespace Nucleus.Coop.Forms
             lbl_Status.Text = string.Format("Viewing results {0}-{1}. Total: {2}", (startIndex + 1), entriesToView + startIndex, tot);
         }
 
+        public string Get(string uri)
+        {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.DefaultConnectionLimit = 9999;
+
+
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            catch (Exception)//ex)
+            {
+                //MessageBox.Show(string.Format("{0}: {1}", ex.ToString(), ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
         private void btn_Close_Click(object sender, EventArgs e)
         {
             Close();
@@ -676,6 +684,15 @@ namespace Nucleus.Coop.Forms
             {
                 btn_Search_Click(this, new EventArgs());
             }
+        }
+
+        private void ScriptDownloader_Resize(object sender, EventArgs e)
+        {
+            list_Games.BeginUpdate();
+            list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            list_Games.Columns[8].Width = 0;
+            list_Games.EndUpdate();
         }
 
         private void list_Games_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -929,14 +946,5 @@ namespace Nucleus.Coop.Forms
                 }
         }
 
-        private void list_Games_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
-        {
-            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255,0,0,0)), e.Bounds);
-            
-            string text = e.Header.Text;
-            int width = TextRenderer.MeasureText(" ", e.Font).Width;
-            Rectangle rectangle = Rectangle.Inflate(e.Bounds, -width, 0);
-            TextRenderer.DrawText(e.Graphics, text, new Font(mainForm.customFont,8.25F), rectangle.Location,Color.White,Color.Black);
-        }
     }
 }

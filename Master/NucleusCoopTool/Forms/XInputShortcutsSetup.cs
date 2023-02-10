@@ -21,7 +21,7 @@ namespace Nucleus.Coop.Forms
         private Cursor default_Cursor;
         private Cursor hand_Cursor;
         private SolidBrush brush;
-        public static bool Enabled;
+        public static new bool Enabled;
 
         public XInputShortcutsSetup()
         {
@@ -357,7 +357,7 @@ namespace Nucleus.Coop.Forms
 
             RectangleF toFill = RectangleF.Empty;
 
-            for (int i = 0; i < XController.Controllers.Length-1; i++)
+            for (int i = 0; i < XController.Controllers.Length; i++)
             {
                 {////draw a circle at the pressed button location
                     int pressed = XController.GetPressedButtons(i);

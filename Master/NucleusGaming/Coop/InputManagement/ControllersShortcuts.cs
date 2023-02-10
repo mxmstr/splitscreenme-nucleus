@@ -211,7 +211,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             while (true)
             {
-                for (int i = 0; i < XController.Controllers.Length - 1; i++)
+                for (int i = 0; i < XController.Controllers.Length ; i++)
                 {
                     if (!XController.Controllers[i].IsConnected)
                     {
@@ -226,10 +226,10 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     int rt = XController.GetRightTriggerValue(i) > 0 ? pressed + RT : RT;//return RT + button or RT
                     int lt = XController.GetLeftTriggerValue(i) > 0 ? pressed + LT : LT;//return LT + button or LT
                     ///Adjust the cursor speed to the joystick value
-                    int MouveLeftSpeed = Math.Abs((XController.GetLeftStickValue(i).Item1 - deadZone) / 1000);
-                    int MouveRightSpeed = (XController.GetLeftStickValue(i).Item1 - deadZone) / 1000;
-                    int MouveUpSpeed = Math.Abs((XController.GetLeftStickValue(i).Item2 - deadZone) / 1000);
-                    int MouveDownSpeed = (XController.GetLeftStickValue(i).Item2 - deadZone) / 1000;
+                    int MouveLeftSpeed = (Math.Abs((XController.GetLeftStickValue(i).Item1 - deadZone) / 2000));
+                    int MouveRightSpeed = ((XController.GetLeftStickValue(i).Item1 - deadZone) / 2000);
+                    int MouveUpSpeed = (Math.Abs((XController.GetLeftStickValue(i).Item2 - deadZone) / 2000));
+                    int MouveDownSpeed = ((XController.GetLeftStickValue(i).Item2 - deadZone) / 2000);
 
                     ///Check if the right joystick values are out of the deadzone and allow to move the cursor or not
                     bool canMouveLeft = XController.GetLeftStickValue(i).Item1 <= -deadZone;
@@ -435,7 +435,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
         private static int LT = 10000;
 
         private static bool ToggleCutscenes;
-        private static bool TopMostToggle = true;
 
         public static Thread ctrlsShortcuts;
         public static Thread CtrlsShortcuts
@@ -456,12 +455,22 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             while (true)
             {
-                for (int i = 0; i < XController.Controllers.Length-1; i++)
+                for (int i = 0; i < XController.Controllers.Length; i++)
                 {
                     if (!XController.Controllers[i].IsConnected)//ne peux pas detecter si connecté
                     {
                         continue;
                     }
+
+                    //while (GenericGameHandler.Instance == null)
+                    //{
+                    //    Thread.Sleep(1000);
+                    //}
+
+                    //while(GenericGameHandler.Instance.hasEnded)
+                    //{
+                    //    Thread.Sleep(1000);
+                    //}
 
                     State currentState = (State)XController.GetControllerState(i);
 
@@ -501,59 +510,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Game Windows Unfocused");
                         }
                         else if ((button == TopMost || rt == TopMost || lt == TopMost))///Minimize/restore windows
-                        {                           
-                                IntPtr splitHandle = GlobalWindowMethods.FindWindow(null, ("SplitForm"));///Get the background Form(s)
-                                if (TopMostToggle)
-                               {
-                                    if (splitHandle != null && splitHandle != IntPtr.Zero)
-                                    {
-                                        User32Interop.SetWindowPos(splitHandle, new IntPtr(-2), 0, 0, 0, 0,
-                                        (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                        GlobalWindowMethods.ShowWindow(splitHandle, GlobalWindowMethods.ShowWindowEnum.Minimize);
-                                    }
-
-                                    Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(GameProfile._game.ExecutableName.ToLower()));
-                                    if (procs.Length > 0)
-                                    {
-                                        for (int p = 0; p < procs.Length; p++)
-                                        {
-                                            IntPtr hWnd = procs[p].NucleusGetMainWindowHandle();
-                                            User32Interop.SetWindowPos(hWnd, new IntPtr(-2), 0, 0, 0, 0,
-                                            (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                            GlobalWindowMethods.ShowWindow(hWnd, GlobalWindowMethods.ShowWindowEnum.Minimize);
-                                        }
-                                    }
-                                    Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Game Windows Minimized");
-                                    User32Util.ShowTaskBar();
-
-                                    TopMostToggle = false;
-                                }
-                                else if (!TopMostToggle)
-                                {
-                                    if (splitHandle != null && splitHandle != IntPtr.Zero)
-                                    {
-                                        GlobalWindowMethods.ShowWindow(splitHandle, GlobalWindowMethods.ShowWindowEnum.Restore);
-                                        User32Interop.SetWindowPos(splitHandle, new IntPtr(-1), 0, 0, 0, 0,
-                                            (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                    }
-
-                                    Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(GameProfile._game.ExecutableName.ToLower()));
-                                    if (procs.Length > 0)
-                                    {
-                                        for (int p = 0; p < procs.Length; p++)
-                                        {
-                                            IntPtr hWnd = procs[p].NucleusGetMainWindowHandle();
-                                            GlobalWindowMethods.ShowWindow(hWnd, GlobalWindowMethods.ShowWindowEnum.Restore);
-                                            User32Interop.SetWindowPos(hWnd, new IntPtr(-1), 0, 0, 0, 0,
-                                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                        }
-                                    }
-
-                                    User32Util.HideTaskbar();
-                                    Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Game Windows Restored");
-
-                                    TopMostToggle = true;
-                                }                          
+                        {
+                            GlobalWindowMethods.ShowHideWindows(GameProfile._game);                          
                         }
                         else if (button == StopSession || rt == StopSession || lt == StopSession)///End current session
                         {
@@ -607,8 +565,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         }
                         else if (button == ReleaseCursor || rt == LockInputs || lt == LockInputs)///Try to release the cursor from game window by alt+tab inputs
                         {
-                            SendKeys.SendWait("%{TAB}");
-                            Thread.Sleep(500);
+                            SendKeys.SendWait("%+{TAB}+{TAB}");   
+                            Thread.Sleep(1000);
                         }
 
                         Thread.Sleep(135);

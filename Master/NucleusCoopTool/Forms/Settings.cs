@@ -422,21 +422,6 @@ namespace Nucleus.Coop
             if (scale > 1.0F)
             {
                 float newFontSize = Font.Size * scale;
-                foreach (Control c in Controls)
-                {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
-                    {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                    }
-                    else if (c.GetType() == typeof(Button))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-                }
-
-
-
                 foreach (Control c in hotkeyBox.Controls)
                 {
                     if (c.GetType() == typeof(Label))
@@ -451,8 +436,20 @@ namespace Nucleus.Coop
                     }
                 }
 
-                nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                foreach (Control c in Controls)
+                {
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
+                    }
+                    else if (c.GetType() == typeof(Button))
+                    {
+                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+
+                nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             }
 
             settingLabel_Container.Location = new Point((Width / 2) - (settingLabel_Container.Width / 2), settingLabel_Container.Location.Y);

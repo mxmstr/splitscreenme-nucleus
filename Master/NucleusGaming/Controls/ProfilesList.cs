@@ -26,6 +26,7 @@ namespace Nucleus.Gaming.Controls
         private ToolTip unloadTooltip;
         private IniFile themeIni = Globals.ThemeIni;
         private Color buttonsBackColor;
+
         public ProfilesList()
         {
             InitializeComponent();
@@ -195,7 +196,7 @@ namespace Nucleus.Gaming.Controls
 
             if (Controls.Count == 1)
                 Controls.Clear();
-            Visible = false;
+                Visible = false;
         }
 
         private void Profile_Preview(object sender, EventArgs e)//Show profile config in handler note textBox (Must be improved)

@@ -22,7 +22,8 @@ namespace Nucleus.Gaming.Coop
         public bool Assigned;
 
         public UserScreen Owner;
-
+        public int DisplayIndex = -1;
+        public string IsExpanded = "Null";
         public int PlayerID;
         public bool SteamEmu;
         public bool GotLauncher;

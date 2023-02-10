@@ -20,7 +20,7 @@ namespace Nucleus.Gaming.Coop
 
         bool Initialize(UserGameInfo game, GameProfile profile);
 
-        string Play(int isDead);
+        string Play();
 
         void Update(double delayMS, bool refresh);
 

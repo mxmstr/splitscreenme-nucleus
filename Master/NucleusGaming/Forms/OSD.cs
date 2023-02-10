@@ -8,9 +8,11 @@ namespace Nucleus.Gaming.Coop.Generic
     {
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         private int timing;
+
         public OSD()
         {
             InitializeComponent();
+            timer.Tick += new EventHandler(TimerTick);
             Show();
         }
 
@@ -21,29 +23,23 @@ namespace Nucleus.Gaming.Coop.Generic
             {
                 Value.Text = text;
                 Value.ForeColor = color;
+                timer.Interval = (timing); //millisecond           
+                Opacity = 1.0D;
+                Show();
+                timer.Start();
             });
         }
 
         private void Value_TextChanged(object sender, EventArgs e)
         {
-            timer.Stop();
-            timer.Interval = (timing); //millisecond
-            timer.Tick += new EventHandler(TimerTick);
-            Opacity = 1.0D;
-            Show();
-            timer.Start();
+           
         }
 
         private void TimerTick(Object Object, EventArgs EventArgs)
         {
-            this.Invoke((MethodInvoker)delegate ()
-            {
-                Value.Text = "";
-            });
-            timer.Stop();
             Opacity = 0.0D;
             Hide();
-            return;
+            timer.Stop();
         }
 
         public void UpdateSize(float scale)
@@ -53,6 +49,7 @@ namespace Nucleus.Gaming.Coop.Generic
                 DPIManager.Unregister(this);
                 return;
             }
-        }      
+        }
+
     }
 }

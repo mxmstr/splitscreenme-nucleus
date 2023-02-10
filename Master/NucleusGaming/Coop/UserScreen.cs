@@ -12,7 +12,7 @@ namespace Nucleus.Gaming.Coop
         public Rectangle display;
         public bool vertical;
         public int priority;
-   
+        public int DisplayIndex;
         private int playerOnScreen = 0;
         public int PlayerOnScreen
         {

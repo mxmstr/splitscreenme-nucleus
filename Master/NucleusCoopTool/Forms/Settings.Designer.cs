@@ -446,6 +446,7 @@ namespace Nucleus.Coop
             // 
             // swl_comboBox
             // 
+            this.swl_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.swl_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.swl_comboBox.FormattingEnabled = true;
             this.swl_comboBox.Items.AddRange(new object[] {
@@ -460,9 +461,10 @@ namespace Nucleus.Coop
             // 
             // plus7
             // 
+            this.plus7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus7.AutoSize = true;
             this.plus7.ForeColor = System.Drawing.Color.Black;
-            this.plus7.Location = new System.Drawing.Point(173, 175);
+            this.plus7.Location = new System.Drawing.Point(174, 175);
             this.plus7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus7.Name = "plus7";
             this.plus7.Size = new System.Drawing.Size(13, 13);
@@ -482,6 +484,7 @@ namespace Nucleus.Coop
             // 
             // swl_textBox
             // 
+            this.swl_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.swl_textBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.swl_textBox.Location = new System.Drawing.Point(190, 173);
             this.swl_textBox.Margin = new System.Windows.Forms.Padding(2);
@@ -494,6 +497,7 @@ namespace Nucleus.Coop
             // 
             // csm_comboBox
             // 
+            this.csm_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.csm_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.csm_comboBox.FormattingEnabled = true;
             this.csm_comboBox.Items.AddRange(new object[] {
@@ -508,9 +512,10 @@ namespace Nucleus.Coop
             // 
             // plus6
             // 
+            this.plus6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus6.AutoSize = true;
             this.plus6.ForeColor = System.Drawing.Color.Black;
-            this.plus6.Location = new System.Drawing.Point(173, 151);
+            this.plus6.Location = new System.Drawing.Point(174, 151);
             this.plus6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus6.Name = "plus6";
             this.plus6.Size = new System.Drawing.Size(13, 13);
@@ -530,6 +535,7 @@ namespace Nucleus.Coop
             // 
             // csm_textBox
             // 
+            this.csm_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.csm_textBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.csm_textBox.Location = new System.Drawing.Point(190, 149);
             this.csm_textBox.Margin = new System.Windows.Forms.Padding(2);
@@ -542,6 +548,7 @@ namespace Nucleus.Coop
             // 
             // r1
             // 
+            this.r1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.r1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.r1.FormattingEnabled = true;
             this.r1.Items.AddRange(new object[] {
@@ -556,9 +563,10 @@ namespace Nucleus.Coop
             // 
             // plus5
             // 
+            this.plus5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus5.AutoSize = true;
             this.plus5.ForeColor = System.Drawing.Color.Black;
-            this.plus5.Location = new System.Drawing.Point(173, 127);
+            this.plus5.Location = new System.Drawing.Point(174, 127);
             this.plus5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus5.Name = "plus5";
             this.plus5.Size = new System.Drawing.Size(13, 13);
@@ -568,6 +576,7 @@ namespace Nucleus.Coop
             // 
             // settingsFocusCmb
             // 
+            this.settingsFocusCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsFocusCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsFocusCmb.FormattingEnabled = true;
             this.settingsFocusCmb.Items.AddRange(new object[] {
@@ -592,9 +601,10 @@ namespace Nucleus.Coop
             // 
             // plus1
             // 
+            this.plus1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus1.AutoSize = true;
             this.plus1.ForeColor = System.Drawing.Color.Black;
-            this.plus1.Location = new System.Drawing.Point(173, 31);
+            this.plus1.Location = new System.Drawing.Point(174, 31);
             this.plus1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus1.Name = "plus1";
             this.plus1.Size = new System.Drawing.Size(13, 13);
@@ -604,6 +614,7 @@ namespace Nucleus.Coop
             // 
             // r2
             // 
+            this.r2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.r2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.r2.Location = new System.Drawing.Point(190, 125);
             this.r2.Margin = new System.Windows.Forms.Padding(2);
@@ -638,6 +649,7 @@ namespace Nucleus.Coop
             // 
             // settingsFocusHKTxt
             // 
+            this.settingsFocusHKTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsFocusHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.settingsFocusHKTxt.Location = new System.Drawing.Point(190, 29);
             this.settingsFocusHKTxt.Margin = new System.Windows.Forms.Padding(2);
@@ -650,6 +662,7 @@ namespace Nucleus.Coop
             // 
             // comboBox_lockKey
             // 
+            this.comboBox_lockKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox_lockKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_lockKey.FormattingEnabled = true;
             this.comboBox_lockKey.Items.AddRange(new object[] {
@@ -699,6 +712,7 @@ namespace Nucleus.Coop
             // 
             // settingsTopCmb
             // 
+            this.settingsTopCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTopCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsTopCmb.FormattingEnabled = true;
             this.settingsTopCmb.Items.AddRange(new object[] {
@@ -713,6 +727,7 @@ namespace Nucleus.Coop
             // 
             // settingsStopCmb
             // 
+            this.settingsStopCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsStopCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsStopCmb.FormattingEnabled = true;
             this.settingsStopCmb.Items.AddRange(new object[] {
@@ -727,6 +742,7 @@ namespace Nucleus.Coop
             // 
             // settingsTopTxt
             // 
+            this.settingsTopTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.settingsTopTxt.Location = new System.Drawing.Point(190, 101);
             this.settingsTopTxt.Margin = new System.Windows.Forms.Padding(2);
@@ -739,6 +755,7 @@ namespace Nucleus.Coop
             // 
             // settingsStopTxt
             // 
+            this.settingsStopTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsStopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.settingsStopTxt.Location = new System.Drawing.Point(190, 77);
             this.settingsStopTxt.Margin = new System.Windows.Forms.Padding(2);
@@ -751,6 +768,7 @@ namespace Nucleus.Coop
             // 
             // settingsCloseCmb
             // 
+            this.settingsCloseCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsCloseCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsCloseCmb.FormattingEnabled = true;
             this.settingsCloseCmb.Items.AddRange(new object[] {
@@ -765,9 +783,10 @@ namespace Nucleus.Coop
             // 
             // plus4
             // 
+            this.plus4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus4.AutoSize = true;
             this.plus4.ForeColor = System.Drawing.Color.Black;
-            this.plus4.Location = new System.Drawing.Point(173, 103);
+            this.plus4.Location = new System.Drawing.Point(174, 103);
             this.plus4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus4.Name = "plus4";
             this.plus4.Size = new System.Drawing.Size(13, 13);
@@ -777,9 +796,10 @@ namespace Nucleus.Coop
             // 
             // plus3
             // 
+            this.plus3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus3.AutoSize = true;
             this.plus3.ForeColor = System.Drawing.Color.Black;
-            this.plus3.Location = new System.Drawing.Point(173, 78);
+            this.plus3.Location = new System.Drawing.Point(174, 78);
             this.plus3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus3.Name = "plus3";
             this.plus3.Size = new System.Drawing.Size(13, 13);
@@ -789,9 +809,10 @@ namespace Nucleus.Coop
             // 
             // plus2
             // 
+            this.plus2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus2.AutoSize = true;
             this.plus2.ForeColor = System.Drawing.Color.Black;
-            this.plus2.Location = new System.Drawing.Point(173, 55);
+            this.plus2.Location = new System.Drawing.Point(174, 55);
             this.plus2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus2.Name = "plus2";
             this.plus2.Size = new System.Drawing.Size(13, 13);
@@ -831,6 +852,7 @@ namespace Nucleus.Coop
             // 
             // settingsCloseHKTxt
             // 
+            this.settingsCloseHKTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsCloseHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.settingsCloseHKTxt.Location = new System.Drawing.Point(190, 53);
             this.settingsCloseHKTxt.Margin = new System.Windows.Forms.Padding(2);

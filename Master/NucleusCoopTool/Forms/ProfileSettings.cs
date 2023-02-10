@@ -1,4 +1,6 @@
 ﻿using NAudio.CoreAudioApi;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
@@ -28,6 +30,8 @@ namespace Nucleus.Coop
 
         private List<string> nicksList = new List<string>();
         private List<string> steamIdsList = new List<string>();
+        private List<string> jsonNicksList = new List<string>();
+        private List<string> jsonsteamIdsList = new List<string>();
 
         private ComboBox[] controllerNicks;
         private ComboBox[] steamIds;
@@ -279,7 +283,6 @@ namespace Nucleus.Coop
                 }
             }
 
-
             mainForm = mf;
             positionsControl = pc;
 
@@ -310,13 +313,38 @@ namespace Nucleus.Coop
             numUpDownHor.InvalidParent = true;
 
             RefreshAudioList();
-            UpdateProfileSettingsValues(false);
+            //UpdateProfileSettingsValues(false);
+
+            string path = Path.Combine(Application.StartupPath, $"Games Profiles\\Nicknames.json");
+            if (File.Exists(path))
+            {
+                string jsonString = File.ReadAllText(path);
+
+                JArray JNicks = (JArray)JsonConvert.DeserializeObject(jsonString);
+
+                foreach (JToken nick in JNicks)
+                {
+                    jsonNicksList.Add(nick.ToString());
+                }
+            }
+
+            string idspath = Path.Combine(Application.StartupPath, $"Games Profiles\\SteamIds.json");
+            if (File.Exists(idspath))
+            {
+                string jsonString = File.ReadAllText(idspath);
+
+                JArray JIds = (JArray)JsonConvert.DeserializeObject(jsonString);
+
+                foreach (JToken id in JIds)
+                {
+                    jsonsteamIdsList.Add(id.ToString());
+                }
+            }
 
             ResumeLayout();
 
             DPIManager.Register(this);
             DPIManager.Update(this);
-
         }
 
         public ProfileSettings()
@@ -336,7 +364,6 @@ namespace Nucleus.Coop
 
             if (scale > 1.0F)
             {
-                float newTabsSize = (Font.Size - 2.0f) * scale;
                 float newFontSize = Font.Size * scale;
 
                 foreach (Control c in sharedTab.Controls)
@@ -411,8 +438,6 @@ namespace Nucleus.Coop
 
             modeLabel.Size = new Size(Width - closeBtnPicture.Right, modeLabel.Height);
             modeLabel.Location = new Point(closeBtnPicture.Right, modeLabel.Location.Y);
-            def_sid_textBox_container.Location = new Point((playersTab.Width / 2) - (def_sid_textBox_container.Width / 2), def_sid_textBox_container.Location.Y);
-            //slitWarning_Label.Location = new Point((Panel1.Width / 2) - (slitWarning_Label.Width / 2), slitWarning_Label.Location.Y);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             ResumeLayout();
         }
@@ -446,11 +471,12 @@ namespace Nucleus.Coop
         private void UpdateProfileSettingsValues(bool save)
         {
             List<long> SteamIDs = GameProfile.SteamIDs;
-            List<string> Nicknames = GameProfile.Nicknames;
+            List<string> Nicknames = GameProfile.Nicknames;         
 
             if (SteamIDs != null)
             {
                 steamIdsList.Clear();
+                steamIdsList.AddRange(jsonsteamIdsList); 
                 for (int i = 0; i < 32; i++)
                 {
                     if (i <= SteamIDs.Count - 1)
@@ -479,14 +505,15 @@ namespace Nucleus.Coop
             else
             {
                 steamIdsList.Clear();
+                steamIdsList.AddRange(jsonsteamIdsList);
             }
-
+            
             if (Nicknames != null)
             {
                 nicksList.Clear();
+                nicksList.AddRange(jsonNicksList);
                 for (int i = 0; i < 32; i++)
                 {
-
                     if (i <= Nicknames.Count - 1)
                     {
                         nicksList.Add(Nicknames[i]);
@@ -510,17 +537,18 @@ namespace Nucleus.Coop
                     else
                     {
                         controllerNicks[i].SelectedItem = "Player" + (i + 1).ToString();
-                        controllerNicks[i].Text = "Player" + (i + 1).ToString();
+                        controllerNicks[i].Text = "Player" + (i + 1).ToString();                    
                     }
                 }
             }
             else
             {
                 nicksList.Clear();
+                nicksList.AddRange(jsonNicksList);
 
                 for (int i = 0; i < 32; i++)
                 {
-                    nicksList.Add("Player" + (i + 1).ToString());
+                    nicksList.Add("Player" + (i + 1).ToString());          
                 }
 
                 for (int i = 0; i < 32; i++)
@@ -603,9 +631,9 @@ namespace Nucleus.Coop
                 }
             }
 
-
             audioDefaultSettingsRadio.Checked = GameProfile.AudioDefaultSettings;
             audioCustomSettingsBox.Enabled = false;
+
             if (audioDefaultSettingsRadio.Checked == false)
             {
                 audioCustomSettingsRadio.Checked = true;
@@ -644,6 +672,22 @@ namespace Nucleus.Coop
             for (int i = 0; i < 32; i++)
             {
                 GameProfile.Nicknames.Add(controllerNicks[i].Text);
+                
+                if (!jsonNicksList.Any(n => n == controllerNicks[i].Text) && controllerNicks[i].Text.ToString() != $"Player{i+1}")
+                {
+                    jsonNicksList.Add(controllerNicks[i].Text);
+                }
+            }
+
+            string path = Path.Combine(Application.StartupPath, $"Games Profiles\\Nicknames.json");
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    string json = JsonConvert.SerializeObject(jsonNicksList, Formatting.Indented);
+                    writer.Write(json);
+                    stream.Flush();
+                }
             }
 
             bool sidWrongValue = false;
@@ -653,12 +697,29 @@ namespace Nucleus.Coop
                 if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0 || steamIds[i].Text == "0")
                 {
                     if (steamIds[i].Text != "")
+                    {
                         GameProfile.SteamIDs.Add(long.Parse(steamIds[i].Text.ToString()));
+                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()))
+                        {
+                            jsonsteamIdsList.Add(steamIds[i].Text.ToString());
+                        }
+                    }
                 }
                 else
                 {
                     steamIds[i].BackColor = Color.Red;
                     sidWrongValue = true;
+                }
+            }
+
+            string idspath = Path.Combine(Application.StartupPath, $"Games Profiles\\SteamIds.json");
+            using (FileStream stream = new FileStream(idspath, FileMode.Create))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    string json = JsonConvert.SerializeObject(jsonsteamIdsList, Formatting.Indented);
+                    writer.Write(json);
+                    stream.Flush();
                 }
             }
 
@@ -736,12 +797,6 @@ namespace Nucleus.Coop
                 GameProfile.PriorityClasses.Add(PriorityClasses[i].Text);
             }
 
-            //if (positionsControl != null && !GameProfile.IsNew)
-            //{
-            //    GameProfile.currentProfile.PlayerData.Clear();
-            //    positionsControl.loadedProfilePlayers.Clear();
-            //    positionsControl.UpdatePlayers();   
-            //}
             GameProfile.Notes = notes_text.Text;
             GameProfile.AutoPlay = autoPlay.Checked;
             GameProfile.AudioDefaultSettings = audioDefaultSettingsRadio.Checked;
@@ -1110,21 +1165,6 @@ namespace Nucleus.Coop
                 cts_kar.Enabled = true;
                 cts_unfocus.Enabled = true;
             }
-        }
-
-        private void cts_settings2_CheckedChanged(object sender, EventArgs e)
-        {
-            //CheckBox kar = (CheckBox)sender;
-            //if (kar.Checked)
-            //{
-            //    cts_Mute.Checked = false;
-            //    GameProfile.Cts_KeepAspectRatio = true;
-            //}
-            //else
-            //{
-            //    GameProfile.Cts_KeepAspectRatio = false;
-            //}
-
         }
     }
 }

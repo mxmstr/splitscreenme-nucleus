@@ -284,6 +284,11 @@ namespace Nucleus.Coop
                                                    int.Parse(themeIni.IniReadValue("Colors", "GameListBackground").Split(',')[2]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "GameListBackground").Split(',')[3]));
 
+               StepPanel.BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[0]),
+                                                   int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[1]),
+                                                   int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[2]),
+                                                   int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[3]));
+
                 btn_textSwitcher.BackgroundImage = new Bitmap(theme + "text_switcher.png");
                 btnAutoSearch.BackColor = buttonsBackColor;
                 button_UpdateAvailable.BackColor = buttonsBackColor;
@@ -484,7 +489,7 @@ namespace Nucleus.Coop
                 hotkeysLockedTimer.Tick += new EventHandler(hotkeysLockedTimerTick);
 
                 gameContextMenuStrip.Renderer = new MyRenderer();
-                Globals.MainOSD.Settings(1, Color.YellowGreen, "");//Init
+                //Globals.MainOSD.Settings(1, Color.YellowGreen, "");//Init
             //}
             //catch (Exception ex)
             //{
@@ -495,7 +500,7 @@ namespace Nucleus.Coop
             CenterToScreen();
 
             //Enable only for windows version with default support for xinput1.4.dll ,
-            //might be fixable by placing the dll at the root of our exe but i won't do that for now.
+            //might be fixable by placing the dll at the root of our exe but not for now.
             string windowsVersion = MachineSpecs.GetPCspecs(null);
             if (!windowsVersion.Contains("Windows 7") && 
                 !windowsVersion.Contains("Windows Vista"))
@@ -563,7 +568,7 @@ namespace Nucleus.Coop
 
             btn_Play.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Bold, GraphicsUnit.Pixel, 0);
             scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            scriptAuthorTxt.Size = new Size((int)(188 * scale), (int)(191 * scale));
+            scriptAuthorTxt.Size = new Size((int)(189 * scale), (int)(191 * scale));
             favoriteOnlyLabel.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             favoriteOnlyLabel.Location = new Point(1, mainButtonFrame.Height / 2 - (favoriteOnlyLabel.Height / 2) * (int)scale);
             favoriteOnly.Size = new Size(favoriteOnlyLabel.Height, favoriteOnlyLabel.Height);
@@ -737,77 +742,15 @@ namespace Nucleus.Coop
 
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == TopMost_HotkeyID)
-            {    
-                IntPtr splitHandle = GlobalWindowMethods.FindWindow(null, ("SplitForm"));//Get the background Form(s)
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+            {
+
+                if (hotkeysLocked || handler == null)
                 {
-                    if (hotkeysLocked || handler == null)
-                    {
-                        return;
-                    }
-
-                    if (TopMostToggle)
-                    {
-                        try
-                        {
-                            if (splitHandle != null && splitHandle != IntPtr.Zero)
-                            {
-                                User32Interop.SetWindowPos(splitHandle, new IntPtr(-2), 0, 0, 0, 0,
-                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                GlobalWindowMethods.ShowWindow(splitHandle, GlobalWindowMethods.ShowWindowEnum.Minimize);
-                            }
-
-                            Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(currentGame.ExecutableName.ToLower()));
-                            if (procs.Length > 0)
-                            {
-                                for (int i = 0; i < procs.Length; i++)
-                                {
-                                    IntPtr hWnd = procs[i].NucleusGetMainWindowHandle();
-                                    User32Interop.SetWindowPos(hWnd, new IntPtr(-2), 0, 0, 0, 0,
-                                    (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                    GlobalWindowMethods.ShowWindow(hWnd, GlobalWindowMethods.ShowWindowEnum.Minimize);
-                                }
-                            }
-                        }
-                        catch
-                        { }
-
-                        TriggerOSD(2000, "Game Windows Minimized");
-                        User32Util.ShowTaskBar();
-                        //Activate();
-                        BringToFront();
-                        TopMostToggle = false;
-                    }
-                    else if (!TopMostToggle)
-                    {
-                        if (splitHandle != null && splitHandle != IntPtr.Zero)
-                        {
-                            GlobalWindowMethods.ShowWindow(splitHandle, GlobalWindowMethods.ShowWindowEnum.Restore);
-                            User32Interop.SetWindowPos(splitHandle, new IntPtr(-1), 0, 0, 0, 0,
-                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                        }
-
-                        Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(currentGame.ExecutableName.ToLower()));
-                        if (procs.Length > 0)
-                        {
-                            for (int i = 0; i < procs.Length; i++)
-                            {
-                                IntPtr hWnd = procs[i].NucleusGetMainWindowHandle();
-                                GlobalWindowMethods.ShowWindow(hWnd, GlobalWindowMethods.ShowWindowEnum.Restore);
-                                User32Interop.SetWindowPos(hWnd, new IntPtr(-1), 0, 0, 0, 0,
-                                    (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                            }
-                        }
-
-                        User32Util.HideTaskbar();
-                        TriggerOSD(2000, "Game Windows Restored");
-                        TopMostToggle = true;
-                    }
+                    return;
                 }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {ini.IniReadValue("Hotkeys", "LockKey")} key)");
-                }
+
+                GlobalWindowMethods.ShowHideWindows(currentGame);
+               
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == StopSession_HotkeyID)
             {
@@ -1896,11 +1839,8 @@ namespace Nucleus.Coop
                 BringToFront();
                 stepPanelPictureBox.Focus();
                 positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
-                positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
+                positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);              
             });
-           
-           
-            //Invoke(new Action(SetBtnToPlay));
         }
 
         private void UpdateGameManager(object state)

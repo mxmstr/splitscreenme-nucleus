@@ -27,6 +27,7 @@ namespace Nucleus.Coop
         {
             nameFont = new Font("Segoe UI", 18);
             detailsFont = new Font("Segoe UI", 12);
+            BackColor = Color.Transparent;
         }
 
         public override void Initialize(UserGameInfo game, GameProfile profile)

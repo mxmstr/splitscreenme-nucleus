@@ -54,7 +54,7 @@ namespace Nucleus.Gaming
             Globals.MainOSD.Settings(timerMS, Color.GreenYellow, text);
         }
 
-        private List<Form> splitForms = new List<Form>();
+        public List<Form> splitForms = new List<Form>();
         private string keyboardInstance;
         private string logMsg;
         private string origExePath;
@@ -169,14 +169,6 @@ namespace Nucleus.Gaming
             }
 
             RawInputProcessor.CurrentGameInfo = gen;
-
-            GameProfile.ScreenIndexes.Clear();
-            GameProfile.EditBounds.Clear();//!!!!pose probleme avec k&m mais a était ajouter parce qu'il y a un probleme avec editbounds(valeurs bizares quand il ya plusieaurs ecrans a re-tester des que possible
-            for (int i = 0; i < players.Count; i++)
-            {
-                GameProfile.ScreenIndexes.Add(players[i].ScreenIndex);//Can't figuring out why player screen index is reseted to -1 so grab it here for now.
-                GameProfile.EditBounds.Add(players[i].EditBounds);//same as above //!!!pose probleme avec k&m mais a était ajouter parce qu'il y a un probleme avec editbounds(valeurs bizares quand il ya plusieaurs ecrans a re-tester des que possible
-            }
 
             try
             {
@@ -296,9 +288,8 @@ namespace Nucleus.Gaming
             catch { }
         }
 
-        public string Play(int isDead)
+        public string Play()
         {
-            // Console.WriteLine(isDead);
 
             if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
             {
@@ -333,33 +324,7 @@ namespace Nucleus.Gaming
                 MachineSpecs.GetPCspecs(this);
             }
 
-
-            if (isDead != -1)
-            {
-
-            }
-            else
-            {
-                ProcessUtil.KillRemainingProcess(this, gen);
-            }
-
-            if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1)
-            {
-                Log("Setup splitscreen division");
-                for (int i = 0; i < profile.PlayerData.Count; i++)
-                {
-                    if (isDead != -1)
-                    {
-                        i = isDead;
-                    }
-                    PlayerInfo player = profile.PlayerData[i];
-
-                    player.MonitorBounds = new Rectangle(player.MonitorBounds.X + 1,
-                                                         player.MonitorBounds.Y + 1,
-                                                         player.MonitorBounds.Width - 2,
-                                                         player.MonitorBounds.Height - 2);
-                }
-            }
+             ProcessUtil.KillRemainingProcess(this, gen);
 
             //Merge raw keyboard/mouse players into one 
             var groupWindows = profile.PlayerData.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
@@ -382,50 +347,62 @@ namespace Nucleus.Gaming
 
             List<PlayerInfo> players = profile.PlayerData.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();//Current new default
 
+            List<int> screens = new List<int>();
+
             Log("Determining which monitors will be used by Nucleus");
+
             for (int i = 0; i < players.Count; i++)
             {
-                if (isDead != -1)
+
+                PlayerInfo player = players[i];
+
+                player.PlayerID = i;
+
+                int pod = player.Owner.DisplayIndex;
+
+                foreach (Display dp in ScreensUtil.AllScreensParams())
                 {
-                    playerDied = isDead;
+
+                    if (screens.Contains(pod) || dp.DisplayIndex != pod)
+                    {
+                        continue;
+                    }
+
+                    screensInUse.Add(dp);
+                    screens.Add(pod);
+
+                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1) || gen.HideDesktop)
+                    {
+                        Globals.MainOSD.Invoke((MethodInvoker)delegate ()
+                        {
+                            Form backgroundForm = new SplitForm(gen, this, dp);
+                            backgroundForm.Show();
+                            backgroundForm.BringToFront();
+                            splitForms.Add(backgroundForm);
+                        });
+                    }                  
                     break;
                 }
+            }
 
-                players[i].PlayerID = i;
+            for (int i = 0; i < players.Count; i++)
+            {          
+                PlayerInfo player = players[i];
 
-                foreach (Display dp in User32Util.GetDisplays())
-                {
-                    if (Screen.AllScreens[GameProfile.ScreenIndexes[i]].DeviceName == (dp.DeviceName))
+                foreach (Display dp in screensInUse)
+                {           
+                    if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1)// && GameProfile.IsNew) ||
+                        //(GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1 && GameProfile.DisplaysIndexes[i] != dp.DisplayIndex))
                     {
-                        if (screensInUse.Count > 0 && i < GameProfile.ScreenIndexes.Count)
+                        if (i == 0)
                         {
-                            if (screensInUse[screensInUse.Count - 1].DeviceName.Equals(Screen.AllScreens[GameProfile.ScreenIndexes[i]].DeviceName))
-                            {
-                                continue;
-                            }
+                            Log("Setup splitscreen division");
                         }
 
-                        if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1) || gen.HideDesktop)
-                        {
-                            Globals.MainOSD.Invoke((MethodInvoker)delegate ()
-                            {
-                                Form backgroundForm = new SplitForm(gen, this, Screen.AllScreens[GameProfile.ScreenIndexes[i]]);
-                                backgroundForm.Show();
-                                backgroundForm.BringToFront();
-                                splitForms.Add(backgroundForm);
-                            });
-                        }
-
-                        if (!dp.Bounds.Contains(players[i].MonitorBounds))
-                        {
-                            Log("Windows screens layout has been changed after loading a game profile.\nNucleus will now exit.");
-                            TriggerOSD(5000, "Do not change Windows screens layout after loading a game profile!");
-                            Thread.Sleep(5000);
-                            Application.Exit();
-                            break;
-                        }
-
-                        screensInUse.Add(dp);
+                        player.MonitorBounds = new Rectangle(player.MonitorBounds.X + 1,
+                                                             player.MonitorBounds.Y + 1,
+                                                             player.MonitorBounds.Width - 2,
+                                                             player.MonitorBounds.Height - 2);
                     }
                 }
             }
@@ -518,11 +495,6 @@ namespace Nucleus.Gaming
 
             for (int i = 0; i < players.Count; i++)
             {
-                if (isDead != -1)
-                {
-                    i = isDead;
-                }
-
                 Log($"********** Setting up player {i + 1} **********");
                 PlayerInfo player = players[i];
                 plyrIndex = i;
@@ -543,8 +515,8 @@ namespace Nucleus.Gaming
                     player.Nickname = $"Player{i + 1}";
                 }
 
-                Console.WriteLine(player.Nickname);
-                TriggerOSD(2000, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{i + 1}");
+                TriggerOSD(1600, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{i + 1}");
+
                 ProcessData procData = player.ProcessData;
                 bool hasSetted = procData != null && procData.Setted;
 
@@ -772,7 +744,7 @@ namespace Nucleus.Gaming
                         DllsInjector.InjectDLLs(this, gen, pdata.Process, nextWindowToInject, before);
                     }
                 }
-
+         
                 Rectangle playerBounds = player.MonitorBounds;
                 owner = player.Owner;
 
@@ -796,7 +768,7 @@ namespace Nucleus.Gaming
 
                     Log("Commencing file operations");
 
-                    if ((i == 0 && (gen.SymlinkGame || gen.HardlinkGame)) || gen.HardcopyGame && isDead == -1)
+                    if ((i == 0 && (gen.SymlinkGame || gen.HardlinkGame)) || gen.HardcopyGame)
                     {
                         for (int f = 0; f < players.Count; f++)
                         {
@@ -816,7 +788,7 @@ namespace Nucleus.Gaming
                     exePath = Path.Combine(linkBinFolder, userGame.Game.ExecutableName);
                     origExePath = Path.Combine(linkBinFolder, userGame.Game.ExecutableName);
 
-                    if (((i == 0 && (gen.SymlinkGame || gen.HardlinkGame)) || gen.HardcopyGame) && isDead == -1)
+                    if (((i == 0 && (gen.SymlinkGame || gen.HardlinkGame)) || gen.HardcopyGame))
                     {
                         if (gen.CopyFiles != null)
                         {
@@ -843,7 +815,7 @@ namespace Nucleus.Gaming
                     jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
 
                     Thread.Sleep(1000);
-                    if (i == 0 && (gen.LauncherExe?.Length > 0 && gen.LauncherExe.EndsWith("NucleusDefined")) && isDead == -1)
+                    if (i == 0 && (gen.LauncherExe?.Length > 0 && gen.LauncherExe.EndsWith("NucleusDefined")))
                     {
                         string exeName = null;
                         if (gen.LauncherExe.Contains('|'))
@@ -880,7 +852,7 @@ namespace Nucleus.Gaming
                         }
                     }
 
-                    if ((i == 0 && (gen.SymlinkGame || gen.HardlinkGame)) || gen.HardcopyGame && isDead == -1)
+                    if ((i == 0 && (gen.SymlinkGame || gen.HardlinkGame)) || gen.HardcopyGame)
                     {
                         if (gen.Hook.CustomDllEnabled)
                         {
@@ -989,26 +961,14 @@ namespace Nucleus.Gaming
                                     Log($"The subfolder {dirSymlinkCopyInstead[k]} does not exist in the original game folder. Skipping.");
                                 }
                             }
-                        }
-
-                        if (isDead != -1)
-                        {
-                            for (int p = 0; p < players.Count; p++)
-                            {
-                                string path = Path.Combine(tempDir, $"Instance{p}");
-                                if (!Directory.Exists(path) || Directory.Exists(path) && !Directory.EnumerateFileSystemEntries(path).Any<string>())
-                                {
-                                    symlinkNeeded = true;
-                                }
-                            }
-                        }
+                        }                     
                     }
 
                     string[] fileExclusionsArr = fileExclusions.ToArray();
                     string[] fileCopiesArr = fileCopies.ToArray();
 
                     bool skipped = false;
-                    if ((gen.ForceSymlink || !gen.KeepSymLinkOnExit || symlinkNeeded) && isDead == -1)
+                    if ((gen.ForceSymlink || !gen.KeepSymLinkOnExit || symlinkNeeded))
                     {
                         if (gen.ForceSymlink)
                         {
@@ -1028,7 +988,7 @@ namespace Nucleus.Gaming
                         }
                         else if (gen.HardlinkGame)
                         {
-                            if (i == 0 && isDead == -1)
+                            if (i == 0)
                             {
                                 Log(string.Format("Hardlinking game folder and files at {0} to {1}, for each instance", rootFolder, tempDir));
                                 int exitCode;
@@ -1040,7 +1000,7 @@ namespace Nucleus.Gaming
                         }
                         else
                         {
-                            if (i == 0 && isDead == -1)
+                            if (i == 0)
                             {
                                 Log(string.Format("Symlinking game folder and files at {0} to {1}, for each instance", rootFolder, tempDir));
                                 int exitCode;
@@ -1390,7 +1350,7 @@ namespace Nucleus.Gaming
                 context.DocumentsConfigPath = gen.DocumentsConfigPath;
                 context.DocumentsSavePath = gen.DocumentsSavePath;
 
-                if (i == 0 && isDead == -1)
+                if (i == 0)
                 {
                     for (int plyri = 0; plyri < players.Count; plyri++)
                     {
@@ -1422,11 +1382,7 @@ namespace Nucleus.Gaming
 
                 bool setupDll = true;
 
-                if (isDead != -1)
-                {
-                    setupDll = false;
-                }
-
+               
                 if (!gen.SymlinkGame && !gen.HardlinkGame && !gen.HardcopyGame && i > 0)
                 {
                     setupDll = false;
@@ -1536,7 +1492,7 @@ namespace Nucleus.Gaming
                     DirectX9Wrapper.UseDirectX9Wrapper(this, gen, setupDll);
                 }
 
-                if (gen.CopyCustomUtils?.Length > 0 && isDead == -1)
+                if (gen.CopyCustomUtils?.Length > 0)
                 {
                     FileUtil.CopyCustomUtils(this, gen, i, linkFolder, setupDll);
                 }
@@ -2239,7 +2195,7 @@ namespace Nucleus.Gaming
                     }
                     else
                     {
-                        if (gen.PromptAfterFirstInstance && i == 0 && isDead == -1)
+                        if (gen.PromptAfterFirstInstance && i == 0)
                         {
                             Log("Prompted user after first instance");
                             Forms.Prompt prompt = new Forms.Prompt("Press OK when ready to launch the rest of the instances.");
@@ -2498,7 +2454,7 @@ namespace Nucleus.Gaming
                     }
                 }
 
-                if (gen.GoldbergLobbyConnect && i == 0 && isDead == -1)
+                if (gen.GoldbergLobbyConnect && i == 0)
                 {
                     SteamMethods.GoldbergLobbyConnect(this);
                 }
@@ -2648,7 +2604,7 @@ namespace Nucleus.Gaming
 
                 if (gen.PromptAfterFirstInstance)
                 {
-                    if (i == 0 && isDead == -1)
+                    if (i == 0)
                     {
                         Log(string.Format("Prompted user after first instance", (i + 2)));
                         Prompt prompt = new Prompt("Press OK when ready to launch the rest of the instances.");
@@ -2766,15 +2722,12 @@ namespace Nucleus.Gaming
 
                 //Set up raw input window
                 //if (player.IsRawKeyboard || player.IsRawMouse)
-                if (isDead == -1)
-
                 {
                     var window = GlobalWindowMethods.CreateRawInputWindow(this, gen, proc, player);
-
                     nextWindowToInject = window;
                 }
 
-                if (i == (players.Count - 1) || isDead != -1)
+                if (i == (players.Count - 1))
                 {
                     if (processingExit)
                     {
@@ -2786,11 +2739,6 @@ namespace Nucleus.Gaming
                     {
                         for (int pi = 0; pi < players.Count; pi++)
                         {
-                            if (isDead != -1)
-                            {
-                                break;
-                            }
-
                             if (GameProfile.AudioCustomSettings && GameProfile.AudioInstances["AudioInstance" + (pi + 1)] != "Default")
                             {
                                 Log($"Attempting to switch audio endpoint for process {players[pi].ProcessData.Process.ProcessName} pid ({players[pi].ProcessID}) to DeviceID {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
@@ -3017,11 +2965,6 @@ namespace Nucleus.Gaming
                         WindowFakeFocus.SendFakeFocusMsg();
                     }
                 }
-
-                if (isDead != -1)//must be there for now else revive player  in loop
-                {
-                    break;
-                }
             }
 
             if (gen.LockInputAtStart)
@@ -3066,15 +3009,9 @@ namespace Nucleus.Gaming
                 }
             }
 
-            if (gen.UseNucleusEnvironment && isDead == -1)
+            if (gen.UseNucleusEnvironment)
             {
                 RegistryUtil.RestoreUserEnvironmentRegistryPath();
-            }
-
-            if (isDead != -1)
-            {
-                gen.OnFinishedSetup?.Invoke();
-                return string.Empty;
             }
 
             Log("All done!");
@@ -3802,7 +3739,7 @@ namespace Nucleus.Gaming
                 }
             }
             catch { }
-
+            
             Ended?.Invoke();
         }
 

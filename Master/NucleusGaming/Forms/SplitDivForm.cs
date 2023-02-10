@@ -19,14 +19,14 @@ namespace Nucleus.Gaming.Forms
         private Timer loadTimer;
         private string currentGame;
 
-        public SplitForm(GenericGameInfo game, GenericGameHandler handler,Screen screen)
+        public SplitForm(GenericGameInfo game, GenericGameHandler handler,Display screen)
         {
             InitializeComponent();
-            Name = "SplitForm";
-            Text = "SplitForm";
+            Name = $"SplitForm{screen.DisplayIndex}";
+            Text = $"SplitForm{screen.DisplayIndex}";
             Location = new Point(screen.Bounds.X, screen.Bounds.Y);
-            Width = screen.WorkingArea.Size.Width;
-            Height = screen.WorkingArea.Size.Height + 50;
+            Width = screen.Bounds.Width;
+            Height = screen.Bounds.Height;// + 50;
             BackgroundImageLayout = ImageLayout.Stretch;
             FormBorderStyle = FormBorderStyle.None;
             StartPosition = FormStartPosition.Manual;           
@@ -37,7 +37,7 @@ namespace Nucleus.Gaming.Forms
         }
 
 
-        private void Setup(GenericGameInfo game,GenericGameHandler handler, Screen screen)
+        private void Setup(GenericGameInfo game,GenericGameHandler handler, Display screen)
         {
             IDictionary<string, Color> splitColors = new Dictionary<string, Color>();
 

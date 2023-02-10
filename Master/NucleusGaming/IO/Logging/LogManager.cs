@@ -98,18 +98,18 @@ namespace Nucleus.Gaming
         {
             Instance.PLog(str);
 
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
-            {
-                if (str.StartsWith("Found game info"))
-                {
-                    return;
-                }
-                using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
-                {
-                    writer.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]LOGMANAGER: {str}");
-                    writer.Close();
-                }
-            }
+            //if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            //{
+            //    if (str.StartsWith("Found game info"))
+            //    {
+            //        return;
+            //    }
+            //    using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
+            //    {
+            //        writer.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]LOGMANAGER: {str}");
+            //        writer.Close();
+            //    }
+            //}
         }
 
         public void LogExceptionFile(Exception ex)

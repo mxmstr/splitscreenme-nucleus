@@ -453,11 +453,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 if (!splitScreenRunning() && PlayerInfos != null)
                 {
-                    List<PlayerInfo> copy = new List<PlayerInfo>(CurrentProfile?.PlayerData);
-                    copy.Capacity = 100;
-
-
-                    foreach (PlayerInfo toFlash in copy.Where(x => x != null && ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
+                    foreach (PlayerInfo toFlash in CurrentProfile?.PlayerData.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) ||((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
                     {
                         toFlash.FlashIcon();
                     }
@@ -477,7 +473,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 {
                     if (!LockInput.IsLocked)
                     {
-                        if (CurrentGameInfo == null || CurrentGameInfo.Play == null)
+                        if (CurrentGameInfo == null || CurrentGameInfo.Play == null || GenericGameHandler.Instance.hasEnded)
                         {
                             return;
                         }

@@ -218,12 +218,11 @@
             // 
             // list_Games
             // 
-            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.list_Games.AutoArrange = false;
             this.list_Games.BackColor = System.Drawing.Color.Black;
-            this.list_Games.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.list_Games.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.gameName,
             this.ownerName,
@@ -241,7 +240,6 @@
             this.list_Games.Location = new System.Drawing.Point(12, 79);
             this.list_Games.MultiSelect = false;
             this.list_Games.Name = "list_Games";
-            this.list_Games.OwnerDraw = true;
             this.list_Games.Size = new System.Drawing.Size(837, 299);
             this.list_Games.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.list_Games.TabIndex = 31;
@@ -249,61 +247,54 @@
             this.list_Games.UseCompatibleStateImageBehavior = false;
             this.list_Games.View = System.Windows.Forms.View.Details;
             this.list_Games.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.list_Games_ColumnClick);
-            this.list_Games.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.list_Games_DrawColumnHeader);
             this.list_Games.SelectedIndexChanged += new System.EventHandler(this.list_Games_SelectedIndexChanged);
             // 
             // gameName
             // 
             this.gameName.Text = "Game";
-            this.gameName.Width = 52;
+            this.gameName.Width = 177;
             // 
             // ownerName
             // 
             this.ownerName.Text = "Uploader";
-            this.ownerName.Width = 56;
+            this.ownerName.Width = 120;
             // 
             // verified
             // 
             this.verified.Text = "Verified";
             this.verified.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.verified.Width = 80;
+            this.verified.Width = 76;
             // 
             // downloadCount
             // 
             this.downloadCount.Text = "Downloads";
             this.downloadCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.downloadCount.Width = 78;
+            this.downloadCount.Width = 77;
             // 
             // stars
             // 
             this.stars.Text = "Likes";
             this.stars.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.stars.Width = 64;
             // 
             // createdAt
             // 
             this.createdAt.Text = "Uploaded";
-            this.createdAt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.createdAt.Width = 76;
+            this.createdAt.Width = 110;
             // 
             // updatedAt
             // 
             this.updatedAt.Text = "Last Updated";
-            this.updatedAt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.updatedAt.Width = 96;
+            this.updatedAt.Width = 138;
             // 
             // description
             // 
-            this.description.DisplayIndex = 8;
             this.description.Text = "Uploader Description";
-            this.description.Width = 231;
+            this.description.Width = 144;
             // 
             // id
             // 
-            this.id.DisplayIndex = 7;
             this.id.Text = "id";
-            this.id.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.id.Width = 102;
+            this.id.Width = 0;
             // 
             // btn_Search
             // 
@@ -392,6 +383,7 @@
             this.Controls.Add(this.btn_Download);
             this.Controls.Add(this.txt_Search);
             this.Controls.Add(this.label4);
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -405,6 +397,7 @@
             this.ResizeBegin += new System.EventHandler(this.ScriptDownloader_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.ScriptDownloader_ResizeEnd);
             this.ClientSizeChanged += new System.EventHandler(this.ScriptDownloader_ClientSizeChanged);
+            this.Resize += new System.EventHandler(this.ScriptDownloader_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
