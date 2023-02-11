@@ -117,6 +117,9 @@ namespace Nucleus.Coop
         public Panel textZoomContainer;
 
         private ToolTip gameProfiles_btnTooltip;
+        private ToolTip profileSettings_Tooltip;
+        private ToolTip instruction_btn_Tooltip;
+
         private string customFont;
         public override string Title => "Position Players";
 
@@ -187,7 +190,8 @@ namespace Nucleus.Coop
             players16 = new Bitmap(theme + "16players.png");
             customLayout = new Bitmap(theme + "customLayout.png");
             plyrsSettingsIcon = new Bitmap(theme + "player_settings.png");
-       
+
+            instruction_btn_Tooltip = new ToolTip();
             instruction_btn = new PictureBox();//using a button cause focus issues
             instruction_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             instruction_btn.Size = new Size(25, 25);
@@ -199,6 +203,7 @@ namespace Nucleus.Coop
             instruction_btn.BackgroundImageLayout = ImageLayout.Stretch;
             instruction_btn.Cursor = hand_Cursor;
             instruction_btn.Click += new EventHandler(this.instruction_Click);
+            instruction_btn_Tooltip.SetToolTip(instruction_btn, "How to setup.");
 
             instructionImg = new PictureBox()
             {
@@ -228,6 +233,7 @@ namespace Nucleus.Coop
             textZoomContainer.BorderStyle = BorderStyle.None;
             textZoomContainer.BackgroundImageLayout = ImageLayout.Stretch;
 
+            profileSettings_Tooltip = new ToolTip();
             profileSettings_btn = new PictureBox();//using a button cause focus issues
             profileSettings_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             profileSettings_btn.BackColor = Color.Transparent;
@@ -235,6 +241,7 @@ namespace Nucleus.Coop
             profileSettings_btn.SizeMode = PictureBoxSizeMode.StretchImage;
             profileSettings_btn.Cursor = hand_Cursor;
             profileSettings_btn.Font = instruction_btn.Font;
+            profileSettings_Tooltip.SetToolTip(profileSettings_btn, "Game profile settings.");
 
             gameProfiles_btnTooltip = new ToolTip();
             gameProfiles_btn = new Label();//using a button cause focus issues

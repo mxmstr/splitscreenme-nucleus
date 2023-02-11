@@ -142,7 +142,6 @@ namespace Nucleus.Gaming
         public bool isDebug;
         public bool dllResize = false;
         public bool dllRepos = false;
-        public int playerDied = -1;
 
         public bool Initialize(UserGameInfo game, GameProfile profile)
         {
@@ -324,7 +323,7 @@ namespace Nucleus.Gaming
                 MachineSpecs.GetPCspecs(this);
             }
 
-             ProcessUtil.KillRemainingProcess(this, gen);
+            ProcessUtil.KillRemainingProcess(this, gen);
 
             //Merge raw keyboard/mouse players into one 
             var groupWindows = profile.PlayerData.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
@@ -353,7 +352,6 @@ namespace Nucleus.Gaming
 
             for (int i = 0; i < players.Count; i++)
             {
-
                 PlayerInfo player = players[i];
 
                 player.PlayerID = i;
@@ -380,7 +378,8 @@ namespace Nucleus.Gaming
                             backgroundForm.BringToFront();
                             splitForms.Add(backgroundForm);
                         });
-                    }                  
+                    }         
+                    
                     break;
                 }
             }
@@ -779,6 +778,7 @@ namespace Nucleus.Gaming
                     }
 
                     linkBinFolder = linkFolder;
+
                     if (!string.IsNullOrEmpty(gen.BinariesFolder))
                     {
                         linkBinFolder = Path.Combine(linkFolder, gen.BinariesFolder);
@@ -788,7 +788,7 @@ namespace Nucleus.Gaming
                     exePath = Path.Combine(linkBinFolder, userGame.Game.ExecutableName);
                     origExePath = Path.Combine(linkBinFolder, userGame.Game.ExecutableName);
 
-                    if (((i == 0 && (gen.SymlinkGame || gen.HardlinkGame)) || gen.HardcopyGame))
+                    if ((i == 0 && (gen.SymlinkGame || gen.HardlinkGame)) || gen.HardcopyGame)
                     {
                         if (gen.CopyFiles != null)
                         {
@@ -961,14 +961,24 @@ namespace Nucleus.Gaming
                                     Log($"The subfolder {dirSymlinkCopyInstead[k]} does not exist in the original game folder. Skipping.");
                                 }
                             }
-                        }                     
+                        }
+
+                        for (int p = 0; p < players.Count; p++)
+                        {
+                            string path = Path.Combine(tempDir, "Instance" + p);
+                            if (!Directory.Exists(path) || Directory.Exists(path) && !Directory.EnumerateFileSystemEntries(path).Any<string>())
+                            {
+                                symlinkNeeded = true;
+                            }
+                        }
                     }
 
                     string[] fileExclusionsArr = fileExclusions.ToArray();
                     string[] fileCopiesArr = fileCopies.ToArray();
-
+                   
                     bool skipped = false;
-                    if ((gen.ForceSymlink || !gen.KeepSymLinkOnExit || symlinkNeeded))
+
+                    if (gen.ForceSymlink || !gen.KeepSymLinkOnExit || symlinkNeeded)
                     {
                         if (gen.ForceSymlink)
                         {
@@ -1031,7 +1041,7 @@ namespace Nucleus.Gaming
 
                                 if (launcherFiles.Length < 1)
                                 {
-                                    Log($"ERROR - Could not find { gen.LauncherExe} in instance folder, Game executable will be used instead; {exePath}");
+                                    Log($"ERROR - Could not find {gen.LauncherExe} in instance folder, Game executable will be used instead; {exePath}");
                                 }
                                 else if (launcherFiles.Length == 1)
                                 {
@@ -1153,7 +1163,6 @@ namespace Nucleus.Gaming
 
                     if (!gen.ForceLauncherExeIgnoreFileCheck)
                     {
-
                         if (gen.LauncherExe?.Length > 0)
                         {
                             if (gen.LauncherExe.Contains(':') && gen.LauncherExe.Contains('\\'))
@@ -1189,8 +1198,6 @@ namespace Nucleus.Gaming
                 {
                     return string.Empty;
                 }
-
-               
 
                 if (gen.ChangeIPPerInstanceAlt)
                 {
@@ -1282,7 +1289,7 @@ namespace Nucleus.Gaming
 
                 if (gen.SymlinkFiles != null)
                 {
-                    Log($"Symlinking {gen.SymlinkFiles.Length} files list from \"Game.SymlinkFiles\"");
+                    Log($"Symlinking {gen.SymlinkFiles.Length} files in Game.SymlinkFiles");
                     context.SymlinkFiles = gen.SymlinkFiles;
                 }
 

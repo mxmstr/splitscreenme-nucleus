@@ -581,7 +581,7 @@ namespace Nucleus.Coop
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            DisposeTimer = new System.Windows.Forms.Timer();//dispose splash screen and keep track on hub ping statut( refresh )
+            DisposeTimer = new System.Windows.Forms.Timer();
             DisposeTimer.Interval = (2900); //millisecond
             DisposeTimer.Tick += new EventHandler(MainTimerTick);
             DisposeTimer.Start();

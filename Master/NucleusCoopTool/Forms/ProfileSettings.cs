@@ -668,6 +668,11 @@ namespace Nucleus.Coop
 
         public void SettingsSaveBtn_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"Games Profiles")))
+            {
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"Games Profiles"));
+            }
+
             GameProfile.Nicknames.Clear();
             for (int i = 0; i < 32; i++)
             {
@@ -688,6 +693,8 @@ namespace Nucleus.Coop
                     writer.Write(json);
                     stream.Flush();
                 }
+
+                stream.Dispose();
             }
 
             bool sidWrongValue = false;
@@ -721,6 +728,8 @@ namespace Nucleus.Coop
                     writer.Write(json);
                     stream.Flush();
                 }
+
+                stream.Dispose();
             }
 
             if (sidWrongValue)
