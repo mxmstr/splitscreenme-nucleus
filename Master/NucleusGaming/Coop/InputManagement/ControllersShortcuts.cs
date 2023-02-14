@@ -329,7 +329,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         dragging = false;
                         Thread.Sleep(200);
                     }
-                    else if (pressed == OpenOsk || rt == OpenOsk || lt == OpenOsk)///Open/close Onscreen keyboard
+                    else if (pressed == OpenOsk || rt == OpenOsk || lt == OpenOsk)///Open/close Onscreen Might have to focus nc window before opening need more testing
                     {
                         if (!oskCleared)//kill if running before nucleus startup
                         {
@@ -348,7 +348,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         {
                             KillOsk();
                             Globals.MainOSD.Settings(1600, Color.YellowGreen, $"On Screen Keyboard Closed");
-                            Thread.Sleep(1100);
+                            Thread.Sleep(500);
                             oskVisible = false;                          
                         }
                     }
@@ -457,20 +457,20 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 for (int i = 0; i < XController.Controllers.Length; i++)
                 {
-                    if (!XController.Controllers[i].IsConnected)//ne peux pas detecter si connecté
+                    if (!XController.Controllers[i].IsConnected)
                     {
                         continue;
                     }
 
-                    //while (GenericGameHandler.Instance == null)
-                    //{
-                    //    Thread.Sleep(1000);
-                    //}
+                    while (GenericGameHandler.Instance == null)
+                    {
+                        Thread.Sleep(1000);
+                    }
 
-                    //while(GenericGameHandler.Instance.hasEnded)
-                    //{
-                    //    Thread.Sleep(1000);
-                    //}
+                    while (GenericGameHandler.Instance.hasEnded)
+                    {
+                        Thread.Sleep(1000);
+                    }
 
                     State currentState = (State)XController.GetControllerState(i);
 

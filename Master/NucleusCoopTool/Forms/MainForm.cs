@@ -419,7 +419,14 @@ namespace Nucleus.Coop
                 txt_version.ForeColor = Color.LightSteelBlue;
                 txt_version.Text = "DEBUG " + version;
 #else
+            if (bool.Parse(themeIni.IniReadValue("Misc", "HideVersion")) == false)
+            {
                 txt_version.Text = version;
+            }
+            else
+            {
+                txt_version.Text = "";
+            }
 #endif
 
                 ResumeLayout();
@@ -545,6 +552,8 @@ namespace Nucleus.Coop
             RefreshGames();
         }
 
+        private bool scaled = false;
+
         public new void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -552,30 +561,34 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
-
-            SuspendLayout();
-
-            float newFontSize = Font.Size * scale;
-            float mainButtonFrameFont = mainButtonFrame.Font.Size * 1.0f;
-
-            if (scale > 1.0f)
+            if (!scaled)
             {
-                foreach (Control button in mainButtonFrame.Controls)
-                {
-                    button.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                }
-            }
+                SuspendLayout();
 
-            btn_Play.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Bold, GraphicsUnit.Pixel, 0);
-            scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            scriptAuthorTxt.Size = new Size((int)(189 * scale), (int)(191 * scale));
-            favoriteOnlyLabel.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            favoriteOnlyLabel.Location = new Point(1, mainButtonFrame.Height / 2 - (favoriteOnlyLabel.Height / 2) * (int)scale);
-            favoriteOnly.Size = new Size(favoriteOnlyLabel.Height, favoriteOnlyLabel.Height);
-            float favoriteY = favoriteOnlyLabel.Right + (5 * scale);
-            favoriteOnly.Location = new Point((int)(favoriteY), mainButtonFrame.Height / 2 - (favoriteOnly.Height / 2) * (int)scale);
-            cursScale = scale;
-            ResumeLayout();
+                float newFontSize = Font.Size * scale;
+                float mainButtonFrameFont = mainButtonFrame.Font.Size * 1.0f;
+
+                if (scale > 1.0f)
+                {
+                    foreach (Control button in mainButtonFrame.Controls)
+                    {
+                        button.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+
+
+                btn_Play.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Bold, GraphicsUnit.Pixel, 0);
+                scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                scriptAuthorTxt.Size = new Size((int)(189 * scale), (int)(191 * scale));
+                favoriteOnlyLabel.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                favoriteOnlyLabel.Location = new Point(1, mainButtonFrame.Height / 2 - (favoriteOnlyLabel.Height / 2) * (int)scale);
+                favoriteOnly.Size = new Size(favoriteOnlyLabel.Height, favoriteOnlyLabel.Height);
+                float favoriteY = favoriteOnlyLabel.Right + (5 * scale);
+                favoriteOnly.Location = new Point((int)(favoriteY), mainButtonFrame.Height / 2 - (favoriteOnly.Height / 2) * (int)scale);
+                cursScale = scale;
+                scaled = true;
+                ResumeLayout();
+            }
         }
 
         protected override void OnShown(EventArgs e)
@@ -635,7 +648,7 @@ namespace Nucleus.Coop
         {
             if (positionsControl.isDisconnected)
             {
-                DPIManager.ForceUpdate();
+                //DPIManager.ForceUpdate();
                 positionsControl.isDisconnected = false;
             }
         }

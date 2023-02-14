@@ -1664,7 +1664,10 @@ namespace Nucleus.Coop
                     {
                         if (screens[i] == scr)
                             g.DrawString((screenPriority.IndexOf(scr) + 1).ToString(), new Font(customFont, 8.25f * ratio, FontStyle.Bold, GraphicsUnit.Pixel, 0), myBrush, scrIndexRect, centerStr);
-                        g.DrawRectangle(PositionScreenPen, scrIndexRect);
+                        if (UseLayoutSelectionBorder)
+                        {
+                            g.DrawRectangle(PositionScreenPen, scrIndexRect);
+                        }
                     }
                 }
 
@@ -1947,8 +1950,7 @@ namespace Nucleus.Coop
                         }
 
                         g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 1, s.Height + 1));
-
-                      
+                    
                        // g.DrawRectangle(color, s);
                         g.DrawRectangle(PositionPlayerScreenPen, s);
                     }
@@ -1965,7 +1967,6 @@ namespace Nucleus.Coop
             }
           
             //Console.WriteLine(TotalPlayers);    
-            //UpdateScreens();
         }
     }
 }

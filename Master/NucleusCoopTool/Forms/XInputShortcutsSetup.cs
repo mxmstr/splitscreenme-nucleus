@@ -259,6 +259,7 @@ namespace Nucleus.Coop.Forms
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
+        private bool scaled = false;
 
         public void UpdateSize(float scale)
         {
@@ -267,49 +268,62 @@ namespace Nucleus.Coop.Forms
                 DPIManager.Unregister(this);
                 return;
             }
-
-            SuspendLayout();
-
-            this.scale = scale;
-
-            if (scale > 1.0F)
+         
+            if (!scaled)
             {
-                float newFontSize = 7.25F * scale;
+                SuspendLayout();
 
-                foreach (Control c in shortContainer.Controls)
+                this.scale = scale;
+
+                if (scale > 1.0F)
                 {
-                    if (c.GetType() == typeof(Label))
+                    float newFontSize = 7.25F * scale;
+
+                    foreach (Control c in shortContainer.Controls)
                     {
-                        c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        if (c.GetType() == typeof(Label))
+                        {
+                            c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                            if (c.Text != ("+"))
+                            {
+                                c.Location = new Point(switch1.Left - c.Width, c.Location.Y);
+                            }
+                        }
+
+                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                        {
+                            c.Font = new Font(c.Font.FontFamily, c.Font.Size * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                           
+                        }
                     }
 
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                    foreach (Control c in UINavContainer.Controls)
                     {
-                        c.Font = new Font(c.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        c.Size = new Size(c.Width, (c.Height + 25) * (int)scale);
+                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                        {
+                            c.Font = new Font(c.Font.FontFamily, c.Font.Size * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                            // c.Size = new Size(c.Width, (c.Height + 25) * (int)scale);
+                        }
+
+                        if (c.GetType() == typeof(Label))
+                        {
+                            c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                            if (c.Text !=("+"))
+                            {
+                                c.Location = new Point(switch10.Left - c.Width, c.Location.Y);
+                            }
+                        }
+
                     }
                 }
-
-                foreach (Control c in UINavContainer.Controls)
-                {
-                    if (c.GetType() == typeof(Label))
-                    {
-                        c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
-                    {
-                        c.Font = new Font(c.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        c.Size = new Size(c.Width, (c.Height + 25) * (int)scale);
-                    }
-                }
+                scaled = true;
+                ResumeLayout();
             }
-
-            ResumeLayout();
         }
 
         private void RefreshTimerTick(Object Object, EventArgs EventArgs)
         {
+            if(Visible)
             Invalidate();
         }
 

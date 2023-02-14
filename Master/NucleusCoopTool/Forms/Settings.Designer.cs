@@ -446,7 +446,6 @@ namespace Nucleus.Coop
             // 
             // swl_comboBox
             // 
-            this.swl_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.swl_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.swl_comboBox.FormattingEnabled = true;
             this.swl_comboBox.Items.AddRange(new object[] {
@@ -461,10 +460,9 @@ namespace Nucleus.Coop
             // 
             // plus7
             // 
-            this.plus7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus7.AutoSize = true;
             this.plus7.ForeColor = System.Drawing.Color.Black;
-            this.plus7.Location = new System.Drawing.Point(174, 175);
+            this.plus7.Location = new System.Drawing.Point(172, 177);
             this.plus7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus7.Name = "plus7";
             this.plus7.Size = new System.Drawing.Size(13, 13);
@@ -474,19 +472,19 @@ namespace Nucleus.Coop
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(1, 175);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 175);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(94, 15);
+            this.label6.Size = new System.Drawing.Size(85, 13);
             this.label6.TabIndex = 96;
             this.label6.Text = "Switch Layouts :";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // swl_textBox
             // 
-            this.swl_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.swl_textBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.swl_textBox.Location = new System.Drawing.Point(190, 173);
+            this.swl_textBox.Location = new System.Drawing.Point(188, 173);
             this.swl_textBox.Margin = new System.Windows.Forms.Padding(2);
             this.swl_textBox.MaxLength = 1;
             this.swl_textBox.Name = "swl_textBox";
@@ -497,7 +495,6 @@ namespace Nucleus.Coop
             // 
             // csm_comboBox
             // 
-            this.csm_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.csm_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.csm_comboBox.FormattingEnabled = true;
             this.csm_comboBox.Items.AddRange(new object[] {
@@ -512,10 +509,9 @@ namespace Nucleus.Coop
             // 
             // plus6
             // 
-            this.plus6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus6.AutoSize = true;
             this.plus6.ForeColor = System.Drawing.Color.Black;
-            this.plus6.Location = new System.Drawing.Point(174, 151);
+            this.plus6.Location = new System.Drawing.Point(172, 153);
             this.plus6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus6.Name = "plus6";
             this.plus6.Size = new System.Drawing.Size(13, 13);
@@ -525,19 +521,19 @@ namespace Nucleus.Coop
             // 
             // csm_label
             // 
-            this.csm_label.Location = new System.Drawing.Point(1, 151);
+            this.csm_label.AutoSize = true;
+            this.csm_label.Location = new System.Drawing.Point(6, 151);
             this.csm_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.csm_label.Name = "csm_label";
-            this.csm_label.Size = new System.Drawing.Size(94, 15);
+            this.csm_label.Size = new System.Drawing.Size(93, 13);
             this.csm_label.TabIndex = 92;
             this.csm_label.Text = "Cutscenes Mode :";
-            this.csm_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.csm_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // csm_textBox
             // 
-            this.csm_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.csm_textBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.csm_textBox.Location = new System.Drawing.Point(190, 149);
+            this.csm_textBox.Location = new System.Drawing.Point(188, 149);
             this.csm_textBox.Margin = new System.Windows.Forms.Padding(2);
             this.csm_textBox.MaxLength = 1;
             this.csm_textBox.Name = "csm_textBox";
@@ -548,7 +544,6 @@ namespace Nucleus.Coop
             // 
             // r1
             // 
-            this.r1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.r1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.r1.FormattingEnabled = true;
             this.r1.Items.AddRange(new object[] {
@@ -563,10 +558,9 @@ namespace Nucleus.Coop
             // 
             // plus5
             // 
-            this.plus5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus5.AutoSize = true;
             this.plus5.ForeColor = System.Drawing.Color.Black;
-            this.plus5.Location = new System.Drawing.Point(174, 127);
+            this.plus5.Location = new System.Drawing.Point(172, 127);
             this.plus5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus5.Name = "plus5";
             this.plus5.Size = new System.Drawing.Size(13, 13);
@@ -576,7 +570,6 @@ namespace Nucleus.Coop
             // 
             // settingsFocusCmb
             // 
-            this.settingsFocusCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsFocusCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsFocusCmb.FormattingEnabled = true;
             this.settingsFocusCmb.Items.AddRange(new object[] {
@@ -591,20 +584,20 @@ namespace Nucleus.Coop
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(1, 127);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(11, 128);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 15);
+            this.label5.Size = new System.Drawing.Size(88, 13);
             this.label5.TabIndex = 88;
-            this.label5.Text = "Reset Windows:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label5.Text = "Reset Windows :";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // plus1
             // 
-            this.plus1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus1.AutoSize = true;
             this.plus1.ForeColor = System.Drawing.Color.Black;
-            this.plus1.Location = new System.Drawing.Point(174, 31);
+            this.plus1.Location = new System.Drawing.Point(172, 31);
             this.plus1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus1.Name = "plus1";
             this.plus1.Size = new System.Drawing.Size(13, 13);
@@ -614,9 +607,8 @@ namespace Nucleus.Coop
             // 
             // r2
             // 
-            this.r2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.r2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.r2.Location = new System.Drawing.Point(190, 125);
+            this.r2.Location = new System.Drawing.Point(188, 125);
             this.r2.Margin = new System.Windows.Forms.Padding(2);
             this.r2.MaxLength = 1;
             this.r2.Name = "r2";
@@ -639,19 +631,19 @@ namespace Nucleus.Coop
             // 
             // label52
             // 
-            this.label52.Location = new System.Drawing.Point(8, 31);
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(10, 31);
             this.label52.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(87, 15);
+            this.label52.Size = new System.Drawing.Size(89, 13);
             this.label52.TabIndex = 33;
-            this.label52.Text = "Toggle Unfocus:";
-            this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label52.Text = "Toggle Unfocus :";
+            this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // settingsFocusHKTxt
             // 
-            this.settingsFocusHKTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsFocusHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsFocusHKTxt.Location = new System.Drawing.Point(190, 29);
+            this.settingsFocusHKTxt.Location = new System.Drawing.Point(188, 29);
             this.settingsFocusHKTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsFocusHKTxt.MaxLength = 1;
             this.settingsFocusHKTxt.Name = "settingsFocusHKTxt";
@@ -662,7 +654,6 @@ namespace Nucleus.Coop
             // 
             // comboBox_lockKey
             // 
-            this.comboBox_lockKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox_lockKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_lockKey.FormattingEnabled = true;
             this.comboBox_lockKey.Items.AddRange(new object[] {
@@ -702,17 +693,17 @@ namespace Nucleus.Coop
             // 
             // label_lockKey
             // 
-            this.label_lockKey.Location = new System.Drawing.Point(8, 197);
+            this.label_lockKey.AutoSize = true;
+            this.label_lockKey.Location = new System.Drawing.Point(14, 199);
             this.label_lockKey.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_lockKey.Name = "label_lockKey";
-            this.label_lockKey.Size = new System.Drawing.Size(86, 15);
+            this.label_lockKey.Size = new System.Drawing.Size(85, 13);
             this.label_lockKey.TabIndex = 29;
-            this.label_lockKey.Text = "Lock Input Key:";
-            this.label_lockKey.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label_lockKey.Text = "Lock Input Key :";
+            this.label_lockKey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // settingsTopCmb
             // 
-            this.settingsTopCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTopCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsTopCmb.FormattingEnabled = true;
             this.settingsTopCmb.Items.AddRange(new object[] {
@@ -727,7 +718,6 @@ namespace Nucleus.Coop
             // 
             // settingsStopCmb
             // 
-            this.settingsStopCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsStopCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsStopCmb.FormattingEnabled = true;
             this.settingsStopCmb.Items.AddRange(new object[] {
@@ -742,9 +732,8 @@ namespace Nucleus.Coop
             // 
             // settingsTopTxt
             // 
-            this.settingsTopTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsTopTxt.Location = new System.Drawing.Point(190, 101);
+            this.settingsTopTxt.Location = new System.Drawing.Point(188, 101);
             this.settingsTopTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsTopTxt.MaxLength = 1;
             this.settingsTopTxt.Name = "settingsTopTxt";
@@ -755,9 +744,8 @@ namespace Nucleus.Coop
             // 
             // settingsStopTxt
             // 
-            this.settingsStopTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsStopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsStopTxt.Location = new System.Drawing.Point(190, 77);
+            this.settingsStopTxt.Location = new System.Drawing.Point(188, 77);
             this.settingsStopTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsStopTxt.MaxLength = 1;
             this.settingsStopTxt.Name = "settingsStopTxt";
@@ -768,7 +756,6 @@ namespace Nucleus.Coop
             // 
             // settingsCloseCmb
             // 
-            this.settingsCloseCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsCloseCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.settingsCloseCmb.FormattingEnabled = true;
             this.settingsCloseCmb.Items.AddRange(new object[] {
@@ -783,10 +770,9 @@ namespace Nucleus.Coop
             // 
             // plus4
             // 
-            this.plus4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus4.AutoSize = true;
             this.plus4.ForeColor = System.Drawing.Color.Black;
-            this.plus4.Location = new System.Drawing.Point(174, 103);
+            this.plus4.Location = new System.Drawing.Point(172, 103);
             this.plus4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus4.Name = "plus4";
             this.plus4.Size = new System.Drawing.Size(13, 13);
@@ -796,10 +782,9 @@ namespace Nucleus.Coop
             // 
             // plus3
             // 
-            this.plus3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus3.AutoSize = true;
             this.plus3.ForeColor = System.Drawing.Color.Black;
-            this.plus3.Location = new System.Drawing.Point(174, 78);
+            this.plus3.Location = new System.Drawing.Point(172, 78);
             this.plus3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus3.Name = "plus3";
             this.plus3.Size = new System.Drawing.Size(13, 13);
@@ -809,10 +794,9 @@ namespace Nucleus.Coop
             // 
             // plus2
             // 
-            this.plus2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus2.AutoSize = true;
             this.plus2.ForeColor = System.Drawing.Color.Black;
-            this.plus2.Location = new System.Drawing.Point(174, 55);
+            this.plus2.Location = new System.Drawing.Point(172, 55);
             this.plus2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus2.Name = "plus2";
             this.plus2.Size = new System.Drawing.Size(13, 13);
@@ -822,39 +806,41 @@ namespace Nucleus.Coop
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(0, 102);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(5, 103);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 15);
+            this.label4.Size = new System.Drawing.Size(94, 13);
             this.label4.TabIndex = 24;
-            this.label4.Text = "Toggle Top Most:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label4.Text = "Toggle Top Most :";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(14, 78);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(24, 79);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 15);
+            this.label3.Size = new System.Drawing.Size(75, 13);
             this.label3.TabIndex = 22;
-            this.label3.Text = "Stop Session:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label3.Text = "Stop Session :";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(11, 54);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 55);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 15);
+            this.label1.Size = new System.Drawing.Size(81, 13);
             this.label1.TabIndex = 20;
-            this.label1.Text = "Close Nucleus:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Text = "Close Nucleus :";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // settingsCloseHKTxt
             // 
-            this.settingsCloseHKTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsCloseHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsCloseHKTxt.Location = new System.Drawing.Point(190, 53);
+            this.settingsCloseHKTxt.Location = new System.Drawing.Point(188, 53);
             this.settingsCloseHKTxt.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCloseHKTxt.MaxLength = 1;
             this.settingsCloseHKTxt.Name = "settingsCloseHKTxt";

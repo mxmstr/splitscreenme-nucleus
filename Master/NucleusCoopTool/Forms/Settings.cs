@@ -163,9 +163,7 @@ namespace Nucleus.Coop
                 settingsCloseBtn.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
             }
 
-
             ResumeLayout();
-
 
             if (mf.mouseClick)
             {
@@ -409,6 +407,8 @@ namespace Nucleus.Coop
             DPIManager.Unregister(this);
         }
 
+        private bool scaled = false;
+
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -417,46 +417,53 @@ namespace Nucleus.Coop
                 return;
             }
 
-            SuspendLayout();
-
-            if (scale > 1.0F)
+            if (!scaled)
             {
-                float newFontSize = Font.Size * scale;
-                foreach (Control c in hotkeyBox.Controls)
+                SuspendLayout();
+
+                if (scale > 1.0F)
                 {
-                    if (c.GetType() == typeof(Label))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    float newFontSize = Font.Size * scale;
+                    foreach (Control c in hotkeyBox.Controls)
+                    {                     
+                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                        {
+                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                            //c.Size = new Size(c.Width, (c.Height + 25) * (int)scale);
+                        }
+
+                        if (c.GetType() == typeof(Label))
+                        {
+                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                            if (c.Text != ("+"))
+                            {
+                                c.Location = new Point(settingsFocusCmb.Left - c.Width, c.Location.Y);
+                            }
+                        }
                     }
 
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                    foreach (Control c in Controls)
                     {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        c.Size = new Size(c.Width, (c.Height + 25) * (int)scale);
+                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                        {
+                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                        }
+                        else if (c.GetType() == typeof(Button))
+                        {
+                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
                     }
+
+                    nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
-                foreach (Control c in Controls)
-                {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
-                    {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                    }
-                    else if (c.GetType() == typeof(Button))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-                }
-
-                nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                settingLabel_Container.Location = new Point((Width / 2) - (settingLabel_Container.Width / 2), settingLabel_Container.Location.Y);
+                // password_Label.Location = new Point((passwordPanel.Width / 2) - (password_Label.Width / 2), password_Label.Location.Y);
+                label38.Location = new Point((hotkeyBox.Width / 2) - (label38.Width / 2), label38.Location.Y);
+                scaled = true;
+                ResumeLayout();
             }
-
-            settingLabel_Container.Location = new Point((Width / 2) - (settingLabel_Container.Width / 2), settingLabel_Container.Location.Y);
-            // password_Label.Location = new Point((passwordPanel.Width / 2) - (password_Label.Width / 2), password_Label.Location.Y);
-            label38.Location = new Point((hotkeyBox.Width / 2) - (label38.Width / 2), label38.Location.Y);
-
-            ResumeLayout();
         }
 
         private void num_KeyPress(object sender, KeyPressEventArgs e)
@@ -635,6 +642,5 @@ namespace Nucleus.Coop
                 mainForm.Xinput_S_Setup.Visible = false;
             }
         }
-
     }
 }

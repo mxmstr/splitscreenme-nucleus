@@ -269,6 +269,8 @@ namespace Nucleus.Coop
             ChangeOption(check.Tag, check.Checked);
         }
 
+        private bool scaled = false;
+
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -277,7 +279,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (scale > 1.0F)
+            if (scale > 1.0F && !scaled)
             {
                 float newFontSize = 7 * scale;
 
@@ -290,6 +292,8 @@ namespace Nucleus.Coop
                         ResumeLayout();
                     }
                 }
+
+                scaled = true;
             }
 
         }

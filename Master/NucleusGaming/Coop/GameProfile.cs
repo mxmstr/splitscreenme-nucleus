@@ -89,12 +89,12 @@ namespace Nucleus.Gaming.Coop
 
         public static List<string> RawMouseDeviceHandles = new List<string>();
 
-        private static bool isNew = true;
-        public static bool IsNew
-        {
-            get => isNew;
-            set => isNew = value;
-        }
+        //private static bool isNew = true;
+        //public static bool IsNew
+        //{
+        //    get => isNew;
+        //    set => isNew = value;
+        //}
 
         private static int hWndInterval;
         public static int HWndInterval
@@ -311,7 +311,7 @@ namespace Nucleus.Gaming.Coop
             network = "Automatic";
             ModeText = "Creation Mode";
             notes = string.Empty;
-            isNew = true;
+            //isNew = true;
             hWndInterval = 0;
             profileToSave = 0;
             totalPlayers = 0;
@@ -565,7 +565,7 @@ namespace Nucleus.Gaming.Coop
             totalPlayers = JplayersInfos.Count();
             createNewProfile = false;
             ModeText = "Edition Mode";
-            isNew = false;
+            //isNew = false;
 
             string mod1 = string.Empty;
             string mod2 = " Loaded";
@@ -677,7 +677,7 @@ namespace Nucleus.Gaming.Coop
 
             JObject JAudioSettings = new JObject(new JProperty("CustomSettings", audioCustomSettings), new JProperty("DefaultSettings", audioDefaultSettings));
 
-            List<PlayerInfo> players = (List<PlayerInfo>)profile.PlayerData.OrderBy(c => c.PlayerID).ToList();//need to do this cause sometimes it's reversed
+            List<PlayerInfo> players = (List<PlayerInfo>)profile.PlayerData.OrderBy(c => c.PlayerID).ToList();//need to do this because sometimes it's reversed
             List<JObject> playersInfos = new List<JObject>();//Players object
 
             for (int i = 0; i < players.Count(); i++)//build per players object

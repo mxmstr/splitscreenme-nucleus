@@ -352,6 +352,8 @@ namespace Nucleus.Coop
             DPIManager.Unregister(this);
         }
 
+        private bool scaled = false;
+
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -359,87 +361,90 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
-
-            SuspendLayout();
-
-            if (scale > 1.0F)
+            if (!scaled)
             {
-                float newFontSize = Font.Size * scale;
+                SuspendLayout();
 
-                foreach (Control c in sharedTab.Controls)
+                if (scale > 1.0F)
                 {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
+                    float newFontSize = Font.Size * scale;
+
+                    foreach (Control c in sharedTab.Controls)
                     {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
+                        {
+                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
                     }
+
+                    foreach (Control c in playersTab.Controls)
+                    {
+                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
+                        {
+                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                        }
+                        else if (c.GetType() == typeof(Button))
+                        {
+                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+                    }
+
+                    foreach (Control c in processorTab.Controls)
+                    {
+                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
+                        {
+                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                        }
+                        else if (c.GetType() == typeof(Button))
+                        {
+                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+                    }
+
+                    foreach (Control c in audioTab.Controls)
+                    {
+                        if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
+                        {
+                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                        }
+                        else if (c.GetType() == typeof(Panel))
+                        {
+                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+
+                        else if (c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton) || c.GetType() == typeof(Button))
+                        {
+                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+                    }
+
+                    foreach (Control c in audioCustomSettingsBox.Controls)
+                    {
+                        if (c.GetType() == typeof(Label))
+                        {
+                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+
+                        if (c.GetType() == typeof(ComboBox))
+                        {
+                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+                    }
+
+                    notes_text.Size = new Size((int)(260 * scale), (int)(81 * scale));
+                    def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
                 }
 
-                foreach (Control c in playersTab.Controls)
-                {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
-                    {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                    }
-                    else if (c.GetType() == typeof(Button))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-                }
-
-                foreach (Control c in processorTab.Controls)
-                {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
-                    {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                    }
-                    else if (c.GetType() == typeof(Button))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-                }
-
-                foreach (Control c in audioTab.Controls)
-                {
-                    if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
-                    {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                    }
-                    else if (c.GetType() == typeof(Panel))
-                    {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-
-                    else if (c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton) || c.GetType() == typeof(Button))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-                }
-
-                foreach (Control c in audioCustomSettingsBox.Controls)
-                {
-                    if (c.GetType() == typeof(Label))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-
-                    if (c.GetType() == typeof(ComboBox))
-                    {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    }
-                }
-
-                notes_text.Size = new Size((int)(260* scale), (int)(81 * scale));
-                def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
+                modeLabel.Size = new Size(Width - closeBtnPicture.Right, modeLabel.Height);
+                modeLabel.Location = new Point(closeBtnPicture.Right, modeLabel.Location.Y);
+                audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
+                scaled = true;
+                ResumeLayout();
             }
-
-            modeLabel.Size = new Size(Width - closeBtnPicture.Right, modeLabel.Height);
-            modeLabel.Location = new Point(closeBtnPicture.Right, modeLabel.Location.Y);
-            audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
-            ResumeLayout();
         }
 
         private void num_KeyPress(object sender, KeyPressEventArgs e)
