@@ -216,7 +216,6 @@ namespace Nucleus.Coop.Forms
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
-        private bool scaled = false;
 
         public new void UpdateSize(float scale)
         {
@@ -225,24 +224,21 @@ namespace Nucleus.Coop.Forms
                 DPIManager.Unregister(this);
                 return;
             }
-            if (!scaled)
-            {
-                SuspendLayout();
+            SuspendLayout();
 
-                if (scale > 1.0F)
+            if (scale > 1.0F)
+            {
+                float newFontSize = Font.Size * scale;
+                foreach (Control c in Controls)
                 {
-                    float newFontSize = Font.Size * scale;
-                    foreach (Control c in Controls)
+                    if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox) ^ c.GetType() == typeof(Panel) ^ c.GetType() == typeof(ListView))
                     {
-                        if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox) ^ c.GetType() == typeof(Panel) ^ c.GetType() == typeof(ListView))
-                        {
-                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                        }
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                     }
                 }
-                scaled = true;
-                ResumeLayout();
             }
+
+            ResumeLayout();
         }
         //private int cover_index = 0;
 

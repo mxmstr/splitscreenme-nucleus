@@ -53,7 +53,6 @@ namespace Nucleus.Coop
 
         public void Main_Showcase()
         {
-
             ScriptDownloader scriptDownloader = new ScriptDownloader(mainForm);
             ImageList showcaseCovers = new ImageList
             {

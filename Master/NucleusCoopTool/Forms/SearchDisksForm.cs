@@ -190,8 +190,6 @@ namespace Nucleus.Coop
             DPIManager.Update(this);
         }  
 
-        private bool scaled = false;
-
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -199,55 +197,54 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
-            if (!scaled)
+
+            SuspendLayout();
+
+            if (scale > 1.0F)
             {
-                SuspendLayout();
+                var heightField = typeof(CheckedListBox).GetField(
+                "scaledListItemBordersHeight",
+                BindingFlags.NonPublic | BindingFlags.Instance
+                );
 
-                if (scale > 1.0F)
-                {
-                    var heightField = typeof(CheckedListBox).GetField(
-                    "scaledListItemBordersHeight",
-                    BindingFlags.NonPublic | BindingFlags.Instance
-                    );
+                var addedHeight = 10 * (int)scale;
 
-                    var addedHeight = 10 * (int)scale;
-
-                    heightField.SetValue(disksBox, addedHeight);
-                    heightField.SetValue(checkboxFoundGames, addedHeight);
-                }
-                else
-                {
-                    var heightField = typeof(CheckedListBox).GetField(
-                   "scaledListItemBordersHeight",
-                   BindingFlags.NonPublic | BindingFlags.Instance
-                   );
-
-                    var addedHeight = 6;
-
-                    heightField.SetValue(disksBox, addedHeight);
-                    heightField.SetValue(checkboxFoundGames, addedHeight);
-
-                }
-
-                float newFontSize = Font.Size * scale;
-                float textBoxFontSize = (Font.Size + 4) * scale;
-
-                foreach (Control c in Controls)
-                {
-                    if (c.GetType() == typeof(CheckedListBox))
-                    {
-                        c.Font = new Font(main.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                    }
-
-                    if (c.GetType() == typeof(TextBox))
-                    {
-                        c.Font = new Font(main.customFont, textBoxFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                    }
-                }
-
-                scaled = true;
-                ResumeLayout();
+                heightField.SetValue(disksBox, addedHeight);
+                heightField.SetValue(checkboxFoundGames, addedHeight);
             }
+            else
+            {
+                var heightField = typeof(CheckedListBox).GetField(
+               "scaledListItemBordersHeight",
+               BindingFlags.NonPublic | BindingFlags.Instance
+               );
+
+                var addedHeight = 6;
+
+                heightField.SetValue(disksBox, addedHeight);
+                heightField.SetValue(checkboxFoundGames, addedHeight);
+
+            }
+
+            float newFontSize = Font.Size * scale;
+            float textBoxFontSize = (Font.Size + 4) * scale;
+
+            foreach (Control c in Controls)
+            {
+                if (c.GetType() == typeof(CheckedListBox))
+                {
+                    c.Font = new Font(main.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                }
+
+                if (c.GetType() == typeof(TextBox))
+                {
+                    c.Font = new Font(main.customFont, textBoxFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                }
+            }
+
+
+            ResumeLayout();
+
         }
 
         protected override void WndProc(ref Message m)

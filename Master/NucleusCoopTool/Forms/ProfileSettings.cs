@@ -289,10 +289,10 @@ namespace Nucleus.Coop
             //network setting
             RefreshCmbNetwork();
 
-            rainbowTimer = new System.Windows.Forms.Timer();
-            rainbowTimer.Interval = (25); //millisecond                   
-            rainbowTimer.Tick += new EventHandler(rainbowTimerTick);
-            rainbowTimer.Start();
+            //rainbowTimer = new System.Windows.Forms.Timer();
+            //rainbowTimer.Interval = (25); //millisecond                   
+            //rainbowTimer.Tick += new EventHandler(rainbowTimerTick);
+            //rainbowTimer.Start();
 
             sharedTab.Parent = this;
             sharedTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
@@ -315,7 +315,7 @@ namespace Nucleus.Coop
             RefreshAudioList();
             //UpdateProfileSettingsValues(false);
 
-            string path = Path.Combine(Application.StartupPath, $"Games Profiles\\Nicknames.json");
+            string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
             if (File.Exists(path))
             {
                 string jsonString = File.ReadAllText(path);
@@ -328,7 +328,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            string idspath = Path.Combine(Application.StartupPath, $"Games Profiles\\SteamIds.json");
+            string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
             if (File.Exists(idspath))
             {
                 string jsonString = File.ReadAllText(idspath);
@@ -352,7 +352,6 @@ namespace Nucleus.Coop
             DPIManager.Unregister(this);
         }
 
-        private bool scaled = false;
 
         public void UpdateSize(float scale)
         {
@@ -361,90 +360,89 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
-            if (!scaled)
+
+            SuspendLayout();
+
+            if (scale > 1.0F)
             {
-                SuspendLayout();
+                float newFontSize = Font.Size * scale;
 
-                if (scale > 1.0F)
+                foreach (Control c in sharedTab.Controls)
                 {
-                    float newFontSize = Font.Size * scale;
-
-                    foreach (Control c in sharedTab.Controls)
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
                     {
-                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
-                        {
-                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
-
-                    foreach (Control c in playersTab.Controls)
-                    {
-                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
-                        {
-                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                        }
-                        else if (c.GetType() == typeof(Button))
-                        {
-                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-                    }
-
-                    foreach (Control c in processorTab.Controls)
-                    {
-                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
-                        {
-                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                        }
-                        else if (c.GetType() == typeof(Button))
-                        {
-                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-                    }
-
-                    foreach (Control c in audioTab.Controls)
-                    {
-                        if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
-                        {
-                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                        }
-                        else if (c.GetType() == typeof(Panel))
-                        {
-                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-
-                        else if (c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton) || c.GetType() == typeof(Button))
-                        {
-                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-                    }
-
-                    foreach (Control c in audioCustomSettingsBox.Controls)
-                    {
-                        if (c.GetType() == typeof(Label))
-                        {
-                            c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-
-                        if (c.GetType() == typeof(ComboBox))
-                        {
-                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-                    }
-
-                    notes_text.Size = new Size((int)(260 * scale), (int)(81 * scale));
-                    def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
                 }
 
-                modeLabel.Size = new Size(Width - closeBtnPicture.Right, modeLabel.Height);
-                modeLabel.Location = new Point(closeBtnPicture.Right, modeLabel.Location.Y);
-                audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
-                scaled = true;
-                ResumeLayout();
+                foreach (Control c in playersTab.Controls)
+                {
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                    }
+                    else if (c.GetType() == typeof(Button))
+                    {
+                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+
+                foreach (Control c in processorTab.Controls)
+                {
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) && (c.Name != "def_sid_textBox" || c.Name != "def_sid_textBox_container"))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                    }
+                    else if (c.GetType() == typeof(Button))
+                    {
+                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+
+                foreach (Control c in audioTab.Controls)
+                {
+                    if (c.GetType() == typeof(NumericUpDown) || c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                    }
+                    else if (c.GetType() == typeof(Panel))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+
+                    else if (c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton) || c.GetType() == typeof(Button))
+                    {
+                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+
+                foreach (Control c in audioCustomSettingsBox.Controls)
+                {
+                    if (c.GetType() == typeof(Label))
+                    {
+                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+
+                    if (c.GetType() == typeof(ComboBox))
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+
+                notes_text.Size = new Size((int)(260 * scale), (int)(81 * scale));
+                def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
             }
+
+            modeLabel.Size = new Size(Width - closeBtnPicture.Right, modeLabel.Height);
+            modeLabel.Location = new Point(closeBtnPicture.Right, modeLabel.Location.Y);
+            audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
+
+            ResumeLayout();
+
         }
 
         private void num_KeyPress(object sender, KeyPressEventArgs e)
@@ -673,9 +671,9 @@ namespace Nucleus.Coop
 
         public void SettingsSaveBtn_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"Games Profiles")))
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles")))
             {
-                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"Games Profiles"));
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles"));
             }
 
             GameProfile.Nicknames.Clear();
@@ -689,7 +687,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            string path = Path.Combine(Application.StartupPath, $"Games Profiles\\Nicknames.json");
+            string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -724,7 +722,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            string idspath = Path.Combine(Application.StartupPath, $"Games Profiles\\SteamIds.json");
+            string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
             using (FileStream stream = new FileStream(idspath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -1124,20 +1122,20 @@ namespace Nucleus.Coop
 
         private void rainbowTimerTick(Object Object, EventArgs EventArgs)
         {
-            if (!loop)
-            {
-                if (r < 90 && b < 90) { r += 3; b += 3; };
-                if (b >= 90 && r >= 90)
-                    loop = true;
-            }
-            else
-            {
-                if (r > 0 && b > 0) { r -= 3; b -= 3; }
-                if (b <= 0 && r <= 0)
-                    loop = false;
-            }
+            //if (!loop)
+            //{
+            //    if (r < 90 && b < 90) { r += 3; b += 3; };
+            //    if (b >= 90 && r >= 90)
+            //        loop = true;
+            //}
+            //else
+            //{
+            //    if (r > 0 && b > 0) { r -= 3; b -= 3; }
+            //    if (b <= 0 && r <= 0)
+            //        loop = false;
+            //}
 
-            saveBtn.BackColor = Color.FromArgb(b, 0, r, 0);
+            //saveBtn.BackColor = Color.FromArgb(b, 0, r, 0);
         }
 
         private void ProfileSettings_Paint(object sender, PaintEventArgs e)

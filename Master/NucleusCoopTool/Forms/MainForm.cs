@@ -552,7 +552,7 @@ namespace Nucleus.Coop
             RefreshGames();
         }
 
-        private bool scaled = false;
+      
 
         public new void UpdateSize(float scale)
         {
@@ -561,8 +561,7 @@ namespace Nucleus.Coop
                 DPIManager.Unregister(this);
                 return;
             }
-            if (!scaled)
-            {
+            
                 SuspendLayout();
 
                 float newFontSize = Font.Size * scale;
@@ -586,9 +585,9 @@ namespace Nucleus.Coop
                 float favoriteY = favoriteOnlyLabel.Right + (5 * scale);
                 favoriteOnly.Location = new Point((int)(favoriteY), mainButtonFrame.Height / 2 - (favoriteOnly.Height / 2) * (int)scale);
                 cursScale = scale;
-                scaled = true;
+               
                 ResumeLayout();
-            }
+          
         }
 
         protected override void OnShown(EventArgs e)
@@ -1423,7 +1422,8 @@ namespace Nucleus.Coop
                     hubShowcase.Dispose();
                 }
 
-                positionsControl.gameProfilesMenu.Visible = false;
+                positionsControl.gameProfilesList.Visible = false;
+                positionsControl.gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
                 positionsControl.textZoomContainer.Visible = false;
 
                 stepPanelPictureBox.Visible = false;
@@ -2226,7 +2226,7 @@ namespace Nucleus.Coop
                     for (int i = 1; i < gameContextMenuStrip.Items.Count; i++)
                     {
                         gameContextMenuStrip.Items[i].Visible = true;
-
+                          
                         if (string.IsNullOrEmpty(currentGameInfo.Game.UserProfileConfigPath) && string.IsNullOrEmpty(currentGameInfo.Game.UserProfileSavePath) && string.IsNullOrEmpty(currentGameInfo.Game.DocumentsConfigPath) && string.IsNullOrEmpty(currentGameInfo.Game.DocumentsSavePath))
                         {
                             if (i == 7)
@@ -2301,7 +2301,8 @@ namespace Nucleus.Coop
                                                 }
 
                                                 (gameContextMenuStrip.Items[8] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items[9] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items[9] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));                                    
+                                                                                    
                                             }
                                         }
                                     }
@@ -2480,6 +2481,23 @@ namespace Nucleus.Coop
                             gameContextMenuStrip.Items[20].ForeColor = StripMenuUpdateItemFont;
                             gameContextMenuStrip.Items[20].BackColor = StripMenuUpdateItemBack;
                         }
+
+                        
+                    }
+
+                    for (int i = 1; i < gameContextMenuStrip.Items.Count; i++)
+                    {
+                        if ((gameContextMenuStrip.Items[i] as ToolStripMenuItem) != null)
+                        {
+                            if ((gameContextMenuStrip.Items[i] as ToolStripMenuItem).DropDownItems.Count > 0)
+                            {
+                                for (int d = 0; d < (gameContextMenuStrip.Items[i] as ToolStripMenuItem).DropDownItems.Count; d++)
+                                {
+                                    (gameContextMenuStrip.Items[i] as ToolStripMenuItem).DropDownItems[d].BackColor = MenuStripBackColor;
+                                    (gameContextMenuStrip.Items[i] as ToolStripMenuItem).DropDownItems[d].ForeColor = MenuStripFontColor;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -2494,7 +2512,7 @@ namespace Nucleus.Coop
             }
         }
 
-        //https://stackoverflow.com/questions/9260303/how-to-change-menu-hover-color
+        ///https://stackoverflow.com/questions/9260303/how-to-change-menu-hover-color
         private class MyRenderer : ToolStripProfessionalRenderer
         {
             public MyRenderer() : base(new MyColors()) { }
@@ -2511,8 +2529,9 @@ namespace Nucleus.Coop
 
             public override Color MenuItemBorder
             {
-                get {return Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); }
+                get { return Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); }
             }
+
         }
 
         private void gameContextMenuStrip_Opened(object sender, EventArgs e)
@@ -2974,6 +2993,7 @@ namespace Nucleus.Coop
         {
             linksPanel.Visible = false;
             ProfilesList.profilesList.Visible = false;
+            positionsControl.gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
             btn_Links.BackgroundImage = new Bitmap(theme + "title_dropdown_closed.png");
 
             if (third_party_tools_container.Visible)
@@ -3149,18 +3169,21 @@ namespace Nucleus.Coop
         {
             if (GameProfile.profilesPathList.Count == 0)
             {
-                positionsControl.gameProfilesMenu.Visible = false;
+                positionsControl.gameProfilesList.Visible = false;
+                positionsControl.gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
                 return;
             }
 
-            if (positionsControl.gameProfilesMenu.Visible)
+            if (positionsControl.gameProfilesList.Visible)
             {
-                positionsControl.gameProfilesMenu.Visible = false;
+                positionsControl.gameProfilesList.Visible = false;
+                positionsControl.gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
 
             }
             else
             {
-                positionsControl.gameProfilesMenu.Visible = true;
+                positionsControl.gameProfilesList.Visible = true;
+                positionsControl.gameProfiles_btn.Image = new Bitmap(theme + "profiles_list_opened.png");
             }
         }
 

@@ -200,8 +200,6 @@ namespace Nucleus.Coop.Forms
             DPIManager.Update(this);
         }
 
-        private bool scaled = false;
-
         public new void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -210,24 +208,21 @@ namespace Nucleus.Coop.Forms
                 return;
             }
 
-            if (!scaled)
-            {
-                SuspendLayout();
+            SuspendLayout();
 
-                if (scale > 1.0F)
+            if (scale > 1.0F)
+            {
+                float newFontSize = Font.Size * scale;
+                foreach (Control c in Controls)
                 {
-                    float newFontSize = Font.Size * scale;
-                    foreach (Control c in Controls)
+                    if (c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(RichTextBox) ^ c.GetType() == typeof(PictureBox))
                     {
-                        if (c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(RichTextBox) ^ c.GetType() == typeof(PictureBox))
-                        {
-                            c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                        }
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                     }
                 }
-                scaled = true;
-                ResumeLayout();
             }
+
+            ResumeLayout();
         }
 
         public string Get(string uri)

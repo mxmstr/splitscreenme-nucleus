@@ -259,7 +259,8 @@ namespace Nucleus.Coop.Forms
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
-        private bool scaled = false;
+
+        //private bool scaled = false;
 
         public void UpdateSize(float scale)
         {
@@ -268,57 +269,54 @@ namespace Nucleus.Coop.Forms
                 DPIManager.Unregister(this);
                 return;
             }
-         
-            if (!scaled)
+
+            SuspendLayout();
+
+            this.scale = scale;
+
+            if (scale > 1.0F)
             {
-                SuspendLayout();
+                float newFontSize = 7.25F * scale;
 
-                this.scale = scale;
-
-                if (scale > 1.0F)
+                foreach (Control c in shortContainer.Controls)
                 {
-                    float newFontSize = 7.25F * scale;
-
-                    foreach (Control c in shortContainer.Controls)
+                    if (c.GetType() == typeof(Label))
                     {
-                        if (c.GetType() == typeof(Label))
+                        c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        if (c.Text != ("+"))
                         {
-                            c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                            if (c.Text != ("+"))
-                            {
-                                c.Location = new Point(switch1.Left - c.Width, c.Location.Y);
-                            }
-                        }
-
-                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
-                        {
-                            c.Font = new Font(c.Font.FontFamily, c.Font.Size * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                           
+                            c.Location = new Point(switch1.Left - c.Width, c.Location.Y);
                         }
                     }
 
-                    foreach (Control c in UINavContainer.Controls)
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
                     {
-                        if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
-                        {
-                            c.Font = new Font(c.Font.FontFamily, c.Font.Size * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                            // c.Size = new Size(c.Width, (c.Height + 25) * (int)scale);
-                        }
-
-                        if (c.GetType() == typeof(Label))
-                        {
-                            c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                            if (c.Text !=("+"))
-                            {
-                                c.Location = new Point(switch10.Left - c.Width, c.Location.Y);
-                            }
-                        }
+                        c.Font = new Font(c.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
                     }
                 }
-                scaled = true;
-                ResumeLayout();
+
+                foreach (Control c in UINavContainer.Controls)
+                {
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                    {
+                        c.Font = new Font(c.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+
+                    if (c.GetType() == typeof(Label))
+                    {
+                        c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        if (c.Text != ("+"))
+                        {
+                            c.Location = new Point(switch10.Left - c.Width, c.Location.Y);
+                        }
+                    }
+
+                }
             }
+
+            ResumeLayout();
+
         }
 
         private void RefreshTimerTick(Object Object, EventArgs EventArgs)

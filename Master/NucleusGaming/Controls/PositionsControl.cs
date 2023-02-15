@@ -60,7 +60,7 @@ namespace Nucleus.Coop
         private bool UseSetupScreenBorder;
         private bool UseLayoutSelectionBorder;
         private bool UseSetupScreenImage;
-        private bool appStart = false;
+        private bool scaled = false;
         public override bool CanProceed => canProceed;
         public override bool CanPlay => false;
         //public bool CanUpdate = true;
@@ -81,8 +81,8 @@ namespace Nucleus.Coop
         public PictureBox instruction_btn;
         private PictureBox instructionImg;
         public PictureBox profileSettings_btn;
-        public Label gameProfiles_btn;
-        public ProfilesList gameProfilesMenu = new ProfilesList();
+        public PictureBox gameProfiles_btn;
+        public ProfilesList gameProfilesList = new ProfilesList();
         private ImageAttributes flashImageAttributes;
 
         private Bitmap instructionCloseImg;
@@ -189,7 +189,7 @@ namespace Nucleus.Coop
             players8 = new Bitmap(theme + "8players.png");
             players16 = new Bitmap(theme + "16players.png");
             customLayout = new Bitmap(theme + "customLayout.png");
-            plyrsSettingsIcon = new Bitmap(theme + "player_settings.png");
+            plyrsSettingsIcon = new Bitmap(theme + "profile_settings.png");
 
             instruction_btn_Tooltip = new ToolTip();
             instruction_btn = new PictureBox();//using a button cause focus issues
@@ -204,7 +204,7 @@ namespace Nucleus.Coop
             instruction_btn.Cursor = hand_Cursor;
             instruction_btn.Click += new EventHandler(this.instruction_Click);
             instruction_btn_Tooltip.SetToolTip(instruction_btn, "How to setup.");
-
+            //instruction_btn.BorderStyle = BorderStyle.FixedSingle;
             instructionImg = new PictureBox()
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
@@ -241,24 +241,20 @@ namespace Nucleus.Coop
             profileSettings_btn.SizeMode = PictureBoxSizeMode.StretchImage;
             profileSettings_btn.Cursor = hand_Cursor;
             profileSettings_btn.Font = instruction_btn.Font;
+            //profileSettings_btn.BorderStyle = BorderStyle.FixedSingle;
             profileSettings_Tooltip.SetToolTip(profileSettings_btn, "Game profile settings.");
 
             gameProfiles_btnTooltip = new ToolTip();
-            gameProfiles_btn = new Label();//using a button cause focus issues
+            gameProfiles_btn = new PictureBox();//using a button cause focus issues
             gameProfiles_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             gameProfiles_btn.AutoSize = false;
-            gameProfiles_btn.BackgroundImageLayout = ImageLayout.Zoom;
-            
-            gameProfiles_btn.BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[0]),
-                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
-                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
-                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[3]));
-
-            gameProfiles_btn.ForeColor = Color.White;
-            gameProfiles_btn.TextAlign = ContentAlignment.MiddleCenter;
+            gameProfiles_btn.SizeMode = PictureBoxSizeMode.StretchImage;
+            gameProfiles_btn.BackColor = Color.Transparent;
+            gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
             gameProfiles_btn.Text = "Profiles List";
             gameProfiles_btn.Cursor = hand_Cursor;
-            gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, "List of game profiles.");
+            gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, "Game profiles list.");
+
             ResumeLayout();
 
             colors = new Brush[]
@@ -277,7 +273,7 @@ namespace Nucleus.Coop
             Controls.Add(instruction_btn);
             Controls.Add(profileSettings_btn);
             Controls.Add(gameProfiles_btn);
-            Controls.Add(gameProfilesMenu);
+            Controls.Add(gameProfilesList);
             Controls.Add(instructionImg);
 
             //Flash image attributes
@@ -333,7 +329,7 @@ namespace Nucleus.Coop
             }
 
             SuspendLayout();
-            if (!appStart)
+            if (!scaled)
             {
                 newplayerCustomFontSize = playerCustomFont.Size;
                 handlerNoteZoom.Font = new Font(customFont, 14f * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
@@ -343,7 +339,7 @@ namespace Nucleus.Coop
 
                 instruction_btn.Width = (int)instructionW;
                 instruction_btn.Height = (int)instructionH;
-                instruction_btn.Location = new Point((Width - instruction_btn.Width) - 5, 5);
+                instruction_btn.Location = new Point((Width - instruction_btn.Width), 5);
 
                 textZoomContainer.Size = new Size(Width - (int)(60 * scale), Height - (int)(50 * scale));
                 textZoomContainer.Location = new Point(Width / 2 - textZoomContainer.Width / 2, instruction_btn.Height + (int)(10 * scale));
@@ -351,16 +347,17 @@ namespace Nucleus.Coop
                 handlerNoteZoom.Location = new Point(0, 20);
 
                 profileSettings_btn.Size = instruction_btn.Size;
-                profileSettings_btn.Location = new Point(((instruction_btn.Left - profileSettings_btn.Width) - 5), instruction_btn.Top);
+                profileSettings_btn.Location = new Point(((instruction_btn.Left - profileSettings_btn.Width) - 3), instruction_btn.Top);
 
-                gameProfiles_btn.Font = new Font(customFont, 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
+                //gameProfiles_btn.Font = new Font(customFont, 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
 
-                gameProfiles_btn.Size = new Size((int)(100 * scale), (int)(20 * scale));
+                gameProfiles_btn.Size = instruction_btn.Size;
 
-                gameProfiles_btn.Location = new Point(((profileSettings_btn.Left - gameProfiles_btn.Width) - 10), (profileSettings_btn.Location.Y + profileSettings_btn.Height / 2) - gameProfiles_btn.Height / 2);
-                gameProfilesMenu.Location = new Point(gameProfiles_btn.Left, gameProfiles_btn.Bottom);
-                gameProfilesMenu.UpdateSize(scale);
-                appStart = true;
+                gameProfiles_btn.Location = new Point(profileSettings_btn.Left - gameProfiles_btn.Width-3, instruction_btn.Location.Y);
+                gameProfilesList.UpdateSize(scale);
+                gameProfilesList.Location = new Point((gameProfiles_btn.Left - (int)((gameProfilesList.Width)*scale))-5, gameProfiles_btn.Location.Y + gameProfiles_btn.Height/2);
+               
+                scaled = true;
                 this.scale = scale;
             }
             ResumeLayout();
@@ -1616,6 +1613,13 @@ namespace Nucleus.Coop
 
             Graphics g = e.Graphics;
 
+            //if (gameProfilesList.Visible)
+            //{
+            //    Pen listPen = new Pen(Color.White, 2);
+            //    Rectangle test = new Rectangle(gameProfilesList.Location.X - 1, gameProfilesList.Location.Y - 1, gameProfilesList.Width + 2, gameProfilesList.Height + 2);
+            //    g.DrawRectangle(listPen, test);
+            //}
+
             if (totalBounds == Rectangle.Empty)//Avoid resizing conflicts with "OnSizeChange" event.
             {
                 GameProfile.currentProfile.Reset();
@@ -1754,23 +1758,23 @@ namespace Nucleus.Coop
                                 Rectangle ogScrUiBounds = GameProfile.AllScreens[j];
                                 Rectangle ogEditBounds = GameProfile.EditBounds[playerProfile];
 
-                                Vector2 ogscruiloc = new Vector2(ogScrUiBounds.X, ogScrUiBounds.Y);//original  screen ui location
-                                Vector2 ogpeb = new Vector2(ogEditBounds.X, ogEditBounds.Y);//original on ui screen player location(editbounds)
-                                Vector2 ogOnUIScrLoc = Vector2.Subtract(ogpeb, ogscruiloc);//relative og ui player loc on og player ui screen
+                                Vector2 ogScruiLoc = new Vector2(ogScrUiBounds.X, ogScrUiBounds.Y);///original screen ui location
+                                Vector2 ogpEb = new Vector2(ogEditBounds.X, ogEditBounds.Y);///original on ui screen player location(editbounds)
+                                Vector2 ogOnUIScrLoc = Vector2.Subtract(ogpEb, ogScruiLoc);///relative og ui player loc on og player ui screen
                                 float ratioEW = (float)ogScrUiBounds.Width / (float)scr.UIBounds.Width;
                                 float ratioEH = (float)ogScrUiBounds.Height / (float)scr.UIBounds.Height;
                                 info.EditBounds = new Rectangle(scr.UIBounds.X + (Convert.ToInt32(ogOnUIScrLoc.X / ratioEW)), scr.UIBounds.Y + (Convert.ToInt32(ogOnUIScrLoc.Y / ratioEH)), Convert.ToInt32(ogEditBounds.Width / ratioEW), Convert.ToInt32(ogEditBounds.Height / ratioEH));
 
                                 ///## Re-calcul & scale players monitor bounds if needed ##///
                                 Rectangle ogScr = GameProfile.OwnerDisplays[playerProfile];
-                                Rectangle ogmb = GameProfile.MonitorBounds[playerProfile];
+                                Rectangle ogMb = GameProfile.MonitorBounds[playerProfile];
 
-                                Vector2 Vogscr = new Vector2(ogScr.X, ogScr.Y);//original player screen location
-                                Vector2 Vogpmb = new Vector2(ogmb.X, ogmb.Y);//original on screen player location(monitorBounds)
-                                Vector2 VogOnScrLoc = Vector2.Subtract(Vogpmb, Vogscr);//relative og player loc on og player screen
+                                Vector2 ogscr = new Vector2(ogScr.X, ogScr.Y);///original player screen location
+                                Vector2 ogPMb = new Vector2(ogMb.X, ogMb.Y);///original on screen player location(monitorBounds)
+                                Vector2 VogOnScrLoc = Vector2.Subtract(ogPMb, ogscr);///relative og player loc on og player screen
                                 float ratioMW = (float)ogScr.Width / (float)scr.MonitorBounds.Width;
                                 float ratioMH = (float)ogScr.Height / (float)scr.MonitorBounds.Height;
-                                info.MonitorBounds = new Rectangle(scr.MonitorBounds.X + (Convert.ToInt32(VogOnScrLoc.X /ratioMW)), scr.MonitorBounds.Y + (Convert.ToInt32(VogOnScrLoc.Y / ratioMH)), Convert.ToInt32(ogmb.Width/ratioMW), Convert.ToInt32(ogmb.Height /ratioMH));
+                                info.MonitorBounds = new Rectangle(scr.MonitorBounds.X + (Convert.ToInt32(VogOnScrLoc.X /ratioMW)), scr.MonitorBounds.Y + (Convert.ToInt32(VogOnScrLoc.Y / ratioMH)), Convert.ToInt32(ogMb.Width/ratioMW), Convert.ToInt32(ogMb.Height /ratioMH));
 
                                 info.Nickname = GameProfile.Nicknames[playerProfile];
                                 info.PlayerID = GameProfile.PlayerIDs[playerProfile];
@@ -1956,7 +1960,7 @@ namespace Nucleus.Coop
                     }
                 }
             }
-
+           
             g.ResetClip();
 
             if (dragging && draggingScreen != -1)
@@ -1965,7 +1969,7 @@ namespace Nucleus.Coop
                 g.DrawRectangle(PositionPlayerScreenPen, draggingScreenRec);
                 g.DrawImage(draggingScreenImg, _draggingScreen);
             }
-          
+            
             //Console.WriteLine(TotalPlayers);    
         }
     }

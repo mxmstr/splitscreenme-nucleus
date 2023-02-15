@@ -256,7 +256,7 @@ namespace Nucleus.Gaming.Coop
 
         private static string GetProfilesPath()
         {
-            string path = Path.Combine(Application.StartupPath, $"Games Profiles\\{GameGUID}");
+            string path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}");
             if (!Directory.Exists(path))
             {
                 Console.WriteLine("No game profile found...");//Log.
@@ -332,7 +332,7 @@ namespace Nucleus.Gaming.Coop
             Label unload = new Label();
 
             positionsControl.ResetScreensTotalPlayers();
-            positionsControl.gameProfilesMenu.profileBtn_CheckedChanged(unload, null);
+            positionsControl.gameProfilesList.profileBtn_CheckedChanged(unload, null);
             positionsControl.loadedProfilePlayers.Clear();
 
             positionsControl.UpdatePlayers();
@@ -372,7 +372,7 @@ namespace Nucleus.Gaming.Coop
 
         public bool LoadUserProfile(int _profileToLoad)
         {
-            string path = Path.Combine(Application.StartupPath, $"Games Profiles\\{GameGUID}\\Profile[{_profileToLoad}].json");
+            string path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{_profileToLoad}].json");
 
             string jsonString = File.ReadAllText(path);
             Console.WriteLine(jsonString);
@@ -597,17 +597,17 @@ namespace Nucleus.Gaming.Coop
             if (profile.PlayerData.Count != totalPlayers || createNewProfile || profilesCount == 0)
             {
                 profilesCount++;//increase to set new profile name
-                path = Path.Combine(Application.StartupPath, $"Games Profiles\\{GameGUID}\\Profile[{profilesCount}].json");
+                path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profilesCount}].json");
                 Console.WriteLine("Creating new a game profile...");
             }
             else
             {
-                path = Path.Combine(Application.StartupPath, $"Games Profiles\\{GameGUID}\\Profile[{profileToSave}].json");
+                path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profileToSave}].json");
             }
 
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"Games Profiles\\{GameGUID}")))
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}")))
             {
-                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"Games Profiles\\{GameGUID}"));
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}"));
             }
 
             JObject options = new JObject();
