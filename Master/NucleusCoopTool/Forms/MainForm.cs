@@ -263,6 +263,12 @@ namespace Nucleus.Coop
                                                    int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[3]));
 
+               btn_Play.ForeColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "PlayButtonFont").Split(',')[0]),
+                                                  int.Parse(themeIni.IniReadValue("Colors", "PlayButtonFont").Split(',')[1]),
+                                                  int.Parse(themeIni.IniReadValue("Colors", "PlayButtonFont").Split(',')[2]),
+                                                  int.Parse(themeIni.IniReadValue("Colors", "PlayButtonFont").Split(',')[3]));
+
+
                 clientAreaPanel.BackgroundImage = new Bitmap(theme + "background.jpg");
                 mainButtonFrame.BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[0]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[1]),
@@ -554,7 +560,7 @@ namespace Nucleus.Coop
 
       
 
-        public new void UpdateSize(float scale)
+        public void UpdateSize(float scale)
         {
             if (IsDisposed)
             {
@@ -575,15 +581,14 @@ namespace Nucleus.Coop
                     }
                 }
 
-
                 btn_Play.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Bold, GraphicsUnit.Pixel, 0);
                 scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 scriptAuthorTxt.Size = new Size((int)(189 * scale), (int)(191 * scale));
                 favoriteOnlyLabel.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                favoriteOnlyLabel.Location = new Point(1, mainButtonFrame.Height / 2 - (favoriteOnlyLabel.Height / 2) * (int)scale);
+                favoriteOnlyLabel.Location = new Point(1, mainButtonFrame.Height / 2 - (favoriteOnlyLabel.Height / 2)/* * (int)scale*/);
                 favoriteOnly.Size = new Size(favoriteOnlyLabel.Height, favoriteOnlyLabel.Height);
                 float favoriteY = favoriteOnlyLabel.Right + (5 * scale);
-                favoriteOnly.Location = new Point((int)(favoriteY), mainButtonFrame.Height / 2 - (favoriteOnly.Height / 2) * (int)scale);
+                favoriteOnly.Location = new Point((int)(favoriteY), mainButtonFrame.Height / 2 - (favoriteOnly.Height / 2) /** (int)scale*/);
                 cursScale = scale;
                
                 ResumeLayout();
@@ -647,7 +652,7 @@ namespace Nucleus.Coop
         {
             if (positionsControl.isDisconnected)
             {
-                //DPIManager.ForceUpdate();
+                DPIManager.ForceUpdate();
                 positionsControl.isDisconnected = false;
             }
         }
@@ -822,7 +827,7 @@ namespace Nucleus.Coop
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Cutscenes_HotkeyID)
             {
-                //if (!Gaming.Coop.InputManagement.LockInput.IsLocked)// TODO add an option in settings to enable/disable ToggleCutScene if input devices are locked
+                //if (!Gaming.Coop.InputManagement.LockInput.IsLocked) //TODO add an option in settings to enable/disable ToggleCutScene if input devices are locked
                 // {
                 if (hotkeysLocked || handler == null)
                 {

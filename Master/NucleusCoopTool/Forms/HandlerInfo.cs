@@ -200,19 +200,19 @@ namespace Nucleus.Coop.Forms
             DPIManager.Update(this);
         }
 
-        public new void UpdateSize(float scale)
+        public void UpdateSize(float scale)
         {
             if (IsDisposed)
             {
                 DPIManager.Unregister(this);
                 return;
             }
-
             SuspendLayout();
 
             if (scale > 1.0F)
             {
                 float newFontSize = Font.Size * scale;
+
                 foreach (Control c in Controls)
                 {
                     if (c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(RichTextBox) ^ c.GetType() == typeof(PictureBox))

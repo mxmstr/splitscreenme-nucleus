@@ -309,7 +309,7 @@ namespace Nucleus.Gaming.Coop
             saved = false;
             splitDivColor = "Black";
             network = "Automatic";
-            ModeText = "Creation Mode";
+            ModeText = "New Profile";
             notes = string.Empty;
             //isNew = true;
             hWndInterval = 0;
@@ -564,7 +564,7 @@ namespace Nucleus.Gaming.Coop
 
             totalPlayers = JplayersInfos.Count();
             createNewProfile = false;
-            ModeText = "Edition Mode";
+            ModeText = $"Profile n°{profileToSave}";
             //isNew = false;
 
             string mod1 = string.Empty;

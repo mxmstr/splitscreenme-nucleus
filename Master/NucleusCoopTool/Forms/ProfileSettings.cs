@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -124,8 +125,18 @@ namespace Nucleus.Coop
 
             foreach (Control control in ctrls)
             {
-                control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+               
+                if (control.GetType() == typeof(CustomNumericUpDown))
+                {
+                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+               
                 control.Cursor = hand_Cursor;
+
+                if (control.Name != "profile_info_btn")
+                {
+                    control.Click += new EventHandler(ProfileSettings_Click);
+                }
             }
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
@@ -142,7 +153,7 @@ namespace Nucleus.Coop
             processorBtnPicture.BackgroundImage = new Bitmap(mf.theme + "processor.png");
             closeBtnPicture.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
             audioRefresh.BackgroundImage = new Bitmap(mf.theme + "refresh.png");
-
+            profile_info_btn.BackgroundImage = new Bitmap(mf.theme + "profile_info.png");
             sharedTab.BackColor = Color.Transparent;
             playersTab.BackColor = Color.Transparent;
             audioTab.BackColor = Color.Transparent;
@@ -437,12 +448,14 @@ namespace Nucleus.Coop
                 default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
             }
 
-            modeLabel.Size = new Size(Width - closeBtnPicture.Right, modeLabel.Height);
-            modeLabel.Location = new Point(closeBtnPicture.Right, modeLabel.Location.Y);
+            Vector2 dist1 = Vector2.Subtract(new Vector2(profile_info_btn.Location.X, profile_info_btn.Location.Y),new Vector2(processorBtnPicture.Location.X, processorBtnPicture.Location.Y));
+            float modeLabelX = (processorBtnPicture.Right + (dist1.X / 2)) - modeLabel.Width / 2;
+
+            modeLabel.Location = new Point((int)modeLabelX, sharedTabBtn.Location.Y+ sharedTabBtn.Height/2 - modeLabel.Height/2);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
+            profileInfo.Location = new Point(this.Width / 2 - profileInfo.Width / 2, this.Height / 2 - profileInfo.Height / 2);
 
             ResumeLayout();
-
         }
 
         private void num_KeyPress(object sender, KeyPressEventArgs e)
@@ -665,11 +678,13 @@ namespace Nucleus.Coop
 
             if (save)
             {
-                SettingsSaveBtn_Click(null, null);
+                SettingsCloseBtn_Click(null, null);
+                //SettingsSaveBtn_Click(null, null);
             }
         }
 
-        public void SettingsSaveBtn_Click(object sender, EventArgs e)
+        private void SettingsCloseBtn_Click(object sender, EventArgs e)
+        //public void SettingsSaveBtn_Click(object sender, EventArgs e)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles")))
             {
@@ -842,8 +857,11 @@ namespace Nucleus.Coop
                 }
             }
 
-            if (sender != null)
-                Globals.MainOSD.Settings(500, Color.LimeGreen, "Profile Settings Saved");
+            ProfilesList.profilesList.Locked = false;
+            Visible = false;
+
+            //if (sender != null)
+            //    Globals.MainOSD.Settings(500, Color.LimeGreen, "Profile Settings Saved");
         }
 
         private void Steamid_Click(object sender, EventArgs e)
@@ -852,7 +870,8 @@ namespace Nucleus.Coop
             id.BackColor = Color.White;
         }
 
-        private void SettingsCloseBtn_Click(object sender, EventArgs e)
+        //private void SettingsCloseBtn_Click(object sender, EventArgs e)
+        public void SettingsSaveBtn_Click(object sender, EventArgs e)
         {
             ProfilesList.profilesList.Locked = false;
             Visible = false;
@@ -1148,8 +1167,8 @@ namespace Nucleus.Coop
                new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
                new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
                new Rectangle(processorTabBtn.Location.X-1,processorTabBtn.Location.Y-1,processorTabBtn.Width+processorBtnPicture.Width+2,processorTabBtn.Height+1),
-               new Rectangle(saveBtn.Location.X-1,saveBtn.Location.Y-1,saveBtn.Width+saveBtnPicture.Width+2,saveBtn.Height+1),
-               new Rectangle(closeBtn.Location.X-1,closeBtn.Location.Y-1,closeBtn.Width+closeBtnPicture.Width+2,closeBtn.Height+1),
+               //new Rectangle(saveBtn.Location.X-1,saveBtn.Location.Y-1,saveBtn.Width+saveBtnPicture.Width+2,saveBtn.Height+1),
+               //new Rectangle(closeBtn.Location.X-1,closeBtn.Location.Y-1,closeBtn.Width+closeBtnPicture.Width+2,closeBtn.Height+1),
                new Rectangle(sharedTab.Location.X,sharedTab.Location.Y,sharedTab.Width,sharedTab.Height),
                new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
                new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
@@ -1176,6 +1195,47 @@ namespace Nucleus.Coop
             {
                 cts_kar.Enabled = true;
                 cts_unfocus.Enabled = true;
+            }
+        }
+        private void closeBtnPicture_MouseEnter(object sender, EventArgs e) 
+        {
+            closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close_mousehover.png");
+        }
+
+        private void closeBtnPicture_MouseLeave(object sender, EventArgs e) 
+        {
+            closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close.png"); 
+        }
+
+        private void profile_info_btn_MouseEnter(object sender, EventArgs e)
+        {
+            profile_info_btn.BackgroundImage = new Bitmap(mainForm.theme + "profile_info_mousehover.png");          
+        }
+
+        private void profile_info_btn_MouseLeave(object sender, EventArgs e)
+        {
+            profile_info_btn.BackgroundImage = new Bitmap(mainForm.theme + "profile_info.png");
+        }
+
+        private void profile_info_btn_Click(object sender, EventArgs e)
+        {
+            if(!profileInfo.Visible)
+            {
+                profileInfo.Visible = true;
+                profileInfo.BringToFront();
+
+            }
+            else
+            {
+                profileInfo.Visible = false;            
+            }
+        }
+
+        private void ProfileSettings_Click(object sender, EventArgs e)
+        {
+            if (profileInfo.Visible)
+            {
+                profileInfo.Visible = false;
             }
         }
     }

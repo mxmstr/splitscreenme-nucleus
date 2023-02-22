@@ -49,10 +49,10 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
                 return;
             }
 
-            while(ControllersUINav.EnabledRuntime)//A voir
-            {
-                Thread.Sleep(1000);
-            }
+            //while(ControllersUINav.EnabledRuntime)//A voir
+            //{
+            //    Thread.Sleep(1000);
+            //}
 
             List<Process> fakeFocusProcs = new List<Process>();
             var windows = RawInputManager.windows;
@@ -147,11 +147,11 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
 
         public static void SendFakeFocusMsg()
         {
-            while (ControllersUINav.EnabledRuntime)
-            {
+            //while (ControllersUINav.EnabledRuntime)
+            //{
 
-                Thread.Sleep(1000);
-            }
+            //    Thread.Sleep(1000);
+            //}
 
             foreach (PlayerInfo plyr in profile.PlayerData)
             {

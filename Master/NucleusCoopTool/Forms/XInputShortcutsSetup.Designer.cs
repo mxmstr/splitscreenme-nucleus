@@ -31,34 +31,34 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XInputShortcutsSetup));
             this.Close = new System.Windows.Forms.Button();
             this.plus7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.label_7 = new System.Windows.Forms.Label();
             this.slave7 = new System.Windows.Forms.TextBox();
             this.plus6 = new System.Windows.Forms.Label();
-            this.csm_label = new System.Windows.Forms.Label();
+            this.label_6 = new System.Windows.Forms.Label();
             this.slave6 = new System.Windows.Forms.TextBox();
             this.plus5 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.label_5 = new System.Windows.Forms.Label();
             this.plus1 = new System.Windows.Forms.Label();
             this.slave5 = new System.Windows.Forms.TextBox();
-            this.label52 = new System.Windows.Forms.Label();
+            this.label_1 = new System.Windows.Forms.Label();
             this.slave1 = new System.Windows.Forms.TextBox();
-            this.label_lockKey = new System.Windows.Forms.Label();
+            this.label_8 = new System.Windows.Forms.Label();
             this.slave4 = new System.Windows.Forms.TextBox();
             this.slave3 = new System.Windows.Forms.TextBox();
             this.plus4 = new System.Windows.Forms.Label();
             this.plus3 = new System.Windows.Forms.Label();
             this.plus2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label_4 = new System.Windows.Forms.Label();
+            this.label_3 = new System.Windows.Forms.Label();
+            this.label_2 = new System.Windows.Forms.Label();
             this.slave2 = new System.Windows.Forms.TextBox();
             this.shortContainer = new System.Windows.Forms.GroupBox();
             this.switch9 = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.plus9 = new System.Windows.Forms.Label();
             this.slave9 = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.label_9 = new System.Windows.Forms.Label();
             this.switch8 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.plus8 = new System.Windows.Forms.Label();
             this.slave8 = new System.Windows.Forms.TextBox();
             this.switch2 = new System.Windows.Forms.TextBox();
             this.switch7 = new System.Windows.Forms.TextBox();
@@ -69,21 +69,21 @@
             this.switch1 = new System.Windows.Forms.TextBox();
             this.UINavContainer = new System.Windows.Forms.GroupBox();
             this.switch11 = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
+            this.plus11 = new System.Windows.Forms.Label();
             this.slave11 = new System.Windows.Forms.TextBox();
-            this.osk_label = new System.Windows.Forms.Label();
+            this.label_11 = new System.Windows.Forms.Label();
             this.switch10 = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.deadzone_label = new System.Windows.Forms.Label();
+            this.plus10 = new System.Windows.Forms.Label();
+            this.label_15 = new System.Windows.Forms.Label();
             this.slave10 = new System.Windows.Forms.TextBox();
-            this.deadzone_txt = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.lclick_txt = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.rclick_txt = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.dragdrop_txt = new System.Windows.Forms.TextBox();
+            this.switch15 = new System.Windows.Forms.TextBox();
+            this.label_10 = new System.Windows.Forms.Label();
+            this.label_14 = new System.Windows.Forms.Label();
+            this.switch14 = new System.Windows.Forms.TextBox();
+            this.label_13 = new System.Windows.Forms.Label();
+            this.switch13 = new System.Windows.Forms.TextBox();
+            this.label_12 = new System.Windows.Forms.Label();
+            this.switch12 = new System.Windows.Forms.TextBox();
             this.deadzone_tip = new System.Windows.Forms.Label();
             this.enabled_chk = new System.Windows.Forms.CheckBox();
             this.shortContainer.SuspendLayout();
@@ -119,16 +119,16 @@
             this.plus7.Text = "+";
             this.plus7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label6
+            // label_7
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 164);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(85, 13);
-            this.label6.TabIndex = 126;
-            this.label6.Text = "Switch Layouts :";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_7.AutoSize = true;
+            this.label_7.Location = new System.Drawing.Point(11, 164);
+            this.label_7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_7.Name = "label_7";
+            this.label_7.Size = new System.Drawing.Size(85, 13);
+            this.label_7.TabIndex = 126;
+            this.label_7.Text = "Switch Layouts :";
+            this.label_7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave7
             // 
@@ -154,16 +154,16 @@
             this.plus6.Text = "+";
             this.plus6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // csm_label
+            // label_6
             // 
-            this.csm_label.AutoSize = true;
-            this.csm_label.Location = new System.Drawing.Point(3, 140);
-            this.csm_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.csm_label.Name = "csm_label";
-            this.csm_label.Size = new System.Drawing.Size(93, 13);
-            this.csm_label.TabIndex = 122;
-            this.csm_label.Text = "Cutscenes Mode :";
-            this.csm_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_6.AutoSize = true;
+            this.label_6.Location = new System.Drawing.Point(3, 140);
+            this.label_6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_6.Name = "label_6";
+            this.label_6.Size = new System.Drawing.Size(93, 13);
+            this.label_6.TabIndex = 122;
+            this.label_6.Text = "Cutscenes Mode :";
+            this.label_6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave6
             // 
@@ -189,16 +189,16 @@
             this.plus5.Text = "+";
             this.plus5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // label_5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(11, 115);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 13);
-            this.label5.TabIndex = 118;
-            this.label5.Text = "Reset Windows:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_5.AutoSize = true;
+            this.label_5.Location = new System.Drawing.Point(11, 115);
+            this.label_5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_5.Name = "label_5";
+            this.label_5.Size = new System.Drawing.Size(85, 13);
+            this.label_5.TabIndex = 118;
+            this.label_5.Text = "Reset Windows:";
+            this.label_5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // plus1
             // 
@@ -224,16 +224,16 @@
             this.slave5.TabIndex = 117;
             this.slave5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label52
+            // label_1
             // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(8, 20);
-            this.label52.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(89, 13);
-            this.label52.TabIndex = 114;
-            this.label52.Text = "Toggle Unfocus :";
-            this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_1.AutoSize = true;
+            this.label_1.Location = new System.Drawing.Point(8, 20);
+            this.label_1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_1.Name = "label_1";
+            this.label_1.Size = new System.Drawing.Size(89, 13);
+            this.label_1.TabIndex = 114;
+            this.label_1.Text = "Toggle Unfocus :";
+            this.label_1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave1
             // 
@@ -247,16 +247,16 @@
             this.slave1.TabIndex = 113;
             this.slave1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label_lockKey
+            // label_8
             // 
-            this.label_lockKey.AutoSize = true;
-            this.label_lockKey.Location = new System.Drawing.Point(14, 188);
-            this.label_lockKey.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label_lockKey.Name = "label_lockKey";
-            this.label_lockKey.Size = new System.Drawing.Size(82, 13);
-            this.label_lockKey.TabIndex = 110;
-            this.label_lockKey.Text = "Lock Input Key:";
-            this.label_lockKey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_8.AutoSize = true;
+            this.label_8.Location = new System.Drawing.Point(14, 188);
+            this.label_8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_8.Name = "label_8";
+            this.label_8.Size = new System.Drawing.Size(82, 13);
+            this.label_8.TabIndex = 110;
+            this.label_8.Text = "Lock Input Key:";
+            this.label_8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave4
             // 
@@ -318,38 +318,38 @@
             this.plus2.Text = "+";
             this.plus2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label4
+            // label_4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 92);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(91, 13);
-            this.label4.TabIndex = 106;
-            this.label4.Text = "Toggle Top Most:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_4.AutoSize = true;
+            this.label_4.Location = new System.Drawing.Point(5, 92);
+            this.label_4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_4.Name = "label_4";
+            this.label_4.Size = new System.Drawing.Size(91, 13);
+            this.label_4.TabIndex = 106;
+            this.label_4.Text = "Toggle Top Most:";
+            this.label_4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // label_3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(24, 68);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 13);
-            this.label3.TabIndex = 105;
-            this.label3.Text = "Stop Session:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_3.AutoSize = true;
+            this.label_3.Location = new System.Drawing.Point(24, 68);
+            this.label_3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_3.Name = "label_3";
+            this.label_3.Size = new System.Drawing.Size(72, 13);
+            this.label_3.TabIndex = 105;
+            this.label_3.Text = "Stop Session:";
+            this.label_3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // label_2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 44);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 13);
-            this.label1.TabIndex = 104;
-            this.label1.Text = "Close Nucleus:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_2.AutoSize = true;
+            this.label_2.Location = new System.Drawing.Point(18, 44);
+            this.label_2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_2.Name = "label_2";
+            this.label_2.Size = new System.Drawing.Size(78, 13);
+            this.label_2.TabIndex = 104;
+            this.label_2.Text = "Close Nucleus:";
+            this.label_2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave2
             // 
@@ -367,11 +367,11 @@
             // 
             this.shortContainer.BackColor = System.Drawing.Color.Black;
             this.shortContainer.Controls.Add(this.switch9);
-            this.shortContainer.Controls.Add(this.label10);
+            this.shortContainer.Controls.Add(this.plus9);
             this.shortContainer.Controls.Add(this.slave9);
-            this.shortContainer.Controls.Add(this.label11);
+            this.shortContainer.Controls.Add(this.label_9);
             this.shortContainer.Controls.Add(this.switch8);
-            this.shortContainer.Controls.Add(this.label2);
+            this.shortContainer.Controls.Add(this.plus8);
             this.shortContainer.Controls.Add(this.slave8);
             this.shortContainer.Controls.Add(this.switch2);
             this.shortContainer.Controls.Add(this.switch7);
@@ -382,25 +382,25 @@
             this.shortContainer.Controls.Add(this.switch1);
             this.shortContainer.Controls.Add(this.plus7);
             this.shortContainer.Controls.Add(this.slave2);
-            this.shortContainer.Controls.Add(this.label6);
-            this.shortContainer.Controls.Add(this.label1);
+            this.shortContainer.Controls.Add(this.label_7);
+            this.shortContainer.Controls.Add(this.label_2);
             this.shortContainer.Controls.Add(this.slave7);
-            this.shortContainer.Controls.Add(this.label3);
-            this.shortContainer.Controls.Add(this.label4);
+            this.shortContainer.Controls.Add(this.label_3);
+            this.shortContainer.Controls.Add(this.label_4);
             this.shortContainer.Controls.Add(this.plus6);
             this.shortContainer.Controls.Add(this.plus2);
-            this.shortContainer.Controls.Add(this.csm_label);
+            this.shortContainer.Controls.Add(this.label_6);
             this.shortContainer.Controls.Add(this.plus3);
             this.shortContainer.Controls.Add(this.slave6);
             this.shortContainer.Controls.Add(this.plus4);
             this.shortContainer.Controls.Add(this.plus5);
             this.shortContainer.Controls.Add(this.slave3);
             this.shortContainer.Controls.Add(this.slave4);
-            this.shortContainer.Controls.Add(this.label5);
+            this.shortContainer.Controls.Add(this.label_5);
             this.shortContainer.Controls.Add(this.plus1);
             this.shortContainer.Controls.Add(this.slave5);
-            this.shortContainer.Controls.Add(this.label_lockKey);
-            this.shortContainer.Controls.Add(this.label52);
+            this.shortContainer.Controls.Add(this.label_8);
+            this.shortContainer.Controls.Add(this.label_1);
             this.shortContainer.Controls.Add(this.slave1);
             this.shortContainer.ForeColor = System.Drawing.Color.White;
             this.shortContainer.Location = new System.Drawing.Point(12, 3);
@@ -423,17 +423,17 @@
             this.switch9.TabIndex = 141;
             this.switch9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label10
+            // plus9
             // 
-            this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(165, 211);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(13, 13);
-            this.label10.TabIndex = 140;
-            this.label10.Text = "+";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plus9.AutoSize = true;
+            this.plus9.ForeColor = System.Drawing.Color.White;
+            this.plus9.Location = new System.Drawing.Point(165, 211);
+            this.plus9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus9.Name = "plus9";
+            this.plus9.Size = new System.Drawing.Size(13, 13);
+            this.plus9.TabIndex = 140;
+            this.plus9.Text = "+";
+            this.plus9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave9
             // 
@@ -447,16 +447,16 @@
             this.slave9.TabIndex = 139;
             this.slave9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label11
+            // label_9
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(14, 212);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(82, 13);
-            this.label11.TabIndex = 138;
-            this.label11.Text = "Release Cursor:";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_9.AutoSize = true;
+            this.label_9.Location = new System.Drawing.Point(38, 212);
+            this.label_9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_9.Name = "label_9";
+            this.label_9.Size = new System.Drawing.Size(57, 13);
+            this.label_9.TabIndex = 138;
+            this.label_9.Text = "ALT+TAB:";
+            this.label_9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // switch8
             // 
@@ -471,17 +471,17 @@
             this.switch8.TabIndex = 137;
             this.switch8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label2
+            // plus8
             // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(165, 187);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(13, 13);
-            this.label2.TabIndex = 136;
-            this.label2.Text = "+";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plus8.AutoSize = true;
+            this.plus8.ForeColor = System.Drawing.Color.White;
+            this.plus8.Location = new System.Drawing.Point(165, 187);
+            this.plus8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus8.Name = "plus8";
+            this.plus8.Size = new System.Drawing.Size(13, 13);
+            this.plus8.TabIndex = 136;
+            this.plus8.Text = "+";
+            this.plus8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave8
             // 
@@ -589,21 +589,21 @@
             // UINavContainer
             // 
             this.UINavContainer.Controls.Add(this.switch11);
-            this.UINavContainer.Controls.Add(this.label14);
+            this.UINavContainer.Controls.Add(this.plus11);
             this.UINavContainer.Controls.Add(this.slave11);
-            this.UINavContainer.Controls.Add(this.osk_label);
+            this.UINavContainer.Controls.Add(this.label_11);
             this.UINavContainer.Controls.Add(this.switch10);
-            this.UINavContainer.Controls.Add(this.label12);
-            this.UINavContainer.Controls.Add(this.deadzone_label);
+            this.UINavContainer.Controls.Add(this.plus10);
+            this.UINavContainer.Controls.Add(this.label_15);
             this.UINavContainer.Controls.Add(this.slave10);
-            this.UINavContainer.Controls.Add(this.deadzone_txt);
-            this.UINavContainer.Controls.Add(this.label13);
-            this.UINavContainer.Controls.Add(this.label9);
-            this.UINavContainer.Controls.Add(this.lclick_txt);
-            this.UINavContainer.Controls.Add(this.label8);
-            this.UINavContainer.Controls.Add(this.rclick_txt);
-            this.UINavContainer.Controls.Add(this.label7);
-            this.UINavContainer.Controls.Add(this.dragdrop_txt);
+            this.UINavContainer.Controls.Add(this.switch15);
+            this.UINavContainer.Controls.Add(this.label_10);
+            this.UINavContainer.Controls.Add(this.label_14);
+            this.UINavContainer.Controls.Add(this.switch14);
+            this.UINavContainer.Controls.Add(this.label_13);
+            this.UINavContainer.Controls.Add(this.switch13);
+            this.UINavContainer.Controls.Add(this.label_12);
+            this.UINavContainer.Controls.Add(this.switch12);
             this.UINavContainer.ForeColor = System.Drawing.Color.White;
             this.UINavContainer.Location = new System.Drawing.Point(12, 261);
             this.UINavContainer.Name = "UINavContainer";
@@ -625,17 +625,17 @@
             this.switch11.TabIndex = 153;
             this.switch11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label14
+            // plus11
             // 
-            this.label14.AutoSize = true;
-            this.label14.ForeColor = System.Drawing.Color.White;
-            this.label14.Location = new System.Drawing.Point(164, 43);
-            this.label14.Margin = new System.Windows.Forms.Padding(0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(13, 13);
-            this.label14.TabIndex = 152;
-            this.label14.Text = "+";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plus11.AutoSize = true;
+            this.plus11.ForeColor = System.Drawing.Color.White;
+            this.plus11.Location = new System.Drawing.Point(164, 43);
+            this.plus11.Margin = new System.Windows.Forms.Padding(0);
+            this.plus11.Name = "plus11";
+            this.plus11.Size = new System.Drawing.Size(13, 13);
+            this.plus11.TabIndex = 152;
+            this.plus11.Text = "+";
+            this.plus11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave11
             // 
@@ -649,16 +649,16 @@
             this.slave11.TabIndex = 151;
             this.slave11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // osk_label
+            // label_11
             // 
-            this.osk_label.AutoSize = true;
-            this.osk_label.Location = new System.Drawing.Point(20, 43);
-            this.osk_label.Margin = new System.Windows.Forms.Padding(0);
-            this.osk_label.Name = "osk_label";
-            this.osk_label.Size = new System.Drawing.Size(76, 13);
-            this.osk_label.TabIndex = 150;
-            this.osk_label.Text = "On screen KB:";
-            this.osk_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_11.AutoSize = true;
+            this.label_11.Location = new System.Drawing.Point(20, 43);
+            this.label_11.Margin = new System.Windows.Forms.Padding(0);
+            this.label_11.Name = "label_11";
+            this.label_11.Size = new System.Drawing.Size(76, 13);
+            this.label_11.TabIndex = 150;
+            this.label_11.Text = "On screen KB:";
+            this.label_11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // switch10
             // 
@@ -673,28 +673,28 @@
             this.switch10.TabIndex = 149;
             this.switch10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label12
+            // plus10
             // 
-            this.label12.AutoSize = true;
-            this.label12.ForeColor = System.Drawing.Color.White;
-            this.label12.Location = new System.Drawing.Point(164, 20);
-            this.label12.Margin = new System.Windows.Forms.Padding(0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(13, 13);
-            this.label12.TabIndex = 148;
-            this.label12.Text = "+";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plus10.AutoSize = true;
+            this.plus10.ForeColor = System.Drawing.Color.White;
+            this.plus10.Location = new System.Drawing.Point(164, 20);
+            this.plus10.Margin = new System.Windows.Forms.Padding(0);
+            this.plus10.Name = "plus10";
+            this.plus10.Size = new System.Drawing.Size(13, 13);
+            this.plus10.TabIndex = 148;
+            this.plus10.Text = "+";
+            this.plus10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // deadzone_label
+            // label_15
             // 
-            this.deadzone_label.AutoSize = true;
-            this.deadzone_label.Location = new System.Drawing.Point(37, 135);
-            this.deadzone_label.Margin = new System.Windows.Forms.Padding(0);
-            this.deadzone_label.Name = "deadzone_label";
-            this.deadzone_label.Size = new System.Drawing.Size(59, 13);
-            this.deadzone_label.TabIndex = 9;
-            this.deadzone_label.Text = "Deadzone:";
-            this.deadzone_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_15.AutoSize = true;
+            this.label_15.Location = new System.Drawing.Point(37, 135);
+            this.label_15.Margin = new System.Windows.Forms.Padding(0);
+            this.label_15.Name = "label_15";
+            this.label_15.Size = new System.Drawing.Size(59, 13);
+            this.label_15.TabIndex = 9;
+            this.label_15.Text = "Deadzone:";
+            this.label_15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slave10
             // 
@@ -708,83 +708,83 @@
             this.slave10.TabIndex = 147;
             this.slave10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // deadzone_txt
+            // switch15
             // 
-            this.deadzone_txt.Location = new System.Drawing.Point(99, 132);
-            this.deadzone_txt.Margin = new System.Windows.Forms.Padding(0);
-            this.deadzone_txt.Name = "deadzone_txt";
-            this.deadzone_txt.Size = new System.Drawing.Size(92, 20);
-            this.deadzone_txt.TabIndex = 8;
-            this.deadzone_txt.MouseEnter += new System.EventHandler(this.deadzone_txt_MouseEnter);
-            this.deadzone_txt.MouseLeave += new System.EventHandler(this.deadzone_txt_MouseLeave);
+            this.switch15.Location = new System.Drawing.Point(99, 132);
+            this.switch15.Margin = new System.Windows.Forms.Padding(0);
+            this.switch15.Name = "switch15";
+            this.switch15.Size = new System.Drawing.Size(92, 20);
+            this.switch15.TabIndex = 8;
+            this.switch15.MouseEnter += new System.EventHandler(this.deadzone_txt_MouseEnter);
+            this.switch15.MouseLeave += new System.EventHandler(this.deadzone_txt_MouseLeave);
             // 
-            // label13
+            // label_10
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(12, 20);
-            this.label13.Margin = new System.Windows.Forms.Padding(0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(84, 13);
-            this.label13.TabIndex = 146;
-            this.label13.Text = "Lock UI Control:";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_10.AutoSize = true;
+            this.label_10.Location = new System.Drawing.Point(12, 20);
+            this.label_10.Margin = new System.Windows.Forms.Padding(0);
+            this.label_10.Name = "label_10";
+            this.label_10.Size = new System.Drawing.Size(84, 13);
+            this.label_10.TabIndex = 146;
+            this.label_10.Text = "Lock UI Control:";
+            this.label_10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label9
+            // label_14
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(42, 113);
-            this.label9.Margin = new System.Windows.Forms.Padding(0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(54, 13);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "Left Click:";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_14.AutoSize = true;
+            this.label_14.Location = new System.Drawing.Point(42, 113);
+            this.label_14.Margin = new System.Windows.Forms.Padding(0);
+            this.label_14.Name = "label_14";
+            this.label_14.Size = new System.Drawing.Size(54, 13);
+            this.label_14.TabIndex = 7;
+            this.label_14.Text = "Left Click:";
+            this.label_14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lclick_txt
+            // switch14
             // 
-            this.lclick_txt.Location = new System.Drawing.Point(99, 109);
-            this.lclick_txt.Margin = new System.Windows.Forms.Padding(0);
-            this.lclick_txt.Name = "lclick_txt";
-            this.lclick_txt.Size = new System.Drawing.Size(92, 20);
-            this.lclick_txt.TabIndex = 6;
+            this.switch14.Location = new System.Drawing.Point(99, 109);
+            this.switch14.Margin = new System.Windows.Forms.Padding(0);
+            this.switch14.Name = "switch14";
+            this.switch14.Size = new System.Drawing.Size(92, 20);
+            this.switch14.TabIndex = 6;
             // 
-            // label8
+            // label_13
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(35, 89);
-            this.label8.Margin = new System.Windows.Forms.Padding(0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(61, 13);
-            this.label8.TabIndex = 5;
-            this.label8.Text = "Right Click:";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_13.AutoSize = true;
+            this.label_13.Location = new System.Drawing.Point(35, 89);
+            this.label_13.Margin = new System.Windows.Forms.Padding(0);
+            this.label_13.Name = "label_13";
+            this.label_13.Size = new System.Drawing.Size(61, 13);
+            this.label_13.TabIndex = 5;
+            this.label_13.Text = "Right Click:";
+            this.label_13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // rclick_txt
+            // switch13
             // 
-            this.rclick_txt.Location = new System.Drawing.Point(99, 86);
-            this.rclick_txt.Margin = new System.Windows.Forms.Padding(0);
-            this.rclick_txt.Name = "rclick_txt";
-            this.rclick_txt.Size = new System.Drawing.Size(92, 20);
-            this.rclick_txt.TabIndex = 4;
+            this.switch13.Location = new System.Drawing.Point(99, 86);
+            this.switch13.Margin = new System.Windows.Forms.Padding(0);
+            this.switch13.Name = "switch13";
+            this.switch13.Size = new System.Drawing.Size(92, 20);
+            this.switch13.TabIndex = 4;
             // 
-            // label7
+            // label_12
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(16, 66);
-            this.label7.Margin = new System.Windows.Forms.Padding(0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(80, 13);
-            this.label7.TabIndex = 3;
-            this.label7.Text = "Drag and Drop:";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_12.AutoSize = true;
+            this.label_12.Location = new System.Drawing.Point(16, 66);
+            this.label_12.Margin = new System.Windows.Forms.Padding(0);
+            this.label_12.Name = "label_12";
+            this.label_12.Size = new System.Drawing.Size(80, 13);
+            this.label_12.TabIndex = 3;
+            this.label_12.Text = "Drag and Drop:";
+            this.label_12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // dragdrop_txt
+            // switch12
             // 
-            this.dragdrop_txt.Location = new System.Drawing.Point(99, 63);
-            this.dragdrop_txt.Margin = new System.Windows.Forms.Padding(0);
-            this.dragdrop_txt.Name = "dragdrop_txt";
-            this.dragdrop_txt.Size = new System.Drawing.Size(92, 20);
-            this.dragdrop_txt.TabIndex = 2;
+            this.switch12.Location = new System.Drawing.Point(99, 63);
+            this.switch12.Margin = new System.Windows.Forms.Padding(0);
+            this.switch12.Name = "switch12";
+            this.switch12.Size = new System.Drawing.Size(92, 20);
+            this.switch12.TabIndex = 2;
             // 
             // deadzone_tip
             // 
@@ -845,26 +845,26 @@
 
         private System.Windows.Forms.Button Close;
         private System.Windows.Forms.Label plus7;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label_7;
         private System.Windows.Forms.TextBox slave7;
         private System.Windows.Forms.Label plus6;
-        private System.Windows.Forms.Label csm_label;
+        private System.Windows.Forms.Label label_6;
         private System.Windows.Forms.TextBox slave6;
         private System.Windows.Forms.Label plus5;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label_5;
         private System.Windows.Forms.Label plus1;
         private System.Windows.Forms.TextBox slave5;
-        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Label label_1;
         private System.Windows.Forms.TextBox slave1;
-        private System.Windows.Forms.Label label_lockKey;
+        private System.Windows.Forms.Label label_8;
         private System.Windows.Forms.TextBox slave4;
         private System.Windows.Forms.TextBox slave3;
         private System.Windows.Forms.Label plus4;
         private System.Windows.Forms.Label plus3;
         private System.Windows.Forms.Label plus2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label_4;
+        private System.Windows.Forms.Label label_3;
+        private System.Windows.Forms.Label label_2;
         private System.Windows.Forms.TextBox slave2;
         private System.Windows.Forms.GroupBox shortContainer;
         private System.Windows.Forms.TextBox switch2;
@@ -875,30 +875,30 @@
         private System.Windows.Forms.TextBox switch5;
         private System.Windows.Forms.TextBox switch1;
         private System.Windows.Forms.TextBox switch8;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label plus8;
         private System.Windows.Forms.TextBox slave8;
         private System.Windows.Forms.GroupBox UINavContainer;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox dragdrop_txt;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox lclick_txt;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox rclick_txt;
+        private System.Windows.Forms.Label label_12;
+        private System.Windows.Forms.TextBox switch12;
+        private System.Windows.Forms.Label label_14;
+        private System.Windows.Forms.TextBox switch14;
+        private System.Windows.Forms.Label label_13;
+        private System.Windows.Forms.TextBox switch13;
         private System.Windows.Forms.Label deadzone_tip;
         private System.Windows.Forms.TextBox switch9;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label plus9;
         private System.Windows.Forms.TextBox slave9;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label_9;
         private System.Windows.Forms.CheckBox enabled_chk;
         private System.Windows.Forms.TextBox switch10;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label deadzone_label;
+        private System.Windows.Forms.Label plus10;
+        private System.Windows.Forms.Label label_15;
         private System.Windows.Forms.TextBox slave10;
-        private System.Windows.Forms.TextBox deadzone_txt;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox switch15;
+        private System.Windows.Forms.Label label_10;
         private System.Windows.Forms.TextBox switch11;
-        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label plus11;
         private System.Windows.Forms.TextBox slave11;
-        private System.Windows.Forms.Label osk_label;
+        private System.Windows.Forms.Label label_11;
     }
 }

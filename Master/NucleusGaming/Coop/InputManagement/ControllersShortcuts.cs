@@ -565,8 +565,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         }
                         else if (button == ReleaseCursor || rt == LockInputs || lt == LockInputs)///Try to release the cursor from game window by alt+tab inputs
                         {
-                            SendKeys.SendWait("%+{TAB}+{TAB}");   
-                            Thread.Sleep(1000);
+                            SendKeys.SendWait("%+{TAB}");   
+                            //Thread.Sleep(1000);
                         }
 
                         Thread.Sleep(135);

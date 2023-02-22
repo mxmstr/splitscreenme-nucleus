@@ -3,6 +3,7 @@ using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using SharpDX.XInput;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -40,7 +41,7 @@ namespace Nucleus.Coop.Forms
             controllerFront = new Bitmap(Nucleus.Coop.Properties.Resources.xboxControllerFront);
             Close.BackgroundImage = new Bitmap(Globals.Theme + "title_close.png");
             brush = new SolidBrush(Color.FromArgb(90, 0, 255, 60));
-            deadzone_txt.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
+            switch15.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
 
             if (roundedcorners)
             {
@@ -190,13 +191,13 @@ namespace Nucleus.Coop.Forms
                 ini.IniWriteValue("XShortcuts", "LockInputs", "");
             }
             enabled_chk.Checked = bool.Parse(ini.IniReadValue("XUINav", "Enabled"));
-            deadzone_txt.Text = ini.IniReadValue("XUINav", "Deadzone");
-            dragdrop_txt.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "DragDrop"))).ToString();
-            dragdrop_txt.Tag = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
-            rclick_txt.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "RightClick"))).ToString();
-            rclick_txt.Tag = int.Parse(ini.IniReadValue("XUINav", "RightClick"));
-            lclick_txt.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "LeftClick"))).ToString();
-            lclick_txt.Tag = int.Parse(ini.IniReadValue("XUINav", "LeftClick"));
+            switch15.Text = ini.IniReadValue("XUINav", "Deadzone");
+            switch12.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "DragDrop"))).ToString();
+            switch12.Tag = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
+            switch13.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "RightClick"))).ToString();
+            switch13.Tag = int.Parse(ini.IniReadValue("XUINav", "RightClick"));
+            switch14.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "LeftClick"))).ToString();
+            switch14.Tag = int.Parse(ini.IniReadValue("XUINav", "LeftClick"));
 
             foreach (Control c in shortContainer.Controls)
             {
@@ -270,9 +271,9 @@ namespace Nucleus.Coop.Forms
                 return;
             }
 
-            SuspendLayout();
-
             this.scale = scale;
+
+            SuspendLayout();
 
             if (scale > 1.0F)
             {
@@ -282,10 +283,11 @@ namespace Nucleus.Coop.Forms
                 {
                     if (c.GetType() == typeof(Label))
                     {
-                        c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        //c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         if (c.Text != ("+"))
                         {
                             c.Location = new Point(switch1.Left - c.Width, c.Location.Y);
+                            //c.BackColor = Color.OrangeRed;
                         }
                     }
 
@@ -305,18 +307,16 @@ namespace Nucleus.Coop.Forms
 
                     if (c.GetType() == typeof(Label))
                     {
-                        c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        //c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         if (c.Text != ("+"))
                         {
                             c.Location = new Point(switch10.Left - c.Width, c.Location.Y);
                         }
                     }
-
                 }
             }
 
             ResumeLayout();
-
         }
 
         private void RefreshTimerTick(Object Object, EventArgs EventArgs)
@@ -556,10 +556,10 @@ namespace Nucleus.Coop.Forms
             ini.IniWriteValue("XShortcuts", "LockInputs", switch8.Tag.ToString() + "+" + slave8.Tag.ToString());
             ini.IniWriteValue("XShortcuts", "ReleaseCursor", switch9.Tag.ToString() + "+" + slave9.Tag.ToString());
 
-            ini.IniWriteValue("XUINav", "Deadzone", deadzone_txt.Text);
-            ini.IniWriteValue("XUINav", "DragDrop", dragdrop_txt.Tag.ToString());
-            ini.IniWriteValue("XUINav", "RightClick", rclick_txt.Tag.ToString());
-            ini.IniWriteValue("XUINav", "LeftClick", lclick_txt.Tag.ToString());
+            ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
+            ini.IniWriteValue("XUINav", "DragDrop", switch12.Tag.ToString());
+            ini.IniWriteValue("XUINav", "RightClick", switch13.Tag.ToString());
+            ini.IniWriteValue("XUINav", "LeftClick", switch14.Tag.ToString());
             ini.IniWriteValue("XUINav", "LockUIControl", switch10.Tag.ToString() + "+" + slave10.Tag.ToString());
             ini.IniWriteValue("XUINav", "OpenOsk", switch11.Tag.ToString() + "+" + slave11.Tag.ToString());
             ControllersShortcuts.UpdateShortcutsValue();

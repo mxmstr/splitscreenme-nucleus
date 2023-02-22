@@ -214,6 +214,33 @@ namespace Nucleus.Coop
             return true;
         }
 
+        public static void CheckVCRversion()
+        {
+            const string subkeyX86 = @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86";
+            const string subkeyX64 = @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64";
+            bool validVCRx86;
+            bool validVCRx64;
+
+            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkeyX86))
+            {
+                validVCRx86 = (int)ndpKey.GetValue("Bld") >= 31103;
+            }
+
+            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkeyX64))
+            {
+                validVCRx64 = (int)ndpKey.GetValue("Bld") >= 31103;
+            }
+
+            bool matchRequirements = validVCRx86 && validVCRx64;
+            if (!matchRequirements)
+            {
+                MessageBox.Show("Please install Microsoft Visual C++ 2015 - 2019 Redistributable (both x86 and x64)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Process.Start("https://learn.microsoft.com/fr-fr/cpp/windows/latest-supported-vc-redist?view=msvc-170");
+                Process nc = Process.GetCurrentProcess();
+                nc.Kill();
+            }
+        }
+
         public static void CheckForUpdate()
         {
             try

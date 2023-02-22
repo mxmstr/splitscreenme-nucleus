@@ -203,7 +203,7 @@ namespace Nucleus.Coop
             instruction_btn.BackgroundImageLayout = ImageLayout.Stretch;
             instruction_btn.Cursor = hand_Cursor;
             instruction_btn.Click += new EventHandler(this.instruction_Click);
-            instruction_btn_Tooltip.SetToolTip(instruction_btn, "How to setup.");
+            instruction_btn_Tooltip.SetToolTip(instruction_btn, "How to setup players.");
             //instruction_btn.BorderStyle = BorderStyle.FixedSingle;
             instructionImg = new PictureBox()
             {
@@ -242,7 +242,7 @@ namespace Nucleus.Coop
             profileSettings_btn.Cursor = hand_Cursor;
             profileSettings_btn.Font = instruction_btn.Font;
             //profileSettings_btn.BorderStyle = BorderStyle.FixedSingle;
-            profileSettings_Tooltip.SetToolTip(profileSettings_btn, "Game profile settings.");
+            //profileSettings_Tooltip.SetToolTip(profileSettings_btn, "Game profile settings.");
 
             gameProfiles_btnTooltip = new ToolTip();
             gameProfiles_btn = new PictureBox();//using a button cause focus issues
@@ -253,7 +253,7 @@ namespace Nucleus.Coop
             gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
             gameProfiles_btn.Text = "Profiles List";
             gameProfiles_btn.Cursor = hand_Cursor;
-            gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, "Game profiles list.");
+            //gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, "Game profiles list.");
 
             ResumeLayout();
 
@@ -328,7 +328,10 @@ namespace Nucleus.Coop
                 return;
             }
 
+            this.scale = scale;
+
             SuspendLayout();
+            
             if (!scaled)
             {
                 newplayerCustomFontSize = playerCustomFont.Size;
@@ -358,8 +361,9 @@ namespace Nucleus.Coop
                 gameProfilesList.Location = new Point((gameProfiles_btn.Left - (int)((gameProfilesList.Width)*scale))-5, gameProfiles_btn.Location.Y + gameProfiles_btn.Height/2);
                
                 scaled = true;
-                this.scale = scale;
+                
             }
+
             ResumeLayout();
         }
 
@@ -837,6 +841,8 @@ namespace Nucleus.Coop
                 gamepadPollTimer = new System.Threading.Timer(GamepadPollTimer_Tick, null, 0, 1001);
             }
 
+            gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, $"{GameProfile._game.GameName} profiles list.");
+            profileSettings_Tooltip.SetToolTip(profileSettings_btn, $"{GameProfile._game.GameName} profile settings.");
             UpdatePlayers();
         }
 
@@ -1203,7 +1209,7 @@ namespace Nucleus.Coop
                         {
                             // return to default position
                             PlayerInfo p = players[j];
-                            if (p.ScreenIndex == i)
+                            if (p.ScreenIndex == i && !p.IsRawMouse)
                             {
                                 screens[i].PlayerOnScreen--;
                                 TotalPlayers--;
@@ -1263,7 +1269,7 @@ namespace Nucleus.Coop
                         {
                             // return to default position
                             PlayerInfo p = players[j];
-                            if (p.ScreenIndex == i)
+                            if (p.ScreenIndex == i && !p.IsRawMouse)
                             {
                                 screen.PlayerOnScreen--;                               
                                 TotalPlayers--;
@@ -1513,7 +1519,7 @@ namespace Nucleus.Coop
 
                     if (draggingScreen != -1)
                     {
-                        if(p.DisplayIndex != -1)
+                        if(p.DisplayIndex != -1 && !p.IsRawMouse)
                         {
                             p.MonitorBounds = new Rectangle(0, 0, 0, 0);
                             screens[p.ScreenIndex].PlayerOnScreen--;
@@ -1606,6 +1612,7 @@ namespace Nucleus.Coop
 
         private int TotalPlayers = 0;
         private int playerProfile = 0;
+        //private Pen listPen = new Pen(Color.White, 2);
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -1615,7 +1622,7 @@ namespace Nucleus.Coop
 
             //if (gameProfilesList.Visible)
             //{
-            //    Pen listPen = new Pen(Color.White, 2);
+                
             //    Rectangle test = new Rectangle(gameProfilesList.Location.X - 1, gameProfilesList.Location.Y - 1, gameProfilesList.Width + 2, gameProfilesList.Height + 2);
             //    g.DrawRectangle(listPen, test);
             //}
@@ -1733,9 +1740,8 @@ namespace Nucleus.Coop
 
                     if (playerProfile < GameProfile.TotalPlayers)
                     {
-                        if (info.GamepadGuid == GameProfile.GamepadsGuid[playerProfile] && !info.IsKeyboardPlayer)
-                        {
-                           
+                        if (info.GamepadGuid == GameProfile.GamepadsGuid[playerProfile]  && !info.IsRawKeyboard && !info.IsRawMouse)
+                        {                        
                             for (int j = 0; j < screens.Length; j++)
                             {
                                 UserScreen scr = screens[j];
@@ -1835,7 +1841,7 @@ namespace Nucleus.Coop
                             }
                             else
                             {
-                                msg = "Drag & Drop Controllers Or Keyboard&Mouse On The Desired Screen(s)";//(GameProfile.PlayerIDs.Count > 0) ? "Click Play!" : "Drag & Drop device(s) On Desired Screen(s)";
+                                msg = "Drag & Drop Controllers Or Keyboard & Mouse On The Desired Screen(s)";//(GameProfile.PlayerIDs.Count > 0) ? "Click Play!" : "Drag & Drop device(s) On Desired Screen(s)";
                             }
                         }
                        
