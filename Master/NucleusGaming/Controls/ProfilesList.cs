@@ -195,8 +195,10 @@ namespace Nucleus.Gaming.Controls
             //Height += 3;
 
             if (Controls.Count == 1)
+            {
                 Controls.Clear();
                 Visible = false;
+            }
         }
 
         private void Profile_Preview(object sender, EventArgs e)//Show profile config in handler note textBox (Must be improved)

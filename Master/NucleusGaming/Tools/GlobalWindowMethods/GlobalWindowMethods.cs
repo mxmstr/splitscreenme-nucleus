@@ -1110,6 +1110,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             genericGameHandler.timer += delayMS;
 
             bool updatedHwnd = false;
+
             if (genericGameHandler.timer > genericGameHandler.HWndInterval)
             {
                 updatedHwnd = true;
@@ -1146,6 +1147,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     {
                         genericGameHandler.exited++;
                     }
+
                     continue;
                 }
 

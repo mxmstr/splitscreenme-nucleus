@@ -844,12 +844,10 @@ namespace Nucleus.Coop
                     GlobalWindowMethods.ToggleCutScenesMode(false);
                     ToggleCutscenes = false;
                 }
-
-
                 // }
                 // else
                 // {
-                //TriggerOSD(1600, $"Unlock Inputs First (Press {ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                    //TriggerOSD(1600, $"Unlock Inputs First (Press {ini.IniReadValue("Hotkeys", "LockKey")} key)");
                 // }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Switch_HotkeyID)
@@ -1050,7 +1048,8 @@ namespace Nucleus.Coop
                     BackColor = Color.FromArgb(190, 0, 0, 0),
                     ForeColor = Color.White,
                     Font = new Font(customFont, 7.25F),
-                    Text = "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version."
+                    Text = "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version.",
+                    BorderStyle = BorderStyle.FixedSingle
                 };
 
                 handlerUpdateLabel.Location = PointToClient(new Point(MousePosition.X+15, MousePosition.Y - c.Height));
@@ -1116,6 +1115,13 @@ namespace Nucleus.Coop
 
         private void btn_downloadAssets_Click(object sender, EventArgs e)
         {
+            List<UserGameInfo> games = gameManager.User.Games;
+            if (games.Count == 0)
+            {
+                TriggerOSD(1600, $"Add game(s) in your list");
+                return;
+            }
+
             SuspendLayout();
             glowingLine0.Image = new Bitmap(theme + "download_bar.gif");
             ResumeLayout();
@@ -1133,8 +1139,9 @@ namespace Nucleus.Coop
         private void CheckForCovers(Control dllabel)
         {
             List<UserGameInfo> games = gameManager.User.Games;
+
             System.Threading.Tasks.Task.Run(() =>
-            {
+            {              
                 for (int i = 0; i < games.Count; i++)
                 {
                     getAssets = new AssetsScraper();
@@ -1357,6 +1364,7 @@ namespace Nucleus.Coop
                 }
 
                 MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 rightFrame.Visible = false;
                 StepPanel.Visible = false;
                 clientAreaPanel.BackgroundImage = defBackground;
@@ -1399,7 +1407,11 @@ namespace Nucleus.Coop
                 }
             }
 
-            if (profileSettings.Visible) { profileSettings.Visible = false; }
+            if (profileSettings.Visible) 
+            { 
+                profileSettings.Visible = false; 
+            }
+
             positionsControl.handlerNoteZoom.Visible = false;
             btn_magnifier.Image = new Bitmap(theme + "magnifier.png");
             btn_textSwitcher.Visible = false;
@@ -1500,6 +1512,8 @@ namespace Nucleus.Coop
             currentProfile.InitializeDefault(currentGame, positionsControl);
             gameManager.UpdateCurrentGameProfile(currentProfile);
             ProfilesList.profilesList.Update_ProfilesList();
+            gameProfilesBtn_Click(null, null);//Show profiles list 
+
             btn_gameOptions.Enabled = true;
 
             button_UpdateAvailable.Visible = currentGameInfo.Game.IsUpdateAvailable(false);
@@ -1538,6 +1552,7 @@ namespace Nucleus.Coop
             content = new ContentManager(currentGame);
 
             GoToStep(0);
+
         }
 
         private void EnablePlay()
@@ -1722,6 +1737,7 @@ namespace Nucleus.Coop
                 Process nc = Process.GetCurrentProcess();
                 nc.Kill();
             }
+
             themeSwitch = false;
         }
 
@@ -1744,17 +1760,6 @@ namespace Nucleus.Coop
                 positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
                 positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
 
-                //SetBtnToPlay();
-                //btn_Play.Enabled = false;
-                //currentControl = null;
-                ////Gaming.Coop.InputManagement.RawInputProcessor.CurrentGameInfo = null;
-                //User32Util.ShowTaskBar();
-                //GoToStep(0);
-                //RefreshGames();
-                //GameProfile.currentProfile.Reset();
-                //WindowState = FormWindowState.Normal;
-                //BringToFront();
-                //stepPanelPictureBox.Focus();
                 return;
             }
 
@@ -1818,7 +1823,7 @@ namespace Nucleus.Coop
                 stepPanelPictureBox.Focus();
             }
 
-            if (!currentGame.ToggleUnfocusOnInputsLock)//A voir pour enlever
+            if (!currentGame.ToggleUnfocusOnInputsLock)//Not sure
             {
                 WindowState = FormWindowState.Minimized;
             }
@@ -1834,6 +1839,7 @@ namespace Nucleus.Coop
             Log("Handler ended method called");
             User32Util.ShowTaskBar();
             handler = null;
+
             try
             {
                 if (handlerThread != null)
@@ -1893,6 +1899,7 @@ namespace Nucleus.Coop
         private void arrow_Back_Click(object sender, EventArgs e)
         {
             currentStepIndex--;
+
             if (currentStepIndex < 0)
             {
                 currentStepIndex = 0;
@@ -1958,7 +1965,7 @@ namespace Nucleus.Coop
                             UserGameInfo game = GameManager.Instance.TryAddGame(path, info[0]);
                             if (gameContextMenuStrip != null)
                                 MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
-                            RefreshGames();
+                                RefreshGames();
                         }
                         else
                         {
@@ -2997,8 +3004,8 @@ namespace Nucleus.Coop
         private void this_Click(object sender, System.EventArgs e)
         {
             linksPanel.Visible = false;
-            ProfilesList.profilesList.Visible = false;
-            positionsControl.gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
+            //ProfilesList.profilesList.Visible = false;
+            //positionsControl.gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
             btn_Links.BackgroundImage = new Bitmap(theme + "title_dropdown_closed.png");
 
             if (third_party_tools_container.Visible)

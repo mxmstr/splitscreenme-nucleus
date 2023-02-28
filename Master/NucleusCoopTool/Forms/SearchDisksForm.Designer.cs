@@ -118,7 +118,7 @@ namespace Nucleus.Coop
             this.closeBtn.FlatAppearance.BorderSize = 0;
             this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeBtn.Location = new System.Drawing.Point(456, 3);
+            this.closeBtn.Location = new System.Drawing.Point(453, 3);
             this.closeBtn.Name = "closeBtn";
             this.closeBtn.Size = new System.Drawing.Size(20, 20);
             this.closeBtn.TabIndex = 16;
@@ -133,7 +133,7 @@ namespace Nucleus.Coop
             this.checkBoxSizer2.BackColor = System.Drawing.Color.Transparent;
             this.checkBoxSizer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.checkBoxSizer2.Controls.Add(this.checkboxFoundGames);
-            this.checkBoxSizer2.Location = new System.Drawing.Point(250, 34);
+            this.checkBoxSizer2.Location = new System.Drawing.Point(248, 34);
             this.checkBoxSizer2.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxSizer2.Name = "checkBoxSizer2";
             this.checkBoxSizer2.Size = new System.Drawing.Size(220, 234);
@@ -186,9 +186,9 @@ namespace Nucleus.Coop
             this.txt_Path.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txt_Path.Enabled = false;
             this.txt_Path.Font = new System.Drawing.Font("Franklin Gothic Medium", 6.25F);
-            this.txt_Path.Location = new System.Drawing.Point(9, 370);
+            this.txt_Path.Location = new System.Drawing.Point(9, 368);
             this.txt_Path.Name = "txt_Path";
-            this.txt_Path.Size = new System.Drawing.Size(462, 17);
+            this.txt_Path.Size = new System.Drawing.Size(460, 17);
             this.txt_Path.TabIndex = 16;
             this.txt_Path.Visible = false;
             // 
@@ -197,7 +197,7 @@ namespace Nucleus.Coop
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar1.BackColor = System.Drawing.Color.White;
             this.progressBar1.ForeColor = System.Drawing.Color.Black;
-            this.progressBar1.Location = new System.Drawing.Point(120, 343);
+            this.progressBar1.Location = new System.Drawing.Point(118, 341);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(350, 21);
             this.progressBar1.TabIndex = 6;
@@ -211,7 +211,7 @@ namespace Nucleus.Coop
             this.txt_Stage.Enabled = false;
             this.txt_Stage.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.5F);
             this.txt_Stage.ForeColor = System.Drawing.Color.Black;
-            this.txt_Stage.Location = new System.Drawing.Point(9, 344);
+            this.txt_Stage.Location = new System.Drawing.Point(9, 342);
             this.txt_Stage.Margin = new System.Windows.Forms.Padding(0);
             this.txt_Stage.Name = "txt_Stage";
             this.txt_Stage.Size = new System.Drawing.Size(105, 19);
@@ -227,7 +227,7 @@ namespace Nucleus.Coop
             this.btn_deselectAll.Enabled = false;
             this.btn_deselectAll.FlatAppearance.BorderSize = 0;
             this.btn_deselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_deselectAll.Location = new System.Drawing.Point(250, 306);
+            this.btn_deselectAll.Location = new System.Drawing.Point(248, 304);
             this.btn_deselectAll.Name = "btn_deselectAll";
             this.btn_deselectAll.Size = new System.Drawing.Size(220, 30);
             this.btn_deselectAll.TabIndex = 14;
@@ -243,7 +243,7 @@ namespace Nucleus.Coop
             this.btn_selectAll.Enabled = false;
             this.btn_selectAll.FlatAppearance.BorderSize = 0;
             this.btn_selectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_selectAll.Location = new System.Drawing.Point(362, 271);
+            this.btn_selectAll.Location = new System.Drawing.Point(360, 269);
             this.btn_selectAll.Name = "btn_selectAll";
             this.btn_selectAll.Size = new System.Drawing.Size(108, 30);
             this.btn_selectAll.TabIndex = 13;
@@ -258,7 +258,7 @@ namespace Nucleus.Coop
             this.btn_delPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_delPath.FlatAppearance.BorderSize = 0;
             this.btn_delPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_delPath.Location = new System.Drawing.Point(9, 306);
+            this.btn_delPath.Location = new System.Drawing.Point(9, 304);
             this.btn_delPath.Name = "btn_delPath";
             this.btn_delPath.Size = new System.Drawing.Size(220, 30);
             this.btn_delPath.TabIndex = 12;
@@ -274,7 +274,7 @@ namespace Nucleus.Coop
             this.btn_addSelection.Enabled = false;
             this.btn_addSelection.FlatAppearance.BorderSize = 0;
             this.btn_addSelection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_addSelection.Location = new System.Drawing.Point(250, 271);
+            this.btn_addSelection.Location = new System.Drawing.Point(248, 269);
             this.btn_addSelection.Name = "btn_addSelection";
             this.btn_addSelection.Size = new System.Drawing.Size(108, 30);
             this.btn_addSelection.TabIndex = 11;
@@ -289,7 +289,7 @@ namespace Nucleus.Coop
             this.btn_customPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_customPath.FlatAppearance.BorderSize = 0;
             this.btn_customPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_customPath.Location = new System.Drawing.Point(9, 271);
+            this.btn_customPath.Location = new System.Drawing.Point(9, 269);
             this.btn_customPath.Name = "btn_customPath";
             this.btn_customPath.Size = new System.Drawing.Size(108, 30);
             this.btn_customPath.TabIndex = 9;
@@ -304,7 +304,7 @@ namespace Nucleus.Coop
             this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Location = new System.Drawing.Point(121, 271);
+            this.btnSearch.Location = new System.Drawing.Point(121, 269);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(108, 30);
             this.btnSearch.TabIndex = 8;
@@ -318,6 +318,7 @@ namespace Nucleus.Coop
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.DimGray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.checkBoxSizer2);
             this.Controls.Add(this.checkBoxSizer1);
@@ -333,7 +334,7 @@ namespace Nucleus.Coop
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "SearchDisksForm";
-            this.Size = new System.Drawing.Size(479, 399);
+            this.Size = new System.Drawing.Size(477, 397);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.checkBoxSizer2.ResumeLayout(false);

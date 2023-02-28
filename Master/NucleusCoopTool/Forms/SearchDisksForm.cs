@@ -97,7 +97,7 @@ namespace Nucleus.Coop
             hand_Cursor = main.hand_Cursor;
             Location = new Point(main.Location.X + main.Width / 2 - Width / 2, main.Location.Y + main.Height / 2 - Height / 2);
 
-            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            //Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
             BackColor = BackColor = Color.FromArgb(int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[0]),

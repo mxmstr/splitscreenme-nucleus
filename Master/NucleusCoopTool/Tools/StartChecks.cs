@@ -232,6 +232,7 @@ namespace Nucleus.Coop
             }
 
             bool matchRequirements = validVCRx86 && validVCRx64;
+
             if (!matchRequirements)
             {
                 MessageBox.Show("Please install Microsoft Visual C++ 2015 - 2019 Redistributable (both x86 and x64)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);

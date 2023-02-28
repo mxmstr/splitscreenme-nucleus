@@ -802,7 +802,9 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 
+            //Ready = false;
             saved = true;
+
             LogManager.Log("Game Profile Saved");
         }
 

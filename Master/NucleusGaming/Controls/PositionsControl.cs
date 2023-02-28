@@ -304,6 +304,11 @@ namespace Nucleus.Coop
 
         private void instruction_Click(object sender, EventArgs e)
         {
+            //if(gameProfilesList.Visible)
+            //{
+            //    return;
+            //}
+
             if (instructionImg.Visible)
             {
                 SuspendLayout();
@@ -358,8 +363,8 @@ namespace Nucleus.Coop
 
                 gameProfiles_btn.Location = new Point(profileSettings_btn.Left - gameProfiles_btn.Width-3, instruction_btn.Location.Y);
                 gameProfilesList.UpdateSize(scale);
-                gameProfilesList.Location = new Point((gameProfiles_btn.Left - (int)((gameProfilesList.Width)*scale))-5, gameProfiles_btn.Location.Y + gameProfiles_btn.Height/2);
-               
+                // gameProfilesList.Location = new Point((gameProfiles_btn.Left - (int)((gameProfilesList.Width)*scale))-5, gameProfiles_btn.Location.Y + gameProfiles_btn.Height/2);
+                gameProfilesList.Location = new Point((gameProfiles_btn.Left - (int)((gameProfilesList.Width) * scale)) - 5, gameProfiles_btn.Location.Y /*+ gameProfiles_btn.Height / 2*/);
                 scaled = true;
                 
             }
@@ -1713,7 +1718,7 @@ namespace Nucleus.Coop
 
             List<PlayerInfo> players = profile.PlayerData;
 
-            if (TotalPlayers ==  GameProfile.TotalPlayers)
+            if (TotalPlayers == GameProfile.TotalPlayers)
             {
                 if (GameProfile.Ready)
                 {

@@ -728,7 +728,7 @@ namespace Nucleus.Coop
             this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
             this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(329, 128);
+            this.numMaxPlyrs.Location = new System.Drawing.Point(329, 138);
             this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
             this.numMaxPlyrs.Name = "numMaxPlyrs";
             this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
@@ -740,7 +740,7 @@ namespace Nucleus.Coop
             this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(327, 30);
+            this.numUpDownVer.Location = new System.Drawing.Point(327, 40);
             this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownVer.Name = "numUpDownVer";
             this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
@@ -793,7 +793,7 @@ namespace Nucleus.Coop
             this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(320, 105);
+            this.label29.Location = new System.Drawing.Point(320, 115);
             this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(64, 13);
@@ -809,7 +809,7 @@ namespace Nucleus.Coop
             this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(320, 58);
+            this.label27.Location = new System.Drawing.Point(320, 68);
             this.label27.Margin = new System.Windows.Forms.Padding(0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(99, 13);
@@ -824,7 +824,7 @@ namespace Nucleus.Coop
             this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(316, 11);
+            this.label28.Location = new System.Drawing.Point(316, 21);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(90, 13);
@@ -972,7 +972,7 @@ namespace Nucleus.Coop
             this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(328, 77);
+            this.numUpDownHor.Location = new System.Drawing.Point(328, 87);
             this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownHor.Name = "numUpDownHor";
             this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
@@ -4557,11 +4557,11 @@ namespace Nucleus.Coop
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.closeBtn);
             this.Controls.Add(this.modeLabel);
+            this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.profileInfo);
             this.Controls.Add(this.sharedTab);
             this.Controls.Add(this.processorTab);
             this.Controls.Add(this.audioTab);
-            this.Controls.Add(this.playersTab);
-            this.Controls.Add(this.profileInfo);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -24,6 +25,9 @@ namespace Nucleus.Coop.Forms
         private SolidBrush brush;
         public static new bool Enabled;
 
+        private RectangleF top;
+        private RectangleF front;
+
         public XInputShortcutsSetup()
         {
             InitializeComponent();
@@ -34,12 +38,18 @@ namespace Nucleus.Coop.Forms
             Cursor.Current = default_Cursor;
             Cursor = default_Cursor;
             shortContainer.Cursor = default_Cursor;
+
             refreshTimer.Tick += new EventHandler(RefreshTimerTick);
-            refreshTimer.Interval = 50;
+            refreshTimer.Interval = 500;
             refreshTimer.Start();
+
+            BackgroundImage = new Bitmap(Globals.Theme + "xinput_background.jpg");
+            BackgroundImageLayout = ImageLayout.Stretch;
+
             controllerTop = new Bitmap(Nucleus.Coop.Properties.Resources.xboxControllerTop);
             controllerFront = new Bitmap(Nucleus.Coop.Properties.Resources.xboxControllerFront);
             Close.BackgroundImage = new Bitmap(Globals.Theme + "title_close.png");
+
             brush = new SolidBrush(Color.FromArgb(90, 0, 255, 60));
             switch15.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
 
@@ -190,6 +200,7 @@ namespace Nucleus.Coop.Forms
             {
                 ini.IniWriteValue("XShortcuts", "LockInputs", "");
             }
+
             enabled_chk.Checked = bool.Parse(ini.IniReadValue("XUINav", "Enabled"));
             switch15.Text = ini.IniReadValue("XUINav", "Deadzone");
             switch12.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "DragDrop"))).ToString();
@@ -219,7 +230,6 @@ namespace Nucleus.Coop.Forms
                     {
                         TextBox textBox = c as TextBox;
                         textBox.CharacterCasing = CharacterCasing.Normal;
-                        //c.Font = new Font(textBox.Font.FontFamily,textBox.Font.Size - 1.5F);
                     }
                 }
                 c.Cursor = hand_Cursor;
@@ -251,7 +261,6 @@ namespace Nucleus.Coop.Forms
                     {
                         TextBox textBox = c as TextBox;
                         textBox.CharacterCasing = CharacterCasing.Normal;
-                        //c.Font = new Font(textBox.Font.FontFamily,textBox.Font.Size - 1.5F);
                     }
                 }
                 c.Cursor = hand_Cursor;
@@ -260,8 +269,6 @@ namespace Nucleus.Coop.Forms
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
-
-        //private bool scaled = false;
 
         public void UpdateSize(float scale)
         {
@@ -283,11 +290,9 @@ namespace Nucleus.Coop.Forms
                 {
                     if (c.GetType() == typeof(Label))
                     {
-                        //c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         if (c.Text != ("+"))
                         {
                             c.Location = new Point(switch1.Left - c.Width, c.Location.Y);
-                            //c.BackColor = Color.OrangeRed;
                         }
                     }
 
@@ -307,7 +312,6 @@ namespace Nucleus.Coop.Forms
 
                     if (c.GetType() == typeof(Label))
                     {
-                        //c.Font = new Font(c.Font.FontFamily, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         if (c.Text != ("+"))
                         {
                             c.Location = new Point(switch10.Left - c.Width, c.Location.Y);
@@ -321,14 +325,11 @@ namespace Nucleus.Coop.Forms
 
         private void RefreshTimerTick(Object Object, EventArgs EventArgs)
         {
-            if(Visible)
-            Invalidate();
+            if (Visible)
+                bufferedClientAreaPanel1.Invalidate();
         }
 
-        //private int prevPressed;
-        private RectangleF top;
-        private RectangleF front;
-        private void XInputShortcutsSetup_Paint(object sender, PaintEventArgs e)
+        private void bufferedClientAreaPanel1_Paint_1(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             float factor = 1.5F;
@@ -339,7 +340,13 @@ namespace Nucleus.Coop.Forms
             float frontWidth = (controllerFront.Width / factor) * scale;
             float frontHeight = (controllerFront.Height / factor) * scale;
 
-            top = new RectangleF(shortContainer.Right + 40, 25, topWidth, topHeight);
+
+            Vector2 p1 = new Vector2(bufferedClientAreaPanel1.Location.X, bufferedClientAreaPanel1.Location.Y);
+            Vector2 p2 = new Vector2(this.Width, bufferedClientAreaPanel1.Location.X);
+            Vector2 size1 = Vector2.Subtract(p2, p1);
+            float locX = size1.X / 2 - topWidth / 2;
+
+            top = new RectangleF(locX, 10, topWidth, topHeight);
             front = new RectangleF(top.X, top.Bottom + 20, frontWidth, frontHeight);
 
             g.DrawImage(controllerTop, top);
@@ -392,7 +399,7 @@ namespace Nucleus.Coop.Forms
                     }
 
                     int.TryParse("None", out int noButtonPressed);
-                    if(pressed == noButtonPressed && !isRL && !isRT)
+                    if (pressed == noButtonPressed && !isRL && !isRT)
                     {
                         continue;
                     }
@@ -541,7 +548,6 @@ namespace Nucleus.Coop.Forms
             //Console.WriteLine(Height - front.Y);
             //Console.WriteLine("X" + (e.X - top.X)+" "+ "Y" + (e.Y - top.Y));//postion in image rectangle
             //Console.WriteLine("X" + (e.X - front.X) + " " + "Y" + (e.Y - front.Y));
-
         }
 
         private void Close_Click(object sender, EventArgs e)
@@ -593,6 +599,16 @@ namespace Nucleus.Coop.Forms
         private void deadzone_txt_MouseLeave(object sender, EventArgs e)
         {
             deadzone_tip.Visible = false;
+        }
+
+        private void Close_MouseEnter(object sender, EventArgs e)
+        {
+            Close.BackgroundImage = new Bitmap(Globals.Theme + "title_close_mousehover.png");
+        }
+
+        private void Close_MouseLeave(object sender, EventArgs e)
+        {
+            Close.BackgroundImage = new Bitmap(Globals.Theme + "title_close.png");
         }
     }
 }

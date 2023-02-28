@@ -108,7 +108,7 @@ namespace Nucleus.Coop
 
             if (mf.roundedcorners)
             {
-                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+               // Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
             Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
@@ -418,45 +418,56 @@ namespace Nucleus.Coop
 
             SuspendLayout();
 
-            if (scale > 1.0F)
+            //if (scale > 1.0F)
+            //{
+            float newFontSize = Font.Size * scale;
+            foreach (Control c in hotkeyBox.Controls)
             {
-                float newFontSize = Font.Size * scale;
-                foreach (Control c in hotkeyBox.Controls)
+                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
                 {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                    if (scale > 1.0F)
                     {
                         c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         //c.Size = new Size(c.Width, (c.Height + 25) * (int)scale);
                     }
-
-                    if (c.GetType() == typeof(Label))
-                    {
-                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        if (c.Text != ("+"))
-                        {
-                            c.Location = new Point(settingsFocusCmb.Left - c.Width, c.Location.Y);
-                        }
-                    }
                 }
 
-                foreach (Control c in Controls)
+                if (c.GetType() == typeof(Label))
                 {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
-                    {
-                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-                    }
-                    else if (c.GetType() == typeof(Button))
+                    if (scale > 1.0F)
                     {
                         c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
-                }
 
-                nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    if (c.Text != ("+"))
+                    {
+                        c.Location = new Point(settingsFocusCmb.Left - c.Width, c.Location.Y);
+                    }
+                }
             }
 
+            foreach (Control c in Controls)
+            {
+                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
+                {
+                    if (scale > 1.0F)
+                    {
+                        c.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+                else if (c.GetType() == typeof(Button))
+                {
+                    if (scale > 1.0F)
+                    {
+                        c.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+                }
+            }
+
+            nucUserPassTxt.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            //}
+
             settingLabel_Container.Location = new Point((Width / 2) - (settingLabel_Container.Width / 2), settingLabel_Container.Location.Y);
-            // password_Label.Location = new Point((passwordPanel.Width / 2) - (password_Label.Width / 2), password_Label.Location.Y);
             label38.Location = new Point((hotkeyBox.Width / 2) - (label38.Width / 2), label38.Location.Y);
 
             ResumeLayout();
@@ -638,6 +649,6 @@ namespace Nucleus.Coop
             {
                 mainForm.Xinput_S_Setup.Visible = false;
             }
-        }
+        }      
     }
 }

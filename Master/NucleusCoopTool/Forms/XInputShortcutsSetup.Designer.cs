@@ -86,6 +86,7 @@
             this.switch12 = new System.Windows.Forms.TextBox();
             this.deadzone_tip = new System.Windows.Forms.Label();
             this.enabled_chk = new System.Windows.Forms.CheckBox();
+            this.bufferedClientAreaPanel1 = new BufferedClientAreaPanel();
             this.shortContainer.SuspendLayout();
             this.UINavContainer.SuspendLayout();
             this.SuspendLayout();
@@ -106,6 +107,8 @@
             this.Close.TabIndex = 0;
             this.Close.UseVisualStyleBackColor = false;
             this.Close.Click += new System.EventHandler(this.Close_Click);
+            this.Close.MouseEnter += new System.EventHandler(this.Close_MouseEnter);
+            this.Close.MouseLeave += new System.EventHandler(this.Close_MouseLeave);
             // 
             // plus7
             // 
@@ -365,7 +368,7 @@
             // 
             // shortContainer
             // 
-            this.shortContainer.BackColor = System.Drawing.Color.Black;
+            this.shortContainer.BackColor = System.Drawing.Color.Transparent;
             this.shortContainer.Controls.Add(this.switch9);
             this.shortContainer.Controls.Add(this.plus9);
             this.shortContainer.Controls.Add(this.slave9);
@@ -588,6 +591,7 @@
             // 
             // UINavContainer
             // 
+            this.UINavContainer.BackColor = System.Drawing.Color.Transparent;
             this.UINavContainer.Controls.Add(this.switch11);
             this.UINavContainer.Controls.Add(this.plus11);
             this.UINavContainer.Controls.Add(this.slave11);
@@ -789,6 +793,7 @@
             // deadzone_tip
             // 
             this.deadzone_tip.AutoSize = true;
+            this.deadzone_tip.BackColor = System.Drawing.Color.Transparent;
             this.deadzone_tip.ForeColor = System.Drawing.Color.White;
             this.deadzone_tip.Location = new System.Drawing.Point(278, 389);
             this.deadzone_tip.Name = "deadzone_tip";
@@ -802,6 +807,7 @@
             // enabled_chk
             // 
             this.enabled_chk.AutoSize = true;
+            this.enabled_chk.BackColor = System.Drawing.Color.Transparent;
             this.enabled_chk.Checked = true;
             this.enabled_chk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.enabled_chk.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -810,8 +816,17 @@
             this.enabled_chk.Size = new System.Drawing.Size(348, 17);
             this.enabled_chk.TabIndex = 92;
             this.enabled_chk.Text = "Enable Controller UI Navigation (Require admin rights for full support)";
-            this.enabled_chk.UseVisualStyleBackColor = true;
+            this.enabled_chk.UseVisualStyleBackColor = false;
             this.enabled_chk.CheckedChanged += new System.EventHandler(this.enabled_chk_CheckedChanged);
+            // 
+            // bufferedClientAreaPanel1
+            // 
+            this.bufferedClientAreaPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.bufferedClientAreaPanel1.Location = new System.Drawing.Point(266, 5);
+            this.bufferedClientAreaPanel1.Name = "bufferedClientAreaPanel1";
+            this.bufferedClientAreaPanel1.Size = new System.Drawing.Size(228, 229);
+            this.bufferedClientAreaPanel1.TabIndex = 93;
+            this.bufferedClientAreaPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.bufferedClientAreaPanel1_Paint_1);
             // 
             // XInputShortcutsSetup
             // 
@@ -819,18 +834,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(500, 431);
+            this.Controls.Add(this.Close);
+            this.Controls.Add(this.bufferedClientAreaPanel1);
             this.Controls.Add(this.enabled_chk);
             this.Controls.Add(this.deadzone_tip);
             this.Controls.Add(this.UINavContainer);
             this.Controls.Add(this.shortContainer);
-            this.Controls.Add(this.Close);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "XInputShortcutsSetup";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gamepad Shortcuts Setup";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.XInputShortcutsSetup_Paint);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.XInputShortcutsSetup_MouseMove);
             this.shortContainer.ResumeLayout(false);
             this.shortContainer.PerformLayout();
@@ -900,5 +915,6 @@
         private System.Windows.Forms.Label plus11;
         private System.Windows.Forms.TextBox slave11;
         private System.Windows.Forms.Label label_11;
+        private BufferedClientAreaPanel bufferedClientAreaPanel1;
     }
 }

@@ -533,6 +533,7 @@ namespace Nucleus.Gaming
                         {
                             return "";
                         }
+
                         Thread.Sleep(1000);
 
                         if (gen.KillMutexLauncher != null)
@@ -3433,6 +3434,8 @@ namespace Nucleus.Gaming
             {
                 GlobalWindowMethods.ChangeForegroundWindow();
             }
+
+            ControllersUINav.EnabledRuntime = false;
         }
 
         struct TickThread
@@ -3522,7 +3525,7 @@ namespace Nucleus.Gaming
                 {
                     ControllersUINav.EnabledRuntime = true;
                 }
-           // }
+            //}
 
             if (ini.IniReadValue("Misc", "ShowStatus") == "True")
             {

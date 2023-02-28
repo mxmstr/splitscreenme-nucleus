@@ -111,7 +111,7 @@ namespace Nucleus.Coop
             this.save_Label.Location = new System.Drawing.Point(0, 0);
             this.save_Label.Margin = new System.Windows.Forms.Padding(0);
             this.save_Label.Name = "save_Label";
-            this.save_Label.Size = new System.Drawing.Size(260, 15);
+            this.save_Label.Size = new System.Drawing.Size(258, 15);
             this.save_Label.TabIndex = 62;
             this.save_Label.Text = "Save settings in order for them to take effect.";
             this.save_Label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -124,7 +124,7 @@ namespace Nucleus.Coop
             this.btn_credits.FlatAppearance.BorderSize = 0;
             this.btn_credits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_credits.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_credits.Location = new System.Drawing.Point(195, 321);
+            this.btn_credits.Location = new System.Drawing.Point(194, 319);
             this.btn_credits.Margin = new System.Windows.Forms.Padding(2);
             this.btn_credits.Name = "btn_credits";
             this.btn_credits.Size = new System.Drawing.Size(80, 22);
@@ -141,7 +141,7 @@ namespace Nucleus.Coop
             this.settingsCloseBtn.FlatAppearance.BorderSize = 0;
             this.settingsCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsCloseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsCloseBtn.Location = new System.Drawing.Point(279, 321);
+            this.settingsCloseBtn.Location = new System.Drawing.Point(278, 319);
             this.settingsCloseBtn.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCloseBtn.Name = "settingsCloseBtn";
             this.settingsCloseBtn.Size = new System.Drawing.Size(80, 22);
@@ -158,7 +158,7 @@ namespace Nucleus.Coop
             this.settingsSaveBtn.FlatAppearance.BorderSize = 0;
             this.settingsSaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsSaveBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsSaveBtn.Location = new System.Drawing.Point(111, 321);
+            this.settingsSaveBtn.Location = new System.Drawing.Point(110, 319);
             this.settingsSaveBtn.Margin = new System.Windows.Forms.Padding(2);
             this.settingsSaveBtn.Name = "settingsSaveBtn";
             this.settingsSaveBtn.Size = new System.Drawing.Size(80, 22);
@@ -174,9 +174,9 @@ namespace Nucleus.Coop
             this.settingLabel_Container.BackColor = System.Drawing.Color.Transparent;
             this.settingLabel_Container.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.settingLabel_Container.Controls.Add(this.save_Label);
-            this.settingLabel_Container.Location = new System.Drawing.Point(111, 301);
+            this.settingLabel_Container.Location = new System.Drawing.Point(111, 299);
             this.settingLabel_Container.Name = "settingLabel_Container";
-            this.settingLabel_Container.Size = new System.Drawing.Size(260, 15);
+            this.settingLabel_Container.Size = new System.Drawing.Size(258, 15);
             this.settingLabel_Container.TabIndex = 37;
             // 
             // password_Label
@@ -185,7 +185,7 @@ namespace Nucleus.Coop
             this.password_Label.AutoSize = true;
             this.password_Label.BackColor = System.Drawing.Color.Transparent;
             this.password_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.password_Label.Location = new System.Drawing.Point(19, 246);
+            this.password_Label.Location = new System.Drawing.Point(17, 246);
             this.password_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.password_Label.Name = "password_Label";
             this.password_Label.Size = new System.Drawing.Size(138, 15);
@@ -196,7 +196,7 @@ namespace Nucleus.Coop
             // nucUserPassTxt
             // 
             this.nucUserPassTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nucUserPassTxt.Location = new System.Drawing.Point(22, 265);
+            this.nucUserPassTxt.Location = new System.Drawing.Point(20, 265);
             this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
             this.nucUserPassTxt.MaxLength = 127;
             this.nucUserPassTxt.Name = "nucUserPassTxt";
@@ -212,9 +212,9 @@ namespace Nucleus.Coop
             this.themeLabel.Location = new System.Drawing.Point(19, 92);
             this.themeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.themeLabel.Name = "themeLabel";
-            this.themeLabel.Size = new System.Drawing.Size(43, 13);
+            this.themeLabel.Size = new System.Drawing.Size(40, 13);
             this.themeLabel.TabIndex = 99;
-            this.themeLabel.Text = "Theme:";
+            this.themeLabel.Text = "Theme";
             this.themeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // themeCbx
@@ -436,7 +436,7 @@ namespace Nucleus.Coop
             this.hotkeyBox.Controls.Add(this.label1);
             this.hotkeyBox.Controls.Add(this.settingsCloseHKTxt);
             this.hotkeyBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hotkeyBox.Location = new System.Drawing.Point(241, 39);
+            this.hotkeyBox.Location = new System.Drawing.Point(245, 3);
             this.hotkeyBox.Margin = new System.Windows.Forms.Padding(2);
             this.hotkeyBox.Name = "hotkeyBox";
             this.hotkeyBox.Padding = new System.Windows.Forms.Padding(2);
@@ -855,11 +855,11 @@ namespace Nucleus.Coop
             this.ctrlr_shorcuts.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcuts.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcuts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ctrlr_shorcuts.Location = new System.Drawing.Point(241, 8);
+            this.ctrlr_shorcuts.Location = new System.Drawing.Point(245, 241);
             this.ctrlr_shorcuts.Name = "ctrlr_shorcuts";
-            this.ctrlr_shorcuts.Size = new System.Drawing.Size(147, 27);
+            this.ctrlr_shorcuts.Size = new System.Drawing.Size(236, 27);
             this.ctrlr_shorcuts.TabIndex = 100;
-            this.ctrlr_shorcuts.Text = "Gamepad Shortcuts Setup";
+            this.ctrlr_shorcuts.Text = "Controller Shortcuts Setup";
             this.ctrlr_shorcuts.UseVisualStyleBackColor = false;
             this.ctrlr_shorcuts.Click += new System.EventHandler(this.ctrlr_shorcuts_Click);
             // 
@@ -869,6 +869,7 @@ namespace Nucleus.Coop
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.ctrlr_shorcuts);
             this.Controls.Add(this.nucUserPassTxt);
             this.Controls.Add(this.password_Label);
@@ -892,7 +893,7 @@ namespace Nucleus.Coop
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Settings";
-            this.Size = new System.Drawing.Size(491, 354);
+            this.Size = new System.Drawing.Size(489, 352);
             this.settingLabel_Container.ResumeLayout(false);
             this.hotkeyBox.ResumeLayout(false);
             this.hotkeyBox.PerformLayout();

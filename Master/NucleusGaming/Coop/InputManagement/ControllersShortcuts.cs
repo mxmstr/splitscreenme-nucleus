@@ -263,6 +263,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                     if (!EnabledRuntime)
                     {
+                        Thread.Sleep(500);
                         continue;
                     }
                   
