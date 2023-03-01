@@ -26,6 +26,7 @@ namespace Nucleus.Gaming.Controls
         private ToolTip unloadTooltip;
         private IniFile themeIni = Globals.ThemeIni;
         private Color buttonsBackColor;
+        public string loadedTitle;
 
         public ProfilesList()
         {
@@ -43,10 +44,27 @@ namespace Nucleus.Gaming.Controls
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[3]));
+            SetToolTips();
+        }
+
+        private void SetToolTips()
+        {
             notesTooltip = new ToolTip();
+            notesTooltip.InitialDelay = 100;
+            notesTooltip.ReshowDelay = 100;
+            notesTooltip.AutoPopDelay = 5000;
             loadTooltip = new ToolTip();
+            loadTooltip.InitialDelay = 100;
+            loadTooltip.ReshowDelay = 100;
+            loadTooltip.AutoPopDelay = 5000;
             deleteTooltip = new ToolTip();
+            deleteTooltip.InitialDelay = 100;
+            deleteTooltip.ReshowDelay = 100;
+            deleteTooltip.AutoPopDelay = 5000;
             unloadTooltip = new ToolTip();
+            unloadTooltip.InitialDelay = 100;
+            unloadTooltip.ReshowDelay = 100;
+            unloadTooltip.AutoPopDelay = 5000;
         }
 
         public void profileBtn_CheckedChanged(object sender, EventArgs e)
@@ -102,12 +120,14 @@ namespace Nucleus.Gaming.Controls
                 selected.ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
                 unloadBtn.ForeColor = Color.Orange;
+                loadedTitle = selected.Text;
             }
         }
 
         public void Update_ProfilesList()
         {
             Controls.Clear();
+            SetToolTips();
 
             Size = new Size((int)(100 * _scale), (int)(3 * _scale));
 

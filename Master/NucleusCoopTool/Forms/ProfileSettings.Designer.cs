@@ -83,17 +83,13 @@ namespace Nucleus.Coop
             this.label29 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.KeepSymLinkCheckBox = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.WIndowsSetupTiming_Label = new System.Windows.Forms.Label();
             this.WindowsSetupTiming_TextBox = new System.Windows.Forms.TextBox();
             this.pauseBetweenInstanceLaunch_TxtBox = new System.Windows.Forms.TextBox();
             this.pauseBetweenInstanceLauch_Label = new System.Windows.Forms.Label();
-            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
-            this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
             this.label32 = new System.Windows.Forms.Label();
-            this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.processorTab = new BufferedClientAreaPanel();
             this.coreCountLabel = new System.Windows.Forms.Label();
@@ -357,6 +353,10 @@ namespace Nucleus.Coop
             this.label8 = new System.Windows.Forms.Label();
             this.player1N = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.useNicksCheck = new System.Windows.Forms.CheckBox();
+            this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
+            this.KeepSymLinkCheckBox = new System.Windows.Forms.CheckBox();
+            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.saveBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).BeginInit();
@@ -585,6 +585,10 @@ namespace Nucleus.Coop
             // sharedTab
             // 
             this.sharedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.sharedTab.Controls.Add(this.KeepSymLinkCheckBox);
+            this.sharedTab.Controls.Add(this.scaleOptionCbx);
+            this.sharedTab.Controls.Add(this.keepAccountsCheck);
+            this.sharedTab.Controls.Add(this.useNicksCheck);
             this.sharedTab.Controls.Add(this.label72);
             this.sharedTab.Controls.Add(this.notes_text);
             this.sharedTab.Controls.Add(this.label71);
@@ -600,17 +604,13 @@ namespace Nucleus.Coop
             this.sharedTab.Controls.Add(this.label29);
             this.sharedTab.Controls.Add(this.label27);
             this.sharedTab.Controls.Add(this.label28);
-            this.sharedTab.Controls.Add(this.KeepSymLinkCheckBox);
             this.sharedTab.Controls.Add(this.label6);
             this.sharedTab.Controls.Add(this.label2);
             this.sharedTab.Controls.Add(this.WIndowsSetupTiming_Label);
             this.sharedTab.Controls.Add(this.WindowsSetupTiming_TextBox);
             this.sharedTab.Controls.Add(this.pauseBetweenInstanceLaunch_TxtBox);
             this.sharedTab.Controls.Add(this.pauseBetweenInstanceLauch_Label);
-            this.sharedTab.Controls.Add(this.scaleOptionCbx);
-            this.sharedTab.Controls.Add(this.keepAccountsCheck);
             this.sharedTab.Controls.Add(this.label32);
-            this.sharedTab.Controls.Add(this.useNicksCheck);
             this.sharedTab.Controls.Add(this.numUpDownHor);
             this.sharedTab.Location = new System.Drawing.Point(1, 33);
             this.sharedTab.Name = "sharedTab";
@@ -621,7 +621,7 @@ namespace Nucleus.Coop
             // 
             this.label72.AutoSize = true;
             this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label72.Location = new System.Drawing.Point(402, 291);
+            this.label72.Location = new System.Drawing.Point(320, 294);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(60, 13);
             this.label72.TabIndex = 145;
@@ -632,19 +632,19 @@ namespace Nucleus.Coop
             this.notes_text.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.notes_text.BackColor = System.Drawing.SystemColors.InfoText;
             this.notes_text.ForeColor = System.Drawing.Color.White;
-            this.notes_text.Location = new System.Drawing.Point(404, 308);
-            this.notes_text.MaximumSize = new System.Drawing.Size(260, 81);
+            this.notes_text.Location = new System.Drawing.Point(322, 311);
+            this.notes_text.MaximumSize = new System.Drawing.Size(341, 81);
             this.notes_text.Multiline = true;
             this.notes_text.Name = "notes_text";
             this.notes_text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.notes_text.Size = new System.Drawing.Size(260, 81);
+            this.notes_text.Size = new System.Drawing.Size(341, 81);
             this.notes_text.TabIndex = 144;
             // 
             // label71
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(402, 186);
+            this.label71.Location = new System.Drawing.Point(12, 278);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(128, 13);
             this.label71.TabIndex = 143;
@@ -657,7 +657,7 @@ namespace Nucleus.Coop
             this.panel1.Controls.Add(this.cts_kar);
             this.panel1.Controls.Add(this.cts_Mute);
             this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(401, 205);
+            this.panel1.Location = new System.Drawing.Point(11, 297);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 82);
             this.panel1.TabIndex = 142;
@@ -696,7 +696,7 @@ namespace Nucleus.Coop
             // SplitColors
             // 
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(14, 342);
+            this.SplitColors.Location = new System.Drawing.Point(14, 240);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
@@ -705,7 +705,7 @@ namespace Nucleus.Coop
             // cmb_Network
             // 
             this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmb_Network.Location = new System.Drawing.Point(14, 156);
+            this.cmb_Network.Location = new System.Drawing.Point(14, 58);
             this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cmb_Network.Name = "cmb_Network";
             this.cmb_Network.Size = new System.Drawing.Size(198, 21);
@@ -715,12 +715,12 @@ namespace Nucleus.Coop
             // 
             this.autoPlay.AutoSize = true;
             this.autoPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoPlay.Location = new System.Drawing.Point(14, 108);
+            this.autoPlay.Location = new System.Drawing.Point(15, 11);
             this.autoPlay.Margin = new System.Windows.Forms.Padding(2);
             this.autoPlay.Name = "autoPlay";
-            this.autoPlay.Size = new System.Drawing.Size(299, 17);
+            this.autoPlay.Size = new System.Drawing.Size(167, 17);
             this.autoPlay.TabIndex = 135;
-            this.autoPlay.Text = "Auto Play On Profile Selection(Multiple k\\m not supported)";
+            this.autoPlay.Text = "Auto Play On Profile Selection";
             this.autoPlay.UseVisualStyleBackColor = true;
             // 
             // numMaxPlyrs
@@ -728,7 +728,7 @@ namespace Nucleus.Coop
             this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
             this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(329, 138);
+            this.numMaxPlyrs.Location = new System.Drawing.Point(315, 242);
             this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
             this.numMaxPlyrs.Name = "numMaxPlyrs";
             this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
@@ -740,7 +740,7 @@ namespace Nucleus.Coop
             this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(327, 40);
+            this.numUpDownVer.Location = new System.Drawing.Point(313, 144);
             this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownVer.Name = "numUpDownVer";
             this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
@@ -752,12 +752,12 @@ namespace Nucleus.Coop
             this.SplitDiv.AutoSize = true;
             this.SplitDiv.Cursor = System.Windows.Forms.Cursors.Default;
             this.SplitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitDiv.Location = new System.Drawing.Point(15, 294);
+            this.SplitDiv.Location = new System.Drawing.Point(15, 192);
             this.SplitDiv.Margin = new System.Windows.Forms.Padding(0);
             this.SplitDiv.Name = "SplitDiv";
-            this.SplitDiv.Size = new System.Drawing.Size(253, 17);
+            this.SplitDiv.Size = new System.Drawing.Size(118, 17);
             this.SplitDiv.TabIndex = 131;
-            this.SplitDiv.Text = "Splitscreen Division (May not work for all games)";
+            this.SplitDiv.Text = "Splitscreen Division";
             this.SplitDiv.UseVisualStyleBackColor = true;
             // 
             // label49
@@ -765,7 +765,7 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(12, 320);
+            this.label49.Location = new System.Drawing.Point(12, 218);
             this.label49.Margin = new System.Windows.Forms.Padding(0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(105, 15);
@@ -777,7 +777,7 @@ namespace Nucleus.Coop
             // 
             this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
-            this.layoutSizer.Location = new System.Drawing.Point(422, 6);
+            this.layoutSizer.Location = new System.Drawing.Point(408, 110);
             this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
             this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
@@ -793,7 +793,7 @@ namespace Nucleus.Coop
             this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(320, 115);
+            this.label29.Location = new System.Drawing.Point(306, 219);
             this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(64, 13);
@@ -809,7 +809,7 @@ namespace Nucleus.Coop
             this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(320, 68);
+            this.label27.Location = new System.Drawing.Point(306, 172);
             this.label27.Margin = new System.Windows.Forms.Padding(0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(99, 13);
@@ -824,7 +824,7 @@ namespace Nucleus.Coop
             this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(316, 21);
+            this.label28.Location = new System.Drawing.Point(302, 125);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(90, 13);
@@ -832,24 +832,11 @@ namespace Nucleus.Coop
             this.label28.Text = " Vertical Divisions";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // KeepSymLinkCheckBox
-            // 
-            this.KeepSymLinkCheckBox.AutoSize = true;
-            this.KeepSymLinkCheckBox.BackColor = System.Drawing.Color.Transparent;
-            this.KeepSymLinkCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepSymLinkCheckBox.Location = new System.Drawing.Point(15, 58);
-            this.KeepSymLinkCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this.KeepSymLinkCheckBox.Name = "KeepSymLinkCheckBox";
-            this.KeepSymLinkCheckBox.Size = new System.Drawing.Size(131, 17);
-            this.KeepSymLinkCheckBox.TabIndex = 119;
-            this.KeepSymLinkCheckBox.Text = "Keep SymLink On Exit";
-            this.KeepSymLinkCheckBox.UseVisualStyleBackColor = false;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(75, 264);
+            this.label6.Location = new System.Drawing.Point(75, 161);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(69, 13);
@@ -861,7 +848,7 @@ namespace Nucleus.Coop
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(53, 214);
+            this.label2.Location = new System.Drawing.Point(53, 111);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
@@ -873,17 +860,17 @@ namespace Nucleus.Coop
             // 
             this.WIndowsSetupTiming_Label.AutoSize = true;
             this.WIndowsSetupTiming_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WIndowsSetupTiming_Label.Location = new System.Drawing.Point(12, 240);
+            this.WIndowsSetupTiming_Label.Location = new System.Drawing.Point(12, 137);
             this.WIndowsSetupTiming_Label.Margin = new System.Windows.Forms.Padding(0);
             this.WIndowsSetupTiming_Label.Name = "WIndowsSetupTiming_Label";
-            this.WIndowsSetupTiming_Label.Size = new System.Drawing.Size(267, 13);
+            this.WIndowsSetupTiming_Label.Size = new System.Drawing.Size(119, 13);
             this.WIndowsSetupTiming_Label.TabIndex = 116;
-            this.WIndowsSetupTiming_Label.Text = "Windows Setup Timing (Can break positioning/resizing)";
+            this.WIndowsSetupTiming_Label.Text = "Windows Setup Timing ";
             this.WIndowsSetupTiming_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // WindowsSetupTiming_TextBox
             // 
-            this.WindowsSetupTiming_TextBox.Location = new System.Drawing.Point(15, 261);
+            this.WindowsSetupTiming_TextBox.Location = new System.Drawing.Point(15, 158);
             this.WindowsSetupTiming_TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.WindowsSetupTiming_TextBox.MaxLength = 5;
             this.WindowsSetupTiming_TextBox.Name = "WindowsSetupTiming_TextBox";
@@ -894,7 +881,7 @@ namespace Nucleus.Coop
             // 
             // pauseBetweenInstanceLaunch_TxtBox
             // 
-            this.pauseBetweenInstanceLaunch_TxtBox.Location = new System.Drawing.Point(15, 211);
+            this.pauseBetweenInstanceLaunch_TxtBox.Location = new System.Drawing.Point(15, 108);
             this.pauseBetweenInstanceLaunch_TxtBox.Margin = new System.Windows.Forms.Padding(0);
             this.pauseBetweenInstanceLaunch_TxtBox.MaxLength = 3;
             this.pauseBetweenInstanceLaunch_TxtBox.Name = "pauseBetweenInstanceLaunch_TxtBox";
@@ -907,46 +894,19 @@ namespace Nucleus.Coop
             // 
             this.pauseBetweenInstanceLauch_Label.AutoSize = true;
             this.pauseBetweenInstanceLauch_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pauseBetweenInstanceLauch_Label.Location = new System.Drawing.Point(12, 190);
+            this.pauseBetweenInstanceLauch_Label.Location = new System.Drawing.Point(12, 87);
             this.pauseBetweenInstanceLauch_Label.Margin = new System.Windows.Forms.Padding(0);
             this.pauseBetweenInstanceLauch_Label.Name = "pauseBetweenInstanceLauch_Label";
-            this.pauseBetweenInstanceLauch_Label.Size = new System.Drawing.Size(302, 13);
+            this.pauseBetweenInstanceLauch_Label.Size = new System.Drawing.Size(150, 13);
             this.pauseBetweenInstanceLauch_Label.TabIndex = 114;
-            this.pauseBetweenInstanceLauch_Label.Text = "Pause Between Game Startup (Can break hooks or xinputplus)";
+            this.pauseBetweenInstanceLauch_Label.Text = "Pause Between Game Startup";
             this.pauseBetweenInstanceLauch_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // scaleOptionCbx
-            // 
-            this.scaleOptionCbx.AutoSize = true;
-            this.scaleOptionCbx.Checked = true;
-            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scaleOptionCbx.Location = new System.Drawing.Point(15, 83);
-            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
-            this.scaleOptionCbx.Name = "scaleOptionCbx";
-            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
-            this.scaleOptionCbx.TabIndex = 112;
-            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
-            this.scaleOptionCbx.UseVisualStyleBackColor = true;
-            // 
-            // keepAccountsCheck
-            // 
-            this.keepAccountsCheck.AutoSize = true;
-            this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.keepAccountsCheck.Location = new System.Drawing.Point(15, 35);
-            this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.keepAccountsCheck.Name = "keepAccountsCheck";
-            this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
-            this.keepAccountsCheck.TabIndex = 111;
-            this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
-            this.keepAccountsCheck.UseVisualStyleBackColor = true;
-            this.keepAccountsCheck.Click += new System.EventHandler(this.keepAccountsCheck_Click);
             // 
             // label32
             // 
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(13, 134);
+            this.label32.Location = new System.Drawing.Point(13, 36);
             this.label32.Margin = new System.Windows.Forms.Padding(0);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(47, 13);
@@ -954,25 +914,12 @@ namespace Nucleus.Coop
             this.label32.Text = "Network";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // useNicksCheck
-            // 
-            this.useNicksCheck.AutoSize = true;
-            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
-            this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.useNicksCheck.Location = new System.Drawing.Point(15, 11);
-            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.useNicksCheck.Name = "useNicksCheck";
-            this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
-            this.useNicksCheck.TabIndex = 108;
-            this.useNicksCheck.Text = "Use Nicknames In-Game";
-            this.useNicksCheck.UseVisualStyleBackColor = false;
-            // 
             // numUpDownHor
             // 
             this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(328, 87);
+            this.numUpDownHor.Location = new System.Drawing.Point(314, 191);
             this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownHor.Name = "numUpDownHor";
             this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
@@ -3310,13 +3257,13 @@ namespace Nucleus.Coop
             // 
             this.default_sid_list_label.AutoSize = true;
             this.default_sid_list_label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.default_sid_list_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.default_sid_list_label.Location = new System.Drawing.Point(200, 381);
+            this.default_sid_list_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.default_sid_list_label.Location = new System.Drawing.Point(192, 380);
             this.default_sid_list_label.Margin = new System.Windows.Forms.Padding(0);
             this.default_sid_list_label.Name = "default_sid_list_label";
-            this.default_sid_list_label.Size = new System.Drawing.Size(99, 13);
+            this.default_sid_list_label.Size = new System.Drawing.Size(110, 15);
             this.default_sid_list_label.TabIndex = 131;
-            this.default_sid_list_label.Text = "Default Steam IDs :";
+            this.default_sid_list_label.Text = "Default Steam Ids :";
             this.default_sid_list_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // steamid32
@@ -3983,12 +3930,12 @@ namespace Nucleus.Coop
             // 
             this.label48.AutoSize = true;
             this.label48.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label48.Location = new System.Drawing.Point(528, 4);
+            this.label48.Location = new System.Drawing.Point(544, 4);
             this.label48.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(83, 13);
+            this.label48.Size = new System.Drawing.Size(49, 13);
             this.label48.TabIndex = 234;
-            this.label48.Text = "Player Steam ID";
+            this.label48.Text = "Steam Id";
             // 
             // steamid9
             // 
@@ -4090,12 +4037,12 @@ namespace Nucleus.Coop
             // 
             this.label47.AutoSize = true;
             this.label47.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label47.Location = new System.Drawing.Point(168, 4);
+            this.label47.Location = new System.Drawing.Point(184, 4);
             this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(83, 13);
+            this.label47.Size = new System.Drawing.Size(49, 13);
             this.label47.TabIndex = 225;
-            this.label47.Text = "Player Steam ID";
+            this.label47.Text = "Steam Id";
             // 
             // steamid1
             // 
@@ -4116,9 +4063,9 @@ namespace Nucleus.Coop
             this.label21.Location = new System.Drawing.Point(374, 4);
             this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(50, 13);
+            this.label21.Size = new System.Drawing.Size(48, 13);
             this.label21.TabIndex = 224;
-            this.label21.Text = "Player ID";
+            this.label21.Text = "Player Id";
             // 
             // label25
             // 
@@ -4423,12 +4370,12 @@ namespace Nucleus.Coop
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(13, 4);
+            this.label13.Location = new System.Drawing.Point(12, 4);
             this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(50, 13);
+            this.label13.Size = new System.Drawing.Size(51, 13);
             this.label13.TabIndex = 198;
-            this.label13.Text = "Player ID";
+            this.label13.Text = " Player Id";
             // 
             // player4N
             // 
@@ -4537,6 +4484,60 @@ namespace Nucleus.Coop
             this.label7.Text = "Player 1:";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // useNicksCheck
+            // 
+            this.useNicksCheck.AutoSize = true;
+            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
+            this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.useNicksCheck.Location = new System.Drawing.Point(310, 9);
+            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.useNicksCheck.Name = "useNicksCheck";
+            this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
+            this.useNicksCheck.TabIndex = 146;
+            this.useNicksCheck.Text = "Use Nicknames In-Game";
+            this.useNicksCheck.UseVisualStyleBackColor = false;
+            // 
+            // keepAccountsCheck
+            // 
+            this.keepAccountsCheck.AutoSize = true;
+            this.keepAccountsCheck.BackColor = System.Drawing.Color.Transparent;
+            this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.keepAccountsCheck.Location = new System.Drawing.Point(310, 30);
+            this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.keepAccountsCheck.Name = "keepAccountsCheck";
+            this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
+            this.keepAccountsCheck.TabIndex = 147;
+            this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
+            this.keepAccountsCheck.UseVisualStyleBackColor = false;
+            // 
+            // KeepSymLinkCheckBox
+            // 
+            this.KeepSymLinkCheckBox.AutoSize = true;
+            this.KeepSymLinkCheckBox.BackColor = System.Drawing.Color.Transparent;
+            this.KeepSymLinkCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeepSymLinkCheckBox.Location = new System.Drawing.Point(310, 68);
+            this.KeepSymLinkCheckBox.Margin = new System.Windows.Forms.Padding(2);
+            this.KeepSymLinkCheckBox.Name = "KeepSymLinkCheckBox";
+            this.KeepSymLinkCheckBox.Size = new System.Drawing.Size(131, 17);
+            this.KeepSymLinkCheckBox.TabIndex = 149;
+            this.KeepSymLinkCheckBox.Text = "Keep SymLink On Exit";
+            this.KeepSymLinkCheckBox.UseVisualStyleBackColor = false;
+            // 
+            // scaleOptionCbx
+            // 
+            this.scaleOptionCbx.AutoSize = true;
+            this.scaleOptionCbx.BackColor = System.Drawing.Color.Transparent;
+            this.scaleOptionCbx.Checked = true;
+            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scaleOptionCbx.Location = new System.Drawing.Point(310, 48);
+            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
+            this.scaleOptionCbx.Name = "scaleOptionCbx";
+            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
+            this.scaleOptionCbx.TabIndex = 148;
+            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
+            this.scaleOptionCbx.UseVisualStyleBackColor = false;
+            // 
             // ProfileSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -4557,11 +4558,11 @@ namespace Nucleus.Coop
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.closeBtn);
             this.Controls.Add(this.modeLabel);
-            this.Controls.Add(this.playersTab);
-            this.Controls.Add(this.profileInfo);
             this.Controls.Add(this.sharedTab);
             this.Controls.Add(this.processorTab);
             this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.profileInfo);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -4740,17 +4741,13 @@ namespace Nucleus.Coop
         private Label label29;
         private Label label27;
         private Label label28;
-        private CheckBox KeepSymLinkCheckBox;
         private Label label6;
         private Label label2;
         private Label WIndowsSetupTiming_Label;
         private TextBox WindowsSetupTiming_TextBox;
         private TextBox pauseBetweenInstanceLaunch_TxtBox;
         private Label pauseBetweenInstanceLauch_Label;
-        private CheckBox scaleOptionCbx;
-        private CheckBox keepAccountsCheck;
         private Label label32;
-        private CheckBox useNicksCheck;
         private BufferedClientAreaPanel playersTab;
         private PictureBox closeBtnPicture;
         private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
@@ -4903,5 +4900,9 @@ namespace Nucleus.Coop
         private TextBox notes_text;
         private PictureBox profile_info_btn;
         private TextBox profileInfo;
+        private CheckBox useNicksCheck;
+        private CheckBox keepAccountsCheck;
+        private CheckBox KeepSymLinkCheckBox;
+        private CheckBox scaleOptionCbx;
     }
 }

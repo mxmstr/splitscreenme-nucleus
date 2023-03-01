@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
+using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows;
@@ -17,13 +18,7 @@ namespace Nucleus.Gaming.Coop
 {
     public class GameProfile
     {
-        /// <summary>
-        /// A reference to the screens as they were
-        /// when the user made the profile
-        /// (so we can compare if a screen
-        /// is missing or added)
-        /// </summary>
-        
+        private IniFile ini = Globals.ini;
         public List<UserScreen> Screens => screens;
         private List<PlayerInfo> playerData;
         private List<UserScreen> screens;
@@ -57,7 +52,7 @@ namespace Nucleus.Gaming.Coop
 
         private static int profilesCount = 0;//Used to check if we need to create a new profile 
         private static int profileToSave;
-        public static string ModeText = "Creation Mode";
+        public static string ModeText = "New Profile";
         public static string GameGUID;
 
         public static List<string> profilesPathList = new List<string>();
@@ -78,9 +73,6 @@ namespace Nucleus.Gaming.Coop
         public static List<bool> IsRawMouses = new List<bool>();//mice
         public static List<string> IsExpanded = new List<string>();//mice
 
-        /// <summary>
-        /// Options set by the user
-        /// </summary>
         public Dictionary<string, object> Options => options;
         private Dictionary<string, object> options;
         public static IDictionary<string, string> AudioInstances = new Dictionary<string, string>();
@@ -232,7 +224,6 @@ namespace Nucleus.Gaming.Coop
         public static bool Saved
         {
             get => saved;
-            //set => saved = value;
         }
 
         public GameProfile()
@@ -295,10 +286,10 @@ namespace Nucleus.Gaming.Coop
             }
 
             autoPlay = false;
-            keepSymLink = false;
-            keepAccounts = false;
-            autoDesktopScaling = true;
-            useNicknames = true;
+            keepSymLink = bool.Parse(ini.IniReadValue("Misc", "KeepSymLink"));
+            keepAccounts = bool.Parse(ini.IniReadValue("Misc", "KeepAccounts"));
+            autoDesktopScaling = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
+            useNicknames = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
             useSplitDiv = false;
             audioDefaultSettings = true;
             audioCustomSettings = false;
@@ -336,6 +327,7 @@ namespace Nucleus.Gaming.Coop
             positionsControl.loadedProfilePlayers.Clear();
 
             positionsControl.UpdatePlayers();
+            positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile._game.GameName} {GameProfile.ModeText.ToLower()} settings.");
             ListGameProfiles();
 
             Console.WriteLine("Game Profile Unloaded");       
@@ -579,6 +571,8 @@ namespace Nucleus.Gaming.Coop
             Globals.MainOSD.Settings(2000, Color.YellowGreen, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
                    
             LogManager.Log($"Game profile n°{_profileToLoad} Loaded");
+            positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile._game.GameName} {GameProfile.ModeText.ToLower()} settings.");
+
             Ready = true;
             return true;
         }
@@ -681,22 +675,25 @@ namespace Nucleus.Gaming.Coop
             List<JObject> playersInfos = new List<JObject>();//Players object
 
             for (int i = 0; i < players.Count(); i++)//build per players object
-            {              
+            {
+                JObject JOwner = new JObject();
+                //if (players[i].Owner != null)
+                //{
+                     JOwner = new JObject(
+                                       new JProperty("Type", players[i].Owner.Type),
 
-                JObject JOwner = new JObject(
-                                   new JProperty("Type", players[i].Owner.Type),
-
-                                    new JProperty("UiBounds", new JObject(
-                                                            new JProperty("X", players[i].Owner.UIBounds.X),
-                                                            new JProperty("Y", players[i].Owner.UIBounds.Y),
-                                                            new JProperty("Width", players[i].Owner.UIBounds.Width),
-                                                            new JProperty("Height", players[i].Owner.UIBounds.Height))),
-                                   new JProperty("DisplayIndex", players[i].Owner.DisplayIndex),  
-                                   new JProperty("Display", new JObject(
-                                                            new JProperty("X", players[i].Owner.display.X),
-                                                            new JProperty("Y", players[i].Owner.display.Y),
-                                                            new JProperty("Width", players[i].Owner.display.Width),
-                                                            new JProperty("Height", players[i].Owner.display.Height))));
+                                        new JProperty("UiBounds", new JObject(
+                                                                new JProperty("X", players[i].Owner.UIBounds.X),
+                                                                new JProperty("Y", players[i].Owner.UIBounds.Y),
+                                                                new JProperty("Width", players[i].Owner.UIBounds.Width),
+                                                                new JProperty("Height", players[i].Owner.UIBounds.Height))),
+                                       new JProperty("DisplayIndex", players[i].Owner.DisplayIndex),
+                                       new JProperty("Display", new JObject(
+                                                                new JProperty("X", players[i].Owner.display.X),
+                                                                new JProperty("Y", players[i].Owner.display.Y),
+                                                                new JProperty("Width", players[i].Owner.display.Width),
+                                                                new JProperty("Height", players[i].Owner.display.Height))));
+                //}
 
                 JObject JMonitorBounds = new JObject(
                                          //new JProperty("X", players[i].ProcessData.HWnd.Location.X),
@@ -804,7 +801,7 @@ namespace Nucleus.Gaming.Coop
 
             //Ready = false;
             saved = true;
-
+            //ProfilesList.profilesList.Update_ProfilesList();
             LogManager.Log("Game Profile Saved");
         }
 

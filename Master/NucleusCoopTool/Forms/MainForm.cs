@@ -1442,6 +1442,7 @@ namespace Nucleus.Coop
                 positionsControl.gameProfilesList.Visible = false;
                 positionsControl.gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
                 positionsControl.textZoomContainer.Visible = false;
+                
 
                 stepPanelPictureBox.Visible = false;
                 rightFrame.Visible = true;
@@ -1513,6 +1514,7 @@ namespace Nucleus.Coop
             gameManager.UpdateCurrentGameProfile(currentProfile);
             ProfilesList.profilesList.Update_ProfilesList();
             gameProfilesBtn_Click(null, null);//Show profiles list 
+            positionsControl.gameProfiles_btn.Visible = GameProfile.profilesPathList.Count > 0;
 
             btn_gameOptions.Enabled = true;
 

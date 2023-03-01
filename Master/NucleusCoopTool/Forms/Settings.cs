@@ -119,7 +119,11 @@ namespace Nucleus.Coop
             foreach (Control control in ctrls)
             {
                 control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                control.Cursor = hand_Cursor;
+
+                if (control.GetType() != typeof(Label) && control.GetType() != typeof(TextBox) && control.Name != "settingLabel_Container")
+                {
+                    control.Cursor = hand_Cursor;
+                }
             }
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
@@ -248,6 +252,27 @@ namespace Nucleus.Coop
                 clickSoundChkB.Checked = false;
             }
 
+            if (ini.IniReadValue("Misc", "UseNicksInGame") != "")
+            {
+                useNicksCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
+            }
+
+            if (ini.IniReadValue("Misc", "KeepAccounts") != "")
+            {
+                keepAccountsCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "KeepAccounts"));
+            }
+
+            if (ini.IniReadValue("Misc", "KeepSymLink") != "")
+            {
+                KeepSymLinkCheckBox.Checked = bool.Parse(ini.IniReadValue("Misc", "KeepSymLink"));
+            }
+
+            //auto scale setting
+            if (ini.IniReadValue("Misc", "AutoDesktopScaling") != "")
+            {
+                scaleOptionCbx.Checked = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
+            }
+          
             //Custom HotKey setting
             comboBox_lockKey.Text = ini.IniReadValue("Hotkeys", "LockKey");
 
@@ -415,7 +440,6 @@ namespace Nucleus.Coop
                 return;
             }
 
-
             SuspendLayout();
 
             //if (scale > 1.0F)
@@ -509,6 +533,8 @@ namespace Nucleus.Coop
             User32Interop.RegisterHotKey(mainForm.Handle, Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
             User32Interop.RegisterHotKey(mainForm.Handle, Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
 
+            ini.IniWriteValue("Misc", "KeepAccounts", keepAccountsCheck.Checked.ToString());            
+            ini.IniWriteValue("Misc", "UseNicksInGame", useNicksCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "IgnoreInputLockReminder", ignoreInputLockReminderCheckbox.Checked.ToString());
             ini.IniWriteValue("Misc", "DebugLog", debugLogCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "SteamLang", cmb_Lang.SelectedItem.ToString());
@@ -517,6 +543,16 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Misc", "NucleusAccountPassword", nucUserPassTxt.Text);
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
+
+            if(GameProfile.ModeText == "New Profile")
+            {
+                GameProfile.UseNicknames = useNicksCheck.Checked;
+                GameProfile.KeepAccounts = keepAccountsCheck.Checked;
+                GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
+                GameProfile.KeepSymLink = KeepSymLinkCheckBox.Checked;
+                ProfileSettings._UpdateProfileSettingsValues(false);
+            }
+
 
 
             mainForm.handleClickSound(clickSoundChkB.Checked);
@@ -649,6 +685,43 @@ namespace Nucleus.Coop
             {
                 mainForm.Xinput_S_Setup.Visible = false;
             }
-        }      
+        }
+
+        private void keepAccountsCheck_Click(object sender, EventArgs e)
+        {
+            if (!keepAccountsCheck.Checked)
+            {
+                DialogResult res = MessageBox.Show("Warning: by disabling this feature, the next time you run a game that uses different user accounts, all Nucleus-made user accounts (and their files, saves) will be deleted. Do you wish to proceed?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (res != DialogResult.OK)
+                {
+                    keepAccountsCheck.Checked = true;
+                }
+            }
+        }
+
+        private void scaleOptionCbx_CheckedChanged(object sender, EventArgs e)
+        {
+            if (scaleOptionCbx.Checked)
+            {
+                ini.IniWriteValue("Misc", "AutoDesktopScaling", "True");
+            }
+            else
+            {
+                ini.IniWriteValue("Misc", "AutoDesktopScaling", "False");
+            }
+
+        }
+
+        private void KeepSymLinkCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (KeepSymLinkCheckBox.Checked)
+            {
+                ini.IniWriteValue("Misc", "KeepSymLink", "True");
+            }
+            else
+            {
+                ini.IniWriteValue("Misc", "KeepSymLink", "False");
+            }
+        }
     }
 }

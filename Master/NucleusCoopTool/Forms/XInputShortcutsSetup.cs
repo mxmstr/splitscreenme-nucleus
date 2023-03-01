@@ -38,7 +38,7 @@ namespace Nucleus.Coop.Forms
             Cursor.Current = default_Cursor;
             Cursor = default_Cursor;
             shortContainer.Cursor = default_Cursor;
-
+            enabled_chk.Cursor = hand_Cursor;
             refreshTimer.Tick += new EventHandler(RefreshTimerTick);
             refreshTimer.Interval = 500;
             refreshTimer.Start();
@@ -232,7 +232,11 @@ namespace Nucleus.Coop.Forms
                         textBox.CharacterCasing = CharacterCasing.Normal;
                     }
                 }
-                c.Cursor = hand_Cursor;
+
+                if (c.GetType() != typeof(Label) && c.GetType() != typeof(TextBox))
+                {
+                    c.Cursor = hand_Cursor;
+                }
             }
 
             foreach (Control c in UINavContainer.Controls)
@@ -263,7 +267,10 @@ namespace Nucleus.Coop.Forms
                         textBox.CharacterCasing = CharacterCasing.Normal;
                     }
                 }
-                c.Cursor = hand_Cursor;
+                if (c.GetType() != typeof(Label) && c.GetType() != typeof(TextBox))
+                {
+                    c.Cursor = hand_Cursor;
+                }
             }
 
             DPIManager.Register(this);

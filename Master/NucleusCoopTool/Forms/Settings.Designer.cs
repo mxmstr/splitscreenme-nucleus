@@ -99,6 +99,10 @@ namespace Nucleus.Coop
             this.label1 = new System.Windows.Forms.Label();
             this.settingsCloseHKTxt = new System.Windows.Forms.TextBox();
             this.ctrlr_shorcuts = new System.Windows.Forms.Button();
+            this.KeepSymLinkCheckBox = new System.Windows.Forms.CheckBox();
+            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
+            this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
+            this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.settingLabel_Container.SuspendLayout();
             this.hotkeyBox.SuspendLayout();
             this.SuspendLayout();
@@ -111,7 +115,7 @@ namespace Nucleus.Coop
             this.save_Label.Location = new System.Drawing.Point(0, 0);
             this.save_Label.Margin = new System.Windows.Forms.Padding(0);
             this.save_Label.Name = "save_Label";
-            this.save_Label.Size = new System.Drawing.Size(258, 15);
+            this.save_Label.Size = new System.Drawing.Size(329, 15);
             this.save_Label.TabIndex = 62;
             this.save_Label.Text = "Save settings in order for them to take effect.";
             this.save_Label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -124,7 +128,7 @@ namespace Nucleus.Coop
             this.btn_credits.FlatAppearance.BorderSize = 0;
             this.btn_credits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_credits.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_credits.Location = new System.Drawing.Point(194, 319);
+            this.btn_credits.Location = new System.Drawing.Point(230, 358);
             this.btn_credits.Margin = new System.Windows.Forms.Padding(2);
             this.btn_credits.Name = "btn_credits";
             this.btn_credits.Size = new System.Drawing.Size(80, 22);
@@ -141,7 +145,7 @@ namespace Nucleus.Coop
             this.settingsCloseBtn.FlatAppearance.BorderSize = 0;
             this.settingsCloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsCloseBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsCloseBtn.Location = new System.Drawing.Point(278, 319);
+            this.settingsCloseBtn.Location = new System.Drawing.Point(314, 358);
             this.settingsCloseBtn.Margin = new System.Windows.Forms.Padding(2);
             this.settingsCloseBtn.Name = "settingsCloseBtn";
             this.settingsCloseBtn.Size = new System.Drawing.Size(80, 22);
@@ -158,7 +162,7 @@ namespace Nucleus.Coop
             this.settingsSaveBtn.FlatAppearance.BorderSize = 0;
             this.settingsSaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsSaveBtn.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsSaveBtn.Location = new System.Drawing.Point(110, 319);
+            this.settingsSaveBtn.Location = new System.Drawing.Point(146, 358);
             this.settingsSaveBtn.Margin = new System.Windows.Forms.Padding(2);
             this.settingsSaveBtn.Name = "settingsSaveBtn";
             this.settingsSaveBtn.Size = new System.Drawing.Size(80, 22);
@@ -174,9 +178,9 @@ namespace Nucleus.Coop
             this.settingLabel_Container.BackColor = System.Drawing.Color.Transparent;
             this.settingLabel_Container.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.settingLabel_Container.Controls.Add(this.save_Label);
-            this.settingLabel_Container.Location = new System.Drawing.Point(111, 299);
+            this.settingLabel_Container.Location = new System.Drawing.Point(111, 338);
             this.settingLabel_Container.Name = "settingLabel_Container";
-            this.settingLabel_Container.Size = new System.Drawing.Size(258, 15);
+            this.settingLabel_Container.Size = new System.Drawing.Size(329, 15);
             this.settingLabel_Container.TabIndex = 37;
             // 
             // password_Label
@@ -185,7 +189,7 @@ namespace Nucleus.Coop
             this.password_Label.AutoSize = true;
             this.password_Label.BackColor = System.Drawing.Color.Transparent;
             this.password_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.password_Label.Location = new System.Drawing.Point(17, 246);
+            this.password_Label.Location = new System.Drawing.Point(313, 13);
             this.password_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.password_Label.Name = "password_Label";
             this.password_Label.Size = new System.Drawing.Size(138, 15);
@@ -196,12 +200,13 @@ namespace Nucleus.Coop
             // nucUserPassTxt
             // 
             this.nucUserPassTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nucUserPassTxt.Location = new System.Drawing.Point(20, 265);
+            this.nucUserPassTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nucUserPassTxt.Location = new System.Drawing.Point(316, 32);
             this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
             this.nucUserPassTxt.MaxLength = 127;
             this.nucUserPassTxt.Name = "nucUserPassTxt";
             this.nucUserPassTxt.PasswordChar = '*';
-            this.nucUserPassTxt.Size = new System.Drawing.Size(197, 20);
+            this.nucUserPassTxt.Size = new System.Drawing.Size(197, 21);
             this.nucUserPassTxt.TabIndex = 74;
             this.nucUserPassTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -209,7 +214,7 @@ namespace Nucleus.Coop
             // 
             this.themeLabel.AutoSize = true;
             this.themeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.themeLabel.Location = new System.Drawing.Point(19, 92);
+            this.themeLabel.Location = new System.Drawing.Point(19, 90);
             this.themeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.themeLabel.Name = "themeLabel";
             this.themeLabel.Size = new System.Drawing.Size(40, 13);
@@ -223,7 +228,7 @@ namespace Nucleus.Coop
             this.themeCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.themeCbx.FormattingEnabled = true;
             this.themeCbx.ItemHeight = 13;
-            this.themeCbx.Location = new System.Drawing.Point(22, 109);
+            this.themeCbx.Location = new System.Drawing.Point(22, 107);
             this.themeCbx.Margin = new System.Windows.Forms.Padding(0);
             this.themeCbx.MaxDropDownItems = 10;
             this.themeCbx.Name = "themeCbx";
@@ -236,7 +241,7 @@ namespace Nucleus.Coop
             this.splashScreenChkB.BackColor = System.Drawing.Color.Transparent;
             this.splashScreenChkB.Checked = true;
             this.splashScreenChkB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.splashScreenChkB.Location = new System.Drawing.Point(22, 201);
+            this.splashScreenChkB.Location = new System.Drawing.Point(22, 226);
             this.splashScreenChkB.Margin = new System.Windows.Forms.Padding(2);
             this.splashScreenChkB.Name = "splashScreenChkB";
             this.splashScreenChkB.Size = new System.Drawing.Size(127, 17);
@@ -250,7 +255,7 @@ namespace Nucleus.Coop
             this.clickSoundChkB.BackColor = System.Drawing.Color.Transparent;
             this.clickSoundChkB.Checked = true;
             this.clickSoundChkB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.clickSoundChkB.Location = new System.Drawing.Point(22, 222);
+            this.clickSoundChkB.Location = new System.Drawing.Point(22, 247);
             this.clickSoundChkB.Margin = new System.Windows.Forms.Padding(2);
             this.clickSoundChkB.Name = "clickSoundChkB";
             this.clickSoundChkB.Size = new System.Drawing.Size(116, 17);
@@ -290,7 +295,7 @@ namespace Nucleus.Coop
             "Thai",
             "Turkish",
             "Ukrainian"});
-            this.cmb_EpicLang.Location = new System.Drawing.Point(22, 67);
+            this.cmb_EpicLang.Location = new System.Drawing.Point(22, 65);
             this.cmb_EpicLang.Margin = new System.Windows.Forms.Padding(0);
             this.cmb_EpicLang.MaxDropDownItems = 10;
             this.cmb_EpicLang.Name = "cmb_EpicLang";
@@ -302,7 +307,7 @@ namespace Nucleus.Coop
             this.label46.AutoSize = true;
             this.label46.BackColor = System.Drawing.Color.Transparent;
             this.label46.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label46.Location = new System.Drawing.Point(19, 48);
+            this.label46.Location = new System.Drawing.Point(19, 46);
             this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(116, 15);
@@ -314,7 +319,7 @@ namespace Nucleus.Coop
             // 
             this.ignoreInputLockReminderCheckbox.AutoSize = true;
             this.ignoreInputLockReminderCheckbox.BackColor = System.Drawing.Color.Transparent;
-            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(22, 180);
+            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(22, 205);
             this.ignoreInputLockReminderCheckbox.Margin = new System.Windows.Forms.Padding(2);
             this.ignoreInputLockReminderCheckbox.Name = "ignoreInputLockReminderCheckbox";
             this.ignoreInputLockReminderCheckbox.Size = new System.Drawing.Size(148, 17);
@@ -326,7 +331,7 @@ namespace Nucleus.Coop
             // 
             this.statusCheck.AutoSize = true;
             this.statusCheck.BackColor = System.Drawing.Color.Transparent;
-            this.statusCheck.Location = new System.Drawing.Point(22, 158);
+            this.statusCheck.Location = new System.Drawing.Point(22, 183);
             this.statusCheck.Margin = new System.Windows.Forms.Padding(2);
             this.statusCheck.Name = "statusCheck";
             this.statusCheck.Size = new System.Drawing.Size(197, 17);
@@ -368,7 +373,7 @@ namespace Nucleus.Coop
             "Thai",
             "Turkish",
             "Ukrainian"});
-            this.cmb_Lang.Location = new System.Drawing.Point(22, 22);
+            this.cmb_Lang.Location = new System.Drawing.Point(22, 20);
             this.cmb_Lang.Margin = new System.Windows.Forms.Padding(0);
             this.cmb_Lang.MaxDropDownItems = 10;
             this.cmb_Lang.Name = "cmb_Lang";
@@ -380,7 +385,7 @@ namespace Nucleus.Coop
             this.label34.AutoSize = true;
             this.label34.BackColor = System.Drawing.Color.Transparent;
             this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.Location = new System.Drawing.Point(19, 3);
+            this.label34.Location = new System.Drawing.Point(19, 1);
             this.label34.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(102, 15);
@@ -392,7 +397,7 @@ namespace Nucleus.Coop
             // 
             this.debugLogCheck.AutoSize = true;
             this.debugLogCheck.BackColor = System.Drawing.Color.Transparent;
-            this.debugLogCheck.Location = new System.Drawing.Point(22, 138);
+            this.debugLogCheck.Location = new System.Drawing.Point(22, 163);
             this.debugLogCheck.Margin = new System.Windows.Forms.Padding(2);
             this.debugLogCheck.Name = "debugLogCheck";
             this.debugLogCheck.Size = new System.Drawing.Size(115, 17);
@@ -436,7 +441,7 @@ namespace Nucleus.Coop
             this.hotkeyBox.Controls.Add(this.label1);
             this.hotkeyBox.Controls.Add(this.settingsCloseHKTxt);
             this.hotkeyBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hotkeyBox.Location = new System.Drawing.Point(245, 3);
+            this.hotkeyBox.Location = new System.Drawing.Point(316, 56);
             this.hotkeyBox.Margin = new System.Windows.Forms.Padding(2);
             this.hotkeyBox.Name = "hotkeyBox";
             this.hotkeyBox.Padding = new System.Windows.Forms.Padding(2);
@@ -855,13 +860,70 @@ namespace Nucleus.Coop
             this.ctrlr_shorcuts.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcuts.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcuts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ctrlr_shorcuts.Location = new System.Drawing.Point(245, 241);
+            this.ctrlr_shorcuts.Location = new System.Drawing.Point(316, 299);
             this.ctrlr_shorcuts.Name = "ctrlr_shorcuts";
             this.ctrlr_shorcuts.Size = new System.Drawing.Size(236, 27);
             this.ctrlr_shorcuts.TabIndex = 100;
             this.ctrlr_shorcuts.Text = "Controller Shortcuts Setup";
             this.ctrlr_shorcuts.UseVisualStyleBackColor = false;
             this.ctrlr_shorcuts.Click += new System.EventHandler(this.ctrlr_shorcuts_Click);
+            // 
+            // KeepSymLinkCheckBox
+            // 
+            this.KeepSymLinkCheckBox.AutoSize = true;
+            this.KeepSymLinkCheckBox.BackColor = System.Drawing.Color.Transparent;
+            this.KeepSymLinkCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeepSymLinkCheckBox.Location = new System.Drawing.Point(22, 307);
+            this.KeepSymLinkCheckBox.Margin = new System.Windows.Forms.Padding(2);
+            this.KeepSymLinkCheckBox.Name = "KeepSymLinkCheckBox";
+            this.KeepSymLinkCheckBox.Size = new System.Drawing.Size(131, 17);
+            this.KeepSymLinkCheckBox.TabIndex = 123;
+            this.KeepSymLinkCheckBox.Text = "Keep SymLink On Exit";
+            this.KeepSymLinkCheckBox.UseVisualStyleBackColor = false;
+            this.KeepSymLinkCheckBox.CheckedChanged += new System.EventHandler(this.KeepSymLinkCheckBox_CheckedChanged);
+            // 
+            // scaleOptionCbx
+            // 
+            this.scaleOptionCbx.AutoSize = true;
+            this.scaleOptionCbx.BackColor = System.Drawing.Color.Transparent;
+            this.scaleOptionCbx.Checked = true;
+            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scaleOptionCbx.Location = new System.Drawing.Point(22, 287);
+            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
+            this.scaleOptionCbx.Name = "scaleOptionCbx";
+            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
+            this.scaleOptionCbx.TabIndex = 122;
+            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
+            this.scaleOptionCbx.UseVisualStyleBackColor = false;
+            this.scaleOptionCbx.CheckedChanged += new System.EventHandler(this.scaleOptionCbx_CheckedChanged);
+            // 
+            // keepAccountsCheck
+            // 
+            this.keepAccountsCheck.AutoSize = true;
+            this.keepAccountsCheck.BackColor = System.Drawing.Color.Transparent;
+            this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.keepAccountsCheck.Location = new System.Drawing.Point(22, 268);
+            this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.keepAccountsCheck.Name = "keepAccountsCheck";
+            this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
+            this.keepAccountsCheck.TabIndex = 121;
+            this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
+            this.keepAccountsCheck.UseVisualStyleBackColor = false;
+            this.keepAccountsCheck.Click += new System.EventHandler(this.keepAccountsCheck_Click);
+            // 
+            // useNicksCheck
+            // 
+            this.useNicksCheck.AutoSize = true;
+            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
+            this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.useNicksCheck.Location = new System.Drawing.Point(22, 143);
+            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.useNicksCheck.Name = "useNicksCheck";
+            this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
+            this.useNicksCheck.TabIndex = 120;
+            this.useNicksCheck.Text = "Use Nicknames In-Game";
+            this.useNicksCheck.UseVisualStyleBackColor = false;
             // 
             // Settings
             // 
@@ -870,6 +932,10 @@ namespace Nucleus.Coop
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.KeepSymLinkCheckBox);
+            this.Controls.Add(this.scaleOptionCbx);
+            this.Controls.Add(this.keepAccountsCheck);
+            this.Controls.Add(this.useNicksCheck);
             this.Controls.Add(this.ctrlr_shorcuts);
             this.Controls.Add(this.nucUserPassTxt);
             this.Controls.Add(this.password_Label);
@@ -893,7 +959,7 @@ namespace Nucleus.Coop
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Settings";
-            this.Size = new System.Drawing.Size(489, 352);
+            this.Size = new System.Drawing.Size(560, 391);
             this.settingLabel_Container.ResumeLayout(false);
             this.hotkeyBox.ResumeLayout(false);
             this.hotkeyBox.PerformLayout();
@@ -955,5 +1021,9 @@ namespace Nucleus.Coop
         private Label label6;
         private TextBox swl_textBox;
         private Button ctrlr_shorcuts;
+        private CheckBox KeepSymLinkCheckBox;
+        private CheckBox scaleOptionCbx;
+        private CheckBox keepAccountsCheck;
+        private CheckBox useNicksCheck;
     }
 }

@@ -117,7 +117,7 @@ namespace Nucleus.Coop
         public Panel textZoomContainer;
 
         private ToolTip gameProfiles_btnTooltip;
-        private ToolTip profileSettings_Tooltip;
+        public ToolTip profileSettings_Tooltip;
         private ToolTip instruction_btn_Tooltip;
 
         private string customFont;
@@ -192,6 +192,10 @@ namespace Nucleus.Coop
             plyrsSettingsIcon = new Bitmap(theme + "profile_settings.png");
 
             instruction_btn_Tooltip = new ToolTip();
+            instruction_btn_Tooltip.InitialDelay = 100;
+            instruction_btn_Tooltip.ReshowDelay = 100;
+            instruction_btn_Tooltip.AutoPopDelay = 5000;
+
             instruction_btn = new PictureBox();//using a button cause focus issues
             instruction_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             instruction_btn.Size = new Size(25, 25);
@@ -234,6 +238,10 @@ namespace Nucleus.Coop
             textZoomContainer.BackgroundImageLayout = ImageLayout.Stretch;
 
             profileSettings_Tooltip = new ToolTip();
+            profileSettings_Tooltip.InitialDelay = 100;
+            profileSettings_Tooltip.ReshowDelay = 100;
+            profileSettings_Tooltip.AutoPopDelay = 5000;
+
             profileSettings_btn = new PictureBox();//using a button cause focus issues
             profileSettings_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             profileSettings_btn.BackColor = Color.Transparent;
@@ -245,6 +253,10 @@ namespace Nucleus.Coop
             //profileSettings_Tooltip.SetToolTip(profileSettings_btn, "Game profile settings.");
 
             gameProfiles_btnTooltip = new ToolTip();
+            gameProfiles_btnTooltip.InitialDelay = 100;
+            gameProfiles_btnTooltip.ReshowDelay = 100;
+            gameProfiles_btnTooltip.AutoPopDelay = 5000;
+
             gameProfiles_btn = new PictureBox();//using a button cause focus issues
             gameProfiles_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             gameProfiles_btn.AutoSize = false;
@@ -847,7 +859,7 @@ namespace Nucleus.Coop
             }
 
             gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, $"{GameProfile._game.GameName} profiles list.");
-            profileSettings_Tooltip.SetToolTip(profileSettings_btn, $"{GameProfile._game.GameName} profile settings.");
+            //profileSettings_Tooltip.SetToolTip(profileSettings_btn, $"{GameProfile._game.GameName} {GameProfile.ModeText} settings.");
             UpdatePlayers();
         }
 
@@ -1840,9 +1852,13 @@ namespace Nucleus.Coop
                         }
                         else
                         {                          
-                            if (game.Game.SupportsMultipleKeyboardsAndMice)
+                            if (game.Game.SupportsMultipleKeyboardsAndMice) 
                             {
                                 msg = "Drag & Drop device(s) On The Desired Screen(s)";//(GameProfile.PlayerIDs.Count > 0) ? "Click Play!" : "Drag & Drop device(s) On Desired Screen(s) (Press A Key Or Move A Mouse)";
+                            }
+                            else if(!game.Game.SupportsMultipleKeyboardsAndMice && !game.Game.SupportsKeyboard)
+                            {
+                                msg = "Drag & Drop Controllers On The Desired Screen(s)";//(GameProfile.PlayerIDs.Count > 0) ? "Click Play!" : "Drag & Drop device(s) On Desired Screen(s) (Press A Key Or Move A Mouse)";
                             }
                             else
                             {

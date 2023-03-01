@@ -49,7 +49,7 @@ namespace Nucleus.Coop
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
         private static ProfileSettings profileSettings;
-
+        private GameProfile profile;
         private Color selectionColor;
 
         private Pen bordersPen;
@@ -138,7 +138,8 @@ namespace Nucleus.Coop
                 }
 
                 if (control.Name != "sharedTab" && control.Name != "playersTab" && control.Name != "audioTab" &&
-                    control.Name != "processorTab" && control.Name != "layoutSizer" && control.Name != "notes_text")
+                    control.Name != "processorTab" && control.Name != "layoutSizer" && control.Name != "notes_text" 
+                    && control.GetType() != typeof(Label) && control.GetType() != typeof(TextBox))
                 {
                     control.Cursor = hand_Cursor;
                 }
@@ -205,9 +206,6 @@ namespace Nucleus.Coop
             audioRefresh.BackColor = Color.Transparent;
 
             modeLabel.Cursor = default_Cursor;
-
-            autoPlayTooltip = new ToolTip();
-            autoPlayTooltip.SetToolTip(autoPlay, "Compatible with controllers only, you must always use the same controllers for it to auto start.");
 
             controllerNicks = new ComboBox[] {
                 player1N, player2N, player3N, player4N, player5N, player6N, player7N, player8N,
@@ -297,7 +295,6 @@ namespace Nucleus.Coop
                 }
             }
 
-
             foreach (Control button in this.Controls)
             {
                 if (button is Button)
@@ -327,7 +324,6 @@ namespace Nucleus.Coop
             sharedTab.BringToFront();
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
 
-
             Vector2 dist1 = Vector2.Subtract(new Vector2(profile_info_btn.Location.X, profile_info_btn.Location.Y), new Vector2(processorBtnPicture.Location.X, processorBtnPicture.Location.Y));
             float modeLabelX = (processorBtnPicture.Right + (dist1.X / 2)) - modeLabel.Width / 2;
 
@@ -344,7 +340,6 @@ namespace Nucleus.Coop
             numUpDownHor.InvalidParent = true;
 
             RefreshAudioList();
-            //UpdateProfileSettingsValues(false);
 
             string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
             if (File.Exists(path))
@@ -372,6 +367,8 @@ namespace Nucleus.Coop
                 }
             }
 
+            SetToolTips();
+
             ResumeLayout();
 
             DPIManager.Register(this);
@@ -395,40 +392,72 @@ namespace Nucleus.Coop
 
             if (scale > 1.0F)
             {
-            float newFontSize = Font.Size * scale;
+                float newFontSize = Font.Size * scale;
 
-            foreach (Control tab in /*playersTab.*/Controls)
-            {
-                foreach (Control child in /*playersTab.*/tab.Controls)
+                foreach (Control tab in /*playersTab.*/Controls)
                 {
-                    if (child.GetType() == typeof(ComboBox)/* || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox) && (child.Name != "def_sid_textBox")*/)
+                    foreach (Control child in /*playersTab.*/tab.Controls)
                     {
-                        child.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        if (child.GetType() == typeof(ComboBox)/* || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox) && (child.Name != "def_sid_textBox")*/)
+                        {
+                            child.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
+                        }
+
+                        //else if (child.GetType() == typeof(Button))
+                        //{
+                        //    child.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        //}
+
+                        //Console.WriteLine(child.Name);
                     }
-
-                    //else if (child.GetType() == typeof(Button))
-                    //{
-                    //    child.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                    //}
-
-                    //Console.WriteLine(child.Name);
                 }
-            }
 
                 notes_text.Size = new Size((int)(260 * scale), (int)(81 * scale));
                 def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
+
             }
 
-            Vector2 dist1 = Vector2.Subtract(new Vector2(profile_info_btn.Location.X, profile_info_btn.Location.Y),new Vector2(processorBtnPicture.Location.X, processorBtnPicture.Location.Y));
+            Vector2 dist1 = Vector2.Subtract(new Vector2(profile_info_btn.Location.X, profile_info_btn.Location.Y), new Vector2(processorBtnPicture.Location.X, processorBtnPicture.Location.Y));
             float modeLabelX = (processorBtnPicture.Right + (dist1.X / 2)) - modeLabel.Width / 2;
 
-            modeLabel.Location = new Point((int)modeLabelX, sharedTabBtn.Location.Y+ sharedTabBtn.Height/2 - modeLabel.Height/2);
+            modeLabel.Location = new Point((int)modeLabelX, sharedTabBtn.Location.Y + sharedTabBtn.Height / 2 - modeLabel.Height / 2);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             profileInfo.Location = new Point(this.Width / 2 - profileInfo.Width / 2, this.Height / 2 - profileInfo.Height / 2);
-
+            default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
             ResumeLayout();
+        }
+
+        private ToolTip autoPlay_Tooltip;
+        private ToolTip pauseBetweenInstance_Tooltip;
+        private ToolTip WindowsSetupTiming_Tooltip;
+        private ToolTip SplitDiv_Tooltip;
+
+        private void SetToolTips()
+        {
+            autoPlay_Tooltip = new ToolTip();
+            autoPlay_Tooltip.InitialDelay = 100;
+            autoPlay_Tooltip.ReshowDelay = 100;
+            autoPlay_Tooltip.AutoPopDelay = 5000;
+            autoPlay_Tooltip.SetToolTip(autoPlay, "Not Compatible with multiple keyboards & mice.");
+
+            pauseBetweenInstance_Tooltip = new ToolTip();
+            pauseBetweenInstance_Tooltip.InitialDelay = 100;
+            pauseBetweenInstance_Tooltip.ReshowDelay = 100;
+            pauseBetweenInstance_Tooltip.AutoPopDelay = 5000;
+            pauseBetweenInstance_Tooltip.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "Could break any hooks or xinputplus for some games");
+
+            WindowsSetupTiming_Tooltip = new ToolTip();
+            WindowsSetupTiming_Tooltip.InitialDelay = 100;
+            WindowsSetupTiming_Tooltip.ReshowDelay = 100;
+            WindowsSetupTiming_Tooltip.AutoPopDelay = 5000;
+            WindowsSetupTiming_Tooltip.SetToolTip(WindowsSetupTiming_TextBox, "Could break positioning/resizing for some games");
+
+            SplitDiv_Tooltip = new ToolTip();
+            SplitDiv_Tooltip.InitialDelay = 100;
+            SplitDiv_Tooltip.ReshowDelay = 100;
+            SplitDiv_Tooltip.AutoPopDelay = 5000;
+            SplitDiv_Tooltip.SetToolTip(SplitDiv, "May not work for all games");
         }
 
         private void num_KeyPress(object sender, KeyPressEventArgs e)
@@ -457,7 +486,7 @@ namespace Nucleus.Coop
             profileSettings.UpdateProfileSettingsValues(save);
         }
 
-        private void UpdateProfileSettingsValues(bool save)
+        public void UpdateProfileSettingsValues(bool save)
         {
             List<long> SteamIDs = GameProfile.SteamIDs;
             List<string> Nicknames = GameProfile.Nicknames;
@@ -835,6 +864,7 @@ namespace Nucleus.Coop
 
             //if (sender != null)
             //    Globals.MainOSD.Settings(500, Color.LimeGreen, "Profile Settings Saved");
+            //GameProfile.saveUserProfile(positionsControl.Profile);
         }
 
         private void Steamid_Click(object sender, EventArgs e)
