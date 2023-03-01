@@ -633,6 +633,12 @@
     <Content Include="gui\theme\default\audio.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\credits.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\credits_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\cursor.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

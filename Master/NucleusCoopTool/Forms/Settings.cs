@@ -146,6 +146,9 @@ namespace Nucleus.Coop
                                                   int.Parse(mf.themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
                                                   int.Parse(mf.themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[3]));
 
+            settingsCloseBtn.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
+            btn_credits.BackgroundImage = new Bitmap(mf.theme + "credits.png");
+
             btn_credits.BackColor = mf.buttonsBackColor;
             settingsCloseBtn.BackColor = mf.buttonsBackColor;
             settingsSaveBtn.BackColor = mf.buttonsBackColor;
@@ -166,6 +169,12 @@ namespace Nucleus.Coop
                 settingsCloseBtn.FlatAppearance.BorderSize = 1;
                 settingsCloseBtn.FlatAppearance.BorderColor = mf.ButtonsBorderColor;
             }
+
+            ToolTip btn_credits_Tooltip = new ToolTip();
+            btn_credits_Tooltip.InitialDelay = 100;
+            btn_credits_Tooltip.ReshowDelay = 100;
+            btn_credits_Tooltip.AutoPopDelay = 5000;
+            btn_credits_Tooltip.SetToolTip(btn_credits, "Credits");
 
             ResumeLayout();
 
@@ -508,6 +517,86 @@ namespace Nucleus.Coop
 
         private void SettingsSaveBtn_Click(object sender, EventArgs e)
         {
+            //ini.IniWriteValue("Hotkeys", "Close", settingsCloseCmb.SelectedItem.ToString() + "+" + settingsCloseHKTxt.Text);
+            //ini.IniWriteValue("Hotkeys", "Stop", settingsStopCmb.SelectedItem.ToString() + "+" + settingsStopTxt.Text);
+            //ini.IniWriteValue("Hotkeys", "TopMost", settingsTopCmb.SelectedItem.ToString() + "+" + settingsTopTxt.Text);
+            //ini.IniWriteValue("Hotkeys", "SetFocus", settingsFocusCmb.SelectedItem.ToString() + "+" + settingsFocusHKTxt.Text);
+            //ini.IniWriteValue("Hotkeys", "ResetWindows", r1.SelectedItem.ToString() + "+" + r2.Text);///
+            //ini.IniWriteValue("Hotkeys", "LockKey", comboBox_lockKey.SelectedItem.ToString());
+            //ini.IniWriteValue("Hotkeys", "Cutscenes", csm_comboBox.SelectedItem.ToString() + "+" + csm_textBox.Text);
+            //ini.IniWriteValue("Hotkeys", "Switch", swl_comboBox.SelectedItem.ToString() + "+" + swl_textBox.Text);
+
+            //User32Interop.UnregisterHotKey(mainForm.Handle, KillProcess_HotkeyID);
+            //User32Interop.UnregisterHotKey(mainForm.Handle, TopMost_HotkeyID);
+            //User32Interop.UnregisterHotKey(mainForm.Handle, StopSession_HotkeyID);
+            //User32Interop.UnregisterHotKey(mainForm.Handle, SetFocus_HotkeyID);
+            //User32Interop.UnregisterHotKey(mainForm.Handle, ResetWindows_HotkeyID);
+            //User32Interop.UnregisterHotKey(mainForm.Handle, Cutscenes_HotkeyID);
+            //User32Interop.UnregisterHotKey(mainForm.Handle, Switch_HotkeyID);
+
+            //User32Interop.RegisterHotKey(mainForm.Handle, KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
+            //User32Interop.RegisterHotKey(mainForm.Handle, TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
+            //User32Interop.RegisterHotKey(mainForm.Handle, StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
+            //User32Interop.RegisterHotKey(mainForm.Handle, SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
+            //User32Interop.RegisterHotKey(mainForm.Handle, ResetWindows_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[1].ToString()));
+            //User32Interop.RegisterHotKey(mainForm.Handle, Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
+            //User32Interop.RegisterHotKey(mainForm.Handle, Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
+
+            //ini.IniWriteValue("Misc", "KeepAccounts", keepAccountsCheck.Checked.ToString());            
+            //ini.IniWriteValue("Misc", "UseNicksInGame", useNicksCheck.Checked.ToString());
+            //ini.IniWriteValue("Misc", "IgnoreInputLockReminder", ignoreInputLockReminderCheckbox.Checked.ToString());
+            //ini.IniWriteValue("Misc", "DebugLog", debugLogCheck.Checked.ToString());
+            //ini.IniWriteValue("Misc", "SteamLang", cmb_Lang.SelectedItem.ToString());
+            //ini.IniWriteValue("Misc", "EpicLang", cmb_EpicLang.SelectedItem.ToString());
+            //ini.IniWriteValue("Misc", "ShowStatus", statusCheck.Checked.ToString());
+            //ini.IniWriteValue("Misc", "NucleusAccountPassword", nucUserPassTxt.Text);
+            //ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
+            //ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
+            //ini.IniWriteValue("Misc", "AutoDesktopScaling", scaleOptionCbx.Checked.ToString());
+            //ini.IniWriteValue("Misc", "KeepSymLink", KeepSymLinkCheckBox.Checked.ToString());
+
+            //if (GameProfile.ModeText == "New Profile")
+            //{
+            //    GameProfile.UseNicknames = useNicksCheck.Checked;
+            //    GameProfile.KeepAccounts = keepAccountsCheck.Checked;
+            //    GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
+            //    GameProfile.KeepSymLink = KeepSymLinkCheckBox.Checked;
+            //    ProfileSettings._UpdateProfileSettingsValues(false);
+            //}
+
+            //mainForm.handleClickSound(clickSoundChkB.Checked);
+
+            //Globals.MainOSD.Settings(500, Color.LimeGreen, "Settings saved");
+            //if (themeCbx.SelectedItem.ToString() != prevTheme)
+            //{
+            //    ini.IniWriteValue("Theme", "Theme", themeCbx.SelectedItem.ToString());
+            //    mainForm.themeSwitch = true;
+            //    Thread.Sleep(200);
+            //    Application.Restart();
+            //}
+
+        }
+
+        private int GetMod(string modifier)
+        {
+            int mod = 0;
+            switch (modifier)
+            {
+                case "Ctrl": // Ctrl
+                    mod = 2;
+                    break;
+                case "Alt":
+                    mod = 1;
+                    break;
+                case "Shift":
+                    mod = 4;
+                    break;
+            }
+            return mod;
+        }
+
+        private void SettingsCloseBtn_Click(object sender, EventArgs e)
+        {
             ini.IniWriteValue("Hotkeys", "Close", settingsCloseCmb.SelectedItem.ToString() + "+" + settingsCloseHKTxt.Text);
             ini.IniWriteValue("Hotkeys", "Stop", settingsStopCmb.SelectedItem.ToString() + "+" + settingsStopTxt.Text);
             ini.IniWriteValue("Hotkeys", "TopMost", settingsTopCmb.SelectedItem.ToString() + "+" + settingsTopTxt.Text);
@@ -533,7 +622,7 @@ namespace Nucleus.Coop
             User32Interop.RegisterHotKey(mainForm.Handle, Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
             User32Interop.RegisterHotKey(mainForm.Handle, Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
 
-            ini.IniWriteValue("Misc", "KeepAccounts", keepAccountsCheck.Checked.ToString());            
+            ini.IniWriteValue("Misc", "KeepAccounts", keepAccountsCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "UseNicksInGame", useNicksCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "IgnoreInputLockReminder", ignoreInputLockReminderCheckbox.Checked.ToString());
             ini.IniWriteValue("Misc", "DebugLog", debugLogCheck.Checked.ToString());
@@ -543,8 +632,10 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Misc", "NucleusAccountPassword", nucUserPassTxt.Text);
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
+            ini.IniWriteValue("Misc", "AutoDesktopScaling", scaleOptionCbx.Checked.ToString());
+            ini.IniWriteValue("Misc", "KeepSymLink", KeepSymLinkCheckBox.Checked.ToString());
 
-            if(GameProfile.ModeText == "New Profile")
+            if (GameProfile.ModeText == "New Profile")
             {
                 GameProfile.UseNicknames = useNicksCheck.Checked;
                 GameProfile.KeepAccounts = keepAccountsCheck.Checked;
@@ -552,8 +643,6 @@ namespace Nucleus.Coop
                 GameProfile.KeepSymLink = KeepSymLinkCheckBox.Checked;
                 ProfileSettings._UpdateProfileSettingsValues(false);
             }
-
-
 
             mainForm.handleClickSound(clickSoundChkB.Checked);
 
@@ -566,28 +655,6 @@ namespace Nucleus.Coop
                 Application.Restart();
             }
 
-        }
-
-        private int GetMod(string modifier)
-        {
-            int mod = 0;
-            switch (modifier)
-            {
-                case "Ctrl": // Ctrl
-                    mod = 2;
-                    break;
-                case "Alt":
-                    mod = 1;
-                    break;
-                case "Shift":
-                    mod = 4;
-                    break;
-            }
-            return mod;
-        }
-
-        private void SettingsCloseBtn_Click(object sender, EventArgs e)
-        {
             if (mainForm.Xinput_S_Setup.Visible)
             {
                 mainForm.Xinput_S_Setup.Visible = false;
@@ -699,29 +766,29 @@ namespace Nucleus.Coop
             }
         }
 
-        private void scaleOptionCbx_CheckedChanged(object sender, EventArgs e)
+        private void settingsCloseBtn_MouseEnter(object sender, EventArgs e)
         {
-            if (scaleOptionCbx.Checked)
-            {
-                ini.IniWriteValue("Misc", "AutoDesktopScaling", "True");
-            }
-            else
-            {
-                ini.IniWriteValue("Misc", "AutoDesktopScaling", "False");
-            }
+            settingsCloseBtn.BackgroundImage = new Bitmap(mainForm.theme + "title_close_mousehover.png");
+        }
+
+        private void settingsCloseBtn_MouseLeave(object sender, EventArgs e)
+        {
+            settingsCloseBtn.BackgroundImage = new Bitmap(mainForm.theme + "title_close.png");
+        }
+
+        private void save_Label_Click(object sender, EventArgs e)
+        {
 
         }
 
-        private void KeepSymLinkCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void btn_credits_MouseEnter(object sender, EventArgs e)
         {
-            if (KeepSymLinkCheckBox.Checked)
-            {
-                ini.IniWriteValue("Misc", "KeepSymLink", "True");
-            }
-            else
-            {
-                ini.IniWriteValue("Misc", "KeepSymLink", "False");
-            }
+            btn_credits.BackgroundImage = new Bitmap(mainForm.theme + "credits_mousehover.png");
+        }
+
+        private void btn_credits_MouseLeave(object sender, EventArgs e)
+        {
+            btn_credits.BackgroundImage = new Bitmap(mainForm.theme + "credits.png");
         }
     }
 }
