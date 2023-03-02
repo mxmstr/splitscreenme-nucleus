@@ -632,7 +632,6 @@ namespace Nucleus.Coop
             if (GameProfile.ModeText == "New Profile")
             {
                 GameProfile.UseNicknames = useNicksCheck.Checked;
-                GameProfile.KeepAccounts = keepAccountsCheck.Checked;
                 GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
                 ProfileSettings._UpdateProfileSettingsValues(false);
             }

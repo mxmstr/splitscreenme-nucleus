@@ -660,7 +660,6 @@ namespace Nucleus.Coop
             autoPlay.Checked = GameProfile.AutoPlay;
             pauseBetweenInstanceLaunch_TxtBox.Text = GameProfile.PauseBetweenInstanceLaunch.ToString();
             WindowsSetupTiming_TextBox.Text = GameProfile.HWndInterval.ToString();
-            keepAccountsCheck.Checked = GameProfile.KeepAccounts;
             SplitDiv.Checked = GameProfile.UseSplitDiv;
             SplitColors.Text = GameProfile.SplitDivColor;
             scaleOptionCbx.Checked = GameProfile.AutoDesktopScaling;
@@ -834,7 +833,6 @@ namespace Nucleus.Coop
             GameProfile.CustomLayout_Hor = (int)numUpDownHor.Value;
             GameProfile.CustomLayout_Max = (int)numMaxPlyrs.Value;
             GameProfile.UseNicknames = useNicksCheck.Checked;
-            GameProfile.KeepAccounts = keepAccountsCheck.Checked;
             GameProfile.UseSplitDiv = SplitDiv.Checked;
             GameProfile.SplitDivColor = SplitColors.Text;
             GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
@@ -969,18 +967,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void keepAccountsCheck_Click(object sender, EventArgs e)
-        {
-            if (!keepAccountsCheck.Checked)
-            {
-                DialogResult res = MessageBox.Show("Warning: by disabling this feature, the next time you run a game that uses different user accounts, all Nucleus-made user accounts (and their files, saves) will be deleted. Do you wish to proceed?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (res != DialogResult.OK)
-                {
-                    keepAccountsCheck.Checked = true;
-                }
-            }
-        }
-
+   
         private void audioCustomSettingsRadio_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;

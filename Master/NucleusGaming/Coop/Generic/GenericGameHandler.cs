@@ -3668,7 +3668,7 @@ namespace Nucleus.Gaming
                     NucleusUsers.TransferNucleusUserAccountProfiles(this, data);
                 }
 
-                if (!GameProfile.KeepAccounts)
+                if (!bool.Parse(ini.IniReadValue("Misc", "KeepAccounts")))
                 {
                     if (gen.LaunchAsDifferentUsers || gen.LaunchAsDifferentUsersAlt)
                     {
@@ -3734,7 +3734,7 @@ namespace Nucleus.Gaming
                 NucleusUsers.DeleteGameContentFolder(this,gen,userGame,profile);
             }
 
-            if  (!GameProfile.KeepAccounts)
+            if  (!bool.Parse(ini.IniReadValue("Misc", "KeepAccounts")))
             {
                 WindowsUsersUtil.DeleteCreatedWindowsUserFolder(this);
             }
