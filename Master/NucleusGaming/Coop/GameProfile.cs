@@ -130,13 +130,6 @@ namespace Nucleus.Gaming.Coop
             set => autoDesktopScaling = value;
         }
 
-        private static bool keepAccounts = false;
-        public static bool KeepAccounts
-        {
-            get => keepAccounts;
-            set => keepAccounts = value;
-        }
-
         private static bool autoPlay = false;
         public static bool AutoPlay
         {
@@ -279,7 +272,6 @@ namespace Nucleus.Gaming.Coop
             }
 
             autoPlay = false;
-            keepAccounts = bool.Parse(ini.IniReadValue("Misc", "KeepAccounts"));
             autoDesktopScaling = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
             useNicknames = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
             useSplitDiv = false;
@@ -395,7 +387,6 @@ namespace Nucleus.Gaming.Coop
             UseSplitDiv = (bool)Jprofile["UseSplitDiv"]["Enabled"];
             SplitDivColor = (string)Jprofile["UseSplitDiv"]["Color"];
             AutoDesktopScaling = (bool)Jprofile["AutoDesktopScaling"]["Enabled"];
-            KeepAccounts = (bool)Jprofile["KeepAccounts"]["Keep"];
             UseNicknames = (bool)Jprofile["UseNicknames"]["Use"];
             Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
             Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
@@ -645,7 +636,6 @@ namespace Nucleus.Gaming.Coop
                                                new JProperty("Color", splitDivColor));
 
             JObject JAutoDesktopScaling = new JObject(new JProperty("Enabled", autoDesktopScaling));
-            JObject JkeepAccounts = new JObject(new JProperty("Keep", keepAccounts));
             JObject JUseNicknames = new JObject(new JProperty("Use", useNicknames));
             JObject JNetwork = new JObject(new JProperty("Type", network));
             JObject JAutoPlay = new JObject(new JProperty("Enabled", autoPlay));
@@ -764,7 +754,6 @@ namespace Nucleus.Gaming.Coop
                new JProperty("Data", playersInfos),
                new JProperty("Options", options),
                new JProperty("UseNicknames", JUseNicknames),
-               new JProperty("KeepAccounts", JkeepAccounts),
                new JProperty("AutoDesktopScaling", JAutoDesktopScaling),
                new JProperty("UseSplitDiv", JUseSplitDiv),
                new JProperty("CustomLayout", JCustomLayout),

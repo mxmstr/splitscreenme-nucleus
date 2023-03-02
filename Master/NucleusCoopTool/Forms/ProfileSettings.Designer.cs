@@ -66,7 +66,6 @@ namespace Nucleus.Coop
             this.profileInfo = new System.Windows.Forms.TextBox();
             this.sharedTab = new BufferedClientAreaPanel();
             this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
-            this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
             this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.label72 = new System.Windows.Forms.Label();
             this.notes_text = new System.Windows.Forms.TextBox();
@@ -585,7 +584,6 @@ namespace Nucleus.Coop
             // 
             this.sharedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.sharedTab.Controls.Add(this.scaleOptionCbx);
-            this.sharedTab.Controls.Add(this.keepAccountsCheck);
             this.sharedTab.Controls.Add(this.useNicksCheck);
             this.sharedTab.Controls.Add(this.label72);
             this.sharedTab.Controls.Add(this.notes_text);
@@ -629,19 +627,6 @@ namespace Nucleus.Coop
             this.scaleOptionCbx.TabIndex = 148;
             this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
             this.scaleOptionCbx.UseVisualStyleBackColor = false;
-            // 
-            // keepAccountsCheck
-            // 
-            this.keepAccountsCheck.AutoSize = true;
-            this.keepAccountsCheck.BackColor = System.Drawing.Color.Transparent;
-            this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.keepAccountsCheck.Location = new System.Drawing.Point(310, 30);
-            this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.keepAccountsCheck.Name = "keepAccountsCheck";
-            this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
-            this.keepAccountsCheck.TabIndex = 147;
-            this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
-            this.keepAccountsCheck.UseVisualStyleBackColor = false;
             // 
             // useNicksCheck
             // 
@@ -4886,7 +4871,6 @@ namespace Nucleus.Coop
         private PictureBox profile_info_btn;
         private TextBox profileInfo;
         private CheckBox useNicksCheck;
-        private CheckBox keepAccountsCheck;
         private CheckBox scaleOptionCbx;
     }
 }

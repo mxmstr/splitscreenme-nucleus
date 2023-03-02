@@ -662,7 +662,6 @@ namespace Nucleus.Coop
             WindowsSetupTiming_TextBox.Text = GameProfile.HWndInterval.ToString();
             keepAccountsCheck.Checked = GameProfile.KeepAccounts;
             SplitDiv.Checked = GameProfile.UseSplitDiv;
-            KeepSymLinkCheckBox.Checked = GameProfile.KeepSymLink;
             SplitColors.Text = GameProfile.SplitDivColor;
             scaleOptionCbx.Checked = GameProfile.AutoDesktopScaling;
             useNicksCheck.Checked = GameProfile.UseNicknames;
@@ -841,7 +840,6 @@ namespace Nucleus.Coop
             GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
             GameProfile.PauseBetweenInstanceLaunch = int.Parse(pauseBetweenInstanceLaunch_TxtBox.Text);
             GameProfile.HWndInterval = int.Parse(WindowsSetupTiming_TextBox.Text.ToString());
-            GameProfile.KeepSymLink = KeepSymLinkCheckBox.Checked;
             GameProfile.AudioInstances.Clear();
             GameProfile.Cts_MuteAudioOnly = cts_Mute.Checked;
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
