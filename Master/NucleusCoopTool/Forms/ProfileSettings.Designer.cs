@@ -65,6 +65,9 @@ namespace Nucleus.Coop
             this.profile_info_btn = new System.Windows.Forms.PictureBox();
             this.profileInfo = new System.Windows.Forms.TextBox();
             this.sharedTab = new BufferedClientAreaPanel();
+            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
+            this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
+            this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.label72 = new System.Windows.Forms.Label();
             this.notes_text = new System.Windows.Forms.TextBox();
             this.label71 = new System.Windows.Forms.Label();
@@ -353,10 +356,6 @@ namespace Nucleus.Coop
             this.label8 = new System.Windows.Forms.Label();
             this.player1N = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.useNicksCheck = new System.Windows.Forms.CheckBox();
-            this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
-            this.KeepSymLinkCheckBox = new System.Windows.Forms.CheckBox();
-            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.saveBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).BeginInit();
@@ -585,7 +584,6 @@ namespace Nucleus.Coop
             // sharedTab
             // 
             this.sharedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.sharedTab.Controls.Add(this.KeepSymLinkCheckBox);
             this.sharedTab.Controls.Add(this.scaleOptionCbx);
             this.sharedTab.Controls.Add(this.keepAccountsCheck);
             this.sharedTab.Controls.Add(this.useNicksCheck);
@@ -616,6 +614,47 @@ namespace Nucleus.Coop
             this.sharedTab.Name = "sharedTab";
             this.sharedTab.Size = new System.Drawing.Size(671, 401);
             this.sharedTab.TabIndex = 42;
+            // 
+            // scaleOptionCbx
+            // 
+            this.scaleOptionCbx.AutoSize = true;
+            this.scaleOptionCbx.BackColor = System.Drawing.Color.Transparent;
+            this.scaleOptionCbx.Checked = true;
+            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scaleOptionCbx.Location = new System.Drawing.Point(310, 48);
+            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
+            this.scaleOptionCbx.Name = "scaleOptionCbx";
+            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
+            this.scaleOptionCbx.TabIndex = 148;
+            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
+            this.scaleOptionCbx.UseVisualStyleBackColor = false;
+            // 
+            // keepAccountsCheck
+            // 
+            this.keepAccountsCheck.AutoSize = true;
+            this.keepAccountsCheck.BackColor = System.Drawing.Color.Transparent;
+            this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.keepAccountsCheck.Location = new System.Drawing.Point(310, 30);
+            this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.keepAccountsCheck.Name = "keepAccountsCheck";
+            this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
+            this.keepAccountsCheck.TabIndex = 147;
+            this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
+            this.keepAccountsCheck.UseVisualStyleBackColor = false;
+            // 
+            // useNicksCheck
+            // 
+            this.useNicksCheck.AutoSize = true;
+            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
+            this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.useNicksCheck.Location = new System.Drawing.Point(310, 9);
+            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.useNicksCheck.Name = "useNicksCheck";
+            this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
+            this.useNicksCheck.TabIndex = 146;
+            this.useNicksCheck.Text = "Use Nicknames In-Game";
+            this.useNicksCheck.UseVisualStyleBackColor = false;
             // 
             // label72
             // 
@@ -4484,60 +4523,6 @@ namespace Nucleus.Coop
             this.label7.Text = "Player 1:";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // useNicksCheck
-            // 
-            this.useNicksCheck.AutoSize = true;
-            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
-            this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.useNicksCheck.Location = new System.Drawing.Point(310, 9);
-            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.useNicksCheck.Name = "useNicksCheck";
-            this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
-            this.useNicksCheck.TabIndex = 146;
-            this.useNicksCheck.Text = "Use Nicknames In-Game";
-            this.useNicksCheck.UseVisualStyleBackColor = false;
-            // 
-            // keepAccountsCheck
-            // 
-            this.keepAccountsCheck.AutoSize = true;
-            this.keepAccountsCheck.BackColor = System.Drawing.Color.Transparent;
-            this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.keepAccountsCheck.Location = new System.Drawing.Point(310, 30);
-            this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.keepAccountsCheck.Name = "keepAccountsCheck";
-            this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
-            this.keepAccountsCheck.TabIndex = 147;
-            this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
-            this.keepAccountsCheck.UseVisualStyleBackColor = false;
-            // 
-            // KeepSymLinkCheckBox
-            // 
-            this.KeepSymLinkCheckBox.AutoSize = true;
-            this.KeepSymLinkCheckBox.BackColor = System.Drawing.Color.Transparent;
-            this.KeepSymLinkCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepSymLinkCheckBox.Location = new System.Drawing.Point(310, 68);
-            this.KeepSymLinkCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this.KeepSymLinkCheckBox.Name = "KeepSymLinkCheckBox";
-            this.KeepSymLinkCheckBox.Size = new System.Drawing.Size(131, 17);
-            this.KeepSymLinkCheckBox.TabIndex = 149;
-            this.KeepSymLinkCheckBox.Text = "Keep SymLink On Exit";
-            this.KeepSymLinkCheckBox.UseVisualStyleBackColor = false;
-            // 
-            // scaleOptionCbx
-            // 
-            this.scaleOptionCbx.AutoSize = true;
-            this.scaleOptionCbx.BackColor = System.Drawing.Color.Transparent;
-            this.scaleOptionCbx.Checked = true;
-            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scaleOptionCbx.Location = new System.Drawing.Point(310, 48);
-            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
-            this.scaleOptionCbx.Name = "scaleOptionCbx";
-            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
-            this.scaleOptionCbx.TabIndex = 148;
-            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
-            this.scaleOptionCbx.UseVisualStyleBackColor = false;
-            // 
             // ProfileSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -4902,7 +4887,6 @@ namespace Nucleus.Coop
         private TextBox profileInfo;
         private CheckBox useNicksCheck;
         private CheckBox keepAccountsCheck;
-        private CheckBox KeepSymLinkCheckBox;
         private CheckBox scaleOptionCbx;
     }
 }

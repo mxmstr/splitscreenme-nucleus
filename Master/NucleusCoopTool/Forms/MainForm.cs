@@ -1548,8 +1548,11 @@ namespace Nucleus.Coop
                 content.Dispose();
             }
 
-            string path = Path.Combine(gameManager.GetAppContentPath(), currentGameInfo.Game.GUID);
-            CleanGameContent.CleanContentFolder(path, currentGame);
+            if (!currentGameInfo.KeepSymLink)
+            {
+                string path = Path.Combine(gameManager.GetAppContentPath(), currentGameInfo.Game.GUID);
+                CleanGameContent.CleanContentFolder(path, currentGame);
+            }
             // content manager is shared withing the same game
             content = new ContentManager(currentGame);
 
@@ -2487,13 +2490,26 @@ namespace Nucleus.Coop
                                 i++;
                             }
                         }
-
+                       
                         if (i == 20)
                         {
-                            gameContextMenuStrip.Items[20].Visible = false;
-                            gameContextMenuStrip.Items[20].Visible = currentGameInfo.Game.UpdateAvailable;
-                            gameContextMenuStrip.Items[20].ForeColor = StripMenuUpdateItemFont;
-                            gameContextMenuStrip.Items[20].BackColor = StripMenuUpdateItemBack;
+                            if (currentGameInfo.KeepSymLink)
+                            {
+                                gameContextMenuStrip.Items[20].Image = new Bitmap(theme + "locked.png");
+                            }
+                            else
+                            {
+                                gameContextMenuStrip.Items[20].Image = new Bitmap(theme + "unlocked.png");
+                               
+                            }                           
+                        }
+
+                        if (i == 21)
+                        {
+                            gameContextMenuStrip.Items[21].Visible = false;
+                            gameContextMenuStrip.Items[21].Visible = currentGameInfo.Game.UpdateAvailable;
+                            gameContextMenuStrip.Items[21].ForeColor = StripMenuUpdateItemFont;
+                            gameContextMenuStrip.Items[21].BackColor = StripMenuUpdateItemBack;
                         }
 
                         
@@ -2534,8 +2550,9 @@ namespace Nucleus.Coop
 
         private class MyColors : ProfessionalColorTable
         {
-          string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "Selection").Split(',');
-         
+            string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "Selection").Split(',');
+            string[] rgb_MenuStripBackColor = Globals.ThemeIni.IniReadValue("Colors", "MenuStripBack").Split(',');
+
             public override Color MenuItemSelected
             {
                 get { return Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));}
@@ -2546,6 +2563,11 @@ namespace Nucleus.Coop
                 get { return Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); }
             }
 
+            public override Color ImageMarginGradientBegin => Color.FromArgb(int.Parse(rgb_MenuStripBackColor[0]), int.Parse(rgb_MenuStripBackColor[1]), int.Parse(rgb_MenuStripBackColor[2]));
+
+            public override Color ImageMarginGradientMiddle => Color.FromArgb(int.Parse(rgb_MenuStripBackColor[0]), int.Parse(rgb_MenuStripBackColor[1]), int.Parse(rgb_MenuStripBackColor[2]));
+
+            public override Color ImageMarginGradientEnd => Color.FromArgb(int.Parse(rgb_MenuStripBackColor[0]), int.Parse(rgb_MenuStripBackColor[1]), int.Parse(rgb_MenuStripBackColor[2]));
         }
 
         private void gameContextMenuStrip_Opened(object sender, EventArgs e)
@@ -3288,6 +3310,22 @@ namespace Nucleus.Coop
                 SplitCalculator.Kill();
             }
             Application.Exit();
+        }
+
+        private void keepInstancesFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(currentGameInfo.KeepSymLink)
+            {
+                currentGameInfo.KeepSymLink = false;
+                gameContextMenuStrip.Items[20].Image = new Bitmap(theme + "locked.png");
+            }
+            else 
+            {
+                currentGameInfo.KeepSymLink = true;
+                gameContextMenuStrip.Items[20].Image = new Bitmap(theme + "unlocked.png");
+            }
+
+            GameManager.Instance.SaveUserProfile();
         }
     }
 }

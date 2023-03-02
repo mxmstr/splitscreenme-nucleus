@@ -271,11 +271,6 @@ namespace Nucleus.Coop
                 keepAccountsCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "KeepAccounts"));
             }
 
-            if (ini.IniReadValue("Misc", "KeepSymLink") != "")
-            {
-                KeepSymLinkCheckBox.Checked = bool.Parse(ini.IniReadValue("Misc", "KeepSymLink"));
-            }
-
             //auto scale setting
             if (ini.IniReadValue("Misc", "AutoDesktopScaling") != "")
             {
@@ -633,14 +628,12 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
             ini.IniWriteValue("Misc", "AutoDesktopScaling", scaleOptionCbx.Checked.ToString());
-            ini.IniWriteValue("Misc", "KeepSymLink", KeepSymLinkCheckBox.Checked.ToString());
 
             if (GameProfile.ModeText == "New Profile")
             {
                 GameProfile.UseNicknames = useNicksCheck.Checked;
                 GameProfile.KeepAccounts = keepAccountsCheck.Checked;
                 GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
-                GameProfile.KeepSymLink = KeepSymLinkCheckBox.Checked;
                 ProfileSettings._UpdateProfileSettingsValues(false);
             }
 

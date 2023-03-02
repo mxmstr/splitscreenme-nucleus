@@ -3729,7 +3729,7 @@ namespace Nucleus.Gaming
                 FileUtil.CleanOriginalgGameFolder(this);
             }
 
-            if (gen.KeepSymLinkOnExit == false && !GameProfile.KeepSymLink)
+            if (gen.KeepSymLinkOnExit == false && !currentGameInfo.KeepSymLink)
             {
                 NucleusUsers.DeleteGameContentFolder(this,gen,userGame,profile);
             }

@@ -144,13 +144,6 @@ namespace Nucleus.Gaming.Coop
             set => autoPlay = value;
         }
 
-        private static bool keepSymLink = false;
-        public static bool KeepSymLink
-        {
-            get => keepSymLink;
-            set => keepSymLink = value;
-        }
-
         private static string splitDivColor = "Black";
         public static string SplitDivColor
         {
@@ -286,7 +279,6 @@ namespace Nucleus.Gaming.Coop
             }
 
             autoPlay = false;
-            keepSymLink = bool.Parse(ini.IniReadValue("Misc", "KeepSymLink"));
             keepAccounts = bool.Parse(ini.IniReadValue("Misc", "KeepAccounts"));
             autoDesktopScaling = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
             useNicknames = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
@@ -408,7 +400,6 @@ namespace Nucleus.Gaming.Coop
             Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
             Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
             Cts_Unfocus = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"];
-            KeepSymLink = (bool)Jprofile["KeepSymLink"]["Keep"];
             Network = (string)Jprofile["Network"]["Type"];
             CustomLayout_Ver = (int)Jprofile["CustomLayout"]["Ver"];
             CustomLayout_Hor = (int)Jprofile["CustomLayout"]["Hor"];
@@ -656,7 +647,6 @@ namespace Nucleus.Gaming.Coop
             JObject JAutoDesktopScaling = new JObject(new JProperty("Enabled", autoDesktopScaling));
             JObject JkeepAccounts = new JObject(new JProperty("Keep", keepAccounts));
             JObject JUseNicknames = new JObject(new JProperty("Use", useNicknames));
-            JObject JKeepSymLink = new JObject(new JProperty("Keep", keepSymLink));
             JObject JNetwork = new JObject(new JProperty("Type", network));
             JObject JAutoPlay = new JObject(new JProperty("Enabled", autoPlay));
             JObject JAudioInstances = new JObject();
@@ -780,7 +770,6 @@ namespace Nucleus.Gaming.Coop
                new JProperty("CustomLayout", JCustomLayout),
                new JProperty("WindowsSetupTiming", JHWndInterval),
                new JProperty("PauseBetweenInstanceLaunch", JPauseBetweenInstanceLaunch),
-               new JProperty("KeepSymLink", JKeepSymLink),
                new JProperty("Network", JNetwork),
                new JProperty("AudioSettings", JAudioSettings),
                new JProperty("AudioInstances", JAudioInstances),

@@ -99,7 +99,6 @@ namespace Nucleus.Coop
             this.label1 = new System.Windows.Forms.Label();
             this.settingsCloseHKTxt = new System.Windows.Forms.TextBox();
             this.ctrlr_shorcuts = new System.Windows.Forms.Button();
-            this.KeepSymLinkCheckBox = new System.Windows.Forms.CheckBox();
             this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
             this.useNicksCheck = new System.Windows.Forms.CheckBox();
@@ -872,19 +871,6 @@ namespace Nucleus.Coop
             this.ctrlr_shorcuts.UseVisualStyleBackColor = false;
             this.ctrlr_shorcuts.Click += new System.EventHandler(this.ctrlr_shorcuts_Click);
             // 
-            // KeepSymLinkCheckBox
-            // 
-            this.KeepSymLinkCheckBox.AutoSize = true;
-            this.KeepSymLinkCheckBox.BackColor = System.Drawing.Color.Transparent;
-            this.KeepSymLinkCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepSymLinkCheckBox.Location = new System.Drawing.Point(22, 321);
-            this.KeepSymLinkCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this.KeepSymLinkCheckBox.Name = "KeepSymLinkCheckBox";
-            this.KeepSymLinkCheckBox.Size = new System.Drawing.Size(131, 17);
-            this.KeepSymLinkCheckBox.TabIndex = 123;
-            this.KeepSymLinkCheckBox.Text = "Keep SymLink On Exit";
-            this.KeepSymLinkCheckBox.UseVisualStyleBackColor = false;
-            // 
             // scaleOptionCbx
             // 
             this.scaleOptionCbx.AutoSize = true;
@@ -898,7 +884,7 @@ namespace Nucleus.Coop
             this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
             this.scaleOptionCbx.TabIndex = 122;
             this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
-            this.scaleOptionCbx.UseVisualStyleBackColor = false;            
+            this.scaleOptionCbx.UseVisualStyleBackColor = false;
             // 
             // keepAccountsCheck
             // 
@@ -934,7 +920,6 @@ namespace Nucleus.Coop
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.KeepSymLinkCheckBox);
             this.Controls.Add(this.scaleOptionCbx);
             this.Controls.Add(this.keepAccountsCheck);
             this.Controls.Add(this.useNicksCheck);
@@ -1023,7 +1008,6 @@ namespace Nucleus.Coop
         private Label label6;
         private TextBox swl_textBox;
         private Button ctrlr_shorcuts;
-        private CheckBox KeepSymLinkCheckBox;
         private CheckBox scaleOptionCbx;
         private CheckBox keepAccountsCheck;
         private CheckBox useNicksCheck;
