@@ -858,7 +858,7 @@ namespace Nucleus.Coop
                 gamepadPollTimer = new System.Threading.Timer(GamepadPollTimer_Tick, null, 0, 1001);
             }
 
-            gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, $"{GameProfile._game.GameName} profiles list.");
+            gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, $"{GameProfile.Game.GameName} profiles list.");
             //profileSettings_Tooltip.SetToolTip(profileSettings_btn, $"{GameProfile._game.GameName} {GameProfile.ModeText} settings.");
             UpdatePlayers();
         }

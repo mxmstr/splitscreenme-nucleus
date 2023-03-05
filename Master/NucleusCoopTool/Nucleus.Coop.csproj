@@ -130,6 +130,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\NewSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\NewSettings.Designer.cs">
+      <DependentUpon>NewSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProfileSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -226,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DownloadPrompt.resx">
       <DependentUpon>DownloadPrompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewSettings.resx">
+      <DependentUpon>NewSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProfileSettings.resx">
       <DependentUpon>ProfileSettings.cs</DependentUpon>
@@ -720,6 +729,12 @@
     <Content Include="gui\theme\default\keyboard_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\layout.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\locked.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\magnifier.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -856,6 +871,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\title_settings_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\unlocked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\virtual_keyboard.png">

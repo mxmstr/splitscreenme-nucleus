@@ -18,13 +18,14 @@ namespace Nucleus.Gaming.Coop
 {
     public class GameProfile
     {
-        private IniFile ini = Globals.ini;
+        private readonly IniFile ini = Globals.ini;
+
         public List<UserScreen> Screens => screens;
         private List<PlayerInfo> playerData;
         private List<UserScreen> screens;
         public List<PlayerInfo> PlayerData => playerData;
         public static GameProfile currentProfile;
-        public static GenericGameInfo _game;
+        public static GenericGameInfo Game;
         private PositionsControl positionsControl = null;
         public static List<Rectangle> MonitorBounds = new List<Rectangle>();
         public static List<Rectangle> OwnerDisplays = new List<Rectangle>();
@@ -38,7 +39,7 @@ namespace Nucleus.Gaming.Coop
         public static List<int> ScreenIndexes = new List<int>();
         public static List<int> PlayerIDs = new List<int>();
         public static List<int> OwnerType = new List<int>();
-        public static List<int> CustomLayout = new List<int>();
+        //public static List<int> CustomLayout = new List<int>();
         public static List<int> DisplaysIndexes = new List<int>();
 
         private static int totalPlayers = 0;
@@ -52,7 +53,16 @@ namespace Nucleus.Gaming.Coop
 
         private static int profilesCount = 0;//Used to check if we need to create a new profile 
         private static int profileToSave;
-        public static string ModeText = "New Profile";
+        
+        private static string modeText = "New Profile";
+        public static string ModeText
+        {
+            get
+            {
+                return modeText;
+            }
+        }
+
         public static string GameGUID;
 
         public static List<string> profilesPathList = new List<string>();
@@ -65,8 +75,6 @@ namespace Nucleus.Gaming.Coop
         public static List<long> SteamIDs = new List<long>();
 
         public static bool Ready = false;
-        public static bool createNewProfile = true;
-
         public static List<bool> IsDInputs = new List<bool>();
         public static List<bool> IsXInputs = new List<bool>();
         public static List<bool> IsKeyboardPlayer = new List<bool>();
@@ -78,15 +86,7 @@ namespace Nucleus.Gaming.Coop
         public static IDictionary<string, string> AudioInstances = new Dictionary<string, string>();
 
         public static List<string> RawKeyboardDeviceHandles = new List<string>();
-
         public static List<string> RawMouseDeviceHandles = new List<string>();
-
-        //private static bool isNew = true;
-        //public static bool IsNew
-        //{
-        //    get => isNew;
-        //    set => isNew = value;
-        //}
 
         private static int hWndInterval;
         public static int HWndInterval
@@ -157,6 +157,7 @@ namespace Nucleus.Gaming.Coop
             get => notes;
             set => notes = value;
         }
+
         private static int pauseBetweenInstanceLaunch;
         public static int PauseBetweenInstanceLaunch
         {
@@ -244,17 +245,18 @@ namespace Nucleus.Gaming.Coop
 
         public void Reset()
         {
-            PlayerIDs.Clear();
+
             Nicknames.Clear();
             SteamIDs.Clear();
+            PlayerIDs.Clear();
             GamepadsGuid.Clear();
             OwnerType.Clear();
             IsDInputs.Clear();
             IsXInputs.Clear();
             IsKeyboardPlayer.Clear();
             IsRawMouses.Clear();
-            CustomLayout.Clear();
-            AudioInstances.Clear();
+            //AudioInstances.Clear();
+
             ScreenIndexes.Clear();
             EditBounds.Clear();
             OwnerDisplays.Clear();
@@ -274,35 +276,40 @@ namespace Nucleus.Gaming.Coop
             autoPlay = false;
             autoDesktopScaling = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
             useNicknames = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
-            useSplitDiv = false;
-            audioDefaultSettings = true;
-            audioCustomSettings = false;
-            cts_KeepAspectRatio = false;
-            cts_MuteAudioOnly = false;
-            Cts_Unfocus = false;
-            Ready = false;
-            saved = false;
-            splitDivColor = "Black";
-            network = "Automatic";
-            ModeText = "New Profile";
+            useSplitDiv = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
+            customLayout_Ver = int.Parse(ini.IniReadValue("CustomLayout", "VerticalLines"));
+            customLayout_Hor = int.Parse(ini.IniReadValue("CustomLayout", "HorizontalLines"));
+            customLayout_Max = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
+            splitDivColor = ini.IniReadValue("CustomLayout", "SplitDivColor");
+            network = ini.IniReadValue("Misc", "Network");
+
+            audioCustomSettings = int.Parse(ini.IniReadValue("Audio", "Custom")) == 1;
+            audioDefaultSettings = audioCustomSettings == false;
+
+            cts_MuteAudioOnly = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
+            cts_KeepAspectRatio = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
+            cts_Unfocus = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
             notes = string.Empty;
-            //isNew = true;
+
             hWndInterval = 0;
+            pauseBetweenInstanceLaunch = 0;
+
             profileToSave = 0;
             totalPlayers = 0;
-            pauseBetweenInstanceLaunch = 0;
-            customLayout_Ver = 0;
-            customLayout_Hor = 0;
-            customLayout_Max = 1;
+
+            modeText = "New Profile";
+
+            Ready = false;
+            saved = false;
 
             options = new Dictionary<string, object>();
 
-            foreach (GameOption opt in _game.Options)
+            foreach (GameOption opt in Game.Options)
             {
                 options.Add(opt.Key, opt.Value);
             }
 
-            createNewProfile = true;
+            //createNewProfile = true;
 
             Label unload = new Label();
 
@@ -311,7 +318,7 @@ namespace Nucleus.Gaming.Coop
             positionsControl.loadedProfilePlayers.Clear();
 
             positionsControl.UpdatePlayers();
-            positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile._game.GameName} {GameProfile.ModeText.ToLower()} settings.");
+            positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
             ListGameProfiles();
 
             Console.WriteLine("Game Profile Unloaded");       
@@ -320,7 +327,7 @@ namespace Nucleus.Gaming.Coop
         public void InitializeDefault(GenericGameInfo game, PositionsControl pc)
         {
             currentProfile = this;
-            _game = game;
+            Game = game;
             positionsControl = pc;
 
             Reset();
@@ -465,6 +472,8 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 
+            AudioInstances.Clear();
+
             JToken JAudioInstances = Jprofile["AudioInstances"] as JToken;
             foreach (JProperty JaudioDevice in JAudioInstances)
             {
@@ -537,8 +546,8 @@ namespace Nucleus.Gaming.Coop
             }
 
             totalPlayers = JplayersInfos.Count();
-            createNewProfile = false;
-            ModeText = $"Profile n°{profileToSave}";
+            //createNewProfile = false;
+            modeText = $"Profile n°{profileToSave}";
             //isNew = false;
 
             string mod1 = string.Empty;
@@ -553,7 +562,7 @@ namespace Nucleus.Gaming.Coop
             Globals.MainOSD.Settings(2000, Color.YellowGreen, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
                    
             LogManager.Log($"Game profile n°{_profileToLoad} Loaded");
-            positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile._game.GameName} {GameProfile.ModeText.ToLower()} settings.");
+            positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
 
             Ready = true;
             return true;
@@ -570,7 +579,7 @@ namespace Nucleus.Gaming.Coop
                 return;
             }
 
-            if (profile.PlayerData.Count != totalPlayers || createNewProfile || profilesCount == 0)
+            if (profile.PlayerData.Count != totalPlayers || ModeText == "New Profile" || profilesCount == 0)
             {
                 profilesCount++;//increase to set new profile name
                 path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profilesCount}].json");

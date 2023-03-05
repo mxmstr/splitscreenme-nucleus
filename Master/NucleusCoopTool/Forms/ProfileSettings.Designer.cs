@@ -49,13 +49,10 @@ namespace Nucleus.Coop
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProfileSettings));
-            this.closeBtn = new System.Windows.Forms.Button();
-            this.saveBtn = new System.Windows.Forms.Button();
             this.sharedTabBtn = new System.Windows.Forms.Button();
             this.playersTabBtn = new System.Windows.Forms.Button();
             this.audioTabBtn = new System.Windows.Forms.Button();
             this.processorTabBtn = new System.Windows.Forms.Button();
-            this.saveBtnPicture = new System.Windows.Forms.PictureBox();
             this.audioBtnPicture = new System.Windows.Forms.PictureBox();
             this.playersBtnPicture = new System.Windows.Forms.PictureBox();
             this.sharedBtnPicture = new System.Windows.Forms.PictureBox();
@@ -64,19 +61,15 @@ namespace Nucleus.Coop
             this.modeLabel = new System.Windows.Forms.Label();
             this.profile_info_btn = new System.Windows.Forms.PictureBox();
             this.profileInfo = new System.Windows.Forms.TextBox();
-            this.sharedTab = new BufferedClientAreaPanel();
-            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
-            this.useNicksCheck = new System.Windows.Forms.CheckBox();
-            this.label72 = new System.Windows.Forms.Label();
-            this.notes_text = new System.Windows.Forms.TextBox();
+            this.layoutBtnPicture = new System.Windows.Forms.PictureBox();
+            this.layoutTabBtn = new System.Windows.Forms.Button();
+            this.layoutTab = new BufferedClientAreaPanel();
             this.label71 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cts_unfocus = new System.Windows.Forms.CheckBox();
             this.cts_kar = new System.Windows.Forms.CheckBox();
             this.cts_Mute = new System.Windows.Forms.CheckBox();
             this.SplitColors = new System.Windows.Forms.ComboBox();
-            this.cmb_Network = new System.Windows.Forms.ComboBox();
-            this.autoPlay = new System.Windows.Forms.CheckBox();
             this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.SplitDiv = new System.Windows.Forms.CheckBox();
@@ -85,6 +78,14 @@ namespace Nucleus.Coop
             this.label29 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
+            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.sharedTab = new BufferedClientAreaPanel();
+            this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
+            this.useNicksCheck = new System.Windows.Forms.CheckBox();
+            this.label72 = new System.Windows.Forms.Label();
+            this.notes_text = new System.Windows.Forms.TextBox();
+            this.cmb_Network = new System.Windows.Forms.ComboBox();
+            this.autoPlay = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.WIndowsSetupTiming_Label = new System.Windows.Forms.Label();
@@ -92,7 +93,6 @@ namespace Nucleus.Coop
             this.pauseBetweenInstanceLaunch_TxtBox = new System.Windows.Forms.TextBox();
             this.pauseBetweenInstanceLauch_Label = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.processorTab = new BufferedClientAreaPanel();
             this.coreCountLabel = new System.Windows.Forms.Label();
             this.PriorityClass32 = new System.Windows.Forms.ComboBox();
@@ -355,59 +355,21 @@ namespace Nucleus.Coop
             this.label8 = new System.Windows.Forms.Label();
             this.player1N = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.saveBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharedBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.processorBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.profile_info_btn)).BeginInit();
-            this.sharedTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
+            this.layoutTab.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.sharedTab.SuspendLayout();
             this.processorTab.SuspendLayout();
             this.audioTab.SuspendLayout();
             this.audioCustomSettingsBox.SuspendLayout();
             this.playersTab.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // closeBtn
-            // 
-            this.closeBtn.BackColor = System.Drawing.Color.Transparent;
-            this.closeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.closeBtn.Location = new System.Drawing.Point(478, 2);
-            this.closeBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.closeBtn.Name = "closeBtn";
-            this.closeBtn.Size = new System.Drawing.Size(52, 23);
-            this.closeBtn.TabIndex = 9;
-            this.closeBtn.Text = "Close";
-            this.closeBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.closeBtn.UseVisualStyleBackColor = false;
-            this.closeBtn.Visible = false;
-            this.closeBtn.Click += new System.EventHandler(this.SettingsCloseBtn_Click);
-            // 
-            // saveBtn
-            // 
-            this.saveBtn.BackColor = System.Drawing.Color.Transparent;
-            this.saveBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.saveBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.saveBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.saveBtn.Location = new System.Drawing.Point(405, 2);
-            this.saveBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(52, 23);
-            this.saveBtn.TabIndex = 8;
-            this.saveBtn.Text = "Save";
-            this.saveBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.saveBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.saveBtn.UseVisualStyleBackColor = false;
-            this.saveBtn.Visible = false;
-            this.saveBtn.Click += new System.EventHandler(this.SettingsSaveBtn_Click);
             // 
             // sharedTabBtn
             // 
@@ -472,17 +434,6 @@ namespace Nucleus.Coop
             this.processorTabBtn.UseVisualStyleBackColor = false;
             this.processorTabBtn.Click += new System.EventHandler(this.button4_Click);
             // 
-            // saveBtnPicture
-            // 
-            this.saveBtnPicture.BackColor = System.Drawing.Color.Transparent;
-            this.saveBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.saveBtnPicture.Location = new System.Drawing.Point(458, 4);
-            this.saveBtnPicture.Name = "saveBtnPicture";
-            this.saveBtnPicture.Size = new System.Drawing.Size(19, 19);
-            this.saveBtnPicture.TabIndex = 293;
-            this.saveBtnPicture.TabStop = false;
-            this.saveBtnPicture.Visible = false;
-            // 
             // audioBtnPicture
             // 
             this.audioBtnPicture.BackColor = System.Drawing.Color.Transparent;
@@ -532,6 +483,7 @@ namespace Nucleus.Coop
             this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.closeBtnPicture.TabIndex = 298;
             this.closeBtnPicture.TabStop = false;
+            this.closeBtnPicture.Click += new System.EventHandler(this.closeBtnPicture_Click);
             this.closeBtnPicture.MouseEnter += new System.EventHandler(this.closeBtnPicture_MouseEnter);
             this.closeBtnPicture.MouseLeave += new System.EventHandler(this.closeBtnPicture_MouseLeave);
             // 
@@ -580,98 +532,60 @@ namespace Nucleus.Coop
             this.profileInfo.Text = resources.GetString("profileInfo.Text");
             this.profileInfo.Visible = false;
             // 
-            // sharedTab
+            // layoutBtnPicture
             // 
-            this.sharedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.sharedTab.Controls.Add(this.scaleOptionCbx);
-            this.sharedTab.Controls.Add(this.useNicksCheck);
-            this.sharedTab.Controls.Add(this.label72);
-            this.sharedTab.Controls.Add(this.notes_text);
-            this.sharedTab.Controls.Add(this.label71);
-            this.sharedTab.Controls.Add(this.panel1);
-            this.sharedTab.Controls.Add(this.SplitColors);
-            this.sharedTab.Controls.Add(this.cmb_Network);
-            this.sharedTab.Controls.Add(this.autoPlay);
-            this.sharedTab.Controls.Add(this.numMaxPlyrs);
-            this.sharedTab.Controls.Add(this.numUpDownVer);
-            this.sharedTab.Controls.Add(this.SplitDiv);
-            this.sharedTab.Controls.Add(this.label49);
-            this.sharedTab.Controls.Add(this.layoutSizer);
-            this.sharedTab.Controls.Add(this.label29);
-            this.sharedTab.Controls.Add(this.label27);
-            this.sharedTab.Controls.Add(this.label28);
-            this.sharedTab.Controls.Add(this.label6);
-            this.sharedTab.Controls.Add(this.label2);
-            this.sharedTab.Controls.Add(this.WIndowsSetupTiming_Label);
-            this.sharedTab.Controls.Add(this.WindowsSetupTiming_TextBox);
-            this.sharedTab.Controls.Add(this.pauseBetweenInstanceLaunch_TxtBox);
-            this.sharedTab.Controls.Add(this.pauseBetweenInstanceLauch_Label);
-            this.sharedTab.Controls.Add(this.label32);
-            this.sharedTab.Controls.Add(this.numUpDownHor);
-            this.sharedTab.Location = new System.Drawing.Point(1, 33);
-            this.sharedTab.Name = "sharedTab";
-            this.sharedTab.Size = new System.Drawing.Size(671, 401);
-            this.sharedTab.TabIndex = 42;
+            this.layoutBtnPicture.BackColor = System.Drawing.Color.Transparent;
+            this.layoutBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.layoutBtnPicture.Location = new System.Drawing.Point(486, 4);
+            this.layoutBtnPicture.Name = "layoutBtnPicture";
+            this.layoutBtnPicture.Size = new System.Drawing.Size(19, 19);
+            this.layoutBtnPicture.TabIndex = 303;
+            this.layoutBtnPicture.TabStop = false;
             // 
-            // scaleOptionCbx
+            // layoutTabBtn
             // 
-            this.scaleOptionCbx.AutoSize = true;
-            this.scaleOptionCbx.BackColor = System.Drawing.Color.Transparent;
-            this.scaleOptionCbx.Checked = true;
-            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scaleOptionCbx.Location = new System.Drawing.Point(310, 48);
-            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
-            this.scaleOptionCbx.Name = "scaleOptionCbx";
-            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
-            this.scaleOptionCbx.TabIndex = 148;
-            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
-            this.scaleOptionCbx.UseVisualStyleBackColor = false;
+            this.layoutTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.layoutTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.layoutTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.layoutTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.layoutTabBtn.Location = new System.Drawing.Point(405, 2);
+            this.layoutTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.layoutTabBtn.Name = "layoutTabBtn";
+            this.layoutTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.layoutTabBtn.TabIndex = 302;
+            this.layoutTabBtn.Text = "Layout";
+            this.layoutTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.layoutTabBtn.UseVisualStyleBackColor = false;
+            this.layoutTabBtn.Click += new System.EventHandler(this.button5_Click);
             // 
-            // useNicksCheck
+            // layoutTab
             // 
-            this.useNicksCheck.AutoSize = true;
-            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
-            this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.useNicksCheck.Location = new System.Drawing.Point(310, 9);
-            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.useNicksCheck.Name = "useNicksCheck";
-            this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
-            this.useNicksCheck.TabIndex = 146;
-            this.useNicksCheck.Text = "Use Nicknames In-Game";
-            this.useNicksCheck.UseVisualStyleBackColor = false;
-            // 
-            // label72
-            // 
-            this.label72.AutoSize = true;
-            this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label72.Location = new System.Drawing.Point(320, 294);
-            this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(60, 13);
-            this.label72.TabIndex = 145;
-            this.label72.Text = "User Notes";
-            // 
-            // notes_text
-            // 
-            this.notes_text.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.notes_text.BackColor = System.Drawing.SystemColors.InfoText;
-            this.notes_text.ForeColor = System.Drawing.Color.White;
-            this.notes_text.Location = new System.Drawing.Point(322, 311);
-            this.notes_text.MaximumSize = new System.Drawing.Size(341, 81);
-            this.notes_text.Multiline = true;
-            this.notes_text.Name = "notes_text";
-            this.notes_text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.notes_text.Size = new System.Drawing.Size(341, 81);
-            this.notes_text.TabIndex = 144;
+            this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.layoutTab.Controls.Add(this.label71);
+            this.layoutTab.Controls.Add(this.panel1);
+            this.layoutTab.Controls.Add(this.SplitColors);
+            this.layoutTab.Controls.Add(this.numMaxPlyrs);
+            this.layoutTab.Controls.Add(this.numUpDownVer);
+            this.layoutTab.Controls.Add(this.SplitDiv);
+            this.layoutTab.Controls.Add(this.label49);
+            this.layoutTab.Controls.Add(this.layoutSizer);
+            this.layoutTab.Controls.Add(this.label29);
+            this.layoutTab.Controls.Add(this.label27);
+            this.layoutTab.Controls.Add(this.label28);
+            this.layoutTab.Controls.Add(this.numUpDownHor);
+            this.layoutTab.Location = new System.Drawing.Point(2, 28);
+            this.layoutTab.Name = "layoutTab";
+            this.layoutTab.Size = new System.Drawing.Size(671, 401);
+            this.layoutTab.TabIndex = 304;
             // 
             // label71
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(12, 278);
+            this.label71.Location = new System.Drawing.Point(13, 193);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(128, 13);
-            this.label71.TabIndex = 143;
+            this.label71.TabIndex = 155;
             this.label71.Text = "Cutscenes Mode Settings";
             // 
             // panel1
@@ -681,10 +595,10 @@ namespace Nucleus.Coop
             this.panel1.Controls.Add(this.cts_kar);
             this.panel1.Controls.Add(this.cts_Mute);
             this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(11, 297);
+            this.panel1.Location = new System.Drawing.Point(12, 212);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 82);
-            this.panel1.TabIndex = 142;
+            this.panel1.TabIndex = 154;
             // 
             // cts_unfocus
             // 
@@ -715,48 +629,27 @@ namespace Nucleus.Coop
             this.cts_Mute.TabIndex = 140;
             this.cts_Mute.Text = "Mute Audio Only";
             this.cts_Mute.UseVisualStyleBackColor = true;
-            this.cts_Mute.CheckedChanged += new System.EventHandler(this.cts_settings1_CheckedChanged);
+            this.cts_Mute.CheckedChanged += new System.EventHandler(this.cts_Mute_CheckedChanged);
             // 
             // SplitColors
             // 
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(14, 240);
+            this.SplitColors.Location = new System.Drawing.Point(15, 155);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
-            this.SplitColors.TabIndex = 137;
-            // 
-            // cmb_Network
-            // 
-            this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmb_Network.Location = new System.Drawing.Point(14, 58);
-            this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.cmb_Network.Name = "cmb_Network";
-            this.cmb_Network.Size = new System.Drawing.Size(198, 21);
-            this.cmb_Network.TabIndex = 136;
-            // 
-            // autoPlay
-            // 
-            this.autoPlay.AutoSize = true;
-            this.autoPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoPlay.Location = new System.Drawing.Point(15, 11);
-            this.autoPlay.Margin = new System.Windows.Forms.Padding(2);
-            this.autoPlay.Name = "autoPlay";
-            this.autoPlay.Size = new System.Drawing.Size(167, 17);
-            this.autoPlay.TabIndex = 135;
-            this.autoPlay.Text = "Auto Play On Profile Selection";
-            this.autoPlay.UseVisualStyleBackColor = true;
+            this.SplitColors.TabIndex = 153;
             // 
             // numMaxPlyrs
             // 
             this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
             this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(315, 242);
+            this.numMaxPlyrs.Location = new System.Drawing.Point(320, 245);
             this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
             this.numMaxPlyrs.Name = "numMaxPlyrs";
             this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
-            this.numMaxPlyrs.TabIndex = 134;
+            this.numMaxPlyrs.TabIndex = 152;
             this.numMaxPlyrs.Value = 0;
             // 
             // numUpDownVer
@@ -764,11 +657,11 @@ namespace Nucleus.Coop
             this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(313, 144);
+            this.numUpDownVer.Location = new System.Drawing.Point(318, 147);
             this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownVer.Name = "numUpDownVer";
             this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownVer.TabIndex = 132;
+            this.numUpDownVer.TabIndex = 150;
             this.numUpDownVer.Value = 0;
             // 
             // SplitDiv
@@ -776,11 +669,11 @@ namespace Nucleus.Coop
             this.SplitDiv.AutoSize = true;
             this.SplitDiv.Cursor = System.Windows.Forms.Cursors.Default;
             this.SplitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitDiv.Location = new System.Drawing.Point(15, 192);
+            this.SplitDiv.Location = new System.Drawing.Point(16, 107);
             this.SplitDiv.Margin = new System.Windows.Forms.Padding(0);
             this.SplitDiv.Name = "SplitDiv";
             this.SplitDiv.Size = new System.Drawing.Size(118, 17);
-            this.SplitDiv.TabIndex = 131;
+            this.SplitDiv.TabIndex = 149;
             this.SplitDiv.Text = "Splitscreen Division";
             this.SplitDiv.UseVisualStyleBackColor = true;
             // 
@@ -789,11 +682,11 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(12, 218);
+            this.label49.Location = new System.Drawing.Point(13, 133);
             this.label49.Margin = new System.Windows.Forms.Padding(0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(105, 15);
-            this.label49.TabIndex = 130;
+            this.label49.TabIndex = 148;
             this.label49.Text = "Background Color";
             this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -801,13 +694,13 @@ namespace Nucleus.Coop
             // 
             this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
-            this.layoutSizer.Location = new System.Drawing.Point(408, 110);
+            this.layoutSizer.Location = new System.Drawing.Point(413, 113);
             this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
             this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.Name = "layoutSizer";
             this.layoutSizer.Size = new System.Drawing.Size(245, 170);
-            this.layoutSizer.TabIndex = 127;
+            this.layoutSizer.TabIndex = 147;
             this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
             // 
             // label29
@@ -817,11 +710,11 @@ namespace Nucleus.Coop
             this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(306, 219);
+            this.label29.Location = new System.Drawing.Point(311, 222);
             this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(64, 13);
-            this.label29.TabIndex = 122;
+            this.label29.TabIndex = 146;
             this.label29.Text = "Max Players";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -833,11 +726,11 @@ namespace Nucleus.Coop
             this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(306, 172);
+            this.label27.Location = new System.Drawing.Point(311, 175);
             this.label27.Margin = new System.Windows.Forms.Padding(0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(99, 13);
-            this.label27.TabIndex = 120;
+            this.label27.TabIndex = 144;
             this.label27.Text = "Horizontal Divisions";
             this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -848,19 +741,124 @@ namespace Nucleus.Coop
             this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(302, 125);
+            this.label28.Location = new System.Drawing.Point(307, 128);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(90, 13);
-            this.label28.TabIndex = 121;
+            this.label28.TabIndex = 145;
             this.label28.Text = " Vertical Divisions";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // numUpDownHor
+            // 
+            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownHor.Location = new System.Drawing.Point(319, 194);
+            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownHor.Name = "numUpDownHor";
+            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownHor.TabIndex = 151;
+            this.numUpDownHor.Value = 0;
+            // 
+            // sharedTab
+            // 
+            this.sharedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.sharedTab.Controls.Add(this.scaleOptionCbx);
+            this.sharedTab.Controls.Add(this.useNicksCheck);
+            this.sharedTab.Controls.Add(this.label72);
+            this.sharedTab.Controls.Add(this.notes_text);
+            this.sharedTab.Controls.Add(this.cmb_Network);
+            this.sharedTab.Controls.Add(this.autoPlay);
+            this.sharedTab.Controls.Add(this.label6);
+            this.sharedTab.Controls.Add(this.label2);
+            this.sharedTab.Controls.Add(this.WIndowsSetupTiming_Label);
+            this.sharedTab.Controls.Add(this.WindowsSetupTiming_TextBox);
+            this.sharedTab.Controls.Add(this.pauseBetweenInstanceLaunch_TxtBox);
+            this.sharedTab.Controls.Add(this.pauseBetweenInstanceLauch_Label);
+            this.sharedTab.Controls.Add(this.label32);
+            this.sharedTab.Location = new System.Drawing.Point(1, 33);
+            this.sharedTab.Name = "sharedTab";
+            this.sharedTab.Size = new System.Drawing.Size(671, 401);
+            this.sharedTab.TabIndex = 42;
+            // 
+            // scaleOptionCbx
+            // 
+            this.scaleOptionCbx.AutoSize = true;
+            this.scaleOptionCbx.BackColor = System.Drawing.Color.Transparent;
+            this.scaleOptionCbx.Checked = true;
+            this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scaleOptionCbx.Location = new System.Drawing.Point(38, 104);
+            this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
+            this.scaleOptionCbx.Name = "scaleOptionCbx";
+            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
+            this.scaleOptionCbx.TabIndex = 148;
+            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
+            this.scaleOptionCbx.UseVisualStyleBackColor = false;
+            // 
+            // useNicksCheck
+            // 
+            this.useNicksCheck.AutoSize = true;
+            this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
+            this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.useNicksCheck.Location = new System.Drawing.Point(38, 80);
+            this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.useNicksCheck.Name = "useNicksCheck";
+            this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
+            this.useNicksCheck.TabIndex = 146;
+            this.useNicksCheck.Text = "Use Nicknames In-Game";
+            this.useNicksCheck.UseVisualStyleBackColor = false;
+            // 
+            // label72
+            // 
+            this.label72.AutoSize = true;
+            this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label72.Location = new System.Drawing.Point(316, 83);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(60, 13);
+            this.label72.TabIndex = 145;
+            this.label72.Text = "User Notes";
+            // 
+            // notes_text
+            // 
+            this.notes_text.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.notes_text.BackColor = System.Drawing.SystemColors.InfoText;
+            this.notes_text.ForeColor = System.Drawing.Color.White;
+            this.notes_text.Location = new System.Drawing.Point(318, 100);
+            this.notes_text.MaximumSize = new System.Drawing.Size(341, 81);
+            this.notes_text.Multiline = true;
+            this.notes_text.Name = "notes_text";
+            this.notes_text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.notes_text.Size = new System.Drawing.Size(341, 81);
+            this.notes_text.TabIndex = 144;
+            // 
+            // cmb_Network
+            // 
+            this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmb_Network.Location = new System.Drawing.Point(37, 175);
+            this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.cmb_Network.Name = "cmb_Network";
+            this.cmb_Network.Size = new System.Drawing.Size(198, 21);
+            this.cmb_Network.TabIndex = 136;
+            // 
+            // autoPlay
+            // 
+            this.autoPlay.AutoSize = true;
+            this.autoPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoPlay.Location = new System.Drawing.Point(38, 128);
+            this.autoPlay.Margin = new System.Windows.Forms.Padding(2);
+            this.autoPlay.Name = "autoPlay";
+            this.autoPlay.Size = new System.Drawing.Size(167, 17);
+            this.autoPlay.TabIndex = 135;
+            this.autoPlay.Text = "Auto Play On Profile Selection";
+            this.autoPlay.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(75, 161);
+            this.label6.Location = new System.Drawing.Point(98, 278);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(69, 13);
@@ -872,7 +870,7 @@ namespace Nucleus.Coop
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(53, 111);
+            this.label2.Location = new System.Drawing.Point(76, 228);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
@@ -884,7 +882,7 @@ namespace Nucleus.Coop
             // 
             this.WIndowsSetupTiming_Label.AutoSize = true;
             this.WIndowsSetupTiming_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WIndowsSetupTiming_Label.Location = new System.Drawing.Point(12, 137);
+            this.WIndowsSetupTiming_Label.Location = new System.Drawing.Point(35, 254);
             this.WIndowsSetupTiming_Label.Margin = new System.Windows.Forms.Padding(0);
             this.WIndowsSetupTiming_Label.Name = "WIndowsSetupTiming_Label";
             this.WIndowsSetupTiming_Label.Size = new System.Drawing.Size(119, 13);
@@ -894,7 +892,7 @@ namespace Nucleus.Coop
             // 
             // WindowsSetupTiming_TextBox
             // 
-            this.WindowsSetupTiming_TextBox.Location = new System.Drawing.Point(15, 158);
+            this.WindowsSetupTiming_TextBox.Location = new System.Drawing.Point(38, 275);
             this.WindowsSetupTiming_TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.WindowsSetupTiming_TextBox.MaxLength = 5;
             this.WindowsSetupTiming_TextBox.Name = "WindowsSetupTiming_TextBox";
@@ -905,7 +903,7 @@ namespace Nucleus.Coop
             // 
             // pauseBetweenInstanceLaunch_TxtBox
             // 
-            this.pauseBetweenInstanceLaunch_TxtBox.Location = new System.Drawing.Point(15, 108);
+            this.pauseBetweenInstanceLaunch_TxtBox.Location = new System.Drawing.Point(38, 225);
             this.pauseBetweenInstanceLaunch_TxtBox.Margin = new System.Windows.Forms.Padding(0);
             this.pauseBetweenInstanceLaunch_TxtBox.MaxLength = 3;
             this.pauseBetweenInstanceLaunch_TxtBox.Name = "pauseBetweenInstanceLaunch_TxtBox";
@@ -918,7 +916,7 @@ namespace Nucleus.Coop
             // 
             this.pauseBetweenInstanceLauch_Label.AutoSize = true;
             this.pauseBetweenInstanceLauch_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pauseBetweenInstanceLauch_Label.Location = new System.Drawing.Point(12, 87);
+            this.pauseBetweenInstanceLauch_Label.Location = new System.Drawing.Point(35, 204);
             this.pauseBetweenInstanceLauch_Label.Margin = new System.Windows.Forms.Padding(0);
             this.pauseBetweenInstanceLauch_Label.Name = "pauseBetweenInstanceLauch_Label";
             this.pauseBetweenInstanceLauch_Label.Size = new System.Drawing.Size(150, 13);
@@ -930,25 +928,13 @@ namespace Nucleus.Coop
             // 
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(13, 36);
+            this.label32.Location = new System.Drawing.Point(36, 153);
             this.label32.Margin = new System.Windows.Forms.Padding(0);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(47, 13);
             this.label32.TabIndex = 109;
             this.label32.Text = "Network";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // numUpDownHor
-            // 
-            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(314, 191);
-            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownHor.Name = "numUpDownHor";
-            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownHor.TabIndex = 133;
-            this.numUpDownHor.Value = 0;
             // 
             // processorTab
             // 
@@ -2854,7 +2840,7 @@ namespace Nucleus.Coop
             this.label39.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label39.ForeColor = System.Drawing.Color.Red;
-            this.label39.Location = new System.Drawing.Point(290, 40);
+            this.label39.Location = new System.Drawing.Point(299, 99);
             this.label39.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(288, 12);
@@ -2870,7 +2856,7 @@ namespace Nucleus.Coop
             this.audioDefaultDevice.BackColor = System.Drawing.Color.Transparent;
             this.audioDefaultDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.audioDefaultDevice.ForeColor = System.Drawing.Color.White;
-            this.audioDefaultDevice.Location = new System.Drawing.Point(290, 15);
+            this.audioDefaultDevice.Location = new System.Drawing.Point(299, 74);
             this.audioDefaultDevice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.audioDefaultDevice.Name = "audioDefaultDevice";
             this.audioDefaultDevice.Size = new System.Drawing.Size(290, 17);
@@ -2896,7 +2882,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsBox.Controls.Add(this.AudioInstance1);
             this.audioCustomSettingsBox.Controls.Add(this.label37);
             this.audioCustomSettingsBox.Controls.Add(this.label36);
-            this.audioCustomSettingsBox.Location = new System.Drawing.Point(75, 69);
+            this.audioCustomSettingsBox.Location = new System.Drawing.Point(84, 128);
             this.audioCustomSettingsBox.Margin = new System.Windows.Forms.Padding(2);
             this.audioCustomSettingsBox.Name = "audioCustomSettingsBox";
             this.audioCustomSettingsBox.Padding = new System.Windows.Forms.Padding(2);
@@ -3088,7 +3074,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio.BackColor = System.Drawing.Color.Transparent;
             this.audioCustomSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.audioCustomSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioCustomSettingsRadio.Location = new System.Drawing.Point(15, 35);
+            this.audioCustomSettingsRadio.Location = new System.Drawing.Point(24, 94);
             this.audioCustomSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
             this.audioCustomSettingsRadio.Name = "audioCustomSettingsRadio";
             this.audioCustomSettingsRadio.Size = new System.Drawing.Size(99, 17);
@@ -3104,7 +3090,7 @@ namespace Nucleus.Coop
             this.audioDefaultSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.audioDefaultSettingsRadio.Checked = true;
             this.audioDefaultSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioDefaultSettingsRadio.Location = new System.Drawing.Point(15, 15);
+            this.audioDefaultSettingsRadio.Location = new System.Drawing.Point(24, 74);
             this.audioDefaultSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
             this.audioDefaultSettingsRadio.Name = "audioDefaultSettingsRadio";
             this.audioDefaultSettingsRadio.Size = new System.Drawing.Size(217, 17);
@@ -4514,6 +4500,8 @@ namespace Nucleus.Coop
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Controls.Add(this.layoutBtnPicture);
+            this.Controls.Add(this.layoutTabBtn);
             this.Controls.Add(this.profile_info_btn);
             this.Controls.Add(this.closeBtnPicture);
             this.Controls.Add(this.processorBtnPicture);
@@ -4524,10 +4512,8 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
-            this.Controls.Add(this.saveBtnPicture);
-            this.Controls.Add(this.saveBtn);
-            this.Controls.Add(this.closeBtn);
             this.Controls.Add(this.modeLabel);
+            this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.sharedTab);
             this.Controls.Add(this.processorTab);
             this.Controls.Add(this.audioTab);
@@ -4540,17 +4526,19 @@ namespace Nucleus.Coop
             this.Size = new System.Drawing.Size(674, 430);
             this.Click += new System.EventHandler(this.ProfileSettings_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.ProfileSettings_Paint);
-            ((System.ComponentModel.ISupportInitialize)(this.saveBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharedBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.processorBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.profile_info_btn)).EndInit();
-            this.sharedTab.ResumeLayout(false);
-            this.sharedTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).EndInit();
+            this.layoutTab.ResumeLayout(false);
+            this.layoutTab.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.sharedTab.ResumeLayout(false);
+            this.sharedTab.PerformLayout();
             this.processorTab.ResumeLayout(false);
             this.processorTab.PerformLayout();
             this.audioTab.ResumeLayout(false);
@@ -4565,9 +4553,6 @@ namespace Nucleus.Coop
         }
 
         #endregion
-
-        private System.Windows.Forms.Button saveBtn;
-        private System.Windows.Forms.Button closeBtn;
         private Button sharedTabBtn;
         private Button playersTabBtn;
         private Button audioTabBtn;
@@ -4679,38 +4664,22 @@ namespace Nucleus.Coop
         private BufferedClientAreaPanel audioTab;
         private Label label39;
         private Label audioDefaultDevice;
-        private GroupBox audioCustomSettingsBox;
-        private ComboBox AudioInstance8;
         private Label label45;
-        private ComboBox AudioInstance7;
         private Label label44;
-        private ComboBox AudioInstance6;
         private Label label43;
-        private ComboBox AudioInstance5;
         private Label label42;
-        private ComboBox AudioInstance4;
         private Label label41;
-        private ComboBox AudioInstance3;
         private Label label40;
-        private ComboBox AudioInstance2;
-        private ComboBox AudioInstance1;
         private Label label37;
         private Label label36;
         private RadioButton audioCustomSettingsRadio;
         private RadioButton audioDefaultSettingsRadio;
         private Button audioRefresh;
-        private PictureBox saveBtnPicture;
         private PictureBox audioBtnPicture;
         private PictureBox playersBtnPicture;
         private PictureBox sharedBtnPicture;
         private PictureBox processorBtnPicture;
         private BufferedClientAreaPanel sharedTab;
-        private CheckBox SplitDiv;
-        private Label label49;
-        public Panel layoutSizer;
-        private Label label29;
-        private Label label27;
-        private Label label28;
         private Label label6;
         private Label label2;
         private Label WIndowsSetupTiming_Label;
@@ -4720,13 +4689,9 @@ namespace Nucleus.Coop
         private Label label32;
         private BufferedClientAreaPanel playersTab;
         private PictureBox closeBtnPicture;
-        private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
-        private Gaming.Controls.CustomNumericUpDown numUpDownHor;
-        private Gaming.Controls.CustomNumericUpDown numUpDownVer;
         private Label modeLabel;
         private CheckBox autoPlay;
         private ComboBox cmb_Network;
-        private ComboBox SplitColors;
         private BufferedClientAreaPanel processorTab;
         private ComboBox PriorityClass32;
         private ComboBox PriorityClass31;
@@ -4861,16 +4826,38 @@ namespace Nucleus.Coop
         private ComboBox IdealProcessor1;
         private Label label93;
         private Label coreCountLabel;
-        private Label label71;
-        private Panel panel1;
-        private CheckBox cts_kar;
-        private CheckBox cts_Mute;
-        private CheckBox cts_unfocus;
         private Label label72;
         private TextBox notes_text;
         private PictureBox profile_info_btn;
         private TextBox profileInfo;
         private CheckBox useNicksCheck;
         private CheckBox scaleOptionCbx;
+        private GroupBox audioCustomSettingsBox;
+        private ComboBox AudioInstance8;
+        private ComboBox AudioInstance7;
+        private ComboBox AudioInstance6;
+        private ComboBox AudioInstance5;
+        private ComboBox AudioInstance4;
+        private ComboBox AudioInstance3;
+        private ComboBox AudioInstance2;
+        private ComboBox AudioInstance1;
+        private PictureBox layoutBtnPicture;
+        private Button layoutTabBtn;
+        private BufferedClientAreaPanel layoutTab;
+        private Label label71;
+        private Panel panel1;
+        private CheckBox cts_unfocus;
+        private CheckBox cts_kar;
+        private CheckBox cts_Mute;
+        private ComboBox SplitColors;
+        private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
+        private Gaming.Controls.CustomNumericUpDown numUpDownVer;
+        private CheckBox SplitDiv;
+        private Label label49;
+        public Panel layoutSizer;
+        private Label label29;
+        private Label label27;
+        private Label label28;
+        private Gaming.Controls.CustomNumericUpDown numUpDownHor;
     }
 }

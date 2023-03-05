@@ -51,7 +51,8 @@ namespace Nucleus.Coop
 
         public Form splashscreen = new Splashscreen();
         public XInputShortcutsSetup Xinput_S_Setup;
-        private Settings settingsForm = null;
+        //private Settings settingsForm = null;
+        private NewSettings settingsForm = null;
         private ProfileSettings profileSettings = null;
         private ContentManager content;
         private IGameHandler handler;
@@ -119,7 +120,7 @@ namespace Nucleus.Coop
         public float cursScale;
         private System.Windows.Forms.Timer DisposeTimer;//dispose splash screen timer
         private System.Windows.Forms.Timer rainbowTimer;
-        private System.Windows.Forms.Timer hotkeysLockedTimer;//Avoid other hotkeys spamming(4s)
+        private System.Windows.Forms.Timer hotkeysLockedTimer;//Avoid hotkeys spamming(4s)
         private bool hotkeysLocked = false;//^^
 
         public string[] rgb_font;
@@ -329,14 +330,17 @@ namespace Nucleus.Coop
                 dinputGamepad_Icon = new Bitmap(theme + "dinput_icon.png");
                 favorite_Unselected = new Bitmap(theme + "favorite_unselected.png");
                 favorite_Selected = new Bitmap(theme + "favorite_selected.png");
+
                 StripMenuUpdateItemBack = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[0]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[1]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[2]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[3]));
+
                 StripMenuUpdateItemFont = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[0]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[1]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[2]),
                                                    int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[3]));
+
                 btn_Extract.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 btnAutoSearch.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
                 button_UpdateAvailable.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
@@ -454,7 +458,7 @@ namespace Nucleus.Coop
                 positionsControl.Click += new EventHandler(this_Click);
                 positionsControl.btn_Play = btn_Play;
 
-                settingsForm = new Settings(this);
+                settingsForm = new NewSettings(this, positionsControl);
                 profileSettings = new ProfileSettings(this, positionsControl);
 
                 searchDisksForm = new SearchDisksForm(this);
@@ -477,6 +481,7 @@ namespace Nucleus.Coop
                 scriptDownloader = new ScriptDownloader(this);
                 downloadPrompt = new DownloadPrompt(hubHandler, this, null, true);
                 Xinput_S_Setup = new XInputShortcutsSetup();
+
                 favoriteOnlyLabel = new Label
                 {
                     AutoSize = true,
@@ -1791,8 +1796,8 @@ namespace Nucleus.Coop
             handler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile));
             handler.Ended += handler_Ended;
 
-            ProfileSettings._UpdateProfileSettingsValues(true);
-            GameProfile._game = currentGame;
+            ProfileSettings.UpdateProfileSettingsUiValues(true);
+            GameProfile.Game = currentGame;
             gameManager.Play(handler);
 
             if (handler.TimerInterval > 0)
@@ -3231,7 +3236,7 @@ namespace Nucleus.Coop
                 profileSettings.BringToFront();
                 profileSettings.Visible = true;
                 ProfilesList.profilesList.Locked = true;
-                ProfileSettings._UpdateProfileSettingsValues(false);
+                ProfileSettings.UpdateProfileSettingsUiValues(false);
             }
         }
 

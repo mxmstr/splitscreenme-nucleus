@@ -46,16 +46,18 @@ namespace Nucleus.Coop
         private Cursor default_Cursor;
         private static Settings settings;
         public static Button _ctrlr_shorcuts;
+
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
-       (
+        (
           int nLeftRect,     // x-coordinate of upper-left corner
           int nTopRect,      // y-coordinate of upper-left corner
           int nRightRect,    // x-coordinate of lower-right corner
           int nBottomRect,   // y-coordinate of lower-right corner
           int nWidthEllipse, // width of ellipse
           int nHeightEllipse // height of ellipse
-       );
+        );
+
         protected override CreateParams CreateParams
         {
             get
@@ -633,7 +635,7 @@ namespace Nucleus.Coop
             {
                 GameProfile.UseNicknames = useNicksCheck.Checked;
                 GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
-                ProfileSettings._UpdateProfileSettingsValues(false);
+                ProfileSettings.UpdateProfileSettingsUiValues(false);
             }
 
             mainForm.handleClickSound(clickSoundChkB.Checked);

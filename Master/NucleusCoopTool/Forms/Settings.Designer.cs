@@ -176,7 +176,7 @@ namespace Nucleus.Coop
             // 
             // settingLabel_Container
             // 
-            this.settingLabel_Container.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.settingLabel_Container.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.settingLabel_Container.BackColor = System.Drawing.Color.Transparent;
             this.settingLabel_Container.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;

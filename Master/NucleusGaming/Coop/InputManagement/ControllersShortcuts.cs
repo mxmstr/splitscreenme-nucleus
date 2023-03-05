@@ -512,7 +512,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         }
                         else if ((button == TopMost || rt == TopMost || lt == TopMost))///Minimize/restore windows
                         {
-                            GlobalWindowMethods.ShowHideWindows(GameProfile._game);                          
+                            GlobalWindowMethods.ShowHideWindows(GameProfile.Game);                          
                         }
                         else if (button == StopSession || rt == StopSession || lt == StopSession)///End current session
                         {
@@ -550,9 +550,9 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             {
                                 Globals.MainOSD.Settings(1000, Color.Yellow, "Inputs Locked");
 
-                                LockInput.Lock(GameProfile._game?.LockInputSuspendsExplorer ?? true, GameProfile._game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile._game?.ProtoInput);
+                                LockInput.Lock(GameProfile.Game?.LockInputSuspendsExplorer ?? true, GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
 
-                                if (GameProfile._game.ToggleUnfocusOnInputsLock)
+                                if (GameProfile.Game.ToggleUnfocusOnInputsLock)
                                 {
                                     GlobalWindowMethods.ChangeForegroundWindow();
                                     Debug.WriteLine("Toggle Unfocus");
@@ -560,7 +560,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             }
                             else
                             {
-                                LockInput.Unlock(GameProfile._game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile._game?.ProtoInput);
+                                LockInput.Unlock(GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
                                 Globals.MainOSD.Settings(1000, Color.Yellow, "Inputs Unlocked");
                             }
                         }
