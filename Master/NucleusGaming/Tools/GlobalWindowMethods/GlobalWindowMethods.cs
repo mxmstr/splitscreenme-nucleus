@@ -647,13 +647,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
-
-        public static void Refresh()
-        {         
-            finish = false;
-        }
-
-        private static bool finish = false;
+        public static bool finish = false;
         public static GameProfile profile;
         private static bool canSwitch = true;
 
@@ -672,7 +666,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             PlayerInfo prev = null;
 
             int shift = -2;
-            int reset = 0;//set to 1 to reset will debugging
+            int reset = 0;//set to 1  reset debugging purpose
             if (reset == 1)
             {
                 foreach (PlayerInfo pl in players)
@@ -1203,7 +1197,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 }
                             }
 
-                            if (data.Status == 2)//
+                            if (data.Status == 2)
                             {
                                 if (!gen.DontRemoveBorders)
                                 {
@@ -1592,11 +1586,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         public static  bool TopMostToggle = true;
         public static void ShowHideWindows(GenericGameInfo game)
         {
-            //if(!GameProfile.Saved)
-            //{
-            //    return;
-            //}
-
             if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
             {
                 if (TopMostToggle)

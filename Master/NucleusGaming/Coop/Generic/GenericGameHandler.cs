@@ -2752,6 +2752,7 @@ namespace Nucleus.Gaming
                                 Log($"Attempting to switch audio endpoint for process {players[pi].ProcessData.Process.ProcessName} pid ({players[pi].ProcessID}) to DeviceID {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
                                 Thread.Sleep(1000);
                                 AudioReroute.SwitchProcessTo(GameProfile.AudioInstances["AudioInstance" + (pi + 1)], AudioReroute.ERole.ERole_enum_count, AudioReroute.EDataFlow.eRender, (uint)players[pi].ProcessID);
+                                //Console.WriteLine($"Player{pi + 1 } audio = {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
                             }
                         }
                     }
@@ -3035,8 +3036,7 @@ namespace Nucleus.Gaming
                 }
             }
             catch { }
-
-            TriggerOSD(1600, "Game Profile Saved");
+            
             ControllersUINav.EnabledRuntime = false;
 
             GameProfile.saveUserProfile(profile);
@@ -3545,7 +3545,7 @@ namespace Nucleus.Gaming
 
             Log("----------------- SHUTTING DOWN -----------------");
 
-            GlobalWindowMethods.Refresh();
+            GlobalWindowMethods.finish = false;
 
             if (splitForms.Count > 0)
             {
@@ -3729,7 +3729,7 @@ namespace Nucleus.Gaming
                 FileUtil.CleanOriginalgGameFolder(this);
             }
 
-            if (gen.KeepSymLinkOnExit == false && !currentGameInfo.KeepSymLink)
+            if (gen.KeepSymLinkOnExit == false && !userGame.KeepSymLink)
             {
                 NucleusUsers.DeleteGameContentFolder(this,gen,userGame,profile);
             }
@@ -3777,7 +3777,7 @@ namespace Nucleus.Gaming
                     }
                 }
             }
-            catch { }
+            catch {}
         }
 
         private void StatusForm_Closing(object sender, FormClosingEventArgs e)

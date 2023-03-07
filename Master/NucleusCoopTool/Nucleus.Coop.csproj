@@ -208,12 +208,6 @@
     <Compile Include="Forms\SearchDisksForm.Designer.cs">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Settings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\InputIcons.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -258,9 +252,6 @@
     <EmbeddedResource Include="Forms\SearchDisksForm.resx">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings.resx">
-      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\XInputShortcutsSetup.resx">
       <DependentUpon>XInputShortcutsSetup.cs</DependentUpon>

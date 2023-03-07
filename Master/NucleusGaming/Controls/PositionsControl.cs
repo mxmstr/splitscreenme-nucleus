@@ -81,7 +81,7 @@ namespace Nucleus.Coop
         public PictureBox instruction_btn;
         private PictureBox instructionImg;
         public PictureBox profileSettings_btn;
-        public PictureBox gameProfiles_btn;
+        public PictureBox gameProfilesList_btn;
         public ProfilesList gameProfilesList = new ProfilesList();
         private ImageAttributes flashImageAttributes;
 
@@ -116,7 +116,7 @@ namespace Nucleus.Coop
         public RichTextBox handlerNoteZoom;
         public Panel textZoomContainer;
 
-        private ToolTip gameProfiles_btnTooltip;
+        private ToolTip gameProfilesList_btnTooltip;
         public ToolTip profileSettings_Tooltip;
         private ToolTip instruction_btn_Tooltip;
 
@@ -249,23 +249,22 @@ namespace Nucleus.Coop
             profileSettings_btn.SizeMode = PictureBoxSizeMode.StretchImage;
             profileSettings_btn.Cursor = hand_Cursor;
             profileSettings_btn.Font = instruction_btn.Font;
-            //profileSettings_btn.BorderStyle = BorderStyle.FixedSingle;
-            //profileSettings_Tooltip.SetToolTip(profileSettings_btn, "Game profile settings.");
+            profileSettings_btn.Visible = false;
+           
+            gameProfilesList_btnTooltip = new ToolTip();
+            gameProfilesList_btnTooltip.InitialDelay = 100;
+            gameProfilesList_btnTooltip.ReshowDelay = 100;
+            gameProfilesList_btnTooltip.AutoPopDelay = 5000;
 
-            gameProfiles_btnTooltip = new ToolTip();
-            gameProfiles_btnTooltip.InitialDelay = 100;
-            gameProfiles_btnTooltip.ReshowDelay = 100;
-            gameProfiles_btnTooltip.AutoPopDelay = 5000;
-
-            gameProfiles_btn = new PictureBox();//using a button cause focus issues
-            gameProfiles_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            gameProfiles_btn.AutoSize = false;
-            gameProfiles_btn.SizeMode = PictureBoxSizeMode.StretchImage;
-            gameProfiles_btn.BackColor = Color.Transparent;
-            gameProfiles_btn.Image = new Bitmap(theme + "profiles_list.png");
-            gameProfiles_btn.Text = "Profiles List";
-            gameProfiles_btn.Cursor = hand_Cursor;
-            //gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, "Game profiles list.");
+            gameProfilesList_btn = new PictureBox();//using a button cause focus issues
+            gameProfilesList_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            gameProfilesList_btn.AutoSize = false;
+            gameProfilesList_btn.SizeMode = PictureBoxSizeMode.StretchImage;
+            gameProfilesList_btn.BackColor = Color.Transparent;
+            gameProfilesList_btn.Image = new Bitmap(theme + "profiles_list.png");
+            gameProfilesList_btn.Text = "Profiles List";
+            gameProfilesList_btn.Cursor = hand_Cursor;
+            gameProfilesList_btn.Visible = false;
 
             ResumeLayout();
 
@@ -284,7 +283,7 @@ namespace Nucleus.Coop
             Controls.Add(textZoomContainer);
             Controls.Add(instruction_btn);
             Controls.Add(profileSettings_btn);
-            Controls.Add(gameProfiles_btn);
+            Controls.Add(gameProfilesList_btn);
             Controls.Add(gameProfilesList);
             Controls.Add(instructionImg);
 
@@ -316,11 +315,6 @@ namespace Nucleus.Coop
 
         private void instruction_Click(object sender, EventArgs e)
         {
-            //if(gameProfilesList.Visible)
-            //{
-            //    return;
-            //}
-
             if (instructionImg.Visible)
             {
                 SuspendLayout();
@@ -367,18 +361,14 @@ namespace Nucleus.Coop
                 handlerNoteZoom.Location = new Point(0, 20);
 
                 profileSettings_btn.Size = instruction_btn.Size;
-                profileSettings_btn.Location = new Point(((instruction_btn.Left - profileSettings_btn.Width) - 3), instruction_btn.Top);
+                profileSettings_btn.Location = new Point(((instruction_btn.Left - profileSettings_btn.Width) - 3), instruction_btn.Top);                
 
-                //gameProfiles_btn.Font = new Font(customFont, 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-
-                gameProfiles_btn.Size = instruction_btn.Size;
-
-                gameProfiles_btn.Location = new Point(profileSettings_btn.Left - gameProfiles_btn.Width-3, instruction_btn.Location.Y);
+                gameProfilesList_btn.Size = instruction_btn.Size;
+                gameProfilesList_btn.Location = new Point(profileSettings_btn.Left - gameProfilesList_btn.Width-3, instruction_btn.Location.Y);
                 gameProfilesList.UpdateSize(scale);
-                // gameProfilesList.Location = new Point((gameProfiles_btn.Left - (int)((gameProfilesList.Width)*scale))-5, gameProfiles_btn.Location.Y + gameProfiles_btn.Height/2);
-                gameProfilesList.Location = new Point((gameProfiles_btn.Left - (int)((gameProfilesList.Width) * scale)) - 5, gameProfiles_btn.Location.Y /*+ gameProfiles_btn.Height / 2*/);
-                scaled = true;
-                
+                // gameProfilesList.Location = new Point((gameProfilesList_btn.Left - (int)((gameProfilesList.Width)*scale))-5, gameProfilesList_btn.Location.Y + gameProfilesList_btn.Height/2);
+                gameProfilesList.Location = new Point((gameProfilesList_btn.Left - (int)((gameProfilesList.Width) * scale)) - 5, gameProfilesList_btn.Location.Y /*+ gameProfilesList_btn.Height / 2*/);
+                scaled = true;              
             }
 
             ResumeLayout();
@@ -413,11 +403,8 @@ namespace Nucleus.Coop
 
             List<PlayerInfo> data = profile.PlayerData;
             foreach (PlayerInfo player in data)
-            {
-                if (player.DInputJoystick != null)
-                {
-                    player.DInputJoystick.Dispose();
-                }
+            {            
+              player.DInputJoystick?.Dispose();                
             }
 
             gamepadTimer.Dispose();
@@ -858,7 +845,7 @@ namespace Nucleus.Coop
                 gamepadPollTimer = new System.Threading.Timer(GamepadPollTimer_Tick, null, 0, 1001);
             }
 
-            gameProfiles_btnTooltip.SetToolTip(gameProfiles_btn, $"{GameProfile.Game.GameName} profiles list.");
+            gameProfilesList_btnTooltip.SetToolTip(gameProfilesList_btn, $"{GameProfile.Game.GameName} profiles list.");
             //profileSettings_Tooltip.SetToolTip(profileSettings_btn, $"{GameProfile._game.GameName} {GameProfile.ModeText} settings.");
             UpdatePlayers();
         }
@@ -1587,9 +1574,7 @@ namespace Nucleus.Coop
                     UpdatePlayers(); // force a player update                    
 
                     Invalidate();
-
                 }
-
             }
 
             Cursor = default_Cursor;
@@ -1630,7 +1615,7 @@ namespace Nucleus.Coop
         private int TotalPlayers = 0;
         private int playerProfile = 0;
         //private Pen listPen = new Pen(Color.White, 2);
-
+       
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -1639,9 +1624,7 @@ namespace Nucleus.Coop
 
             //if (gameProfilesList.Visible)
             //{
-                
-            //    Rectangle test = new Rectangle(gameProfilesList.Location.X - 1, gameProfilesList.Location.Y - 1, gameProfilesList.Width + 2, gameProfilesList.Height + 2);
-            //    g.DrawRectangle(listPen, test);
+            //    g.DrawRectangle(listPen, gameProfilesList.Location.X - 1, gameProfilesList.Location.Y - 1, gameProfilesList.Width + 2, gameProfilesList.Height + 2));
             //}
 
             if (totalBounds == Rectangle.Empty)//Avoid resizing conflicts with "OnSizeChange" event.
@@ -1823,8 +1806,10 @@ namespace Nucleus.Coop
                     PointF loc = RectangleUtil.Center(size, s);
                     Pen color = (info.GamepadId > colors.Count()) ? new Pen(Color.Magenta) : new Pen(colors[info.GamepadId]);
 
-                    //g.DrawEllipse(color ,gamepadRect);
-                    //g.FillRectangle((info.GamepadId > colors.Count()) ? Brushes.Magenta : colors[info.GamepadId], s);
+                    //if (info.Owner != null)
+                    //{
+                    //    g.FillRectangle((info.GamepadId > colors.Count()) ? Brushes.Magenta : colors[info.GamepadId], s);
+                    //}
 
                     if (gamePadPressed == -1)
                     {

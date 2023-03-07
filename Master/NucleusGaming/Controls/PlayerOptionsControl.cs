@@ -20,7 +20,7 @@ namespace Nucleus.Coop
         private string customOption = "";
         public override bool CanProceed => true;
         public override bool CanPlay => true;
-
+        private float _scale;
         public override string Title => "Player Options";
 
         public PlayerOptionsControl()
@@ -28,6 +28,8 @@ namespace Nucleus.Coop
             nameFont = new Font("Segoe UI", 18);
             detailsFont = new Font("Segoe UI", 12);
             BackColor = Color.Transparent;
+            DPIManager.Register(this);
+            DPIManager.Update(this);
         }
 
         public override void Initialize(UserGameInfo game, GameProfile profile)
@@ -37,14 +39,14 @@ namespace Nucleus.Coop
             Controls.Clear();
 
             int wid = 200;
-          
+
             list = new ControlListBox
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
                 Size = Size,
                 AutoScroll = true,
             };
-         
+
             List<GameOption> options = game.Game.Options;
             Dictionary<string, object> vals = profile.Options;
 
@@ -64,12 +66,12 @@ namespace Nucleus.Coop
                     Title = opt.Name,
                     Details = opt.Description,
                     Width = list.Width,
-                    Font = new Font("Segoe UI", 8)
+                    Font = new Font("Segoe UI", 8 * _scale)
                 };
                 //cool.DetailsFont = detailsFont;
-               
+
                 list.Controls.Add(cool);
-                
+
                 // Check the value type and add a control for it
                 if (opt.Value is Enum || opt.List != null && opt.List.Count != 0)
                 {
@@ -117,8 +119,8 @@ namespace Nucleus.Coop
                         }
                     }
 
-                    box.Width = wid;
-                    box.Height = 40;
+                    box.Width = (int)(wid * _scale);
+                    box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
@@ -135,8 +137,8 @@ namespace Nucleus.Coop
                     int border = 10;
 
                     box.Checked = (bool)val;
-                    box.Width = 40;
-                    box.Height = 40;
+                    box.Width = (int)(40 * _scale);
+                    box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
@@ -159,8 +161,8 @@ namespace Nucleus.Coop
 
                     num.Value = value;
 
-                    num.Width = wid;
-                    num.Height = 40;
+                    num.Width = (int)(wid * _scale);
+                    num.Height = (int)(40 * _scale);
                     num.Left = cool.Width - num.Width - border;
                     num.Top = (cool.Height / 2) - (num.Height / 2);
                     num.Anchor = AnchorStyles.Right;
@@ -185,8 +187,8 @@ namespace Nucleus.Coop
                     }
                     box.SelectedIndex = box.Items.IndexOf(value);
 
-                    box.Width = wid;
-                    box.Height = 40;
+                    box.Width = (int)(wid * _scale);
+                    box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
@@ -209,8 +211,8 @@ namespace Nucleus.Coop
                     }
 
                     box.TextChanged += new System.EventHandler(this.box_TextChanged);
-                    box.Width = wid;
-                    box.Height = 40;
+                    box.Width = (int)(wid * _scale);
+                    box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
@@ -219,16 +221,15 @@ namespace Nucleus.Coop
                     cool.Controls.Add(box);
                     box.Tag = opt;
                 }
-               
+
             }
 
             Controls.Add(list);
 
             list.UpdateSizes();
-
+            //UpdateSize(_scale);
             CanPlayUpdated(true, false);
-            DPIManager.Register(this);
-            DPIManager.Update(this);
+
         }
 
         private void box_TextChanged(object sender, EventArgs e)
@@ -243,7 +244,7 @@ namespace Nucleus.Coop
             // boxing but whatever
             GameOption option = (GameOption)tag;
             profile.Options[option.Key] = value;
-            
+
         }
 
         private void box_SelectedValueChanged(object sender, EventArgs e)
@@ -269,8 +270,6 @@ namespace Nucleus.Coop
             ChangeOption(check.Tag, check.Checked);
         }
 
-        private bool scaled = false;
-
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -279,24 +278,9 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (scale > 1.0F && !scaled)
-            {
-                float newFontSize = 7 * scale;
-
-                foreach (Control c in Controls)
-                {
-                    foreach (Control child in c.Controls)
-                    {
-                        SuspendLayout();
-                        child.Font = new Font("Franklin Gothic Medium", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                        ResumeLayout();
-                    }
-                }
-
-                scaled = true;
-            }
+            _scale = scale;
 
         }
-        
+
     }
 }

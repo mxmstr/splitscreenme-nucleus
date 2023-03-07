@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -110,7 +111,7 @@ namespace Nucleus.Gaming.Controls
             if (selected.Text == "Unload")
             {
                 selected.ForeColor = Color.Gray;
-                GameProfile.currentProfile.Reset();
+                GameProfile.currentProfile.Reset();              
                 Globals.MainOSD.Settings(500, Color.Yellow, "Game Profile Unloaded");
                 return;
             }
@@ -213,7 +214,7 @@ namespace Nucleus.Gaming.Controls
             }
 
             //Height += 3;
-
+           
             if (Controls.Count == 1)
             {
                 Controls.Clear();
@@ -223,6 +224,11 @@ namespace Nucleus.Gaming.Controls
 
         private void Profile_Preview(object sender, EventArgs e)//Show profile config in handler note textBox (Must be improved)
         {
+            if (Locked)
+            {
+                return;
+            }
+
             Label selected = (Label)sender;
 
             Control preview = selected.Parent as Control;
@@ -262,6 +268,11 @@ namespace Nucleus.Gaming.Controls
 
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
         {
+            if (Locked)
+            {
+                return;
+            }
+
             Label deleteBtn = (Label)sender;
 
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete this game profile?", "Are you sure?!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop
 {
-    public class PlayerInfo 
+    public class PlayerInfo
     {
         private Rectangle sourceEditBounds;
         private Rectangle editBounds;
@@ -37,8 +37,7 @@ namespace Nucleus.Gaming.Coop
         public bool IsRawKeyboard;
         public bool IsInputUsed;
         public bool IsController;//Good to do not have to loop both Xinput & DInput  
-        //public string Identifier;
-        //public IntPtr RawDeviceHandle = (IntPtr)(-1);
+
         public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
         public IntPtr RawKeyboardDeviceHandle = (IntPtr)(-1);
 
@@ -55,9 +54,7 @@ namespace Nucleus.Gaming.Coop
         public int ProtoController2;
         public int ProtoController3;
         public int ProtoController4;
-        //public int Row;
-        //public int Col;
-        // public bool isfirstPlayer;
+
         public string HIDDeviceID;
         public string Nickname;
         public string InstanceId;

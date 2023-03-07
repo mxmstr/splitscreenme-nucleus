@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -220,7 +221,7 @@ namespace Nucleus.Gaming
 
             Log("High-level error log generated at content/" + file);
 
-            Application.Exit();
+            Process.GetCurrentProcess().Kill();
         }
 
         public static void Log(string str, object par1)

@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
@@ -31,7 +32,7 @@ namespace Nucleus.Gaming
         private UserProfile user;
         private List<BackupFile> backupFiles;
         private string error;
-        private bool isSaving;    
+        private bool isSaving;
         private GameProfile currentProfile;
 
         private RawInputProcessor rawInputProcessor;
@@ -439,7 +440,7 @@ namespace Nucleus.Gaming
                             string json = reader.ReadToEnd();
 
                             user = JsonConvert.DeserializeObject<UserProfile>(json);
-                            
+
                             if (user.Games == null)
                             {
                                 // json doesn't save empty lists, and user didn't add any game
@@ -459,7 +460,7 @@ namespace Nucleus.Gaming
                                 }
                             }
                             user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
-                            
+
                         }
 
                         saveUser(userProfile);
@@ -513,7 +514,7 @@ namespace Nucleus.Gaming
                     using (FileStream stream = new FileStream(path, FileMode.Create))
                     {
                         using (StreamWriter writer = new StreamWriter(stream))
-                        {                         
+                        {
                             string json = JsonConvert.SerializeObject(user, Formatting.Indented);
                             writer.Write(json);
                             stream.Flush();
@@ -521,8 +522,8 @@ namespace Nucleus.Gaming
                     }
                     //LogManager.Log("Saved user profile");
                 }
-                catch(Exception e) 
-                { 
+                catch (Exception e)
+                {
                     Console.WriteLine(e.Message);
                 }
                 isSaving = false;
@@ -536,7 +537,7 @@ namespace Nucleus.Gaming
             string jsfolder = GetJsScriptsPath();
             DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
             FileInfo[] files = jsFolder.GetFiles("*.js");
-           
+
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo f = files[i];
@@ -621,13 +622,25 @@ namespace Nucleus.Gaming
 
         }
         #endregion
+        public Thread playThread;
+
+        public void PlayAbort()
+        {
+            while (playThread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
+            {
+            }
+
+            playThread?.Interrupt();
+        }
 
         public void Play(IGameHandler handler)
         {
             // Start the Play method in another thread, so the
             // handler can update while it's still loading
             error = null;
-            ThreadPool.QueueUserWorkItem(play, handler);
+            playThread = new Thread(new ParameterizedThreadStart(play));
+            playThread.Start(handler);
+            //ThreadPool.QueueUserWorkItem(play, handler);
         }
 
         private void play(object state)

@@ -47,6 +47,7 @@
             this.val.TabIndex = 2;
             this.val.Text = "0";
             this.val.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.val.TextChanged += new System.EventHandler(this.val_TextChanged);
             // 
             // down
             // 

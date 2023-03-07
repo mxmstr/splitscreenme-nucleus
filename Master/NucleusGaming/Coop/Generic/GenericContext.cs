@@ -76,11 +76,8 @@ namespace Nucleus.Gaming
         public bool ChangeExe;
         public bool UseX360ce;
         public string HookFocusInstances;
-        //public bool UseAlpha8CustomDll;
         public bool bHasKeyboardPlayer;
         public bool KeepAspectRatio;
-        //public bool HideDesktop;
-        //public int FakeFocusInterval;
         public bool ResetWindows;
         public bool UseGoldberg;
         public string OrigSteamDllPath;

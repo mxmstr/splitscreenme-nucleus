@@ -1,17 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
-using Nucleus.Gaming.Controls;
-using Nucleus.Gaming.Coop.Generic;
-using Nucleus.Gaming.Tools.GlobalWindowMethods;
-using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Coop
@@ -39,7 +34,6 @@ namespace Nucleus.Gaming.Coop
         public static List<int> ScreenIndexes = new List<int>();
         public static List<int> PlayerIDs = new List<int>();
         public static List<int> OwnerType = new List<int>();
-        //public static List<int> CustomLayout = new List<int>();
         public static List<int> DisplaysIndexes = new List<int>();
 
         private static int totalPlayers = 0;
@@ -53,7 +47,7 @@ namespace Nucleus.Gaming.Coop
 
         private static int profilesCount = 0;//Used to check if we need to create a new profile 
         private static int profileToSave;
-        
+
         private static string modeText = "New Profile";
         public static string ModeText
         {
@@ -78,8 +72,8 @@ namespace Nucleus.Gaming.Coop
         public static List<bool> IsDInputs = new List<bool>();
         public static List<bool> IsXInputs = new List<bool>();
         public static List<bool> IsKeyboardPlayer = new List<bool>();
-        public static List<bool> IsRawMouses = new List<bool>();//mice
-        public static List<string> IsExpanded = new List<string>();//mice
+        public static List<bool> IsRawMouses = new List<bool>();
+        public static List<string> IsExpanded = new List<string>();
 
         public Dictionary<string, object> Options => options;
         private Dictionary<string, object> options;
@@ -213,10 +207,10 @@ namespace Nucleus.Gaming.Coop
             get => saved;
         }
 
-        public GameProfile()
-        {
+        //public GameProfile()
+        //{
 
-        }
+        //}
 
         private void ListGameProfiles()
         {
@@ -228,7 +222,6 @@ namespace Nucleus.Gaming.Coop
             {
                 profilesPathList = Directory.EnumerateFiles(path).OrderBy(s => int.Parse(Regex.Match(s, @"\d+").Value)).ToList();
                 profilesCount = profilesPathList.Count();
-                Console.WriteLine($"Found {profilesCount} Game profile(s)");
             }
         }
 
@@ -237,17 +230,36 @@ namespace Nucleus.Gaming.Coop
             string path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}");
             if (!Directory.Exists(path))
             {
-                Console.WriteLine("No game profile found...");//Log.
                 return null;
             }
             return path;
         }
 
-        public void Reset()
+        private void GetPlayersNickNameAndSteamIds()
         {
+            SteamIDs.Clear();
+            for (int i = 0; i < 32; i++)
+            {
+                string sid = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
+                if (sid == "")
+                {
+                    continue;
+                }
+
+                SteamIDs.Add((long)long.Parse(ini.IniReadValue("SteamIDs", "Player_" + (i + 1))));
+            }
 
             Nicknames.Clear();
-            SteamIDs.Clear();
+            for (int i = 0; i < 32; i++)
+            {
+                Nicknames.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)));
+            }
+        }
+
+        public void Reset()
+        {
+            GetPlayersNickNameAndSteamIds();
+
             PlayerIDs.Clear();
             GamepadsGuid.Clear();
             OwnerType.Clear();
@@ -255,14 +267,13 @@ namespace Nucleus.Gaming.Coop
             IsXInputs.Clear();
             IsKeyboardPlayer.Clear();
             IsRawMouses.Clear();
-            //AudioInstances.Clear();
 
             ScreenIndexes.Clear();
             EditBounds.Clear();
             OwnerDisplays.Clear();
             DisplaysIndexes.Clear();
             MonitorBounds.Clear();
-            IsExpanded.Clear(); 
+            IsExpanded.Clear();
             IdealProcessors.Clear();
             Affinitys.Clear();
             PriorityClasses.Clear();
@@ -309,8 +320,6 @@ namespace Nucleus.Gaming.Coop
                 options.Add(opt.Key, opt.Value);
             }
 
-            //createNewProfile = true;
-
             Label unload = new Label();
 
             positionsControl.ResetScreensTotalPlayers();
@@ -321,7 +330,7 @@ namespace Nucleus.Gaming.Coop
             positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
             ListGameProfiles();
 
-            Console.WriteLine("Game Profile Unloaded");       
+            //Console.WriteLine("Game Profile Unloaded");
         }
 
         public void InitializeDefault(GenericGameInfo game, PositionsControl pc)
@@ -350,7 +359,7 @@ namespace Nucleus.Gaming.Coop
                 {
                     options.Add(opt.Key, opt.Value);
                 }
-            }      
+            }
         }
 
         public bool LoadUserProfile(int _profileToLoad)
@@ -358,7 +367,6 @@ namespace Nucleus.Gaming.Coop
             string path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{_profileToLoad}].json");
 
             string jsonString = File.ReadAllText(path);
-            Console.WriteLine(jsonString);
 
             JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
@@ -371,6 +379,9 @@ namespace Nucleus.Gaming.Coop
                 Ready = false;
                 return false;
             }
+
+            Nicknames.Clear();
+            SteamIDs.Clear();
 
             JToken Joptions = Jprofile["Options"] as JToken;
 
@@ -481,13 +492,13 @@ namespace Nucleus.Gaming.Coop
             }
 
             JToken JAllscreens = Jprofile["AllScreens"] as JToken;
-            for(int s = 0; s < JAllscreens.Count();s++)
+            for (int s = 0; s < JAllscreens.Count(); s++)
             {
                 AllScreens.Add(new Rectangle((int)JAllscreens[s]["X"], (int)JAllscreens[s]["Y"], (int)JAllscreens[s]["Width"], (int)JAllscreens[s]["Height"]));
             }
 
             bool hasKeyboard = false;
-      
+
             if (AutoPlay)
             {
                 positionsControl.GamepadTimer_Tick(null);
@@ -522,21 +533,17 @@ namespace Nucleus.Gaming.Coop
                 {
                     Globals.MainOSD.Settings(2000, Color.Orange, $"Game Profile N°{_profileToLoad} Loaded\nThe Auto Play Option Is Not Compatible With Keyboards");
                     AutoPlay = false;
-                    //positionsControl.UpdatePlayers();
                 }
 
                 if (allPlayers < PlayerIDs.Count && !hasKeyboard)
                 {
-                   // Globals.MainOSD.Settings(2000, Color.Orange, $"Requires {PlayerIDs.Count} Controller(s).\nMaybe All The Controllers Used To Create This Profile Are Not Plugged?");
-                    //Reset();
-                    //return false;
                     AutoPlay = false;
                     positionsControl.UpdatePlayers();
                 }
             }
 
             foreach (int index in ScreenIndexes)//Check if there is enough screens
-            {             
+            {
                 if (index > ScreensUtil.AllScreens().Length)
                 {
                     Globals.MainOSD.Settings(2000, Color.Orange, $"Can't Find The Required Screen(s)");
@@ -546,9 +553,7 @@ namespace Nucleus.Gaming.Coop
             }
 
             totalPlayers = JplayersInfos.Count();
-            //createNewProfile = false;
             modeText = $"Profile n°{profileToSave}";
-            //isNew = false;
 
             string mod1 = string.Empty;
             string mod2 = " Loaded";
@@ -560,7 +565,7 @@ namespace Nucleus.Gaming.Coop
             }
 
             Globals.MainOSD.Settings(2000, Color.YellowGreen, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
-                   
+
             LogManager.Log($"Game profile n°{_profileToLoad} Loaded");
             positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
 
@@ -571,10 +576,15 @@ namespace Nucleus.Gaming.Coop
         public static void saveUserProfile(GameProfile profile)
         {
             string path;
+            bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
 
-            if(profilesCount+1 >= 21)
+            if (profilesCount + 1 >= 21 || profileDisabled)
             {
-                Globals.MainOSD.Settings(2000, Color.Orange, $"Limit Of 20 Profiles Has Been Reach Already");
+                if (!profileDisabled)
+                {
+                    Globals.MainOSD.Settings(2000, Color.Orange, $"Limit Of 20 Profiles Has Been Reach Already");
+                }
+
                 saved = true;
                 return;
             }
@@ -583,7 +593,7 @@ namespace Nucleus.Gaming.Coop
             {
                 profilesCount++;//increase to set new profile name
                 path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profilesCount}].json");
-                Console.WriteLine("Creating new a game profile...");
+                //Console.WriteLine("Creating new a game profile...");
             }
             else
             {
@@ -666,31 +676,26 @@ namespace Nucleus.Gaming.Coop
             for (int i = 0; i < players.Count(); i++)//build per players object
             {
                 JObject JOwner = new JObject();
-                //if (players[i].Owner != null)
-                //{
-                     JOwner = new JObject(
-                                       new JProperty("Type", players[i].Owner.Type),
 
-                                        new JProperty("UiBounds", new JObject(
-                                                                new JProperty("X", players[i].Owner.UIBounds.X),
-                                                                new JProperty("Y", players[i].Owner.UIBounds.Y),
-                                                                new JProperty("Width", players[i].Owner.UIBounds.Width),
-                                                                new JProperty("Height", players[i].Owner.UIBounds.Height))),
-                                       new JProperty("DisplayIndex", players[i].Owner.DisplayIndex),
-                                       new JProperty("Display", new JObject(
-                                                                new JProperty("X", players[i].Owner.display.X),
-                                                                new JProperty("Y", players[i].Owner.display.Y),
-                                                                new JProperty("Width", players[i].Owner.display.Width),
-                                                                new JProperty("Height", players[i].Owner.display.Height))));
-                //}
+                JOwner = new JObject(
+                                  new JProperty("Type", players[i].Owner.Type),
+
+                                   new JProperty("UiBounds", new JObject(
+                                                           new JProperty("X", players[i].Owner.UIBounds.X),
+                                                           new JProperty("Y", players[i].Owner.UIBounds.Y),
+                                                           new JProperty("Width", players[i].Owner.UIBounds.Width),
+                                                           new JProperty("Height", players[i].Owner.UIBounds.Height))),
+                                  new JProperty("DisplayIndex", players[i].Owner.DisplayIndex),
+                                  new JProperty("Display", new JObject(
+                                                           new JProperty("X", players[i].Owner.display.X),
+                                                           new JProperty("Y", players[i].Owner.display.Y),
+                                                           new JProperty("Width", players[i].Owner.display.Width),
+                                                           new JProperty("Height", players[i].Owner.display.Height))));
+
 
                 JObject JMonitorBounds = new JObject(
-                                         //new JProperty("X", players[i].ProcessData.HWnd.Location.X),
-                                         //new JProperty("Y", players[i].ProcessData.HWnd.Location.Y),
-                                         //new JProperty("Width", players[i].ProcessData.HWnd.Size.Width),
-                                         //new JProperty("Height", players[i].ProcessData.HWnd.Size.Height));
-                                         new JProperty("X", useSplitDiv ? players[i].MonitorBounds.Location.X -1 : players[i].MonitorBounds.Location.X),
-                                         new JProperty("Y", useSplitDiv ? players[i].MonitorBounds.Location.Y -1 : players[i].MonitorBounds.Location.Y),
+                                         new JProperty("X", useSplitDiv ? players[i].MonitorBounds.Location.X - 1 : players[i].MonitorBounds.Location.X),
+                                         new JProperty("Y", useSplitDiv ? players[i].MonitorBounds.Location.Y - 1 : players[i].MonitorBounds.Location.Y),
                                          new JProperty("Width", useSplitDiv ? players[i].MonitorBounds.Width + 2 : players[i].MonitorBounds.Width),
                                          new JProperty("Height", useSplitDiv ? players[i].MonitorBounds.Height + 2 : players[i].MonitorBounds.Height));
 
@@ -750,7 +755,7 @@ namespace Nucleus.Gaming.Coop
                                               new JProperty("Y", screen.UIBounds.Y),
                                               new JProperty("Width", screen.UIBounds.Width),
                                               new JProperty("Height", screen.UIBounds.Height),
-                                              new JProperty("Index", s)); 
+                                              new JProperty("Index", s));
 
                 JScreens.Add(JScreen);
             }
@@ -786,10 +791,10 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 
-            //Ready = false;
             saved = true;
-            //ProfilesList.profilesList.Update_ProfilesList();
+
             LogManager.Log("Game Profile Saved");
+            Globals.MainOSD.Settings(1600, Color.GreenYellow, $"Game Profile Saved");
         }
 
         public static GameProfile CleanClone(GameProfile profile)
@@ -820,7 +825,7 @@ namespace Nucleus.Gaming.Coop
             {
                 noptions.Add(opt.Key, opt.Value);
             }
-            
+
             nprof.options = noptions;
 
             return nprof;

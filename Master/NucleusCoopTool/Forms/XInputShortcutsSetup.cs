@@ -50,6 +50,12 @@ namespace Nucleus.Coop.Forms
             controllerFront = new Bitmap(Nucleus.Coop.Properties.Resources.xboxControllerFront);
             Close.BackgroundImage = new Bitmap(Globals.Theme + "title_close.png");
 
+            ToolTip enabled_chk_Tooltip = new ToolTip();
+            enabled_chk_Tooltip.InitialDelay = 100;
+            enabled_chk_Tooltip.ReshowDelay = 100;
+            enabled_chk_Tooltip.AutoPopDelay = 5000;
+            enabled_chk_Tooltip.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready");
+
             brush = new SolidBrush(Color.FromArgb(90, 0, 255, 60));
             switch15.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
 

@@ -34,7 +34,6 @@ namespace Nucleus.Gaming
             AutoScroll = true;
             DoubleBuffered = true;
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom| AnchorStyles.Left | AnchorStyles.Right;
-
         }
 
         public override bool AutoScroll

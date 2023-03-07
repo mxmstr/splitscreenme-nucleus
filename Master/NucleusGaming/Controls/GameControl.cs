@@ -27,6 +27,7 @@ namespace Nucleus.Coop
         public string PlayerText { get; set; }
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
+
         protected override CreateParams CreateParams
         {
             get

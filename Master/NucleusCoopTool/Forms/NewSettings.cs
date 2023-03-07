@@ -10,6 +10,7 @@ using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace Nucleus.Coop
         private ComboBox[] steamIds;
 
         private Button highlighted;
-
+        public static Button _ctrlr_shorcuts;
         private float fontSize;
         private List<Control> ctrls = new List<Control>();
         private IDictionary<string, string> audioDevices;
@@ -119,7 +120,8 @@ namespace Nucleus.Coop
             InitializeComponent();
 
             SuspendLayout();
-
+            Size = Parent.Size;
+            Location = new Point(0, 0);
             default_Cursor = mf.default_Cursor;
             Cursor = default_Cursor;
             hand_Cursor = mf.hand_Cursor;
@@ -127,9 +129,9 @@ namespace Nucleus.Coop
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
-            Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
+            //Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
             Visible = false;
-
+            _ctrlr_shorcuts = ctrlr_shorcuts;
             controlscollect();
 
             foreach (Control control in ctrls)
@@ -148,7 +150,7 @@ namespace Nucleus.Coop
                 }
 
                 if (control.Name != "settingsTab" && control.Name != "playersTab" && control.Name != "audioTab" &&
-                    control.Name != "layoutTab" && control.Name != "layoutSizer"  
+                    control.Name != "layoutTab" && control.Name != "layoutSizer"
                     && control.GetType() != typeof(Label) && control.GetType() != typeof(TextBox))
                 {
                     control.Cursor = hand_Cursor;
@@ -181,9 +183,15 @@ namespace Nucleus.Coop
             audioTab.BackColor = Color.Transparent;
             audioRefresh.BackColor = Color.Transparent;
             layoutTab.BackColor = Color.Transparent;
-            //
-            //MouseOverColor
-            //
+
+            plus1.ForeColor = ForeColor;
+            plus2.ForeColor = ForeColor;
+            plus3.ForeColor = ForeColor;
+            plus4.ForeColor = ForeColor;
+            plus5.ForeColor = ForeColor;
+            plus6.ForeColor = ForeColor;
+            plus7.ForeColor = ForeColor;
+
             settingsTabBtn.Click += new EventHandler(tabsButtons_highlight);
             playersTabBtn.Click += new EventHandler(tabsButtons_highlight);
             audioTabBtn.Click += new EventHandler(tabsButtons_highlight);
@@ -222,12 +230,26 @@ namespace Nucleus.Coop
                 steamid17, steamid18, steamid19, steamid20, steamid21, steamid22, steamid23, steamid24,
                 steamid25, steamid26, steamid27, steamid28, steamid29, steamid30, steamid31, steamid32};
 
-
-
             SplitDiv.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
             cts_Mute.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
             cts_kar.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_unfocus.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
+            disableGameProfiles.Checked = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
+            mf.disableGameProfiles = disableGameProfiles.Checked;
+
+            if (ini.IniReadValue("CustomLayout", "HorizontalLines") != "")
+            {
+                numUpDownHor.Value = int.Parse(ini.IniReadValue("CustomLayout", "HorizontalLines"));
+            }
+
+            if (ini.IniReadValue("CustomLayout", "VerticalLines") != "")
+            {
+                numUpDownVer.Value = int.Parse(ini.IniReadValue("CustomLayout", "VerticalLines"));
+            }
+            if (ini.IniReadValue("CustomLayout", "MaxPlayers") != "")
+            {
+                numMaxPlyrs.Value = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
+            }
 
             //network setting
             RefreshCmbNetwork();
@@ -283,7 +305,7 @@ namespace Nucleus.Coop
                     prevTheme = _path[last];
                 }
             }
-         
+
             //epiclangs setting
             IDictionary<string, string> epiclangs = new Dictionary<string, string>();
 
@@ -322,7 +344,7 @@ namespace Nucleus.Coop
                     epicLang = lang.Value;
                 }
             }
-           
+
             //splash screen setting                   
             splashScreenChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
 
@@ -332,10 +354,10 @@ namespace Nucleus.Coop
             useNicksCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
 
             keepAccountsCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "KeepAccounts"));
-           
+
             //auto scale setting
             scaleOptionCbx.Checked = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
-          
+
 
             //Custom HotKey setting
             comboBox_lockKey.Text = ini.IniReadValue("Hotkeys", "LockKey");
@@ -533,11 +555,12 @@ namespace Nucleus.Coop
             audioTab.Parent = this;
             audioTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
             layoutTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
+            layoutTab.Parent = this;
 
             SettingsTab.BringToFront();
 
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
-        
+
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
 
             def_sid_comboBox.SelectedIndex = 0;
@@ -547,7 +570,7 @@ namespace Nucleus.Coop
 
             numUpDownHor.MaxValue = 5;
             numUpDownHor.InvalidParent = true;
-          
+
             string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
             if (File.Exists(path))
             {
@@ -600,32 +623,32 @@ namespace Nucleus.Coop
 
             SuspendLayout();
 
-            if (scale > 1.0F)
+
+            float newFontSize = Font.Size * scale;
+
+            foreach (Control tab in Controls)
             {
-                float newFontSize = Font.Size * scale;
-
-                foreach (Control tab in /*playersTab.*/Controls)
+                foreach (Control child in tab.Controls)
                 {
-                    foreach (Control child in /*playersTab.*/tab.Controls)
+                    if (child.GetType() == typeof(ComboBox) || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox))
                     {
-                        if (child.GetType() == typeof(ComboBox)/* || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox) && (child.Name != "def_sid_textBox")*/)
+                        child.Font = new Font(child.Font.FontFamily, child.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
+
+                    foreach (Control c in child.Controls)
+                    {
+                        if (c.GetType() == typeof(Label) && child.GetType() != typeof(CustomNumericUpDown))
                         {
-                            child.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
+                            if (c.Text != "+" && c.Text != "Hotkeys" && !c.Text.Contains("Instance"))
+                            {
+                                c.Location = new Point(settingsFocusCmb.Left - c.Width, c.Location.Y);
+                            }
                         }
-
-                        //else if (child.GetType() == typeof(Button))
-                        //{
-                        //    child.Font = new Font(mainForm.customFont, Font.Size, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        //}
-
-                        //Console.WriteLine(child.Name);
                     }
                 }
-
-                def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
             }
+
+            def_sid_comboBox.Font = new Font(def_sid_comboBox.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
 
@@ -633,39 +656,35 @@ namespace Nucleus.Coop
             ResumeLayout();
         }
 
-        private ToolTip SplitDiv_Tooltip;
-        private ToolTip btn_credits_Tooltip;
-
         private void SetToolTips()
         {
-            btn_credits_Tooltip = new ToolTip();
+            ToolTip btn_credits_Tooltip = new ToolTip();
             btn_credits_Tooltip.InitialDelay = 100;
             btn_credits_Tooltip.ReshowDelay = 100;
             btn_credits_Tooltip.AutoPopDelay = 5000;
             btn_credits_Tooltip.SetToolTip(btn_credits, "Credits");
 
-            SplitDiv_Tooltip = new ToolTip();
+            ToolTip SplitDiv_Tooltip = new ToolTip();
             SplitDiv_Tooltip.InitialDelay = 100;
             SplitDiv_Tooltip.ReshowDelay = 100;
             SplitDiv_Tooltip.AutoPopDelay = 5000;
             SplitDiv_Tooltip.SetToolTip(SplitDiv, "May not work for all games");
+
+            ToolTip disableGameProfiles_Tooltip = new ToolTip();
+            disableGameProfiles_Tooltip.InitialDelay = 100;
+            disableGameProfiles_Tooltip.ReshowDelay = 100;
+            disableGameProfiles_Tooltip.AutoPopDelay = 5000;
+            disableGameProfiles_Tooltip.SetToolTip(disableGameProfiles, "Nucleus will quit if selected");
+
         }
 
         private void GetPlayersNickNameAndSteamIds()
-        {         
+        {
             for (int i = 0; i < 32; i++)
             {
                 nicksList.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)).ToString());
                 steamIdsList.Add(ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());
             }
-
-            //for (int i = 0; i < 32; i++)
-            //{
-            //    controllerNicks[i].Items.AddRange(jsonNicksList.ToArray());
-            //    controllerNicks[i].Items.AddRange(nicksList.ToArray());
-            //    controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-            //    controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-            //}
 
             for (int i = 0; i < 32; i++)
             {
@@ -693,7 +712,7 @@ namespace Nucleus.Coop
         {
             e.Handled = true;
         }
-    
+
         private void closeBtnPicture_Click(object sender, EventArgs e)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles")))
@@ -706,7 +725,7 @@ namespace Nucleus.Coop
                 ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
 
                 if (!jsonNicksList.Any(n => n == controllerNicks[i].Text) && controllerNicks[i].Text.ToString() != $"Player{i + 1}")
-                {                  
+                {
                     jsonNicksList.Add(controllerNicks[i].Text);
                 }
             }
@@ -736,7 +755,6 @@ namespace Nucleus.Coop
 
                         if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()))
                         {
-                                                      
                             jsonsteamIdsList.Add(steamIds[i].Text.ToString());
                         }
                     }
@@ -766,8 +784,7 @@ namespace Nucleus.Coop
                 playersTab.BringToFront();
                 MessageBox.Show("Must be 17 numbers e.g. 76561199075562883 ", "Incorrect steam id format!");
                 return;
-            }                   
-
+            }
 
             if (audioDefaultSettingsRadio.Checked)
             {
@@ -840,31 +857,31 @@ namespace Nucleus.Coop
             ini.IniWriteValue("CustomLayout", "Cts_KeepAspectRatio", cts_kar.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "Cts_Unfocus", cts_unfocus.Checked.ToString());
 
+            mainForm.handleClickSound(clickSoundChkB.Checked);
+
+            if (disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
+            {
+                ini.IniWriteValue("Misc", "DisableGameProfiles", disableGameProfiles.Checked.ToString());
+                mainForm.disableGameProfiles = disableGameProfiles.Checked;
+            }
+
+
             if (GameProfile.ModeText == "New Profile")
             {
                 if (GameProfile.currentProfile != null)
                 {
                     GameProfile.currentProfile.Reset();
-                    ProfileSettings.UpdateProfileSettingsUiValues(true);
+                    ProfileSettings.UpdateProfileSettingsUiValues(false);
                 }
             }
 
-            if (themeCbx.SelectedItem.ToString() != prevTheme)
-            {
-                ini.IniWriteValue("Theme", "Theme", themeCbx.SelectedItem.ToString());
-                Application.Restart();
-            }
-
-            mainForm.handleClickSound(clickSoundChkB.Checked);
-
-            Globals.MainOSD.Settings(500, Color.LimeGreen, "Settings saved");
+            bool needToRestart = false;
 
             if (themeCbx.SelectedItem.ToString() != prevTheme)
             {
                 ini.IniWriteValue("Theme", "Theme", themeCbx.SelectedItem.ToString());
-                mainForm.themeSwitch = true;
-                Thread.Sleep(200);
-                Application.Restart();
+                mainForm.restartRequired = true;
+                needToRestart = true;
             }
 
             if (mainForm.Xinput_S_Setup.Visible)
@@ -873,6 +890,15 @@ namespace Nucleus.Coop
             }
 
             Visible = false;
+
+            Globals.MainOSD.Settings(500, Color.LimeGreen, "Settings saved");
+
+            if (needToRestart)
+            {
+                Thread.Sleep(300);
+                Application.Restart();
+                Process.GetCurrentProcess().Kill();
+            }
         }
 
         private int GetMod(string modifier)
@@ -911,7 +937,6 @@ namespace Nucleus.Coop
             {
                 MessageBox.Show("Error registering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         public void RegHotkeys(int id, int mod, int key)
@@ -972,7 +997,6 @@ namespace Nucleus.Coop
                 gs.DrawLine(bordersPen, vlines[i], 10, vlines[i], 10 + LayoutHeight);
             }
 
-            //p.Dispose();
             gs.Dispose();
         }
 
@@ -1010,7 +1034,7 @@ namespace Nucleus.Coop
                 cmb_Network.SelectedIndex = 0;
             }
         }
-   
+
         private void audioCustomSettingsRadio_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;
@@ -1056,7 +1080,7 @@ namespace Nucleus.Coop
                     {
                         cmb.SelectedItem = "Default";
                     }
-                }               
+                }
             }
         }
 
@@ -1162,7 +1186,6 @@ namespace Nucleus.Coop
 
         private void button3_Click(object sender, EventArgs e)
         {
-            RefreshAudioList();
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
             MMDevice audioDefault = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
             audioDefaultDevice.Text = "Default: " + audioDefault.FriendlyName;
@@ -1190,12 +1213,9 @@ namespace Nucleus.Coop
                new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
                new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
                new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
-               //new Rectangle(saveBtn.Location.X-1,saveBtn.Location.Y-1,saveBtn.Width+saveBtnPicture.Width+2,saveBtn.Height+1),
-               //new Rectangle(closeBtn.Location.X-1,closeBtn.Location.Y-1,closeBtn.Width+closeBtnPicture.Width+2,closeBtn.Height+1),
                new Rectangle(SettingsTab.Location.X,SettingsTab.Location.Y,SettingsTab.Width,SettingsTab.Height),
                new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
                new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
-
             };
 
             g.DrawRectangles(bordersPen, tabBorders);
@@ -1229,7 +1249,6 @@ namespace Nucleus.Coop
             closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close.png");
         }
 
-        
         private void btn_credits_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Nucleus Co-op - " + mainForm.version +
@@ -1238,7 +1257,7 @@ namespace Nucleus.Coop
            "\nNew Nucleus Co-op fork: ZeroFox" +
            "\nMultiple keyboards / mice & hooks: Ilyaki" +
            "\nWebsite & handler API: r - mach" +
-           "\nNew UI design & bug fixes: Mikou27(nene27)" +
+           "\nNew UI design, bug fixes, per game profiles and gamepad UI control/shortcuts support : Mikou27(nene27)" +
            "\nHandlers development & testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more." +
            "\nThis new & improved Nucleus Co-op brings a ton of enhancements, such as:" +
            "\n- Massive increase to the amount of compatible games, 400 + as of now." +

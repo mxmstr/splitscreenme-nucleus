@@ -75,5 +75,11 @@ namespace Nucleus.Gaming.Controls
            
             Font = new Font("Franklin Gothic", 9.25f*scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
         }
+
+        private void val_TextChanged(object sender, EventArgs e)
+        {
+            if (InvalidParent)
+                Parent.Invalidate();
+        }
     }
 }

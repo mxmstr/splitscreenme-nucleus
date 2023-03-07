@@ -353,8 +353,7 @@ namespace Nucleus.Gaming
                 });
             }
 
-            // Run this in another thread to not block UI
-
+                // Run this in another thread to not block UI
                 //System.Threading.Tasks.Task.Run(() =>
                 //{
                     UpdateAvailable = Hub.IsUpdateAvailable(true);
