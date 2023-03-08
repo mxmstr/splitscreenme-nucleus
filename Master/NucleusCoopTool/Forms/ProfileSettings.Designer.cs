@@ -1076,6 +1076,7 @@ namespace Nucleus.Coop
             this.processorTab.Name = "processorTab";
             this.processorTab.Size = new System.Drawing.Size(671, 401);
             this.processorTab.TabIndex = 300;
+            this.processorTab.Visible = false;
             // 
             // coreCountLabel
             // 
@@ -3228,6 +3229,7 @@ namespace Nucleus.Coop
             this.playersTab.Name = "playersTab";
             this.playersTab.Size = new System.Drawing.Size(671, 401);
             this.playersTab.TabIndex = 132;
+            this.playersTab.Visible = false;
             // 
             // def_sid_comboBox
             // 
@@ -4513,12 +4515,12 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
+            this.Controls.Add(this.processorTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
-            this.Controls.Add(this.profileInfo);
             this.Controls.Add(this.layoutTab);
+            this.Controls.Add(this.profileInfo);
             this.Controls.Add(this.sharedTab);
-            this.Controls.Add(this.processorTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);

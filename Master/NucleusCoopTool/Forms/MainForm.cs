@@ -133,7 +133,7 @@ namespace Nucleus.Coop
         public float cursScale;
         private System.Windows.Forms.Timer DisposeTimer;//dispose splash screen timer
         private System.Windows.Forms.Timer rainbowTimer;
-        private System.Windows.Forms.Timer hotkeysLockedTimer;//Avoid hotkeys spamming(4s)
+        private System.Windows.Forms.Timer hotkeysLockedTimer;//Avoid hotkeys spamming
         private bool hotkeysLocked = false;//^^
 
         public string[] rgb_font;
@@ -409,7 +409,7 @@ namespace Nucleus.Coop
 
             foreach (Control titleBarButtons in Controls)
             {
-                titleBarButtons.BackColor = BackColor;//avoid "glitchs" while maximizing the window (aesthetic stuff only)            
+                titleBarButtons.BackColor = BackColor;//avoid "glitchs" while maximizing the window (aesthetic only)            
             }
 
             controlscollect();
@@ -1862,7 +1862,6 @@ namespace Nucleus.Coop
                 stepPanelPictureBox.Focus();
                 positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
                 positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
-                gameManager.PlayAbort();
             });
         }
 
@@ -2068,7 +2067,7 @@ namespace Nucleus.Coop
                     if (gameGuid == currentGameInfo.GameGuid && exePath == currentGameInfo.ExePath)
                     {
                         DialogResult dialogResult = dontConfirm ? DialogResult.Yes :
-                            MessageBox.Show("Are you sure you want to delete " + currentGameInfo.Game.GameName + "?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            MessageBox.Show($"Are you sure you want to delete {currentGameInfo.Game.GameName}?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (dialogResult == DialogResult.Yes)
                         {
                             gameManager.User.Games.RemoveAt(i);
@@ -2078,42 +2077,42 @@ namespace Nucleus.Coop
                             RefreshGames();
                             if (!dontConfirm)
                             {
-                                if (File.Exists(Path.Combine(Application.StartupPath, @"gui\covers\" + gameGuid + ".jpeg")))
+                                if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
                                 {
                                     try
                                     {
-                                        File.Delete(Path.Combine(Application.StartupPath, @"gui\covers\" + gameGuid + ".jpeg"));
+                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                                     }
                                     catch (Exception)
                                     {
                                         cover.BackgroundImage.Dispose();
-                                        File.Delete(Path.Combine(Application.StartupPath, @"gui\covers\" + gameGuid + ".jpeg"));
+                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                                     }
                                 }
 
-                                if (Directory.Exists(Path.Combine(Application.StartupPath, @"gui\screenshots\" + gameGuid)))
+                                if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")))
                                 {
                                     try
                                     {
-                                        Directory.Delete(Path.Combine(Application.StartupPath, @"gui\screenshots\" + gameGuid), true);
+                                        Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"), true);
                                     }
                                     catch (Exception)
                                     {
                                         screenshotImg.Dispose();
-                                        Directory.Delete(Path.Combine(Application.StartupPath, @"gui\screenshots\" + gameGuid), true);
+                                        Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"), true);
                                     }
                                 }
 
-                                if (File.Exists(Path.Combine(Application.StartupPath, @"gui\descriptions\" + gameGuid + ".txt")))
+                                if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt")))
                                 {
                                     try
                                     {
-                                        File.Delete(Path.Combine(Application.StartupPath, @"gui\descriptions\" + gameGuid + ".txt"));
+                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
                                     }
                                     catch (Exception)
                                     {
                                         scriptAuthorTxt.Text = null;
-                                        File.Delete(Path.Combine(Application.StartupPath, @"gui\descriptions\" + gameGuid + ".txt"));
+                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
                                     }
                                 }
 

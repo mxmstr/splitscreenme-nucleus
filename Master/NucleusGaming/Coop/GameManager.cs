@@ -622,25 +622,13 @@ namespace Nucleus.Gaming
 
         }
         #endregion
-        public Thread playThread;
-
-        public void PlayAbort()
-        {
-            while (playThread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
-            {
-            }
-
-            playThread?.Interrupt();
-        }
-
+  
         public void Play(IGameHandler handler)
         {
             // Start the Play method in another thread, so the
             // handler can update while it's still loading
             error = null;
-            playThread = new Thread(new ParameterizedThreadStart(play));
-            playThread.Start(handler);
-            //ThreadPool.QueueUserWorkItem(play, handler);
+            ThreadPool.QueueUserWorkItem(play, handler);
         }
 
         private void play(object state)

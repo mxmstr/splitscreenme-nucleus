@@ -86,26 +86,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private void controlscollect()
-        {
-            foreach (Control control in Controls)
-            {
-                ctrls.Add(control);
-                foreach (Control container1 in control.Controls)
-                {
-                    ctrls.Add(container1);
-                    foreach (Control container2 in container1.Controls)
-                    {
-                        ctrls.Add(container2);
-                        foreach (Control container3 in container2.Controls)
-                        {
-                            ctrls.Add(container3);
-                        }
-                    }
-                }
-            }
-        }
-
         public void button_Click(object sender, EventArgs e)
         {
             if (mainForm.mouseClick)
@@ -120,8 +100,7 @@ namespace Nucleus.Coop
             InitializeComponent();
 
             SuspendLayout();
-            Size = Parent.Size;
-            Location = new Point(0, 0);
+
             default_Cursor = mf.default_Cursor;
             Cursor = default_Cursor;
             hand_Cursor = mf.hand_Cursor;
@@ -129,7 +108,7 @@ namespace Nucleus.Coop
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
-            //Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
+            Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
             Visible = false;
             _ctrlr_shorcuts = ctrlr_shorcuts;
             controlscollect();
@@ -217,6 +196,7 @@ namespace Nucleus.Coop
 
             audioRefresh.BackColor = Color.Transparent;
 
+            def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
 
             controllerNicks = new ComboBox[] {
                 player1N, player2N, player3N, player4N, player5N, player6N, player7N, player8N,
@@ -357,7 +337,6 @@ namespace Nucleus.Coop
 
             //auto scale setting
             scaleOptionCbx.Checked = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
-
 
             //Custom HotKey setting
             comboBox_lockKey.Text = ini.IniReadValue("Hotkeys", "LockKey");
@@ -623,16 +602,19 @@ namespace Nucleus.Coop
 
             SuspendLayout();
 
-
+            
             float newFontSize = Font.Size * scale;
 
             foreach (Control tab in Controls)
             {
                 foreach (Control child in tab.Controls)
-                {
-                    if (child.GetType() == typeof(ComboBox) || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox))
+                { 
+                    if (scale > 1.0F)
                     {
-                        child.Font = new Font(child.Font.FontFamily, child.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        if (child.GetType() == typeof(ComboBox) || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox))
+                        {
+                            child.Font = new Font(child.Font.FontFamily, child.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
                     }
 
                     foreach (Control c in child.Controls)
@@ -674,11 +656,10 @@ namespace Nucleus.Coop
             disableGameProfiles_Tooltip.InitialDelay = 100;
             disableGameProfiles_Tooltip.ReshowDelay = 100;
             disableGameProfiles_Tooltip.AutoPopDelay = 5000;
-            disableGameProfiles_Tooltip.SetToolTip(disableGameProfiles, "Nucleus will quit if selected");
-
+            disableGameProfiles_Tooltip.SetToolTip(disableGameProfiles, "Simply disable profiles loading/saving, Nucleus will always use global settings instead");
         }
 
-        private void GetPlayersNickNameAndSteamIds()
+        private  void GetPlayersNickNameAndSteamIds()
         {
             for (int i = 0; i < 32; i++)
             {
@@ -697,7 +678,7 @@ namespace Nucleus.Coop
                 controllerNicks[i].Items.AddRange(nicksList.ToArray());
                 controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                 controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-            }
+            }            
         }
 
         private void num_KeyPress(object sender, KeyPressEventArgs e)
@@ -720,6 +701,7 @@ namespace Nucleus.Coop
                 Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles"));
             }
 
+            bool sidWrongValue = false;
             for (int i = 0; i < 32; i++)
             {
                 ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
@@ -728,26 +710,9 @@ namespace Nucleus.Coop
                 {
                     jsonNicksList.Add(controllerNicks[i].Text);
                 }
-            }
 
-            string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
-            using (FileStream stream = new FileStream(path, FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    string json = JsonConvert.SerializeObject(jsonNicksList, Formatting.Indented);
-                    writer.Write(json);
-                    stream.Flush();
-                }
 
-                stream.Dispose();
-            }
-
-            bool sidWrongValue = false;
-
-            for (int i = 0; i < 32; i++)
-            {
-                if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0 || steamIds[i].Text != "0")
+                if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0)
                 {
                     if (steamIds[i].Text != "")
                     {
@@ -766,6 +731,26 @@ namespace Nucleus.Coop
                 }
             }
 
+            if (sidWrongValue)
+            {
+                playersTab.BringToFront();
+                MessageBox.Show("Must be 17 numbers e.g. 76561199075562883 ", "Incorrect steam id format!");
+                return;
+            }
+
+            string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    string json = JsonConvert.SerializeObject(jsonNicksList, Formatting.Indented);
+                    writer.Write(json);
+                    stream.Flush();
+                }
+
+                stream.Dispose();
+            }
+
             string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
             using (FileStream stream = new FileStream(idspath, FileMode.Create))
             {
@@ -777,13 +762,6 @@ namespace Nucleus.Coop
                 }
 
                 stream.Dispose();
-            }
-
-            if (sidWrongValue)
-            {
-                playersTab.BringToFront();
-                MessageBox.Show("Must be 17 numbers e.g. 76561199075562883 ", "Incorrect steam id format!");
-                return;
             }
 
             if (audioDefaultSettingsRadio.Checked)
@@ -805,6 +783,18 @@ namespace Nucleus.Coop
                         ini.IniWriteValue("Audio", cmb.Name, audioDevices[cmb.Text]);
                     }
                 }
+            }
+
+            foreach(Control ht in hotkeyBox.Controls)
+            {
+                if(ht.GetType() == typeof(TextBox))
+                {
+                    if (ht.Text == "")
+                    {
+                        MessageBox.Show("Enter correct hotkeys values", "Invalid hotkeys keys!");
+                        return;
+                    }
+                }    
             }
 
             ini.IniWriteValue("Hotkeys", "Close", settingsCloseCmb.SelectedItem.ToString() + "+" + settingsCloseHKTxt.Text);
@@ -864,7 +854,6 @@ namespace Nucleus.Coop
                 ini.IniWriteValue("Misc", "DisableGameProfiles", disableGameProfiles.Checked.ToString());
                 mainForm.disableGameProfiles = disableGameProfiles.Checked;
             }
-
 
             if (GameProfile.ModeText == "New Profile")
             {
@@ -1302,39 +1291,39 @@ namespace Nucleus.Coop
                 }
             }
         }
+        private void settingsCloseHKTxt_TextChanged(object sender, EventArgs e)
+        {
+            settingsCloseHKTxt.Text = string.Concat(settingsCloseHKTxt.Text.Where(char.IsLetterOrDigit));
+        }
 
         private void settingsCloseHKTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //settingsCloseHKTxt.Text = "";
+            settingsCloseHKTxt.Text = "";
             e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
              && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
         private void settingsStopTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //settingsStopTxt.Text = "";
+            settingsStopTxt.Text = "";
             e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
-            && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+             && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
         private void settingsTopTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //settingsTopTxt.Text = "";
+            settingsTopTxt.Text = "";
             e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
              && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
         private void settingsFocusHKTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //settingsTopTxt.Text = "";
+            settingsTopTxt.Text = "";
             e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
-            && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+             && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
-        private void settingsCloseHKTxt_TextChanged(object sender, EventArgs e)
-        {
-            settingsCloseHKTxt.Text = string.Concat(settingsCloseHKTxt.Text.Where(char.IsLetterOrDigit));
-        }
 
         private void cts_Mute_CheckedChanged(object sender, EventArgs e)
         {
@@ -1350,6 +1339,26 @@ namespace Nucleus.Coop
             {
                 cts_kar.Enabled = true;
                 cts_unfocus.Enabled = true;
+            }
+        }
+
+        private void controlscollect()
+        {
+            foreach (Control control in Controls)
+            {
+                ctrls.Add(control);
+                foreach (Control container1 in control.Controls)
+                {
+                    ctrls.Add(container1);
+                    foreach (Control container2 in container1.Controls)
+                    {
+                        ctrls.Add(container2);
+                        foreach (Control container3 in container2.Controls)
+                        {
+                            ctrls.Add(container3);
+                        }
+                    }
+                }
             }
         }
     }

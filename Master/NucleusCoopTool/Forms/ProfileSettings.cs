@@ -77,33 +77,7 @@ namespace Nucleus.Coop
                 return handleparams;
             }
         }
-
-        private void controlscollect()
-        {
-            foreach (Control control in Controls)
-            {
-                ctrls.Add(control);
-                foreach (Control container1 in control.Controls)
-                {
-                    ctrls.Add(container1);
-                    foreach (Control container2 in container1.Controls)
-                    {
-                        ctrls.Add(container2);
-                        foreach (Control container3 in container2.Controls)
-                        {
-                            ctrls.Add(container3);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void button_Click(object sender, EventArgs e)
-        {
-            if (mainForm.mouseClick)
-                mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
-        }
-
+       
         public ProfileSettings(MainForm mf, PositionsControl pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
@@ -211,6 +185,8 @@ namespace Nucleus.Coop
 
             modeLabel.Cursor = default_Cursor;
 
+            def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
+
             controllerNicks = new ComboBox[] {
                 player1N, player2N, player3N, player4N, player5N, player6N, player7N, player8N,
                 player9N, player10N, player11N, player12N, player13N, player14N, player15N, player16N,
@@ -261,7 +237,7 @@ namespace Nucleus.Coop
                     Affinitys[all].KeyPress += new KeyPressEventHandler(Affinity_KeyPress);
                 }
             }
-
+           
             coreCountLabel.Text = $"Cores/Threads {Environment.ProcessorCount} (Max Value)";
 
             SplitColors.Items.Add("Black");
@@ -407,8 +383,7 @@ namespace Nucleus.Coop
                     {
                         if (child.GetType() == typeof(ComboBox) || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
                         {
-                            child.Font = new Font(mainForm.customFont, child.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
+                            child.Font = new Font(child.Font.FontFamily, child.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                         }
                     }
                 }
@@ -494,7 +469,6 @@ namespace Nucleus.Coop
             if (SteamIDs?.Count > 0)
             {
                 steamIdsList.Clear();
-                steamIdsList.AddRange(jsonsteamIdsList);
 
                 for (int i = 0; i < 32; i++)
                 {
@@ -507,6 +481,7 @@ namespace Nucleus.Coop
                 for (int i = 0; i < 32; i++)
                 {
                     steamIds[i].Items.Clear();
+                    steamIds[i].Items.AddRange(jsonsteamIdsList.ToArray());
                     steamIds[i].Items.AddRange(steamIdsList.ToArray());
 
                     if (i < SteamIDs.Count)
@@ -524,10 +499,10 @@ namespace Nucleus.Coop
             else
             {
                 steamIdsList.Clear();
-                steamIdsList.AddRange(jsonsteamIdsList);
 
                 for (int i = 0; i < 32; i++)
                 {
+                    steamIds[i].Items.AddRange(jsonsteamIdsList.ToArray());
                     steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
                     steamIds[i].SelectedItem = steamIds[i].Text;
                 }
@@ -686,17 +661,120 @@ namespace Nucleus.Coop
                 Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles"));
             }
 
+            bool sidWrongValue = false;
+            bool IdealProcessorsWrongValue = false;
+            bool affinitysWrongValue = false;
+
+            GameProfile.SteamIDs.Clear();
             GameProfile.Nicknames.Clear();
+            GameProfile.Affinitys.Clear();
+            GameProfile.IdealProcessors.Clear();
+            GameProfile.PriorityClasses.Clear();
+
+
             for (int i = 0; i < 32; i++)
             {
+                //Set GameProfile Nicknames
                 GameProfile.Nicknames.Add(controllerNicks[i].Text);
 
                 if (!jsonNicksList.Any(n => n == controllerNicks[i].Text) && controllerNicks[i].Text.ToString() != $"Player{i + 1}")
                 {
                     jsonNicksList.Add(controllerNicks[i].Text);
                 }
+
+                //Set GameProfile Steam ids
+                if ((Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0) || steamIds[i].Text == "0")
+                {
+                    if (steamIds[i].Text != "" && steamIds[i].Text != "0")
+                    {
+                        GameProfile.SteamIDs.Add(long.Parse(steamIds[i].Text.ToString()));
+                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()))
+                        {
+                            jsonsteamIdsList.Add(steamIds[i].Text.ToString());
+                        }
+                    }
+                }
+                else
+                {   
+                    //Invalid Steam id detected
+                    steamIds[i].BackColor = Color.Red;
+                    sidWrongValue = true;
+                    break;
+                }
+
+                //Set GameProfile Ideal Processors
+                if (IdealProcessors[i].Text == "")
+                {
+                    IdealProcessors[i].Text = "*";
+                }
+
+                int wrongValue = Environment.ProcessorCount;
+                if (IdealProcessors[i].Text != "*")
+                {
+                    if (int.Parse(IdealProcessors[i].Text) > wrongValue)
+                    {  
+                        //Invalid Ideal Processor detected
+                        IdealProcessors[i].BackColor = Color.Red;
+                        IdealProcessorsWrongValue = true;
+                        break;
+                    }
+                }
+
+                GameProfile.IdealProcessors.Add(IdealProcessors[i].Text);
+
+                //Set GameProfile Processors Affinity
+                int maxValue = Environment.ProcessorCount;               
+                
+                string[] values = Affinitys[i].Text.Split(',');
+                foreach (string val in values)
+                {
+                    if (val != "")
+                    {
+                        if (int.Parse(val) > maxValue)
+                        {
+                            //Invalid affinity detected
+                            Affinitys[i].BackColor = Color.Red;
+                            affinitysWrongValue = true;
+                            break;
+                        }
+                    }
+                }
+
+                GameProfile.Affinitys.Add(Affinitys[i].Text);
+
+                //Set GameProfile Priority Classes
+                GameProfile.PriorityClasses.Add(PriorityClasses[i].Text);
             }
 
+            //Warn user for invalid Steam ids
+            if (sidWrongValue)
+            {
+                GameProfile.SteamIDs.Clear();
+                playersTab.BringToFront();
+                MessageBox.Show("Must be 17 numbers e.g. 76561199075562883 ", "Incorrect steam id format!");
+                return;
+            }
+
+            //Warn user for invalid ideal processors 
+            if (IdealProcessorsWrongValue)
+            {
+                GameProfile.IdealProcessors.Clear();
+                processorTab.BringToFront();
+                MessageBox.Show("This PC do not have so much cores ;)", "Invalid CPU core value!");
+                return;
+            }
+
+            //Warn user for invalid processors affinity
+            if (affinitysWrongValue)
+            {
+                processorTab.BringToFront();
+                GameProfile.Affinitys.Clear();
+                MessageBox.Show("This PC do not have so much cores ;)", "Invalid CPU core value!");
+                return;
+            }
+
+
+            //Save new added nicknames
             string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
@@ -710,28 +788,7 @@ namespace Nucleus.Coop
                 stream.Dispose();
             }
 
-            bool sidWrongValue = false;
-            GameProfile.SteamIDs.Clear();
-            for (int i = 0; i < 32; i++)
-            {
-                if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0 || steamIds[i].Text == "0")
-                {
-                    if (steamIds[i].Text != "")
-                    {
-                        GameProfile.SteamIDs.Add(long.Parse(steamIds[i].Text.ToString()));
-                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()))
-                        {
-                            jsonsteamIdsList.Add(steamIds[i].Text.ToString());
-                        }
-                    }
-                }
-                else
-                {
-                    steamIds[i].BackColor = Color.Red;
-                    sidWrongValue = true;
-                }
-            }
-
+            //Save new added Steam ids
             string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
             using (FileStream stream = new FileStream(idspath, FileMode.Create))
             {
@@ -744,81 +801,8 @@ namespace Nucleus.Coop
 
                 stream.Dispose();
             }
-
-            if (sidWrongValue)
-            {
-                GameProfile.SteamIDs.Clear();
-                playersTab.BringToFront();
-                MessageBox.Show("Must be 17 numbers e.g. 76561199075562883 ", "Incorrect steam id format!");
-                return;
-            }
-
-            bool IdealProcessorsWrongValue = false;
-            GameProfile.IdealProcessors.Clear();
-            for (int i = 0; i < 32; i++)
-            {
-                if (IdealProcessors[i].Text == "")
-                {
-                    IdealProcessors[i].Text = "*";
-                }
-
-                int wrongValue = Environment.ProcessorCount;
-                if (IdealProcessors[i].Text != "*")
-                {
-                    if (int.Parse(IdealProcessors[i].Text) > wrongValue)
-                    {
-                        IdealProcessors[i].BackColor = Color.Red;
-                        IdealProcessorsWrongValue = true;
-                    }
-                }
-
-                GameProfile.IdealProcessors.Add(IdealProcessors[i].Text);
-            }
-
-            if (IdealProcessorsWrongValue)
-            {
-                GameProfile.IdealProcessors.Clear();
-                processorTab.BringToFront();
-                MessageBox.Show("This PC do not have so much cores ;)", "Invalid CPU core value!");
-                return;
-            }
-
-            bool affinitysWrongValue = false;
-            GameProfile.Affinitys.Clear();
-            for (int i = 0; i < 32; i++)
-            {
-                int maxValue = Environment.ProcessorCount;
-                string[] values = Affinitys[i].Text.Split(',');
-                foreach (string val in values)
-                {
-                    if (val != "")
-                    {
-                        if (int.Parse(val) > maxValue)
-                        {
-                            Affinitys[i].BackColor = Color.Red;
-
-                            affinitysWrongValue = true;
-                        }
-                    }
-                }
-
-                GameProfile.Affinitys.Add(Affinitys[i].Text);
-            }
-
-            if (affinitysWrongValue)
-            {
-                processorTab.BringToFront();
-                GameProfile.Affinitys.Clear();
-                MessageBox.Show("This PC do not have so much cores ;)", "Invalid CPU core value!");
-                return;
-            }
-
-            GameProfile.PriorityClasses.Clear();
-            for (int i = 0; i < 32; i++)
-            {
-                GameProfile.PriorityClasses.Add(PriorityClasses[i].Text);
-            }
-
+           
+            //Set shared GameProfile options
             GameProfile.Notes = notes_text.Text;
             GameProfile.AutoPlay = autoPlay.Checked;
             GameProfile.AudioDefaultSettings = audioDefaultSettingsRadio.Checked;
@@ -838,6 +822,7 @@ namespace Nucleus.Coop
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
             GameProfile.Cts_Unfocus = cts_unfocus.Checked;
 
+            //Set AudioInstances GameProfile (part of shared GameProfile options)
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
                 if (ctrl is ComboBox)
@@ -850,7 +835,9 @@ namespace Nucleus.Coop
                 }
             }
 
+            //Unlock profiles list on close
             ProfilesList.profilesList.Locked = false;
+
             Visible = false;
         }
 
@@ -1253,6 +1240,32 @@ namespace Nucleus.Coop
                 cts_kar.Enabled = true;
                 cts_unfocus.Enabled = true;
             }
+        }
+
+        private void controlscollect()
+        {
+            foreach (Control control in Controls)
+            {
+                ctrls.Add(control);
+                foreach (Control container1 in control.Controls)
+                {
+                    ctrls.Add(container1);
+                    foreach (Control container2 in container1.Controls)
+                    {
+                        ctrls.Add(container2);
+                        foreach (Control container3 in container2.Controls)
+                        {
+                            ctrls.Add(container3);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void button_Click(object sender, EventArgs e)
+        {
+            if (mainForm.mouseClick)
+                mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
         }
     }
 }

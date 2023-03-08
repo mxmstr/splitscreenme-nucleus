@@ -15,13 +15,11 @@ namespace Nucleus.Gaming.Coop
     {
         private readonly IniFile ini = Globals.ini;
 
-        public List<UserScreen> Screens => screens;
-        private List<PlayerInfo> playerData;
         private List<UserScreen> screens;
+        public List<UserScreen> Screens => screens;
+        private List<PlayerInfo> playerData;     
         public List<PlayerInfo> PlayerData => playerData;
-        public static GameProfile currentProfile;
-        public static GenericGameInfo Game;
-        private PositionsControl positionsControl = null;
+
         public static List<Rectangle> MonitorBounds = new List<Rectangle>();
         public static List<Rectangle> OwnerDisplays = new List<Rectangle>();
         public static List<Rectangle> OwnerUIBounds = new List<Rectangle>();
@@ -36,27 +34,20 @@ namespace Nucleus.Gaming.Coop
         public static List<int> OwnerType = new List<int>();
         public static List<int> DisplaysIndexes = new List<int>();
 
+        public static GameProfile currentProfile;
+        public static GenericGameInfo Game;
+        private PositionsControl positionsControl = null;
+
         private static int totalPlayers = 0;
-        public static int TotalPlayers
-        {
-            get
-            {
-                return totalPlayers;
-            }
-        }
+        public static int TotalPlayers => totalPlayers;
+
 
         private static int profilesCount = 0;//Used to check if we need to create a new profile 
         private static int profileToSave;
 
         private static string modeText = "New Profile";
-        public static string ModeText
-        {
-            get
-            {
-                return modeText;
-            }
-        }
-
+        public static string ModeText => modeText;
+   
         public static string GameGUID;
 
         public static List<string> profilesPathList = new List<string>();
@@ -67,8 +58,7 @@ namespace Nucleus.Gaming.Coop
         public static List<string> PriorityClasses = new List<string>();
 
         public static List<long> SteamIDs = new List<long>();
-
-        public static bool Ready = false;
+      
         public static List<bool> IsDInputs = new List<bool>();
         public static List<bool> IsXInputs = new List<bool>();
         public static List<bool> IsKeyboardPlayer = new List<bool>();
@@ -202,15 +192,9 @@ namespace Nucleus.Gaming.Coop
         }
 
         private static bool saved = false;
-        public static bool Saved
-        {
-            get => saved;
-        }
+        public static bool Saved => saved;
 
-        //public GameProfile()
-        //{
-
-        //}
+        public static bool Ready = false;
 
         private void ListGameProfiles()
         {
@@ -232,27 +216,26 @@ namespace Nucleus.Gaming.Coop
             {
                 return null;
             }
+
             return path;
         }
 
         private void GetPlayersNickNameAndSteamIds()
         {
             SteamIDs.Clear();
+            Nicknames.Clear();
+
             for (int i = 0; i < 32; i++)
             {
+                Nicknames.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)));
+
                 string sid = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
                 if (sid == "")
                 {
                     continue;
                 }
 
-                SteamIDs.Add((long)long.Parse(ini.IniReadValue("SteamIDs", "Player_" + (i + 1))));
-            }
-
-            Nicknames.Clear();
-            for (int i = 0; i < 32; i++)
-            {
-                Nicknames.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)));
+                SteamIDs.Add((long)long.Parse(ini.IniReadValue("SteamIDs", "Player_" + (i + 1))));              
             }
         }
 
@@ -278,11 +261,6 @@ namespace Nucleus.Gaming.Coop
             Affinitys.Clear();
             PriorityClasses.Clear();
             AllScreens.Clear();
-
-            if (PlayerData != null)
-            {
-                PlayerData.Clear();
-            }
 
             autoPlay = false;
             autoDesktopScaling = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
@@ -312,6 +290,8 @@ namespace Nucleus.Gaming.Coop
 
             Ready = false;
             saved = false;
+
+            PlayerData?.Clear();
 
             options = new Dictionary<string, object>();
 
