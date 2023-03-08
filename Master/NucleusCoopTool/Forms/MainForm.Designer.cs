@@ -420,7 +420,8 @@ namespace Nucleus.Coop
             this.keepInstancesFolderToolStripMenuItem,
             this.updateHandlerToolStripMenuItem});
             this.gameContextMenuStrip.Name = "gameContextMenuStrip";
-            this.gameContextMenuStrip.Size = new System.Drawing.Size(236, 440);
+            this.gameContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.gameContextMenuStrip.Size = new System.Drawing.Size(236, 462);
             this.gameContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.GameContextMenuStrip_Opening);
             this.gameContextMenuStrip.Opened += new System.EventHandler(this.gameContextMenuStrip_Opened);
             // 

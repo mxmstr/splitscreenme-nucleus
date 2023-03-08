@@ -121,6 +121,14 @@ namespace Nucleus.Coop
                     {
                         child.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
+
+                    foreach (Control childOfChild in child.Controls)
+                    {
+                        if (childOfChild.GetType() == typeof(ComboBox) || childOfChild.GetType() == typeof(TextBox) || childOfChild.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
+                        {
+                            childOfChild.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+                    }
                 }
 
                 if (control.GetType() == typeof(CustomNumericUpDown))
@@ -197,6 +205,9 @@ namespace Nucleus.Coop
             audioRefresh.BackColor = Color.Transparent;
 
             def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
+            btnNext.Click += mf.button_Click;
+            btnNext.BackColor = mf.buttonsBackColor;
+            btnNext.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
 
             controllerNicks = new ComboBox[] {
                 player1N, player2N, player3N, player4N, player5N, player6N, player7N, player8N,
@@ -536,6 +547,10 @@ namespace Nucleus.Coop
             layoutTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
             layoutTab.Parent = this;
 
+            page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
+            page2.Location = page1.Location;
+            btnNext.Location = new Point((page1.Right - btnNext.Width)-5, (page1.Top - btnNext.Height)-5);
+            btnNext.Parent = playersTab;
             SettingsTab.BringToFront();
 
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
@@ -617,15 +632,25 @@ namespace Nucleus.Coop
                         }
                     }
 
-                    foreach (Control c in child.Controls)
+                    foreach (Control childOfChild in child.Controls)
                     {
-                        if (c.GetType() == typeof(Label) && child.GetType() != typeof(CustomNumericUpDown))
+                        if (childOfChild.GetType() == typeof(Label) && child.GetType() != typeof(CustomNumericUpDown))
                         {
-                            if (c.Text != "+" && c.Text != "Hotkeys" && !c.Text.Contains("Instance"))
+                            if (childOfChild.Text != "+" && childOfChild.Text != "Hotkeys" && !childOfChild.Text.Contains("Instance") && !childOfChild.Text.Contains("Player") && !childOfChild.Text.Contains("Steam"))
                             {
-                                c.Location = new Point(settingsFocusCmb.Left - c.Width, c.Location.Y);
+                                childOfChild.Location = new Point(settingsFocusCmb.Left - childOfChild.Width, childOfChild.Location.Y);
                             }
                         }
+
+                        if (scale > 1.0F)
+                        {
+
+                            if (childOfChild.GetType() == typeof(ComboBox) || childOfChild.GetType() == typeof(TextBox) || childOfChild.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
+                            {
+                                childOfChild.Font = new Font(childOfChild.Font.FontFamily, childOfChild.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                            }
+                        }
+
                     }
                 }
             }
@@ -1359,6 +1384,24 @@ namespace Nucleus.Coop
                         }
                     }
                 }
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if(page1.Visible)
+            {               
+                page2.Visible = true; 
+                page2.BringToFront();
+                page1.Visible = false;
+                btnNext.Text = "Previous";
+            }
+            else
+            {               
+                page1.Visible = true;
+                page1.BringToFront();
+                page2.Visible=false;
+                btnNext.Text = "Next";
             }
         }
     }

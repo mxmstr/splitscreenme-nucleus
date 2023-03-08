@@ -260,7 +260,7 @@ namespace Nucleus.Coop.Forms
                     c.Text = "LeftTrigger";
                 }
 
-                if (c.Name != "deadzone_txt")
+                if (c.Name != "switch15")
                 {
                     c.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
                 }

@@ -107,6 +107,14 @@ namespace Nucleus.Coop
                     {
                         child.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
+
+                    foreach (Control childOfChild in child.Controls)
+                    {
+                        if (childOfChild.GetType() == typeof(ComboBox) || childOfChild.GetType() == typeof(TextBox) || childOfChild.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
+                        {
+                            childOfChild.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+                    }
                 }
 
                 if (control.GetType() == typeof(CustomNumericUpDown))
@@ -180,6 +188,11 @@ namespace Nucleus.Coop
             audioTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
             processorTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
             layoutTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
+            btnNext.Click += mf.button_Click;
+            btnNext.BackColor = mf.buttonsBackColor;
+            btnNext.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btnProcessorNext.BackColor = mf.buttonsBackColor;
+            btnProcessorNext.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
 
             audioRefresh.BackColor = Color.Transparent;
 
@@ -295,13 +308,37 @@ namespace Nucleus.Coop
 
             sharedTab.Parent = this;
             sharedTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+           
             playersTab.Parent = this;
             playersTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+            
             audioTab.Parent = this;
             audioTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+           
+            processorTab.Parent = this;
             processorTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+
+            layoutTab.Parent = this;
             layoutTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
             
+            page1.Parent = playersTab;
+            page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
+
+            page2.Parent = playersTab;
+            page2.Location = page1.Location;
+
+            btnNext.Parent = playersTab;
+            btnNext.Location = new Point((page1.Right-btnNext.Width)-5, (page1.Top - btnNext.Height)-5);
+
+            processorPage1.Parent = processorTab;
+            processorPage1.Location = new Point(processorTab.Width / 2 - processorPage1.Width / 2, processorTab.Height / 2 - processorPage1.Height / 2);
+
+            processorPage2.Parent = processorTab;
+            processorPage2.Location = processorPage1.Location;
+
+            btnProcessorNext.Location = new Point((processorPage1.Right - btnProcessorNext.Width)-5, (processorPage1.Top - btnProcessorNext.Height)-5);
+            btnProcessorNext.Parent = processorTab;
+
             sharedTab.BringToFront();
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
 
@@ -384,6 +421,14 @@ namespace Nucleus.Coop
                         if (child.GetType() == typeof(ComboBox) || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
                         {
                             child.Font = new Font(child.Font.FontFamily, child.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
+
+                        foreach (Control childOfChild in child.Controls)
+                        {
+                            if (childOfChild.GetType() == typeof(ComboBox) || childOfChild.GetType() == typeof(TextBox) || childOfChild.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
+                            {
+                                childOfChild.Font = new Font(childOfChild.Font.FontFamily, childOfChild.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                            }
                         }
                     }
                 }
@@ -1266,6 +1311,42 @@ namespace Nucleus.Coop
         {
             if (mainForm.mouseClick)
                 mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (page1.Visible)
+            {
+                btnNext.Text = "Previous";
+                page2.Visible = true;
+                page2.BringToFront();
+                page1.Visible = false;
+            }
+            else
+            {
+                btnNext.Text = "Next";
+                page1.Visible = true;
+                page1.BringToFront();
+                page2.Visible = false;
+            }
+        }
+
+        private void btnProcessorNext_Click_1(object sender, EventArgs e)
+        {
+            if (processorPage1.Visible)
+            {               
+                processorPage2.Visible = true;
+                processorPage2.BringToFront();
+                processorPage1.Visible = false;
+                btnProcessorNext.Text = "Previous";
+            }
+            else
+            {              
+                processorPage1.Visible = true;
+                processorPage1.BringToFront();
+                processorPage2.Visible = false;
+                btnProcessorNext.Text = "Next";
+            }
         }
     }
 }
