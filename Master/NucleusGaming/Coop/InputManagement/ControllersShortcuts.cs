@@ -217,10 +217,10 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     int rt = XController.GetRightTriggerValue(i) > 0 ? pressed + RT : RT;//return RT + button or RT
                     int lt = XController.GetLeftTriggerValue(i) > 0 ? pressed + LT : LT;//return LT + button or LT
                     ///Adjust the cursor speed to the joystick value
-                    int MouveLeftSpeed = (Math.Abs((XController.GetLeftStickValue(i).Item1 - Deadzone) / 2000));
-                    int MouveRightSpeed = ((XController.GetLeftStickValue(i).Item1 - Deadzone) / 2000);
-                    int MouveUpSpeed = (Math.Abs((XController.GetLeftStickValue(i).Item2 - Deadzone) / 2000));
-                    int MouveDownSpeed = ((XController.GetLeftStickValue(i).Item2 - Deadzone) / 2000);
+                    int MouveLeftSpeed = (Math.Abs((XController.GetLeftStickValue(i).Item1) / 2000));
+                    int MouveRightSpeed = ((XController.GetLeftStickValue(i).Item1) / 2000);
+                    int MouveUpSpeed = (Math.Abs((XController.GetLeftStickValue(i).Item2) / 2000));
+                    int MouveDownSpeed = ((XController.GetLeftStickValue(i).Item2) / 2000);
 
                     ///Check if the right joystick values are out of the deadzone and allow to move the cursor or not
                     bool canMouveLeft = XController.GetLeftStickValue(i).Item1 <= -Deadzone;
@@ -229,8 +229,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     bool canMouveDown = XController.GetLeftStickValue(i).Item2 >= Deadzone;
 
                     ///Adjust scrolling the cursor speed to the joystick value
-                    int ScrollUpSpeed = Math.Abs((XController.GetRightStickValue(i).Item2 - Deadzone) / 1000);
-                    int ScrollDownSpeed = (XController.GetRightStickValue(i).Item2 - Deadzone) / 1000;
+                    int ScrollUpSpeed = Math.Abs((XController.GetRightStickValue(i).Item2) / 1000);
+                    int ScrollDownSpeed = (XController.GetRightStickValue(i).Item2) / 1000;
 
                     ///Check if the left joystick value(Y axis only) is out of the deadzone and allow to scroll Up or Down or not
                     bool canScrollUp = XController.GetRightStickValue(i).Item2 >= Deadzone;

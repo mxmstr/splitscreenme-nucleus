@@ -190,26 +190,26 @@ namespace Nucleus.Coop
             this.label2 = new System.Windows.Forms.Label();
             this.debugLogCheck = new System.Windows.Forms.CheckBox();
             this.hotkeyBox = new System.Windows.Forms.GroupBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label56 = new System.Windows.Forms.Label();
+            this.hkLabel4 = new System.Windows.Forms.Label();
+            this.hkLabel3 = new System.Windows.Forms.Label();
             this.swl_comboBox = new System.Windows.Forms.ComboBox();
             this.plus7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.hkLabel7 = new System.Windows.Forms.Label();
             this.swl_textBox = new System.Windows.Forms.TextBox();
             this.csm_comboBox = new System.Windows.Forms.ComboBox();
-            this.label60 = new System.Windows.Forms.Label();
+            this.hkLabel = new System.Windows.Forms.Label();
             this.plus6 = new System.Windows.Forms.Label();
             this.csm_textBox = new System.Windows.Forms.TextBox();
-            this.label_lockKey = new System.Windows.Forms.Label();
+            this.hkLabel8 = new System.Windows.Forms.Label();
             this.r1 = new System.Windows.Forms.ComboBox();
             this.plus5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.hkLabel1 = new System.Windows.Forms.Label();
             this.settingsFocusCmb = new System.Windows.Forms.ComboBox();
             this.plus1 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.hkLabel5 = new System.Windows.Forms.Label();
             this.r2 = new System.Windows.Forms.TextBox();
             this.hotkeysLabel = new System.Windows.Forms.Label();
-            this.csm_label = new System.Windows.Forms.Label();
+            this.hkLabel6 = new System.Windows.Forms.Label();
             this.settingsFocusHKTxt = new System.Windows.Forms.TextBox();
             this.comboBox_lockKey = new System.Windows.Forms.ComboBox();
             this.settingsTopCmb = new System.Windows.Forms.ComboBox();
@@ -433,6 +433,8 @@ namespace Nucleus.Coop
             // btnNext
             // 
             this.btnNext.BackColor = System.Drawing.Color.Transparent;
+            this.btnNext.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNext.Location = new System.Drawing.Point(568, 78);
             this.btnNext.Name = "btnNext";
@@ -2258,26 +2260,26 @@ namespace Nucleus.Coop
             // 
             this.hotkeyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.hotkeyBox.BackColor = System.Drawing.Color.Transparent;
-            this.hotkeyBox.Controls.Add(this.label30);
-            this.hotkeyBox.Controls.Add(this.label56);
+            this.hotkeyBox.Controls.Add(this.hkLabel4);
+            this.hotkeyBox.Controls.Add(this.hkLabel3);
             this.hotkeyBox.Controls.Add(this.swl_comboBox);
             this.hotkeyBox.Controls.Add(this.plus7);
-            this.hotkeyBox.Controls.Add(this.label6);
+            this.hotkeyBox.Controls.Add(this.hkLabel7);
             this.hotkeyBox.Controls.Add(this.swl_textBox);
             this.hotkeyBox.Controls.Add(this.csm_comboBox);
-            this.hotkeyBox.Controls.Add(this.label60);
+            this.hotkeyBox.Controls.Add(this.hkLabel);
             this.hotkeyBox.Controls.Add(this.plus6);
             this.hotkeyBox.Controls.Add(this.csm_textBox);
-            this.hotkeyBox.Controls.Add(this.label_lockKey);
+            this.hotkeyBox.Controls.Add(this.hkLabel8);
             this.hotkeyBox.Controls.Add(this.r1);
             this.hotkeyBox.Controls.Add(this.plus5);
-            this.hotkeyBox.Controls.Add(this.label4);
+            this.hotkeyBox.Controls.Add(this.hkLabel1);
             this.hotkeyBox.Controls.Add(this.settingsFocusCmb);
             this.hotkeyBox.Controls.Add(this.plus1);
-            this.hotkeyBox.Controls.Add(this.label5);
+            this.hotkeyBox.Controls.Add(this.hkLabel5);
             this.hotkeyBox.Controls.Add(this.r2);
             this.hotkeyBox.Controls.Add(this.hotkeysLabel);
-            this.hotkeyBox.Controls.Add(this.csm_label);
+            this.hotkeyBox.Controls.Add(this.hkLabel6);
             this.hotkeyBox.Controls.Add(this.settingsFocusHKTxt);
             this.hotkeyBox.Controls.Add(this.comboBox_lockKey);
             this.hotkeyBox.Controls.Add(this.settingsTopCmb);
@@ -2298,29 +2300,29 @@ namespace Nucleus.Coop
             this.hotkeyBox.TabIndex = 152;
             this.hotkeyBox.TabStop = false;
             // 
-            // label30
+            // hkLabel4
             // 
-            this.label30.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(9, 102);
-            this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(105, 15);
-            this.label30.TabIndex = 24;
-            this.label30.Text = "Toggle Top Most :";
-            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hkLabel4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hkLabel4.AutoSize = true;
+            this.hkLabel4.Location = new System.Drawing.Point(9, 102);
+            this.hkLabel4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel4.Name = "hkLabel4";
+            this.hkLabel4.Size = new System.Drawing.Size(105, 15);
+            this.hkLabel4.TabIndex = 24;
+            this.hkLabel4.Text = "Toggle Top Most :";
+            this.hkLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label56
+            // hkLabel3
             // 
-            this.label56.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(29, 78);
-            this.label56.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(85, 15);
-            this.label56.TabIndex = 22;
-            this.label56.Text = "Stop Session :";
-            this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hkLabel3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hkLabel3.AutoSize = true;
+            this.hkLabel3.Location = new System.Drawing.Point(29, 78);
+            this.hkLabel3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel3.Name = "hkLabel3";
+            this.hkLabel3.Size = new System.Drawing.Size(85, 15);
+            this.hkLabel3.TabIndex = 22;
+            this.hkLabel3.Text = "Stop Session :";
+            this.hkLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // swl_comboBox
             // 
@@ -2352,17 +2354,17 @@ namespace Nucleus.Coop
             this.plus7.Text = "+";
             this.plus7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label6
+            // hkLabel7
             // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(20, 174);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(94, 15);
-            this.label6.TabIndex = 96;
-            this.label6.Text = "Switch Layouts :";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hkLabel7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hkLabel7.AutoSize = true;
+            this.hkLabel7.Location = new System.Drawing.Point(20, 174);
+            this.hkLabel7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel7.Name = "hkLabel7";
+            this.hkLabel7.Size = new System.Drawing.Size(94, 15);
+            this.hkLabel7.TabIndex = 96;
+            this.hkLabel7.Text = "Switch Layouts :";
+            this.hkLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // swl_textBox
             // 
@@ -2394,17 +2396,17 @@ namespace Nucleus.Coop
             this.csm_comboBox.Size = new System.Drawing.Size(67, 23);
             this.csm_comboBox.TabIndex = 90;
             // 
-            // label60
+            // hkLabel
             // 
-            this.label60.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(22, 54);
-            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(92, 15);
-            this.label60.TabIndex = 20;
-            this.label60.Text = "Close Nucleus :";
-            this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hkLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hkLabel.AutoSize = true;
+            this.hkLabel.Location = new System.Drawing.Point(22, 54);
+            this.hkLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel.Name = "hkLabel";
+            this.hkLabel.Size = new System.Drawing.Size(92, 15);
+            this.hkLabel.TabIndex = 20;
+            this.hkLabel.Text = "Close Nucleus :";
+            this.hkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // plus6
             // 
@@ -2432,17 +2434,17 @@ namespace Nucleus.Coop
             this.csm_textBox.TabIndex = 91;
             this.csm_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label_lockKey
+            // hkLabel8
             // 
-            this.label_lockKey.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label_lockKey.AutoSize = true;
-            this.label_lockKey.Location = new System.Drawing.Point(22, 198);
-            this.label_lockKey.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label_lockKey.Name = "label_lockKey";
-            this.label_lockKey.Size = new System.Drawing.Size(92, 15);
-            this.label_lockKey.TabIndex = 29;
-            this.label_lockKey.Text = "Lock Input Key :";
-            this.label_lockKey.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hkLabel8.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hkLabel8.AutoSize = true;
+            this.hkLabel8.Location = new System.Drawing.Point(22, 198);
+            this.hkLabel8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel8.Name = "hkLabel8";
+            this.hkLabel8.Size = new System.Drawing.Size(92, 15);
+            this.hkLabel8.TabIndex = 29;
+            this.hkLabel8.Text = "Lock Input Key :";
+            this.hkLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // r1
             // 
@@ -2474,17 +2476,17 @@ namespace Nucleus.Coop
             this.plus5.Text = "+";
             this.plus5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label4
+            // hkLabel1
             // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 30);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(99, 15);
-            this.label4.TabIndex = 33;
-            this.label4.Text = "Toggle Unfocus :";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hkLabel1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hkLabel1.AutoSize = true;
+            this.hkLabel1.Location = new System.Drawing.Point(15, 30);
+            this.hkLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel1.Name = "hkLabel1";
+            this.hkLabel1.Size = new System.Drawing.Size(99, 15);
+            this.hkLabel1.TabIndex = 33;
+            this.hkLabel1.Text = "Toggle Unfocus :";
+            this.hkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // settingsFocusCmb
             // 
@@ -2516,17 +2518,17 @@ namespace Nucleus.Coop
             this.plus1.Text = "+";
             this.plus1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // hkLabel5
             // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 127);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(98, 15);
-            this.label5.TabIndex = 88;
-            this.label5.Text = "Reset Windows :";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hkLabel5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hkLabel5.AutoSize = true;
+            this.hkLabel5.Location = new System.Drawing.Point(16, 127);
+            this.hkLabel5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel5.Name = "hkLabel5";
+            this.hkLabel5.Size = new System.Drawing.Size(98, 15);
+            this.hkLabel5.TabIndex = 88;
+            this.hkLabel5.Text = "Reset Windows :";
+            this.hkLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // r2
             // 
@@ -2553,17 +2555,17 @@ namespace Nucleus.Coop
             this.hotkeysLabel.Text = "Hotkeys ";
             this.hotkeysLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // csm_label
+            // hkLabel6
             // 
-            this.csm_label.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.csm_label.AutoSize = true;
-            this.csm_label.Location = new System.Drawing.Point(9, 150);
-            this.csm_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.csm_label.Name = "csm_label";
-            this.csm_label.Size = new System.Drawing.Size(105, 15);
-            this.csm_label.TabIndex = 92;
-            this.csm_label.Text = "Cutscenes Mode :";
-            this.csm_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hkLabel6.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hkLabel6.AutoSize = true;
+            this.hkLabel6.Location = new System.Drawing.Point(9, 150);
+            this.hkLabel6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel6.Name = "hkLabel6";
+            this.hkLabel6.Size = new System.Drawing.Size(105, 15);
+            this.hkLabel6.TabIndex = 92;
+            this.hkLabel6.Text = "Cutscenes Mode :";
+            this.hkLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // settingsFocusHKTxt
             // 
@@ -3333,10 +3335,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.SettingsTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.SettingsTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -3445,23 +3447,23 @@ namespace Nucleus.Coop
         private GroupBox hotkeyBox;
         private ComboBox swl_comboBox;
         private Label plus7;
-        private Label label6;
+        private Label hkLabel7;
         private TextBox swl_textBox;
         private ComboBox csm_comboBox;
         private Label plus6;
-        private Label csm_label;
+        private Label hkLabel6;
         private TextBox csm_textBox;
         private ComboBox r1;
         private Label plus5;
         private ComboBox settingsFocusCmb;
-        private Label label5;
+        private Label hkLabel5;
         private Label plus1;
         private TextBox r2;
         private Label hotkeysLabel;
-        private Label label4;
+        private Label hkLabel1;
         private TextBox settingsFocusHKTxt;
         private ComboBox comboBox_lockKey;
-        private Label label_lockKey;
+        private Label hkLabel8;
         private ComboBox settingsTopCmb;
         private ComboBox settingsStopCmb;
         private TextBox settingsTopTxt;
@@ -3470,9 +3472,9 @@ namespace Nucleus.Coop
         private Label plus4;
         private Label plus3;
         private Label plus2;
-        private Label label30;
-        private Label label56;
-        private Label label60;
+        private Label hkLabel4;
+        private Label hkLabel3;
+        private Label hkLabel;
         private TextBox settingsCloseHKTxt;
         private Button btn_credits;
         private CheckBox disableGameProfiles;

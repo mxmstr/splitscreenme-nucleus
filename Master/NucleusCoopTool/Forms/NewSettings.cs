@@ -56,8 +56,6 @@ namespace Nucleus.Coop
         private IDictionary<string, string> audioDevices;
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
-        private static NewSettings newSettings;
-        private GameProfile profile;
         private Color selectionColor;
 
         private Pen bordersPen;
@@ -92,7 +90,6 @@ namespace Nucleus.Coop
         public NewSettings(MainForm mf, PositionsControl pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
-            newSettings = this;
 
             InitializeComponent();
 
@@ -105,46 +102,60 @@ namespace Nucleus.Coop
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
+
             Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
             Visible = false;
+
             _ctrlr_shorcuts = ctrlr_shorcuts;
+
             controlscollect();
 
-            foreach (Control control in ctrls)
+            foreach (Control c in ctrls)
             {
-                foreach (Control child in control.Controls)
+                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
                 {
-                    if (child.GetType() == typeof(CheckBox) || child.GetType() == typeof(Label) || child.GetType() == typeof(RadioButton))
+                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+
+                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
+                {
+                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+
+                if (c.GetType() == typeof(CustomNumericUpDown))
+                {
+                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+
+                if (c.Name != "settingsTab" && c.Name != "playersTab" && c.Name != "audioTab" &&
+                    c.Name != "layoutTab" && c.Name != "layoutSizer"
+                    && c.GetType() != typeof(Label) && c.GetType() != typeof(TextBox))
+                {
+                    c.Cursor = hand_Cursor;
+                }
+
+                if (c.Name == "settingsTab" || c.Name == "playersTab" || c.Name == "audioTab" || c.Name == "layoutTab")
+                {
+                    tabs.Add(c as Panel);
+                }
+
+                if (c.Name.Contains("steamid") && c.GetType() == typeof(ComboBox))
+                {
+                    c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
+                    c.Click += new System.EventHandler(Steamid_Click);
+                }
+
+                if (c is Button)
+                {
+                    Button isButton = c as Button;
+
+                    if (mf.mouseClick)
                     {
-                        child.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        isButton.Click += new System.EventHandler(this.button_Click);
                     }
 
-                    foreach (Control childOfChild in child.Controls)
-                    {
-                        if (childOfChild.GetType() == typeof(ComboBox) || childOfChild.GetType() == typeof(TextBox) || childOfChild.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
-                        {
-                            childOfChild.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-                    }
+                    isButton.FlatAppearance.BorderSize = 0;
                 }
-
-                if (control.GetType() == typeof(CustomNumericUpDown))
-                {
-                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                }
-
-                if (control.Name != "settingsTab" && control.Name != "playersTab" && control.Name != "audioTab" &&
-                    control.Name != "layoutTab" && control.Name != "layoutSizer"
-                    && control.GetType() != typeof(Label) && control.GetType() != typeof(TextBox))
-                {
-                    control.Cursor = hand_Cursor;
-                }
-
-                if (control.Name == "settingsTab" || control.Name == "playersTab" || control.Name == "audioTab" || control.Name == "layoutTab")
-                {
-                    tabs.Add(control as Panel);
-                }
-
             }
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
@@ -181,18 +192,15 @@ namespace Nucleus.Coop
             audioTabBtn.Click += new EventHandler(tabsButtons_highlight);
             layoutTabBtn.Click += new EventHandler(tabsButtons_highlight);
 
-
             settingsBtnPicture.Click += new EventHandler(button1_Click);
             playersBtnPicture.Click += new EventHandler(button2_Click);
             audioBtnPicture.Click += new EventHandler(button3_Click);
             layoutBtnPicture.Click += new EventHandler(button4_Click);
 
-
             settingsBtnPicture.Click += new EventHandler(tabsButtons_highlight);
             playersBtnPicture.Click += new EventHandler(tabsButtons_highlight);
             audioBtnPicture.Click += new EventHandler(tabsButtons_highlight);
             layoutBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-
 
             settingsTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
             playersTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
@@ -251,19 +259,20 @@ namespace Nucleus.Coop
                 cmb_Network.SelectedIndex = 0;
             }
 
-            IDictionary<string, Color> splitColors = new Dictionary<string, Color>();
-
-            splitColors.Add("Black", Color.Black);
-            splitColors.Add("Gray", Color.DimGray);
-            splitColors.Add("White", Color.White);
-            splitColors.Add("Dark Blue", Color.DarkBlue);
-            splitColors.Add("Blue", Color.Blue);
-            splitColors.Add("Purple", Color.Purple);
-            splitColors.Add("Pink", Color.Pink);
-            splitColors.Add("Red", Color.Red);
-            splitColors.Add("Orange", Color.Orange);
-            splitColors.Add("Yellow", Color.Yellow);
-            splitColors.Add("Green", Color.Green);
+            IDictionary<string, Color> splitColors = new Dictionary<string, Color>
+            {
+                { "Black", Color.Black },
+                { "Gray", Color.DimGray },
+                { "White", Color.White },
+                { "Dark Blue", Color.DarkBlue },
+                { "Blue", Color.Blue },
+                { "Purple", Color.Purple },
+                { "Pink", Color.Pink },
+                { "Red", Color.Red },
+                { "Orange", Color.Orange },
+                { "Yellow", Color.Yellow },
+                { "Green", Color.Green }
+            };
 
             foreach (KeyValuePair<string, Color> color in splitColors)
             {
@@ -295,34 +304,35 @@ namespace Nucleus.Coop
             }
 
             //epiclangs setting
-            IDictionary<string, string> epiclangs = new Dictionary<string, string>();
-
-            epiclangs.Add("Arabic", "ar");
-            epiclangs.Add("Brazilian", "pt-BR");
-            epiclangs.Add("Bulgarian", "bg");
-            epiclangs.Add("Chinese", "zh");
-            epiclangs.Add("Czech", "cs");
-            epiclangs.Add("Danish", "da");
-            epiclangs.Add("Dutch", "nl");
-            epiclangs.Add("English", "en");
-            epiclangs.Add("Finnish", "fi");
-            epiclangs.Add("French", "fr");
-            epiclangs.Add("German", "de");
-            epiclangs.Add("Greek", "el");
-            epiclangs.Add("Hungarian", "hu");
-            epiclangs.Add("Italian", "it");
-            epiclangs.Add("Japanese", "ja");
-            epiclangs.Add("Koreana", "ko");
-            epiclangs.Add("Norwegian", "no");
-            epiclangs.Add("Polish", "pl");
-            epiclangs.Add("Portuguese", "pt");
-            epiclangs.Add("Romanian", "ro");
-            epiclangs.Add("Russian", "ru");
-            epiclangs.Add("Spanish", "es");
-            epiclangs.Add("Swedish", "sv");
-            epiclangs.Add("Thai", "th");
-            epiclangs.Add("Turkish", "tr");
-            epiclangs.Add("Ukrainian", "uk");
+            IDictionary<string, string> epiclangs = new Dictionary<string, string>
+            {
+                { "Arabic", "ar" },
+                { "Brazilian", "pt-BR" },
+                { "Bulgarian", "bg" },
+                { "Chinese", "zh" },
+                { "Czech", "cs" },
+                { "Danish", "da" },
+                { "Dutch", "nl" },
+                { "English", "en" },
+                { "Finnish", "fi" },
+                { "French", "fr" },
+                { "German", "de" },
+                { "Greek", "el" },
+                { "Hungarian", "hu" },
+                { "Italian", "it" },
+                { "Japanese", "ja" },
+                { "Koreana", "ko" },
+                { "Norwegian", "no" },
+                { "Polish", "pl" },
+                { "Portuguese", "pt" },
+                { "Romanian", "ro" },
+                { "Russian", "ru" },
+                { "Spanish", "es" },
+                { "Swedish", "sv" },
+                { "Thai", "th" },
+                { "Turkish", "tr" },
+                { "Ukrainian", "uk" }
+            };
 
             foreach (KeyValuePair<string, string> lang in epiclangs)
             {
@@ -494,29 +504,7 @@ namespace Nucleus.Coop
             {
                 nucUserPassTxt.Text = ini.IniReadValue("Misc", "NucleusAccountPassword");
             }
-
-            foreach (Control cAddEvent in playersTab.Controls)
-            {
-                if (cAddEvent.Name.Contains("steamid") && cAddEvent.GetType() == typeof(ComboBox))
-                {
-                    cAddEvent.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
-                    cAddEvent.Click += new System.EventHandler(Steamid_Click);
-                }
-            }
-
-            foreach (Control button in this.Controls)
-            {
-                if (button is Button)
-                {
-                    Button isButton = button as Button;
-                    if (mf.mouseClick)
-                    {
-                        isButton.Click += new System.EventHandler(this.button_Click);
-                    }
-                    isButton.FlatAppearance.BorderSize = 0;
-                }
-            }
-
+        
             if (ini.IniReadValue("Audio", "Custom") == "0")
             {
                 audioDefaultSettingsRadio.Checked = true;
@@ -614,40 +602,23 @@ namespace Nucleus.Coop
 
             SuspendLayout();
 
-
             float newFontSize = Font.Size * scale;
 
-            foreach (Control tab in Controls)
+            foreach (Control c in ctrls)
             {
-                foreach (Control child in tab.Controls)
+                if (scale > 1.0F)
                 {
-                    if (scale > 1.0F)
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
                     {
-                        if (child.GetType() == typeof(ComboBox) || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox))
-                        {
-                            child.Font = new Font(child.Font.FontFamily, child.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
+                        c.Font = new Font(c.Font.FontFamily, c.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
+                }
 
-                    foreach (Control childOfChild in child.Controls)
+                if (c.GetType() == typeof(Label) && c.GetType() != typeof(CustomNumericUpDown))
+                {
+                    if (c.Name.Contains("hkLabel"))
                     {
-                        if (childOfChild.GetType() == typeof(Label) && child.GetType() != typeof(CustomNumericUpDown))
-                        {
-                            if (childOfChild.Text != "+" && childOfChild.Text != "Hotkeys" && !childOfChild.Text.Contains("Instance") && !childOfChild.Text.Contains("Player") && !childOfChild.Text.Contains("Steam"))
-                            {
-                                childOfChild.Location = new Point(settingsFocusCmb.Left - childOfChild.Width, childOfChild.Location.Y);
-                            }
-                        }
-
-                        if (scale > 1.0F)
-                        {
-
-                            if (childOfChild.GetType() == typeof(ComboBox) || childOfChild.GetType() == typeof(TextBox) || childOfChild.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
-                            {
-                                childOfChild.Font = new Font(childOfChild.Font.FontFamily, childOfChild.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                            }
-                        }
-
+                        c.Location = new Point(settingsFocusCmb.Left - c.Width, c.Location.Y);
                     }
                 }
             }
@@ -704,19 +675,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private void num_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void ReadOnly_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
         private void closeBtnPicture_Click(object sender, EventArgs e)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles")))
@@ -733,7 +691,6 @@ namespace Nucleus.Coop
                 {
                     jsonNicksList.Add(controllerNicks[i].Text);
                 }
-
 
                 if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0)
                 {
@@ -962,56 +919,6 @@ namespace Nucleus.Coop
             id.BackColor = Color.White;
         }
 
-        private void layoutSizer_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics gs = e.Graphics;
-
-            int LayoutHeight = layoutSizer.Size.Height - 20;
-            int LayoutWidth = layoutSizer.Size.Width - 20;
-
-            Rectangle outline = new Rectangle(10, 10, LayoutWidth, LayoutHeight);
-
-            gs.DrawRectangle(bordersPen, outline);
-
-            int[] hlines = new int[(int)numUpDownHor.Value];
-            int[] vlines = new int[(int)numUpDownVer.Value];
-
-            for (int i = 0; i < (int)numUpDownHor.Value; i++)
-            {
-                int divisions = (int)numUpDownHor.Value + 1;
-
-                int y = (LayoutHeight / divisions);
-                if (i == 0)
-                {
-                    hlines[i] = y + 10;
-                }
-                else
-                {
-                    hlines[i] = y + hlines[i - 1];
-                }
-                gs.DrawLine(bordersPen, 10, hlines[i], 10 + LayoutWidth, hlines[i]);
-            }
-
-            for (int i = 0; i < (int)numUpDownVer.Value; i++)
-            {
-
-                int divisions = (int)numUpDownVer.Value + 1;
-
-                int x = (LayoutWidth / divisions);
-                if (i == 0)
-                {
-                    vlines[i] = x + 10;
-                }
-                else
-                {
-                    vlines[i] = x + vlines[i - 1];
-                }
-                gs.DrawLine(bordersPen, vlines[i], 10, vlines[i], 10 + LayoutHeight);
-            }
-
-            gs.Dispose();
-        }
-
         private void cmb_Network_DropDown(object sender, EventArgs e)
         {
             RefreshCmbNetwork();
@@ -1148,13 +1055,11 @@ namespace Nucleus.Coop
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Button button = sender as Button;
-
             foreach (Panel p in tabs)
             {
-                if (p.Name != "settingsTab")
+                if (p.Name == "settingsTab")
                 {
-                    p.Visible = false;
+                    p.Visible = true;
                 }
                 else
                 {
@@ -1213,27 +1118,7 @@ namespace Nucleus.Coop
                     p.BringToFront();
                 }
             }
-        }
-
-        private void ProfileSettings_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-
-            Rectangle[] tabBorders = new Rectangle[]
-            {
-               new Rectangle(settingsTabBtn.Location.X-1,settingsTabBtn.Location.Y-1,settingsTabBtn.Width+settingsBtnPicture.Width+2,settingsTabBtn.Height+1),
-               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
-               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
-               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
-               new Rectangle(SettingsTab.Location.X,SettingsTab.Location.Y,SettingsTab.Width,SettingsTab.Height),
-               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
-               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
-            };
-
-            g.DrawRectangles(bordersPen, tabBorders);
-
-            numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);
-        }
+        }      
 
         private void cts_settings1_CheckedChanged(object sender, EventArgs e)
         {
@@ -1259,25 +1144,6 @@ namespace Nucleus.Coop
         private void closeBtnPicture_MouseLeave(object sender, EventArgs e)
         {
             closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close.png");
-        }
-
-        private void btn_credits_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Nucleus Co-op - " + mainForm.version +
-           "\n " +
-           "\nOriginal Nucleus Co-op Project: Lucas Assis(lucasassislar)" +
-           "\nNew Nucleus Co-op fork: ZeroFox" +
-           "\nMultiple keyboards / mice & hooks: Ilyaki" +
-           "\nWebsite & handler API: r - mach" +
-           "\nNew UI design, bug fixes, per game profiles and gamepad UI control/shortcuts support : Mikou27(nene27)" +
-           "\nHandlers development & testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more." +
-           "\nThis new & improved Nucleus Co-op brings a ton of enhancements, such as:" +
-           "\n- Massive increase to the amount of compatible games, 400 + as of now." +
-           "\n- Beautiful new overhauled user interface with support for themes, game covers & screenshots." +
-           "\n- Support for per-game profiles." +
-           "\n- Many quality of life improvements & bug fixes." +
-           "\nAnd so much more!" +
-           "\nSpecial thanks to: Talos91, dr.oldboi, PoundlandBacon, Pizzo and the rest of the Splitscreen Dreams discord community.", "Credits", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btn_credits_MouseEnter(object sender, EventArgs e)
@@ -1314,6 +1180,20 @@ namespace Nucleus.Coop
                 }
             }
         }
+
+        private void num_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void ReadOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         private void settingsCloseHKTxt_TextChanged(object sender, EventArgs e)
         {
             settingsCloseHKTxt.Text = string.Concat(settingsCloseHKTxt.Text.Where(char.IsLetterOrDigit));
@@ -1347,10 +1227,10 @@ namespace Nucleus.Coop
              && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
-
         private void cts_Mute_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox mute = (CheckBox)sender;
+
             if (mute.Checked)
             {
                 cts_kar.Checked = false;
@@ -1364,27 +1244,7 @@ namespace Nucleus.Coop
                 cts_unfocus.Enabled = true;
             }
         }
-
-        private void controlscollect()
-        {
-            foreach (Control control in Controls)
-            {
-                ctrls.Add(control);
-                foreach (Control container1 in control.Controls)
-                {
-                    ctrls.Add(container1);
-                    foreach (Control container2 in container1.Controls)
-                    {
-                        ctrls.Add(container2);
-                        foreach (Control container3 in container2.Controls)
-                        {
-                            ctrls.Add(container3);
-                        }
-                    }
-                }
-            }
-        }
-
+     
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (page1.Visible)
@@ -1405,6 +1265,119 @@ namespace Nucleus.Coop
                 btnNext.Text = "Next";
                 ResumeLayout();
             }
+        }
+
+        private void controlscollect()
+        {
+            foreach (Control control in Controls)
+            {
+                ctrls.Add(control);
+                foreach (Control container1 in control.Controls)
+                {
+                    ctrls.Add(container1);
+                    foreach (Control container2 in container1.Controls)
+                    {
+                        ctrls.Add(container2);
+                        foreach (Control container3 in container2.Controls)
+                        {
+                            ctrls.Add(container3);
+                            foreach (Control container4 in container3.Controls)
+                            {
+                                ctrls.Add(container4);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btn_credits_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Nucleus Co-op - " + mainForm.version +
+           "\n " +
+           "\nOriginal Nucleus Co-op Project: Lucas Assis(lucasassislar)" +
+           "\nNew Nucleus Co-op fork: ZeroFox" +
+           "\nMultiple keyboards / mice & hooks: Ilyaki" +
+           "\nWebsite & handler API: r - mach" +
+           "\nNew UI design, bug fixes, per game profiles and gamepad UI control/shortcuts support : Mikou27(nene27)" +
+           "\nHandlers development & testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more." +
+           "\nThis new & improved Nucleus Co-op brings a ton of enhancements, such as:" +
+           "\n- Massive increase to the amount of compatible games, 400 + as of now." +
+           "\n- Beautiful new overhauled user interface with support for themes, game covers & screenshots." +
+           "\n- Support for per-game profiles." +
+           "\n- Many quality of life improvements & bug fixes." +
+           "\nAnd so much more!" +
+           "\nSpecial thanks to: Talos91, dr.oldboi, PoundlandBacon, Pizzo and the rest of the Splitscreen Dreams discord community.", "Credits", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void layoutSizer_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics gs = e.Graphics;
+
+            int LayoutHeight = layoutSizer.Size.Height - 20;
+            int LayoutWidth = layoutSizer.Size.Width - 20;
+
+            Rectangle outline = new Rectangle(10, 10, LayoutWidth, LayoutHeight);
+
+            gs.DrawRectangle(bordersPen, outline);
+
+            int[] hlines = new int[(int)numUpDownHor.Value];
+            int[] vlines = new int[(int)numUpDownVer.Value];
+
+            for (int i = 0; i < (int)numUpDownHor.Value; i++)
+            {
+                int divisions = (int)numUpDownHor.Value + 1;
+
+                int y = (LayoutHeight / divisions);
+                if (i == 0)
+                {
+                    hlines[i] = y + 10;
+                }
+                else
+                {
+                    hlines[i] = y + hlines[i - 1];
+                }
+                gs.DrawLine(bordersPen, 10, hlines[i], 10 + LayoutWidth, hlines[i]);
+            }
+
+            for (int i = 0; i < (int)numUpDownVer.Value; i++)
+            {
+
+                int divisions = (int)numUpDownVer.Value + 1;
+
+                int x = (LayoutWidth / divisions);
+                if (i == 0)
+                {
+                    vlines[i] = x + 10;
+                }
+                else
+                {
+                    vlines[i] = x + vlines[i - 1];
+                }
+                gs.DrawLine(bordersPen, vlines[i], 10, vlines[i], 10 + LayoutHeight);
+            }
+
+            gs.Dispose();
+        }
+
+        private void ProfileSettings_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+
+            Rectangle[] tabBorders = new Rectangle[]
+            {
+               new Rectangle(settingsTabBtn.Location.X-1,settingsTabBtn.Location.Y-1,settingsTabBtn.Width+settingsBtnPicture.Width+2,settingsTabBtn.Height+1),
+               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
+               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
+               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
+               new Rectangle(SettingsTab.Location.X,SettingsTab.Location.Y,SettingsTab.Width,SettingsTab.Height),
+               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
+               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
+            };
+
+            g.DrawRectangles(bordersPen, tabBorders);
+
+            numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);
         }
     }
 }

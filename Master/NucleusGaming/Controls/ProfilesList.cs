@@ -100,6 +100,7 @@ namespace Nucleus.Gaming.Controls
                         playbtn.Enabled = false;
                     }
                 }
+
                 return;
             }
 
@@ -248,7 +249,7 @@ namespace Nucleus.Gaming.Controls
             }
             else
             {
-                text = Jprofile.ToString();//jsonString.Replace(" ", "").                                
+                text =  Jprofile.ToString();//jsonString.Replace(" ", "").                                
                                            //Replace(",", "").
                                            //Replace("\"", "").
                                            //Replace("{", "").

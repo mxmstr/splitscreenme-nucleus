@@ -107,15 +107,14 @@ namespace Nucleus.Coop.Forms
                 if (control.GetType() == typeof(Button) || control.Name == "linkLabel_MoreInfo")
                 {
                     control.Cursor = hand_Cursor;
+                    if (control.Name != "btn_Close")
+                    {
+                        control.Click += new System.EventHandler(this.button_Click);
+                    }
                 }
             }
 
             ResumeLayout();
-
-            if (mf.mouseClick)
-            {
-                foreach (Control button in this.Controls) { if (button is Button && button.Name != "btn_Close") { button.Click += new System.EventHandler(this.button_Click); } }
-            }
 
             this.mainForm = mf;
 
@@ -162,7 +161,6 @@ namespace Nucleus.Coop.Forms
             try
             {
                 WebRequest request = WebRequest.Create(_cover);
-                //request.Timeout = 10;
                 WebResponse resp = request.GetResponse();
                 Stream respStream = resp.GetResponseStream();
                 bmp = new Bitmap(respStream);
@@ -171,7 +169,6 @@ namespace Nucleus.Coop.Forms
             catch (Exception) { }
 
             pic_GameCover.Image = bmp;
-
 
             string rawComments = Get(api + "comments/" + Handler.Id);
             if (rawComments != "{}")
@@ -196,6 +193,7 @@ namespace Nucleus.Coop.Forms
                     txt_Comm.AppendText(Environment.NewLine);
                 }
             }
+
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
@@ -207,13 +205,14 @@ namespace Nucleus.Coop.Forms
                 DPIManager.Unregister(this);
                 return;
             }
+
             SuspendLayout();
 
             if (scale > 1.0F)
             {
                 float newFontSize = Font.Size * scale;
 
-                foreach (Control c in Controls)
+                foreach (Control c in ctrls)
                 {
                     if (c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(RichTextBox) ^ c.GetType() == typeof(PictureBox))
                     {
@@ -228,8 +227,6 @@ namespace Nucleus.Coop.Forms
         public string Get(string uri)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-            //request.Timeout = 10;
-
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             using (Stream stream = response.GetResponseStream())
             using (StreamReader reader = new StreamReader(stream))

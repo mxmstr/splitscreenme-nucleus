@@ -212,7 +212,8 @@ namespace Nucleus.Coop
             rgb_HandlerNoteTitleFontColor = themeIni.IniReadValue("Colors", "HandlerNoteTitleFont").Split(',');
             rgb_ButtonsBorderColor = themeIni.IniReadValue("Colors", "ButtonsBorder").Split(',');
             rgb_HandlerNoteMagnifierTitleBackColor = themeIni.IniReadValue("Colors", "HandlerNoteMagnifierTitleBackColor ").Split(',');
-
+            string[] windowSize = ini.IniReadValue("Misc", "WindowSize").Split('X');
+            //string[] windowLocation = ini.IniReadValue("Misc", "WindowLocation").Split('X'); 
             disableQuickHandlerUpdate = bool.Parse(ini.IniReadValue("Dev", "DisableQuickHandlerUpdate"));
             float fontSize = float.Parse(themeIni.IniReadValue("Font", "MainFontSize"));
             bool coverBorderOff = bool.Parse(themeIni.IniReadValue("Misc", "DisableCoverBorder"));
@@ -227,8 +228,11 @@ namespace Nucleus.Coop
             HandlerNoteMagnifierTitleBackColor = Color.FromArgb(int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[0]), int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[1]), int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[2]));
             HandlerNoteTitleFont = Color.FromArgb(int.Parse(rgb_HandlerNoteTitleFontColor[0]), int.Parse(rgb_HandlerNoteTitleFontColor[1]), int.Parse(rgb_HandlerNoteTitleFontColor[2]));
             ButtonsBorderColor = Color.FromArgb(int.Parse(rgb_ButtonsBorderColor[0]), int.Parse(rgb_ButtonsBorderColor[1]), int.Parse(rgb_ButtonsBorderColor[2]));
-
+         
             InitializeComponent();
+
+            Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
+            //Location = PointToScreen(new Point(int.Parse(windowLocation[0]), int.Parse(windowLocation[1])));
 
             SuspendLayout();
 
@@ -395,13 +399,18 @@ namespace Nucleus.Coop
 
             foreach (Control titleBarButtons in Controls)
             {
-                titleBarButtons.BackColor = BackColor;//avoid "glitchs" while maximizing the window (aesthetic only)            
+                        
             }
 
             controlscollect();
 
             foreach (Control control in ctrls)
             {
+                if(control.Parent == this)
+                {
+                    control.BackColor = BackColor;//Title bar buttons => avoid "glitchs" while maximizing the window (aesthetic only)   
+                }
+
                 if (control.Name != "btn_Links" && control.Name != "btn_thirdPartytools" && control.Name != "HandlerNoteTitle" && control.Name != "scriptAuthorTxt")//Close "third_party_tools_container" control when an other control in the form is clicked.
                 {
                     control.Font = new Font(customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
@@ -2439,47 +2448,14 @@ namespace Nucleus.Coop
             return null;
         }
 
-        private void OpenRawGameScript()
-        {
-            try
-            {
-                if (ini.IniReadValue("Dev", "TextEditorPath") != "Default")
-                {
-                    Process.Start($"{ini.IniReadValue("Dev", "TextEditorPath")}", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
-                }
-                else
-                {
-                    Process.Start("notepad++.exe", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
-                }
-
-            }
-            catch (Exception)
-            {
-                Process.Start("notepad.exe", Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName));
-            }
-        }
-
         private void OpenScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenRawGameScript();
-        }
-
-        private void OpenDataFolder()
-        {
-            string path = Path.Combine(gameManager.GetAppContentPath(), currentGameInfo.Game.GUID);
-            if (Directory.Exists(path))
-            {
-                Process.Start(path);
-            }
-            else
-            {
-                MessageBox.Show("No data present for this game.", "No data found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            OpenHandler.OpenRawHandler(gameManager,currentGameInfo);
         }
 
         private void OpenDataFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenDataFolder();
+            OpenGameContentFolder.OpenDataFolder(gameManager,currentGameInfo);
         }
 
         private void ChangeIconToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2514,6 +2490,7 @@ namespace Nucleus.Coop
                     {
                         currentGameInfo.Icon = new Bitmap(dlg.FileName);
                     }
+
                     iconsIni.IniWriteValue("GameIcons", currentGameInfo.Game.GameName, dlg.FileName);
 
                     GetIcon(currentGameInfo);
@@ -2980,10 +2957,15 @@ namespace Nucleus.Coop
             if (settingsForm != null) settingsForm.Visible = false;
             if (searchDisksForm != null) searchDisksForm.Visible = false;
 
+
             if (positionsControl != null)
             {
                 positionsControl.textZoomContainer.Visible = false;
                 btn_magnifier.Image = new Bitmap(theme + "magnifier.png");
+            }
+            if (ProfilesList.profilesList != null)
+            {
+                ProfilesList.profilesList.Locked = false;
             }
         }
 
@@ -3015,6 +2997,8 @@ namespace Nucleus.Coop
 
         private void closeButton(object sender, EventArgs e)
         {
+            SaveNucleusWindowPosAndLoc();
+
             Process[] processes = Process.GetProcessesByName("SplitCalculator");
             foreach (Process SplitCalculator in processes)
             {
@@ -3038,6 +3022,18 @@ namespace Nucleus.Coop
             }
 
             GameManager.Instance.SaveUserProfile();
+        }
+
+        private void SaveNucleusWindowPosAndLoc()
+        {
+            ini.IniWriteValue("Misc", "WindowSize", Width + "X" + Height);
+            //var loc = PointToScreen(Location);
+            //ini.IniWriteValue("Misc", "WindowLocation",loc.X + "X" + loc.Y);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveNucleusWindowPosAndLoc();
         }
     }
 }

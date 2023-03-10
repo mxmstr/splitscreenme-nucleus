@@ -21,7 +21,7 @@ namespace Nucleus.Coop
 
     public partial class ProfileSettings : UserControl, IDynamicSized
     {
-        private IniFile ini = Globals.ini;
+        private readonly IniFile ini = Globals.ini;
 
         private MainForm mainForm = null;
         private static ProfileSettings profileSettings;
@@ -38,7 +38,7 @@ namespace Nucleus.Coop
         private TextBox[] Affinitys;
         private ComboBox[] PriorityClasses;
         private List<Control> ctrls = new List<Control>();
-
+       
         private Button highlighted;
 
         private float fontSize;
@@ -47,21 +47,20 @@ namespace Nucleus.Coop
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
 
-        private GameProfile profile;
         private Color selectionColor;
 
         private Pen bordersPen;
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
-       (
+        (
           int nLeftRect,     // x-coordinate of upper-left corner
           int nTopRect,      // y-coordinate of upper-left corner
           int nRightRect,    // x-coordinate of lower-right corner
           int nBottomRect,   // y-coordinate of lower-right corner
           int nWidthEllipse, // width of ellipse
           int nHeightEllipse // height of ellipse
-       );
+        );
 
         protected override CreateParams CreateParams
         {
@@ -77,6 +76,7 @@ namespace Nucleus.Coop
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
             profileSettings = this;
+            mainForm = mf;
 
             InitializeComponent();
 
@@ -94,44 +94,60 @@ namespace Nucleus.Coop
 
             controlscollect();
 
-            foreach (Control control in ctrls)
+            foreach (Control c in ctrls)
             {
-                foreach (Control child in control.Controls)
+                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
                 {
-                    if (child.GetType() == typeof(CheckBox) || child.GetType() == typeof(Label) || child.GetType() == typeof(RadioButton))
+                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+
+                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
+                {
+                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+
+                if (c.GetType() == typeof(CustomNumericUpDown))
+                {
+                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+
+                if (c.Name != "sharedTab" && c.Name != "playersTab" && c.Name != "audioTab" &&
+                    c.Name != "processorTab" && c.Name != "layoutTab" && c.Name != "layoutSizer" && c.Name != "notes_text"
+                    && c.GetType() != typeof(Label) && c.GetType() != typeof(TextBox))
+                {
+                    c.Cursor = hand_Cursor;
+                }
+
+                if (c.Name == "sharedTab" || c.Name == "playersTab" || c.Name == "audioTab" || c.Name == "processorTab" || c.Name == "layoutTab")
+                {
+                    tabs.Add(c as Panel);
+                }
+
+                if (c.Name != "profile_info_btn")
+                {
+                    c.Click += new EventHandler(ProfileSettings_Click);
+                }
+
+                if (c is Button)
+                {
+                    Button isButton = c as Button;
+                    if (mf.mouseClick)
                     {
-                        child.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        isButton.Click += new System.EventHandler(this.button_Click);
                     }
 
-                    foreach (Control childOfChild in child.Controls)
-                    {
-                        if (childOfChild.GetType() == typeof(ComboBox) || childOfChild.GetType() == typeof(TextBox) || childOfChild.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
-                        {
-                            childOfChild.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-                    }
+                    isButton.FlatAppearance.BorderSize = 0;
                 }
 
-                if (control.GetType() == typeof(CustomNumericUpDown))
+                if (c.Name.Contains("pauseBetweenInstanceLaunch_TxtBox") || c.Name.Contains("WindowsSetupTiming_TextBox"))
                 {
-                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
                 }
-
-                if (control.Name != "sharedTab" && control.Name != "playersTab" && control.Name != "audioTab" &&
-                    control.Name != "processorTab" && control.Name != "layoutTab" && control.Name != "layoutSizer" && control.Name != "notes_text"
-                    && control.GetType() != typeof(Label) && control.GetType() != typeof(TextBox))
+           
+                if (c.Name.Contains("steamid") && c.GetType() == typeof(ComboBox))
                 {
-                    control.Cursor = hand_Cursor;
-                }
-
-                if (control.Name == "sharedTab" || control.Name == "playersTab" || control.Name == "audioTab" || control.Name == "processorTab" || control.Name == "layoutTab")
-                {
-                    tabs.Add(control as Panel);
-                }
-
-                if (control.Name != "profile_info_btn")
-                {
-                    control.Click += new EventHandler(ProfileSettings_Click);
+                    c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
+                    c.Click += new System.EventHandler(Steamid_Click);
                 }
             }
 
@@ -141,7 +157,6 @@ namespace Nucleus.Coop
                                                    int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[1]),
                                                    int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[2]),
                                                    int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[3]));
-
 
             audioBtnPicture.BackgroundImage = new Bitmap(mf.theme + "audio.png");
             playersBtnPicture.BackgroundImage = new Bitmap(mf.theme + "players.png");
@@ -159,7 +174,6 @@ namespace Nucleus.Coop
             processorTab.BackColor = Color.Transparent;
             layoutTab.BackColor = Color.Transparent;
 
-            //MouseOverColor
             sharedTabBtn.Click += new EventHandler(tabsButtons_highlight);
             playersTabBtn.Click += new EventHandler(tabsButtons_highlight);
             audioTabBtn.Click += new EventHandler(tabsButtons_highlight);
@@ -266,38 +280,6 @@ namespace Nucleus.Coop
                 pClass.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
             }
 
-            foreach (Control cAddEvent in sharedTab.Controls)
-            {
-                if (cAddEvent.Name.Contains("pauseBetweenInstanceLaunch_TxtBox") || cAddEvent.Name.Contains("WindowsSetupTiming_TextBox"))
-                {
-                    cAddEvent.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
-                }
-            }
-
-            foreach (Control cAddEvent in playersTab.Controls)
-            {
-                if (cAddEvent.Name.Contains("steamid") && cAddEvent.GetType() == typeof(ComboBox))
-                {
-                    cAddEvent.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
-                    cAddEvent.Click += new System.EventHandler(Steamid_Click);
-                }
-            }
-
-            foreach (Control button in this.Controls)
-            {
-                if (button is Button)
-                {
-                    Button isButton = button as Button;
-                    if (mf.mouseClick)
-                    {
-                        isButton.Click += new System.EventHandler(this.button_Click);
-                    }
-                    isButton.FlatAppearance.BorderSize = 0;
-                }
-            }
-
-            mainForm = mf;
-
             //network setting
             RefreshCmbNetwork();
 
@@ -305,16 +287,16 @@ namespace Nucleus.Coop
             sharedTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
 
             playersTab.Parent = this;
-            playersTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+            playersTab.Location = sharedTab.Location;
 
             audioTab.Parent = this;
-            audioTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+            audioTab.Location = sharedTab.Location;
 
             processorTab.Parent = this;
-            processorTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+            processorTab.Location = sharedTab.Location;
 
             layoutTab.Parent = this;
-            layoutTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+            layoutTab.Location = sharedTab.Location;
 
             page1.Parent = playersTab;
             page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
@@ -409,28 +391,16 @@ namespace Nucleus.Coop
             {
                 float newFontSize = Font.Size * scale;
 
-                foreach (Control tab in Controls)
+                foreach (Control c in ctrls)
                 {
-                    foreach (Control child in tab.Controls)
+                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
                     {
-                        if (child.GetType() == typeof(ComboBox) || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
-                        {
-                            child.Font = new Font(child.Font.FontFamily, child.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                        }
-
-                        foreach (Control childOfChild in child.Controls)
-                        {
-                            if (childOfChild.GetType() == typeof(ComboBox) || childOfChild.GetType() == typeof(TextBox) || childOfChild.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
-                            {
-                                childOfChild.Font = new Font(childOfChild.Font.FontFamily, childOfChild.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-                            }
-                        }
+                        c.Font = new Font(c.Font.FontFamily, c.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
                 }
 
                 notes_text.Size = new Size((int)(260 * scale), (int)(81 * scale));
                 def_sid_comboBox.Font = new Font(mainForm.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
             }
 
             Vector2 dist1 = Vector2.Subtract(new Vector2(profile_info_btn.Location.X, profile_info_btn.Location.Y), new Vector2(layoutBtnPicture.Location.X, layoutBtnPicture.Location.Y));
@@ -443,57 +413,31 @@ namespace Nucleus.Coop
             ResumeLayout();
         }
 
-        private ToolTip autoPlay_Tooltip;
-        private ToolTip pauseBetweenInstance_Tooltip;
-        private ToolTip WindowsSetupTiming_Tooltip;
-        private ToolTip SplitDiv_Tooltip;
-
         private void SetToolTips()
         {
-            autoPlay_Tooltip = new ToolTip();
+            ToolTip autoPlay_Tooltip = new ToolTip();
             autoPlay_Tooltip.InitialDelay = 100;
             autoPlay_Tooltip.ReshowDelay = 100;
             autoPlay_Tooltip.AutoPopDelay = 5000;
-            autoPlay_Tooltip.SetToolTip(autoPlay, "Not Compatible with multiple keyboards & mice.");
+            autoPlay_Tooltip.SetToolTip(autoPlay, "Not Compatible with multiple keyboards & mice");
 
-            pauseBetweenInstance_Tooltip = new ToolTip();
+            ToolTip pauseBetweenInstance_Tooltip = new ToolTip();
             pauseBetweenInstance_Tooltip.InitialDelay = 100;
             pauseBetweenInstance_Tooltip.ReshowDelay = 100;
             pauseBetweenInstance_Tooltip.AutoPopDelay = 5000;
             pauseBetweenInstance_Tooltip.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "Could break any hooks or xinputplus for some games");
 
-            WindowsSetupTiming_Tooltip = new ToolTip();
+            ToolTip WindowsSetupTiming_Tooltip = new ToolTip();
             WindowsSetupTiming_Tooltip.InitialDelay = 100;
             WindowsSetupTiming_Tooltip.ReshowDelay = 100;
             WindowsSetupTiming_Tooltip.AutoPopDelay = 5000;
             WindowsSetupTiming_Tooltip.SetToolTip(WindowsSetupTiming_TextBox, "Could break positioning/resizing for some games");
 
-            SplitDiv_Tooltip = new ToolTip();
+            ToolTip SplitDiv_Tooltip = new ToolTip();
             SplitDiv_Tooltip.InitialDelay = 100;
             SplitDiv_Tooltip.ReshowDelay = 100;
             SplitDiv_Tooltip.AutoPopDelay = 5000;
             SplitDiv_Tooltip.SetToolTip(SplitDiv, "May not work for all games");
-        }
-
-        private void num_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void Affinity_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != ','))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void ReadOnly_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
         }
 
         public static void UpdateProfileSettingsUiValues(bool save)
@@ -601,10 +545,12 @@ namespace Nucleus.Coop
             GetPlayersNickNameAndIds();
 
             List<string> _IdealProcessors = GameProfile.IdealProcessors;
+            List<string> _Affinitys = GameProfile.Affinitys;
+            List<string> _PriorityClasses = GameProfile.PriorityClasses;
 
-            if (_IdealProcessors != null)
+            for (int i = 0; i < 32; i++)
             {
-                for (int i = 0; i < 32; i++)
+                if (_IdealProcessors != null)
                 {
                     if (i < _IdealProcessors.Count)
                     {
@@ -615,13 +561,8 @@ namespace Nucleus.Coop
                         IdealProcessors[i].SelectedIndex = 0;
                     }
                 }
-            }
 
-            List<string> _Affinitys = GameProfile.Affinitys;
-
-            if (_Affinitys != null)
-            {
-                for (int i = 0; i < 32; i++)
+                if (_Affinitys != null)
                 {
                     if (i < _Affinitys.Count)
                     {
@@ -631,14 +572,10 @@ namespace Nucleus.Coop
                     {
                         Affinitys[i].Text = "";
                     }
+
                 }
-            }
 
-            List<string> _PriorityClasses = GameProfile.PriorityClasses;
-
-            if (_PriorityClasses != null)
-            {
-                for (int i = 0; i < 32; i++)
+                if (_PriorityClasses != null)
                 {
                     if (i < _PriorityClasses.Count)
                     {
@@ -650,7 +587,7 @@ namespace Nucleus.Coop
                     }
                 }
             }
-
+        
             if (GameProfile.ModeText == "New Profile")
             {
                 GameProfile.AudioInstances.Clear();
@@ -710,7 +647,6 @@ namespace Nucleus.Coop
             GameProfile.Affinitys.Clear();
             GameProfile.IdealProcessors.Clear();
             GameProfile.PriorityClasses.Clear();
-
 
             for (int i = 0; i < 32; i++)
             {
@@ -862,7 +798,7 @@ namespace Nucleus.Coop
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
             GameProfile.Cts_Unfocus = cts_unfocus.Checked;
 
-            //Set AudioInstances GameProfile (part of shared GameProfile options)
+            //Set GameProfile AudioInstances  (part of shared GameProfile options)
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
                 if (ctrl is ComboBox)
@@ -886,57 +822,7 @@ namespace Nucleus.Coop
             ComboBox id = (ComboBox)sender;
             id.BackColor = Color.White;
         }
-
-        private void layoutSizer_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics gs = e.Graphics;
-
-            int LayoutHeight = layoutSizer.Size.Height - 20;
-            int LayoutWidth = layoutSizer.Size.Width - 20;
-
-            Rectangle outline = new Rectangle(10, 10, LayoutWidth, LayoutHeight);
-
-            gs.DrawRectangle(bordersPen, outline);
-
-            int[] hlines = new int[(int)numUpDownHor.Value];
-            int[] vlines = new int[(int)numUpDownVer.Value];
-
-            for (int i = 0; i < (int)numUpDownHor.Value; i++)
-            {
-                int divisions = (int)numUpDownHor.Value + 1;
-
-                int y = (LayoutHeight / divisions);
-                if (i == 0)
-                {
-                    hlines[i] = y + 10;
-                }
-                else
-                {
-                    hlines[i] = y + hlines[i - 1];
-                }
-                gs.DrawLine(bordersPen, 10, hlines[i], 10 + LayoutWidth, hlines[i]);
-            }
-
-            for (int i = 0; i < (int)numUpDownVer.Value; i++)
-            {
-
-                int divisions = (int)numUpDownVer.Value + 1;
-
-                int x = (LayoutWidth / divisions);
-                if (i == 0)
-                {
-                    vlines[i] = x + 10;
-                }
-                else
-                {
-                    vlines[i] = x + vlines[i - 1];
-                }
-                gs.DrawLine(bordersPen, vlines[i], 10, vlines[i], 10 + LayoutHeight);
-            }
-
-            gs.Dispose();
-        }
-
+        
         private void cmb_Network_DropDown(object sender, EventArgs e)
         {
             RefreshCmbNetwork();
@@ -945,7 +831,6 @@ namespace Nucleus.Coop
         private void RefreshCmbNetwork()
         {
             cmb_Network.Items.Clear();
-
             cmb_Network.Items.Add("Automatic");
 
             NetworkInterface[] ni = NetworkInterface.GetAllNetworkInterfaces();
@@ -982,12 +867,14 @@ namespace Nucleus.Coop
         {
             audioDevices = new Dictionary<string, string>();
             audioDevices.Clear();
+
             if (!audioDevices.ContainsKey("Default"))
             {
                 audioDevices.Add("Default", "Default");
             }
 
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
+
             foreach (MMDevice endpoint in enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
             {
                 if (!audioDevices.ContainsKey(endpoint.FriendlyName))
@@ -1033,7 +920,6 @@ namespace Nucleus.Coop
                         {
                             cmb.SelectedItem = "Default";
                         }
-
                     }
                 }
             }
@@ -1202,26 +1088,25 @@ namespace Nucleus.Coop
             }
         }
 
-        private void ProfileSettings_Paint(object sender, PaintEventArgs e)
+        private void num_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Graphics g = e.Graphics;
-
-            Rectangle[] tabBorders = new Rectangle[]
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
-               new Rectangle(sharedTabBtn.Location.X-1,sharedTabBtn.Location.Y-1,sharedTabBtn.Width+sharedBtnPicture.Width+2,sharedTabBtn.Height+1),
-               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
-               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
-               new Rectangle(processorTabBtn.Location.X-1,processorTabBtn.Location.Y-1,processorTabBtn.Width+processorBtnPicture.Width+2,processorTabBtn.Height+1),
-               new Rectangle(sharedTab.Location.X,sharedTab.Location.Y,sharedTab.Width,sharedTab.Height),
-               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
-               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
-               new Rectangle(layoutTab.Location.X,layoutTab.Location.Y,layoutTab.Width,layoutTab.Height),
-               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
-            };
+                e.Handled = true;
+            }
+        }
 
-            g.DrawRectangles(bordersPen, tabBorders);
+        private void Affinity_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != ','))
+            {
+                e.Handled = true;
+            }
+        }
 
-            numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);
+        private void ReadOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
         }
 
         private void closeBtnPicture_MouseEnter(object sender, EventArgs e)
@@ -1282,26 +1167,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private void controlscollect()
-        {
-            foreach (Control control in Controls)
-            {
-                ctrls.Add(control);
-                foreach (Control container1 in control.Controls)
-                {
-                    ctrls.Add(container1);
-                    foreach (Control container2 in container1.Controls)
-                    {
-                        ctrls.Add(container2);
-                        foreach (Control container3 in container2.Controls)
-                        {
-                            ctrls.Add(container3);
-                        }
-                    }
-                }
-            }
-        }
-
         public void button_Click(object sender, EventArgs e)
         {
             if (mainForm.mouseClick)
@@ -1310,7 +1175,6 @@ namespace Nucleus.Coop
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-
             if (page1.Visible)
             {
                 SuspendLayout();
@@ -1329,12 +1193,10 @@ namespace Nucleus.Coop
                 page2.Visible = false;
                 ResumeLayout();
             }
-
         }
 
         private void btnProcessorNext_Click_1(object sender, EventArgs e)
         {
-
             if (processorPage1.Visible)
             {
                 SuspendLayout();
@@ -1353,7 +1215,102 @@ namespace Nucleus.Coop
                 btnProcessorNext.Text = "Next";
                 ResumeLayout();
             }
+        }
 
+        private void controlscollect()
+        {
+            foreach (Control control in Controls)
+            {
+                ctrls.Add(control);
+                foreach (Control container1 in control.Controls)
+                {
+                    ctrls.Add(container1);
+                    foreach (Control container2 in container1.Controls)
+                    {
+                        ctrls.Add(container2);
+                        foreach (Control container3 in container2.Controls)
+                        {
+                            ctrls.Add(container3);
+                            foreach (Control container4 in container3.Controls)
+                            {
+                                ctrls.Add(container4);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void layoutSizer_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics gs = e.Graphics;
+
+            int LayoutHeight = layoutSizer.Size.Height - 20;
+            int LayoutWidth = layoutSizer.Size.Width - 20;
+
+            Rectangle outline = new Rectangle(10, 10, LayoutWidth, LayoutHeight);
+
+            gs.DrawRectangle(bordersPen, outline);
+
+            int[] hlines = new int[(int)numUpDownHor.Value];
+            int[] vlines = new int[(int)numUpDownVer.Value];
+
+            for (int i = 0; i < (int)numUpDownHor.Value; i++)
+            {
+                int divisions = (int)numUpDownHor.Value + 1;
+
+                int y = (LayoutHeight / divisions);
+                if (i == 0)
+                {
+                    hlines[i] = y + 10;
+                }
+                else
+                {
+                    hlines[i] = y + hlines[i - 1];
+                }
+                gs.DrawLine(bordersPen, 10, hlines[i], 10 + LayoutWidth, hlines[i]);
+            }
+
+            for (int i = 0; i < (int)numUpDownVer.Value; i++)
+            {
+
+                int divisions = (int)numUpDownVer.Value + 1;
+
+                int x = (LayoutWidth / divisions);
+                if (i == 0)
+                {
+                    vlines[i] = x + 10;
+                }
+                else
+                {
+                    vlines[i] = x + vlines[i - 1];
+                }
+                gs.DrawLine(bordersPen, vlines[i], 10, vlines[i], 10 + LayoutHeight);
+            }
+
+            gs.Dispose();
+        }
+
+        private void ProfileSettings_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+
+            Rectangle[] tabBorders = new Rectangle[]
+            {
+               new Rectangle(sharedTabBtn.Location.X-1,sharedTabBtn.Location.Y-1,sharedTabBtn.Width+sharedBtnPicture.Width+2,sharedTabBtn.Height+1),
+               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
+               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
+               new Rectangle(processorTabBtn.Location.X-1,processorTabBtn.Location.Y-1,processorTabBtn.Width+processorBtnPicture.Width+2,processorTabBtn.Height+1),
+               new Rectangle(sharedTab.Location.X,sharedTab.Location.Y,sharedTab.Width,sharedTab.Height),
+               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
+               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
+               new Rectangle(layoutTab.Location.X,layoutTab.Location.Y,layoutTab.Width,layoutTab.Height),
+               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
+            };
+
+            g.DrawRectangles(bordersPen, tabBorders);
+
+            numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);
         }
     }
 }

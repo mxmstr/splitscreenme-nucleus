@@ -1646,6 +1646,7 @@ namespace Nucleus.Coop
 
                 if (UseSetupScreenBorder)
                 {
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(120, 0,0,0)), s.UIBounds);
                     g.DrawRectangle(PositionScreenPen, s.UIBounds);
                 }
 
@@ -1806,56 +1807,57 @@ namespace Nucleus.Coop
                     //{
                     //    g.FillRectangle((info.GamepadId > colors.Count()) ? Brushes.Magenta : colors[info.GamepadId], s);
                     //}
-
-                    if (gamePadPressed == -1)
+                    if (i == 0)//do not spam string drawing
                     {
-                        g.ResetClip();
-                        string msg = String.Empty;
+                        if (gamePadPressed == -1)
+                        {
+                            g.ResetClip();
+                            string msg = String.Empty;
 
-                        Brush brush = myBrush;
-                        if (GameProfile.TotalPlayers > 0)
-                        {
-                            if (TotalPlayers > GameProfile.TotalPlayers)
+                            Brush brush = myBrush;
+                            if (GameProfile.TotalPlayers > 0)
                             {
-                                msg = $"There is to much players!";
-                                brush = notEnoughPlyrsSBrush;
-                            }
-                            else if ((GameProfile.TotalPlayers - TotalPlayers) > 0)
-                            {
-                                string st = GameProfile.TotalPlayers - TotalPlayers > 1 ? "players" : "player";
-                                msg = $"Waiting {(GameProfile.PlayerIDs.Count - TotalPlayers)} More {st}";
-                                brush = notEnoughPlyrsSBrush;
-                            }
-                            else if (GameProfile.TotalPlayers == TotalPlayers)
-                            {
-                                msg = $"Profile Ready!";
-                            }
-                        }
-                        else
-                        {
-                            if (game.Game.SupportsMultipleKeyboardsAndMice)
-                            {
-                                msg = "Drag & Drop device(s) On The Desired Screen(s)";//(GameProfile.PlayerIDs.Count > 0) ? "Click Play!" : "Drag & Drop device(s) On Desired Screen(s) (Press A Key Or Move A Mouse)";
-                            }
-                            else if (!game.Game.SupportsMultipleKeyboardsAndMice && !game.Game.SupportsKeyboard)
-                            {
-                                msg = "Drag & Drop Controllers On The Desired Screen(s)";//(GameProfile.PlayerIDs.Count > 0) ? "Click Play!" : "Drag & Drop device(s) On Desired Screen(s) (Press A Key Or Move A Mouse)";
+                                if (TotalPlayers > GameProfile.TotalPlayers)
+                                {
+                                    msg = $"There is to much players!";
+                                    brush = notEnoughPlyrsSBrush;
+                                }
+                                else if ((GameProfile.TotalPlayers - TotalPlayers) > 0)
+                                {
+                                    string st = GameProfile.TotalPlayers - TotalPlayers > 1 ? "players" : "player";
+                                    msg = $"Waiting {(GameProfile.PlayerIDs.Count - TotalPlayers)} More {st}";
+                                    brush = notEnoughPlyrsSBrush;
+                                }
+                                else if (GameProfile.TotalPlayers == TotalPlayers)
+                                {
+                                    msg = $"Profile Ready!";
+                                }
                             }
                             else
                             {
-                                msg = "Drag & Drop Controllers Or Keyboard & Mouse On The Desired Screen(s)";//(GameProfile.PlayerIDs.Count > 0) ? "Click Play!" : "Drag & Drop device(s) On Desired Screen(s)";
+                                if (game.Game.SupportsMultipleKeyboardsAndMice)
+                                {
+                                    msg = "Drag & Drop device(s) On The Desired Screen(s)";
+                                }
+                                else if (!game.Game.SupportsMultipleKeyboardsAndMice && !game.Game.SupportsKeyboard)
+                                {
+                                    msg = "Drag & Drop Controllers On The Desired Screen(s)";
+                                }
+                                else
+                                {
+                                    msg = "Drag & Drop Controllers Or Keyboard & Mouse On The Desired Screen(s)";
+                                }
                             }
+
+                            g.DrawString(msg, playerTextFont, brush, new PointF(10, 10));
                         }
-
-                        g.DrawString(msg, playerTextFont, brush, new PointF(10, 10));
-
-                    }
-                    else
-                    {
-                        if (gamePadPressed == info.GamepadId)
+                        else
                         {
-                            g.ResetClip();
-                            g.DrawString("Gamepad " + (info.GamepadId + 1), playerTextFont, colors[info.GamepadId], new PointF(10, 10));
+                            if (gamePadPressed == info.GamepadId)
+                            {
+                                g.ResetClip();
+                                g.DrawString("Gamepad " + (info.GamepadId + 1), playerTextFont, colors[info.GamepadId], new PointF(10, 10));
+                            }
                         }
                     }
 

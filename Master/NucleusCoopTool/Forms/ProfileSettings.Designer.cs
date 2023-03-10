@@ -70,71 +70,6 @@ namespace Nucleus.Coop
             this.label98 = new System.Windows.Forms.Label();
             this.btnProcessorNext = new System.Windows.Forms.Button();
             this.label99 = new System.Windows.Forms.Label();
-            this.processorPage2 = new System.Windows.Forms.Panel();
-            this.PriorityClass32 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass31 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass30 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass29 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass28 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass27 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass26 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass25 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass24 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass23 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass22 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass21 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass20 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass19 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass18 = new System.Windows.Forms.ComboBox();
-            this.PriorityClass17 = new System.Windows.Forms.ComboBox();
-            this.Affinity32 = new System.Windows.Forms.TextBox();
-            this.Affinity31 = new System.Windows.Forms.TextBox();
-            this.Affinity30 = new System.Windows.Forms.TextBox();
-            this.Affinity29 = new System.Windows.Forms.TextBox();
-            this.Affinity28 = new System.Windows.Forms.TextBox();
-            this.Affinity27 = new System.Windows.Forms.TextBox();
-            this.Affinity26 = new System.Windows.Forms.TextBox();
-            this.Affinity25 = new System.Windows.Forms.TextBox();
-            this.Affinity24 = new System.Windows.Forms.TextBox();
-            this.Affinity23 = new System.Windows.Forms.TextBox();
-            this.Affinity22 = new System.Windows.Forms.TextBox();
-            this.Affinity21 = new System.Windows.Forms.TextBox();
-            this.Affinity20 = new System.Windows.Forms.TextBox();
-            this.Affinity19 = new System.Windows.Forms.TextBox();
-            this.Affinity18 = new System.Windows.Forms.TextBox();
-            this.Affinity17 = new System.Windows.Forms.TextBox();
-            this.IdealProcessor32 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.IdealProcessor31 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.IdealProcessor30 = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.IdealProcessor29 = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.IdealProcessor28 = new System.Windows.Forms.ComboBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.IdealProcessor27 = new System.Windows.Forms.ComboBox();
-            this.label56 = new System.Windows.Forms.Label();
-            this.IdealProcessor26 = new System.Windows.Forms.ComboBox();
-            this.label60 = new System.Windows.Forms.Label();
-            this.IdealProcessor25 = new System.Windows.Forms.ComboBox();
-            this.label62 = new System.Windows.Forms.Label();
-            this.IdealProcessor24 = new System.Windows.Forms.ComboBox();
-            this.label63 = new System.Windows.Forms.Label();
-            this.IdealProcessor23 = new System.Windows.Forms.ComboBox();
-            this.label64 = new System.Windows.Forms.Label();
-            this.IdealProcessor22 = new System.Windows.Forms.ComboBox();
-            this.label65 = new System.Windows.Forms.Label();
-            this.IdealProcessor21 = new System.Windows.Forms.ComboBox();
-            this.label66 = new System.Windows.Forms.Label();
-            this.IdealProcessor20 = new System.Windows.Forms.ComboBox();
-            this.label67 = new System.Windows.Forms.Label();
-            this.IdealProcessor19 = new System.Windows.Forms.ComboBox();
-            this.label68 = new System.Windows.Forms.Label();
-            this.IdealProcessor18 = new System.Windows.Forms.ComboBox();
-            this.label69 = new System.Windows.Forms.Label();
-            this.IdealProcessor17 = new System.Windows.Forms.ComboBox();
-            this.label70 = new System.Windows.Forms.Label();
             this.processorPage1 = new System.Windows.Forms.Panel();
             this.Affinity4 = new System.Windows.Forms.TextBox();
             this.label93 = new System.Windows.Forms.Label();
@@ -200,6 +135,71 @@ namespace Nucleus.Coop
             this.Affinity14 = new System.Windows.Forms.TextBox();
             this.Affinity15 = new System.Windows.Forms.TextBox();
             this.Affinity16 = new System.Windows.Forms.TextBox();
+            this.processorPage2 = new System.Windows.Forms.Panel();
+            this.PriorityClass32 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass31 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass30 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass29 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass28 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass27 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass26 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass25 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass24 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass23 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass22 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass21 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass20 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass19 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass18 = new System.Windows.Forms.ComboBox();
+            this.PriorityClass17 = new System.Windows.Forms.ComboBox();
+            this.Affinity32 = new System.Windows.Forms.TextBox();
+            this.Affinity31 = new System.Windows.Forms.TextBox();
+            this.Affinity30 = new System.Windows.Forms.TextBox();
+            this.Affinity29 = new System.Windows.Forms.TextBox();
+            this.Affinity28 = new System.Windows.Forms.TextBox();
+            this.Affinity27 = new System.Windows.Forms.TextBox();
+            this.Affinity26 = new System.Windows.Forms.TextBox();
+            this.Affinity25 = new System.Windows.Forms.TextBox();
+            this.Affinity24 = new System.Windows.Forms.TextBox();
+            this.Affinity23 = new System.Windows.Forms.TextBox();
+            this.Affinity22 = new System.Windows.Forms.TextBox();
+            this.Affinity21 = new System.Windows.Forms.TextBox();
+            this.Affinity20 = new System.Windows.Forms.TextBox();
+            this.Affinity19 = new System.Windows.Forms.TextBox();
+            this.Affinity18 = new System.Windows.Forms.TextBox();
+            this.Affinity17 = new System.Windows.Forms.TextBox();
+            this.IdealProcessor32 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.IdealProcessor31 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.IdealProcessor30 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.IdealProcessor29 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.IdealProcessor28 = new System.Windows.Forms.ComboBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.IdealProcessor27 = new System.Windows.Forms.ComboBox();
+            this.label56 = new System.Windows.Forms.Label();
+            this.IdealProcessor26 = new System.Windows.Forms.ComboBox();
+            this.label60 = new System.Windows.Forms.Label();
+            this.IdealProcessor25 = new System.Windows.Forms.ComboBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.IdealProcessor24 = new System.Windows.Forms.ComboBox();
+            this.label63 = new System.Windows.Forms.Label();
+            this.IdealProcessor23 = new System.Windows.Forms.ComboBox();
+            this.label64 = new System.Windows.Forms.Label();
+            this.IdealProcessor22 = new System.Windows.Forms.ComboBox();
+            this.label65 = new System.Windows.Forms.Label();
+            this.IdealProcessor21 = new System.Windows.Forms.ComboBox();
+            this.label66 = new System.Windows.Forms.Label();
+            this.IdealProcessor20 = new System.Windows.Forms.ComboBox();
+            this.label67 = new System.Windows.Forms.Label();
+            this.IdealProcessor19 = new System.Windows.Forms.ComboBox();
+            this.label68 = new System.Windows.Forms.Label();
+            this.IdealProcessor18 = new System.Windows.Forms.ComboBox();
+            this.label69 = new System.Windows.Forms.Label();
+            this.IdealProcessor17 = new System.Windows.Forms.ComboBox();
+            this.label70 = new System.Windows.Forms.Label();
             this.audioTab = new BufferedClientAreaPanel();
             this.label39 = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
@@ -375,8 +375,8 @@ namespace Nucleus.Coop
             ((System.ComponentModel.ISupportInitialize)(this.profile_info_btn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
             this.processorTab.SuspendLayout();
-            this.processorPage2.SuspendLayout();
             this.processorPage1.SuspendLayout();
+            this.processorPage2.SuspendLayout();
             this.audioTab.SuspendLayout();
             this.audioCustomSettingsBox.SuspendLayout();
             this.playersTab.SuspendLayout();
@@ -643,6 +643,8 @@ namespace Nucleus.Coop
             // btnProcessorNext
             // 
             this.btnProcessorNext.BackColor = System.Drawing.Color.Transparent;
+            this.btnProcessorNext.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnProcessorNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnProcessorNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnProcessorNext.Location = new System.Drawing.Point(595, 109);
             this.btnProcessorNext.Name = "btnProcessorNext";
@@ -663,917 +665,6 @@ namespace Nucleus.Coop
             this.label99.Size = new System.Drawing.Size(66, 13);
             this.label99.TabIndex = 390;
             this.label99.Text = "Priority Class";
-            // 
-            // processorPage2
-            // 
-            this.processorPage2.Controls.Add(this.PriorityClass32);
-            this.processorPage2.Controls.Add(this.PriorityClass31);
-            this.processorPage2.Controls.Add(this.PriorityClass30);
-            this.processorPage2.Controls.Add(this.PriorityClass29);
-            this.processorPage2.Controls.Add(this.PriorityClass28);
-            this.processorPage2.Controls.Add(this.PriorityClass27);
-            this.processorPage2.Controls.Add(this.PriorityClass26);
-            this.processorPage2.Controls.Add(this.PriorityClass25);
-            this.processorPage2.Controls.Add(this.PriorityClass24);
-            this.processorPage2.Controls.Add(this.PriorityClass23);
-            this.processorPage2.Controls.Add(this.PriorityClass22);
-            this.processorPage2.Controls.Add(this.PriorityClass21);
-            this.processorPage2.Controls.Add(this.PriorityClass20);
-            this.processorPage2.Controls.Add(this.PriorityClass19);
-            this.processorPage2.Controls.Add(this.PriorityClass18);
-            this.processorPage2.Controls.Add(this.PriorityClass17);
-            this.processorPage2.Controls.Add(this.Affinity32);
-            this.processorPage2.Controls.Add(this.Affinity31);
-            this.processorPage2.Controls.Add(this.Affinity30);
-            this.processorPage2.Controls.Add(this.Affinity29);
-            this.processorPage2.Controls.Add(this.Affinity28);
-            this.processorPage2.Controls.Add(this.Affinity27);
-            this.processorPage2.Controls.Add(this.Affinity26);
-            this.processorPage2.Controls.Add(this.Affinity25);
-            this.processorPage2.Controls.Add(this.Affinity24);
-            this.processorPage2.Controls.Add(this.Affinity23);
-            this.processorPage2.Controls.Add(this.Affinity22);
-            this.processorPage2.Controls.Add(this.Affinity21);
-            this.processorPage2.Controls.Add(this.Affinity20);
-            this.processorPage2.Controls.Add(this.Affinity19);
-            this.processorPage2.Controls.Add(this.Affinity18);
-            this.processorPage2.Controls.Add(this.Affinity17);
-            this.processorPage2.Controls.Add(this.IdealProcessor32);
-            this.processorPage2.Controls.Add(this.label1);
-            this.processorPage2.Controls.Add(this.IdealProcessor31);
-            this.processorPage2.Controls.Add(this.label3);
-            this.processorPage2.Controls.Add(this.IdealProcessor30);
-            this.processorPage2.Controls.Add(this.label4);
-            this.processorPage2.Controls.Add(this.IdealProcessor29);
-            this.processorPage2.Controls.Add(this.label5);
-            this.processorPage2.Controls.Add(this.IdealProcessor28);
-            this.processorPage2.Controls.Add(this.label30);
-            this.processorPage2.Controls.Add(this.IdealProcessor27);
-            this.processorPage2.Controls.Add(this.label56);
-            this.processorPage2.Controls.Add(this.IdealProcessor26);
-            this.processorPage2.Controls.Add(this.label60);
-            this.processorPage2.Controls.Add(this.IdealProcessor25);
-            this.processorPage2.Controls.Add(this.label62);
-            this.processorPage2.Controls.Add(this.IdealProcessor24);
-            this.processorPage2.Controls.Add(this.label63);
-            this.processorPage2.Controls.Add(this.IdealProcessor23);
-            this.processorPage2.Controls.Add(this.label64);
-            this.processorPage2.Controls.Add(this.IdealProcessor22);
-            this.processorPage2.Controls.Add(this.label65);
-            this.processorPage2.Controls.Add(this.IdealProcessor21);
-            this.processorPage2.Controls.Add(this.label66);
-            this.processorPage2.Controls.Add(this.IdealProcessor20);
-            this.processorPage2.Controls.Add(this.label67);
-            this.processorPage2.Controls.Add(this.IdealProcessor19);
-            this.processorPage2.Controls.Add(this.label68);
-            this.processorPage2.Controls.Add(this.IdealProcessor18);
-            this.processorPage2.Controls.Add(this.label69);
-            this.processorPage2.Controls.Add(this.IdealProcessor17);
-            this.processorPage2.Controls.Add(this.label70);
-            this.processorPage2.Location = new System.Drawing.Point(1, 134);
-            this.processorPage2.Name = "processorPage2";
-            this.processorPage2.Size = new System.Drawing.Size(671, 210);
-            this.processorPage2.TabIndex = 326;
-            // 
-            // PriorityClass32
-            // 
-            this.PriorityClass32.BackColor = System.Drawing.Color.White;
-            this.PriorityClass32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass32.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass32.Location = new System.Drawing.Point(405, 178);
-            this.PriorityClass32.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass32.MaxLength = 17;
-            this.PriorityClass32.Name = "PriorityClass32";
-            this.PriorityClass32.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass32.TabIndex = 387;
-            // 
-            // PriorityClass31
-            // 
-            this.PriorityClass31.BackColor = System.Drawing.Color.White;
-            this.PriorityClass31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass31.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass31.Location = new System.Drawing.Point(405, 156);
-            this.PriorityClass31.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass31.MaxLength = 17;
-            this.PriorityClass31.Name = "PriorityClass31";
-            this.PriorityClass31.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass31.TabIndex = 386;
-            // 
-            // PriorityClass30
-            // 
-            this.PriorityClass30.BackColor = System.Drawing.Color.White;
-            this.PriorityClass30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass30.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass30.Location = new System.Drawing.Point(405, 134);
-            this.PriorityClass30.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass30.MaxLength = 17;
-            this.PriorityClass30.Name = "PriorityClass30";
-            this.PriorityClass30.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass30.TabIndex = 385;
-            // 
-            // PriorityClass29
-            // 
-            this.PriorityClass29.BackColor = System.Drawing.Color.White;
-            this.PriorityClass29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass29.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass29.Location = new System.Drawing.Point(405, 112);
-            this.PriorityClass29.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass29.MaxLength = 17;
-            this.PriorityClass29.Name = "PriorityClass29";
-            this.PriorityClass29.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass29.TabIndex = 384;
-            // 
-            // PriorityClass28
-            // 
-            this.PriorityClass28.BackColor = System.Drawing.Color.White;
-            this.PriorityClass28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass28.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass28.Location = new System.Drawing.Point(405, 90);
-            this.PriorityClass28.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass28.MaxLength = 17;
-            this.PriorityClass28.Name = "PriorityClass28";
-            this.PriorityClass28.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass28.TabIndex = 383;
-            // 
-            // PriorityClass27
-            // 
-            this.PriorityClass27.BackColor = System.Drawing.Color.White;
-            this.PriorityClass27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass27.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass27.Location = new System.Drawing.Point(405, 68);
-            this.PriorityClass27.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass27.MaxLength = 17;
-            this.PriorityClass27.Name = "PriorityClass27";
-            this.PriorityClass27.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass27.TabIndex = 382;
-            // 
-            // PriorityClass26
-            // 
-            this.PriorityClass26.BackColor = System.Drawing.Color.White;
-            this.PriorityClass26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass26.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass26.Location = new System.Drawing.Point(405, 46);
-            this.PriorityClass26.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass26.MaxLength = 17;
-            this.PriorityClass26.Name = "PriorityClass26";
-            this.PriorityClass26.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass26.TabIndex = 381;
-            // 
-            // PriorityClass25
-            // 
-            this.PriorityClass25.BackColor = System.Drawing.Color.White;
-            this.PriorityClass25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass25.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass25.Location = new System.Drawing.Point(405, 24);
-            this.PriorityClass25.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass25.MaxLength = 17;
-            this.PriorityClass25.Name = "PriorityClass25";
-            this.PriorityClass25.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass25.TabIndex = 380;
-            // 
-            // PriorityClass24
-            // 
-            this.PriorityClass24.BackColor = System.Drawing.Color.White;
-            this.PriorityClass24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass24.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass24.Location = new System.Drawing.Point(41, 178);
-            this.PriorityClass24.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass24.MaxLength = 17;
-            this.PriorityClass24.Name = "PriorityClass24";
-            this.PriorityClass24.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass24.TabIndex = 379;
-            // 
-            // PriorityClass23
-            // 
-            this.PriorityClass23.BackColor = System.Drawing.Color.White;
-            this.PriorityClass23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass23.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass23.Location = new System.Drawing.Point(41, 156);
-            this.PriorityClass23.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass23.MaxLength = 17;
-            this.PriorityClass23.Name = "PriorityClass23";
-            this.PriorityClass23.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass23.TabIndex = 378;
-            // 
-            // PriorityClass22
-            // 
-            this.PriorityClass22.BackColor = System.Drawing.Color.White;
-            this.PriorityClass22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass22.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass22.Location = new System.Drawing.Point(41, 134);
-            this.PriorityClass22.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass22.MaxLength = 17;
-            this.PriorityClass22.Name = "PriorityClass22";
-            this.PriorityClass22.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass22.TabIndex = 377;
-            // 
-            // PriorityClass21
-            // 
-            this.PriorityClass21.BackColor = System.Drawing.Color.White;
-            this.PriorityClass21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass21.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass21.Location = new System.Drawing.Point(41, 112);
-            this.PriorityClass21.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass21.MaxLength = 17;
-            this.PriorityClass21.Name = "PriorityClass21";
-            this.PriorityClass21.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass21.TabIndex = 376;
-            // 
-            // PriorityClass20
-            // 
-            this.PriorityClass20.BackColor = System.Drawing.Color.White;
-            this.PriorityClass20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass20.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass20.Location = new System.Drawing.Point(41, 90);
-            this.PriorityClass20.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass20.MaxLength = 17;
-            this.PriorityClass20.Name = "PriorityClass20";
-            this.PriorityClass20.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass20.TabIndex = 375;
-            // 
-            // PriorityClass19
-            // 
-            this.PriorityClass19.BackColor = System.Drawing.Color.White;
-            this.PriorityClass19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass19.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass19.Location = new System.Drawing.Point(41, 68);
-            this.PriorityClass19.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass19.MaxLength = 17;
-            this.PriorityClass19.Name = "PriorityClass19";
-            this.PriorityClass19.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass19.TabIndex = 374;
-            // 
-            // PriorityClass18
-            // 
-            this.PriorityClass18.BackColor = System.Drawing.Color.White;
-            this.PriorityClass18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass18.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass18.Location = new System.Drawing.Point(41, 46);
-            this.PriorityClass18.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass18.MaxLength = 17;
-            this.PriorityClass18.Name = "PriorityClass18";
-            this.PriorityClass18.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass18.TabIndex = 373;
-            // 
-            // PriorityClass17
-            // 
-            this.PriorityClass17.BackColor = System.Drawing.Color.White;
-            this.PriorityClass17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PriorityClass17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PriorityClass17.Items.AddRange(new object[] {
-            "Normal",
-            "AboveNormal",
-            "High",
-            "RealTime"});
-            this.PriorityClass17.Location = new System.Drawing.Point(41, 24);
-            this.PriorityClass17.Margin = new System.Windows.Forms.Padding(2);
-            this.PriorityClass17.MaxLength = 17;
-            this.PriorityClass17.Name = "PriorityClass17";
-            this.PriorityClass17.Size = new System.Drawing.Size(86, 21);
-            this.PriorityClass17.TabIndex = 372;
-            // 
-            // Affinity32
-            // 
-            this.Affinity32.BackColor = System.Drawing.Color.White;
-            this.Affinity32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity32.Location = new System.Drawing.Point(555, 179);
-            this.Affinity32.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity32.MaxLength = 100;
-            this.Affinity32.Name = "Affinity32";
-            this.Affinity32.Size = new System.Drawing.Size(86, 20);
-            this.Affinity32.TabIndex = 371;
-            // 
-            // Affinity31
-            // 
-            this.Affinity31.BackColor = System.Drawing.Color.White;
-            this.Affinity31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity31.Location = new System.Drawing.Point(555, 157);
-            this.Affinity31.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity31.MaxLength = 100;
-            this.Affinity31.Name = "Affinity31";
-            this.Affinity31.Size = new System.Drawing.Size(86, 20);
-            this.Affinity31.TabIndex = 370;
-            // 
-            // Affinity30
-            // 
-            this.Affinity30.BackColor = System.Drawing.Color.White;
-            this.Affinity30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity30.Location = new System.Drawing.Point(555, 135);
-            this.Affinity30.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity30.MaxLength = 100;
-            this.Affinity30.Name = "Affinity30";
-            this.Affinity30.Size = new System.Drawing.Size(86, 20);
-            this.Affinity30.TabIndex = 369;
-            // 
-            // Affinity29
-            // 
-            this.Affinity29.BackColor = System.Drawing.Color.White;
-            this.Affinity29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity29.Location = new System.Drawing.Point(555, 113);
-            this.Affinity29.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity29.MaxLength = 100;
-            this.Affinity29.Name = "Affinity29";
-            this.Affinity29.Size = new System.Drawing.Size(86, 20);
-            this.Affinity29.TabIndex = 368;
-            // 
-            // Affinity28
-            // 
-            this.Affinity28.BackColor = System.Drawing.Color.White;
-            this.Affinity28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity28.Location = new System.Drawing.Point(555, 91);
-            this.Affinity28.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity28.MaxLength = 100;
-            this.Affinity28.Name = "Affinity28";
-            this.Affinity28.Size = new System.Drawing.Size(86, 20);
-            this.Affinity28.TabIndex = 367;
-            // 
-            // Affinity27
-            // 
-            this.Affinity27.BackColor = System.Drawing.Color.White;
-            this.Affinity27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity27.Location = new System.Drawing.Point(555, 69);
-            this.Affinity27.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity27.MaxLength = 100;
-            this.Affinity27.Name = "Affinity27";
-            this.Affinity27.Size = new System.Drawing.Size(86, 20);
-            this.Affinity27.TabIndex = 366;
-            // 
-            // Affinity26
-            // 
-            this.Affinity26.BackColor = System.Drawing.Color.White;
-            this.Affinity26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity26.Location = new System.Drawing.Point(555, 47);
-            this.Affinity26.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity26.MaxLength = 100;
-            this.Affinity26.Name = "Affinity26";
-            this.Affinity26.Size = new System.Drawing.Size(86, 20);
-            this.Affinity26.TabIndex = 365;
-            // 
-            // Affinity25
-            // 
-            this.Affinity25.BackColor = System.Drawing.Color.White;
-            this.Affinity25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity25.Location = new System.Drawing.Point(555, 25);
-            this.Affinity25.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity25.MaxLength = 100;
-            this.Affinity25.Name = "Affinity25";
-            this.Affinity25.Size = new System.Drawing.Size(86, 20);
-            this.Affinity25.TabIndex = 364;
-            // 
-            // Affinity24
-            // 
-            this.Affinity24.BackColor = System.Drawing.Color.White;
-            this.Affinity24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Affinity24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity24.Location = new System.Drawing.Point(192, 179);
-            this.Affinity24.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity24.MaxLength = 100;
-            this.Affinity24.Name = "Affinity24";
-            this.Affinity24.Size = new System.Drawing.Size(86, 20);
-            this.Affinity24.TabIndex = 363;
-            // 
-            // Affinity23
-            // 
-            this.Affinity23.BackColor = System.Drawing.Color.White;
-            this.Affinity23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Affinity23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity23.Location = new System.Drawing.Point(192, 157);
-            this.Affinity23.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity23.MaxLength = 100;
-            this.Affinity23.Name = "Affinity23";
-            this.Affinity23.Size = new System.Drawing.Size(86, 20);
-            this.Affinity23.TabIndex = 362;
-            // 
-            // Affinity22
-            // 
-            this.Affinity22.BackColor = System.Drawing.Color.White;
-            this.Affinity22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Affinity22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity22.Location = new System.Drawing.Point(192, 135);
-            this.Affinity22.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity22.MaxLength = 100;
-            this.Affinity22.Name = "Affinity22";
-            this.Affinity22.Size = new System.Drawing.Size(86, 20);
-            this.Affinity22.TabIndex = 361;
-            // 
-            // Affinity21
-            // 
-            this.Affinity21.BackColor = System.Drawing.Color.White;
-            this.Affinity21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Affinity21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity21.Location = new System.Drawing.Point(192, 113);
-            this.Affinity21.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity21.MaxLength = 100;
-            this.Affinity21.Name = "Affinity21";
-            this.Affinity21.Size = new System.Drawing.Size(86, 20);
-            this.Affinity21.TabIndex = 360;
-            // 
-            // Affinity20
-            // 
-            this.Affinity20.BackColor = System.Drawing.Color.White;
-            this.Affinity20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Affinity20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity20.Location = new System.Drawing.Point(192, 91);
-            this.Affinity20.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity20.MaxLength = 100;
-            this.Affinity20.Name = "Affinity20";
-            this.Affinity20.Size = new System.Drawing.Size(86, 20);
-            this.Affinity20.TabIndex = 359;
-            // 
-            // Affinity19
-            // 
-            this.Affinity19.BackColor = System.Drawing.Color.White;
-            this.Affinity19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Affinity19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity19.Location = new System.Drawing.Point(192, 69);
-            this.Affinity19.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity19.MaxLength = 100;
-            this.Affinity19.Name = "Affinity19";
-            this.Affinity19.Size = new System.Drawing.Size(86, 20);
-            this.Affinity19.TabIndex = 358;
-            // 
-            // Affinity18
-            // 
-            this.Affinity18.BackColor = System.Drawing.Color.White;
-            this.Affinity18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Affinity18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity18.Location = new System.Drawing.Point(192, 47);
-            this.Affinity18.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity18.MaxLength = 100;
-            this.Affinity18.Name = "Affinity18";
-            this.Affinity18.Size = new System.Drawing.Size(86, 20);
-            this.Affinity18.TabIndex = 357;
-            // 
-            // Affinity17
-            // 
-            this.Affinity17.BackColor = System.Drawing.Color.White;
-            this.Affinity17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Affinity17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity17.Location = new System.Drawing.Point(192, 25);
-            this.Affinity17.Margin = new System.Windows.Forms.Padding(2);
-            this.Affinity17.MaxLength = 100;
-            this.Affinity17.Name = "Affinity17";
-            this.Affinity17.Size = new System.Drawing.Size(86, 20);
-            this.Affinity17.TabIndex = 356;
-            // 
-            // IdealProcessor32
-            // 
-            this.IdealProcessor32.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor32.Location = new System.Drawing.Point(500, 178);
-            this.IdealProcessor32.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor32.MaxLength = 9;
-            this.IdealProcessor32.Name = "IdealProcessor32";
-            this.IdealProcessor32.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor32.TabIndex = 354;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(376, 181);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(25, 13);
-            this.label1.TabIndex = 355;
-            this.label1.Text = "32 :";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor31
-            // 
-            this.IdealProcessor31.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor31.Location = new System.Drawing.Point(500, 156);
-            this.IdealProcessor31.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor31.MaxLength = 9;
-            this.IdealProcessor31.Name = "IdealProcessor31";
-            this.IdealProcessor31.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor31.TabIndex = 352;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(376, 159);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(25, 13);
-            this.label3.TabIndex = 353;
-            this.label3.Text = "31 :";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor30
-            // 
-            this.IdealProcessor30.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor30.Location = new System.Drawing.Point(500, 134);
-            this.IdealProcessor30.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor30.MaxLength = 9;
-            this.IdealProcessor30.Name = "IdealProcessor30";
-            this.IdealProcessor30.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor30.TabIndex = 350;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(376, 137);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(25, 13);
-            this.label4.TabIndex = 351;
-            this.label4.Text = "30 :";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor29
-            // 
-            this.IdealProcessor29.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor29.Location = new System.Drawing.Point(500, 112);
-            this.IdealProcessor29.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor29.MaxLength = 9;
-            this.IdealProcessor29.Name = "IdealProcessor29";
-            this.IdealProcessor29.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor29.TabIndex = 348;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(376, 115);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(25, 13);
-            this.label5.TabIndex = 349;
-            this.label5.Text = "29 :";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor28
-            // 
-            this.IdealProcessor28.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor28.Location = new System.Drawing.Point(500, 90);
-            this.IdealProcessor28.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor28.MaxLength = 9;
-            this.IdealProcessor28.Name = "IdealProcessor28";
-            this.IdealProcessor28.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor28.TabIndex = 346;
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label30.Location = new System.Drawing.Point(376, 93);
-            this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(25, 13);
-            this.label30.TabIndex = 347;
-            this.label30.Text = "28 :";
-            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor27
-            // 
-            this.IdealProcessor27.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor27.Location = new System.Drawing.Point(500, 68);
-            this.IdealProcessor27.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor27.MaxLength = 9;
-            this.IdealProcessor27.Name = "IdealProcessor27";
-            this.IdealProcessor27.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor27.TabIndex = 345;
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label56.Location = new System.Drawing.Point(376, 71);
-            this.label56.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(25, 13);
-            this.label56.TabIndex = 344;
-            this.label56.Text = "27 :";
-            this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor26
-            // 
-            this.IdealProcessor26.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor26.Location = new System.Drawing.Point(500, 46);
-            this.IdealProcessor26.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor26.MaxLength = 9;
-            this.IdealProcessor26.Name = "IdealProcessor26";
-            this.IdealProcessor26.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor26.TabIndex = 343;
-            // 
-            // label60
-            // 
-            this.label60.AutoSize = true;
-            this.label60.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label60.Location = new System.Drawing.Point(376, 49);
-            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(25, 13);
-            this.label60.TabIndex = 341;
-            this.label60.Text = "26 :";
-            this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor25
-            // 
-            this.IdealProcessor25.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor25.Location = new System.Drawing.Point(500, 24);
-            this.IdealProcessor25.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor25.MaxLength = 9;
-            this.IdealProcessor25.Name = "IdealProcessor25";
-            this.IdealProcessor25.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor25.TabIndex = 342;
-            // 
-            // label62
-            // 
-            this.label62.AutoSize = true;
-            this.label62.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label62.Location = new System.Drawing.Point(376, 28);
-            this.label62.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(25, 13);
-            this.label62.TabIndex = 340;
-            this.label62.Text = "25 :";
-            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor24
-            // 
-            this.IdealProcessor24.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor24.Location = new System.Drawing.Point(136, 178);
-            this.IdealProcessor24.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor24.MaxLength = 2;
-            this.IdealProcessor24.Name = "IdealProcessor24";
-            this.IdealProcessor24.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor24.TabIndex = 338;
-            // 
-            // label63
-            // 
-            this.label63.AutoSize = true;
-            this.label63.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label63.Location = new System.Drawing.Point(12, 181);
-            this.label63.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(25, 13);
-            this.label63.TabIndex = 339;
-            this.label63.Text = "24 :";
-            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor23
-            // 
-            this.IdealProcessor23.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor23.Location = new System.Drawing.Point(136, 156);
-            this.IdealProcessor23.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor23.MaxLength = 2;
-            this.IdealProcessor23.Name = "IdealProcessor23";
-            this.IdealProcessor23.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor23.TabIndex = 336;
-            // 
-            // label64
-            // 
-            this.label64.AutoSize = true;
-            this.label64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label64.Location = new System.Drawing.Point(12, 159);
-            this.label64.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(25, 13);
-            this.label64.TabIndex = 337;
-            this.label64.Text = "23 :";
-            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor22
-            // 
-            this.IdealProcessor22.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor22.Location = new System.Drawing.Point(136, 134);
-            this.IdealProcessor22.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor22.MaxLength = 2;
-            this.IdealProcessor22.Name = "IdealProcessor22";
-            this.IdealProcessor22.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor22.TabIndex = 334;
-            // 
-            // label65
-            // 
-            this.label65.AutoSize = true;
-            this.label65.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label65.Location = new System.Drawing.Point(12, 137);
-            this.label65.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(25, 13);
-            this.label65.TabIndex = 335;
-            this.label65.Text = "22 :";
-            this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor21
-            // 
-            this.IdealProcessor21.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor21.Location = new System.Drawing.Point(136, 112);
-            this.IdealProcessor21.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor21.MaxLength = 2;
-            this.IdealProcessor21.Name = "IdealProcessor21";
-            this.IdealProcessor21.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor21.TabIndex = 332;
-            // 
-            // label66
-            // 
-            this.label66.AutoSize = true;
-            this.label66.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label66.Location = new System.Drawing.Point(12, 115);
-            this.label66.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(25, 13);
-            this.label66.TabIndex = 333;
-            this.label66.Text = "21 :";
-            this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor20
-            // 
-            this.IdealProcessor20.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor20.Location = new System.Drawing.Point(136, 90);
-            this.IdealProcessor20.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor20.MaxLength = 2;
-            this.IdealProcessor20.Name = "IdealProcessor20";
-            this.IdealProcessor20.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor20.TabIndex = 330;
-            // 
-            // label67
-            // 
-            this.label67.AutoSize = true;
-            this.label67.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label67.Location = new System.Drawing.Point(12, 93);
-            this.label67.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(25, 13);
-            this.label67.TabIndex = 331;
-            this.label67.Text = "20 :";
-            this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor19
-            // 
-            this.IdealProcessor19.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor19.Location = new System.Drawing.Point(136, 68);
-            this.IdealProcessor19.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor19.MaxLength = 2;
-            this.IdealProcessor19.Name = "IdealProcessor19";
-            this.IdealProcessor19.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor19.TabIndex = 329;
-            // 
-            // label68
-            // 
-            this.label68.AutoSize = true;
-            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label68.Location = new System.Drawing.Point(12, 71);
-            this.label68.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(25, 13);
-            this.label68.TabIndex = 328;
-            this.label68.Text = "19 :";
-            this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor18
-            // 
-            this.IdealProcessor18.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor18.Location = new System.Drawing.Point(136, 46);
-            this.IdealProcessor18.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor18.MaxLength = 2;
-            this.IdealProcessor18.Name = "IdealProcessor18";
-            this.IdealProcessor18.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor18.TabIndex = 327;
-            // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.Location = new System.Drawing.Point(12, 49);
-            this.label69.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(25, 13);
-            this.label69.TabIndex = 325;
-            this.label69.Text = "18 :";
-            this.label69.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IdealProcessor17
-            // 
-            this.IdealProcessor17.BackColor = System.Drawing.Color.White;
-            this.IdealProcessor17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IdealProcessor17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor17.Location = new System.Drawing.Point(136, 24);
-            this.IdealProcessor17.Margin = new System.Windows.Forms.Padding(2);
-            this.IdealProcessor17.MaxLength = 2;
-            this.IdealProcessor17.Name = "IdealProcessor17";
-            this.IdealProcessor17.Size = new System.Drawing.Size(48, 21);
-            this.IdealProcessor17.TabIndex = 326;
-            // 
-            // label70
-            // 
-            this.label70.AutoSize = true;
-            this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(12, 28);
-            this.label70.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(25, 13);
-            this.label70.TabIndex = 324;
-            this.label70.Text = "17 :";
-            this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // processorPage1
             // 
@@ -2486,6 +1577,917 @@ namespace Nucleus.Coop
             this.Affinity16.Size = new System.Drawing.Size(86, 20);
             this.Affinity16.TabIndex = 242;
             // 
+            // processorPage2
+            // 
+            this.processorPage2.Controls.Add(this.PriorityClass32);
+            this.processorPage2.Controls.Add(this.PriorityClass31);
+            this.processorPage2.Controls.Add(this.PriorityClass30);
+            this.processorPage2.Controls.Add(this.PriorityClass29);
+            this.processorPage2.Controls.Add(this.PriorityClass28);
+            this.processorPage2.Controls.Add(this.PriorityClass27);
+            this.processorPage2.Controls.Add(this.PriorityClass26);
+            this.processorPage2.Controls.Add(this.PriorityClass25);
+            this.processorPage2.Controls.Add(this.PriorityClass24);
+            this.processorPage2.Controls.Add(this.PriorityClass23);
+            this.processorPage2.Controls.Add(this.PriorityClass22);
+            this.processorPage2.Controls.Add(this.PriorityClass21);
+            this.processorPage2.Controls.Add(this.PriorityClass20);
+            this.processorPage2.Controls.Add(this.PriorityClass19);
+            this.processorPage2.Controls.Add(this.PriorityClass18);
+            this.processorPage2.Controls.Add(this.PriorityClass17);
+            this.processorPage2.Controls.Add(this.Affinity32);
+            this.processorPage2.Controls.Add(this.Affinity31);
+            this.processorPage2.Controls.Add(this.Affinity30);
+            this.processorPage2.Controls.Add(this.Affinity29);
+            this.processorPage2.Controls.Add(this.Affinity28);
+            this.processorPage2.Controls.Add(this.Affinity27);
+            this.processorPage2.Controls.Add(this.Affinity26);
+            this.processorPage2.Controls.Add(this.Affinity25);
+            this.processorPage2.Controls.Add(this.Affinity24);
+            this.processorPage2.Controls.Add(this.Affinity23);
+            this.processorPage2.Controls.Add(this.Affinity22);
+            this.processorPage2.Controls.Add(this.Affinity21);
+            this.processorPage2.Controls.Add(this.Affinity20);
+            this.processorPage2.Controls.Add(this.Affinity19);
+            this.processorPage2.Controls.Add(this.Affinity18);
+            this.processorPage2.Controls.Add(this.Affinity17);
+            this.processorPage2.Controls.Add(this.IdealProcessor32);
+            this.processorPage2.Controls.Add(this.label1);
+            this.processorPage2.Controls.Add(this.IdealProcessor31);
+            this.processorPage2.Controls.Add(this.label3);
+            this.processorPage2.Controls.Add(this.IdealProcessor30);
+            this.processorPage2.Controls.Add(this.label4);
+            this.processorPage2.Controls.Add(this.IdealProcessor29);
+            this.processorPage2.Controls.Add(this.label5);
+            this.processorPage2.Controls.Add(this.IdealProcessor28);
+            this.processorPage2.Controls.Add(this.label30);
+            this.processorPage2.Controls.Add(this.IdealProcessor27);
+            this.processorPage2.Controls.Add(this.label56);
+            this.processorPage2.Controls.Add(this.IdealProcessor26);
+            this.processorPage2.Controls.Add(this.label60);
+            this.processorPage2.Controls.Add(this.IdealProcessor25);
+            this.processorPage2.Controls.Add(this.label62);
+            this.processorPage2.Controls.Add(this.IdealProcessor24);
+            this.processorPage2.Controls.Add(this.label63);
+            this.processorPage2.Controls.Add(this.IdealProcessor23);
+            this.processorPage2.Controls.Add(this.label64);
+            this.processorPage2.Controls.Add(this.IdealProcessor22);
+            this.processorPage2.Controls.Add(this.label65);
+            this.processorPage2.Controls.Add(this.IdealProcessor21);
+            this.processorPage2.Controls.Add(this.label66);
+            this.processorPage2.Controls.Add(this.IdealProcessor20);
+            this.processorPage2.Controls.Add(this.label67);
+            this.processorPage2.Controls.Add(this.IdealProcessor19);
+            this.processorPage2.Controls.Add(this.label68);
+            this.processorPage2.Controls.Add(this.IdealProcessor18);
+            this.processorPage2.Controls.Add(this.label69);
+            this.processorPage2.Controls.Add(this.IdealProcessor17);
+            this.processorPage2.Controls.Add(this.label70);
+            this.processorPage2.Location = new System.Drawing.Point(1, 134);
+            this.processorPage2.Name = "processorPage2";
+            this.processorPage2.Size = new System.Drawing.Size(671, 210);
+            this.processorPage2.TabIndex = 326;
+            // 
+            // PriorityClass32
+            // 
+            this.PriorityClass32.BackColor = System.Drawing.Color.White;
+            this.PriorityClass32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass32.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass32.Location = new System.Drawing.Point(405, 178);
+            this.PriorityClass32.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass32.MaxLength = 17;
+            this.PriorityClass32.Name = "PriorityClass32";
+            this.PriorityClass32.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass32.TabIndex = 387;
+            // 
+            // PriorityClass31
+            // 
+            this.PriorityClass31.BackColor = System.Drawing.Color.White;
+            this.PriorityClass31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass31.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass31.Location = new System.Drawing.Point(405, 156);
+            this.PriorityClass31.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass31.MaxLength = 17;
+            this.PriorityClass31.Name = "PriorityClass31";
+            this.PriorityClass31.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass31.TabIndex = 386;
+            // 
+            // PriorityClass30
+            // 
+            this.PriorityClass30.BackColor = System.Drawing.Color.White;
+            this.PriorityClass30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass30.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass30.Location = new System.Drawing.Point(405, 134);
+            this.PriorityClass30.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass30.MaxLength = 17;
+            this.PriorityClass30.Name = "PriorityClass30";
+            this.PriorityClass30.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass30.TabIndex = 385;
+            // 
+            // PriorityClass29
+            // 
+            this.PriorityClass29.BackColor = System.Drawing.Color.White;
+            this.PriorityClass29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass29.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass29.Location = new System.Drawing.Point(405, 112);
+            this.PriorityClass29.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass29.MaxLength = 17;
+            this.PriorityClass29.Name = "PriorityClass29";
+            this.PriorityClass29.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass29.TabIndex = 384;
+            // 
+            // PriorityClass28
+            // 
+            this.PriorityClass28.BackColor = System.Drawing.Color.White;
+            this.PriorityClass28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass28.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass28.Location = new System.Drawing.Point(405, 90);
+            this.PriorityClass28.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass28.MaxLength = 17;
+            this.PriorityClass28.Name = "PriorityClass28";
+            this.PriorityClass28.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass28.TabIndex = 383;
+            // 
+            // PriorityClass27
+            // 
+            this.PriorityClass27.BackColor = System.Drawing.Color.White;
+            this.PriorityClass27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass27.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass27.Location = new System.Drawing.Point(405, 68);
+            this.PriorityClass27.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass27.MaxLength = 17;
+            this.PriorityClass27.Name = "PriorityClass27";
+            this.PriorityClass27.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass27.TabIndex = 382;
+            // 
+            // PriorityClass26
+            // 
+            this.PriorityClass26.BackColor = System.Drawing.Color.White;
+            this.PriorityClass26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass26.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass26.Location = new System.Drawing.Point(405, 46);
+            this.PriorityClass26.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass26.MaxLength = 17;
+            this.PriorityClass26.Name = "PriorityClass26";
+            this.PriorityClass26.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass26.TabIndex = 381;
+            // 
+            // PriorityClass25
+            // 
+            this.PriorityClass25.BackColor = System.Drawing.Color.White;
+            this.PriorityClass25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass25.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass25.Location = new System.Drawing.Point(405, 24);
+            this.PriorityClass25.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass25.MaxLength = 17;
+            this.PriorityClass25.Name = "PriorityClass25";
+            this.PriorityClass25.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass25.TabIndex = 380;
+            // 
+            // PriorityClass24
+            // 
+            this.PriorityClass24.BackColor = System.Drawing.Color.White;
+            this.PriorityClass24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass24.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass24.Location = new System.Drawing.Point(41, 178);
+            this.PriorityClass24.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass24.MaxLength = 17;
+            this.PriorityClass24.Name = "PriorityClass24";
+            this.PriorityClass24.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass24.TabIndex = 379;
+            // 
+            // PriorityClass23
+            // 
+            this.PriorityClass23.BackColor = System.Drawing.Color.White;
+            this.PriorityClass23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass23.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass23.Location = new System.Drawing.Point(41, 156);
+            this.PriorityClass23.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass23.MaxLength = 17;
+            this.PriorityClass23.Name = "PriorityClass23";
+            this.PriorityClass23.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass23.TabIndex = 378;
+            // 
+            // PriorityClass22
+            // 
+            this.PriorityClass22.BackColor = System.Drawing.Color.White;
+            this.PriorityClass22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass22.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass22.Location = new System.Drawing.Point(41, 134);
+            this.PriorityClass22.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass22.MaxLength = 17;
+            this.PriorityClass22.Name = "PriorityClass22";
+            this.PriorityClass22.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass22.TabIndex = 377;
+            // 
+            // PriorityClass21
+            // 
+            this.PriorityClass21.BackColor = System.Drawing.Color.White;
+            this.PriorityClass21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass21.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass21.Location = new System.Drawing.Point(41, 112);
+            this.PriorityClass21.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass21.MaxLength = 17;
+            this.PriorityClass21.Name = "PriorityClass21";
+            this.PriorityClass21.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass21.TabIndex = 376;
+            // 
+            // PriorityClass20
+            // 
+            this.PriorityClass20.BackColor = System.Drawing.Color.White;
+            this.PriorityClass20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass20.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass20.Location = new System.Drawing.Point(41, 90);
+            this.PriorityClass20.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass20.MaxLength = 17;
+            this.PriorityClass20.Name = "PriorityClass20";
+            this.PriorityClass20.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass20.TabIndex = 375;
+            // 
+            // PriorityClass19
+            // 
+            this.PriorityClass19.BackColor = System.Drawing.Color.White;
+            this.PriorityClass19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass19.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass19.Location = new System.Drawing.Point(41, 68);
+            this.PriorityClass19.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass19.MaxLength = 17;
+            this.PriorityClass19.Name = "PriorityClass19";
+            this.PriorityClass19.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass19.TabIndex = 374;
+            // 
+            // PriorityClass18
+            // 
+            this.PriorityClass18.BackColor = System.Drawing.Color.White;
+            this.PriorityClass18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass18.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass18.Location = new System.Drawing.Point(41, 46);
+            this.PriorityClass18.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass18.MaxLength = 17;
+            this.PriorityClass18.Name = "PriorityClass18";
+            this.PriorityClass18.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass18.TabIndex = 373;
+            // 
+            // PriorityClass17
+            // 
+            this.PriorityClass17.BackColor = System.Drawing.Color.White;
+            this.PriorityClass17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriorityClass17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PriorityClass17.Items.AddRange(new object[] {
+            "Normal",
+            "AboveNormal",
+            "High",
+            "RealTime"});
+            this.PriorityClass17.Location = new System.Drawing.Point(41, 24);
+            this.PriorityClass17.Margin = new System.Windows.Forms.Padding(2);
+            this.PriorityClass17.MaxLength = 17;
+            this.PriorityClass17.Name = "PriorityClass17";
+            this.PriorityClass17.Size = new System.Drawing.Size(86, 21);
+            this.PriorityClass17.TabIndex = 372;
+            // 
+            // Affinity32
+            // 
+            this.Affinity32.BackColor = System.Drawing.Color.White;
+            this.Affinity32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity32.Location = new System.Drawing.Point(555, 179);
+            this.Affinity32.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity32.MaxLength = 100;
+            this.Affinity32.Name = "Affinity32";
+            this.Affinity32.Size = new System.Drawing.Size(86, 20);
+            this.Affinity32.TabIndex = 371;
+            // 
+            // Affinity31
+            // 
+            this.Affinity31.BackColor = System.Drawing.Color.White;
+            this.Affinity31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity31.Location = new System.Drawing.Point(555, 157);
+            this.Affinity31.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity31.MaxLength = 100;
+            this.Affinity31.Name = "Affinity31";
+            this.Affinity31.Size = new System.Drawing.Size(86, 20);
+            this.Affinity31.TabIndex = 370;
+            // 
+            // Affinity30
+            // 
+            this.Affinity30.BackColor = System.Drawing.Color.White;
+            this.Affinity30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity30.Location = new System.Drawing.Point(555, 135);
+            this.Affinity30.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity30.MaxLength = 100;
+            this.Affinity30.Name = "Affinity30";
+            this.Affinity30.Size = new System.Drawing.Size(86, 20);
+            this.Affinity30.TabIndex = 369;
+            // 
+            // Affinity29
+            // 
+            this.Affinity29.BackColor = System.Drawing.Color.White;
+            this.Affinity29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity29.Location = new System.Drawing.Point(555, 113);
+            this.Affinity29.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity29.MaxLength = 100;
+            this.Affinity29.Name = "Affinity29";
+            this.Affinity29.Size = new System.Drawing.Size(86, 20);
+            this.Affinity29.TabIndex = 368;
+            // 
+            // Affinity28
+            // 
+            this.Affinity28.BackColor = System.Drawing.Color.White;
+            this.Affinity28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity28.Location = new System.Drawing.Point(555, 91);
+            this.Affinity28.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity28.MaxLength = 100;
+            this.Affinity28.Name = "Affinity28";
+            this.Affinity28.Size = new System.Drawing.Size(86, 20);
+            this.Affinity28.TabIndex = 367;
+            // 
+            // Affinity27
+            // 
+            this.Affinity27.BackColor = System.Drawing.Color.White;
+            this.Affinity27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity27.Location = new System.Drawing.Point(555, 69);
+            this.Affinity27.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity27.MaxLength = 100;
+            this.Affinity27.Name = "Affinity27";
+            this.Affinity27.Size = new System.Drawing.Size(86, 20);
+            this.Affinity27.TabIndex = 366;
+            // 
+            // Affinity26
+            // 
+            this.Affinity26.BackColor = System.Drawing.Color.White;
+            this.Affinity26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity26.Location = new System.Drawing.Point(555, 47);
+            this.Affinity26.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity26.MaxLength = 100;
+            this.Affinity26.Name = "Affinity26";
+            this.Affinity26.Size = new System.Drawing.Size(86, 20);
+            this.Affinity26.TabIndex = 365;
+            // 
+            // Affinity25
+            // 
+            this.Affinity25.BackColor = System.Drawing.Color.White;
+            this.Affinity25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity25.Location = new System.Drawing.Point(555, 25);
+            this.Affinity25.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity25.MaxLength = 100;
+            this.Affinity25.Name = "Affinity25";
+            this.Affinity25.Size = new System.Drawing.Size(86, 20);
+            this.Affinity25.TabIndex = 364;
+            // 
+            // Affinity24
+            // 
+            this.Affinity24.BackColor = System.Drawing.Color.White;
+            this.Affinity24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity24.Location = new System.Drawing.Point(192, 179);
+            this.Affinity24.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity24.MaxLength = 100;
+            this.Affinity24.Name = "Affinity24";
+            this.Affinity24.Size = new System.Drawing.Size(86, 20);
+            this.Affinity24.TabIndex = 363;
+            // 
+            // Affinity23
+            // 
+            this.Affinity23.BackColor = System.Drawing.Color.White;
+            this.Affinity23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity23.Location = new System.Drawing.Point(192, 157);
+            this.Affinity23.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity23.MaxLength = 100;
+            this.Affinity23.Name = "Affinity23";
+            this.Affinity23.Size = new System.Drawing.Size(86, 20);
+            this.Affinity23.TabIndex = 362;
+            // 
+            // Affinity22
+            // 
+            this.Affinity22.BackColor = System.Drawing.Color.White;
+            this.Affinity22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity22.Location = new System.Drawing.Point(192, 135);
+            this.Affinity22.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity22.MaxLength = 100;
+            this.Affinity22.Name = "Affinity22";
+            this.Affinity22.Size = new System.Drawing.Size(86, 20);
+            this.Affinity22.TabIndex = 361;
+            // 
+            // Affinity21
+            // 
+            this.Affinity21.BackColor = System.Drawing.Color.White;
+            this.Affinity21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity21.Location = new System.Drawing.Point(192, 113);
+            this.Affinity21.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity21.MaxLength = 100;
+            this.Affinity21.Name = "Affinity21";
+            this.Affinity21.Size = new System.Drawing.Size(86, 20);
+            this.Affinity21.TabIndex = 360;
+            // 
+            // Affinity20
+            // 
+            this.Affinity20.BackColor = System.Drawing.Color.White;
+            this.Affinity20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity20.Location = new System.Drawing.Point(192, 91);
+            this.Affinity20.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity20.MaxLength = 100;
+            this.Affinity20.Name = "Affinity20";
+            this.Affinity20.Size = new System.Drawing.Size(86, 20);
+            this.Affinity20.TabIndex = 359;
+            // 
+            // Affinity19
+            // 
+            this.Affinity19.BackColor = System.Drawing.Color.White;
+            this.Affinity19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity19.Location = new System.Drawing.Point(192, 69);
+            this.Affinity19.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity19.MaxLength = 100;
+            this.Affinity19.Name = "Affinity19";
+            this.Affinity19.Size = new System.Drawing.Size(86, 20);
+            this.Affinity19.TabIndex = 358;
+            // 
+            // Affinity18
+            // 
+            this.Affinity18.BackColor = System.Drawing.Color.White;
+            this.Affinity18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity18.Location = new System.Drawing.Point(192, 47);
+            this.Affinity18.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity18.MaxLength = 100;
+            this.Affinity18.Name = "Affinity18";
+            this.Affinity18.Size = new System.Drawing.Size(86, 20);
+            this.Affinity18.TabIndex = 357;
+            // 
+            // Affinity17
+            // 
+            this.Affinity17.BackColor = System.Drawing.Color.White;
+            this.Affinity17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Affinity17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Affinity17.Location = new System.Drawing.Point(192, 25);
+            this.Affinity17.Margin = new System.Windows.Forms.Padding(2);
+            this.Affinity17.MaxLength = 100;
+            this.Affinity17.Name = "Affinity17";
+            this.Affinity17.Size = new System.Drawing.Size(86, 20);
+            this.Affinity17.TabIndex = 356;
+            // 
+            // IdealProcessor32
+            // 
+            this.IdealProcessor32.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor32.Location = new System.Drawing.Point(500, 178);
+            this.IdealProcessor32.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor32.MaxLength = 9;
+            this.IdealProcessor32.Name = "IdealProcessor32";
+            this.IdealProcessor32.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor32.TabIndex = 354;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(376, 181);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(25, 13);
+            this.label1.TabIndex = 355;
+            this.label1.Text = "32 :";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor31
+            // 
+            this.IdealProcessor31.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor31.Location = new System.Drawing.Point(500, 156);
+            this.IdealProcessor31.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor31.MaxLength = 9;
+            this.IdealProcessor31.Name = "IdealProcessor31";
+            this.IdealProcessor31.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor31.TabIndex = 352;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(376, 159);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(25, 13);
+            this.label3.TabIndex = 353;
+            this.label3.Text = "31 :";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor30
+            // 
+            this.IdealProcessor30.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor30.Location = new System.Drawing.Point(500, 134);
+            this.IdealProcessor30.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor30.MaxLength = 9;
+            this.IdealProcessor30.Name = "IdealProcessor30";
+            this.IdealProcessor30.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor30.TabIndex = 350;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(376, 137);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(25, 13);
+            this.label4.TabIndex = 351;
+            this.label4.Text = "30 :";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor29
+            // 
+            this.IdealProcessor29.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor29.Location = new System.Drawing.Point(500, 112);
+            this.IdealProcessor29.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor29.MaxLength = 9;
+            this.IdealProcessor29.Name = "IdealProcessor29";
+            this.IdealProcessor29.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor29.TabIndex = 348;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(376, 115);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(25, 13);
+            this.label5.TabIndex = 349;
+            this.label5.Text = "29 :";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor28
+            // 
+            this.IdealProcessor28.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor28.Location = new System.Drawing.Point(500, 90);
+            this.IdealProcessor28.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor28.MaxLength = 9;
+            this.IdealProcessor28.Name = "IdealProcessor28";
+            this.IdealProcessor28.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor28.TabIndex = 346;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label30.Location = new System.Drawing.Point(376, 93);
+            this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(25, 13);
+            this.label30.TabIndex = 347;
+            this.label30.Text = "28 :";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor27
+            // 
+            this.IdealProcessor27.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor27.Location = new System.Drawing.Point(500, 68);
+            this.IdealProcessor27.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor27.MaxLength = 9;
+            this.IdealProcessor27.Name = "IdealProcessor27";
+            this.IdealProcessor27.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor27.TabIndex = 345;
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label56.Location = new System.Drawing.Point(376, 71);
+            this.label56.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(25, 13);
+            this.label56.TabIndex = 344;
+            this.label56.Text = "27 :";
+            this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor26
+            // 
+            this.IdealProcessor26.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor26.Location = new System.Drawing.Point(500, 46);
+            this.IdealProcessor26.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor26.MaxLength = 9;
+            this.IdealProcessor26.Name = "IdealProcessor26";
+            this.IdealProcessor26.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor26.TabIndex = 343;
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label60.Location = new System.Drawing.Point(376, 49);
+            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(25, 13);
+            this.label60.TabIndex = 341;
+            this.label60.Text = "26 :";
+            this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor25
+            // 
+            this.IdealProcessor25.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor25.Location = new System.Drawing.Point(500, 24);
+            this.IdealProcessor25.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor25.MaxLength = 9;
+            this.IdealProcessor25.Name = "IdealProcessor25";
+            this.IdealProcessor25.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor25.TabIndex = 342;
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label62.Location = new System.Drawing.Point(376, 28);
+            this.label62.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(25, 13);
+            this.label62.TabIndex = 340;
+            this.label62.Text = "25 :";
+            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor24
+            // 
+            this.IdealProcessor24.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor24.Location = new System.Drawing.Point(136, 178);
+            this.IdealProcessor24.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor24.MaxLength = 2;
+            this.IdealProcessor24.Name = "IdealProcessor24";
+            this.IdealProcessor24.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor24.TabIndex = 338;
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label63.Location = new System.Drawing.Point(12, 181);
+            this.label63.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(25, 13);
+            this.label63.TabIndex = 339;
+            this.label63.Text = "24 :";
+            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor23
+            // 
+            this.IdealProcessor23.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor23.Location = new System.Drawing.Point(136, 156);
+            this.IdealProcessor23.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor23.MaxLength = 2;
+            this.IdealProcessor23.Name = "IdealProcessor23";
+            this.IdealProcessor23.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor23.TabIndex = 336;
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label64.Location = new System.Drawing.Point(12, 159);
+            this.label64.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(25, 13);
+            this.label64.TabIndex = 337;
+            this.label64.Text = "23 :";
+            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor22
+            // 
+            this.IdealProcessor22.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor22.Location = new System.Drawing.Point(136, 134);
+            this.IdealProcessor22.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor22.MaxLength = 2;
+            this.IdealProcessor22.Name = "IdealProcessor22";
+            this.IdealProcessor22.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor22.TabIndex = 334;
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label65.Location = new System.Drawing.Point(12, 137);
+            this.label65.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(25, 13);
+            this.label65.TabIndex = 335;
+            this.label65.Text = "22 :";
+            this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor21
+            // 
+            this.IdealProcessor21.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor21.Location = new System.Drawing.Point(136, 112);
+            this.IdealProcessor21.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor21.MaxLength = 2;
+            this.IdealProcessor21.Name = "IdealProcessor21";
+            this.IdealProcessor21.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor21.TabIndex = 332;
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label66.Location = new System.Drawing.Point(12, 115);
+            this.label66.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(25, 13);
+            this.label66.TabIndex = 333;
+            this.label66.Text = "21 :";
+            this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor20
+            // 
+            this.IdealProcessor20.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor20.Location = new System.Drawing.Point(136, 90);
+            this.IdealProcessor20.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor20.MaxLength = 2;
+            this.IdealProcessor20.Name = "IdealProcessor20";
+            this.IdealProcessor20.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor20.TabIndex = 330;
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label67.Location = new System.Drawing.Point(12, 93);
+            this.label67.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(25, 13);
+            this.label67.TabIndex = 331;
+            this.label67.Text = "20 :";
+            this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor19
+            // 
+            this.IdealProcessor19.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor19.Location = new System.Drawing.Point(136, 68);
+            this.IdealProcessor19.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor19.MaxLength = 2;
+            this.IdealProcessor19.Name = "IdealProcessor19";
+            this.IdealProcessor19.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor19.TabIndex = 329;
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label68.Location = new System.Drawing.Point(12, 71);
+            this.label68.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(25, 13);
+            this.label68.TabIndex = 328;
+            this.label68.Text = "19 :";
+            this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor18
+            // 
+            this.IdealProcessor18.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor18.Location = new System.Drawing.Point(136, 46);
+            this.IdealProcessor18.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor18.MaxLength = 2;
+            this.IdealProcessor18.Name = "IdealProcessor18";
+            this.IdealProcessor18.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor18.TabIndex = 327;
+            // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label69.Location = new System.Drawing.Point(12, 49);
+            this.label69.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(25, 13);
+            this.label69.TabIndex = 325;
+            this.label69.Text = "18 :";
+            this.label69.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IdealProcessor17
+            // 
+            this.IdealProcessor17.BackColor = System.Drawing.Color.White;
+            this.IdealProcessor17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IdealProcessor17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdealProcessor17.Location = new System.Drawing.Point(136, 24);
+            this.IdealProcessor17.Margin = new System.Windows.Forms.Padding(2);
+            this.IdealProcessor17.MaxLength = 2;
+            this.IdealProcessor17.Name = "IdealProcessor17";
+            this.IdealProcessor17.Size = new System.Drawing.Size(48, 21);
+            this.IdealProcessor17.TabIndex = 326;
+            // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label70.Location = new System.Drawing.Point(12, 28);
+            this.label70.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(25, 13);
+            this.label70.TabIndex = 324;
+            this.label70.Text = "17 :";
+            this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // audioTab
             // 
             this.audioTab.BackColor = System.Drawing.Color.RosyBrown;
@@ -2810,6 +2812,8 @@ namespace Nucleus.Coop
             // btnNext
             // 
             this.btnNext.BackColor = System.Drawing.Color.Transparent;
+            this.btnNext.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNext.Location = new System.Drawing.Point(18, 51);
             this.btnNext.Name = "btnNext";
@@ -4735,12 +4739,12 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
-            this.Controls.Add(this.processorTab);
-            this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.sharedTab);
             this.Controls.Add(this.profileInfo);
+            this.Controls.Add(this.processorTab);
+            this.Controls.Add(this.audioTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -4757,10 +4761,10 @@ namespace Nucleus.Coop
             ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).EndInit();
             this.processorTab.ResumeLayout(false);
             this.processorTab.PerformLayout();
-            this.processorPage2.ResumeLayout(false);
-            this.processorPage2.PerformLayout();
             this.processorPage1.ResumeLayout(false);
             this.processorPage1.PerformLayout();
+            this.processorPage2.ResumeLayout(false);
+            this.processorPage2.PerformLayout();
             this.audioTab.ResumeLayout(false);
             this.audioTab.PerformLayout();
             this.audioCustomSettingsBox.ResumeLayout(false);

@@ -199,7 +199,6 @@ namespace Nucleus.Coop.Forms
             string exeName = null;
             int found = 0;
 
-
             foreach (string line in File.ReadAllLines(Path.Combine(scriptTempFolder, "handler.js")))
             {
                 if (line.ToLower().StartsWith("game.executablename"))
@@ -292,7 +291,6 @@ namespace Nucleus.Coop.Forms
                     " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it.",
                     "Download finished! Add to Nucleus?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-
                 if (dialogResult == DialogResult.Yes)
                 {
                     Gaming.GameManager.Instance.AddScript(frmHandleTitle);
@@ -301,7 +299,6 @@ namespace Nucleus.Coop.Forms
             }
             else
             {
-
                 Gaming.GameManager.Instance.AddScript(frmHandleTitle);
                 gameExeNoUpdate = false;
             }

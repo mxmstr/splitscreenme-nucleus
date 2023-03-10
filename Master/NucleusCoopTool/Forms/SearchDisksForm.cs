@@ -128,6 +128,23 @@ namespace Nucleus.Coop
             foreach (Control control in ctrls)
             {
                 control.Font = new Font(main.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+                if (control.Name != "panel1")
+                {
+                    control.Cursor = hand_Cursor;
+                }
+                else
+                {
+                    control.Cursor = default_Cursor;
+                }
+
+                if (main.mouseClick)
+                {
+                    if (control is Button)
+                    {
+                        control.Click += new System.EventHandler(this.button_Click);
+                    }
+                }
             }
 
             if (main.useButtonsBorder)
@@ -145,31 +162,9 @@ namespace Nucleus.Coop
                 btn_selectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
                 btn_deselectAll.FlatAppearance.BorderSize = 1;
                 btn_deselectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-
             }
 
             ResumeLayout();
-
-
-            foreach (Control button in this.Controls)
-            {
-                if (button.Name != "panel1")
-                {
-                    button.Cursor = hand_Cursor;
-                }
-                else
-                {
-                    button.Cursor = default_Cursor;
-                }
-
-                if (main.mouseClick)
-                {
-                    if (button is Button)
-                    {
-                        button.Click += new System.EventHandler(this.button_Click);
-                    }
-                }
-            }
 
             closeBtn.Cursor = hand_Cursor;
 
@@ -229,7 +224,7 @@ namespace Nucleus.Coop
             float newFontSize = Font.Size * scale;
             float textBoxFontSize = (Font.Size + 4) * scale;
 
-            foreach (Control c in Controls)
+            foreach (Control c in ctrls)
             {
                 if (c.GetType() == typeof(CheckedListBox))
                 {
@@ -242,9 +237,7 @@ namespace Nucleus.Coop
                 }
             }
 
-
             ResumeLayout();
-
         }
 
         protected override void WndProc(ref Message m)
@@ -498,7 +491,6 @@ namespace Nucleus.Coop
                 searching = false;
                 btnSearch.Text = "Search";
 
-
                 watch.Stop();
 
                 long elapsedMs = watch.ElapsedMilliseconds / 1000;
@@ -664,7 +656,6 @@ namespace Nucleus.Coop
         private void closeBtn_MouseEnter(object sender, EventArgs e)
         {
             closeBtn.BackgroundImage = new Bitmap(main.theme + "title_close_mousehover.png");
-
         }
 
         private void closeBtn_MouseLeave(object sender, EventArgs e)

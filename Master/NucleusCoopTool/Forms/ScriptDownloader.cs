@@ -30,7 +30,6 @@ namespace Nucleus.Coop.Forms
         private List<Control> ctrls = new List<Control>();
 
         private bool grabAll = false;
-        private bool canResize;
         private JArray handlers;
 
         private int entriesPerPage;
@@ -39,9 +38,7 @@ namespace Nucleus.Coop.Forms
         private int verCount = 0;
         private int lastVer = 0;
         private float fontSize;
-        private static Hub hub = new Hub();
         private SortOrder sortOrder = SortOrder.Ascending;
-        private float scale;
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
 
@@ -108,8 +105,12 @@ namespace Nucleus.Coop.Forms
         public ScriptDownloader(MainForm mf)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "HandlerDownloaderFontSize"));
+            string[] windowSize = ini.IniReadValue("Misc", "DownloaderWindowSize").Split('X');
+            mainForm = mf;
 
             InitializeComponent();
+           
+            Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
 
             default_Cursor = mf.default_Cursor;
             Cursor.Current = default_Cursor;
@@ -122,8 +123,6 @@ namespace Nucleus.Coop.Forms
 
             lvwColumnSorter = new ListViewColumnSorter();
             list_Games.ListViewItemSorter = lvwColumnSorter;
-            //list_Games.DrawItem += (sender, e) => { e.DrawDefault = true; };
-            //list_Games.DrawSubItem += (sender, e) => { e.DrawDefault = true; };
 
             cmb_Sort.SelectedIndex = 0;
             cmb_NumResults.SelectedIndex = 1;
@@ -138,7 +137,7 @@ namespace Nucleus.Coop.Forms
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
             BackgroundImage = new Bitmap(mf.theme + "other_backgrounds.jpg");
-            //Controls Pictures
+
             btn_Next.BackColor = mf.buttonsBackColor;
             btn_Prev.BackColor = mf.buttonsBackColor;
             btn_ViewAll.BackColor = mf.buttonsBackColor;
@@ -147,9 +146,7 @@ namespace Nucleus.Coop.Forms
             btn_Close.BackColor = mf.buttonsBackColor;
             btn_Download.BackColor = mf.buttonsBackColor;
             btn_Extract.BackColor = mf.buttonsBackColor;
-            //
-            //MouseOverColor
-            //
+
             btn_Next.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Prev.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_ViewAll.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
@@ -168,11 +165,16 @@ namespace Nucleus.Coop.Forms
                 if (control.GetType() == typeof(Button))
                 {
                     control.Cursor = hand_Cursor;
+
+                    if (mf.mouseClick)
+                    {
+                        control.Click += new System.EventHandler(this.button_Click);
+                    }
                 }
                 else
                 {
                     control.Cursor = default_Cursor;
-                }
+                }             
             }
 
             if (mf.useButtonsBorder)
@@ -204,13 +206,6 @@ namespace Nucleus.Coop.Forms
 
             ResumeLayout();
 
-            if (mf.mouseClick)
-            {
-                foreach (Control button in this.Controls) { if (button is Button) { button.Click += new System.EventHandler(this.button_Click); } }
-            }
-
-            mainForm = mf;
-
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
@@ -227,7 +222,7 @@ namespace Nucleus.Coop.Forms
             if (scale > 1.0F)
             {
                 float newFontSize = Font.Size * scale;
-                foreach (Control c in Controls)
+                foreach (Control c in ctrls)
                 {
                     if (c.GetType() == typeof(NumericUpDown) ^ c.GetType() == typeof(ComboBox) ^ c.GetType() == typeof(TextBox) ^ c.GetType() == typeof(GroupBox) ^ c.GetType() == typeof(Panel) ^ c.GetType() == typeof(ListView))
                     {
@@ -450,15 +445,6 @@ namespace Nucleus.Coop.Forms
                 }
             }
         }
-        private static Stream GenerateStreamFromString(string s)
-        {
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(s);
-            writer.Flush();
-            stream.Position = 0;
-            return stream;
-        }
 
         public void FetchHandlers(int startIndex)
         {
@@ -670,15 +656,15 @@ namespace Nucleus.Coop.Forms
                     return reader.ReadToEnd();
                 }
             }
-            catch (Exception)//ex)
-            {
-                //MessageBox.Show(string.Format("{0}: {1}", ex.ToString(), ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            catch
+            {             
                 return null;
             }
         }
 
         private void btn_Close_Click(object sender, EventArgs e)
         {
+            ini.IniWriteValue("Misc", "DownloaderWindowSize", Width + "X" + Height);
             Close();
         }
 
@@ -783,7 +769,6 @@ namespace Nucleus.Coop.Forms
 
                 DownloadPrompt downloadPrompt = new DownloadPrompt(handler, mainForm, null);
                 downloadPrompt.ShowDialog();
-
             }
         }
 
@@ -812,6 +797,7 @@ namespace Nucleus.Coop.Forms
                 {
                     txt_Search.Text = lastSearch;
                 }
+
                 btn_Search.PerformClick();
             }
         }
@@ -939,7 +925,7 @@ namespace Nucleus.Coop.Forms
         {
             Invalidate();
             if (mainForm != null)
-
+            {
                 if (mainForm.roundedcorners)
                 {
                     Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
@@ -948,6 +934,7 @@ namespace Nucleus.Coop.Forms
                 {
                     Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
                 }
+            }
         }
 
     }

@@ -755,6 +755,7 @@ namespace Nucleus.Coop
             this.scriptAuthorTxtSizer.Controls.Add(this.HandlerNoteTitle);
             this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(11, 283);
             this.scriptAuthorTxtSizer.Margin = new System.Windows.Forms.Padding(5);
+            this.scriptAuthorTxtSizer.MaximumSize = new System.Drawing.Size(172, 237);
             this.scriptAuthorTxtSizer.Name = "scriptAuthorTxtSizer";
             this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(172, 237);
             this.scriptAuthorTxtSizer.TabIndex = 31;
@@ -1160,6 +1161,7 @@ namespace Nucleus.Coop
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Nucleus Co-op";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.ClientSizeChanged += new System.EventHandler(this.MainForm_ClientSizeChanged);
