@@ -18,19 +18,25 @@ namespace Nucleus.Coop.Tools
     {
         private int maxScreenshotsToDownload;
 
-        public void DownloadGameAssets(MainForm main, GameControl currentControl)
+        public void DownloadGameAssets(MainForm main, GameManager gameManager, ScriptDownloader scriptDownloader, GameControl currentControl)
         {
-            GameManager gameManager = new GameManager(main);
-            ScriptDownloader scriptDownloader = new ScriptDownloader(main);
-            Handler handler = new Handler();
             List<UserGameInfo> games = gameManager.User.Games;
 
-            Label dllabel = new Label();
-            dllabel.BackColor = main.BackColor;
-            dllabel.ForeColor = main.ForeColor;
-            dllabel.AutoSize = true;
-            dllabel.Visible = true;
+            Label dllabel = new Label
+            {
+                BackColor = main.BackColor,
+                ForeColor = main.ForeColor,
+                AutoSize = true,
+            };
 
+            main.glowingLine0.Image = new Bitmap(Globals.Theme + "download_bar.gif");
+            main.mainButtonFrame.Enabled = false;
+            main.StepPanel.Enabled = false;
+            main.button_UpdateAvailable.Enabled = false;
+            main.btn_gameOptions.Enabled = false;
+            main.btn_settings.Enabled = false;
+            main.btn_downloadAssets.Enabled = false;
+            main.game_listSizer.Enabled = false;
             main.Controls.Add(dllabel);
 
             System.Threading.Tasks.Task.Run(() =>
@@ -51,7 +57,7 @@ namespace Nucleus.Coop.Tools
                         continue;
                     }
 
-                    handler = scriptDownloader.GetHandler(id);
+                    Handler handler = scriptDownloader.GetHandler(id);
 
                     if (handler == null)
                     {
@@ -60,17 +66,6 @@ namespace Nucleus.Coop.Tools
 
                     main.Invoke((MethodInvoker)delegate ()
                     {
-                        main.SuspendLayout();
-                        main.glowingLine0.Image = new Bitmap(Globals.Theme + "download_bar.gif");
-                        main.ResumeLayout();
-
-                        main.mainButtonFrame.Enabled = false;
-                        main.StepPanel.Enabled = false;
-                        main.button_UpdateAvailable.Enabled = false;
-                        main.btn_gameOptions.Enabled = false;
-                        main.btn_settings.Enabled = false;
-                        main.btn_downloadAssets.Enabled = false;
-                        main.game_listSizer.Enabled = false;
                         dllabel.Text = $"Downloading Assets For {game.GameGuid}";
                         dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, 12);
                     });
@@ -85,9 +80,7 @@ namespace Nucleus.Coop.Tools
 
                 main.Invoke((MethodInvoker)delegate ()
                 {
-                    main.SuspendLayout();
                     main.glowingLine0.Image = new Bitmap(Globals.Theme + "lightbar_top.gif");
-                    main.ResumeLayout();
                     main.mainButtonFrame.Enabled = true;
                     main.btn_downloadAssets.Enabled = true;
                     main.game_listSizer.Enabled = true;
@@ -114,6 +107,7 @@ namespace Nucleus.Coop.Tools
             {
                 Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"gui\\covers"));
             }
+
             try
             {
                 if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
@@ -122,7 +116,6 @@ namespace Nucleus.Coop.Tools
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
                     ServicePointManager.DefaultConnectionLimit = 9999;
-
 
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urls);
                     request.UserAgent = "request";
@@ -176,7 +169,6 @@ namespace Nucleus.Coop.Tools
                         using (Image newImage = Image.FromStream(stream))
                         {
                             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}")))
-
                             {
                                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}")));
                             }

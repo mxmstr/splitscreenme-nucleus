@@ -66,6 +66,7 @@ namespace Nucleus.Coop
         private ScriptDownloader scriptDownloader;
         private DownloadPrompt downloadPrompt;
         private SoundPlayer splayer;
+        private AssetsDownloader assetsDownloader;
 
         private int KillProcess_HotkeyID = 1;
         private int TopMost_HotkeyID = 2;
@@ -266,9 +267,7 @@ namespace Nucleus.Coop
                                                int.Parse(themeIni.IniReadValue("Colors", "PlayButtonFont").Split(',')[1]),
                                                int.Parse(themeIni.IniReadValue("Colors", "PlayButtonFont").Split(',')[2]),
                                                int.Parse(themeIni.IniReadValue("Colors", "PlayButtonFont").Split(',')[3]));
-
-
-            clientAreaPanel.BackgroundImage = new Bitmap(theme + "background.jpg");
+           
             mainButtonFrame.BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[1]),
                                                int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[2]),
@@ -293,7 +292,8 @@ namespace Nucleus.Coop
                                                 int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[1]),
                                                 int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[2]),
                                                 int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[3]));
-
+            
+            clientAreaPanel.BackgroundImage = new Bitmap(theme + "background.jpg");
             btn_textSwitcher.BackgroundImage = new Bitmap(theme + "text_switcher.png");
             btnAutoSearch.BackColor = buttonsBackColor;
             button_UpdateAvailable.BackColor = buttonsBackColor;
@@ -467,7 +467,7 @@ namespace Nucleus.Coop
 
             controls = new Dictionary<UserGameInfo, GameControl>();
             gameManager = new GameManager(this);
-
+            assetsDownloader = new AssetsDownloader();
             optionsControl = new PlayerOptionsControl();
             jsControl = new JSUserInputControl();
 
@@ -1090,9 +1090,8 @@ namespace Nucleus.Coop
                 TriggerOSD(1600, $"Add Game(s) In Your List");
                 return;
             }
-
-            AssetsDownloader assetsDownloader = new AssetsDownloader();
-            assetsDownloader.DownloadGameAssets(this, currentControl);
+           
+            assetsDownloader.DownloadGameAssets(this, gameManager, scriptDownloader, currentControl);
         }
 
         private int r = 0;
@@ -1133,10 +1132,6 @@ namespace Nucleus.Coop
                 HandlerNoteTitle.ForeColor = HandlerNoteTitleFont;
                 HandlerNoteTitle.Font = new Font(HandlerNoteTitle.Font.FontFamily, (float)HandlerNoteTitle.Font.Size, FontStyle.Regular);
             }
-
-#if DEBUG
-            txt_version.ForeColor = Color.FromArgb(255, 255, b);
-#endif
         }
 
         private bool rainbowTimerRunning = false;
@@ -1836,6 +1831,7 @@ namespace Nucleus.Coop
                                 {
                                     string[] iniContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
                                     List<string> newContent = new List<string>();
+
                                     for (int index = 0; index < iniContent.Length; index++)
                                     {
                                         if (iniContent[index].Contains(gameGuid + "=" + iconsIni.IniReadValue("GameIcons", gameGuid)))

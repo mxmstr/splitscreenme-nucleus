@@ -11,6 +11,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -101,8 +102,8 @@ namespace Nucleus.Coop
 
                 try
                 {
-
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_cover);
+                    request.UserAgent = "request";
                     WebResponse resp = request.GetResponse();
                     Stream respStream = resp.GetResponseStream();
                     bmp = new Bitmap(respStream);

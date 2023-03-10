@@ -74,6 +74,7 @@ namespace Nucleus.Coop
             this.titleBackground.Name = "titleBackground";
             this.titleBackground.Size = new System.Drawing.Size(425, 39);
             this.titleBackground.TabIndex = 71;
+            this.titleBackground.Visible = false;
             // 
             // Container1
             // 

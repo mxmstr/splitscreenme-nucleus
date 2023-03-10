@@ -564,6 +564,7 @@ namespace Nucleus.Coop.Forms
                 try
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_cover);
+                    request.UserAgent = "request";
                     WebResponse resp = request.GetResponse();
                     Stream respStream = resp.GetResponseStream();
                     bmp = new Bitmap(respStream);
@@ -658,10 +659,10 @@ namespace Nucleus.Coop.Forms
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.DefaultConnectionLimit = 9999;
 
-
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                request.UserAgent = "request";
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
                 using (StreamReader reader = new StreamReader(stream))
