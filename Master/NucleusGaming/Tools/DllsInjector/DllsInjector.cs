@@ -1,20 +1,17 @@
 ﻿using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.ProtoInput;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Tools.DllsInjector
 {
     public static class DllsInjector
     {
 
-        public static void InjectDLLs(GenericGameHandler genericGameHandler, GenericGameInfo gen,Process proc, Window window, PlayerInfo player)
+        public static void InjectDLLs(GenericGameHandler genericGameHandler, GenericGameInfo gen, Process proc, Window window, PlayerInfo player)
         {
             genericGameHandler.Log("Injecting hooks DLL");
 

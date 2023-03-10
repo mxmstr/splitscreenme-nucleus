@@ -17,7 +17,7 @@ namespace Nucleus.Gaming.Coop
 
         private List<UserScreen> screens;
         public List<UserScreen> Screens => screens;
-        private List<PlayerInfo> playerData;     
+        private List<PlayerInfo> playerData;
         public List<PlayerInfo> PlayerData => playerData;
 
         public static List<Rectangle> MonitorBounds = new List<Rectangle>();
@@ -47,7 +47,7 @@ namespace Nucleus.Gaming.Coop
 
         private static string modeText = "New Profile";
         public static string ModeText => modeText;
-   
+
         public static string GameGUID;
 
         public static List<string> profilesPathList = new List<string>();
@@ -58,7 +58,7 @@ namespace Nucleus.Gaming.Coop
         public static List<string> PriorityClasses = new List<string>();
 
         public static List<long> SteamIDs = new List<long>();
-      
+
         public static List<bool> IsDInputs = new List<bool>();
         public static List<bool> IsXInputs = new List<bool>();
         public static List<bool> IsKeyboardPlayer = new List<bool>();
@@ -235,7 +235,7 @@ namespace Nucleus.Gaming.Coop
                     continue;
                 }
 
-                SteamIDs.Add((long)long.Parse(ini.IniReadValue("SteamIDs", "Player_" + (i + 1))));              
+                SteamIDs.Add((long)long.Parse(ini.IniReadValue("SteamIDs", "Player_" + (i + 1))));
             }
         }
 

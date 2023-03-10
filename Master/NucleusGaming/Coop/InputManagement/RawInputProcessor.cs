@@ -2,7 +2,6 @@
 using Nucleus.Gaming.Coop.InputManagement.Enums;
 using Nucleus.Gaming.Coop.InputManagement.Structs;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
-using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Coop.InputManagement
 {
@@ -453,7 +451,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 if (!splitScreenRunning() && PlayerInfos != null)
                 {
-                    foreach (PlayerInfo toFlash in CurrentProfile?.PlayerData.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) ||((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
+                    foreach (PlayerInfo toFlash in CurrentProfile?.PlayerData.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
                     {
                         toFlash.FlashIcon();
                     }
@@ -478,7 +476,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             return;
                         }
 
-                        Globals.MainOSD.Settings(1000, Color.Yellow,"Inputs Locked");
+                        Globals.MainOSD.Settings(1000, Color.Yellow, "Inputs Locked");
 
                         LockInput.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
 

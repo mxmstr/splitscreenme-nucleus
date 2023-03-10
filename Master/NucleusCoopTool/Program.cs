@@ -1,8 +1,6 @@
-﻿using Microsoft.Win32;
-using Nucleus.Gaming;
+﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Windows;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -32,11 +30,11 @@ namespace Nucleus.Coop
             }
 
 
-            connected = StartChecks.CheckNetCon(); 
+            connected = StartChecks.CheckNetCon();
 
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
-           // StartChecks.CheckAppUpdate();//a decommenter
+            // StartChecks.CheckAppUpdate();//a decommenter
             //StartChecks.CheckForUpdate(); //Uncomment to run Pizzo's Python nc updater on startup
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware

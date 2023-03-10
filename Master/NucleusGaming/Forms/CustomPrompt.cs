@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Forms
@@ -8,7 +7,7 @@ namespace Nucleus.Gaming.Forms
     public partial class CustomPrompt : Form
     {
         private int index;
-       
+
         public CustomPrompt(string message, string prevAnswer, int i)
         {
             string theme = Globals.Theme;

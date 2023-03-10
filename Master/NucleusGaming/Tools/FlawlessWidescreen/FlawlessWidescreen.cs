@@ -211,7 +211,7 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
 
             if (gen.FlawlessWidescreenOverrideDisplay)
             {
-               genericGameHandler.Log("Restoring back up Flawless Widescreen settings file");
+                genericGameHandler.Log("Restoring back up Flawless Widescreen settings file");
                 string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\FlawlessWidescreen\\" + genericGameHandler.garch);
                 string setPath = utilFolder + "\\settings.xml";
                 string backupPath = Path.GetDirectoryName(setPath) + "\\settings_NUCLEUS_BACKUP.xml";

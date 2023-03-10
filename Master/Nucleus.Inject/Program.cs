@@ -443,7 +443,11 @@ namespace Nucleus.Inject
             dataToSend[index++] = (byte)(allowedRawKeyboardHandle >> 8);
             dataToSend[index++] = (byte)(allowedRawKeyboardHandle);
 
-            byte Bool_1_0(bool x) => x ? (byte)1 : (byte)0;
+            byte Bool_1_0(bool x)
+            {
+                return x ? (byte)1 : (byte)0;
+            }
+
             dataToSend[index++] = Bool_1_0(preventWindowDeactivation);
             dataToSend[index++] = Bool_1_0(setWindow);
             dataToSend[index++] = Bool_1_0(isDebug);
@@ -550,7 +554,7 @@ namespace Nucleus.Inject
                     proc.WaitForExit();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // handle exception
             }

@@ -200,7 +200,7 @@ namespace Nucleus.Coop.Forms
             DPIManager.Update(this);
         }
 
-        public void UpdateSize(float scale)
+        public new void UpdateSize(float scale)
         {
             if (IsDisposed)
             {

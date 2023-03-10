@@ -7,7 +7,7 @@ namespace Nucleus.Gaming.Controls
     {
         protected Color defaultForeColor = Color.Black;
         protected Color disabledForeColor = Color.Black;
-        public Color DefaultForeColor
+        public new Color DefaultForeColor
         {
             get => defaultForeColor;
             set => defaultForeColor = value;

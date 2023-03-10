@@ -1,7 +1,6 @@
 ﻿using Nucleus.Gaming;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace SplitTool.Controls
@@ -155,7 +154,7 @@ namespace SplitTool.Controls
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
-            
+
             if (OnSelected != null)
             {
                 OnSelected(Data);

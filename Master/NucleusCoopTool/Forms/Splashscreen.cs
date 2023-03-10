@@ -1,7 +1,6 @@
 ﻿using Nucleus.Gaming;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;

@@ -3,11 +3,9 @@ using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using SharpDX.XInput;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
@@ -218,7 +216,8 @@ namespace Nucleus.Coop.Forms
 
             foreach (Control c in shortContainer.Controls)
             {
-                if (c.Text == "1024"){
+                if (c.Text == "1024")
+                {
                     c.Text = "Guide";
                 }
                 else if (c.Text == "9999")
@@ -251,7 +250,7 @@ namespace Nucleus.Coop.Forms
                 {
                     c.Text = "Guide";
                 }
-                else if(c.Text == "9999")
+                else if (c.Text == "9999")
                 {
                     c.Text = "RightTrigger";
                 }
@@ -598,8 +597,9 @@ namespace Nucleus.Coop.Forms
         private void ReadOnly_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
-        }        private void enabled_chk_CheckedChanged(object sender, EventArgs e)
-        {      
+        }
+        private void enabled_chk_CheckedChanged(object sender, EventArgs e)
+        {
             ini.IniWriteValue("XUINav", "Enabled", enabled_chk.Checked.ToString());
             ControllersUINav.UpdateUINavSettings();
         }

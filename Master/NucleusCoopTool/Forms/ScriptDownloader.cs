@@ -1,6 +1,8 @@
 ﻿using ListViewSorter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Gaming;
+using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,12 +10,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms;
-using Nucleus.Gaming;
-using System.Media;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
-using Nucleus.Gaming.Coop.Generic;
+using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
 {

@@ -30,22 +30,18 @@ namespace Nucleus.Gaming.Tools.NemirtingasGalaxyEmu
                         genericGameHandler.Log("Emulator settings folder generated");
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     genericGameHandler.Log("Nucleus is unable to generate the required emulator settings folder");
                 }
 
                 try
                 {
-
-                    string log;
                     if (i == 0)
                     {
-                        log = "TRACE";
                     }
                     else
                     {
-                        log = "OFF";
                     }
 
                     JObject emuSettings;
@@ -76,7 +72,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasGalaxyEmu
                         genericGameHandler.addedFiles.Add(jsonPath);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     genericGameHandler.Log("Nucleus is unable to write the required NemirtingasGalaxyEmu.json file");
                 }
@@ -97,7 +93,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasGalaxyEmu
                     instanceDllFolder = linkFolder.TrimEnd('\\') + "\\" + dllFolder.TrimStart('\\');
 
                     if (nameFile.EndsWith(x64dll, true, null))
-                    {                    
+                    {
                         FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(instanceDllFolder, x64dll));
                         try
                         {

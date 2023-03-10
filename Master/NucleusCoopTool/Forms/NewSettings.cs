@@ -4,9 +4,7 @@ using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Windows.Interop;
-using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -549,7 +546,7 @@ namespace Nucleus.Coop
 
             page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
             page2.Location = page1.Location;
-            btnNext.Location = new Point((page1.Right - btnNext.Width)-5, (page1.Top - btnNext.Height)-5);
+            btnNext.Location = new Point((page1.Right - btnNext.Width) - 5, (page1.Top - btnNext.Height) - 5);
             btnNext.Parent = playersTab;
             SettingsTab.BringToFront();
 
@@ -617,13 +614,13 @@ namespace Nucleus.Coop
 
             SuspendLayout();
 
-            
+
             float newFontSize = Font.Size * scale;
 
             foreach (Control tab in Controls)
             {
                 foreach (Control child in tab.Controls)
-                { 
+                {
                     if (scale > 1.0F)
                     {
                         if (child.GetType() == typeof(ComboBox) || child.GetType() == typeof(TextBox) || child.GetType() == typeof(GroupBox))
@@ -660,7 +657,7 @@ namespace Nucleus.Coop
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
 
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
-           
+
             ResumeLayout();
         }
 
@@ -685,7 +682,7 @@ namespace Nucleus.Coop
             disableGameProfiles_Tooltip.SetToolTip(disableGameProfiles, "Simply disable profiles loading/saving, Nucleus will always use global settings instead");
         }
 
-        private  void GetPlayersNickNameAndSteamIds()
+        private void GetPlayersNickNameAndSteamIds()
         {
             for (int i = 0; i < 32; i++)
             {
@@ -704,7 +701,7 @@ namespace Nucleus.Coop
                 controllerNicks[i].Items.AddRange(nicksList.ToArray());
                 controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                 controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-            }            
+            }
         }
 
         private void num_KeyPress(object sender, KeyPressEventArgs e)
@@ -811,16 +808,16 @@ namespace Nucleus.Coop
                 }
             }
 
-            foreach(Control ht in hotkeyBox.Controls)
+            foreach (Control ht in hotkeyBox.Controls)
             {
-                if(ht.GetType() == typeof(TextBox))
+                if (ht.GetType() == typeof(TextBox))
                 {
                     if (ht.Text == "")
                     {
                         MessageBox.Show("Hotkeys values can't be empty", "Invalid hotkeys values!");
                         return;
                     }
-                }    
+                }
             }
 
             ini.IniWriteValue("Hotkeys", "Close", settingsCloseCmb.SelectedItem.ToString() + "+" + settingsCloseHKTxt.Text);
@@ -1390,10 +1387,10 @@ namespace Nucleus.Coop
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            if(page1.Visible)
+            if (page1.Visible)
             {
-                SuspendLayout();      
-                page2.Visible = true; 
+                SuspendLayout();
+                page2.Visible = true;
                 page2.BringToFront();
                 page1.Visible = false;
                 btnNext.Text = "Previous";
@@ -1404,7 +1401,7 @@ namespace Nucleus.Coop
                 SuspendLayout();
                 page1.Visible = true;
                 page1.BringToFront();
-                page2.Visible=false;
+                page2.Visible = false;
                 btnNext.Text = "Next";
                 ResumeLayout();
             }

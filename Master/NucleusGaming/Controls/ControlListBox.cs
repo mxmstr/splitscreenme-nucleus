@@ -1,8 +1,5 @@
-﻿using Nucleus.Gaming.Controls;
-using SplitTool.Controls;
-using System;
+﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
@@ -33,7 +30,7 @@ namespace Nucleus.Gaming
             VerticalScroll.Visible = false;
             AutoScroll = true;
             DoubleBuffered = true;
-            Anchor = AnchorStyles.Top | AnchorStyles.Bottom| AnchorStyles.Left | AnchorStyles.Right;
+            Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         }
 
         public override bool AutoScroll
@@ -53,8 +50,8 @@ namespace Nucleus.Gaming
 
         protected override void OnSizeChanged(EventArgs e)
         {
-            base.OnSizeChanged(e);           
-            UpdateSizes();         
+            base.OnSizeChanged(e);
+            UpdateSizes();
         }
 
         private bool updatingSize;
@@ -145,7 +142,7 @@ namespace Nucleus.Gaming
         }
 
         public void Deselect()
-        { 
+        {
             SelectedControl = null;
             c_Click(this, EventArgs.Empty);
         }
@@ -173,7 +170,7 @@ namespace Nucleus.Gaming
         }
 
         private void c_Click(object sender, EventArgs e)
-        {          
+        {
             Control parent = (Control)sender;
 
             for (int i = 0; i < Controls.Count; i++)
@@ -196,7 +193,7 @@ namespace Nucleus.Gaming
 
             if (parent != null && parent != SelectedControl)
             {
-                if (SelectedControl != null && 
+                if (SelectedControl != null &&
                     SelectedControl.GetType() != typeof(ComboBox) &&
                     SelectedControl.GetType() != typeof(TextBox))
                 {
@@ -204,7 +201,7 @@ namespace Nucleus.Gaming
                 }
 
                 if (SelectedChanged != null)
-                {                  
+                {
                     SelectedControl = parent;
                     SelectedChanged(SelectedControl, this);
                 }
@@ -212,12 +209,12 @@ namespace Nucleus.Gaming
 
             SelectedControl = parent;
 
-            if (SelectedControl.GetType() != typeof(ComboBox) && 
+            if (SelectedControl.GetType() != typeof(ComboBox) &&
                 SelectedControl.GetType() != typeof(TextBox) && SelectedControl.GetType() != typeof(Label))
             {
-                SelectedControl.BackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), 
-                                                           int.Parse(rgb_SelectionColor[1]), 
-                                                           int.Parse(rgb_SelectionColor[2]), 
+                SelectedControl.BackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]),
+                                                           int.Parse(rgb_SelectionColor[1]),
+                                                           int.Parse(rgb_SelectionColor[2]),
                                                            int.Parse(rgb_SelectionColor[3]));
             }
 

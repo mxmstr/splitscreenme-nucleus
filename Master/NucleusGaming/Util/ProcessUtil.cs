@@ -35,7 +35,7 @@ namespace Nucleus
                 }
             }
         }
-        
+
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern bool CreateProcessWithLogonW(
            String userName,
@@ -202,12 +202,12 @@ namespace Nucleus
             ////ThreadPool.QueueUserWorkItem(KillParent, p);
         }
 
-       
+
         private static void KillParent(object state)
         {
             Process p = (Process)state;
         }
-        
+
         public static bool KillMutex(Process process, string mutexType, string mutexName, bool partial)
         {
             if (mutexName.ToLower().StartsWith("type:") && mutexName.Contains("|"))
@@ -412,7 +412,7 @@ namespace Nucleus
             }
         }
 
-        public static void WriteToProcessMemory(GenericGameInfo gen,Process proc)
+        public static void WriteToProcessMemory(GenericGameInfo gen, Process proc)
         {
             string[] writeSplit = gen.WriteToProcessMemory.Split('|');
             long baseAddr = long.Parse(writeSplit[0], NumberStyles.HexNumber);
@@ -474,7 +474,7 @@ namespace Nucleus
             proc.ProcessorAffinity = (IntPtr)num2;
         }
 
-        public static void SetProcessorAffinityPerInstance(GenericGameInfo gen, Process proc,int i)
+        public static void SetProcessorAffinityPerInstance(GenericGameInfo gen, Process proc, int i)
         {
             string[] processorsPerInstance = gen.UseProcessorsPerInstance;
             if ((processorsPerInstance != null ? ((uint)processorsPerInstance.Length > 0U ? 1 : 0) : 0) != 0)

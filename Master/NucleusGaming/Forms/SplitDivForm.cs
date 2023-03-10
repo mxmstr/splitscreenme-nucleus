@@ -1,13 +1,9 @@
 ﻿using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Forms
@@ -19,7 +15,7 @@ namespace Nucleus.Gaming.Forms
         private Timer loadTimer;
         private string currentGame;
 
-        public SplitForm(GenericGameInfo game, GenericGameHandler handler,Display screen)
+        public SplitForm(GenericGameInfo game, GenericGameHandler handler, Display screen)
         {
             InitializeComponent();
             Name = $"SplitForm{screen.DisplayIndex}";
@@ -29,7 +25,7 @@ namespace Nucleus.Gaming.Forms
             Height = screen.Bounds.Height;// + 50;
             BackgroundImageLayout = ImageLayout.Stretch;
             FormBorderStyle = FormBorderStyle.None;
-            StartPosition = FormStartPosition.Manual;           
+            StartPosition = FormStartPosition.Manual;
             BackColor = Color.Black;
             currentGame = game.GUID;
 
@@ -37,7 +33,7 @@ namespace Nucleus.Gaming.Forms
         }
 
 
-        private void Setup(GenericGameInfo game,GenericGameHandler handler, Display screen)
+        private void Setup(GenericGameInfo game, GenericGameHandler handler, Display screen)
         {
             IDictionary<string, Color> splitColors = new Dictionary<string, Color>();
 
@@ -86,8 +82,8 @@ namespace Nucleus.Gaming.Forms
             };
 
             slideshow.Tick += new EventHandler(slideshowTick);
-            slideshow.Start();          
-                      
+            slideshow.Start();
+
         }
 
         private void slideshowTick(Object myObject, EventArgs myEventArgs)
@@ -98,12 +94,12 @@ namespace Nucleus.Gaming.Forms
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                BackgroundImage = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGame + "\\" + RandomIndex + "_" + currentGame + ".jpeg"));            
-            }            
+                BackgroundImage = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGame + "\\" + RandomIndex + "_" + currentGame + ".jpeg"));
+            }
         }
 
         private void loadTimerTick(Object myObject, EventArgs myEventArgs)
-        {          
+        {
             slideshow.Dispose();
             loadTimer.Dispose();
 

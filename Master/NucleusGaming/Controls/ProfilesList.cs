@@ -1,17 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Nucleus.Coop;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.Generic;
-using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Controls
@@ -111,7 +106,7 @@ namespace Nucleus.Gaming.Controls
             if (selected.Text == "Unload")
             {
                 selected.ForeColor = Color.Gray;
-                GameProfile.currentProfile.Reset();              
+                GameProfile.currentProfile.Reset();
                 Globals.MainOSD.Settings(500, Color.Yellow, "Game Profile Unloaded");
                 return;
             }
@@ -214,7 +209,7 @@ namespace Nucleus.Gaming.Controls
             }
 
             //Height += 3;
-           
+
             if (Controls.Count == 1)
             {
                 Controls.Clear();

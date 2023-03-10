@@ -1,17 +1,12 @@
 ﻿using Nucleus.Gaming;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
     static class CleanGameContent
     {
-        public static void CleanContentFolder(string path,GenericGameInfo currentGameInfo)
+        public static void CleanContentFolder(string path, GenericGameInfo currentGameInfo)
         {
             if (Directory.Exists(path))
             {
@@ -28,7 +23,7 @@ namespace Nucleus.Coop
                         }
                     }
                 }
-                catch 
+                catch
                 {
                     LogManager.Log("Nucleus will try to unlock one or more files in order to cleanup game content.");
                     try
@@ -53,7 +48,7 @@ namespace Nucleus.Coop
                             }
                         }
                     }
-                    catch 
+                    catch
                     {
                         LogManager.Log("Game content cleanup failed. One or more files can't be unlocked by Nucleus.");
                         System.Threading.Tasks.Task.Run(() =>

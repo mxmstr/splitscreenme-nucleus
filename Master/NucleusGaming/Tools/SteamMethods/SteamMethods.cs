@@ -12,7 +12,6 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using static Nucleus.Gaming.GenericGameHandler;
 
 namespace Nucleus.Gaming.Tools.SteamMethods
 {
@@ -97,7 +96,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
                 utilFolder += "\\experimental_steamclient";
 
                 string exeFolder = Path.GetDirectoryName(exePath);
-              
+
                 FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(exeFolder, "steamclient.dll"));
                 File.Copy(Path.Combine(utilFolder, "steamclient.dll"), Path.Combine(exeFolder, "steamclient.dll"));
 
@@ -227,7 +226,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
                                 if (File.Exists(Path.Combine(instanceSteamDllFolder, "steam_api64.dll")))
                                 {
                                     if (gen.GoldbergExperimental && gen.GoldbergExperimentalRename)
-                                    {                                     
+                                    {
                                         FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(instanceSteamDllFolder, "cracksteam_api64.dll"));
                                         genericGameHandler.Log("Renaming steam_api64.dll to cracksteam_api64.dll");
                                         File.Move(Path.Combine(instanceSteamDllFolder, "steam_api64.dll"), Path.Combine(instanceSteamDllFolder, "cracksteam_api64.dll"));
@@ -265,12 +264,12 @@ namespace Nucleus.Gaming.Tools.SteamMethods
                                         FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(instanceSteamDllFolder, "steam_api.dll"));
                                     }
                                 }
-                               genericGameHandler.Log("Placing Goldberg steam_api.dll in instance steam dll folder");
+                                genericGameHandler.Log("Placing Goldberg steam_api.dll in instance steam dll folder");
                                 File.Copy(Path.Combine(utilFolder, steamDll), Path.Combine(instanceSteamDllFolder, "steam_api.dll"), true);
                             }
                             catch (Exception ex)
                             {
-                               genericGameHandler.Log("ERROR - " + ex.Message);
+                                genericGameHandler.Log("ERROR - " + ex.Message);
                                 genericGameHandler.Log("Using alternative copy method for steam_api.dll");
                                 CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, steamDll) + "\" \"" + Path.Combine(instanceSteamDllFolder, "steam_api.dll") + "\"");
                             }
@@ -295,7 +294,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
                             continue;
                         }
                     }
-                   genericGameHandler.Log("New steam api folder found");
+                    genericGameHandler.Log("New steam api folder found");
                     prevSteamDllFilePath = Path.GetDirectoryName(nameFile);
 
                     if (genericGameHandler.ini.IniReadValue("Misc", "UseNicksInGame") == "True" && !string.IsNullOrEmpty(player.Nickname))
@@ -349,7 +348,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
                         }
                     }
 
-                    if (GameProfile.SteamIDs.Count-1 >= i)
+                    if (GameProfile.SteamIDs.Count - 1 >= i)
                     {
                         genericGameHandler.Log("Using steam ID from profile");
                         steamID = GameProfile.SteamIDs[i];
@@ -561,7 +560,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
 
                 }
 
-                if (GameProfile.SteamIDs.Count-1 >= i)
+                if (GameProfile.SteamIDs.Count - 1 >= i)
                 {
                     steamID = GameProfile.SteamIDs[i];
                     player.SteamID = GameProfile.SteamIDs[i];
@@ -688,11 +687,11 @@ namespace Nucleus.Gaming.Tools.SteamMethods
             emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Manual");
 
 
-            if (GameProfile.SteamIDs.Count-1 >= i)
+            if (GameProfile.SteamIDs.Count - 1 >= i)
             {
                 emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", GameProfile.SteamIDs[i].ToString());//ToString?   
             }
-            else if(genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
+            else if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
             {
                 emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());//ToString?   
             }
@@ -955,7 +954,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
             };
         }
 
-        public static void SetSteamIdNoGoldberg(GenericGameHandler genericGameHandler, GenericGameInfo gen,int i)//Useless
+        public static void SetSteamIdNoGoldberg(GenericGameHandler genericGameHandler, GenericGameInfo gen, int i)//Useless
         {
             long steamID = random_steam_id + i;
 

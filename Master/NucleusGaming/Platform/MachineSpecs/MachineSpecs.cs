@@ -1,19 +1,16 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming.Platform.Windows;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Platform.PCSpecs
 {
     public static class MachineSpecs
     {
         public static string GetPCspecs(GenericGameHandler genericGameHandler)
-        {           
+        {
             string pcSpecs = "PC Info - ";
             var name = (from x in new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
                         select x.GetPropertyValue("Caption")).FirstOrDefault();
@@ -34,11 +31,11 @@ namespace Nucleus.Gaming.Platform.PCSpecs
                 }
             }
 
-            if(genericGameHandler != null)
+            if (genericGameHandler != null)
             {
                 genericGameHandler.Log(pcSpecs);
             }
-         
+
             return pcSpecs;
         }
 

@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -177,7 +176,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         public static void ChangeGameWindow(GenericGameHandler genericGameHandler, GenericGameInfo gen, Process proc, List<PlayerInfo> players, int playerIndex)
         {
             var hwnd = WaitForProcWindowHandleNotZero(genericGameHandler, proc);
-           
+
             Point loc = new Point(players[playerIndex].MonitorBounds.X, players[playerIndex].MonitorBounds.Y);
             Size size = new Size(players[playerIndex].MonitorBounds.Width, players[playerIndex].MonitorBounds.Height);
 
@@ -1004,7 +1003,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 Rectangle playerWindow = new Rectangle(data.HWnd.Location.X, data.HWnd.Location.Y, data.HWnd.Size.Width, data.HWnd.Size.Height);
                 bool fisrtOfScr = localizeFirstOfScr.IntersectsWith(playerWindow);
 
-               // Console.WriteLine(fisrtOfScr + " " + p.PlayerID);
+                // Console.WriteLine(fisrtOfScr + " " + p.PlayerID);
 
                 if (on)
                 {
@@ -1086,19 +1085,19 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
         }
 
-        public static void RevivePlayer(GenericGameHandler genericGameHandler, GenericGameInfo gen,GameProfile profile,PlayerInfo p)
-        { 
+        public static void RevivePlayer(GenericGameHandler genericGameHandler, GenericGameInfo gen, GameProfile profile, PlayerInfo p)
+        {
             genericGameHandler.Play();
-            Console.WriteLine(p.PlayerID);                    
+            Console.WriteLine(p.PlayerID);
         }
 
         public static void UpdateAndRefreshGameWindows(GenericGameHandler genericGameHandler, GenericGameInfo gen, GameProfile profile, double delayMS, bool refresh)
-        { 
+        {
             if (profile == null)
-            { 
+            {
                 return;
             }
-                    
+
             genericGameHandler.exited = 0;
             List<PlayerInfo> players = profile.PlayerData;
             genericGameHandler.timer += delayMS;
@@ -1110,19 +1109,19 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 updatedHwnd = true;
                 genericGameHandler.timer = 0;
             }
-            
+
             Application.DoEvents();
 
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo p = players[i];
-                ProcessData data = p.ProcessData;            
+                ProcessData data = p.ProcessData;
 
                 if (data == null)
                 {
                     continue;
                 }
-             
+
                 if (refresh)
                 {
                     genericGameHandler.TriggerOSD(100000, "Reseting game windows. Please wait...");
@@ -1131,8 +1130,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     //updatedHwnd = false;
                     data.Setted = false;
                     data.Finished = false;
-                    data.Status = 0;               
-                    resetingWindows = true;                  
+                    data.Status = 0;
+                    resetingWindows = true;
                 }
 
                 if (data.Finished)
@@ -1349,7 +1348,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                         {
                                             ChangeForegroundWindow();
                                         }
-                                        genericGameHandler.TriggerOSD(2000,"Game Windows Reseted");
+                                        genericGameHandler.TriggerOSD(2000, "Game Windows Reseted");
                                         resetingWindows = false;
                                     }
 
@@ -1583,7 +1582,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             SetWindowText(proc.NucleusGetMainWindowHandle(), windowTitle);
         }
 
-        public static  bool TopMostToggle = true;
+        public static bool TopMostToggle = true;
         public static void ShowHideWindows(GenericGameInfo game)
         {
             if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
@@ -1665,8 +1664,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             IntPtr nucHwnd = User32Interop.FindWindow(null, "Nucleus Co-op");
 
-                if (nucHwnd != IntPtr.Zero)
-                    User32Interop.SetForegroundWindow(nucHwnd);
+            if (nucHwnd != IntPtr.Zero)
+                User32Interop.SetForegroundWindow(nucHwnd);
         }
     }
 }

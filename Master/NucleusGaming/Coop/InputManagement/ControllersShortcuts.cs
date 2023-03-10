@@ -1,7 +1,5 @@
-﻿using Nucleus.Gaming.Coop.ProtoInput;
-using Nucleus.Gaming.Tools.GlobalWindowMethods;
+﻿using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows;
-using Nucleus.Gaming.Windows.Interop;
 using SharpDX.XInput;
 using System;
 using System.Diagnostics;
@@ -11,7 +9,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using WindowScrape.Constants;
 
 namespace Nucleus.Gaming.Coop.InputManagement
 {
@@ -166,10 +163,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
         }
 
         public static Thread controllersUINavThread;
-        public static Thread ControllersUINavThread
-        {
-            get { return controllersUINavThread; }
-        }
+        public static Thread ControllersUINavThread => controllersUINavThread;
 
         private static Point GetCursorPos()
         {
@@ -187,15 +181,12 @@ namespace Nucleus.Gaming.Coop.InputManagement
         private static int LT = 10000;
 
         private static bool _Enabled;
-        public static bool Enabled
-        {
-            get => _Enabled;
-        }
+        public static bool Enabled => _Enabled;
         public static bool EnabledRuntime;//Can on/off UI navigation later on runtime
         private static bool oskCleared = false;
         private static bool oskVisible;
 
-       
+
         public static void StartXConNavThread()
         {
             int x = GetCursorPos().X;///Init current cursor X
@@ -211,7 +202,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             while (true)
             {
-                for (int i = 0; i < XController.Controllers.Length ; i++)
+                for (int i = 0; i < XController.Controllers.Length; i++)
                 {
                     if (!XController.Controllers[i].IsConnected)
                     {
@@ -236,7 +227,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     bool canMouveRight = XController.GetLeftStickValue(i).Item1 >= Deadzone;
                     bool canMouveUp = XController.GetLeftStickValue(i).Item2 <= -Deadzone;
                     bool canMouveDown = XController.GetLeftStickValue(i).Item2 >= Deadzone;
-    
+
                     ///Adjust scrolling the cursor speed to the joystick value
                     int ScrollUpSpeed = Math.Abs((XController.GetRightStickValue(i).Item2 - Deadzone) / 1000);
                     int ScrollDownSpeed = (XController.GetRightStickValue(i).Item2 - Deadzone) / 1000;
@@ -251,10 +242,10 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         {
                             EnabledRuntime = false;
                             Globals.MainOSD.Settings(1600, Color.YellowGreen, $"UI Control Locked");
-                            Thread.Sleep(800);                         
+                            Thread.Sleep(800);
                         }
                         else if (!EnabledRuntime && (pressed == LockUIControl))
-                        {                                                       
+                        {
                             EnabledRuntime = true;
                             Globals.MainOSD.Settings(1600, Color.YellowGreen, $"UI Control Unlocked");
                             Thread.Sleep(800);
@@ -266,7 +257,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         Thread.Sleep(500);
                         continue;
                     }
-                  
+
                     if (canScrollUp)
                     {
                         mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollUpSpeed, 0);///Mouse wheel Up
@@ -275,7 +266,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     {
                         mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollDownSpeed, 0);///Mouse wheel Down
                     }
-                 
+
                     if (canMouveRight)
                     {
                         x += steps * MouveRightSpeed;
@@ -302,7 +293,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         SetCursorPos(x, y);
                     }
 
-                    if ((pressed == LeftClick || rt == LeftClick || lt == LeftClick )  && prevPressed != pressed)///Left click and release(single click) 
+                    if ((pressed == LeftClick || rt == LeftClick || lt == LeftClick) && prevPressed != pressed)///Left click and release(single click) 
                     {
                         mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0);///Left Mouse Button Down
                         Thread.Sleep(200);
@@ -318,7 +309,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         dragging = false;
                     }
 
-                    if ((pressed == Dragdrop || rt == Dragdrop || lt == Dragdrop ) && pressed != prevPressed && !dragging)///Left click //catch/drag  
+                    if ((pressed == Dragdrop || rt == Dragdrop || lt == Dragdrop) && pressed != prevPressed && !dragging)///Left click //catch/drag  
                     {
                         mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0);
                         dragging = true;
@@ -343,14 +334,14 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             _OpenOsk();
                             Globals.MainOSD.Settings(1600, Color.YellowGreen, $"On Screen Keyboard Opened");
                             Thread.Sleep(1100);
-                            oskVisible = true;                          
+                            oskVisible = true;
                         }
                         else
                         {
                             KillOsk();
                             Globals.MainOSD.Settings(1600, Color.YellowGreen, $"On Screen Keyboard Closed");
                             Thread.Sleep(500);
-                            oskVisible = false;                          
+                            oskVisible = false;
                         }
                     }
                     prevPressed = pressed;
@@ -438,10 +429,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
         private static bool ToggleCutscenes;
 
         public static Thread ctrlsShortcuts;
-        public static Thread CtrlsShortcuts
-        {
-            get { return ctrlsShortcuts; }
-        }
+        public static Thread CtrlsShortcuts => ctrlsShortcuts;
 
         public static void StartSRTCThread()
         {
@@ -512,7 +500,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         }
                         else if ((button == TopMost || rt == TopMost || lt == TopMost))///Minimize/restore windows
                         {
-                            GlobalWindowMethods.ShowHideWindows(GameProfile.Game);                          
+                            GlobalWindowMethods.ShowHideWindows(GameProfile.Game);
                         }
                         else if (button == StopSession || rt == StopSession || lt == StopSession)///End current session
                         {
@@ -520,7 +508,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             {
                                 if (GenericGameHandler.Instance != null)
                                     GenericGameHandler.Instance.End(true);
-                                    Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Session Ended");
+                                Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Session Ended");
                             }
                             else
                             {
@@ -566,7 +554,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         }
                         else if (button == ReleaseCursor || rt == LockInputs || lt == LockInputs)///Try to release the cursor from game window by alt+tab inputs
                         {
-                            SendKeys.SendWait("%+{TAB}");   
+                            SendKeys.SendWait("%+{TAB}");
                             //Thread.Sleep(1000);
                         }
 

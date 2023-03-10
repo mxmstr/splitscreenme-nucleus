@@ -15,8 +15,8 @@ namespace Nucleus.Coop
             main = mainform;
             main.icons_Container.Visible = false;
             main.icons_Container.Controls.Clear();
-            
-           Size iconsSize = new Size(main.icons_Container.Height + 6, main.icons_Container.Height - 2);
+
+            Size iconsSize = new Size(main.icons_Container.Height + 6, main.icons_Container.Height - 2);
             if ((game.Hook.XInputEnabled && !game.Hook.XInputReroute && !game.ProtoInput.DinputDeviceHook) || game.ProtoInput.XinputHook)
             {
                 PictureBox icon = new PictureBox

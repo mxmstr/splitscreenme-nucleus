@@ -4,12 +4,8 @@ using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.Generic;
-using Nucleus.Gaming.Windows.Interop;
-using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -18,7 +14,6 @@ using System.Net.Sockets;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -77,7 +72,7 @@ namespace Nucleus.Coop
                 return handleparams;
             }
         }
-       
+
         public ProfileSettings(MainForm mf, PositionsControl pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
@@ -250,7 +245,7 @@ namespace Nucleus.Coop
                     Affinitys[all].KeyPress += new KeyPressEventHandler(Affinity_KeyPress);
                 }
             }
-           
+
             coreCountLabel.Text = $"Cores/Threads {Environment.ProcessorCount} (Max Value)";
 
             SplitColors.Items.Add("Black");
@@ -308,19 +303,19 @@ namespace Nucleus.Coop
 
             sharedTab.Parent = this;
             sharedTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
-           
+
             playersTab.Parent = this;
             playersTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
-            
+
             audioTab.Parent = this;
             audioTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
-           
+
             processorTab.Parent = this;
             processorTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
 
             layoutTab.Parent = this;
             layoutTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
-            
+
             page1.Parent = playersTab;
             page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
 
@@ -328,7 +323,7 @@ namespace Nucleus.Coop
             page2.Location = page1.Location;
 
             btnNext.Parent = playersTab;
-            btnNext.Location = new Point((page1.Right-btnNext.Width)-5, (page1.Top - btnNext.Height)-5);
+            btnNext.Location = new Point((page1.Right - btnNext.Width) - 5, (page1.Top - btnNext.Height) - 5);
 
             processorPage1.Parent = processorTab;
             processorPage1.Location = new Point(processorTab.Width / 2 - processorPage1.Width / 2, processorTab.Height / 2 - processorPage1.Height / 2);
@@ -336,7 +331,7 @@ namespace Nucleus.Coop
             processorPage2.Parent = processorTab;
             processorPage2.Location = processorPage1.Location;
 
-            btnProcessorNext.Location = new Point((processorPage1.Right - btnProcessorNext.Width)-5, (processorPage1.Top - btnProcessorNext.Height)-5);
+            btnProcessorNext.Location = new Point((processorPage1.Right - btnProcessorNext.Width) - 5, (processorPage1.Top - btnProcessorNext.Height) - 5);
             btnProcessorNext.Parent = processorTab;
 
             sharedTab.BringToFront();
@@ -740,7 +735,7 @@ namespace Nucleus.Coop
                     }
                 }
                 else
-                {   
+                {
                     //Invalid Steam id detected
                     steamIds[i].BackColor = Color.Red;
                     sidWrongValue = true;
@@ -757,7 +752,7 @@ namespace Nucleus.Coop
                 if (IdealProcessors[i].Text != "*")
                 {
                     if (int.Parse(IdealProcessors[i].Text) > wrongValue)
-                    {  
+                    {
                         //Invalid Ideal Processor detected
                         IdealProcessors[i].BackColor = Color.Red;
                         IdealProcessorsWrongValue = true;
@@ -768,8 +763,8 @@ namespace Nucleus.Coop
                 GameProfile.IdealProcessors.Add(IdealProcessors[i].Text);
 
                 //Set GameProfile Processors Affinity
-                int maxValue = Environment.ProcessorCount;               
-                
+                int maxValue = Environment.ProcessorCount;
+
                 string[] values = Affinitys[i].Text.Split(',');
                 foreach (string val in values)
                 {
@@ -846,7 +841,7 @@ namespace Nucleus.Coop
 
                 stream.Dispose();
             }
-           
+
             //Set shared GameProfile options
             GameProfile.Notes = notes_text.Text;
             GameProfile.AutoPlay = autoPlay.Checked;
@@ -1315,7 +1310,7 @@ namespace Nucleus.Coop
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            
+
             if (page1.Visible)
             {
                 SuspendLayout();
@@ -1334,12 +1329,12 @@ namespace Nucleus.Coop
                 page2.Visible = false;
                 ResumeLayout();
             }
-           
+
         }
 
         private void btnProcessorNext_Click_1(object sender, EventArgs e)
         {
-           
+
             if (processorPage1.Visible)
             {
                 SuspendLayout();
@@ -1358,7 +1353,7 @@ namespace Nucleus.Coop
                 btnProcessorNext.Text = "Next";
                 ResumeLayout();
             }
-              
+
         }
     }
 }

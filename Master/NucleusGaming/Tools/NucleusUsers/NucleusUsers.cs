@@ -4,20 +4,18 @@ using Nucleus.Gaming.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Tools.NucleusUsers
 {
     public static class NucleusUsers
     {
-        public static void UserProfileConfigCopy(GenericGameHandler genericGameHandler, GenericGameInfo gen,PlayerInfo player)
+        public static void UserProfileConfigCopy(GenericGameHandler genericGameHandler, GenericGameInfo gen, PlayerInfo player)
         {
             string nucConfigPath = Path.Combine($@"{genericGameHandler.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", gen.UserProfileConfigPath);
             string realConfigPath = Path.Combine(genericGameHandler.NucleusEnvironmentRoot, gen.UserProfileConfigPath);
@@ -277,7 +275,7 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
             return envPtr;
         }
 
-        public static void DeleteGameContentFolder(GenericGameHandler genericGameHandler,GenericGameInfo gen, UserGameInfo userGame,GameProfile profile)
+        public static void DeleteGameContentFolder(GenericGameHandler genericGameHandler, GenericGameInfo gen, UserGameInfo userGame, GameProfile profile)
         {
             if (gen.SymlinkGame || gen.HardlinkGame || gen.HardcopyGame)
             {

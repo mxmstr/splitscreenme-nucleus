@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -301,7 +299,7 @@ namespace Nucleus.Gaming.Tools.AudioReroute
             }
         }
 
-       
+
 
         [Guid("2a59116d-6c4f-45e0-a74f-707e3fef9258")]
         [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]

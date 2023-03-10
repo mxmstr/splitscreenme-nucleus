@@ -254,8 +254,6 @@ namespace StartGame
         static void StartGame(string path, string args = "", string workingDir = null)
         {
             System.IO.Stream str = new System.IO.MemoryStream();
-            //GenericGameInfo gen = new GenericGameInfo(null, null, str);
-            bool regMethod = false;
 
             if (!Path.IsPathRooted(path))
             {
@@ -484,8 +482,6 @@ namespace StartGame
 
                     pOutPID = (uint)processInformation.dwProcessId;
                     proc = Process.GetProcessById((int)pOutPID);
-                    //pOutPID = proc.Id;
-                    regMethod = true;
                 }
 
                 Thread.Sleep(1000);
@@ -621,7 +617,7 @@ namespace StartGame
                     proc.WaitForExit();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // handle exception
             }

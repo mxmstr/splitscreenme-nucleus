@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Controls
@@ -48,7 +43,7 @@ namespace Nucleus.Gaming.Controls
             InitializeComponent();
             //SetStyle( ControlStyles.FixedHeight,true);
 
-            BackColor = Color.Transparent;          
+            BackColor = Color.Transparent;
             BorderStyle = BorderStyle.FixedSingle;
 
             Height = 20;
@@ -60,7 +55,7 @@ namespace Nucleus.Gaming.Controls
                 Name = "Main",
                 Dock = DockStyle.Top,
                 BorderStyle = BorderStyle.FixedSingle,
-                
+
                 Font = font,
                 BackColor = Color.FromArgb(0, 180, 12),
                 ForeColor = Color.White,
@@ -100,11 +95,11 @@ namespace Nucleus.Gaming.Controls
             Expand.Click += new EventHandler(Expand_Click);
 
             MainItem.Controls.Add(Expand);
-           // Controls.Add(Real);
-            
+            // Controls.Add(Real);
+
             Controls.Add(MainItem);
-           // Real.Location = MainItem.Location;
-            
+            // Real.Location = MainItem.Location;
+
             this.MouseWheel += new MouseEventHandler(Scrolling);
             DPIManager.Register(this);
         }
@@ -117,14 +112,14 @@ namespace Nucleus.Gaming.Controls
 
         private void Real_MouseLeave(object sender, EventArgs e)
         {
-           // Real.Text = MainItem.Text;
-           // Real.BringToFront();
+            // Real.Text = MainItem.Text;
+            // Real.BringToFront();
         }
 
         public void Expand_Click(object sender, EventArgs e)//refresh the whole list
         {
-           MainItem.Width = Width;
-          
+            MainItem.Width = Width;
+
             if (Opened)
             {
                 Controls.Clear();
@@ -145,7 +140,7 @@ namespace Nucleus.Gaming.Controls
                     Name = Items[i],
                     FlatStyle = FlatStyle.Flat,
                     BackgroundImageLayout = ImageLayout.Zoom,
-                    BorderStyle= BorderStyle.FixedSingle,
+                    BorderStyle = BorderStyle.FixedSingle,
                     Font = font,
                     BackColor = Color.FromArgb(130, 28, 47, 32),
                     ForeColor = Color.White,
@@ -153,17 +148,17 @@ namespace Nucleus.Gaming.Controls
                     Text = text,
                     Height = (int)(20 * _scale)
                 };
-          
+
                 item.Size = new Size((int)(MainItem.Width), (int)(MainItem.Height));
                 item.Location = new Point(0, Controls[i].Bottom);
                 item.Click += new EventHandler(Item_Click);
-                
+
                 Height += MainItem.Height;
                 Controls.Add(item);
             }
 
             Opened = true;
-            Refresh();          
+            Refresh();
         }
 
 
@@ -177,8 +172,8 @@ namespace Nucleus.Gaming.Controls
             Label item = sender as Label;
             MainItem.Text = item.Text;
             selectedItem = item.Text;
-           // Real.Text = MainItem.Text;
-            Expand_Click(null,null);
+            // Real.Text = MainItem.Text;
+            Expand_Click(null, null);
         }
 
         private void Scrolling(object sender, MouseEventArgs e)
@@ -203,7 +198,7 @@ namespace Nucleus.Gaming.Controls
                         Controls[0].Text = Items[ItemIndex];
                         ItemIndex++;
                     }
-                }             
+                }
             }
 
             if (Opened && outOfBounds)//Scroll Items list 
@@ -225,7 +220,7 @@ namespace Nucleus.Gaming.Controls
                         Controls[i].Location = new Point(0, Controls[i].Location.Y - Controls[i].Height * ScrollOffset);
                     }
 
-                    Height -= Controls[0].Height* ScrollOffset;
+                    Height -= Controls[0].Height * ScrollOffset;
                 }
             }
         }
@@ -233,20 +228,20 @@ namespace Nucleus.Gaming.Controls
         public void SelectedDefaultText(string text)
         {
             MainItem.Text = text;
-           // Real.Text = MainItem.Text;
+            // Real.Text = MainItem.Text;
         }
-       
+
         protected override void OnPaint(PaintEventArgs e)///voir pour utiliser drawstring seulement si readonly
         {
             Graphics g = e.Graphics;
 
             Rectangle parentBounds = new Rectangle(Parent.Location.X, Parent.Location.Y, Parent.Width, Parent.Height);
             Rectangle bounds = new Rectangle(0, 0, Width, Height);
-            Rectangle border = new Rectangle(MainItem.Location.X, MainItem.Location.Y, MainItem.Width, MainItem.Height-3);
+            Rectangle border = new Rectangle(MainItem.Location.X, MainItem.Location.Y, MainItem.Width, MainItem.Height - 3);
             //Pen pen = new Pen(Color.Yellow,1);
             //g.DrawRectangle(pen, border);
 
-           // Size textSize = TextRenderer.MeasureText(MainItem.Text, MainItem.Font);
+            // Size textSize = TextRenderer.MeasureText(MainItem.Text, MainItem.Font);
             //float ratio = (float)(textSize.Width / textSize.Height)/10;
             //Real.Width = textSize.Width;
             //Real.Size = new Size(textSize.Width, MainItem.Height);
@@ -256,7 +251,7 @@ namespace Nucleus.Gaming.Controls
             //Real.Text = MainItem.Text;
             if (bounds.Bottom > parentBounds.Bottom)
             {
-                outOfBounds = true;            
+                outOfBounds = true;
             }
         }
 

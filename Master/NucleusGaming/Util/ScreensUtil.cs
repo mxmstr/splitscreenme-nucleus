@@ -41,7 +41,7 @@ namespace Nucleus.Gaming
         {
             Display[] all = User32Util.GetDisplays();
             UserScreen[] rects = new UserScreen[all.Length];
-            
+
 
             for (int i = 0; i < rects.Length; i++)
             {

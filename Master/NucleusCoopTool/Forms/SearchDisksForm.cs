@@ -188,7 +188,7 @@ namespace Nucleus.Coop
 
             DPIManager.Register(this);
             DPIManager.Update(this);
-        }  
+        }
 
         public void UpdateSize(float scale)
         {

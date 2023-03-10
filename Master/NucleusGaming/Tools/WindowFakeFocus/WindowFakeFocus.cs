@@ -5,10 +5,7 @@ using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Tools.WindowFakeFocus
 {
@@ -25,10 +22,7 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
 
         public static Thread fakeFocus;
 
-        public static Thread FakeFocus
-        {
-            get { return fakeFocus; }
-        }
+        public static Thread FakeFocus => fakeFocus;
 
         private static GenericGameHandler genericGameHandler;
         private static GenericGameInfo gen;
@@ -139,7 +133,7 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //genericGameHandler.Log($"ThreadAbortException in FakeFocus. Exiting. Error: {e}");
             }

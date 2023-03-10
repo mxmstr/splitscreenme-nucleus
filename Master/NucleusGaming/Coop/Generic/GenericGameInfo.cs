@@ -64,7 +64,7 @@ namespace Nucleus.Gaming
         public bool SplitDivCompatibility = true;
         public bool SetTopMostAtEnd;
         public bool Favorite;
-        
+
         public void AddOption(string name, string desc, string key, object value, object defaultValue)
         {
             Options.Add(new GameOption(name, desc, key, value, defaultValue));
@@ -353,12 +353,12 @@ namespace Nucleus.Gaming
                 });
             }
 
-                // Run this in another thread to not block UI
-                //System.Threading.Tasks.Task.Run(() =>
-                //{
-                    UpdateAvailable = Hub.IsUpdateAvailable(true);
-                //});
-  
+            // Run this in another thread to not block UI
+            //System.Threading.Tasks.Task.Run(() =>
+            //{
+            UpdateAvailable = Hub.IsUpdateAvailable(true);
+            //});
+
             engine.SetValue("Game", (object)null);
         }
 

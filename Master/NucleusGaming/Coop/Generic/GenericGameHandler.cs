@@ -58,8 +58,8 @@ namespace Nucleus.Gaming
         private string keyboardInstance;
         private string logMsg;
         private string origExePath;
-        public string NucleusEnvironmentRoot { get { return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile); } }
-        public string DocumentsRoot { get { return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); } }
+        public string NucleusEnvironmentRoot => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        public string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public string nucleusFolderPath;
         public string exePath;
         public string instanceExeFolder;
@@ -88,12 +88,12 @@ namespace Nucleus.Gaming
         public int numPlayers = 0;
 
         protected int totalPlayers;
-        public int TotalPlayers { get { return totalPlayers; } }
+        public int TotalPlayers => totalPlayers;
 
         public double origRatio = 1;
         public double timer { get; set; }
         protected double timerInterval = 1000;
-        public double TimerInterval { get { return timerInterval; } }
+        public double TimerInterval => timerInterval;
 
         public int HWndInterval = 10000;
 
@@ -109,11 +109,11 @@ namespace Nucleus.Gaming
         public Process launchProc;
         public UserScreen owner;
         public readonly IniFile ini = Globals.ini;
-        public Thread FakeFocus { get { return WindowFakeFocus.fakeFocus; } }
+        public Thread FakeFocus => WindowFakeFocus.fakeFocus;
         public Thread _ControllersShortcuts = ControllersShortcuts.ctrlsShortcuts;
 
         public event Action Ended;
-        public static GenericGameHandler Instance { get { return instance; } }
+        public static GenericGameHandler Instance => instance;
 
         public Dictionary<string, string> jsData;
 
@@ -136,7 +136,7 @@ namespace Nucleus.Gaming
         private bool isPrevent;
         private bool hasKeyboardPlayer = false;
         public bool hasEnded;
-        public virtual bool HasEnded { get { return hasEnded; } }
+        public virtual bool HasEnded => hasEnded;
         public bool gameIs64 { get; set; }
         public bool UsingNucleusAccounts;
         public bool isDebug;
@@ -378,20 +378,20 @@ namespace Nucleus.Gaming
                             backgroundForm.BringToFront();
                             splitForms.Add(backgroundForm);
                         });
-                    }         
-                    
+                    }
+
                     break;
                 }
             }
 
             for (int i = 0; i < players.Count; i++)
-            {          
+            {
                 PlayerInfo player = players[i];
 
                 foreach (Display dp in screensInUse)
-                {           
-                    if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1)// && GameProfile.IsNew) ||
-                        //(GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1 && GameProfile.DisplaysIndexes[i] != dp.DisplayIndex))
+                {
+                    if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1)
+
                     {
                         if (i == 0)
                         {
@@ -744,7 +744,7 @@ namespace Nucleus.Gaming
                         DllsInjector.InjectDLLs(this, gen, pdata.Process, nextWindowToInject, before);
                     }
                 }
-         
+
                 Rectangle playerBounds = player.MonitorBounds;
                 owner = player.Owner;
 
@@ -916,7 +916,7 @@ namespace Nucleus.Gaming
                             {
                                 string s = skipExclusions[k];
                                 // make sure it's lower case
-                                dirExclusions.Add($"direxskip{ s.ToLower()}");
+                                dirExclusions.Add($"direxskip{s.ToLower()}");
                             }
                         }
 
@@ -976,7 +976,7 @@ namespace Nucleus.Gaming
 
                     string[] fileExclusionsArr = fileExclusions.ToArray();
                     string[] fileCopiesArr = fileCopies.ToArray();
-                   
+
                     bool skipped = false;
 
                     if (gen.ForceSymlink || !gen.KeepSymLinkOnExit || symlinkNeeded)
@@ -1188,7 +1188,7 @@ namespace Nucleus.Gaming
                                 {
                                     exePath = launcherFiles[0];
                                     origExePath = launcherFiles[0];
-                                    Log($"Multiple { gen.LauncherExe}'s found in instance folder. Using {exePath} to launch the game");
+                                    Log($"Multiple {gen.LauncherExe}'s found in instance folder. Using {exePath} to launch the game");
                                 }
                             }
                         }
@@ -1390,7 +1390,7 @@ namespace Nucleus.Gaming
 
                 bool setupDll = true;
 
-               
+
                 if (!gen.SymlinkGame && !gen.HardlinkGame && !gen.HardcopyGame && i > 0)
                 {
                     setupDll = false;
@@ -1531,7 +1531,7 @@ namespace Nucleus.Gaming
                     {
                         Log("Epic Emu parameters not found in arguments. Adding the necessary parameters to existing starting arguments");
                         //AUTH_LOGIN = unused - AUTH_PASSWORD = cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd - AUTH_TYPE = exchangecode - epicapp = CrabTest - epicenv = Prod - EpicPortal - epiclocale = en - epicusername <= same username than in the.json > -epicuserid <= same epicid than in the.json                     
-                        context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.GetEpicLanguage()} -epicusername={ player.Nickname} -epicuserid=0000000000000000000000000player{i + 1} ";
+                        context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.GetEpicLanguage()} -epicusername={player.Nickname} -epicuserid=0000000000000000000000000player{i + 1} ";
                     }
                 }
 
@@ -3036,7 +3036,7 @@ namespace Nucleus.Gaming
                 }
             }
             catch { }
-            
+
             ControllersUINav.EnabledRuntime = false;
 
             GameProfile.saveUserProfile(profile);
@@ -3521,10 +3521,10 @@ namespace Nucleus.Gaming
 
             //if (ControllersUINav.controllersUINavThread != null)
             //{
-                if (ControllersUINav.Enabled)
-                {
-                    ControllersUINav.EnabledRuntime = true;
-                }
+            if (ControllersUINav.Enabled)
+            {
+                ControllersUINav.EnabledRuntime = true;
+            }
             //}
 
             if (ini.IniReadValue("Misc", "ShowStatus") == "True")
@@ -3749,7 +3749,7 @@ namespace Nucleus.Gaming
                 }
             }
             catch { }
-            
+
             Ended?.Invoke();
         }
 
@@ -3777,7 +3777,7 @@ namespace Nucleus.Gaming
                     }
                 }
             }
-            catch {}
+            catch { }
         }
 
         private void StatusForm_Closing(object sender, FormClosingEventArgs e)

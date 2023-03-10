@@ -1,5 +1,4 @@
 ﻿using Nucleus.Gaming.Coop;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -17,7 +16,7 @@ namespace Nucleus.Gaming.Tools.DevReorder
             if (setupDll)
             {
                 string ogFile = Path.Combine(genericGameHandler.instanceExeFolder, "dinput8.dll");
-                FileUtil.FileCheck(genericGameHandler,gen,ogFile);
+                FileUtil.FileCheck(genericGameHandler, gen, ogFile);
                 genericGameHandler.Log("Copying dinput8.dll");
                 File.Copy(Path.Combine(utilFolder, garch + "\\dinput8.dll"), Path.Combine(genericGameHandler.instanceExeFolder, "dinput8.dll"), true);
             }

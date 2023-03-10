@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 //using Ionic.Zip;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
@@ -11,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
@@ -622,7 +620,7 @@ namespace Nucleus.Gaming
 
         }
         #endregion
-  
+
         public void Play(IGameHandler handler)
         {
             // Start the Play method in another thread, so the

@@ -12,7 +12,7 @@ using System.Threading;
 namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
 {
     public static class MonitorsDpiScaling
-    {      
+    {
         public enum DMDO
         {
             DEFAULT = 0,

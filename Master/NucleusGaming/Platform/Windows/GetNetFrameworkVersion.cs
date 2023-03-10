@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nucleus.Gaming.Platform.Windows
+﻿namespace Nucleus.Gaming.Platform.Windows
 {
     public static class GetNetFrameworkVersion
     {

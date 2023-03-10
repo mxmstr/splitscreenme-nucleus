@@ -18,7 +18,7 @@ namespace Nucleus.Coop.Tools
     {
         private int maxScreenshotsToDownload;
 
-        public void DownloadGameAssets(MainForm main,GameControl currentControl)
+        public void DownloadGameAssets(MainForm main, GameControl currentControl)
         {
             GameManager gameManager = new GameManager(main);
             ScriptDownloader scriptDownloader = new ScriptDownloader(main);
@@ -101,9 +101,8 @@ namespace Nucleus.Coop.Tools
 
                     if (currentControl != null)
                     {
-                       SetBackroundAndCover.ApplyBackgroundAndCover(main,currentControl.UserGameInfo.GameGuid);
+                        SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
                     }
-
                 });
 
             });
@@ -111,6 +110,10 @@ namespace Nucleus.Coop.Tools
 
         public void DownloadCovers(string urls, string gameGuid)
         {
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\covers")))
+            {
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"gui\\covers"));
+            }
             try
             {
                 if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
@@ -137,6 +140,11 @@ namespace Nucleus.Coop.Tools
 
         public void DownloadScreenshots(string json, string gameName)
         {
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots")))
+            {
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"gui\\screenshots"));
+            }
+
             try
             {
                 dynamic jsonData = JsonConvert.DeserializeObject<dynamic>(json);
@@ -184,6 +192,11 @@ namespace Nucleus.Coop.Tools
 
         public void DownloadDescriptions(string desc, string gameGuid)
         {
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions")))
+            {
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"gui\\descriptions"));
+            }
+
             if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt")))
             {
                 using (FileStream stream = new FileStream(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"), FileMode.Create))

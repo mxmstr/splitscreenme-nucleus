@@ -1,16 +1,11 @@
 ﻿using Nucleus.Gaming.Coop;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Util
 {
     public static class ExecutableUtil
     {
-        public static void ChangeExeName(GenericGameHandler genericGameHandler, GenericGameInfo gen,UserGameInfo userGame, string instanceExeFolder, int i)
+        public static void ChangeExeName(GenericGameHandler genericGameHandler, GenericGameInfo gen, UserGameInfo userGame, string instanceExeFolder, int i)
         {
             string newExe = Path.GetFileNameWithoutExtension(userGame.Game.ExecutableName) + " - Player " + (i + 1) + ".exe";
 

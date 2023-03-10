@@ -120,7 +120,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public static void CopyCustomUtils(GenericGameHandler genericGameHandler, GenericGameInfo gen,int i, string linkFolder, bool setupDll)
+        public static void CopyCustomUtils(GenericGameHandler genericGameHandler, GenericGameInfo gen, int i, string linkFolder, bool setupDll)
         {
             if (setupDll)
             {
@@ -168,7 +168,7 @@ namespace Nucleus.Gaming
                     }
                     else //file
                     {
-                        FileUtil.FileCheck(genericGameHandler,gen,Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)));
+                        FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)));
 
                         genericGameHandler.Log("Copying " + utilName + " to " + "Instance" + i + "\\" + utilPath);
                         File.Copy(Path.Combine(utilFolder, utilName), Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)), true);
@@ -178,7 +178,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public static string GetFolder(GenericGameHandler genericGameHandler,  Folder folder)
+        public static string GetFolder(GenericGameHandler genericGameHandler, Folder folder)
         {
             string str = folder.ToString();
             string output;
@@ -291,7 +291,7 @@ namespace Nucleus.Gaming
                 }
                 else
                 {
-                    
+
 
                     genericGameHandler.Log($"Deleting {Path.GetFileName(file)}");
                     File.Delete(file);

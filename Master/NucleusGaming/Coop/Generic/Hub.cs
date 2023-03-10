@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.IO;
 using System.Net;
 
@@ -13,7 +12,7 @@ namespace Nucleus.Gaming.Coop.Generic
 
         public bool IsUpdateAvailable(bool fetch)
         {
-            if(!Connected)
+            if (!Connected)
             {
                 return false;
             }
@@ -108,7 +107,7 @@ namespace Nucleus.Gaming.Coop.Generic
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.DefaultConnectionLimit = 9999;
-             
+
             try
             {
 

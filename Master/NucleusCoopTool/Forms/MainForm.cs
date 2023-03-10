@@ -10,25 +10,17 @@ using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Platform.PCSpecs;
-using Nucleus.Gaming.Tools;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Util;
 using Nucleus.Gaming.Windows;
-using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Media;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
-using WindowScrape.Constants;
 
 
 namespace Nucleus.Coop
@@ -84,7 +76,7 @@ namespace Nucleus.Coop
         private int Switch_HotkeyID = 7;
 
         private int currentStepIndex;
-      
+
         private List<string> profilePaths = new List<string>();
         private List<Control> ctrls = new List<Control>();
 
@@ -94,7 +86,7 @@ namespace Nucleus.Coop
         public Bitmap defBackground;
         public Bitmap coverImg;
         public Bitmap screenshotImg;
-        public Color buttonsBackColor;      
+        public Color buttonsBackColor;
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
         public bool connected;
@@ -115,7 +107,7 @@ namespace Nucleus.Coop
         private bool _disableGameProfiles;
         public bool disableGameProfiles
         {
-            get { return _disableGameProfiles; }
+            get => _disableGameProfiles;
             set
             {
                 if (_disableGameProfiles != value)
@@ -219,7 +211,7 @@ namespace Nucleus.Coop
             rgb_HandlerNoteTitleFontColor = themeIni.IniReadValue("Colors", "HandlerNoteTitleFont").Split(',');
             rgb_ButtonsBorderColor = themeIni.IniReadValue("Colors", "ButtonsBorder").Split(',');
             rgb_HandlerNoteMagnifierTitleBackColor = themeIni.IniReadValue("Colors", "HandlerNoteMagnifierTitleBackColor ").Split(',');
-            
+
             disableQuickHandlerUpdate = bool.Parse(ini.IniReadValue("Dev", "DisableQuickHandlerUpdate"));
             float fontSize = float.Parse(themeIni.IniReadValue("Font", "MainFontSize"));
             bool coverBorderOff = bool.Parse(themeIni.IniReadValue("Misc", "DisableCoverBorder"));
@@ -331,7 +323,7 @@ namespace Nucleus.Coop
             btn_dlFromHub.BackColor = buttonsBackColor;
             glowingLine0.Image = new Bitmap(theme + "lightbar_top.gif");
             btn_magnifier.Image = new Bitmap(theme + "magnifier.png");
-            
+
             favorite_Unselected = new Bitmap(theme + "favorite_unselected.png");
             favorite_Selected = new Bitmap(theme + "favorite_selected.png");
 
@@ -561,7 +553,7 @@ namespace Nucleus.Coop
             RefreshGames();
         }
 
-        public void UpdateSize(float scale)
+        public new void UpdateSize(float scale)
         {
             if (IsDisposed)
             {
@@ -581,7 +573,7 @@ namespace Nucleus.Coop
                     button.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
             }
-            
+
             gameContextMenuStrip.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             btn_Play.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Bold, GraphicsUnit.Pixel, 0);
             scriptAuthorTxt.Font = new Font(customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
@@ -1100,7 +1092,7 @@ namespace Nucleus.Coop
             }
 
             AssetsDownloader assetsDownloader = new AssetsDownloader();
-            assetsDownloader.DownloadGameAssets(this,currentControl);
+            assetsDownloader.DownloadGameAssets(this, currentControl);
         }
 
         private int r = 0;
@@ -1171,7 +1163,7 @@ namespace Nucleus.Coop
             positionsControl.handlerNoteZoom.Visible = false;
             btn_magnifier.Image = new Bitmap(theme + "magnifier.png");
             btn_textSwitcher.Visible = false;
-          
+
             screenshotImg?.Dispose();
 
             coverImg?.Dispose();
@@ -1217,8 +1209,8 @@ namespace Nucleus.Coop
                 SetBackroundAndCover.ApplyBackgroundAndCover(this, currentControl.UserGameInfo.GameGuid);
                 rightFrame.Visible = true;
                 button_UpdateAvailable.Visible = false;
-               
-                btn_Play.Enabled = false;             
+
+                btn_Play.Enabled = false;
                 btn_gameOptions.Visible = true;
                 StepPanel.Visible = true;
                 positionsControl.textZoomContainer.Visible = false;
@@ -2270,15 +2262,9 @@ namespace Nucleus.Coop
             string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "Selection").Split(',');
             string[] rgb_MenuStripBackColor = Globals.ThemeIni.IniReadValue("Colors", "MenuStripBack").Split(',');
 
-            public override Color MenuItemSelected
-            {
-                get { return Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); }
-            }
+            public override Color MenuItemSelected => Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
 
-            public override Color MenuItemBorder
-            {
-                get { return Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); }
-            }
+            public override Color MenuItemBorder => Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
 
             public override Color ImageMarginGradientBegin => Color.FromArgb(int.Parse(rgb_MenuStripBackColor[0]), int.Parse(rgb_MenuStripBackColor[1]), int.Parse(rgb_MenuStripBackColor[2]));
 

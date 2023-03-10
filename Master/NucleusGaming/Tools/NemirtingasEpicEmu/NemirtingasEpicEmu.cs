@@ -31,21 +31,18 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
                         genericGameHandler.Log("Emulator settings folder generated");
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     genericGameHandler.Log("Nucleus is unable to generate the required emulator settings folder");
                 }
 
                 try
                 {
-                    string log;
                     if (i == 0)
                     {
-                        log = "TRACE";
                     }
                     else
                     {
-                        log = "OFF";
                     }
 
                     JObject emuSettings;

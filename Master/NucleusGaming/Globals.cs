@@ -11,15 +11,11 @@ namespace Nucleus.Gaming
         public static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         public static string Theme//return theme path(current theme folder)
-        {
-             get { return Path.Combine(Application.StartupPath, @"gui\theme\" + ini.IniReadValue("Theme", "Theme") +"\\");} 
-        }
+=> Path.Combine(Application.StartupPath, @"gui\theme\" + ini.IniReadValue("Theme", "Theme") + "\\");
 
         public static IniFile ThemeIni//return theme.ini file(current theme)
-        {
-            get { return new IniFile(Path.Combine(Theme, "theme.ini")); }
-        }
+=> new IniFile(Path.Combine(Theme, "theme.ini"));
 
-        public static OSD MainOSD = new OSD();     
+        public static OSD MainOSD = new OSD();
     }
 }

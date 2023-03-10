@@ -1,11 +1,9 @@
 ﻿using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Generic.Step;
 using SplitTool.Controls;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
@@ -124,18 +122,18 @@ namespace Nucleus.Gaming
                 }
 
                 if (toSelect != null)
-                  Control_AutoSelect();
-            }     
+                    Control_AutoSelect();
+            }
         }
 
         public void Control_AutoSelect()
         {
             if (toSelect == null)
-            { 
-                return; 
+            {
+                return;
             }
 
-            toSelect.BackColor = Color.DodgerBlue;        
+            toSelect.BackColor = Color.DodgerBlue;
             toSelect.Title = toSelect.Title + " " + "(Auto Selected)";
             Control_OnSelected(toSelect);
         }
@@ -145,7 +143,7 @@ namespace Nucleus.Gaming
             CoolListControl c = obj as CoolListControl;
             profile.Options[CustomStep.Option.Key] = obj;
             canProceed = true;
-            CanPlayUpdated(true, true);        
+            CanPlayUpdated(true, true);
         }
 
     }

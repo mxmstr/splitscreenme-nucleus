@@ -4,7 +4,6 @@ using Nucleus.Gaming.Coop.InputManagement.Structs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -104,7 +103,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     IntPtr pData = Marshal.AllocHGlobal((int)pcbSize);
                     WinApi.GetRawInputDeviceInfo(rid.hDevice, 0x2000000b, pData, ref pcbSize);
                     RID_DEVICE_INFO device = (RID_DEVICE_INFO)Marshal.PtrToStructure(pData, typeof(RID_DEVICE_INFO));
-                  
+
                     if (device.dwType == 0)
                     {
                         //Mouse

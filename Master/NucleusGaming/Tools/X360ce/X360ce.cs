@@ -1,5 +1,4 @@
 ﻿using Nucleus.Gaming.Coop;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +8,7 @@ using System.Threading;
 namespace Nucleus.Gaming.Tools.X360ce
 {
     public static class X360ce
-    {     
+    {
         public static void UseX360ce(GenericGameHandler genericGameHandler, GenericGameInfo gen, int i, List<PlayerInfo> players, PlayerInfo player, GenericContext context, bool setupDll)
         {
             genericGameHandler.Log("Setting up x360ce");

@@ -9,9 +9,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Tools.Network
@@ -155,11 +153,11 @@ namespace Nucleus.Gaming.Tools.Network
             }
             else
             {
-                SetIP(iniNetworkInterface, currentIPaddress,currentSubnetMask, currentGateway);
+                SetIP(iniNetworkInterface, currentIPaddress, currentSubnetMask, currentGateway);
             }
         }
 
-        public static void ChangeIPPerInstanceAltCreateAdapter(GenericGameHandler genericGameHandler,PlayerInfo player)
+        public static void ChangeIPPerInstanceAltCreateAdapter(GenericGameHandler genericGameHandler, PlayerInfo player)
         {
             List<string> adptrs = Network.GetNetAdapters();
 
@@ -219,7 +217,7 @@ namespace Nucleus.Gaming.Tools.Network
             string stdOut = p.StandardOutput.ReadToEnd();
             genericGameHandler.Log("ChangeIPPerInstanceAlt remove output \n" + stdOut);
 
-            p.WaitForExit();         
+            p.WaitForExit();
         }
 
         public static string GetLocalIP()

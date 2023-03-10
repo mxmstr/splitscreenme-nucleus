@@ -10,9 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Util
 {
@@ -170,7 +168,7 @@ namespace Nucleus.Gaming.Util
                                 sw.WriteLine(@"@echo off");
                                 echoLineUsed = true;
                             }
-                            sw.WriteLine($@"net user nucleusplayer{pc} { genericGameHandler.nucleusUserAccountsPassword} /add && net user nucleusplayer{pc} { genericGameHandler.nucleusUserAccountsPassword} && net localgroup " + adminLocalGroup + $" nucleusplayer{pc} /add");
+                            sw.WriteLine($@"net user nucleusplayer{pc} {genericGameHandler.nucleusUserAccountsPassword} /add && net user nucleusplayer{pc} {genericGameHandler.nucleusUserAccountsPassword} && net localgroup " + adminLocalGroup + $" nucleusplayer{pc} /add");
                         }
                     }
                 }
@@ -265,7 +263,7 @@ namespace Nucleus.Gaming.Util
                     genericGameHandler.Log("ERROR - " + ex.Message);
                 }
             }
-           
+
         }
 
         public static void DeleteCreatedWindowsUser(GenericGameHandler genericGameHandler)
@@ -307,7 +305,7 @@ namespace Nucleus.Gaming.Util
                             //MessageBox.Show("ERROR! User: {0} not found!", username);
                         }
                     }
-                    catch (Exception exception)
+                    catch (Exception)
                     {
                         //MessageBox.Show(exception.Message);
                     }
