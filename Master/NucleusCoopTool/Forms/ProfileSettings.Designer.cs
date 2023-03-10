@@ -2562,6 +2562,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance8.BackColor = System.Drawing.Color.White;
             this.AudioInstance8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance8.FormattingEnabled = true;
             this.AudioInstance8.Location = new System.Drawing.Point(321, 84);
             this.AudioInstance8.Margin = new System.Windows.Forms.Padding(2);
@@ -2584,6 +2585,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance7.BackColor = System.Drawing.Color.White;
             this.AudioInstance7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance7.FormattingEnabled = true;
             this.AudioInstance7.Location = new System.Drawing.Point(321, 62);
             this.AudioInstance7.Margin = new System.Windows.Forms.Padding(2);
@@ -2606,6 +2608,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance6.BackColor = System.Drawing.Color.White;
             this.AudioInstance6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance6.FormattingEnabled = true;
             this.AudioInstance6.Location = new System.Drawing.Point(321, 40);
             this.AudioInstance6.Margin = new System.Windows.Forms.Padding(2);
@@ -2628,6 +2631,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance5.BackColor = System.Drawing.Color.White;
             this.AudioInstance5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance5.FormattingEnabled = true;
             this.AudioInstance5.Location = new System.Drawing.Point(321, 18);
             this.AudioInstance5.Margin = new System.Windows.Forms.Padding(2);
@@ -2650,6 +2654,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance4.BackColor = System.Drawing.Color.White;
             this.AudioInstance4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance4.FormattingEnabled = true;
             this.AudioInstance4.Location = new System.Drawing.Point(70, 84);
             this.AudioInstance4.Margin = new System.Windows.Forms.Padding(2);
@@ -2672,6 +2677,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance3.BackColor = System.Drawing.Color.White;
             this.AudioInstance3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance3.FormattingEnabled = true;
             this.AudioInstance3.Location = new System.Drawing.Point(70, 62);
             this.AudioInstance3.Margin = new System.Windows.Forms.Padding(2);
@@ -2694,6 +2700,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance2.BackColor = System.Drawing.Color.White;
             this.AudioInstance2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance2.FormattingEnabled = true;
             this.AudioInstance2.Location = new System.Drawing.Point(70, 40);
             this.AudioInstance2.Margin = new System.Windows.Forms.Padding(2);
@@ -2705,6 +2712,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance1.BackColor = System.Drawing.Color.White;
             this.AudioInstance1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance1.FormattingEnabled = true;
             this.AudioInstance1.Items.AddRange(new object[] {
             "Default"});
@@ -4403,6 +4411,7 @@ namespace Nucleus.Coop
             // 
             // SplitColors
             // 
+            this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SplitColors.Location = new System.Drawing.Point(15, 155);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
@@ -4605,6 +4614,7 @@ namespace Nucleus.Coop
             // 
             // cmb_Network
             // 
+            this.cmb_Network.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmb_Network.Location = new System.Drawing.Point(37, 175);
             this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -4725,12 +4735,12 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
+            this.Controls.Add(this.processorTab);
+            this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.sharedTab);
             this.Controls.Add(this.profileInfo);
-            this.Controls.Add(this.processorTab);
-            this.Controls.Add(this.audioTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);

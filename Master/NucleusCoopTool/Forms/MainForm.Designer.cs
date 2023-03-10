@@ -421,7 +421,7 @@ namespace Nucleus.Coop
             this.updateHandlerToolStripMenuItem});
             this.gameContextMenuStrip.Name = "gameContextMenuStrip";
             this.gameContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.gameContextMenuStrip.Size = new System.Drawing.Size(236, 462);
+            this.gameContextMenuStrip.Size = new System.Drawing.Size(236, 440);
             this.gameContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.GameContextMenuStrip_Opening);
             this.gameContextMenuStrip.Opened += new System.EventHandler(this.gameContextMenuStrip_Opened);
             // 
@@ -724,7 +724,6 @@ namespace Nucleus.Coop
             this.icons_Container.Name = "icons_Container";
             this.icons_Container.Size = new System.Drawing.Size(143, 17);
             this.icons_Container.TabIndex = 32;
-            this.icons_Container.Visible = false;
             // 
             // btn_gameOptions
             // 
@@ -768,14 +767,15 @@ namespace Nucleus.Coop
             this.scriptAuthorTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.scriptAuthorTxt.BulletIndent = 1;
             this.scriptAuthorTxt.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.scriptAuthorTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.scriptAuthorTxt.ForeColor = System.Drawing.Color.White;
             this.scriptAuthorTxt.Location = new System.Drawing.Point(0, 24);
             this.scriptAuthorTxt.Margin = new System.Windows.Forms.Padding(0);
-            this.scriptAuthorTxt.MaximumSize = new System.Drawing.Size(188, 191);
+            this.scriptAuthorTxt.MaximumSize = new System.Drawing.Size(189, 191);
             this.scriptAuthorTxt.Name = "scriptAuthorTxt";
             this.scriptAuthorTxt.ReadOnly = true;
             this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 191);
+            this.scriptAuthorTxt.Size = new System.Drawing.Size(189, 191);
             this.scriptAuthorTxt.TabIndex = 13;
             this.scriptAuthorTxt.Text = "";
             this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.scriptAuthorTxt_LinkClicked);
@@ -1185,7 +1185,6 @@ namespace Nucleus.Coop
         }
 
         #endregion
-        private BufferedClientAreaPanel StepPanel;
         private Gaming.ControlListBox list_Games;
         private System.Windows.Forms.Label label_StepTitle;
         private System.Windows.Forms.Button btn_Play;
@@ -1204,7 +1203,6 @@ namespace Nucleus.Coop
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem changeIconToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scriptNotesToolStripMenuItem;
-        private System.Windows.Forms.Button btn_gameOptions;
         private System.Windows.Forms.RichTextBox scriptAuthorTxt;
         private System.Windows.Forms.ToolStripMenuItem openOrigExePathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteContentFolderToolStripMenuItem;
@@ -1218,18 +1216,12 @@ namespace Nucleus.Coop
         private System.Windows.Forms.ToolStripMenuItem deleteDocumentConfigPathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openDocumentSavePathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteDocumentSavePathToolStripMenuItem;
-		private System.Windows.Forms.Button button_UpdateAvailable;
 		private System.Windows.Forms.PictureBox stepPanelPictureBox;
         private Button minimizeBtn;
         private Button maximizeBtn;
         private PictureBox logo;
-        private BufferedClientAreaPanel coverFrame;
         private BufferedClientAreaPanel scriptAuthorTxtSizer;
-        private BufferedClientAreaPanel mainButtonFrame;
         private BufferedClientAreaPanel rightFrame;
-        private BufferedClientAreaPanel game_listSizer;
-        private BufferedClientAreaPanel cover;
-        private Button btn_downloadAssets;
         private Label txt_version;
         public PictureBox glowingLine0;
         private Button btn_faq;
@@ -1250,12 +1242,20 @@ namespace Nucleus.Coop
         private Button btn_Links;
         private Label HandlerNoteTitle;
         private PictureBox btn_magnifier;
-        private Button btn_textSwitcher;
         private ToolStripMenuItem updateHandlerToolStripMenuItem;
         public FlowLayoutPanel icons_Container;
         public Label inputsIconsDesc;
         private Button closeBtn;
         public Button btn_settings;
         private ToolStripMenuItem keepInstancesFolderToolStripMenuItem;
+        public Button btn_textSwitcher;
+        public BufferedClientAreaPanel coverFrame;
+        public BufferedClientAreaPanel cover;
+        public BufferedClientAreaPanel StepPanel;
+        public Button btn_gameOptions;
+        public Button button_UpdateAvailable;
+        public BufferedClientAreaPanel game_listSizer;
+        public BufferedClientAreaPanel mainButtonFrame;
+        public Button btn_downloadAssets;
     }
 }

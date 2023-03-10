@@ -295,6 +295,11 @@ namespace Nucleus.Coop.Forms
 
         public Handler GetHandler(string id)
         {
+            if (id == "")
+            {
+                return null;
+            }
+
             try
             {
                 ServicePointManager.Expect100Continue = true;

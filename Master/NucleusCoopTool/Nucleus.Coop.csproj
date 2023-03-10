@@ -148,8 +148,9 @@
     <Compile Include="Forms\XInputShortcutsSetup.Designer.cs">
       <DependentUpon>XInputShortcutsSetup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\AssetsScraper.cs" />
+    <Compile Include="Tools\AssetsDownloader.cs" />
     <Compile Include="Tools\blur.cs" />
+    <Compile Include="Tools\CheckGameRequirements.cs" />
     <Compile Include="Tools\CleanGameContent.cs" />
     <Compile Include="Controls\BufferedClientAreaPanel.cs">
       <SubType>Component</SubType>
@@ -216,6 +217,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\SetBackroundAndCover.cs" />
     <Compile Include="Tools\StartChecks.cs" />
     <EmbeddedResource Include="Controls\HubShowcase.resx">
       <DependentUpon>HubShowcase.cs</DependentUpon>

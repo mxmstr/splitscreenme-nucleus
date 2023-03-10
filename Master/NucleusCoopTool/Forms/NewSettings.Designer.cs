@@ -60,6 +60,8 @@ namespace Nucleus.Coop
             this.btn_credits = new System.Windows.Forms.Button();
             this.playersTab = new BufferedClientAreaPanel();
             this.btnNext = new System.Windows.Forms.Button();
+            this.def_sid_comboBox = new System.Windows.Forms.ComboBox();
+            this.default_sid_list_label = new System.Windows.Forms.Label();
             this.page1 = new System.Windows.Forms.Panel();
             this.label48 = new System.Windows.Forms.Label();
             this.label47 = new System.Windows.Forms.Label();
@@ -170,8 +172,6 @@ namespace Nucleus.Coop
             this.label35 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.player28N = new System.Windows.Forms.ComboBox();
-            this.def_sid_comboBox = new System.Windows.Forms.ComboBox();
-            this.default_sid_list_label = new System.Windows.Forms.Label();
             this.SettingsTab = new BufferedClientAreaPanel();
             this.disableGameProfiles = new System.Windows.Forms.CheckBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
@@ -422,8 +422,8 @@ namespace Nucleus.Coop
             this.playersTab.Controls.Add(this.btnNext);
             this.playersTab.Controls.Add(this.def_sid_comboBox);
             this.playersTab.Controls.Add(this.default_sid_list_label);
-            this.playersTab.Controls.Add(this.page2);
             this.playersTab.Controls.Add(this.page1);
+            this.playersTab.Controls.Add(this.page2);
             this.playersTab.Location = new System.Drawing.Point(-1, 26);
             this.playersTab.Name = "playersTab";
             this.playersTab.Size = new System.Drawing.Size(671, 401);
@@ -441,6 +441,53 @@ namespace Nucleus.Coop
             this.btnNext.Text = "Next";
             this.btnNext.UseVisualStyleBackColor = false;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // def_sid_comboBox
+            // 
+            this.def_sid_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.def_sid_comboBox.BackColor = System.Drawing.Color.White;
+            this.def_sid_comboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.def_sid_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.def_sid_comboBox.ForeColor = System.Drawing.Color.Black;
+            this.def_sid_comboBox.ItemHeight = 13;
+            this.def_sid_comboBox.Items.AddRange(new object[] {
+            "Player 1 : 76561199023125438",
+            "Player 2 : 76561199023125439",
+            "Player 3 : 76561199023125440",
+            "Player 4 : 76561199023125441",
+            "Player 5 : 76561199023125442",
+            "Player 6 : 76561199023125443",
+            "Player 7 : 76561199023125444",
+            "Player 8 : 76561199023125445",
+            "Player 9 : 76561199023125446",
+            "Player 10: 76561199023125447",
+            "Player 11: 76561199023125448",
+            "Player 12: 76561199023125449",
+            "Player 13: 76561199023125450",
+            "Player 14: 76561199023125451",
+            "Player 15: 76561199023125452",
+            "Player 16: 76561199023125453"});
+            this.def_sid_comboBox.Location = new System.Drawing.Point(301, 348);
+            this.def_sid_comboBox.Margin = new System.Windows.Forms.Padding(0);
+            this.def_sid_comboBox.MaxLength = 30;
+            this.def_sid_comboBox.Name = "def_sid_comboBox";
+            this.def_sid_comboBox.Size = new System.Drawing.Size(175, 21);
+            this.def_sid_comboBox.TabIndex = 135;
+            // 
+            // default_sid_list_label
+            // 
+            this.default_sid_list_label.AutoSize = true;
+            this.default_sid_list_label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.default_sid_list_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.default_sid_list_label.Location = new System.Drawing.Point(192, 350);
+            this.default_sid_list_label.Margin = new System.Windows.Forms.Padding(0);
+            this.default_sid_list_label.Name = "default_sid_list_label";
+            this.default_sid_list_label.Size = new System.Drawing.Size(110, 15);
+            this.default_sid_list_label.TabIndex = 131;
+            this.default_sid_list_label.Text = "Default Steam Ids :";
+            this.default_sid_list_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // page1
             // 
@@ -1237,7 +1284,6 @@ namespace Nucleus.Coop
             this.page2.Name = "page2";
             this.page2.Size = new System.Drawing.Size(634, 217);
             this.page2.TabIndex = 292;
-            this.page2.Visible = false;
             // 
             // label3
             // 
@@ -1913,53 +1959,6 @@ namespace Nucleus.Coop
             this.player28N.Size = new System.Drawing.Size(69, 21);
             this.player28N.TabIndex = 324;
             // 
-            // def_sid_comboBox
-            // 
-            this.def_sid_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.def_sid_comboBox.BackColor = System.Drawing.Color.White;
-            this.def_sid_comboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.def_sid_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.def_sid_comboBox.ForeColor = System.Drawing.Color.Black;
-            this.def_sid_comboBox.ItemHeight = 13;
-            this.def_sid_comboBox.Items.AddRange(new object[] {
-            "Player 1 : 76561199023125438",
-            "Player 2 : 76561199023125439",
-            "Player 3 : 76561199023125440",
-            "Player 4 : 76561199023125441",
-            "Player 5 : 76561199023125442",
-            "Player 6 : 76561199023125443",
-            "Player 7 : 76561199023125444",
-            "Player 8 : 76561199023125445",
-            "Player 9 : 76561199023125446",
-            "Player 10: 76561199023125447",
-            "Player 11: 76561199023125448",
-            "Player 12: 76561199023125449",
-            "Player 13: 76561199023125450",
-            "Player 14: 76561199023125451",
-            "Player 15: 76561199023125452",
-            "Player 16: 76561199023125453"});
-            this.def_sid_comboBox.Location = new System.Drawing.Point(301, 348);
-            this.def_sid_comboBox.Margin = new System.Windows.Forms.Padding(0);
-            this.def_sid_comboBox.MaxLength = 30;
-            this.def_sid_comboBox.Name = "def_sid_comboBox";
-            this.def_sid_comboBox.Size = new System.Drawing.Size(175, 21);
-            this.def_sid_comboBox.TabIndex = 135;
-            // 
-            // default_sid_list_label
-            // 
-            this.default_sid_list_label.AutoSize = true;
-            this.default_sid_list_label.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.default_sid_list_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.default_sid_list_label.Location = new System.Drawing.Point(192, 350);
-            this.default_sid_list_label.Margin = new System.Windows.Forms.Padding(0);
-            this.default_sid_list_label.Name = "default_sid_list_label";
-            this.default_sid_list_label.Size = new System.Drawing.Size(110, 15);
-            this.default_sid_list_label.TabIndex = 131;
-            this.default_sid_list_label.Text = "Default Steam Ids :";
-            this.default_sid_list_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // SettingsTab
             // 
             this.SettingsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -2328,6 +2327,7 @@ namespace Nucleus.Coop
             this.swl_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.swl_comboBox.BackColor = System.Drawing.Color.White;
             this.swl_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.swl_comboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.swl_comboBox.FormattingEnabled = true;
             this.swl_comboBox.Items.AddRange(new object[] {
             "Ctrl",
@@ -2382,6 +2382,7 @@ namespace Nucleus.Coop
             this.csm_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.csm_comboBox.BackColor = System.Drawing.Color.White;
             this.csm_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.csm_comboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.csm_comboBox.FormattingEnabled = true;
             this.csm_comboBox.Items.AddRange(new object[] {
             "Ctrl",
@@ -2448,6 +2449,7 @@ namespace Nucleus.Coop
             this.r1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.r1.BackColor = System.Drawing.Color.White;
             this.r1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.r1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.r1.FormattingEnabled = true;
             this.r1.Items.AddRange(new object[] {
             "Ctrl",
@@ -2489,6 +2491,7 @@ namespace Nucleus.Coop
             this.settingsFocusCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsFocusCmb.BackColor = System.Drawing.Color.White;
             this.settingsFocusCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsFocusCmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsFocusCmb.FormattingEnabled = true;
             this.settingsFocusCmb.Items.AddRange(new object[] {
             "Ctrl",
@@ -2581,6 +2584,7 @@ namespace Nucleus.Coop
             this.comboBox_lockKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox_lockKey.BackColor = System.Drawing.Color.White;
             this.comboBox_lockKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_lockKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBox_lockKey.FormattingEnabled = true;
             this.comboBox_lockKey.Items.AddRange(new object[] {
             "End",
@@ -2622,6 +2626,7 @@ namespace Nucleus.Coop
             this.settingsTopCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTopCmb.BackColor = System.Drawing.Color.White;
             this.settingsTopCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsTopCmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsTopCmb.FormattingEnabled = true;
             this.settingsTopCmb.Items.AddRange(new object[] {
             "Ctrl",
@@ -2638,6 +2643,7 @@ namespace Nucleus.Coop
             this.settingsStopCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsStopCmb.BackColor = System.Drawing.Color.White;
             this.settingsStopCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsStopCmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsStopCmb.FormattingEnabled = true;
             this.settingsStopCmb.Items.AddRange(new object[] {
             "Ctrl",
@@ -2682,6 +2688,7 @@ namespace Nucleus.Coop
             this.settingsCloseCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsCloseCmb.BackColor = System.Drawing.Color.White;
             this.settingsCloseCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.settingsCloseCmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsCloseCmb.FormattingEnabled = true;
             this.settingsCloseCmb.Items.AddRange(new object[] {
             "Ctrl",
@@ -2777,6 +2784,7 @@ namespace Nucleus.Coop
             // 
             // cmb_Network
             // 
+            this.cmb_Network.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmb_Network.Location = new System.Drawing.Point(19, 165);
             this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -2873,6 +2881,7 @@ namespace Nucleus.Coop
             // 
             // SplitColors
             // 
+            this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SplitColors.Location = new System.Drawing.Point(15, 155);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
@@ -3077,6 +3086,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance8.BackColor = System.Drawing.Color.White;
             this.AudioInstance8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance8.FormattingEnabled = true;
             this.AudioInstance8.Location = new System.Drawing.Point(321, 84);
             this.AudioInstance8.Margin = new System.Windows.Forms.Padding(2);
@@ -3099,6 +3109,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance7.BackColor = System.Drawing.Color.White;
             this.AudioInstance7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance7.FormattingEnabled = true;
             this.AudioInstance7.Location = new System.Drawing.Point(321, 62);
             this.AudioInstance7.Margin = new System.Windows.Forms.Padding(2);
@@ -3121,6 +3132,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance6.BackColor = System.Drawing.Color.White;
             this.AudioInstance6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance6.FormattingEnabled = true;
             this.AudioInstance6.Location = new System.Drawing.Point(321, 40);
             this.AudioInstance6.Margin = new System.Windows.Forms.Padding(2);
@@ -3143,6 +3155,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance5.BackColor = System.Drawing.Color.White;
             this.AudioInstance5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance5.FormattingEnabled = true;
             this.AudioInstance5.Location = new System.Drawing.Point(321, 18);
             this.AudioInstance5.Margin = new System.Windows.Forms.Padding(2);
@@ -3165,6 +3178,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance4.BackColor = System.Drawing.Color.White;
             this.AudioInstance4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance4.FormattingEnabled = true;
             this.AudioInstance4.Location = new System.Drawing.Point(70, 84);
             this.AudioInstance4.Margin = new System.Windows.Forms.Padding(2);
@@ -3187,6 +3201,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance3.BackColor = System.Drawing.Color.White;
             this.AudioInstance3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance3.FormattingEnabled = true;
             this.AudioInstance3.Location = new System.Drawing.Point(70, 62);
             this.AudioInstance3.Margin = new System.Windows.Forms.Padding(2);
@@ -3209,6 +3224,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance2.BackColor = System.Drawing.Color.White;
             this.AudioInstance2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance2.FormattingEnabled = true;
             this.AudioInstance2.Location = new System.Drawing.Point(70, 40);
             this.AudioInstance2.Margin = new System.Windows.Forms.Padding(2);
@@ -3220,6 +3236,7 @@ namespace Nucleus.Coop
             // 
             this.AudioInstance1.BackColor = System.Drawing.Color.White;
             this.AudioInstance1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AudioInstance1.FormattingEnabled = true;
             this.AudioInstance1.Items.AddRange(new object[] {
             "Default"});
@@ -3316,10 +3333,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.playersTab);
             this.Controls.Add(this.SettingsTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.playersTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);

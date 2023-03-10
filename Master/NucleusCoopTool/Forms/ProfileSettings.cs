@@ -1315,38 +1315,50 @@ namespace Nucleus.Coop
 
         private void btnNext_Click(object sender, EventArgs e)
         {
+            
             if (page1.Visible)
             {
+                SuspendLayout();
                 btnNext.Text = "Previous";
                 page2.Visible = true;
                 page2.BringToFront();
                 page1.Visible = false;
+                ResumeLayout();
             }
             else
             {
+                SuspendLayout();
                 btnNext.Text = "Next";
                 page1.Visible = true;
                 page1.BringToFront();
                 page2.Visible = false;
+                ResumeLayout();
             }
+           
         }
 
         private void btnProcessorNext_Click_1(object sender, EventArgs e)
         {
+           
             if (processorPage1.Visible)
-            {               
+            {
+                SuspendLayout();
                 processorPage2.Visible = true;
                 processorPage2.BringToFront();
                 processorPage1.Visible = false;
                 btnProcessorNext.Text = "Previous";
+                ResumeLayout();
             }
             else
-            {              
+            {
+                SuspendLayout();
                 processorPage1.Visible = true;
                 processorPage1.BringToFront();
                 processorPage2.Visible = false;
                 btnProcessorNext.Text = "Next";
+                ResumeLayout();
             }
+              
         }
     }
 }

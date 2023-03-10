@@ -660,6 +660,7 @@ namespace Nucleus.Coop
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
 
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
+           
             ResumeLayout();
         }
 
@@ -816,7 +817,7 @@ namespace Nucleus.Coop
                 {
                     if (ht.Text == "")
                     {
-                        MessageBox.Show("Enter correct hotkeys values", "Invalid hotkeys keys!");
+                        MessageBox.Show("Hotkeys values can't be empty", "Invalid hotkeys values!");
                         return;
                     }
                 }    
@@ -1390,18 +1391,22 @@ namespace Nucleus.Coop
         private void btnNext_Click(object sender, EventArgs e)
         {
             if(page1.Visible)
-            {               
+            {
+                SuspendLayout();      
                 page2.Visible = true; 
                 page2.BringToFront();
                 page1.Visible = false;
                 btnNext.Text = "Previous";
+                ResumeLayout();
             }
             else
-            {               
+            {
+                SuspendLayout();
                 page1.Visible = true;
                 page1.BringToFront();
                 page2.Visible=false;
                 btnNext.Text = "Next";
+                ResumeLayout();
             }
         }
     }
