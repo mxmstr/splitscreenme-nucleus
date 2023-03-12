@@ -31,6 +31,7 @@ namespace Nucleus.Coop
         private List<string> jsonNicksList = new List<string>();
         private List<string> jsonsteamIdsList = new List<string>();
         private List<Panel> tabs = new List<Panel>();
+        private List<Control> tabsButtons = new List<Control>();
 
         private ComboBox[] controllerNicks;
         private ComboBox[] steamIds;
@@ -39,8 +40,6 @@ namespace Nucleus.Coop
         private ComboBox[] PriorityClasses;
         private List<Control> ctrls = new List<Control>();
        
-        private Button highlighted;
-
         private float fontSize;
 
         private IDictionary<string, string> audioDevices;
@@ -48,6 +47,8 @@ namespace Nucleus.Coop
         private Cursor default_Cursor;
 
         private Color selectionColor;
+
+        private Rectangle[] tabBorders;
 
         private Pen bordersPen;
 
@@ -96,12 +97,13 @@ namespace Nucleus.Coop
 
             foreach (Control c in ctrls)
             {
-                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
+                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton) )
                 {
-                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
+                        c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
-                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
+                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
                 {
                     c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
@@ -120,7 +122,14 @@ namespace Nucleus.Coop
 
                 if (c.Name == "sharedTab" || c.Name == "playersTab" || c.Name == "audioTab" || c.Name == "processorTab" || c.Name == "layoutTab")
                 {
+                    c.BackColor = Color.Transparent;
                     tabs.Add(c as Panel);
+                }
+
+                if ((string)c.Tag == "sharedTab" || (string)c.Tag == "playersTab" || (string)c.Tag == "audioTab" || (string)c.Tag == "processorTab" || (string)c.Tag == "layoutTab")
+                {
+                    c.Click += new EventHandler(tabsButtons_highlight);
+                    tabsButtons.Add(c);
                 }
 
                 if (c.Name != "profile_info_btn")
@@ -137,6 +146,7 @@ namespace Nucleus.Coop
                     }
 
                     isButton.FlatAppearance.BorderSize = 0;
+                    isButton.FlatAppearance.MouseOverBackColor = selectionColor;
                 }
 
                 if (c.Name.Contains("pauseBetweenInstanceLaunch_TxtBox") || c.Name.Contains("WindowsSetupTiming_TextBox"))
@@ -166,42 +176,13 @@ namespace Nucleus.Coop
             closeBtnPicture.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
             audioRefresh.BackgroundImage = new Bitmap(mf.theme + "refresh.png");
             profile_info_btn.BackgroundImage = new Bitmap(mf.theme + "profile_info.png");
+            btnNext.BackgroundImage = new Bitmap(mf.theme + "page1.png");
+            btnProcessorNext.BackgroundImage = new Bitmap(mf.theme + "page1.png");
 
-            sharedTab.BackColor = Color.Transparent;
-            playersTab.BackColor = Color.Transparent;
-            audioTab.BackColor = Color.Transparent;
-            audioRefresh.BackColor = Color.Transparent;
-            processorTab.BackColor = Color.Transparent;
-            layoutTab.BackColor = Color.Transparent;
+            audioBtnPicture.Click += new EventHandler(audioTabBtn_Click);
 
-            sharedTabBtn.Click += new EventHandler(tabsButtons_highlight);
-            playersTabBtn.Click += new EventHandler(tabsButtons_highlight);
-            audioTabBtn.Click += new EventHandler(tabsButtons_highlight);
-            processorTabBtn.Click += new EventHandler(tabsButtons_highlight);
-            layoutTabBtn.Click += new EventHandler(tabsButtons_highlight);
-
-            sharedBtnPicture.Click += new EventHandler(button1_Click);
-            playersBtnPicture.Click += new EventHandler(button2_Click);
-            audioBtnPicture.Click += new EventHandler(button3_Click);
-            processorBtnPicture.Click += new EventHandler(button4_Click);
-            layoutBtnPicture.Click += new EventHandler(button5_Click);
-
-            sharedBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-            playersBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-            audioBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-            processorBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-            layoutBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-
-            sharedTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
-            playersTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
-            audioTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
-            processorTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
-            layoutTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
-            btnNext.Click += mf.button_Click;
             btnNext.BackColor = mf.buttonsBackColor;
-            btnNext.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btnProcessorNext.BackColor = mf.buttonsBackColor;
-            btnProcessorNext.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
 
             audioRefresh.BackColor = Color.Transparent;
 
@@ -261,6 +242,7 @@ namespace Nucleus.Coop
             }
 
             coreCountLabel.Text = $"Cores/Threads {Environment.ProcessorCount} (Max Value)";
+            coreCountLabel.ForeColor = Color.Yellow;   
 
             SplitColors.Items.Add("Black");
             SplitColors.Items.Add("Gray");
@@ -300,21 +282,26 @@ namespace Nucleus.Coop
 
             page1.Parent = playersTab;
             page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
+            page1.BringToFront();
 
             page2.Parent = playersTab;
             page2.Location = page1.Location;
 
             btnNext.Parent = playersTab;
-            btnNext.Location = new Point((page1.Right - btnNext.Width) - 5, (page1.Top - btnNext.Height) - 5);
+            btnNext.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            btnNext.Location = new Point(page1.Right - btnNext.Width, (page1.Top - btnNext.Height) - 5);
 
             processorPage1.Parent = processorTab;
             processorPage1.Location = new Point(processorTab.Width / 2 - processorPage1.Width / 2, processorTab.Height / 2 - processorPage1.Height / 2);
+            processorPage1.BringToFront();
 
             processorPage2.Parent = processorTab;
             processorPage2.Location = processorPage1.Location;
 
-            btnProcessorNext.Location = new Point((processorPage1.Right - btnProcessorNext.Width) - 5, (processorPage1.Top - btnProcessorNext.Height) - 5);
             btnProcessorNext.Parent = processorTab;
+            btnProcessorNext.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            btnProcessorNext.Location = new Point(processorPage1.Right - btnProcessorNext.Width, (processorPage1.Top - btnProcessorNext.Height) - 5);
+            
 
             sharedTab.BringToFront();
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
@@ -325,7 +312,8 @@ namespace Nucleus.Coop
             modeLabel.Location = new Point((int)modeLabelX, sharedTabBtn.Location.Y + sharedTabBtn.Height / 2 - modeLabel.Height / 2);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             profileInfo.Location = new Point(this.Width / 2 - profileInfo.Width / 2, this.Height / 2 - profileInfo.Height / 2);
-
+            warningLabel.ForeColor = Color.Yellow;
+           
             def_sid_comboBox.SelectedIndex = 0;
 
             numUpDownVer.MaxValue = 5;
@@ -410,6 +398,21 @@ namespace Nucleus.Coop
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             profileInfo.Location = new Point(this.Width / 2 - profileInfo.Width / 2, this.Height / 2 - profileInfo.Height / 2);
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
+            warningLabel.Location = new Point(sharedTab.Width / 2 - warningLabel.Width / 2, warningLabel.Location.Y);
+
+            tabBorders = new Rectangle[]
+            {
+               new Rectangle(sharedTabBtn.Location.X-1,sharedTabBtn.Location.Y-1,sharedTabBtn.Width+sharedBtnPicture.Width+2,sharedTabBtn.Height+1),
+               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
+               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
+               new Rectangle(processorTabBtn.Location.X-1,processorTabBtn.Location.Y-1,processorTabBtn.Width+processorBtnPicture.Width+2,processorTabBtn.Height+1),
+               new Rectangle(sharedTab.Location.X,sharedTab.Location.Y,sharedTab.Width,sharedTab.Height),
+               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
+               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
+               new Rectangle(layoutTab.Location.X,layoutTab.Location.Y,layoutTab.Width,layoutTab.Height),
+               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
+            };
+
             ResumeLayout();
         }
 
@@ -438,11 +441,6 @@ namespace Nucleus.Coop
             SplitDiv_Tooltip.ReshowDelay = 100;
             SplitDiv_Tooltip.AutoPopDelay = 5000;
             SplitDiv_Tooltip.SetToolTip(SplitDiv, "May not work for all games");
-        }
-
-        public static void UpdateProfileSettingsUiValues(bool save)
-        {
-            profileSettings?.UpdateUiValues(save);
         }
 
         private void GetPlayersNickNameAndIds()
@@ -540,7 +538,12 @@ namespace Nucleus.Coop
             }
         }
 
-        private void UpdateUiValues(bool save)//Update Ui values "save" => true also validate all game profile values by calling close button event 
+        public static void UpdateProfileSettingsUiValues()
+        {
+            profileSettings?.UpdateUiValues();
+        }
+
+        private void UpdateUiValues() 
         {
             GetPlayersNickNameAndIds();
 
@@ -572,7 +575,6 @@ namespace Nucleus.Coop
                     {
                         Affinitys[i].Text = "";
                     }
-
                 }
 
                 if (_PriorityClasses != null)
@@ -619,19 +621,9 @@ namespace Nucleus.Coop
             {
                 modeLabel.Text = GameProfile.ModeText;
             }
-
-            if (save)
-            {
-                closeBtnPicture_Click(null, null);
-            }
         }
 
-        public static void UpdateProfileSettingsValues()
-        {
-            profileSettings?.closeBtnPicture_Click(null, null);
-        }
-
-        private void closeBtnPicture_Click(object sender, EventArgs e)//Validate and set GameProfile values
+        private void closeBtnPicture_Click(object sender, EventArgs e)//Set GameProfile values
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles")))
             {
@@ -932,130 +924,44 @@ namespace Nucleus.Coop
 
         private void tabsButtons_highlight(object sender, EventArgs e)
         {
-            if (sender.GetType() == typeof(PictureBox))
+            Control c = sender as Control;
+
+            for(int i = 0; i< tabsButtons.Count;i++)
             {
-                PictureBox pict = sender as PictureBox;
-                foreach (Control b in Controls)
+                if (i < tabs.Count)
                 {
-                    if (b.GetType() == typeof(Button))
+                    if (tabs[i].Name != (string)c.Tag)
                     {
-                        Button _button = (Button)b;
-
-                        if (highlighted != null)
-                        {
-                            if (highlighted != _button)
-                            {
-                                highlighted.BackColor = Color.Transparent;
-                            }
-                        }
-
-                        if (pict.Name.Contains(_button.Name))
-                        {
-                            highlighted = _button;
-                            _button.BackColor = selectionColor;
-                            break;
-                        }
+                        tabs[i].Visible = false;
+                    }
+                    else
+                    {
+                        tabs[i].Visible = true;
+                        tabs[i].BringToFront();
                     }
                 }
 
-                return;
-            }
-
-            Button button = sender as Button;
-
-            if (highlighted != null)
-            {
-                if (highlighted != button)
+                if(tabsButtons[i].GetType() != typeof(Button))
                 {
-                    highlighted.BackColor = Color.Transparent;
+                    continue;
                 }
-            }
 
-            highlighted = button;
-            button.BackColor = selectionColor;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            foreach (Panel p in tabs)
-            {
-                if (p.Name != "sharedTab")
+                if (tabsButtons[i].Tag != c.Tag)
                 {
-                    p.Visible = false;
+                    tabsButtons[i].BackColor = Color.Transparent;
                 }
                 else
                 {
-                    p.Visible = true;
-                    p.BringToFront();
+                    tabsButtons[i].BackColor = selectionColor;
                 }
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            foreach (Panel p in tabs)
-            {
-                if (p.Name != "playersTab")
-                {
-                    p.Visible = false;
-                }
-                else
-                {
-                    p.Visible = true;
-                    p.BringToFront();
-                }
-            }
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            foreach (Panel p in tabs)
-            {
-                if (p.Name != "processorTab")
-                {
-                    p.Visible = false;
-                }
-                else
-                {
-                    p.Visible = true;
-                    p.BringToFront();
-                }
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            foreach (Panel p in tabs)
-            {
-                if (p.Name != "layoutTab")
-                {
-                    p.Visible = false;
-                }
-                else
-                {
-                    p.Visible = true;
-                    p.BringToFront();
-                }
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
+        private void audioTabBtn_Click(object sender, EventArgs e)
         {
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
             MMDevice audioDefault = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
             audioDefaultDevice.Text = "Default: " + audioDefault.FriendlyName;
-            foreach (Panel p in tabs)
-            {
-                if (p.Name != "audioTab")
-                {
-                    p.Visible = false;
-                }
-                else
-                {
-                    p.Visible = true;
-                    p.BringToFront();
-                }
-            }
         }
 
         private void IdealProcessor_Click(object sender, EventArgs e)
@@ -1178,19 +1084,19 @@ namespace Nucleus.Coop
             if (page1.Visible)
             {
                 SuspendLayout();
-                btnNext.Text = "Previous";
-                page2.Visible = true;
-                page2.BringToFront();
+                btnNext.BackgroundImage = new Bitmap(Globals.Theme + "page2.png");
                 page1.Visible = false;
+                page2.BringToFront();
+                page2.Visible = true;                           
                 ResumeLayout();
             }
             else
             {
                 SuspendLayout();
-                btnNext.Text = "Next";
-                page1.Visible = true;
-                page1.BringToFront();
+                btnNext.BackgroundImage = new Bitmap(Globals.Theme + "page1.png");
                 page2.Visible = false;
+                page1.BringToFront();                
+                page1.Visible = true;            
                 ResumeLayout();
             }
         }
@@ -1200,19 +1106,19 @@ namespace Nucleus.Coop
             if (processorPage1.Visible)
             {
                 SuspendLayout();
-                processorPage2.Visible = true;
-                processorPage2.BringToFront();
+                btnProcessorNext.BackgroundImage = new Bitmap(Globals.Theme + "page2.png");
                 processorPage1.Visible = false;
-                btnProcessorNext.Text = "Previous";
+                processorPage2.BringToFront();
+                processorPage2.Visible = true;               
                 ResumeLayout();
             }
             else
             {
                 SuspendLayout();
-                processorPage1.Visible = true;
-                processorPage1.BringToFront();
+                btnProcessorNext.BackgroundImage = new Bitmap(Globals.Theme + "page1.png");
                 processorPage2.Visible = false;
-                btnProcessorNext.Text = "Next";
+                processorPage1.BringToFront();
+                processorPage1.Visible = true;
                 ResumeLayout();
             }
         }
@@ -1291,23 +1197,11 @@ namespace Nucleus.Coop
             gs.Dispose();
         }
 
+
         private void ProfileSettings_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-
-            Rectangle[] tabBorders = new Rectangle[]
-            {
-               new Rectangle(sharedTabBtn.Location.X-1,sharedTabBtn.Location.Y-1,sharedTabBtn.Width+sharedBtnPicture.Width+2,sharedTabBtn.Height+1),
-               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
-               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
-               new Rectangle(processorTabBtn.Location.X-1,processorTabBtn.Location.Y-1,processorTabBtn.Width+processorBtnPicture.Width+2,processorTabBtn.Height+1),
-               new Rectangle(sharedTab.Location.X,sharedTab.Location.Y,sharedTab.Width,sharedTab.Height),
-               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
-               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
-               new Rectangle(layoutTab.Location.X,layoutTab.Location.Y,layoutTab.Width,layoutTab.Height),
-               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
-            };
-
+         
             g.DrawRectangles(bordersPen, tabBorders);
 
             numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);

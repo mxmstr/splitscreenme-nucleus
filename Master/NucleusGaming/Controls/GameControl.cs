@@ -60,12 +60,10 @@ namespace Nucleus.Coop
                 AutoSize = false;
                 Name = "GameControl";
                 Size = new Size(209, 42);
-                ResumeLayout(false);
-
+               
                 GameInfo = game;
                 UserGameInfo = userGame;
 
-                SuspendLayout();
                 Cursor default_Cursor = new Cursor(themePath + "cursor.ico");
                 Cursor = default_Cursor;
                 Cursor hand_Cursor = new Cursor(themePath + "cursor_hand.ico");

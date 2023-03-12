@@ -412,11 +412,12 @@ namespace Nucleus.Gaming.Coop
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Y"],
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Width"],
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Height"]));
+
                 OwnerUIBounds.Add(new Rectangle(
-                                              (int)JplayersInfos[i]["Owner"]["UiBounds"]["X"],
-                                              (int)JplayersInfos[i]["Owner"]["UiBounds"]["Y"],
-                                              (int)JplayersInfos[i]["Owner"]["UiBounds"]["Width"],
-                                              (int)JplayersInfos[i]["Owner"]["UiBounds"]["Height"]));
+                                               (int)JplayersInfos[i]["Owner"]["UiBounds"]["X"],
+                                               (int)JplayersInfos[i]["Owner"]["UiBounds"]["Y"],
+                                               (int)JplayersInfos[i]["Owner"]["UiBounds"]["Width"],
+                                               (int)JplayersInfos[i]["Owner"]["UiBounds"]["Height"]));
 
 
                 MonitorBounds.Add(new Rectangle(
@@ -426,10 +427,10 @@ namespace Nucleus.Gaming.Coop
                                                (int)JplayersInfos[i]["MonitorBounds"]["Height"]));
 
                 EditBounds.Add(new Rectangle(
-                                               (int)JplayersInfos[i]["EditBounds"]["X"],
-                                               (int)JplayersInfos[i]["EditBounds"]["Y"],
-                                               (int)JplayersInfos[i]["EditBounds"]["Width"],
-                                               (int)JplayersInfos[i]["EditBounds"]["Height"]));
+                                            (int)JplayersInfos[i]["EditBounds"]["X"],
+                                            (int)JplayersInfos[i]["EditBounds"]["Y"],
+                                            (int)JplayersInfos[i]["EditBounds"]["Width"],
+                                            (int)JplayersInfos[i]["EditBounds"]["Height"]));
 
 
                 IsDInputs.Add((bool)JplayersInfos[i]["IsDInput"]);
@@ -553,7 +554,7 @@ namespace Nucleus.Gaming.Coop
             return true;
         }
 
-        public static void saveUserProfile(GameProfile profile)
+        public static void SaveUserProfile(GameProfile profile)
         {
             string path;
             bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));

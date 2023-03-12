@@ -144,6 +144,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
                 return uint.Parse(lastLine.Split(':')[1]);
             }
         }
+
         public static void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (string.IsNullOrEmpty(e.Data))
@@ -157,7 +158,6 @@ namespace Nucleus.Gaming.Tools.GameStarter
         public static bool SymlinkGame(string root, string destination, out int exitCode,
             string[] dirExclusions, string[] fileExclusions, string[] fileCopyInstead, bool hardLink, bool symFolders, int numPlayers)
         {
-
             exitCode = 1;
 
             lock (locker)

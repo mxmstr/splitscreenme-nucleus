@@ -106,8 +106,6 @@ namespace Nucleus.Inject
             {
                 try
                 {
-
-
                     RuntimeHook(argsDecoded, i, is64);
                 }
                 catch (Exception e)

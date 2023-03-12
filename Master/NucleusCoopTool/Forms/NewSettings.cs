@@ -26,7 +26,6 @@ namespace Nucleus.Coop
     {
         private IniFile ini = Globals.ini;
         private MainForm mainForm = null;
-        private PositionsControl positionsControl;
 
         public int KillProcess_HotkeyID = 1;
         public int TopMost_HotkeyID = 2;
@@ -41,15 +40,13 @@ namespace Nucleus.Coop
         private List<string> jsonNicksList = new List<string>();
         private List<string> jsonsteamIdsList = new List<string>();
         private string prevTheme;
-        private string epicLang;
-        private string epicLangText;
 
         private List<Panel> tabs = new List<Panel>();
+        private List<Control> tabsButtons = new List<Control>();
 
         private ComboBox[] controllerNicks;
         private ComboBox[] steamIds;
 
-        private Button highlighted;
         public static Button _ctrlr_shorcuts;
         private float fontSize;
         private List<Control> ctrls = new List<Control>();
@@ -58,6 +55,7 @@ namespace Nucleus.Coop
         private Cursor default_Cursor;
         private Color selectionColor;
 
+        private Rectangle[] tabBorders;
         private Pen bordersPen;
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -90,6 +88,7 @@ namespace Nucleus.Coop
         public NewSettings(MainForm mf, PositionsControl pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
+            mainForm = mf;
 
             InitializeComponent();
 
@@ -106,18 +105,19 @@ namespace Nucleus.Coop
             Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
             Visible = false;
 
-            _ctrlr_shorcuts = ctrlr_shorcuts;
+            _ctrlr_shorcuts = ctrlr_shorcutsBtn;
 
             controlscollect();
 
             foreach (Control c in ctrls)
             {
-                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
+                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label)  || c.GetType() == typeof(RadioButton))
                 {
-                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    if(c.Name != "audioWarningLabel" && c.Name != "warningLabel")
+                       c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
-                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox) /*&& (child.Name != "def_sid_textBox")*/)
+                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
                 {
                     c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
@@ -136,7 +136,14 @@ namespace Nucleus.Coop
 
                 if (c.Name == "settingsTab" || c.Name == "playersTab" || c.Name == "audioTab" || c.Name == "layoutTab")
                 {
+                    c.BackColor = Color.Transparent;
                     tabs.Add(c as Panel);
+                }
+
+                if ((string)c.Tag == "settingsTab" || (string)c.Tag == "playersTab" || (string)c.Tag == "audioTab" || (string)c.Tag == "layoutTab")
+                {
+                    c.Click += new EventHandler(tabsButtons_highlight);
+                    tabsButtons.Add(c);
                 }
 
                 if (c.Name.Contains("steamid") && c.GetType() == typeof(ComboBox))
@@ -155,6 +162,7 @@ namespace Nucleus.Coop
                     }
 
                     isButton.FlatAppearance.BorderSize = 0;
+                    isButton.FlatAppearance.MouseOverBackColor = selectionColor;
                 }
             }
 
@@ -172,12 +180,9 @@ namespace Nucleus.Coop
             closeBtnPicture.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
             btn_credits.BackgroundImage = new Bitmap(mf.theme + "credits.png");
             audioRefresh.BackgroundImage = new Bitmap(mf.theme + "refresh.png");
+            btnNext.BackgroundImage = new Bitmap(mf.theme + "page1.png");
 
-            SettingsTab.BackColor = Color.Transparent;
-            playersTab.BackColor = Color.Transparent;
-            audioTab.BackColor = Color.Transparent;
-            audioRefresh.BackColor = Color.Transparent;
-            layoutTab.BackColor = Color.Transparent;
+            btn_credits.FlatAppearance.MouseOverBackColor = Color.Transparent;
 
             plus1.ForeColor = ForeColor;
             plus2.ForeColor = ForeColor;
@@ -187,32 +192,46 @@ namespace Nucleus.Coop
             plus6.ForeColor = ForeColor;
             plus7.ForeColor = ForeColor;
 
-            settingsTabBtn.Click += new EventHandler(tabsButtons_highlight);
-            playersTabBtn.Click += new EventHandler(tabsButtons_highlight);
-            audioTabBtn.Click += new EventHandler(tabsButtons_highlight);
-            layoutTabBtn.Click += new EventHandler(tabsButtons_highlight);
-
-            settingsBtnPicture.Click += new EventHandler(button1_Click);
-            playersBtnPicture.Click += new EventHandler(button2_Click);
-            audioBtnPicture.Click += new EventHandler(button3_Click);
-            layoutBtnPicture.Click += new EventHandler(button4_Click);
-
-            settingsBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-            playersBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-            audioBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-            layoutBtnPicture.Click += new EventHandler(tabsButtons_highlight);
-
-            settingsTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
-            playersTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
-            audioTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
-            layoutTabBtn.FlatAppearance.MouseOverBackColor = selectionColor;
+            audioBtnPicture.Click += new EventHandler(audioBtnPicture_Click);
 
             audioRefresh.BackColor = Color.Transparent;
 
             def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
-            btnNext.Click += mf.button_Click;
+            ctrlr_shorcutsBtn.FlatAppearance.BorderSize = 1;
+
+            settingsTab.Parent = this;
+            settingsTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
+            settingsTab.BringToFront();
+
+            playersTab.Parent = this;
+            playersTab.Location = settingsTab.Location;
+
+            audioTab.Parent = this;
+            audioTab.Location = settingsTab.Location;
+
+            layoutTab.Parent = this;
+            layoutTab.Location = settingsTab.Location;
+           
+            page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
+            page2.Location = page1.Location;
+            page1.BringToFront();
+
+            btnNext.Parent = playersTab;
             btnNext.BackColor = mf.buttonsBackColor;
-            btnNext.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btnNext.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            btnNext.Location = new Point(page1.Right - btnNext.Width, (page1.Top - btnNext.Height) - 5);
+                                  
+            default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
+
+            audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
+
+            def_sid_comboBox.SelectedIndex = 0;
+
+            numUpDownVer.MaxValue = 5;
+            numUpDownVer.InvalidParent = true;
+
+            numUpDownHor.MaxValue = 5;
+            numUpDownHor.InvalidParent = true;
 
             controllerNicks = new ComboBox[] {
                 player1N, player2N, player3N, player4N, player5N, player6N, player7N, player8N,
@@ -259,30 +278,19 @@ namespace Nucleus.Coop
                 cmb_Network.SelectedIndex = 0;
             }
 
-            IDictionary<string, Color> splitColors = new Dictionary<string, Color>
-            {
-                { "Black", Color.Black },
-                { "Gray", Color.DimGray },
-                { "White", Color.White },
-                { "Dark Blue", Color.DarkBlue },
-                { "Blue", Color.Blue },
-                { "Purple", Color.Purple },
-                { "Pink", Color.Pink },
-                { "Red", Color.Red },
-                { "Orange", Color.Orange },
-                { "Yellow", Color.Yellow },
-                { "Green", Color.Green }
-            };
+            SplitColors.Items.Add("Black");
+            SplitColors.Items.Add("Gray");
+            SplitColors.Items.Add("White");
+            SplitColors.Items.Add("Dark Blue");
+            SplitColors.Items.Add("Blue");
+            SplitColors.Items.Add("Purple");
+            SplitColors.Items.Add("Pink");
+            SplitColors.Items.Add("Red");
+            SplitColors.Items.Add("Orange");
+            SplitColors.Items.Add("Yellow");
+            SplitColors.Items.Add("Green");
 
-            foreach (KeyValuePair<string, Color> color in splitColors)
-            {
-                SplitColors.Items.Add(color.Key);
-
-                if (color.Key == ini.IniReadValue("CustomLayout", "SplitDivColor"))
-                {
-                    SplitColors.Text = color.Key;
-                }
-            }
+            SplitColors.SelectedItem = ini.IniReadValue("CustomLayout", "SplitDivColor");
 
             string[] themeList = Directory.GetDirectories(Path.Combine(Application.StartupPath, @"gui\theme\"));
 
@@ -296,53 +304,19 @@ namespace Nucleus.Coop
                 });
 
                 string[] themeName = mf.theme.Split('\\');
-                if (_path[last] == themeName[themeName.Length - 2])
+                if (_path[last] != themeName[themeName.Length - 2])
                 {
-                    themeCbx.Text = _path[last];
-                    prevTheme = _path[last];
+                    continue;
                 }
+
+                themeCbx.Text = _path[last];
+                prevTheme = _path[last];
+
             }
 
             //epiclangs setting
-            IDictionary<string, string> epiclangs = new Dictionary<string, string>
-            {
-                { "Arabic", "ar" },
-                { "Brazilian", "pt-BR" },
-                { "Bulgarian", "bg" },
-                { "Chinese", "zh" },
-                { "Czech", "cs" },
-                { "Danish", "da" },
-                { "Dutch", "nl" },
-                { "English", "en" },
-                { "Finnish", "fi" },
-                { "French", "fr" },
-                { "German", "de" },
-                { "Greek", "el" },
-                { "Hungarian", "hu" },
-                { "Italian", "it" },
-                { "Japanese", "ja" },
-                { "Koreana", "ko" },
-                { "Norwegian", "no" },
-                { "Polish", "pl" },
-                { "Portuguese", "pt" },
-                { "Romanian", "ro" },
-                { "Russian", "ru" },
-                { "Spanish", "es" },
-                { "Swedish", "sv" },
-                { "Thai", "th" },
-                { "Turkish", "tr" },
-                { "Ukrainian", "uk" }
-            };
-
-            foreach (KeyValuePair<string, string> lang in epiclangs)
-            {
-                if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
-                {
-                    epicLangText = lang.Key;
-                    epicLang = lang.Value;
-                }
-            }
-
+            cmb_EpicLang.SelectedItem = ini.IniReadValue("Misc", "EpicLang");
+                
             //splash screen setting                   
             splashScreenChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
 
@@ -366,15 +340,6 @@ namespace Nucleus.Coop
             else
             {
                 cmb_Lang.SelectedIndex = 0;
-            }
-
-            if (ini.IniReadValue("Misc", "EpicLang") != "")
-            {
-                cmb_EpicLang.Text = epicLangText;
-            }
-            else
-            {
-                cmb_EpicLang.SelectedIndex = 0;
             }
 
             if (ini.IniReadValue("Hotkeys", "Close").Contains('+'))
@@ -504,7 +469,7 @@ namespace Nucleus.Coop
             {
                 nucUserPassTxt.Text = ini.IniReadValue("Misc", "NucleusAccountPassword");
             }
-        
+
             if (ini.IniReadValue("Audio", "Custom") == "0")
             {
                 audioDefaultSettingsRadio.Checked = true;
@@ -515,40 +480,12 @@ namespace Nucleus.Coop
                 audioCustomSettingsRadio.Checked = true;
             }
 
-            RefreshAudioList();
+            disableQuickUpdate.Checked = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
 
-            mainForm = mf;
-            positionsControl = pc;
+            RefreshAudioList();
 
             //network setting
             RefreshCmbNetwork();
-
-            SettingsTab.Parent = this;
-            SettingsTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
-            playersTab.Parent = this;
-            playersTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
-            audioTab.Parent = this;
-            audioTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
-            layoutTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
-            layoutTab.Parent = this;
-
-            page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
-            page2.Location = page1.Location;
-            btnNext.Location = new Point((page1.Right - btnNext.Width) - 5, (page1.Top - btnNext.Height) - 5);
-            btnNext.Parent = playersTab;
-            SettingsTab.BringToFront();
-
-            default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
-
-            audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
-
-            def_sid_comboBox.SelectedIndex = 0;
-
-            numUpDownVer.MaxValue = 5;
-            numUpDownVer.InvalidParent = true;
-
-            numUpDownHor.MaxValue = 5;
-            numUpDownHor.InvalidParent = true;
 
             string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
             if (File.Exists(path))
@@ -626,8 +563,19 @@ namespace Nucleus.Coop
             def_sid_comboBox.Font = new Font(def_sid_comboBox.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
-
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
+            audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
+
+            tabBorders = new Rectangle[]
+            {
+               new Rectangle(settingsTabBtn.Location.X-1,settingsTabBtn.Location.Y-1,settingsTabBtn.Width+settingsBtnPicture.Width+2,settingsTabBtn.Height+1),
+               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
+               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
+               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
+               new Rectangle(settingsTab.Location.X,settingsTab.Location.Y,settingsTab.Width,settingsTab.Height),
+               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
+               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
+            };
 
             ResumeLayout();
         }
@@ -651,6 +599,12 @@ namespace Nucleus.Coop
             disableGameProfiles_Tooltip.ReshowDelay = 100;
             disableGameProfiles_Tooltip.AutoPopDelay = 5000;
             disableGameProfiles_Tooltip.SetToolTip(disableGameProfiles, "Simply disable profiles loading/saving, Nucleus will always use global settings instead");
+
+            ToolTip disableQuickUpdate_Tooltip = new ToolTip();
+            disableQuickUpdate_Tooltip.InitialDelay = 100;
+            disableQuickUpdate_Tooltip.ReshowDelay = 100;
+            disableQuickUpdate_Tooltip.AutoPopDelay = 5000;
+            disableQuickUpdate_Tooltip.SetToolTip(disableQuickUpdate, "Speedup startup time, handler still updatable from the \"New Handler Available!\" button");
         }
 
         private void GetPlayersNickNameAndSteamIds()
@@ -816,6 +770,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
+            ini.IniWriteValue("Dev", "DisableFastHandlerUpdate", disableQuickUpdate.Checked.ToString());
 
             ini.IniWriteValue("CustomLayout", "SplitDiv", SplitDiv.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "SplitDivColor", SplitColors.Text.ToString());
@@ -835,15 +790,6 @@ namespace Nucleus.Coop
                 mainForm.disableGameProfiles = disableGameProfiles.Checked;
             }
 
-            if (GameProfile.ModeText == "New Profile")
-            {
-                if (GameProfile.currentProfile != null)
-                {
-                    GameProfile.currentProfile.Reset();
-                    ProfileSettings.UpdateProfileSettingsUiValues(false);
-                }
-            }
-
             bool needToRestart = false;
 
             if (themeCbx.SelectedItem.ToString() != prevTheme)
@@ -851,6 +797,14 @@ namespace Nucleus.Coop
                 ini.IniWriteValue("Theme", "Theme", themeCbx.SelectedItem.ToString());
                 mainForm.restartRequired = true;
                 needToRestart = true;
+            }
+
+            if (GameProfile.ModeText == "New Profile" && disableGameProfiles.Checked)
+            {
+                if (GameProfile.currentProfile != null)
+                {
+                    GameProfile.currentProfile.Reset();                  
+                }
             }
 
             if (mainForm.Xinput_S_Setup.Visible)
@@ -1010,132 +964,46 @@ namespace Nucleus.Coop
 
         private void tabsButtons_highlight(object sender, EventArgs e)
         {
-            if (sender.GetType() == typeof(PictureBox))
+            Control c = sender as Control;
+
+            for (int i = 0; i < tabsButtons.Count; i++)
             {
-                PictureBox pict = sender as PictureBox;
-                foreach (Control b in Controls)
+                if (i < tabs.Count)
                 {
-                    if (b.GetType() == typeof(Button))
+                    if (tabs[i].Name != (string)c.Tag)
                     {
-                        Button _button = (Button)b;
-
-                        if (highlighted != null)
-                        {
-                            if (highlighted != _button)
-                            {
-                                highlighted.BackColor = Color.Transparent;
-                            }
-                        }
-
-                        if (pict.Name.Contains(_button.Name))
-                        {
-                            highlighted = _button;
-                            _button.BackColor = selectionColor;
-                            break;
-                        }
+                        tabs[i].Visible = false;
+                    }
+                    else
+                    {
+                        tabs[i].Visible = true;
+                        tabs[i].BringToFront();
                     }
                 }
 
-                return;
-            }
-
-            Button button = sender as Button;
-
-            if (highlighted != null)
-            {
-                if (highlighted != button)
+                if (tabsButtons[i].GetType() != typeof(Button))
                 {
-                    highlighted.BackColor = Color.Transparent;
+                    continue;
                 }
-            }
 
-            highlighted = button;
-            button.BackColor = selectionColor;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            foreach (Panel p in tabs)
-            {
-                if (p.Name == "settingsTab")
+                if (tabsButtons[i].Tag != c.Tag)
                 {
-                    p.Visible = true;
+                    tabsButtons[i].BackColor = Color.Transparent;
                 }
                 else
                 {
-                    p.Visible = true;
-                    p.BringToFront();
+                    tabsButtons[i].BackColor = selectionColor;
                 }
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            foreach (Panel p in tabs)
-            {
-                if (p.Name != "playersTab")
-                {
-                    p.Visible = false;
-                }
-                else
-                {
-                    p.Visible = true;
-                    p.BringToFront();
-                }
-            }
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            foreach (Panel p in tabs)
-            {
-                if (p.Name != "layoutTab")
-                {
-                    p.Visible = false;
-                }
-                else
-                {
-                    p.Visible = true;
-                    p.BringToFront();
-                }
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
+        private void audioBtnPicture_Click(object sender, EventArgs e)
         {
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
             MMDevice audioDefault = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
             audioDefaultDevice.Text = "Default: " + audioDefault.FriendlyName;
-            foreach (Panel p in tabs)
-            {
-                if (p.Name != "audioTab")
-                {
-                    p.Visible = false;
-                }
-                else
-                {
-                    p.Visible = true;
-                    p.BringToFront();
-                }
-            }
-        }      
-
-        private void cts_settings1_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox mute = (CheckBox)sender;
-            if (mute.Checked)
-            {
-                cts_kar.Checked = false;
-                cts_kar.Enabled = false;
-                cts_unfocus.Checked = false;
-                cts_unfocus.Enabled = false;
-            }
-            else
-            {
-                cts_kar.Enabled = true;
-                cts_unfocus.Enabled = true;
-            }
         }
+
         private void closeBtnPicture_MouseEnter(object sender, EventArgs e)
         {
             closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close_mousehover.png");
@@ -1244,25 +1112,25 @@ namespace Nucleus.Coop
                 cts_unfocus.Enabled = true;
             }
         }
-     
+
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (page1.Visible)
             {
                 SuspendLayout();
-                page2.Visible = true;
-                page2.BringToFront();
+                btnNext.BackgroundImage = new Bitmap(Globals.Theme + "page2.png");
                 page1.Visible = false;
-                btnNext.Text = "Previous";
+                page2.BringToFront();
+                page2.Visible = true;
                 ResumeLayout();
             }
             else
             {
                 SuspendLayout();
-                page1.Visible = true;
-                page1.BringToFront();
+                btnNext.BackgroundImage = new Bitmap(Globals.Theme + "page1.png");
                 page2.Visible = false;
-                btnNext.Text = "Next";
+                page1.BringToFront();
+                page1.Visible = true;
                 ResumeLayout();
             }
         }
@@ -1363,17 +1231,6 @@ namespace Nucleus.Coop
         private void ProfileSettings_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-
-            Rectangle[] tabBorders = new Rectangle[]
-            {
-               new Rectangle(settingsTabBtn.Location.X-1,settingsTabBtn.Location.Y-1,settingsTabBtn.Width+settingsBtnPicture.Width+2,settingsTabBtn.Height+1),
-               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
-               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
-               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
-               new Rectangle(SettingsTab.Location.X,SettingsTab.Location.Y,SettingsTab.Width,SettingsTab.Height),
-               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
-               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
-            };
 
             g.DrawRectangles(bordersPen, tabBorders);
 

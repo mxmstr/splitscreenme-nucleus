@@ -51,10 +51,12 @@ namespace Nucleus.Gaming.Forms
 
             foreach (KeyValuePair<string, Color> color in splitColors)
             {
-                if (color.Key == GameProfile.SplitDivColor)
+                if (color.Key != GameProfile.SplitDivColor)
                 {
-                    ChoosenColor = color.Value;
+                    continue;
                 }
+
+                ChoosenColor = color.Value;
             }
 
             int interval = 5000;
@@ -88,13 +90,13 @@ namespace Nucleus.Gaming.Forms
 
         private void slideshowTick(Object myObject, EventArgs myEventArgs)
         {
-            if (Directory.Exists(Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGame)))
+            if (Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")))
             {
-                string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGame)));
+                string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")));
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                BackgroundImage = new Bitmap(Path.Combine(Application.StartupPath, @"gui\screenshots\" + currentGame + "\\" + RandomIndex + "_" + currentGame + ".jpeg"));
+                BackgroundImage = new Bitmap(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{RandomIndex}_{currentGame}.jpeg"));
             }
         }
 

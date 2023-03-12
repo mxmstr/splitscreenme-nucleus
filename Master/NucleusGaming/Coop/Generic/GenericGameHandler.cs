@@ -3039,7 +3039,7 @@ namespace Nucleus.Gaming
 
             ControllersUINav.EnabledRuntime = false;
 
-            GameProfile.saveUserProfile(profile);
+            GameProfile.SaveUserProfile(profile);
             gen.OnFinishedSetup?.Invoke();
 
             return string.Empty;

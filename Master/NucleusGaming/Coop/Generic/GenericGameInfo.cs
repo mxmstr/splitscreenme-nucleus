@@ -354,14 +354,20 @@ namespace Nucleus.Gaming
             }
 
             // Run this in another thread to not block UI
-            //System.Threading.Tasks.Task.Run(() =>
-            //{
-               UpdateAvailable = Hub.IsUpdateAvailable(true);
-            //});
+            if (bool.Parse(Globals.ini.IniReadValue("Dev", "DisableFastHandlerUpdate")))
+            {
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    UpdateAvailable = Hub.IsUpdateAvailable(true);
+                });
+            }
+            else 
+            {
+                UpdateAvailable = Hub.IsUpdateAvailable(true);
+            }
 
             engine.SetValue("Game", (object)null);
         }
-
 
         public CustomStep ShowOptionAsStep(string optionKey, bool required, string title)
         {
@@ -461,88 +467,96 @@ namespace Nucleus.Gaming
 
         public string GetEpicLanguage()
         {
-            IniFile ini = Globals.ini;
+            string epicLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
 
-            IDictionary<string, string> epiclangs = new Dictionary<string, string>();
-            epiclangs.Add("Arabic", "ar");
-            epiclangs.Add("Brazilian", "pt-BR");
-            epiclangs.Add("Bulgarian", "bg");
-            epiclangs.Add("Chinese", "zh");
-            epiclangs.Add("Czech", "cs");
-            epiclangs.Add("Danish", "da");
-            epiclangs.Add("Dutch", "nl");
-            epiclangs.Add("English", "en");
-            epiclangs.Add("Finnish", "fi");
-            epiclangs.Add("French", "fr");
-            epiclangs.Add("German", "de");
-            epiclangs.Add("Greek", "el");
-            epiclangs.Add("Hungarian", "hu");
-            epiclangs.Add("Italian", "it");
-            epiclangs.Add("Japanese", "ja");
-            epiclangs.Add("Koreana", "ko");
-            epiclangs.Add("Norwegian", "no");
-            epiclangs.Add("Polish", "pl");
-            epiclangs.Add("Portuguese", "pt");
-            epiclangs.Add("Romanian", "ro");
-            epiclangs.Add("Russian", "ru");
-            epiclangs.Add("Spanish", "es");
-            epiclangs.Add("Swedish", "sv");
-            epiclangs.Add("Thai", "th");
-            epiclangs.Add("Turkish", "tr");
-            epiclangs.Add("Ukrainian", "uk");
+            IDictionary<string, string> epiclangs = new Dictionary<string, string>
+            {
+                { "Arabic", "ar" },
+                { "Brazilian", "pt-BR" },
+                { "Bulgarian", "bg" },
+                { "Chinese", "zh" },
+                { "Czech", "cs" },
+                { "Danish", "da" },
+                { "Dutch", "nl" },
+                { "English", "en" },
+                { "Finnish", "fi" },
+                { "French", "fr" },
+                { "German", "de" },
+                { "Greek", "el" },
+                { "Hungarian", "hu" },
+                { "Italian", "it" },
+                { "Japanese", "ja" },
+                { "Koreana", "ko" },
+                { "Norwegian", "no" },
+                { "Polish", "pl" },
+                { "Portuguese", "pt" },
+                { "Romanian", "ro" },
+                { "Russian", "ru" },
+                { "Spanish", "es" },
+                { "Swedish", "sv" },
+                { "Thai", "th" },
+                { "Turkish", "tr" },
+                { "Ukrainian", "uk" }
+            };
 
             foreach (KeyValuePair<string, string> lang in epiclangs)
             {
-                if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
+                if (lang.Key != epicLanguage)
                 {
-                    EpicLang = lang.Value;
-                    Console.WriteLine(EpicLang);
+                    continue;                 
                 }
+
+                EpicLang = lang.Value;
             }
+
             return EpicLang;
         }
 
         private string GogLang;
         public string GetGogLanguage()
         {
-            IniFile ini = Globals.ini;
+            string gogLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
 
-            IDictionary<string, string> epiclangs = new Dictionary<string, string>();
-            epiclangs.Add("Arabic", "ar");
-            epiclangs.Add("Brazilian", "pt-BR");
-            epiclangs.Add("Bulgarian", "bg");
-            epiclangs.Add("Chinese", "zh");
-            epiclangs.Add("Czech", "cs");
-            epiclangs.Add("Danish", "da");
-            epiclangs.Add("Dutch", "nl");
-            epiclangs.Add("English", "en");
-            epiclangs.Add("Finnish", "fi");
-            epiclangs.Add("French", "fr");
-            epiclangs.Add("German", "de");
-            epiclangs.Add("Greek", "el");
-            epiclangs.Add("Hungarian", "hu");
-            epiclangs.Add("Italian", "it");
-            epiclangs.Add("Japanese", "ja");
-            epiclangs.Add("Koreana", "ko");
-            epiclangs.Add("Norwegian", "no");
-            epiclangs.Add("Polish", "pl");
-            epiclangs.Add("Portuguese", "pt");
-            epiclangs.Add("Romanian", "ro");
-            epiclangs.Add("Russian", "ru");
-            epiclangs.Add("Spanish", "es");
-            epiclangs.Add("Swedish", "sv");
-            epiclangs.Add("Thai", "th");
-            epiclangs.Add("Turkish", "tr");
-            epiclangs.Add("Ukrainian", "uk");
+            IDictionary<string, string> epiclangs = new Dictionary<string, string>
+            {
+                { "Arabic", "ar" },
+                { "Brazilian", "pt-BR" },
+                { "Bulgarian", "bg" },
+                { "Chinese", "zh" },
+                { "Czech", "cs" },
+                { "Danish", "da" },
+                { "Dutch", "nl" },
+                { "English", "en" },
+                { "Finnish", "fi" },
+                { "French", "fr" },
+                { "German", "de" },
+                { "Greek", "el" },
+                { "Hungarian", "hu" },
+                { "Italian", "it" },
+                { "Japanese", "ja" },
+                { "Koreana", "ko" },
+                { "Norwegian", "no" },
+                { "Polish", "pl" },
+                { "Portuguese", "pt" },
+                { "Romanian", "ro" },
+                { "Russian", "ru" },
+                { "Spanish", "es" },
+                { "Swedish", "sv" },
+                { "Thai", "th" },
+                { "Turkish", "tr" },
+                { "Ukrainian", "uk" }
+            };
 
             foreach (KeyValuePair<string, string> lang in epiclangs)
             {
-                if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
+                if (lang.Key != gogLanguage)
                 {
-                    GogLang = lang.Key;
-                    Console.WriteLine(GogLang);
+                    continue;
                 }
+
+                GogLang = lang.Key;
             }
+
             return GogLang;
         }
 

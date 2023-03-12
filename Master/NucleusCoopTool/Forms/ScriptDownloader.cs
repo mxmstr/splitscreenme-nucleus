@@ -936,6 +936,5 @@ namespace Nucleus.Coop.Forms
                 }
             }
         }
-
     }
 }

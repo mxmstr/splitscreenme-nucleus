@@ -1646,7 +1646,7 @@ namespace Nucleus.Coop
 
                 if (UseSetupScreenBorder)
                 {
-                    g.FillRectangle(new SolidBrush(Color.FromArgb(120, 0,0,0)), s.UIBounds);
+                    //g.FillRectangle(new SolidBrush(Color.FromArgb(120, 0,0,0)), s.UIBounds);
                     g.DrawRectangle(PositionScreenPen, s.UIBounds);
                 }
 

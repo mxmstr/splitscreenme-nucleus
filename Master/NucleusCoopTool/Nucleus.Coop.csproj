@@ -217,8 +217,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ExtractHandler.cs" />
+    <Compile Include="Tools\GetGameDetails.cs" />
     <Compile Include="Tools\OpenGameContentFolder.cs" />
     <Compile Include="Tools\OpenHandler.cs" />
+    <Compile Include="Tools\RemoveGame.cs" />
     <Compile Include="Tools\SetBackroundAndCover.cs" />
     <Compile Include="Tools\StartChecks.cs" />
     <EmbeddedResource Include="Controls\HubShowcase.resx">
@@ -734,6 +737,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\magnifier_close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\page1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\page2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\players.png">

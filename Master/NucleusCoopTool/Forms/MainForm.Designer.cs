@@ -1205,7 +1205,6 @@ namespace Nucleus.Coop
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem changeIconToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scriptNotesToolStripMenuItem;
-        private System.Windows.Forms.RichTextBox scriptAuthorTxt;
         private System.Windows.Forms.ToolStripMenuItem openOrigExePathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteContentFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
@@ -1259,5 +1258,6 @@ namespace Nucleus.Coop
         public BufferedClientAreaPanel game_listSizer;
         public BufferedClientAreaPanel mainButtonFrame;
         public Button btn_downloadAssets;
+        public RichTextBox scriptAuthorTxt;
     }
 }

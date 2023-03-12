@@ -201,7 +201,7 @@ namespace Nucleus.Coop
             this.IdealProcessor17 = new System.Windows.Forms.ComboBox();
             this.label70 = new System.Windows.Forms.Label();
             this.audioTab = new BufferedClientAreaPanel();
-            this.label39 = new System.Windows.Forms.Label();
+            this.audioWarningLabel = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
             this.audioCustomSettingsBox = new System.Windows.Forms.GroupBox();
             this.AudioInstance8 = new System.Windows.Forms.ComboBox();
@@ -354,6 +354,7 @@ namespace Nucleus.Coop
             this.label28 = new System.Windows.Forms.Label();
             this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.sharedTab = new BufferedClientAreaPanel();
+            this.warningLabel = new System.Windows.Forms.Label();
             this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
             this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.label72 = new System.Windows.Forms.Label();
@@ -397,10 +398,10 @@ namespace Nucleus.Coop
             this.sharedTabBtn.Name = "sharedTabBtn";
             this.sharedTabBtn.Size = new System.Drawing.Size(80, 23);
             this.sharedTabBtn.TabIndex = 38;
+            this.sharedTabBtn.Tag = "sharedTab";
             this.sharedTabBtn.Text = "Shared";
             this.sharedTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.sharedTabBtn.UseVisualStyleBackColor = false;
-            this.sharedTabBtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // playersTabBtn
             // 
@@ -413,10 +414,10 @@ namespace Nucleus.Coop
             this.playersTabBtn.Name = "playersTabBtn";
             this.playersTabBtn.Size = new System.Drawing.Size(80, 23);
             this.playersTabBtn.TabIndex = 43;
+            this.playersTabBtn.Tag = "playersTab";
             this.playersTabBtn.Text = "Players";
             this.playersTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.playersTabBtn.UseVisualStyleBackColor = false;
-            this.playersTabBtn.Click += new System.EventHandler(this.button2_Click);
             // 
             // audioTabBtn
             // 
@@ -429,10 +430,11 @@ namespace Nucleus.Coop
             this.audioTabBtn.Name = "audioTabBtn";
             this.audioTabBtn.Size = new System.Drawing.Size(80, 23);
             this.audioTabBtn.TabIndex = 44;
+            this.audioTabBtn.Tag = "audioTab";
             this.audioTabBtn.Text = "Audio";
             this.audioTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.audioTabBtn.UseVisualStyleBackColor = false;
-            this.audioTabBtn.Click += new System.EventHandler(this.button3_Click);
+            this.audioTabBtn.Click += new System.EventHandler(this.audioTabBtn_Click);
             // 
             // processorTabBtn
             // 
@@ -445,10 +447,10 @@ namespace Nucleus.Coop
             this.processorTabBtn.Name = "processorTabBtn";
             this.processorTabBtn.Size = new System.Drawing.Size(80, 23);
             this.processorTabBtn.TabIndex = 45;
+            this.processorTabBtn.Tag = "processorTab";
             this.processorTabBtn.Text = "Processor";
             this.processorTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.processorTabBtn.UseVisualStyleBackColor = false;
-            this.processorTabBtn.Click += new System.EventHandler(this.button4_Click);
             // 
             // audioBtnPicture
             // 
@@ -459,6 +461,7 @@ namespace Nucleus.Coop
             this.audioBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.audioBtnPicture.TabIndex = 294;
             this.audioBtnPicture.TabStop = false;
+            this.audioBtnPicture.Tag = "audioTab";
             // 
             // playersBtnPicture
             // 
@@ -469,6 +472,7 @@ namespace Nucleus.Coop
             this.playersBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.playersBtnPicture.TabIndex = 295;
             this.playersBtnPicture.TabStop = false;
+            this.playersBtnPicture.Tag = "playersTab";
             // 
             // sharedBtnPicture
             // 
@@ -479,6 +483,7 @@ namespace Nucleus.Coop
             this.sharedBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.sharedBtnPicture.TabIndex = 296;
             this.sharedBtnPicture.TabStop = false;
+            this.sharedBtnPicture.Tag = "sharedTab";
             // 
             // processorBtnPicture
             // 
@@ -489,6 +494,7 @@ namespace Nucleus.Coop
             this.processorBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.processorBtnPicture.TabIndex = 297;
             this.processorBtnPicture.TabStop = false;
+            this.processorBtnPicture.Tag = "processorTab";
             // 
             // closeBtnPicture
             // 
@@ -557,6 +563,7 @@ namespace Nucleus.Coop
             this.layoutBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.layoutBtnPicture.TabIndex = 303;
             this.layoutBtnPicture.TabStop = false;
+            this.layoutBtnPicture.Tag = "layoutTab";
             // 
             // layoutTabBtn
             // 
@@ -569,10 +576,10 @@ namespace Nucleus.Coop
             this.layoutTabBtn.Name = "layoutTabBtn";
             this.layoutTabBtn.Size = new System.Drawing.Size(80, 23);
             this.layoutTabBtn.TabIndex = 302;
+            this.layoutTabBtn.Tag = "layoutTab";
             this.layoutTabBtn.Text = "Layout";
             this.layoutTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.layoutTabBtn.UseVisualStyleBackColor = false;
-            this.layoutTabBtn.Click += new System.EventHandler(this.button5_Click);
             // 
             // processorTab
             // 
@@ -589,7 +596,6 @@ namespace Nucleus.Coop
             this.processorTab.Name = "processorTab";
             this.processorTab.Size = new System.Drawing.Size(671, 401);
             this.processorTab.TabIndex = 300;
-            this.processorTab.Visible = false;
             // 
             // label96
             // 
@@ -620,7 +626,7 @@ namespace Nucleus.Coop
             this.coreCountLabel.AutoSize = true;
             this.coreCountLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.coreCountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.coreCountLabel.Location = new System.Drawing.Point(511, 7);
+            this.coreCountLabel.Location = new System.Drawing.Point(504, 7);
             this.coreCountLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.coreCountLabel.Name = "coreCountLabel";
             this.coreCountLabel.Size = new System.Drawing.Size(149, 13);
@@ -643,14 +649,14 @@ namespace Nucleus.Coop
             // btnProcessorNext
             // 
             this.btnProcessorNext.BackColor = System.Drawing.Color.Transparent;
+            this.btnProcessorNext.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnProcessorNext.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btnProcessorNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnProcessorNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProcessorNext.Location = new System.Drawing.Point(595, 109);
+            this.btnProcessorNext.Location = new System.Drawing.Point(3, 109);
             this.btnProcessorNext.Name = "btnProcessorNext";
-            this.btnProcessorNext.Size = new System.Drawing.Size(75, 23);
+            this.btnProcessorNext.Size = new System.Drawing.Size(38, 22);
             this.btnProcessorNext.TabIndex = 327;
-            this.btnProcessorNext.Text = "Next";
             this.btnProcessorNext.UseVisualStyleBackColor = false;
             this.btnProcessorNext.Click += new System.EventHandler(this.btnProcessorNext_Click_1);
             // 
@@ -734,7 +740,7 @@ namespace Nucleus.Coop
             this.processorPage1.Controls.Add(this.Affinity16);
             this.processorPage1.Location = new System.Drawing.Point(3, 133);
             this.processorPage1.Name = "processorPage1";
-            this.processorPage1.Size = new System.Drawing.Size(671, 210);
+            this.processorPage1.Size = new System.Drawing.Size(634, 217);
             this.processorPage1.TabIndex = 325;
             // 
             // Affinity4
@@ -742,7 +748,7 @@ namespace Nucleus.Coop
             this.Affinity4.BackColor = System.Drawing.Color.White;
             this.Affinity4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity4.Location = new System.Drawing.Point(192, 91);
+            this.Affinity4.Location = new System.Drawing.Point(185, 76);
             this.Affinity4.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity4.MaxLength = 100;
             this.Affinity4.Name = "Affinity4";
@@ -753,7 +759,7 @@ namespace Nucleus.Coop
             // 
             this.label93.AutoSize = true;
             this.label93.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label93.Location = new System.Drawing.Point(18, 28);
+            this.label93.Location = new System.Drawing.Point(11, 12);
             this.label93.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label93.Name = "label93";
             this.label93.Size = new System.Drawing.Size(19, 13);
@@ -766,7 +772,7 @@ namespace Nucleus.Coop
             this.IdealProcessor1.BackColor = System.Drawing.Color.White;
             this.IdealProcessor1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor1.Location = new System.Drawing.Point(136, 24);
+            this.IdealProcessor1.Location = new System.Drawing.Point(129, 9);
             this.IdealProcessor1.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor1.MaxLength = 2;
             this.IdealProcessor1.Name = "IdealProcessor1";
@@ -777,7 +783,7 @@ namespace Nucleus.Coop
             // 
             this.label91.AutoSize = true;
             this.label91.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label91.Location = new System.Drawing.Point(18, 50);
+            this.label91.Location = new System.Drawing.Point(11, 34);
             this.label91.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label91.Name = "label91";
             this.label91.Size = new System.Drawing.Size(19, 13);
@@ -790,7 +796,7 @@ namespace Nucleus.Coop
             this.IdealProcessor2.BackColor = System.Drawing.Color.White;
             this.IdealProcessor2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor2.Location = new System.Drawing.Point(136, 46);
+            this.IdealProcessor2.Location = new System.Drawing.Point(129, 31);
             this.IdealProcessor2.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor2.MaxLength = 2;
             this.IdealProcessor2.Name = "IdealProcessor2";
@@ -801,7 +807,7 @@ namespace Nucleus.Coop
             // 
             this.label90.AutoSize = true;
             this.label90.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label90.Location = new System.Drawing.Point(18, 72);
+            this.label90.Location = new System.Drawing.Point(11, 55);
             this.label90.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label90.Name = "label90";
             this.label90.Size = new System.Drawing.Size(19, 13);
@@ -814,7 +820,7 @@ namespace Nucleus.Coop
             this.IdealProcessor3.BackColor = System.Drawing.Color.White;
             this.IdealProcessor3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor3.Location = new System.Drawing.Point(136, 68);
+            this.IdealProcessor3.Location = new System.Drawing.Point(129, 53);
             this.IdealProcessor3.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor3.MaxLength = 2;
             this.IdealProcessor3.Name = "IdealProcessor3";
@@ -825,7 +831,7 @@ namespace Nucleus.Coop
             // 
             this.label89.AutoSize = true;
             this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label89.Location = new System.Drawing.Point(18, 94);
+            this.label89.Location = new System.Drawing.Point(11, 78);
             this.label89.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label89.Name = "label89";
             this.label89.Size = new System.Drawing.Size(19, 13);
@@ -838,7 +844,7 @@ namespace Nucleus.Coop
             this.IdealProcessor4.BackColor = System.Drawing.Color.White;
             this.IdealProcessor4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor4.Location = new System.Drawing.Point(136, 90);
+            this.IdealProcessor4.Location = new System.Drawing.Point(129, 75);
             this.IdealProcessor4.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor4.MaxLength = 2;
             this.IdealProcessor4.Name = "IdealProcessor4";
@@ -849,7 +855,7 @@ namespace Nucleus.Coop
             // 
             this.label87.AutoSize = true;
             this.label87.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label87.Location = new System.Drawing.Point(18, 116);
+            this.label87.Location = new System.Drawing.Point(11, 99);
             this.label87.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label87.Name = "label87";
             this.label87.Size = new System.Drawing.Size(19, 13);
@@ -867,7 +873,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass16.Location = new System.Drawing.Point(405, 178);
+            this.PriorityClass16.Location = new System.Drawing.Point(398, 163);
             this.PriorityClass16.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass16.MaxLength = 17;
             this.PriorityClass16.Name = "PriorityClass16";
@@ -879,7 +885,7 @@ namespace Nucleus.Coop
             this.IdealProcessor5.BackColor = System.Drawing.Color.White;
             this.IdealProcessor5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor5.Location = new System.Drawing.Point(136, 112);
+            this.IdealProcessor5.Location = new System.Drawing.Point(129, 97);
             this.IdealProcessor5.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor5.MaxLength = 2;
             this.IdealProcessor5.Name = "IdealProcessor5";
@@ -896,7 +902,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass15.Location = new System.Drawing.Point(405, 156);
+            this.PriorityClass15.Location = new System.Drawing.Point(398, 141);
             this.PriorityClass15.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass15.MaxLength = 17;
             this.PriorityClass15.Name = "PriorityClass15";
@@ -907,7 +913,7 @@ namespace Nucleus.Coop
             // 
             this.label86.AutoSize = true;
             this.label86.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label86.Location = new System.Drawing.Point(18, 138);
+            this.label86.Location = new System.Drawing.Point(11, 122);
             this.label86.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label86.Name = "label86";
             this.label86.Size = new System.Drawing.Size(19, 13);
@@ -925,7 +931,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass14.Location = new System.Drawing.Point(405, 134);
+            this.PriorityClass14.Location = new System.Drawing.Point(398, 119);
             this.PriorityClass14.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass14.MaxLength = 17;
             this.PriorityClass14.Name = "PriorityClass14";
@@ -937,7 +943,7 @@ namespace Nucleus.Coop
             this.IdealProcessor6.BackColor = System.Drawing.Color.White;
             this.IdealProcessor6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor6.Location = new System.Drawing.Point(136, 134);
+            this.IdealProcessor6.Location = new System.Drawing.Point(129, 119);
             this.IdealProcessor6.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor6.MaxLength = 2;
             this.IdealProcessor6.Name = "IdealProcessor6";
@@ -954,7 +960,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass13.Location = new System.Drawing.Point(405, 112);
+            this.PriorityClass13.Location = new System.Drawing.Point(398, 97);
             this.PriorityClass13.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass13.MaxLength = 17;
             this.PriorityClass13.Name = "PriorityClass13";
@@ -965,7 +971,7 @@ namespace Nucleus.Coop
             // 
             this.label85.AutoSize = true;
             this.label85.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label85.Location = new System.Drawing.Point(18, 159);
+            this.label85.Location = new System.Drawing.Point(11, 144);
             this.label85.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label85.Name = "label85";
             this.label85.Size = new System.Drawing.Size(19, 13);
@@ -983,7 +989,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass12.Location = new System.Drawing.Point(405, 90);
+            this.PriorityClass12.Location = new System.Drawing.Point(398, 75);
             this.PriorityClass12.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass12.MaxLength = 17;
             this.PriorityClass12.Name = "PriorityClass12";
@@ -995,7 +1001,7 @@ namespace Nucleus.Coop
             this.IdealProcessor7.BackColor = System.Drawing.Color.White;
             this.IdealProcessor7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor7.Location = new System.Drawing.Point(136, 156);
+            this.IdealProcessor7.Location = new System.Drawing.Point(129, 141);
             this.IdealProcessor7.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor7.MaxLength = 2;
             this.IdealProcessor7.Name = "IdealProcessor7";
@@ -1012,7 +1018,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass11.Location = new System.Drawing.Point(405, 68);
+            this.PriorityClass11.Location = new System.Drawing.Point(398, 53);
             this.PriorityClass11.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass11.MaxLength = 17;
             this.PriorityClass11.Name = "PriorityClass11";
@@ -1023,7 +1029,7 @@ namespace Nucleus.Coop
             // 
             this.label84.AutoSize = true;
             this.label84.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label84.Location = new System.Drawing.Point(18, 181);
+            this.label84.Location = new System.Drawing.Point(11, 166);
             this.label84.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label84.Name = "label84";
             this.label84.Size = new System.Drawing.Size(19, 13);
@@ -1041,7 +1047,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass10.Location = new System.Drawing.Point(405, 46);
+            this.PriorityClass10.Location = new System.Drawing.Point(398, 31);
             this.PriorityClass10.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass10.MaxLength = 17;
             this.PriorityClass10.Name = "PriorityClass10";
@@ -1053,7 +1059,7 @@ namespace Nucleus.Coop
             this.IdealProcessor8.BackColor = System.Drawing.Color.White;
             this.IdealProcessor8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor8.Location = new System.Drawing.Point(136, 178);
+            this.IdealProcessor8.Location = new System.Drawing.Point(129, 163);
             this.IdealProcessor8.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor8.MaxLength = 2;
             this.IdealProcessor8.Name = "IdealProcessor8";
@@ -1070,7 +1076,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass9.Location = new System.Drawing.Point(405, 24);
+            this.PriorityClass9.Location = new System.Drawing.Point(398, 9);
             this.PriorityClass9.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass9.MaxLength = 17;
             this.PriorityClass9.Name = "PriorityClass9";
@@ -1081,7 +1087,7 @@ namespace Nucleus.Coop
             // 
             this.label83.AutoSize = true;
             this.label83.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label83.Location = new System.Drawing.Point(382, 28);
+            this.label83.Location = new System.Drawing.Point(375, 12);
             this.label83.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label83.Name = "label83";
             this.label83.Size = new System.Drawing.Size(19, 13);
@@ -1094,7 +1100,7 @@ namespace Nucleus.Coop
             this.IdealProcessor9.BackColor = System.Drawing.Color.White;
             this.IdealProcessor9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor9.Location = new System.Drawing.Point(500, 24);
+            this.IdealProcessor9.Location = new System.Drawing.Point(493, 9);
             this.IdealProcessor9.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor9.MaxLength = 9;
             this.IdealProcessor9.Name = "IdealProcessor9";
@@ -1105,7 +1111,7 @@ namespace Nucleus.Coop
             // 
             this.label82.AutoSize = true;
             this.label82.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label82.Location = new System.Drawing.Point(376, 50);
+            this.label82.Location = new System.Drawing.Point(369, 34);
             this.label82.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label82.Name = "label82";
             this.label82.Size = new System.Drawing.Size(25, 13);
@@ -1118,7 +1124,7 @@ namespace Nucleus.Coop
             this.IdealProcessor10.BackColor = System.Drawing.Color.White;
             this.IdealProcessor10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor10.Location = new System.Drawing.Point(500, 46);
+            this.IdealProcessor10.Location = new System.Drawing.Point(493, 31);
             this.IdealProcessor10.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor10.MaxLength = 9;
             this.IdealProcessor10.Name = "IdealProcessor10";
@@ -1129,7 +1135,7 @@ namespace Nucleus.Coop
             // 
             this.label81.AutoSize = true;
             this.label81.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label81.Location = new System.Drawing.Point(376, 72);
+            this.label81.Location = new System.Drawing.Point(369, 56);
             this.label81.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label81.Name = "label81";
             this.label81.Size = new System.Drawing.Size(25, 13);
@@ -1142,7 +1148,7 @@ namespace Nucleus.Coop
             this.IdealProcessor11.BackColor = System.Drawing.Color.White;
             this.IdealProcessor11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor11.Location = new System.Drawing.Point(500, 68);
+            this.IdealProcessor11.Location = new System.Drawing.Point(493, 53);
             this.IdealProcessor11.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor11.MaxLength = 9;
             this.IdealProcessor11.Name = "IdealProcessor11";
@@ -1153,7 +1159,7 @@ namespace Nucleus.Coop
             // 
             this.label80.AutoSize = true;
             this.label80.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label80.Location = new System.Drawing.Point(376, 94);
+            this.label80.Location = new System.Drawing.Point(369, 78);
             this.label80.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label80.Name = "label80";
             this.label80.Size = new System.Drawing.Size(25, 13);
@@ -1166,7 +1172,7 @@ namespace Nucleus.Coop
             this.IdealProcessor12.BackColor = System.Drawing.Color.White;
             this.IdealProcessor12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor12.Location = new System.Drawing.Point(500, 90);
+            this.IdealProcessor12.Location = new System.Drawing.Point(493, 75);
             this.IdealProcessor12.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor12.MaxLength = 9;
             this.IdealProcessor12.Name = "IdealProcessor12";
@@ -1177,7 +1183,7 @@ namespace Nucleus.Coop
             // 
             this.label79.AutoSize = true;
             this.label79.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label79.Location = new System.Drawing.Point(376, 116);
+            this.label79.Location = new System.Drawing.Point(369, 100);
             this.label79.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label79.Name = "label79";
             this.label79.Size = new System.Drawing.Size(25, 13);
@@ -1195,7 +1201,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass8.Location = new System.Drawing.Point(41, 178);
+            this.PriorityClass8.Location = new System.Drawing.Point(34, 163);
             this.PriorityClass8.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass8.MaxLength = 17;
             this.PriorityClass8.Name = "PriorityClass8";
@@ -1207,7 +1213,7 @@ namespace Nucleus.Coop
             this.IdealProcessor13.BackColor = System.Drawing.Color.White;
             this.IdealProcessor13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor13.Location = new System.Drawing.Point(500, 112);
+            this.IdealProcessor13.Location = new System.Drawing.Point(493, 97);
             this.IdealProcessor13.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor13.MaxLength = 9;
             this.IdealProcessor13.Name = "IdealProcessor13";
@@ -1224,7 +1230,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass7.Location = new System.Drawing.Point(41, 156);
+            this.PriorityClass7.Location = new System.Drawing.Point(34, 141);
             this.PriorityClass7.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass7.MaxLength = 17;
             this.PriorityClass7.Name = "PriorityClass7";
@@ -1235,7 +1241,7 @@ namespace Nucleus.Coop
             // 
             this.label78.AutoSize = true;
             this.label78.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label78.Location = new System.Drawing.Point(376, 138);
+            this.label78.Location = new System.Drawing.Point(369, 122);
             this.label78.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label78.Name = "label78";
             this.label78.Size = new System.Drawing.Size(25, 13);
@@ -1253,7 +1259,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass6.Location = new System.Drawing.Point(41, 134);
+            this.PriorityClass6.Location = new System.Drawing.Point(34, 119);
             this.PriorityClass6.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass6.MaxLength = 17;
             this.PriorityClass6.Name = "PriorityClass6";
@@ -1265,7 +1271,7 @@ namespace Nucleus.Coop
             this.IdealProcessor14.BackColor = System.Drawing.Color.White;
             this.IdealProcessor14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor14.Location = new System.Drawing.Point(500, 134);
+            this.IdealProcessor14.Location = new System.Drawing.Point(493, 119);
             this.IdealProcessor14.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor14.MaxLength = 9;
             this.IdealProcessor14.Name = "IdealProcessor14";
@@ -1282,7 +1288,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass5.Location = new System.Drawing.Point(41, 112);
+            this.PriorityClass5.Location = new System.Drawing.Point(34, 97);
             this.PriorityClass5.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass5.MaxLength = 17;
             this.PriorityClass5.Name = "PriorityClass5";
@@ -1293,7 +1299,7 @@ namespace Nucleus.Coop
             // 
             this.label77.AutoSize = true;
             this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label77.Location = new System.Drawing.Point(376, 160);
+            this.label77.Location = new System.Drawing.Point(369, 144);
             this.label77.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(25, 13);
@@ -1311,7 +1317,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass4.Location = new System.Drawing.Point(41, 90);
+            this.PriorityClass4.Location = new System.Drawing.Point(34, 75);
             this.PriorityClass4.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass4.MaxLength = 17;
             this.PriorityClass4.Name = "PriorityClass4";
@@ -1323,7 +1329,7 @@ namespace Nucleus.Coop
             this.IdealProcessor15.BackColor = System.Drawing.Color.White;
             this.IdealProcessor15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor15.Location = new System.Drawing.Point(500, 156);
+            this.IdealProcessor15.Location = new System.Drawing.Point(493, 141);
             this.IdealProcessor15.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor15.MaxLength = 9;
             this.IdealProcessor15.Name = "IdealProcessor15";
@@ -1340,7 +1346,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass3.Location = new System.Drawing.Point(41, 68);
+            this.PriorityClass3.Location = new System.Drawing.Point(34, 53);
             this.PriorityClass3.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass3.MaxLength = 17;
             this.PriorityClass3.Name = "PriorityClass3";
@@ -1351,7 +1357,7 @@ namespace Nucleus.Coop
             // 
             this.label76.AutoSize = true;
             this.label76.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label76.Location = new System.Drawing.Point(376, 182);
+            this.label76.Location = new System.Drawing.Point(369, 166);
             this.label76.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label76.Name = "label76";
             this.label76.Size = new System.Drawing.Size(25, 13);
@@ -1369,7 +1375,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass2.Location = new System.Drawing.Point(41, 46);
+            this.PriorityClass2.Location = new System.Drawing.Point(34, 31);
             this.PriorityClass2.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass2.MaxLength = 17;
             this.PriorityClass2.Name = "PriorityClass2";
@@ -1381,7 +1387,7 @@ namespace Nucleus.Coop
             this.IdealProcessor16.BackColor = System.Drawing.Color.White;
             this.IdealProcessor16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor16.Location = new System.Drawing.Point(500, 178);
+            this.IdealProcessor16.Location = new System.Drawing.Point(493, 163);
             this.IdealProcessor16.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor16.MaxLength = 9;
             this.IdealProcessor16.Name = "IdealProcessor16";
@@ -1398,7 +1404,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass1.Location = new System.Drawing.Point(41, 24);
+            this.PriorityClass1.Location = new System.Drawing.Point(34, 9);
             this.PriorityClass1.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass1.MaxLength = 17;
             this.PriorityClass1.Name = "PriorityClass1";
@@ -1410,7 +1416,7 @@ namespace Nucleus.Coop
             this.Affinity1.BackColor = System.Drawing.Color.White;
             this.Affinity1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity1.Location = new System.Drawing.Point(192, 25);
+            this.Affinity1.Location = new System.Drawing.Point(185, 10);
             this.Affinity1.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity1.MaxLength = 100;
             this.Affinity1.Name = "Affinity1";
@@ -1422,7 +1428,7 @@ namespace Nucleus.Coop
             this.Affinity2.BackColor = System.Drawing.Color.White;
             this.Affinity2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity2.Location = new System.Drawing.Point(192, 47);
+            this.Affinity2.Location = new System.Drawing.Point(185, 32);
             this.Affinity2.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity2.MaxLength = 100;
             this.Affinity2.Name = "Affinity2";
@@ -1434,7 +1440,7 @@ namespace Nucleus.Coop
             this.Affinity3.BackColor = System.Drawing.Color.White;
             this.Affinity3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity3.Location = new System.Drawing.Point(192, 69);
+            this.Affinity3.Location = new System.Drawing.Point(185, 54);
             this.Affinity3.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity3.MaxLength = 100;
             this.Affinity3.Name = "Affinity3";
@@ -1446,7 +1452,7 @@ namespace Nucleus.Coop
             this.Affinity5.BackColor = System.Drawing.Color.White;
             this.Affinity5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity5.Location = new System.Drawing.Point(192, 113);
+            this.Affinity5.Location = new System.Drawing.Point(185, 98);
             this.Affinity5.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity5.MaxLength = 100;
             this.Affinity5.Name = "Affinity5";
@@ -1458,7 +1464,7 @@ namespace Nucleus.Coop
             this.Affinity6.BackColor = System.Drawing.Color.White;
             this.Affinity6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity6.Location = new System.Drawing.Point(192, 135);
+            this.Affinity6.Location = new System.Drawing.Point(185, 120);
             this.Affinity6.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity6.MaxLength = 100;
             this.Affinity6.Name = "Affinity6";
@@ -1470,7 +1476,7 @@ namespace Nucleus.Coop
             this.Affinity7.BackColor = System.Drawing.Color.White;
             this.Affinity7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity7.Location = new System.Drawing.Point(192, 157);
+            this.Affinity7.Location = new System.Drawing.Point(185, 142);
             this.Affinity7.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity7.MaxLength = 100;
             this.Affinity7.Name = "Affinity7";
@@ -1482,7 +1488,7 @@ namespace Nucleus.Coop
             this.Affinity8.BackColor = System.Drawing.Color.White;
             this.Affinity8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity8.Location = new System.Drawing.Point(192, 179);
+            this.Affinity8.Location = new System.Drawing.Point(185, 164);
             this.Affinity8.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity8.MaxLength = 100;
             this.Affinity8.Name = "Affinity8";
@@ -1493,7 +1499,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity9.BackColor = System.Drawing.Color.White;
             this.Affinity9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity9.Location = new System.Drawing.Point(555, 25);
+            this.Affinity9.Location = new System.Drawing.Point(548, 10);
             this.Affinity9.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity9.MaxLength = 100;
             this.Affinity9.Name = "Affinity9";
@@ -1504,7 +1510,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity10.BackColor = System.Drawing.Color.White;
             this.Affinity10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity10.Location = new System.Drawing.Point(555, 47);
+            this.Affinity10.Location = new System.Drawing.Point(548, 32);
             this.Affinity10.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity10.MaxLength = 100;
             this.Affinity10.Name = "Affinity10";
@@ -1515,7 +1521,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity11.BackColor = System.Drawing.Color.White;
             this.Affinity11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity11.Location = new System.Drawing.Point(555, 69);
+            this.Affinity11.Location = new System.Drawing.Point(548, 54);
             this.Affinity11.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity11.MaxLength = 100;
             this.Affinity11.Name = "Affinity11";
@@ -1526,7 +1532,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity12.BackColor = System.Drawing.Color.White;
             this.Affinity12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity12.Location = new System.Drawing.Point(555, 91);
+            this.Affinity12.Location = new System.Drawing.Point(548, 76);
             this.Affinity12.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity12.MaxLength = 100;
             this.Affinity12.Name = "Affinity12";
@@ -1537,7 +1543,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity13.BackColor = System.Drawing.Color.White;
             this.Affinity13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity13.Location = new System.Drawing.Point(555, 113);
+            this.Affinity13.Location = new System.Drawing.Point(548, 98);
             this.Affinity13.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity13.MaxLength = 100;
             this.Affinity13.Name = "Affinity13";
@@ -1548,7 +1554,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity14.BackColor = System.Drawing.Color.White;
             this.Affinity14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity14.Location = new System.Drawing.Point(555, 135);
+            this.Affinity14.Location = new System.Drawing.Point(548, 120);
             this.Affinity14.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity14.MaxLength = 100;
             this.Affinity14.Name = "Affinity14";
@@ -1559,7 +1565,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity15.BackColor = System.Drawing.Color.White;
             this.Affinity15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity15.Location = new System.Drawing.Point(555, 157);
+            this.Affinity15.Location = new System.Drawing.Point(548, 142);
             this.Affinity15.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity15.MaxLength = 100;
             this.Affinity15.Name = "Affinity15";
@@ -1570,7 +1576,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity16.BackColor = System.Drawing.Color.White;
             this.Affinity16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity16.Location = new System.Drawing.Point(555, 179);
+            this.Affinity16.Location = new System.Drawing.Point(548, 164);
             this.Affinity16.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity16.MaxLength = 100;
             this.Affinity16.Name = "Affinity16";
@@ -1643,9 +1649,9 @@ namespace Nucleus.Coop
             this.processorPage2.Controls.Add(this.label69);
             this.processorPage2.Controls.Add(this.IdealProcessor17);
             this.processorPage2.Controls.Add(this.label70);
-            this.processorPage2.Location = new System.Drawing.Point(1, 134);
+            this.processorPage2.Location = new System.Drawing.Point(2, 131);
             this.processorPage2.Name = "processorPage2";
-            this.processorPage2.Size = new System.Drawing.Size(671, 210);
+            this.processorPage2.Size = new System.Drawing.Size(634, 217);
             this.processorPage2.TabIndex = 326;
             // 
             // PriorityClass32
@@ -1658,7 +1664,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass32.Location = new System.Drawing.Point(405, 178);
+            this.PriorityClass32.Location = new System.Drawing.Point(398, 163);
             this.PriorityClass32.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass32.MaxLength = 17;
             this.PriorityClass32.Name = "PriorityClass32";
@@ -1675,7 +1681,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass31.Location = new System.Drawing.Point(405, 156);
+            this.PriorityClass31.Location = new System.Drawing.Point(398, 141);
             this.PriorityClass31.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass31.MaxLength = 17;
             this.PriorityClass31.Name = "PriorityClass31";
@@ -1692,7 +1698,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass30.Location = new System.Drawing.Point(405, 134);
+            this.PriorityClass30.Location = new System.Drawing.Point(398, 119);
             this.PriorityClass30.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass30.MaxLength = 17;
             this.PriorityClass30.Name = "PriorityClass30";
@@ -1709,7 +1715,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass29.Location = new System.Drawing.Point(405, 112);
+            this.PriorityClass29.Location = new System.Drawing.Point(398, 97);
             this.PriorityClass29.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass29.MaxLength = 17;
             this.PriorityClass29.Name = "PriorityClass29";
@@ -1726,7 +1732,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass28.Location = new System.Drawing.Point(405, 90);
+            this.PriorityClass28.Location = new System.Drawing.Point(398, 75);
             this.PriorityClass28.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass28.MaxLength = 17;
             this.PriorityClass28.Name = "PriorityClass28";
@@ -1743,7 +1749,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass27.Location = new System.Drawing.Point(405, 68);
+            this.PriorityClass27.Location = new System.Drawing.Point(398, 53);
             this.PriorityClass27.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass27.MaxLength = 17;
             this.PriorityClass27.Name = "PriorityClass27";
@@ -1760,7 +1766,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass26.Location = new System.Drawing.Point(405, 46);
+            this.PriorityClass26.Location = new System.Drawing.Point(398, 31);
             this.PriorityClass26.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass26.MaxLength = 17;
             this.PriorityClass26.Name = "PriorityClass26";
@@ -1777,7 +1783,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass25.Location = new System.Drawing.Point(405, 24);
+            this.PriorityClass25.Location = new System.Drawing.Point(398, 9);
             this.PriorityClass25.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass25.MaxLength = 17;
             this.PriorityClass25.Name = "PriorityClass25";
@@ -1794,7 +1800,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass24.Location = new System.Drawing.Point(41, 178);
+            this.PriorityClass24.Location = new System.Drawing.Point(34, 163);
             this.PriorityClass24.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass24.MaxLength = 17;
             this.PriorityClass24.Name = "PriorityClass24";
@@ -1811,7 +1817,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass23.Location = new System.Drawing.Point(41, 156);
+            this.PriorityClass23.Location = new System.Drawing.Point(34, 141);
             this.PriorityClass23.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass23.MaxLength = 17;
             this.PriorityClass23.Name = "PriorityClass23";
@@ -1828,7 +1834,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass22.Location = new System.Drawing.Point(41, 134);
+            this.PriorityClass22.Location = new System.Drawing.Point(34, 119);
             this.PriorityClass22.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass22.MaxLength = 17;
             this.PriorityClass22.Name = "PriorityClass22";
@@ -1845,7 +1851,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass21.Location = new System.Drawing.Point(41, 112);
+            this.PriorityClass21.Location = new System.Drawing.Point(34, 97);
             this.PriorityClass21.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass21.MaxLength = 17;
             this.PriorityClass21.Name = "PriorityClass21";
@@ -1862,7 +1868,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass20.Location = new System.Drawing.Point(41, 90);
+            this.PriorityClass20.Location = new System.Drawing.Point(34, 75);
             this.PriorityClass20.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass20.MaxLength = 17;
             this.PriorityClass20.Name = "PriorityClass20";
@@ -1879,7 +1885,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass19.Location = new System.Drawing.Point(41, 68);
+            this.PriorityClass19.Location = new System.Drawing.Point(34, 53);
             this.PriorityClass19.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass19.MaxLength = 17;
             this.PriorityClass19.Name = "PriorityClass19";
@@ -1896,7 +1902,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass18.Location = new System.Drawing.Point(41, 46);
+            this.PriorityClass18.Location = new System.Drawing.Point(34, 31);
             this.PriorityClass18.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass18.MaxLength = 17;
             this.PriorityClass18.Name = "PriorityClass18";
@@ -1913,7 +1919,7 @@ namespace Nucleus.Coop
             "AboveNormal",
             "High",
             "RealTime"});
-            this.PriorityClass17.Location = new System.Drawing.Point(41, 24);
+            this.PriorityClass17.Location = new System.Drawing.Point(34, 9);
             this.PriorityClass17.Margin = new System.Windows.Forms.Padding(2);
             this.PriorityClass17.MaxLength = 17;
             this.PriorityClass17.Name = "PriorityClass17";
@@ -1924,7 +1930,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity32.BackColor = System.Drawing.Color.White;
             this.Affinity32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity32.Location = new System.Drawing.Point(555, 179);
+            this.Affinity32.Location = new System.Drawing.Point(548, 164);
             this.Affinity32.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity32.MaxLength = 100;
             this.Affinity32.Name = "Affinity32";
@@ -1935,7 +1941,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity31.BackColor = System.Drawing.Color.White;
             this.Affinity31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity31.Location = new System.Drawing.Point(555, 157);
+            this.Affinity31.Location = new System.Drawing.Point(548, 142);
             this.Affinity31.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity31.MaxLength = 100;
             this.Affinity31.Name = "Affinity31";
@@ -1946,7 +1952,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity30.BackColor = System.Drawing.Color.White;
             this.Affinity30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity30.Location = new System.Drawing.Point(555, 135);
+            this.Affinity30.Location = new System.Drawing.Point(548, 120);
             this.Affinity30.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity30.MaxLength = 100;
             this.Affinity30.Name = "Affinity30";
@@ -1957,7 +1963,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity29.BackColor = System.Drawing.Color.White;
             this.Affinity29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity29.Location = new System.Drawing.Point(555, 113);
+            this.Affinity29.Location = new System.Drawing.Point(548, 98);
             this.Affinity29.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity29.MaxLength = 100;
             this.Affinity29.Name = "Affinity29";
@@ -1968,7 +1974,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity28.BackColor = System.Drawing.Color.White;
             this.Affinity28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity28.Location = new System.Drawing.Point(555, 91);
+            this.Affinity28.Location = new System.Drawing.Point(548, 76);
             this.Affinity28.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity28.MaxLength = 100;
             this.Affinity28.Name = "Affinity28";
@@ -1979,7 +1985,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity27.BackColor = System.Drawing.Color.White;
             this.Affinity27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity27.Location = new System.Drawing.Point(555, 69);
+            this.Affinity27.Location = new System.Drawing.Point(548, 54);
             this.Affinity27.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity27.MaxLength = 100;
             this.Affinity27.Name = "Affinity27";
@@ -1990,7 +1996,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity26.BackColor = System.Drawing.Color.White;
             this.Affinity26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity26.Location = new System.Drawing.Point(555, 47);
+            this.Affinity26.Location = new System.Drawing.Point(548, 32);
             this.Affinity26.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity26.MaxLength = 100;
             this.Affinity26.Name = "Affinity26";
@@ -2001,7 +2007,7 @@ namespace Nucleus.Coop
             // 
             this.Affinity25.BackColor = System.Drawing.Color.White;
             this.Affinity25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity25.Location = new System.Drawing.Point(555, 25);
+            this.Affinity25.Location = new System.Drawing.Point(548, 10);
             this.Affinity25.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity25.MaxLength = 100;
             this.Affinity25.Name = "Affinity25";
@@ -2013,7 +2019,7 @@ namespace Nucleus.Coop
             this.Affinity24.BackColor = System.Drawing.Color.White;
             this.Affinity24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity24.Location = new System.Drawing.Point(192, 179);
+            this.Affinity24.Location = new System.Drawing.Point(185, 164);
             this.Affinity24.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity24.MaxLength = 100;
             this.Affinity24.Name = "Affinity24";
@@ -2025,7 +2031,7 @@ namespace Nucleus.Coop
             this.Affinity23.BackColor = System.Drawing.Color.White;
             this.Affinity23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity23.Location = new System.Drawing.Point(192, 157);
+            this.Affinity23.Location = new System.Drawing.Point(185, 142);
             this.Affinity23.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity23.MaxLength = 100;
             this.Affinity23.Name = "Affinity23";
@@ -2037,7 +2043,7 @@ namespace Nucleus.Coop
             this.Affinity22.BackColor = System.Drawing.Color.White;
             this.Affinity22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity22.Location = new System.Drawing.Point(192, 135);
+            this.Affinity22.Location = new System.Drawing.Point(185, 120);
             this.Affinity22.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity22.MaxLength = 100;
             this.Affinity22.Name = "Affinity22";
@@ -2049,7 +2055,7 @@ namespace Nucleus.Coop
             this.Affinity21.BackColor = System.Drawing.Color.White;
             this.Affinity21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity21.Location = new System.Drawing.Point(192, 113);
+            this.Affinity21.Location = new System.Drawing.Point(185, 98);
             this.Affinity21.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity21.MaxLength = 100;
             this.Affinity21.Name = "Affinity21";
@@ -2061,7 +2067,7 @@ namespace Nucleus.Coop
             this.Affinity20.BackColor = System.Drawing.Color.White;
             this.Affinity20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity20.Location = new System.Drawing.Point(192, 91);
+            this.Affinity20.Location = new System.Drawing.Point(185, 76);
             this.Affinity20.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity20.MaxLength = 100;
             this.Affinity20.Name = "Affinity20";
@@ -2073,7 +2079,7 @@ namespace Nucleus.Coop
             this.Affinity19.BackColor = System.Drawing.Color.White;
             this.Affinity19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity19.Location = new System.Drawing.Point(192, 69);
+            this.Affinity19.Location = new System.Drawing.Point(185, 54);
             this.Affinity19.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity19.MaxLength = 100;
             this.Affinity19.Name = "Affinity19";
@@ -2085,7 +2091,7 @@ namespace Nucleus.Coop
             this.Affinity18.BackColor = System.Drawing.Color.White;
             this.Affinity18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity18.Location = new System.Drawing.Point(192, 47);
+            this.Affinity18.Location = new System.Drawing.Point(185, 32);
             this.Affinity18.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity18.MaxLength = 100;
             this.Affinity18.Name = "Affinity18";
@@ -2097,7 +2103,7 @@ namespace Nucleus.Coop
             this.Affinity17.BackColor = System.Drawing.Color.White;
             this.Affinity17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Affinity17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Affinity17.Location = new System.Drawing.Point(192, 25);
+            this.Affinity17.Location = new System.Drawing.Point(185, 10);
             this.Affinity17.Margin = new System.Windows.Forms.Padding(2);
             this.Affinity17.MaxLength = 100;
             this.Affinity17.Name = "Affinity17";
@@ -2109,7 +2115,7 @@ namespace Nucleus.Coop
             this.IdealProcessor32.BackColor = System.Drawing.Color.White;
             this.IdealProcessor32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor32.Location = new System.Drawing.Point(500, 178);
+            this.IdealProcessor32.Location = new System.Drawing.Point(493, 163);
             this.IdealProcessor32.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor32.MaxLength = 9;
             this.IdealProcessor32.Name = "IdealProcessor32";
@@ -2120,7 +2126,7 @@ namespace Nucleus.Coop
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(376, 181);
+            this.label1.Location = new System.Drawing.Point(369, 166);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(25, 13);
@@ -2133,7 +2139,7 @@ namespace Nucleus.Coop
             this.IdealProcessor31.BackColor = System.Drawing.Color.White;
             this.IdealProcessor31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor31.Location = new System.Drawing.Point(500, 156);
+            this.IdealProcessor31.Location = new System.Drawing.Point(493, 141);
             this.IdealProcessor31.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor31.MaxLength = 9;
             this.IdealProcessor31.Name = "IdealProcessor31";
@@ -2144,7 +2150,7 @@ namespace Nucleus.Coop
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(376, 159);
+            this.label3.Location = new System.Drawing.Point(369, 144);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(25, 13);
@@ -2157,7 +2163,7 @@ namespace Nucleus.Coop
             this.IdealProcessor30.BackColor = System.Drawing.Color.White;
             this.IdealProcessor30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor30.Location = new System.Drawing.Point(500, 134);
+            this.IdealProcessor30.Location = new System.Drawing.Point(493, 119);
             this.IdealProcessor30.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor30.MaxLength = 9;
             this.IdealProcessor30.Name = "IdealProcessor30";
@@ -2168,7 +2174,7 @@ namespace Nucleus.Coop
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(376, 137);
+            this.label4.Location = new System.Drawing.Point(369, 122);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(25, 13);
@@ -2181,7 +2187,7 @@ namespace Nucleus.Coop
             this.IdealProcessor29.BackColor = System.Drawing.Color.White;
             this.IdealProcessor29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor29.Location = new System.Drawing.Point(500, 112);
+            this.IdealProcessor29.Location = new System.Drawing.Point(493, 97);
             this.IdealProcessor29.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor29.MaxLength = 9;
             this.IdealProcessor29.Name = "IdealProcessor29";
@@ -2192,7 +2198,7 @@ namespace Nucleus.Coop
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(376, 115);
+            this.label5.Location = new System.Drawing.Point(369, 100);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(25, 13);
@@ -2205,7 +2211,7 @@ namespace Nucleus.Coop
             this.IdealProcessor28.BackColor = System.Drawing.Color.White;
             this.IdealProcessor28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor28.Location = new System.Drawing.Point(500, 90);
+            this.IdealProcessor28.Location = new System.Drawing.Point(493, 75);
             this.IdealProcessor28.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor28.MaxLength = 9;
             this.IdealProcessor28.Name = "IdealProcessor28";
@@ -2216,7 +2222,7 @@ namespace Nucleus.Coop
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label30.Location = new System.Drawing.Point(376, 93);
+            this.label30.Location = new System.Drawing.Point(369, 78);
             this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(25, 13);
@@ -2229,7 +2235,7 @@ namespace Nucleus.Coop
             this.IdealProcessor27.BackColor = System.Drawing.Color.White;
             this.IdealProcessor27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor27.Location = new System.Drawing.Point(500, 68);
+            this.IdealProcessor27.Location = new System.Drawing.Point(493, 53);
             this.IdealProcessor27.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor27.MaxLength = 9;
             this.IdealProcessor27.Name = "IdealProcessor27";
@@ -2240,7 +2246,7 @@ namespace Nucleus.Coop
             // 
             this.label56.AutoSize = true;
             this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label56.Location = new System.Drawing.Point(376, 71);
+            this.label56.Location = new System.Drawing.Point(369, 55);
             this.label56.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(25, 13);
@@ -2253,7 +2259,7 @@ namespace Nucleus.Coop
             this.IdealProcessor26.BackColor = System.Drawing.Color.White;
             this.IdealProcessor26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor26.Location = new System.Drawing.Point(500, 46);
+            this.IdealProcessor26.Location = new System.Drawing.Point(493, 31);
             this.IdealProcessor26.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor26.MaxLength = 9;
             this.IdealProcessor26.Name = "IdealProcessor26";
@@ -2264,7 +2270,7 @@ namespace Nucleus.Coop
             // 
             this.label60.AutoSize = true;
             this.label60.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label60.Location = new System.Drawing.Point(376, 49);
+            this.label60.Location = new System.Drawing.Point(369, 34);
             this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(25, 13);
@@ -2277,7 +2283,7 @@ namespace Nucleus.Coop
             this.IdealProcessor25.BackColor = System.Drawing.Color.White;
             this.IdealProcessor25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor25.Location = new System.Drawing.Point(500, 24);
+            this.IdealProcessor25.Location = new System.Drawing.Point(493, 9);
             this.IdealProcessor25.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor25.MaxLength = 9;
             this.IdealProcessor25.Name = "IdealProcessor25";
@@ -2288,7 +2294,7 @@ namespace Nucleus.Coop
             // 
             this.label62.AutoSize = true;
             this.label62.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label62.Location = new System.Drawing.Point(376, 28);
+            this.label62.Location = new System.Drawing.Point(369, 12);
             this.label62.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(25, 13);
@@ -2301,7 +2307,7 @@ namespace Nucleus.Coop
             this.IdealProcessor24.BackColor = System.Drawing.Color.White;
             this.IdealProcessor24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor24.Location = new System.Drawing.Point(136, 178);
+            this.IdealProcessor24.Location = new System.Drawing.Point(129, 163);
             this.IdealProcessor24.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor24.MaxLength = 2;
             this.IdealProcessor24.Name = "IdealProcessor24";
@@ -2312,7 +2318,7 @@ namespace Nucleus.Coop
             // 
             this.label63.AutoSize = true;
             this.label63.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label63.Location = new System.Drawing.Point(12, 181);
+            this.label63.Location = new System.Drawing.Point(5, 166);
             this.label63.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(25, 13);
@@ -2325,7 +2331,7 @@ namespace Nucleus.Coop
             this.IdealProcessor23.BackColor = System.Drawing.Color.White;
             this.IdealProcessor23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor23.Location = new System.Drawing.Point(136, 156);
+            this.IdealProcessor23.Location = new System.Drawing.Point(129, 141);
             this.IdealProcessor23.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor23.MaxLength = 2;
             this.IdealProcessor23.Name = "IdealProcessor23";
@@ -2336,7 +2342,7 @@ namespace Nucleus.Coop
             // 
             this.label64.AutoSize = true;
             this.label64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label64.Location = new System.Drawing.Point(12, 159);
+            this.label64.Location = new System.Drawing.Point(5, 144);
             this.label64.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(25, 13);
@@ -2349,7 +2355,7 @@ namespace Nucleus.Coop
             this.IdealProcessor22.BackColor = System.Drawing.Color.White;
             this.IdealProcessor22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor22.Location = new System.Drawing.Point(136, 134);
+            this.IdealProcessor22.Location = new System.Drawing.Point(129, 119);
             this.IdealProcessor22.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor22.MaxLength = 2;
             this.IdealProcessor22.Name = "IdealProcessor22";
@@ -2360,7 +2366,7 @@ namespace Nucleus.Coop
             // 
             this.label65.AutoSize = true;
             this.label65.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label65.Location = new System.Drawing.Point(12, 137);
+            this.label65.Location = new System.Drawing.Point(5, 122);
             this.label65.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(25, 13);
@@ -2373,7 +2379,7 @@ namespace Nucleus.Coop
             this.IdealProcessor21.BackColor = System.Drawing.Color.White;
             this.IdealProcessor21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor21.Location = new System.Drawing.Point(136, 112);
+            this.IdealProcessor21.Location = new System.Drawing.Point(129, 97);
             this.IdealProcessor21.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor21.MaxLength = 2;
             this.IdealProcessor21.Name = "IdealProcessor21";
@@ -2384,7 +2390,7 @@ namespace Nucleus.Coop
             // 
             this.label66.AutoSize = true;
             this.label66.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label66.Location = new System.Drawing.Point(12, 115);
+            this.label66.Location = new System.Drawing.Point(5, 100);
             this.label66.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(25, 13);
@@ -2397,7 +2403,7 @@ namespace Nucleus.Coop
             this.IdealProcessor20.BackColor = System.Drawing.Color.White;
             this.IdealProcessor20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor20.Location = new System.Drawing.Point(136, 90);
+            this.IdealProcessor20.Location = new System.Drawing.Point(129, 75);
             this.IdealProcessor20.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor20.MaxLength = 2;
             this.IdealProcessor20.Name = "IdealProcessor20";
@@ -2408,7 +2414,7 @@ namespace Nucleus.Coop
             // 
             this.label67.AutoSize = true;
             this.label67.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label67.Location = new System.Drawing.Point(12, 93);
+            this.label67.Location = new System.Drawing.Point(5, 78);
             this.label67.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(25, 13);
@@ -2421,7 +2427,7 @@ namespace Nucleus.Coop
             this.IdealProcessor19.BackColor = System.Drawing.Color.White;
             this.IdealProcessor19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor19.Location = new System.Drawing.Point(136, 68);
+            this.IdealProcessor19.Location = new System.Drawing.Point(129, 53);
             this.IdealProcessor19.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor19.MaxLength = 2;
             this.IdealProcessor19.Name = "IdealProcessor19";
@@ -2432,7 +2438,7 @@ namespace Nucleus.Coop
             // 
             this.label68.AutoSize = true;
             this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label68.Location = new System.Drawing.Point(12, 71);
+            this.label68.Location = new System.Drawing.Point(5, 56);
             this.label68.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(25, 13);
@@ -2445,7 +2451,7 @@ namespace Nucleus.Coop
             this.IdealProcessor18.BackColor = System.Drawing.Color.White;
             this.IdealProcessor18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor18.Location = new System.Drawing.Point(136, 46);
+            this.IdealProcessor18.Location = new System.Drawing.Point(129, 31);
             this.IdealProcessor18.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor18.MaxLength = 2;
             this.IdealProcessor18.Name = "IdealProcessor18";
@@ -2456,7 +2462,7 @@ namespace Nucleus.Coop
             // 
             this.label69.AutoSize = true;
             this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.Location = new System.Drawing.Point(12, 49);
+            this.label69.Location = new System.Drawing.Point(5, 34);
             this.label69.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(25, 13);
@@ -2469,7 +2475,7 @@ namespace Nucleus.Coop
             this.IdealProcessor17.BackColor = System.Drawing.Color.White;
             this.IdealProcessor17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.IdealProcessor17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdealProcessor17.Location = new System.Drawing.Point(136, 24);
+            this.IdealProcessor17.Location = new System.Drawing.Point(129, 9);
             this.IdealProcessor17.Margin = new System.Windows.Forms.Padding(2);
             this.IdealProcessor17.MaxLength = 2;
             this.IdealProcessor17.Name = "IdealProcessor17";
@@ -2480,7 +2486,7 @@ namespace Nucleus.Coop
             // 
             this.label70.AutoSize = true;
             this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(12, 28);
+            this.label70.Location = new System.Drawing.Point(5, 12);
             this.label70.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(25, 13);
@@ -2491,7 +2497,7 @@ namespace Nucleus.Coop
             // audioTab
             // 
             this.audioTab.BackColor = System.Drawing.Color.RosyBrown;
-            this.audioTab.Controls.Add(this.label39);
+            this.audioTab.Controls.Add(this.audioWarningLabel);
             this.audioTab.Controls.Add(this.audioDefaultDevice);
             this.audioTab.Controls.Add(this.audioCustomSettingsBox);
             this.audioTab.Controls.Add(this.audioCustomSettingsRadio);
@@ -2502,22 +2508,23 @@ namespace Nucleus.Coop
             this.audioTab.Size = new System.Drawing.Size(671, 401);
             this.audioTab.TabIndex = 292;
             // 
-            // label39
+            // audioWarningLabel
             // 
-            this.label39.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.audioWarningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label39.BackColor = System.Drawing.Color.Transparent;
-            this.label39.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.ForeColor = System.Drawing.Color.Red;
-            this.label39.Location = new System.Drawing.Point(299, 99);
-            this.label39.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(288, 12);
-            this.label39.TabIndex = 22;
-            this.label39.Text = "This feature may not work for all games";
-            this.label39.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label39.UseMnemonic = false;
+            this.audioWarningLabel.AutoSize = true;
+            this.audioWarningLabel.BackColor = System.Drawing.Color.Transparent;
+            this.audioWarningLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.audioWarningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.audioWarningLabel.ForeColor = System.Drawing.Color.Yellow;
+            this.audioWarningLabel.Location = new System.Drawing.Point(226, 27);
+            this.audioWarningLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.audioWarningLabel.Name = "audioWarningLabel";
+            this.audioWarningLabel.Size = new System.Drawing.Size(273, 15);
+            this.audioWarningLabel.TabIndex = 22;
+            this.audioWarningLabel.Text = "This Feature May Not Work For All Games";
+            this.audioWarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.audioWarningLabel.UseMnemonic = false;
             // 
             // audioDefaultDevice
             // 
@@ -2526,7 +2533,7 @@ namespace Nucleus.Coop
             this.audioDefaultDevice.BackColor = System.Drawing.Color.Transparent;
             this.audioDefaultDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.audioDefaultDevice.ForeColor = System.Drawing.Color.White;
-            this.audioDefaultDevice.Location = new System.Drawing.Point(299, 74);
+            this.audioDefaultDevice.Location = new System.Drawing.Point(299, 98);
             this.audioDefaultDevice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.audioDefaultDevice.Name = "audioDefaultDevice";
             this.audioDefaultDevice.Size = new System.Drawing.Size(290, 17);
@@ -2552,7 +2559,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsBox.Controls.Add(this.AudioInstance1);
             this.audioCustomSettingsBox.Controls.Add(this.label37);
             this.audioCustomSettingsBox.Controls.Add(this.label36);
-            this.audioCustomSettingsBox.Location = new System.Drawing.Point(84, 128);
+            this.audioCustomSettingsBox.Location = new System.Drawing.Point(84, 152);
             this.audioCustomSettingsBox.Margin = new System.Windows.Forms.Padding(2);
             this.audioCustomSettingsBox.Name = "audioCustomSettingsBox";
             this.audioCustomSettingsBox.Padding = new System.Windows.Forms.Padding(2);
@@ -2752,7 +2759,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio.BackColor = System.Drawing.Color.Transparent;
             this.audioCustomSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.audioCustomSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioCustomSettingsRadio.Location = new System.Drawing.Point(24, 94);
+            this.audioCustomSettingsRadio.Location = new System.Drawing.Point(24, 118);
             this.audioCustomSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
             this.audioCustomSettingsRadio.Name = "audioCustomSettingsRadio";
             this.audioCustomSettingsRadio.Size = new System.Drawing.Size(99, 17);
@@ -2768,7 +2775,7 @@ namespace Nucleus.Coop
             this.audioDefaultSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.audioDefaultSettingsRadio.Checked = true;
             this.audioDefaultSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioDefaultSettingsRadio.Location = new System.Drawing.Point(24, 74);
+            this.audioDefaultSettingsRadio.Location = new System.Drawing.Point(24, 98);
             this.audioDefaultSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
             this.audioDefaultSettingsRadio.Name = "audioDefaultSettingsRadio";
             this.audioDefaultSettingsRadio.Size = new System.Drawing.Size(217, 17);
@@ -2807,19 +2814,18 @@ namespace Nucleus.Coop
             this.playersTab.Name = "playersTab";
             this.playersTab.Size = new System.Drawing.Size(671, 401);
             this.playersTab.TabIndex = 132;
-            this.playersTab.Visible = false;
             // 
             // btnNext
             // 
             this.btnNext.BackColor = System.Drawing.Color.Transparent;
+            this.btnNext.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnNext.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btnNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNext.Location = new System.Drawing.Point(18, 51);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(75, 23);
+            this.btnNext.Size = new System.Drawing.Size(38, 22);
             this.btnNext.TabIndex = 299;
-            this.btnNext.Text = "Next";
             this.btnNext.UseVisualStyleBackColor = false;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
@@ -2928,7 +2934,7 @@ namespace Nucleus.Coop
             this.page1.Controls.Add(this.label7);
             this.page1.Location = new System.Drawing.Point(1, 81);
             this.page1.Name = "page1";
-            this.page1.Size = new System.Drawing.Size(671, 210);
+            this.page1.Size = new System.Drawing.Size(634, 217);
             this.page1.TabIndex = 298;
             // 
             // label48
@@ -3247,7 +3253,7 @@ namespace Nucleus.Coop
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(361, 168);
+            this.label18.Location = new System.Drawing.Point(361, 167);
             this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(54, 13);
@@ -3297,7 +3303,7 @@ namespace Nucleus.Coop
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(361, 124);
+            this.label20.Location = new System.Drawing.Point(361, 123);
             this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(54, 13);
@@ -3663,7 +3669,7 @@ namespace Nucleus.Coop
             this.page2.Controls.Add(this.player28N);
             this.page2.Location = new System.Drawing.Point(1, 80);
             this.page2.Name = "page2";
-            this.page2.Size = new System.Drawing.Size(671, 210);
+            this.page2.Size = new System.Drawing.Size(634, 217);
             this.page2.TabIndex = 297;
             // 
             // label31
@@ -3979,7 +3985,7 @@ namespace Nucleus.Coop
             // 
             this.label55.AutoSize = true;
             this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label55.Location = new System.Drawing.Point(1, 122);
+            this.label55.Location = new System.Drawing.Point(1, 123);
             this.label55.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(54, 13);
@@ -4081,7 +4087,7 @@ namespace Nucleus.Coop
             // 
             this.label53.AutoSize = true;
             this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label53.Location = new System.Drawing.Point(1, 166);
+            this.label53.Location = new System.Drawing.Point(1, 167);
             this.label53.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(54, 13);
@@ -4119,7 +4125,7 @@ namespace Nucleus.Coop
             // 
             this.label52.AutoSize = true;
             this.label52.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label52.Location = new System.Drawing.Point(1, 187);
+            this.label52.Location = new System.Drawing.Point(1, 189);
             this.label52.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label52.Name = "label52";
             this.label52.Size = new System.Drawing.Size(54, 13);
@@ -4157,7 +4163,7 @@ namespace Nucleus.Coop
             // 
             this.label50.AutoSize = true;
             this.label50.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label50.Location = new System.Drawing.Point(361, 187);
+            this.label50.Location = new System.Drawing.Point(361, 189);
             this.label50.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label50.Name = "label50";
             this.label50.Size = new System.Drawing.Size(54, 13);
@@ -4207,7 +4213,7 @@ namespace Nucleus.Coop
             // 
             this.label73.AutoSize = true;
             this.label73.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label73.Location = new System.Drawing.Point(361, 166);
+            this.label73.Location = new System.Drawing.Point(361, 167);
             this.label73.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label73.Name = "label73";
             this.label73.Size = new System.Drawing.Size(54, 13);
@@ -4547,6 +4553,7 @@ namespace Nucleus.Coop
             // sharedTab
             // 
             this.sharedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.sharedTab.Controls.Add(this.warningLabel);
             this.sharedTab.Controls.Add(this.scaleOptionCbx);
             this.sharedTab.Controls.Add(this.useNicksCheck);
             this.sharedTab.Controls.Add(this.label72);
@@ -4565,6 +4572,16 @@ namespace Nucleus.Coop
             this.sharedTab.Size = new System.Drawing.Size(671, 401);
             this.sharedTab.TabIndex = 42;
             // 
+            // warningLabel
+            // 
+            this.warningLabel.AutoSize = true;
+            this.warningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.warningLabel.Location = new System.Drawing.Point(128, 22);
+            this.warningLabel.Name = "warningLabel";
+            this.warningLabel.Size = new System.Drawing.Size(475, 15);
+            this.warningLabel.TabIndex = 157;
+            this.warningLabel.Text = "Game Profiles Are Saved/Updated When All Instances Are Set And Ready!";
+            // 
             // scaleOptionCbx
             // 
             this.scaleOptionCbx.AutoSize = true;
@@ -4572,7 +4589,7 @@ namespace Nucleus.Coop
             this.scaleOptionCbx.Checked = true;
             this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
             this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scaleOptionCbx.Location = new System.Drawing.Point(38, 104);
+            this.scaleOptionCbx.Location = new System.Drawing.Point(38, 134);
             this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
             this.scaleOptionCbx.Name = "scaleOptionCbx";
             this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
@@ -4585,7 +4602,7 @@ namespace Nucleus.Coop
             this.useNicksCheck.AutoSize = true;
             this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
             this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.useNicksCheck.Location = new System.Drawing.Point(38, 80);
+            this.useNicksCheck.Location = new System.Drawing.Point(38, 110);
             this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
             this.useNicksCheck.Name = "useNicksCheck";
             this.useNicksCheck.Size = new System.Drawing.Size(144, 17);
@@ -4597,7 +4614,7 @@ namespace Nucleus.Coop
             // 
             this.label72.AutoSize = true;
             this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label72.Location = new System.Drawing.Point(316, 83);
+            this.label72.Location = new System.Drawing.Point(316, 113);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(60, 13);
             this.label72.TabIndex = 145;
@@ -4608,7 +4625,7 @@ namespace Nucleus.Coop
             this.notes_text.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.notes_text.BackColor = System.Drawing.SystemColors.InfoText;
             this.notes_text.ForeColor = System.Drawing.Color.White;
-            this.notes_text.Location = new System.Drawing.Point(318, 100);
+            this.notes_text.Location = new System.Drawing.Point(318, 130);
             this.notes_text.MaximumSize = new System.Drawing.Size(341, 81);
             this.notes_text.Multiline = true;
             this.notes_text.Name = "notes_text";
@@ -4620,7 +4637,7 @@ namespace Nucleus.Coop
             // 
             this.cmb_Network.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmb_Network.Location = new System.Drawing.Point(37, 175);
+            this.cmb_Network.Location = new System.Drawing.Point(37, 205);
             this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cmb_Network.Name = "cmb_Network";
             this.cmb_Network.Size = new System.Drawing.Size(198, 21);
@@ -4630,7 +4647,7 @@ namespace Nucleus.Coop
             // 
             this.autoPlay.AutoSize = true;
             this.autoPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoPlay.Location = new System.Drawing.Point(38, 128);
+            this.autoPlay.Location = new System.Drawing.Point(38, 158);
             this.autoPlay.Margin = new System.Windows.Forms.Padding(2);
             this.autoPlay.Name = "autoPlay";
             this.autoPlay.Size = new System.Drawing.Size(167, 17);
@@ -4642,7 +4659,7 @@ namespace Nucleus.Coop
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(98, 278);
+            this.label6.Location = new System.Drawing.Point(98, 308);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(69, 13);
@@ -4654,7 +4671,7 @@ namespace Nucleus.Coop
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(76, 228);
+            this.label2.Location = new System.Drawing.Point(76, 258);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
@@ -4666,7 +4683,7 @@ namespace Nucleus.Coop
             // 
             this.WIndowsSetupTiming_Label.AutoSize = true;
             this.WIndowsSetupTiming_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WIndowsSetupTiming_Label.Location = new System.Drawing.Point(35, 254);
+            this.WIndowsSetupTiming_Label.Location = new System.Drawing.Point(35, 284);
             this.WIndowsSetupTiming_Label.Margin = new System.Windows.Forms.Padding(0);
             this.WIndowsSetupTiming_Label.Name = "WIndowsSetupTiming_Label";
             this.WIndowsSetupTiming_Label.Size = new System.Drawing.Size(119, 13);
@@ -4676,7 +4693,7 @@ namespace Nucleus.Coop
             // 
             // WindowsSetupTiming_TextBox
             // 
-            this.WindowsSetupTiming_TextBox.Location = new System.Drawing.Point(38, 275);
+            this.WindowsSetupTiming_TextBox.Location = new System.Drawing.Point(38, 305);
             this.WindowsSetupTiming_TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.WindowsSetupTiming_TextBox.MaxLength = 5;
             this.WindowsSetupTiming_TextBox.Name = "WindowsSetupTiming_TextBox";
@@ -4687,7 +4704,7 @@ namespace Nucleus.Coop
             // 
             // pauseBetweenInstanceLaunch_TxtBox
             // 
-            this.pauseBetweenInstanceLaunch_TxtBox.Location = new System.Drawing.Point(38, 225);
+            this.pauseBetweenInstanceLaunch_TxtBox.Location = new System.Drawing.Point(38, 255);
             this.pauseBetweenInstanceLaunch_TxtBox.Margin = new System.Windows.Forms.Padding(0);
             this.pauseBetweenInstanceLaunch_TxtBox.MaxLength = 3;
             this.pauseBetweenInstanceLaunch_TxtBox.Name = "pauseBetweenInstanceLaunch_TxtBox";
@@ -4700,7 +4717,7 @@ namespace Nucleus.Coop
             // 
             this.pauseBetweenInstanceLauch_Label.AutoSize = true;
             this.pauseBetweenInstanceLauch_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pauseBetweenInstanceLauch_Label.Location = new System.Drawing.Point(35, 204);
+            this.pauseBetweenInstanceLauch_Label.Location = new System.Drawing.Point(35, 234);
             this.pauseBetweenInstanceLauch_Label.Margin = new System.Windows.Forms.Padding(0);
             this.pauseBetweenInstanceLauch_Label.Name = "pauseBetweenInstanceLauch_Label";
             this.pauseBetweenInstanceLauch_Label.Size = new System.Drawing.Size(150, 13);
@@ -4712,7 +4729,7 @@ namespace Nucleus.Coop
             // 
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(36, 153);
+            this.label32.Location = new System.Drawing.Point(36, 183);
             this.label32.Margin = new System.Windows.Forms.Padding(0);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(47, 13);
@@ -4739,12 +4756,12 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
+            this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.sharedTab);
-            this.Controls.Add(this.profileInfo);
             this.Controls.Add(this.processorTab);
-            this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.profileInfo);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -4792,7 +4809,7 @@ namespace Nucleus.Coop
         private Button audioTabBtn;
         private Button processorTabBtn;
         private BufferedClientAreaPanel audioTab;
-        private Label label39;
+        private Label audioWarningLabel;
         private Label audioDefaultDevice;
         private Label label45;
         private Label label44;
@@ -5105,5 +5122,6 @@ namespace Nucleus.Coop
         private Label label70;
         private Panel processorPage1;
         private Button btnProcessorNext;
+        private Label warningLabel;
     }
 }

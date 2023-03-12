@@ -30,10 +30,10 @@ namespace Nucleus.Coop
     /// </summary>
     public partial class MainForm : BaseForm, IDynamicSized
     {
-        public string version = "v" + Globals.Version;
-        private IniFile iconsIni;
-        public IniFile themeIni = Globals.ThemeIni;
-        public string theme = Globals.Theme;
+        public readonly string version = "v" + Globals.Version;
+        public readonly IniFile iconsIni;
+        public readonly IniFile themeIni = Globals.ThemeIni;
+        public readonly string theme = Globals.Theme;
 
         protected string faq_link = "https://www.splitscreen.me/docs/faq";
         protected string api = "https://hub.splitscreen.me/api/v1/";
@@ -103,7 +103,7 @@ namespace Nucleus.Coop
         private bool DisableOfflineIcon;
         private bool showFavoriteOnly;
         private bool canResize = false;
-        private bool disableQuickHandlerUpdate = false;
+        private bool disableFastHandlerUpdate = false;
 
         private bool _disableGameProfiles;
         public bool disableGameProfiles
@@ -119,7 +119,6 @@ namespace Nucleus.Coop
             }
         }
 
-        public float cursScale;
         private System.Windows.Forms.Timer DisposeTimer;//dispose splash screen timer
         private System.Windows.Forms.Timer rainbowTimer;
         private System.Windows.Forms.Timer hotkeysLockedTimer;//Avoid hotkeys spamming
@@ -214,7 +213,7 @@ namespace Nucleus.Coop
             rgb_HandlerNoteMagnifierTitleBackColor = themeIni.IniReadValue("Colors", "HandlerNoteMagnifierTitleBackColor ").Split(',');
             string[] windowSize = ini.IniReadValue("Misc", "WindowSize").Split('X');
             //string[] windowLocation = ini.IniReadValue("Misc", "WindowLocation").Split('X'); 
-            disableQuickHandlerUpdate = bool.Parse(ini.IniReadValue("Dev", "DisableQuickHandlerUpdate"));
+            disableFastHandlerUpdate = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
             float fontSize = float.Parse(themeIni.IniReadValue("Font", "MainFontSize"));
             bool coverBorderOff = bool.Parse(themeIni.IniReadValue("Misc", "DisableCoverBorder"));
             bool noteBorderOff = bool.Parse(themeIni.IniReadValue("Misc", "DisableNoteBorder"));
@@ -254,13 +253,16 @@ namespace Nucleus.Coop
             ForeColor = Color.FromArgb(int.Parse(rgb_font[0]), int.Parse(rgb_font[1]), int.Parse(rgb_font[2]));
             scriptAuthorTxt.BackColor = HandlerNoteBackColor;
             scriptAuthorTxt.ForeColor = HandlerNoteFontColor;
+
+
+            icons_Container.BackColor = Color.FromArgb(rightFrame.BackColor.A - rightFrame.BackColor.A, rightFrame.BackColor.R, rightFrame.BackColor.G, rightFrame.BackColor.B);
+            inputsIconsDesc.BackColor = icons_Container.BackColor;
+            HandlerNoteTitle.ForeColor = HandlerNoteTitleFont;
+
             scriptAuthorTxtSizer.BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "HandlerNoteContainerBackground").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "HandlerNoteContainerBackground").Split(',')[1]),
                                                int.Parse(themeIni.IniReadValue("Colors", "HandlerNoteContainerBackground").Split(',')[2]),
                                                int.Parse(themeIni.IniReadValue("Colors", "HandlerNoteContainerBackground").Split(',')[3]));
-
-            HandlerNoteTitle.ForeColor = HandlerNoteTitleFont;
-
 
             buttonsBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
@@ -280,12 +282,7 @@ namespace Nucleus.Coop
             rightFrame.BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "RightFrameBackground").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "RightFrameBackground").Split(',')[1]),
                                                int.Parse(themeIni.IniReadValue("Colors", "RightFrameBackground").Split(',')[2]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "RightFrameBackground").Split(',')[3]));
-
-
-            icons_Container.BackColor = Color.FromArgb(rightFrame.BackColor.A - rightFrame.BackColor.A, rightFrame.BackColor.R, rightFrame.BackColor.G, rightFrame.BackColor.B);
-
-            inputsIconsDesc.BackColor = icons_Container.BackColor;
+                                               int.Parse(themeIni.IniReadValue("Colors", "RightFrameBackground").Split(',')[3]));         
 
             game_listSizer.BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "GameListBackground").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "GameListBackground").Split(',')[1]),
@@ -296,7 +293,17 @@ namespace Nucleus.Coop
                                                 int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[1]),
                                                 int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[2]),
                                                 int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBackground").Split(',')[3]));
-            
+
+            StripMenuUpdateItemBack = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[0]),
+                                              int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[1]),
+                                              int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[2]),
+                                              int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[3]));
+
+            StripMenuUpdateItemFont = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[0]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[1]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[2]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[3]));
+
             clientAreaPanel.BackgroundImage = new Bitmap(theme + "background.jpg");
             btn_textSwitcher.BackgroundImage = new Bitmap(theme + "text_switcher.png");
             btnAutoSearch.BackColor = buttonsBackColor;
@@ -330,17 +337,7 @@ namespace Nucleus.Coop
 
             favorite_Unselected = new Bitmap(theme + "favorite_unselected.png");
             favorite_Selected = new Bitmap(theme + "favorite_selected.png");
-
-            StripMenuUpdateItemBack = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[0]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[1]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[2]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemBack").Split(',')[3]));
-
-            StripMenuUpdateItemFont = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[0]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[1]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[2]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[3]));
-
+        
             btn_Extract.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
             btnAutoSearch.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
             button_UpdateAvailable.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
@@ -375,7 +372,7 @@ namespace Nucleus.Coop
                 btn_dlFromHub.FlatAppearance.BorderSize = 1;
                 btn_dlFromHub.FlatAppearance.BorderColor = ButtonsBorderColor;
             }
-
+           
             linksPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, linksPanel.Width, linksPanel.Height, 15, 15));
             third_party_tools_container.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, third_party_tools_container.Width, third_party_tools_container.Height, 10, 10));
             scriptAuthorTxtSizer.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, scriptAuthorTxtSizer.Width, scriptAuthorTxtSizer.Height, 20, 20));
@@ -395,11 +392,6 @@ namespace Nucleus.Coop
             if (noteBorderOff)
             {
                 scriptAuthorTxtSizer.BorderStyle = BorderStyle.None;
-            }
-
-            foreach (Control titleBarButtons in Controls)
-            {
-                        
             }
 
             controlscollect();
@@ -558,7 +550,7 @@ namespace Nucleus.Coop
                 showFavoriteOnly = true;
             }
 
-            ini.IniWriteValue("Dev", "ShowFavoriteOnly", showFavoriteOnly.ToString());
+            ini.IniWriteValue("Dev", "ShowFavoriteOnly", showFavoriteOnly.ToString());         
             RefreshGames();
         }
 
@@ -592,7 +584,6 @@ namespace Nucleus.Coop
             favoriteOnly.Size = new Size(favoriteOnlyLabel.Height, favoriteOnlyLabel.Height);
             float favoriteY = favoriteOnlyLabel.Right + (5 * scale);
             favoriteOnly.Location = new Point((int)(favoriteY), mainButtonFrame.Height / 2 - (favoriteOnly.Height / 2) /** (int)scale*/);
-            cursScale = scale;
 
             ResumeLayout();
         }
@@ -902,12 +893,6 @@ namespace Nucleus.Coop
 
                 games = gameManager.User.Games;
 
-                for (int i = 0; i < games.Count; i++)
-                {
-                    UserGameInfo game = games[i];
-                    NewUserGame(game);
-                }
-
                 if (games.Count == 0)
                 {
                     noGamesPresent = true;
@@ -917,8 +902,16 @@ namespace Nucleus.Coop
                         Text = "No games",
                         Font = this.Font,
                     };
-
+                
                     list_Games.Controls.Add(con);
+                }
+                else
+                {
+                    for (int i = 0; i < games.Count; i++)
+                    {
+                        UserGameInfo game = games[i];
+                        NewUserGame(game);
+                    }
                 }
             }
 
@@ -944,7 +937,7 @@ namespace Nucleus.Coop
             bool updateAvailable = false;
             bool favorite = game.Favorite;
 
-            if (!disableQuickHandlerUpdate && connected)
+            if (!disableFastHandlerUpdate && connected)
             {
                 updateAvailable = game.Game.UpdateAvailable;
             }
@@ -1241,6 +1234,7 @@ namespace Nucleus.Coop
                     ProfilesList.profilesList.Update_ProfilesList();
                     gameProfilesList_btn_Click(null, null);//Show profiles list 
                     positionsControl.gameProfilesList_btn.Visible = GameProfile.profilesPathList.Count > 0;
+                    ProfilesList.profilesList.Locked = false;
                 }
 
                 btn_gameOptions.Enabled = true;
@@ -1277,6 +1271,7 @@ namespace Nucleus.Coop
                     string path = Path.Combine(gameManager.GetAppContentPath(), currentGameInfo.Game.GUID);
                     CleanGameContent.CleanContentFolder(path, currentGame);
                 }
+
                 // content manager is shared within the same game
                 content = new ContentManager(currentGame);
 
@@ -1722,146 +1717,12 @@ namespace Nucleus.Coop
 
         private void DetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GetDetails();
+            GetGameDetails.GetDetails(gameManager,currentGameInfo);
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeleteGame();
-        }
-
-        private void GetDetails()
-        {
-            string userProfile = gameManager.GetUserProfilePath();
-
-            if (File.Exists(userProfile))
-            {
-                string jsonString = File.ReadAllText(userProfile);
-                JObject jObject = JsonConvert.DeserializeObject(jsonString) as JObject;
-
-                JArray games = jObject["Games"] as JArray;
-                for (int i = 0; i < games.Count; i++)
-                {
-                    string gameGuid = jObject["Games"][i]["GameGuid"].ToString();
-                    string profiles = jObject["Games"][i]["Profiles"].ToString();
-                    string exePath = jObject["Games"][i]["ExePath"].ToString();
-
-                    if (gameGuid == currentGameInfo.GameGuid && exePath == currentGameInfo.ExePath)
-                    {
-                        string arch = "";
-                        if (MachineSpecs.GetMachineArch(exePath) == true)
-                        {
-                            arch = "x64";
-                        }
-                        else if (MachineSpecs.GetMachineArch(exePath) == false)
-                        {
-                            arch = "x86";
-                        }
-                        else
-                        {
-                            arch = "Unknown";
-                        }
-
-                        MessageBox.Show(string.Format("Game Name: {0}\nArchitecture: {1}\nSteam ID: {2}\n\nHandler Filename: {3}\nNucleus Game Content Path: {4}\nOrig Exe Path: {5}\n\nMax Players: {6}\nSupports XInput: {7}\nSupports DInput: {8}\nSupports Keyboard: {9}\nSupports multiple keyboards and mice: {10}", currentGameInfo.Game.GameName, arch, currentGameInfo.Game.SteamID, currentGameInfo.Game.JsFileName, Path.Combine(gameManager.GetAppContentPath(), gameGuid), exePath, currentGameInfo.Game.MaxPlayers, currentGameInfo.Game.Hook.XInputEnabled || currentGameInfo.Game.ProtoInput.XinputHook, currentGameInfo.Game.Hook.DInputEnabled, currentGameInfo.Game.SupportsKeyboard, currentGameInfo.Game.SupportsMultipleKeyboardsAndMice), "Game Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-            }
-        }
-
-        private void DeleteGame(bool dontConfirm = false)
-        {
-            string userProfile = gameManager.GetUserProfilePath();
-
-            if (File.Exists(userProfile))
-            {
-                string jsonString = File.ReadAllText(userProfile);
-                JObject jObject = JsonConvert.DeserializeObject(jsonString) as JObject;
-
-                JArray games = jObject["Games"] as JArray;
-                for (int i = 0; i < games.Count; i++)
-                {
-                    string gameGuid = jObject["Games"][i]["GameGuid"].ToString();
-                    string profiles = jObject["Games"][i]["Profiles"].ToString();
-                    string exePath = jObject["Games"][i]["ExePath"].ToString();
-
-                    if (gameGuid == currentGameInfo.GameGuid && exePath == currentGameInfo.ExePath)
-                    {
-                        DialogResult dialogResult = dontConfirm ? DialogResult.Yes :
-                            MessageBox.Show($"Are you sure you want to delete {currentGameInfo.Game.GameName}?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            gameManager.User.Games.RemoveAt(i);
-                            jObject["Games"][i].Remove();
-                            string output = JsonConvert.SerializeObject(jObject, Formatting.Indented);
-                            File.WriteAllText(userProfile, output);
-                            RefreshGames();
-                            if (!dontConfirm)
-                            {
-                                if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
-                                {
-                                    try
-                                    {
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                                    }
-                                    catch (Exception)
-                                    {
-                                        cover.BackgroundImage.Dispose();
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                                    }
-                                }
-
-                                if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")))
-                                {
-                                    try
-                                    {
-                                        Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"), true);
-                                    }
-                                    catch (Exception)
-                                    {
-                                        screenshotImg.Dispose();
-                                        Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"), true);
-                                    }
-                                }
-
-                                if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt")))
-                                {
-                                    try
-                                    {
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
-                                    }
-                                    catch (Exception)
-                                    {
-                                        scriptAuthorTxt.Text = null;
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
-                                    }
-                                }
-
-                                if (iconsIni.IniReadValue("GameIcons", gameGuid) != "")
-                                {
-                                    string[] iniContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
-                                    List<string> newContent = new List<string>();
-
-                                    for (int index = 0; index < iniContent.Length; index++)
-                                    {
-                                        if (iniContent[index].Contains(gameGuid + "=" + iconsIni.IniReadValue("GameIcons", gameGuid)))
-                                        {
-                                            string fullPath = gameGuid + "=" + iconsIni.IniReadValue("GameIcons", gameGuid).ToString();
-                                            iniContent[index] = string.Empty;
-                                        }
-
-                                        if (iniContent[index] != string.Empty)
-                                        {
-                                            newContent.Add(iniContent[index]);
-                                        }
-                                    }
-
-                                    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            RemoveGame.Remove(this,gameManager, currentGameInfo,false);
         }
 
         private void GameContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -2572,8 +2433,7 @@ namespace Nucleus.Coop
                 DialogResult dialogResult = MessageBox.Show("An update to this handler is available, download it?", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
-
-                    DeleteGame(true);
+                    RemoveGame.Remove(this, gameManager, currentGameInfo, true);
                     StepPanel.Visible = false;
                     label_StepTitle.Text = "Select a game";
                     btn_Play.Enabled = false;
@@ -2648,20 +2508,7 @@ namespace Nucleus.Coop
 
         private void btn_Extract_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog
-            {
-                Title = "Select a game handler to extract",
-                DefaultExt = "nc",
-                InitialDirectory = Gaming.GameManager.Instance.GetJsScriptsPath(),
-                Filter = "nc files (*.nc)|*.nc"
-            };
-
-            DialogResult result = ofd.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                DownloadPrompt downloadPrompt = new DownloadPrompt(null, this, ofd.FileName);
-                downloadPrompt.ShowDialog();
-            }
+            ExtractHandler.Extract(this);
         }
 
         private void btn_SplitCalculator_Click(object sender, EventArgs e)
@@ -2919,7 +2766,7 @@ namespace Nucleus.Coop
                 profileSettings.BringToFront();
                 profileSettings.Visible = true;
                 ProfilesList.profilesList.Locked = true;
-                ProfileSettings.UpdateProfileSettingsUiValues(false);
+                ProfileSettings.UpdateProfileSettingsUiValues(/*false*/);
             }
         }
 
