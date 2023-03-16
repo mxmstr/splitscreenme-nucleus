@@ -1,5 +1,6 @@
 ﻿using Games;
 using Jint;
+using Jint.Parser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Navigation;
@@ -25,6 +27,10 @@ namespace Nucleus.Gaming.Controls
         private float _scale;
         public static ProfilesList profilesList;
         public bool Locked = false;
+
+        private Cursor hand_Cursor;
+        private Cursor default_Cursor;
+
         private ToolTip notesTooltip;
         private ToolTip loadTooltip;
         private ToolTip deleteTooltip;
@@ -57,6 +63,9 @@ namespace Nucleus.Gaming.Controls
             borderPen = new Pen(Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[1]),
                                                int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])));
+
+            default_Cursor = new Cursor(Globals.Theme + "cursor.ico");
+            hand_Cursor = new Cursor(Globals.Theme + "cursor_hand.ico");
             SetToolTips();
         }
 
@@ -143,7 +152,6 @@ namespace Nucleus.Gaming.Controls
             Controls.Clear();
             SetToolTips();
             
-
             List<SizeF> sizes = new List<SizeF>();
 
             Size = new Size((int)(300* _scale), (int)(3 * _scale));
@@ -169,8 +177,6 @@ namespace Nucleus.Gaming.Controls
                     {
                         text = $"Profile n°{i + 1}";
                     }
-
-                    //text = $"Profile n°{i + 1}";
                 }
                 else
                 {
@@ -188,8 +194,10 @@ namespace Nucleus.Gaming.Controls
                     Text = "X"
                 };
 
+                deleteBtn.Cursor = hand_Cursor;
                 deleteTooltip.SetToolTip(deleteBtn, "Delete this game profile.");
                 deleteBtn.Click += new EventHandler(DeleteBtn_Click);//Delete profile
+
                 offset += deleteBtn.Width;
 
                 Label previewBtn = new Label()
@@ -203,12 +211,14 @@ namespace Nucleus.Gaming.Controls
                     ForeColor = Color.Green,
                     FlatStyle = FlatStyle.Flat,
                     TextAlign = ContentAlignment.MiddleCenter,
-
                 };
 
+                previewBtn.Cursor = hand_Cursor;             
                 notesTooltip.SetToolTip(previewBtn, "Show profile content or user notes.");
                 previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
+
                 offset += previewBtn.Width;
+
                 Label profileBtn = new Label()
                 {
                     Name = (i + 1).ToString(),
@@ -223,6 +233,7 @@ namespace Nucleus.Gaming.Controls
                     Height = (int)(20 * _scale)
                 };
 
+                profileBtn.Cursor = hand_Cursor;
                 loadTooltip.SetToolTip(profileBtn, "Load this game profile.");
                 profileBtn.Click += new EventHandler(profileBtn_CheckedChanged);
 
@@ -243,7 +254,6 @@ namespace Nucleus.Gaming.Controls
                 {
                     sizes.Add(graphics.MeasureString(profileBtn.Text, profileBtn.Font , Size.Width,StringFormat.GenericDefault));
                 }
-
 
                 Height += profileBtn.Height + 1;
                 Controls.Add(profileBtn);
@@ -307,7 +317,7 @@ namespace Nucleus.Gaming.Controls
             }
 
             scriptAuthorTxt[0].Text = text;
-            HandlerNoteTitle[0].Text = preview.Text;
+            HandlerNoteTitle[0].Text = $"Profile n°{preview.Name}";
             btn_textSwitcher[0].Visible = true;
         }
       

@@ -487,7 +487,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         if (CurrentGameInfo.ToggleUnfocusOnInputsLock)
                         {
                             GlobalWindowMethods.ChangeForegroundWindow();
-                            Debug.WriteLine("Toggle Unfocus");
+                            //Debug.WriteLine("Toggle Unfocus");
                         }
                     }
                     else

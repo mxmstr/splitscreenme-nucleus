@@ -127,7 +127,7 @@ namespace Nucleus.Coop
                                     }
                                 }
                             }
-                            Console.WriteLine("Registry has been restored");
+                            //Console.WriteLine("Registry has been restored");
                         }
                     }
                     else if (!File.Exists(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg")))
@@ -153,7 +153,8 @@ namespace Nucleus.Coop
 
                             File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
                             Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));
-                            Console.WriteLine("Registry backup is up-to-date");
+                            
+                            //Console.WriteLine("Registry backup is up-to-date");
                         }
                         else
                         {
@@ -163,7 +164,7 @@ namespace Nucleus.Coop
                             File.Move(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"), Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
                             File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
                             Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));
-                            Console.WriteLine("Registry has been updated");
+                            //Console.WriteLine("Registry has been updated");
                         }
                     }
                 }

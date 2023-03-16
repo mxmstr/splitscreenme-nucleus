@@ -36,7 +36,6 @@ namespace Nucleus.Coop.Tools
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
             {
-                //mainForm.coverImg = ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                 mainForm.clientAreaPanel.SuspendLayout();
                 mainForm.cover.BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));// mainForm.coverImg;
                 mainForm.clientAreaPanel.ResumeLayout();
@@ -45,7 +44,7 @@ namespace Nucleus.Coop.Tools
             }
             else
             {
-                mainForm.cover.BackgroundImage = ImageCache.GetImage(Globals.Theme + "no_cover.png");// new Bitmap(Globals.Theme + "no_cover.png");
+                mainForm.cover.BackgroundImage = ImageCache.GetImage(Globals.Theme + "no_cover.png");
                 mainForm.cover.Visible = true;
                 mainForm.coverFrame.Visible = true;
             }
@@ -56,15 +55,13 @@ namespace Nucleus.Coop.Tools
                 string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")));
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
-
-                //mainForm.screenshotImg = ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));//name(1) => directory name ; name(2) = partial image name 
+             
                 mainForm.clientAreaPanel.SuspendLayout();
-                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg")));
+                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"))); //name(1) => directory name ; name(2) = partial image path 
                 mainForm.clientAreaPanel.ResumeLayout();
             }
             else
             {
-
                 mainForm.clientAreaPanel.SuspendLayout();
                 mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.defBackground);
                 mainForm.clientAreaPanel.ResumeLayout();

@@ -87,8 +87,8 @@ namespace Nucleus.Coop
             this.icons_Container = new System.Windows.Forms.FlowLayoutPanel();
             this.btn_gameOptions = new System.Windows.Forms.Button();
             this.scriptAuthorTxtSizer = new BufferedClientAreaPanel();
+            this.btn_textSwitcher = new System.Windows.Forms.PictureBox();
             this.scriptAuthorTxt = new System.Windows.Forms.RichTextBox();
-            this.btn_textSwitcher = new System.Windows.Forms.Button();
             this.btn_magnifier = new System.Windows.Forms.PictureBox();
             this.HandlerNoteTitle = new System.Windows.Forms.Label();
             this.cover = new BufferedClientAreaPanel();
@@ -117,6 +117,7 @@ namespace Nucleus.Coop
             this.game_listSizer.SuspendLayout();
             this.rightFrame.SuspendLayout();
             this.scriptAuthorTxtSizer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btn_textSwitcher)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_magnifier)).BeginInit();
             this.cover.SuspendLayout();
             this.coverFrame.SuspendLayout();
@@ -749,8 +750,8 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptAuthorTxtSizer.BackColor = System.Drawing.Color.Transparent;
             this.scriptAuthorTxtSizer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.scriptAuthorTxtSizer.Controls.Add(this.scriptAuthorTxt);
             this.scriptAuthorTxtSizer.Controls.Add(this.btn_textSwitcher);
+            this.scriptAuthorTxtSizer.Controls.Add(this.scriptAuthorTxt);
             this.scriptAuthorTxtSizer.Controls.Add(this.btn_magnifier);
             this.scriptAuthorTxtSizer.Controls.Add(this.HandlerNoteTitle);
             this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(11, 283);
@@ -759,6 +760,20 @@ namespace Nucleus.Coop
             this.scriptAuthorTxtSizer.Name = "scriptAuthorTxtSizer";
             this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(172, 237);
             this.scriptAuthorTxtSizer.TabIndex = 31;
+            // 
+            // btn_textSwitcher
+            // 
+            this.btn_textSwitcher.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_textSwitcher.BackColor = System.Drawing.Color.Transparent;
+            this.btn_textSwitcher.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_textSwitcher.Location = new System.Drawing.Point(149, 1);
+            this.btn_textSwitcher.Name = "btn_textSwitcher";
+            this.btn_textSwitcher.Size = new System.Drawing.Size(20, 20);
+            this.btn_textSwitcher.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btn_textSwitcher.TabIndex = 44;
+            this.btn_textSwitcher.TabStop = false;
+            this.btn_textSwitcher.Visible = false;
+            this.btn_textSwitcher.Click += new System.EventHandler(this.btn_textSwitcher_Click);
             // 
             // scriptAuthorTxt
             // 
@@ -781,27 +796,10 @@ namespace Nucleus.Coop
             this.scriptAuthorTxt.Text = "";
             this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.scriptAuthorTxt_LinkClicked);
             // 
-            // btn_textSwitcher
-            // 
-            this.btn_textSwitcher.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_textSwitcher.BackColor = System.Drawing.Color.Transparent;
-            this.btn_textSwitcher.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_textSwitcher.FlatAppearance.BorderSize = 0;
-            this.btn_textSwitcher.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_textSwitcher.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_textSwitcher.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_textSwitcher.Location = new System.Drawing.Point(152, 3);
-            this.btn_textSwitcher.Name = "btn_textSwitcher";
-            this.btn_textSwitcher.Size = new System.Drawing.Size(17, 18);
-            this.btn_textSwitcher.TabIndex = 44;
-            this.btn_textSwitcher.UseVisualStyleBackColor = false;
-            this.btn_textSwitcher.Visible = false;
-            this.btn_textSwitcher.Click += new System.EventHandler(this.btn_textSwitcher_Click);
-            // 
             // btn_magnifier
             // 
             this.btn_magnifier.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_magnifier.Location = new System.Drawing.Point(2, 2);
+            this.btn_magnifier.Location = new System.Drawing.Point(2, 1);
             this.btn_magnifier.Name = "btn_magnifier";
             this.btn_magnifier.Size = new System.Drawing.Size(20, 20);
             this.btn_magnifier.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1174,6 +1172,7 @@ namespace Nucleus.Coop
             this.rightFrame.ResumeLayout(false);
             this.rightFrame.PerformLayout();
             this.scriptAuthorTxtSizer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.btn_textSwitcher)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_magnifier)).EndInit();
             this.cover.ResumeLayout(false);
             this.coverFrame.ResumeLayout(false);
@@ -1249,7 +1248,7 @@ namespace Nucleus.Coop
         private Button closeBtn;
         public Button btn_settings;
         private ToolStripMenuItem keepInstancesFolderToolStripMenuItem;
-        public Button btn_textSwitcher;
+        public PictureBox btn_textSwitcher;
         public BufferedClientAreaPanel coverFrame;
         public BufferedClientAreaPanel cover;
         public BufferedClientAreaPanel StepPanel;

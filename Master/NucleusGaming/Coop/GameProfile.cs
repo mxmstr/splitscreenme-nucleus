@@ -555,7 +555,7 @@ namespace Nucleus.Gaming.Coop
 
             Globals.MainOSD.Settings(2000, Color.YellowGreen, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
 
-            LogManager.Log($"Game profile n°{_profileToLoad} Loaded");
+            //LogManager.Log($"Game profile n°{_profileToLoad} Loaded");
             positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
 
             Ready = true;
@@ -565,6 +565,7 @@ namespace Nucleus.Gaming.Coop
         public static void UpdateGameProfile(GameProfile profile)
         {
             string path;
+
             bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
 
             if (profilesCount + 1 >= 21 || profileDisabled)
@@ -657,39 +658,47 @@ namespace Nucleus.Gaming.Coop
             }
 
             JObject JAudioSettings = new JObject(new JProperty("CustomSettings", audioCustomSettings), new JProperty("DefaultSettings", audioDefaultSettings));
-     
+
             List<JObject> playersInfos = new List<JObject>();//Players object
 
             for (int i = 0; i < PlayerIDs.Count(); i++)//build per players object
-            {                 
+            {
+                //JObject JOwner = new JObject();
+                //JObject JMonitorBounds = new JObject();
+                //JObject JEditBounds = new JObject();
+
+                //if (OwnerUIBounds.Count > 0)
+                //{
+
                 JObject JOwner = new JObject(
-                                  new JProperty("Type", OwnerType[i]),
+                                      new JProperty("Type", OwnerType[i]),
 
-                                   new JProperty("UiBounds", new JObject(
-                                                           new JProperty("X", OwnerUIBounds[i].X),
-                                                           new JProperty("Y", OwnerUIBounds[i].Y),
-                                                           new JProperty("Width", OwnerUIBounds[i].Width),
-                                                           new JProperty("Height", OwnerUIBounds[i].Height))),
+                                       new JProperty("UiBounds", new JObject(
+                                                               new JProperty("X", OwnerUIBounds[i].X),
+                                                               new JProperty("Y", OwnerUIBounds[i].Y),
+                                                               new JProperty("Width", OwnerUIBounds[i].Width),
+                                                               new JProperty("Height", OwnerUIBounds[i].Height))),
 
-                                  new JProperty("DisplayIndex", DisplaysIndexes[i]),
-                                  new JProperty("Display", new JObject(
-                                                           new JProperty("X", OwnerDisplays[i].X),
-                                                           new JProperty("Y", OwnerDisplays[i].Y),
-                                                           new JProperty("Width", OwnerDisplays[i].Width),
-                                                           new JProperty("Height", OwnerDisplays[i].Height))));
+                                      new JProperty("DisplayIndex", DisplaysIndexes[i]),
+                                      new JProperty("Display", new JObject(
+                                                               new JProperty("X", OwnerDisplays[i].X),
+                                                               new JProperty("Y", OwnerDisplays[i].Y),
+                                                               new JProperty("Width", OwnerDisplays[i].Width),
+                                                               new JProperty("Height", OwnerDisplays[i].Height))));
 
 
                 JObject JMonitorBounds = new JObject(
-                                         new JProperty("X", MonitorBounds[i].X),
-                                         new JProperty("Y", MonitorBounds[i].Y),
-                                         new JProperty("Width", MonitorBounds[i].Width),
-                                         new JProperty("Height", MonitorBounds[i].Height));
+                                             new JProperty("X", MonitorBounds[i].X),
+                                             new JProperty("Y", MonitorBounds[i].Y),
+                                             new JProperty("Width", MonitorBounds[i].Width),
+                                             new JProperty("Height", MonitorBounds[i].Height));
 
                 JObject JEditBounds = new JObject(
-                                      new JProperty("X", EditBounds[i].X),
-                                      new JProperty("Y", EditBounds[i].Y),
-                                      new JProperty("Width", EditBounds[i].Width),
-                                      new JProperty("Height", EditBounds[i].Height));
+                                          new JProperty("X", EditBounds[i].X),
+                                          new JProperty("Y", EditBounds[i].Y),
+                                          new JProperty("Width", EditBounds[i].Width),
+                                          new JProperty("Height", EditBounds[i].Height));
+               //}
 
                 JObject JProcessor = new JObject();
 
@@ -713,7 +722,7 @@ namespace Nucleus.Gaming.Coop
                                  new JProperty("Nickname", Nicknames[i]),
                                  new JProperty("SteamID", SteamIDs[i]),
                                  new JProperty("GamepadGuid", GamepadsGuid[i]),
-                                 new JProperty("IsDInput",IsDInputs[i]),
+                                 new JProperty("IsDInput", IsDInputs[i]),
                                  new JProperty("IsXInput", IsXInputs[i]),
                                  new JProperty("Processor", JProcessor),
                                  new JProperty("IsKeyboardPlayer", IsKeyboardPlayer[i]),
@@ -722,7 +731,7 @@ namespace Nucleus.Gaming.Coop
                                  new JProperty("RawMouseDeviceHandle", RawMouseDeviceHandles[i]),
                                  new JProperty("IsExpanded", IsExpanded[i]),
                                  new JProperty("ScreenPriority", ScreenPrioritys[i]),
-                                 new JProperty("ScreenIndex",ScreenIndexes[i]),
+                                 new JProperty("ScreenIndex", ScreenIndexes[i]),
                                  new JProperty("EditBounds", JEditBounds),
                                  new JProperty("MonitorBounds", JMonitorBounds),
                                  new JProperty("Owner", JOwner)
@@ -777,9 +786,9 @@ namespace Nucleus.Gaming.Coop
             }
 
             modeText = $"Profile n°{profileToSave}";
-
-            LogManager.Log("Game Profile Updated");
-            Globals.MainOSD.Settings(1600, Color.GreenYellow, $"Game Profile Updated");          
+            //profile.ListGameProfiles();
+            //LogManager.Log("Game Profile Updated");
+            Globals.MainOSD.Settings(1600, Color.GreenYellow, $"Game Profile Updated");
         }
 
         public static void SaveGameProfile(GameProfile profile)
@@ -885,15 +894,15 @@ namespace Nucleus.Gaming.Coop
             for (int i = 0; i < players.Count(); i++)//build per players object
             {
                 JObject JOwner = new JObject(
-                                  new JProperty("Type", players[i].Owner.Type),
+                                   new JProperty("Type", players[i].Owner.Type),
 
                                    new JProperty("UiBounds", new JObject(
                                                            new JProperty("X", players[i].Owner.UIBounds.X),
                                                            new JProperty("Y", players[i].Owner.UIBounds.Y),
                                                            new JProperty("Width", players[i].Owner.UIBounds.Width),
                                                            new JProperty("Height", players[i].Owner.UIBounds.Height))),
-                                  new JProperty("DisplayIndex", players[i].Owner.DisplayIndex),
-                                  new JProperty("Display", new JObject(
+                                   new JProperty("DisplayIndex", players[i].Owner.DisplayIndex),
+                                   new JProperty("Display", new JObject(
                                                            new JProperty("X", players[i].Owner.display.X),
                                                            new JProperty("Y", players[i].Owner.display.Y),
                                                            new JProperty("Width", players[i].Owner.display.Width),

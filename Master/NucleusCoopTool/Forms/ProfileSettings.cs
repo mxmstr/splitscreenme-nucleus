@@ -15,6 +15,7 @@ using System.Net.Sockets;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -266,7 +267,7 @@ namespace Nucleus.Coop
                 pClass.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
             }
 
-            //network setting
+            ///network setting
             RefreshCmbNetwork();
 
             sharedTab.Parent = this;
@@ -403,6 +404,7 @@ namespace Nucleus.Coop
             profileInfo.Location = new Point(this.Width / 2 - profileInfo.Width / 2, this.Height / 2 - profileInfo.Height / 2);
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
             warningLabel.Location = new Point(sharedTab.Width / 2 - warningLabel.Width / 2, warningLabel.Location.Y);
+            audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
 
             tabBorders = new Rectangle[]
             {
@@ -634,7 +636,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void closeBtnPicture_Click(object sender, EventArgs e)//Set GameProfile values
+        private void closeBtnPicture_Click(object sender, EventArgs e)///Set GameProfile values
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles")))
             {
@@ -653,7 +655,7 @@ namespace Nucleus.Coop
 
             for (int i = 0; i < 32; i++)
             {
-                //Set GameProfile Nicknames
+                ///Set GameProfile Nicknames
                 GameProfile.Nicknames.Add(controllerNicks[i].Text);
 
                 if (!jsonNicksList.Any(n => n == controllerNicks[i].Text) && controllerNicks[i].Text.ToString() != $"Player{i + 1}")
@@ -661,7 +663,7 @@ namespace Nucleus.Coop
                     jsonNicksList.Add(controllerNicks[i].Text);
                 }
 
-                //Set GameProfile Steam ids
+                ///Set GameProfile Steam ids
                 if ((Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0) || steamIds[i].Text == "0")
                 {
                     if (steamIds[i].Text != "")
@@ -675,13 +677,13 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    //Invalid Steam id detected
+                    ///Invalid Steam id detected
                     steamIds[i].BackColor = Color.Red;
                     sidWrongValue = true;
                     break;
                 }
 
-                //Set GameProfile Ideal Processors
+                ///Set GameProfile Ideal Processors
                 if (IdealProcessors[i].Text == "")
                 {
                     IdealProcessors[i].Text = "*";
@@ -692,7 +694,7 @@ namespace Nucleus.Coop
                 {
                     if (int.Parse(IdealProcessors[i].Text) > wrongValue)
                     {
-                        //Invalid Ideal Processor detected
+                        ///Invalid Ideal Processor detected
                         IdealProcessors[i].BackColor = Color.Red;
                         IdealProcessorsWrongValue = true;
                         break;
@@ -701,7 +703,7 @@ namespace Nucleus.Coop
 
                 GameProfile.IdealProcessors.Add(IdealProcessors[i].Text);
 
-                //Set GameProfile Processors Affinity
+                ///Set GameProfile Processors Affinity
                 int maxValue = Environment.ProcessorCount;
 
                 string[] values = Affinitys[i].Text.Split(',');
@@ -711,7 +713,7 @@ namespace Nucleus.Coop
                     {
                         if (int.Parse(val) > maxValue)
                         {
-                            //Invalid affinity detected
+                            ///Invalid affinity detected
                             Affinitys[i].BackColor = Color.Red;
                             affinitysWrongValue = true;
                             break;
@@ -721,11 +723,11 @@ namespace Nucleus.Coop
 
                 GameProfile.Affinitys.Add(Affinitys[i].Text);
 
-                //Set GameProfile Priority Classes
+                ///Set GameProfile Priority Classes
                 GameProfile.PriorityClasses.Add(PriorityClasses[i].Text);
             }
 
-            //Warn user for invalid Steam ids
+            ///Warn user for invalid Steam ids
             if (sidWrongValue)
             {
                 GameProfile.SteamIDs.Clear();
@@ -734,7 +736,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            //Warn user for invalid ideal processors 
+            ///Warn user for invalid ideal processors 
             if (IdealProcessorsWrongValue)
             {
                 GameProfile.IdealProcessors.Clear();
@@ -743,7 +745,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            //Warn user for invalid processors affinity
+            ///Warn user for invalid processors affinity
             if (affinitysWrongValue)
             {
                 processorTab.BringToFront();
@@ -752,7 +754,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            //Save new added nicknames
+            ///Save new added nicknames in Nicknames.json
             string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
@@ -766,7 +768,7 @@ namespace Nucleus.Coop
                 stream.Dispose();
             }
 
-            //Save new added Steam ids
+            ///Save new added Steam ids in SteamIds.json
             string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
             using (FileStream stream = new FileStream(idspath, FileMode.Create))
             {
@@ -780,7 +782,7 @@ namespace Nucleus.Coop
                 stream.Dispose();
             }
 
-            //Set shared GameProfile options
+            ///Set shared GameProfile options
             GameProfile.Title = profileTitle.Text;
             GameProfile.Notes = notes_text.Text;
             GameProfile.AutoPlay = autoPlay.Checked;
@@ -801,7 +803,7 @@ namespace Nucleus.Coop
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
             GameProfile.Cts_Unfocus = cts_unfocus.Checked;
 
-            //Set GameProfile AudioInstances  (part of shared GameProfile options)
+            ///Set GameProfile AudioInstances  (part of shared GameProfile options)
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
                 if (ctrl is ComboBox)
@@ -814,16 +816,16 @@ namespace Nucleus.Coop
                 }
             }
 
-            //Unlock profiles list on close          
+            ///Unlock profiles list on close          
             ProfilesList.profilesList.Locked = false;
 
-            //Update profile .json file
+            ///Update profile .json file
             if (GameProfile.ModeText != "New Profile")
-            {
+            {              
                 GameProfile.UpdateGameProfile(GameProfile.currentProfile);
                 positionsControl.gameProfilesList.Update_ProfilesList();
 
-                //Send control selection event to the Profiles List
+                ///Send control selection event to the Profiles List (update the list and reload the profile)
                 EventArgs eventArgs = new EventArgs();
 
                 Label selected = new Label
@@ -834,6 +836,21 @@ namespace Nucleus.Coop
 
                 positionsControl.gameProfilesList.profileBtn_CheckedChanged(selected, eventArgs);
             }
+            //else
+            //{
+            //    GameProfile.UpdateGameProfile(GameProfile.currentProfile);              
+            //    positionsControl.gameProfilesList.Update_ProfilesList();
+
+            //    EventArgs eventArgs = new EventArgs();
+
+            //    Label selected = new Label
+            //    {
+            //        Name = (GameProfile.profilesPathList.Count).ToString(),
+            //        Text = $"Profile n°{GameProfile.profilesPathList.Count}"
+            //    };
+
+            //    positionsControl.gameProfilesList.profileBtn_CheckedChanged(selected, eventArgs);
+            //}
 
             Visible = false;
         }
@@ -1229,6 +1246,8 @@ namespace Nucleus.Coop
                 gs.DrawLine(bordersPen, vlines[i], 10, vlines[i], 10 + LayoutHeight);
             }
 
+            numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);
+
             gs.Dispose();
         }
 
@@ -1237,8 +1256,6 @@ namespace Nucleus.Coop
             Graphics g = e.Graphics;
          
             g.DrawRectangles(bordersPen, tabBorders);
-
-            numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);
         }
     }
 }

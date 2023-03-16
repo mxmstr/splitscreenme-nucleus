@@ -611,11 +611,11 @@ namespace Nucleus.Coop
             // 
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.titleLabel.Location = new System.Drawing.Point(318, 96);
+            this.titleLabel.Location = new System.Drawing.Point(315, 108);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(59, 13);
+            this.titleLabel.Size = new System.Drawing.Size(210, 13);
             this.titleLabel.TabIndex = 159;
-            this.titleLabel.Text = "Profile Title";
+            this.titleLabel.Text = "Profile Title (facultative, 35 characters max)";
             // 
             // profileTitle
             // 
@@ -623,7 +623,7 @@ namespace Nucleus.Coop
             this.profileTitle.BackColor = System.Drawing.SystemColors.InfoText;
             this.profileTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.profileTitle.ForeColor = System.Drawing.Color.White;
-            this.profileTitle.Location = new System.Drawing.Point(319, 113);
+            this.profileTitle.Location = new System.Drawing.Point(316, 125);
             this.profileTitle.MaximumSize = new System.Drawing.Size(341, 81);
             this.profileTitle.MaxLength = 35;
             this.profileTitle.Name = "profileTitle";
@@ -637,9 +637,10 @@ namespace Nucleus.Coop
             this.warningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.warningLabel.Location = new System.Drawing.Point(93, 22);
             this.warningLabel.Name = "warningLabel";
-            this.warningLabel.Size = new System.Drawing.Size(486, 15);
+            this.warningLabel.Size = new System.Drawing.Size(428, 15);
             this.warningLabel.TabIndex = 157;
-            this.warningLabel.Text = "Game Profiles Are Created/Updated When All Instances Are Set And Ready!";
+            this.warningLabel.Text = "Game Profiles Are Created When All Instances Are Set And Ready!";
+            this.warningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // scaleOptionCbx
             // 
@@ -673,7 +674,7 @@ namespace Nucleus.Coop
             // 
             this.label72.AutoSize = true;
             this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label72.Location = new System.Drawing.Point(316, 219);
+            this.label72.Location = new System.Drawing.Point(316, 171);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(60, 13);
             this.label72.TabIndex = 145;
@@ -685,7 +686,7 @@ namespace Nucleus.Coop
             this.notes_text.BackColor = System.Drawing.SystemColors.InfoText;
             this.notes_text.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notes_text.ForeColor = System.Drawing.Color.White;
-            this.notes_text.Location = new System.Drawing.Point(318, 236);
+            this.notes_text.Location = new System.Drawing.Point(318, 188);
             this.notes_text.MaximumSize = new System.Drawing.Size(341, 81);
             this.notes_text.Multiline = true;
             this.notes_text.Name = "notes_text";
@@ -2739,7 +2740,7 @@ namespace Nucleus.Coop
             this.audioWarningLabel.Size = new System.Drawing.Size(273, 15);
             this.audioWarningLabel.TabIndex = 22;
             this.audioWarningLabel.Text = "This Feature May Not Work For All Games";
-            this.audioWarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.audioWarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.audioWarningLabel.UseMnemonic = false;
             // 
             // audioDefaultDevice
@@ -4785,12 +4786,12 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
-            this.Controls.Add(this.sharedTab);
-            this.Controls.Add(this.processorTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.profileInfo);
+            this.Controls.Add(this.sharedTab);
+            this.Controls.Add(this.processorTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);

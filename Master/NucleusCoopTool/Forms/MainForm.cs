@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Windows.Forms;
@@ -329,7 +330,7 @@ namespace Nucleus.Coop
                                                int.Parse(themeIni.IniReadValue("Colors", "StripMenuUpdateItemFont").Split(',')[3]));
 
             clientAreaPanel.BackgroundImage = ImageCache.GetImage(theme + "background.jpg");
-            btn_textSwitcher.BackgroundImage = ImageCache.GetImage(theme + "text_switcher.png");
+            btn_textSwitcher.Image = ImageCache.GetImage(theme + "text_switcher.png");
             btnAutoSearch.BackColor = buttonsBackColor;
             button_UpdateAvailable.BackColor = buttonsBackColor;
             btnSearch.BackColor = buttonsBackColor;
@@ -480,11 +481,12 @@ namespace Nucleus.Coop
 
             settings = new NewSettings(this, positionsControl);
             profileSettings = new ProfileSettings(this, positionsControl);
-
             searchDisksForm = new SearchDisksForm(this);
+
             clientAreaPanel.Controls.Add(settings);
             clientAreaPanel.Controls.Add(profileSettings);
             clientAreaPanel.Controls.Add(searchDisksForm);
+
             positionsControl.Paint += PositionsControl_Paint;
 
             settings.RegHotkeys(this);
@@ -1125,13 +1127,15 @@ namespace Nucleus.Coop
 
         private void rainbowTimerTick(Object Object, EventArgs EventArgs)
         {
-            if (HandlerNoteTitle.Text == "Handler Notes" || HandlerNoteTitle.Text == "Read First")
+            string text = HandlerNoteTitle.Text;        
+
+            if (text == "Handler Notes" || text == "Read First")
             {
                 if (!loop)
                 {
                     HandlerNoteTitle.Text = "Handler Notes";
-                    if (r < 255 && b < 255) { r += 3; b += 3; };
-                    if (b >= 255 && r >= 255)
+                    if (r < 200 && b < 200) { r += 3; b += 3; };
+                    if (b >= 200 && r >= 200)
                         loop = true;
                     HandlerNoteTitle.Font = new Font(HandlerNoteTitle.Font.FontFamily, HandlerNoteTitle.Font.Size, FontStyle.Bold);
                 }
@@ -1143,17 +1147,16 @@ namespace Nucleus.Coop
                         loop = false;
                 }
 
-                HandlerNoteTitle.ForeColor = Color.FromArgb(r, 255, b);
-
+                HandlerNoteTitle.ForeColor =  Color.FromArgb(r,r, 255, b);
             }
-            else if (HandlerNoteTitle.Text.Contains("Profile n°"))
+            else if (text.Contains("Profile n°"))
             {
                 HandlerNoteTitle.ForeColor = Color.LightGreen;
                 HandlerNoteTitle.Font = new Font(HandlerNoteTitle.Font.FontFamily, HandlerNoteTitle.Font.Size, FontStyle.Bold);
             }
-            else
+            else if (text.Contains("Description"))
             {
-                HandlerNoteTitle.ForeColor = HandlerNoteTitleFont;
+                HandlerNoteTitle.ForeColor = Color.Gold;
                 HandlerNoteTitle.Font = new Font(HandlerNoteTitle.Font.FontFamily, (float)HandlerNoteTitle.Font.Size, FontStyle.Regular);
             }
         }
@@ -1198,6 +1201,7 @@ namespace Nucleus.Coop
                 currentGameSetup = currentControl.UserGameInfo.Game.GameName;
 
                 button_UpdateAvailable.Visible = currentGameInfo.Game.UpdateAvailable;
+
                 HandlerNoteTitle.Text = "Handler Notes";
                 hubShowcase?.Dispose();
 

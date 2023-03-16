@@ -10,7 +10,7 @@ namespace Nucleus.Coop
         {
             if (Directory.Exists(path))
             {
-                LogManager.Log("Proceed game content cleanup.");
+                LogManager.Log("Game content cleaned.");
                 string[] instances = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
 
                 try

@@ -266,7 +266,7 @@ namespace Nucleus.Coop
                 numMaxPlyrs.Value = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
             }
 
-            //network setting
+            ///network setting
             RefreshCmbNetwork();
 
             if (ini.IniReadValue("Misc", "Network") != "")
@@ -314,23 +314,23 @@ namespace Nucleus.Coop
 
             }
 
-            //epiclangs setting
+            ///epiclangs setting
             cmb_EpicLang.SelectedItem = ini.IniReadValue("Misc", "EpicLang");
                 
-            //splash screen setting                   
+            ///splash screen setting                   
             splashScreenChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
 
-            //mouse click sound setting          
+            ///mouse click sound setting          
             clickSoundChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "MouseClick"));
 
             useNicksCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
 
             keepAccountsCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "KeepAccounts"));
 
-            //auto scale setting
+            ///auto scale setting
             scaleOptionCbx.Checked = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
 
-            //Custom HotKey setting
+            ///Custom HotKey setting
             comboBox_lockKey.Text = ini.IniReadValue("Hotkeys", "LockKey");
 
             if (ini.IniReadValue("Misc", "SteamLang") != "")
@@ -484,10 +484,11 @@ namespace Nucleus.Coop
 
             RefreshAudioList();
 
-            //network setting
+            ///network setting
             RefreshCmbNetwork();
 
             string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
+
             if (File.Exists(path))
             {
                 string jsonString = File.ReadAllText(path);
@@ -501,6 +502,7 @@ namespace Nucleus.Coop
             }
 
             string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
+
             if (File.Exists(idspath))
             {
                 string jsonString = File.ReadAllText(idspath);
@@ -829,7 +831,7 @@ namespace Nucleus.Coop
             int mod = 0;
             switch (modifier)
             {
-                case "Ctrl": // Ctrl
+                case "Ctrl":
                     mod = 2;
                     break;
                 case "Alt":
@@ -1226,6 +1228,7 @@ namespace Nucleus.Coop
                 gs.DrawLine(bordersPen, vlines[i], 10, vlines[i], 10 + LayoutHeight);
             }
 
+            numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);
             gs.Dispose();
         }
 
@@ -1233,9 +1236,7 @@ namespace Nucleus.Coop
         {
             Graphics g = e.Graphics;
 
-            g.DrawRectangles(bordersPen, tabBorders);
-
-            numMaxPlyrs.Value = (numUpDownHor.Value + 1) * (numUpDownVer.Value + 1);
+            g.DrawRectangles(bordersPen, tabBorders);        
         }
     }
 }

@@ -1,23 +1,5 @@
-﻿using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using System;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using Nucleus.Gaming.Windows.Interop;
-using WindowScrape.Constants;
-using System.Runtime.InteropServices;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.Win32;
-using System.Text;
-using System.Runtime.ExceptionServices;
-using System.Reflection;
-using Nucleus.Coop.Forms;
-using Nucleus.Gaming.Coop.ProtoInput;
-using Nucleus.Gaming;
+﻿using System.Windows.Forms;
+
 namespace Nucleus.Coop
 {
     partial class NewSettings
@@ -1519,7 +1501,7 @@ namespace Nucleus.Coop
             this.audioWarningLabel.Size = new System.Drawing.Size(273, 15);
             this.audioWarningLabel.TabIndex = 22;
             this.audioWarningLabel.Text = "This Feature May Not Work For All Games";
-            this.audioWarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.audioWarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.audioWarningLabel.UseMnemonic = false;
             // 
             // audioDefaultDevice
@@ -3358,10 +3340,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
+            this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.settingsTab);
-            this.Controls.Add(this.layoutTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);

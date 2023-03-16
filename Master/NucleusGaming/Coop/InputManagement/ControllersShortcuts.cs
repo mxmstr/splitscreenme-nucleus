@@ -433,7 +433,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public static void StartSRTCThread()
         {
-            Console.WriteLine("Controller shortcuts thread started");
+            //Console.WriteLine("Controller shortcuts thread started");
 
             while (!XController.Controllers[0].IsConnected)///Waiting for Controller
             {
