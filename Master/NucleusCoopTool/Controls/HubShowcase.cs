@@ -110,7 +110,6 @@ namespace Nucleus.Coop
                     bmp = new Bitmap(respStream);
                     respStream.Dispose();
                     showcaseCovers.Images.Add(bmp);
-
                 }
                 catch (Exception) { }
             }
@@ -159,7 +158,7 @@ namespace Nucleus.Coop
                             hotness[cover_index] = ":(";
                         }
 
-                        coverLayer.Name = $@"https://hub.splitscreen.me/handler/{hubLink[cover_index]}";//lazy or stupid? Maybe both :).
+                        coverLayer.Name = $@"https://hub.splitscreen.me/handler/{hubLink[cover_index]}";
                         authorLabel.Text = "Handler by " + author[cover_index];
                         downloadLabel.Text = "Downloads: " + downloadCount[cover_index] + "         " + " Hotness: " + hotness[cover_index];
                         coverBox.BackgroundImage = showcaseCovers.Images[cover_index];
@@ -175,7 +174,6 @@ namespace Nucleus.Coop
 
             rainbowTimer.Start();
             handlers.Clear();
-
         }
 
         private int r = 0;

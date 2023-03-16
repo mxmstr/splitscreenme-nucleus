@@ -361,10 +361,6 @@ namespace Nucleus.Gaming
                     UpdateAvailable = Hub.IsUpdateAvailable(true);
                 });
             }
-            else 
-            {
-                UpdateAvailable = Hub.IsUpdateAvailable(true);
-            }
 
             engine.SetValue("Game", (object)null);
         }

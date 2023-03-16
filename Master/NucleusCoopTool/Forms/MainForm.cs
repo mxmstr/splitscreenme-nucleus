@@ -236,8 +236,7 @@ namespace Nucleus.Coop
             rgb_HandlerNoteTitleFontColor = themeIni.IniReadValue("Colors", "HandlerNoteTitleFont").Split(',');
             rgb_ButtonsBorderColor = themeIni.IniReadValue("Colors", "ButtonsBorder").Split(',');
             rgb_HandlerNoteMagnifierTitleBackColor = themeIni.IniReadValue("Colors", "HandlerNoteMagnifierTitleBackColor ").Split(',');
-            string[] windowSize = ini.IniReadValue("Misc", "WindowSize").Split('X');
-            //string[] windowLocation = ini.IniReadValue("Misc", "WindowLocation").Split('X'); 
+                   
             disableFastHandlerUpdate = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
             float fontSize = float.Parse(themeIni.IniReadValue("Font", "MainFontSize"));
             bool coverBorderOff = bool.Parse(themeIni.IniReadValue("Misc", "DisableCoverBorder"));
@@ -255,8 +254,11 @@ namespace Nucleus.Coop
          
             InitializeComponent();
 
-            Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
-            //Location = PointToScreen(new Point(int.Parse(windowLocation[0]), int.Parse(windowLocation[1])));
+            if (ini.IniReadValue("Misc", "WindowSize") != "")
+            {
+                string[] windowSize = ini.IniReadValue("Misc", "WindowSize").Split('X');
+                Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
+            }
 
             SuspendLayout();
 
@@ -446,7 +448,6 @@ namespace Nucleus.Coop
                     handleClickSound(true);
                 }
             }
-
 #if DEBUG
             txt_version.ForeColor = Color.LightSteelBlue;
             txt_version.Text = "DEBUG " + version;
@@ -501,6 +502,7 @@ namespace Nucleus.Coop
             jsControl.OnCanPlayUpdated += StepCanPlay;
 
             scriptDownloader = new ScriptDownloader(this);
+            
             downloadPrompt = new DownloadPrompt(handler, this, null, true);
             Xinput_S_Setup = new XInputShortcutsSetup();
 
@@ -531,8 +533,18 @@ namespace Nucleus.Coop
             gameContextMenuStrip.Renderer = new MyRenderer();
 
             RefreshGames(true);
-            CenterToScreen();
 
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+            if (ini.IniReadValue("Misc", "WindowLocation") != "")
+            {
+                string[] windowLocation = ini.IniReadValue("Misc", "WindowLocation").Split('X');
+                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+            }
+            else 
+            {
+                CenterToScreen();
+            }
+            
             //Enable only for windows version with default support for xinput1.4.dll ,
             //might be fixable by placing the dll at the root of our exe but not for now.
             string windowsVersion = MachineSpecs.GetPCspecs(null);
@@ -540,7 +552,6 @@ namespace Nucleus.Coop
                 !windowsVersion.Contains("Windows Vista"))
             {
                 ControllersShortcuts.ctrlsShortcuts = new Thread(ControllersShortcuts.StartSRTCThread);
-                ControllersShortcuts.ctrlsShortcuts.Priority = ThreadPriority.Lowest;
                 ControllersShortcuts.ctrlsShortcuts.Start();
                 ControllersShortcuts.UpdateShortcutsValue();
 
@@ -956,17 +967,14 @@ namespace Nucleus.Coop
 
             list_Games.SuspendLayout();
 
-            bool updateAvailable = game.Game.UpdateAvailable;
-
             bool favorite = game.Favorite;
 
             if (!disableFastHandlerUpdate && connected && checkUpdate)
             {
-                updateAvailable = game.Game.IsUpdateAvailable(true);//game.Game.UpdateAvailable;
-                game.Game.UpdateAvailable = updateAvailable;
+                game.Game.UpdateAvailable = game.Game.IsUpdateAvailable(true);//game.Game.UpdateAvailable;
             }
 
-            GameControl con = new GameControl(game.Game, game, updateAvailable, favorite)
+            GameControl con = new GameControl(game.Game, game, game.Game.UpdateAvailable, favorite)
             {
                 Width = game_listSizer.Width,
             };
@@ -2436,8 +2444,15 @@ namespace Nucleus.Coop
         }
 
         private void btn_Download_Click(object sender, EventArgs e)
-        {
-            scriptDownloader.ShowDialog();
+        {                     
+            if (scriptDownloader.Visible)
+            {
+                scriptDownloader.Visible = false;
+            }
+            else
+            {               
+                scriptDownloader.Visible = true;
+            }
         }
 
         private void button_UpdateAvailable_Click(object sender, EventArgs e)
@@ -2706,18 +2721,9 @@ namespace Nucleus.Coop
             btn_textSwitcher.Visible = (gameDesExist && notesExist);
         }
 
-        private int clickCount = 0;
-
         private void stepPanelPictureBox_Click(object sender, EventArgs e)
         {
-            clickCount++;
-
-            if (clickCount < 3)
-            {
-                return;
-            }
-
-            if (connected)
+            if (connected && hubShowcase == null)
                 TriggerHubShowCase();
         }
 
@@ -2830,6 +2836,7 @@ namespace Nucleus.Coop
                 positionsControl.textZoomContainer.Visible = false;
                 btn_magnifier.Image = ImageCache.GetImage(theme + "magnifier.png");
             }
+
             if (ProfilesList.profilesList != null)
             {
                 ProfilesList.profilesList.Locked = false;
@@ -2855,7 +2862,7 @@ namespace Nucleus.Coop
                 titleBarButtons.Visible = titleBarButtons.Name != "third_party_tools_container" && titleBarButtons.Name != "linksPanel";
             }
 
-            if (connected) { btn_noHub.Visible = false; }
+            if (connected || DisableOfflineIcon) { btn_noHub.Visible = false; }
 
             clientAreaPanel.Visible = true;
 
@@ -2894,8 +2901,7 @@ namespace Nucleus.Coop
         private void SaveNucleusWindowPosAndLoc()
         {
             ini.IniWriteValue("Misc", "WindowSize", Width + "X" + Height);
-            //var loc = PointToScreen(Location);
-            //ini.IniWriteValue("Misc", "WindowLocation",loc.X + "X" + loc.Y);
+            ini.IniWriteValue("Misc", "WindowLocation", Location.X + "X" + Location.Y);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

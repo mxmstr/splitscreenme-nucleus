@@ -106,12 +106,15 @@ namespace Nucleus.Coop.Forms
         public ScriptDownloader(MainForm mf)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "HandlerDownloaderFontSize"));
-            string[] windowSize = ini.IniReadValue("Misc", "DownloaderWindowSize").Split('X');
             mainForm = mf;
 
             InitializeComponent();
-           
-            Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
+                 
+            if (ini.IniReadValue("Misc", "DownloaderWindowSize") != "")
+            {
+                string[] windowSize = ini.IniReadValue("Misc", "DownloaderWindowSize").Split('X');
+                Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
+            }
 
             default_Cursor = mf.default_Cursor;
             Cursor.Current = default_Cursor;
@@ -207,6 +210,17 @@ namespace Nucleus.Coop.Forms
 
             ResumeLayout();
 
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+            if (ini.IniReadValue("Misc", "DownloaderWindowLocation") != "")
+            {
+                string[] windowLocation = ini.IniReadValue("Misc", "DownloaderWindowLocation").Split('X');
+                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+            }
+            else
+            {
+                StartPosition = FormStartPosition.CenterScreen;
+            }
+
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
@@ -218,6 +232,7 @@ namespace Nucleus.Coop.Forms
                 DPIManager.Unregister(this);
                 return;
             }
+
             SuspendLayout();
 
             if (scale > 1.0F)
@@ -234,7 +249,6 @@ namespace Nucleus.Coop.Forms
 
             ResumeLayout();
         }
-        //private int cover_index = 0;
 
         protected override void WndProc(ref Message m)
         {
@@ -595,8 +609,6 @@ namespace Nucleus.Coop.Forms
 
                 list_Games.Items[(list_Games.Items.Count - 1)].SubItems[2].Font = new Font(new FontFamily("Wingdings"), 10, FontStyle.Bold);
                 list_Games.Items[(list_Games.Items.Count - 1)].SubItems[2].ForeColor = Color.Green;
-
-
             }
 
             list_Games.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -666,7 +678,8 @@ namespace Nucleus.Coop.Forms
         private void btn_Close_Click(object sender, EventArgs e)
         {
             ini.IniWriteValue("Misc", "DownloaderWindowSize", Width + "X" + Height);
-            Close();
+            ini.IniWriteValue("Misc", "DownloaderWindowLocation", Location.X + "X" + Location.Y);
+            Visible = false;
         }
 
         private void txt_Search_KeyDown(object sender, KeyEventArgs e)

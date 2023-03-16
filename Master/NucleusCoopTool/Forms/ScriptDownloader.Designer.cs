@@ -218,8 +218,8 @@
             // 
             // list_Games
             // 
-            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.list_Games.AutoArrange = false;
             this.list_Games.BackColor = System.Drawing.Color.Black;
@@ -392,7 +392,7 @@
             this.MinimumSize = new System.Drawing.Size(862, 472);
             this.Name = "ScriptDownloader";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Download Game Handlers";
             this.ResizeBegin += new System.EventHandler(this.ScriptDownloader_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.ScriptDownloader_ResizeEnd);

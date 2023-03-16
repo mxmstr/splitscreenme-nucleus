@@ -22,6 +22,7 @@ namespace Nucleus.Coop
         private Color userOverBackColor;
         private Color userLeaveBackColor;
         public bool updateAvailable;
+        private bool disableFastHandlerUpdate;
         public bool favorite;
         public string TitleText { get; set; }
         public string PlayerText { get; set; }
@@ -54,6 +55,7 @@ namespace Nucleus.Coop
                 userLeaveBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
                 favorite_Unselected = ImageCache.GetImage(themePath + "favorite_unselected.png");
                 favorite_Selected = ImageCache.GetImage(themePath + "favorite_selected.png");
+                disableFastHandlerUpdate = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
 
                 SuspendLayout();
                 AutoScaleDimensions = new SizeF(96F, 96F);
@@ -196,7 +198,7 @@ namespace Nucleus.Coop
                 Height = picture.Bottom + border;//adjust the control Height
             }
 
-            title.ForeColor = updateAvailable ? Color.PaleGreen : Color.White;
+            title.ForeColor = (updateAvailable && !disableFastHandlerUpdate) ? Color.PaleGreen : Color.White;
 
             favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
             float favoriteY = (209 - playerIcon.Width) * scale;
