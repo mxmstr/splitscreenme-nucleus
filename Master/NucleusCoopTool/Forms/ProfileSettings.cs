@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
 using System;
@@ -24,6 +25,7 @@ namespace Nucleus.Coop
         private readonly IniFile ini = Globals.ini;
 
         private MainForm mainForm = null;
+        private PositionsControl positionsControl = null;
         private static ProfileSettings profileSettings;
 
         private List<string> nicksList = new List<string>();
@@ -78,6 +80,7 @@ namespace Nucleus.Coop
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
             profileSettings = this;
             mainForm = mf;
+            positionsControl = pc;
 
             InitializeComponent();
 
@@ -86,12 +89,12 @@ namespace Nucleus.Coop
             default_Cursor = mf.default_Cursor;
             Cursor = default_Cursor;
             hand_Cursor = mf.hand_Cursor;
+
             var rgb_selectionColor = mf.themeIni.IniReadValue("Colors", "Selection").Split(',');
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
-            Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
-            Visible = false;
+            Location = new Point(mf.Width / 2 - Width / 2, mf.Height / 2 - Height / 2);
 
             controlscollect();
 
@@ -99,12 +102,13 @@ namespace Nucleus.Coop
             {
                 if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton) )
                 {
-                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
+                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel" && c.Name != "modeLabel")
                         c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
-                {
+                { 
+                    if(c.Name != "notes_text" && c.Name != "profileTitle")
                     c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
@@ -168,16 +172,16 @@ namespace Nucleus.Coop
                                                    int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[2]),
                                                    int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[3]));
 
-            audioBtnPicture.BackgroundImage = new Bitmap(mf.theme + "audio.png");
-            playersBtnPicture.BackgroundImage = new Bitmap(mf.theme + "players.png");
-            sharedBtnPicture.BackgroundImage = new Bitmap(mf.theme + "shared.png");
-            processorBtnPicture.BackgroundImage = new Bitmap(mf.theme + "processor.png");
-            layoutBtnPicture.BackgroundImage = new Bitmap(mf.theme + "layout.png");
-            closeBtnPicture.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
-            audioRefresh.BackgroundImage = new Bitmap(mf.theme + "refresh.png");
-            profile_info_btn.BackgroundImage = new Bitmap(mf.theme + "profile_info.png");
-            btnNext.BackgroundImage = new Bitmap(mf.theme + "page1.png");
-            btnProcessorNext.BackgroundImage = new Bitmap(mf.theme + "page1.png");
+            audioBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "audio.png");
+            playersBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "players.png");
+            sharedBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "shared.png");
+            processorBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "processor.png");
+            layoutBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "layout.png");
+            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "title_close.png");
+            audioRefresh.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
+            profile_info_btn.BackgroundImage = ImageCache.GetImage(mf.theme + "profile_info.png");
+            btnNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
+            btnProcessorNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
 
             audioBtnPicture.Click += new EventHandler(audioTabBtn_Click);
 
@@ -531,7 +535,13 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < 32; i++)
                 {
+                    nicksList.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)));
+                }
+                               
+                for (int i = 0; i < 32; i++)
+                {
                     controllerNicks[i].Items.Clear();
+                    controllerNicks[i].Items.AddRange(nicksList.ToArray());
                     controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                     controllerNicks[i].SelectedItem = controllerNicks[i].Text;
                 }
@@ -616,6 +626,7 @@ namespace Nucleus.Coop
             cts_kar.Checked = GameProfile.Cts_KeepAspectRatio;
             cts_unfocus.Checked = GameProfile.Cts_Unfocus;
             notes_text.Text = GameProfile.Notes;
+            profileTitle.Text = GameProfile.Title;
 
             if (GameProfile.currentProfile != null)
             {
@@ -653,10 +664,10 @@ namespace Nucleus.Coop
                 //Set GameProfile Steam ids
                 if ((Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0) || steamIds[i].Text == "0")
                 {
-                    if (steamIds[i].Text != "" && steamIds[i].Text != "0")
+                    if (steamIds[i].Text != "")
                     {
                         GameProfile.SteamIDs.Add(long.Parse(steamIds[i].Text.ToString()));
-                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()))
+                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0")
                         {
                             jsonsteamIdsList.Add(steamIds[i].Text.ToString());
                         }
@@ -741,7 +752,6 @@ namespace Nucleus.Coop
                 return;
             }
 
-
             //Save new added nicknames
             string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
             using (FileStream stream = new FileStream(path, FileMode.Create))
@@ -771,6 +781,7 @@ namespace Nucleus.Coop
             }
 
             //Set shared GameProfile options
+            GameProfile.Title = profileTitle.Text;
             GameProfile.Notes = notes_text.Text;
             GameProfile.AutoPlay = autoPlay.Checked;
             GameProfile.AudioDefaultSettings = audioDefaultSettingsRadio.Checked;
@@ -803,8 +814,26 @@ namespace Nucleus.Coop
                 }
             }
 
-            //Unlock profiles list on close
+            //Unlock profiles list on close          
             ProfilesList.profilesList.Locked = false;
+
+            //Update profile .json file
+            if (GameProfile.ModeText != "New Profile")
+            {
+                GameProfile.UpdateGameProfile(GameProfile.currentProfile);
+                positionsControl.gameProfilesList.Update_ProfilesList();
+
+                //Send control selection event to the Profiles List
+                EventArgs eventArgs = new EventArgs();
+
+                Label selected = new Label
+                {
+                    Name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString(),
+                    Text = GameProfile.ModeText
+                };
+
+                positionsControl.gameProfilesList.profileBtn_CheckedChanged(selected, eventArgs);
+            }
 
             Visible = false;
         }
@@ -855,6 +884,11 @@ namespace Nucleus.Coop
             audioCustomSettingsBox.Enabled = radio.Checked;
         }
 
+        public static void ProfileRefreshAudioList()
+        {
+            profileSettings?.RefreshAudioList();
+        }
+
         private void RefreshAudioList()
         {
             audioDevices = new Dictionary<string, string>();
@@ -887,8 +921,9 @@ namespace Nucleus.Coop
                     ComboBox cmb = (ComboBox)ctrl;
                     cmb.Items.Clear();
                     cmb.Items.AddRange(audioDevices.Keys.ToArray());
+
                     if (GameProfile.ModeText == "New Profile")
-                    {
+                    {                     
                         if (audioDevices.Values.Contains(ini.IniReadValue("Audio", cmb.Name)))
                         {
                             cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == ini.IniReadValue("Audio", cmb.Name)).Key;
@@ -1017,22 +1052,22 @@ namespace Nucleus.Coop
 
         private void closeBtnPicture_MouseEnter(object sender, EventArgs e)
         {
-            closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close_mousehover.png");
+            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close_mousehover.png");
         }
 
         private void closeBtnPicture_MouseLeave(object sender, EventArgs e)
         {
-            closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close.png");
+            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
         }
 
         private void profile_info_btn_MouseEnter(object sender, EventArgs e)
         {
-            profile_info_btn.BackgroundImage = new Bitmap(mainForm.theme + "profile_info_mousehover.png");
+            profile_info_btn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "profile_info_mousehover.png");
         }
 
         private void profile_info_btn_MouseLeave(object sender, EventArgs e)
         {
-            profile_info_btn.BackgroundImage = new Bitmap(mainForm.theme + "profile_info.png");
+            profile_info_btn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "profile_info.png");
         }
 
         private void profile_info_btn_Click(object sender, EventArgs e)
@@ -1084,7 +1119,7 @@ namespace Nucleus.Coop
             if (page1.Visible)
             {
                 SuspendLayout();
-                btnNext.BackgroundImage = new Bitmap(Globals.Theme + "page2.png");
+                btnNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page2.png");
                 page1.Visible = false;
                 page2.BringToFront();
                 page2.Visible = true;                           
@@ -1093,7 +1128,7 @@ namespace Nucleus.Coop
             else
             {
                 SuspendLayout();
-                btnNext.BackgroundImage = new Bitmap(Globals.Theme + "page1.png");
+                btnNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page1.png");
                 page2.Visible = false;
                 page1.BringToFront();                
                 page1.Visible = true;            
@@ -1106,7 +1141,7 @@ namespace Nucleus.Coop
             if (processorPage1.Visible)
             {
                 SuspendLayout();
-                btnProcessorNext.BackgroundImage = new Bitmap(Globals.Theme + "page2.png");
+                btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page2.png");
                 processorPage1.Visible = false;
                 processorPage2.BringToFront();
                 processorPage2.Visible = true;               
@@ -1115,7 +1150,7 @@ namespace Nucleus.Coop
             else
             {
                 SuspendLayout();
-                btnProcessorNext.BackgroundImage = new Bitmap(Globals.Theme + "page1.png");
+                btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page1.png");
                 processorPage2.Visible = false;
                 processorPage1.BringToFront();
                 processorPage1.Visible = true;
@@ -1196,7 +1231,6 @@ namespace Nucleus.Coop
 
             gs.Dispose();
         }
-
 
         private void ProfileSettings_Paint(object sender, PaintEventArgs e)
         {

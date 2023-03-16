@@ -62,7 +62,7 @@ namespace Nucleus.Gaming.Coop
         public static List<bool> IsDInputs = new List<bool>();
         public static List<bool> IsXInputs = new List<bool>();
         public static List<bool> IsKeyboardPlayer = new List<bool>();
-        public static List<bool> IsRawMouses = new List<bool>();
+        public static List<bool> IsRawMouse = new List<bool>();
         public static List<string> IsExpanded = new List<string>();
 
         public Dictionary<string, object> Options => options;
@@ -140,6 +140,13 @@ namespace Nucleus.Gaming.Coop
         {
             get => notes;
             set => notes = value;
+        }
+
+        private static string title;
+        public static string Title
+        {
+            get => title;
+            set => title = value;
         }
 
         private static int pauseBetweenInstanceLaunch;
@@ -249,7 +256,7 @@ namespace Nucleus.Gaming.Coop
             IsDInputs.Clear();
             IsXInputs.Clear();
             IsKeyboardPlayer.Clear();
-            IsRawMouses.Clear();
+            IsRawMouse.Clear();
 
             ScreenIndexes.Clear();
             EditBounds.Clear();
@@ -395,6 +402,7 @@ namespace Nucleus.Gaming.Coop
             CustomLayout_Max = (int)Jprofile["CustomLayout"]["Max"];
             AutoPlay = (bool)Jprofile["AutoPlay"]["Enabled"];
             Notes = (string)Jprofile["Notes"];
+            Title = (string)Jprofile["Title"];
 
             JToken JplayersInfos = Jprofile["Data"] as JToken;
 
@@ -438,7 +446,7 @@ namespace Nucleus.Gaming.Coop
 
                 IsKeyboardPlayer.Add((bool)JplayersInfos[i]["IsKeyboardPlayer"]);
                 RawKeyboardDeviceHandles.Add((string)JplayersInfos[i]["RawKeyboardDeviceHandle"]);
-                IsRawMouses.Add((bool)JplayersInfos[i]["IsRawMouse"]);
+                IsRawMouse.Add((bool)JplayersInfos[i]["IsRawMouse"]);
                 RawMouseDeviceHandles.Add((string)JplayersInfos[i]["RawMouseDeviceHandle"]);
 
                 IsExpanded.Add((string)JplayersInfos[i]["IsExpanded"]);
@@ -554,7 +562,227 @@ namespace Nucleus.Gaming.Coop
             return true;
         }
 
-        public static void SaveUserProfile(GameProfile profile)
+        public static void UpdateGameProfile(GameProfile profile)
+        {
+            string path;
+            bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
+
+            if (profilesCount + 1 >= 21 || profileDisabled)
+            {
+                if (!profileDisabled)
+                {
+                    Globals.MainOSD.Settings(2000, Color.Orange, $"Limit Of 20 Profiles Has Been Reach Already");
+                }
+
+                return;
+            }
+
+            if (ModeText == "New Profile" || profilesCount == 0)
+            {
+                profilesCount++;//increase to set new profile name
+                path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profilesCount}].json");
+                //Console.WriteLine("Creating new a game profile...");
+            }
+            else
+            {
+                path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profileToSave}].json");
+            }
+
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}")))
+            {
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}"));
+            }
+
+            JObject options = new JObject();
+            foreach (KeyValuePair<string, object> opt in profile.Options)
+            {
+                if (opt.Value.GetType() == typeof(System.Dynamic.ExpandoObject))//Only used for options with pictures so far
+                {
+                    JObject values = new JObject();
+                    System.Dynamic.ExpandoObject _vals = (System.Dynamic.ExpandoObject)opt.Value;
+
+                    foreach (var t in _vals)
+                    {
+                        values.Add(new JProperty(t.Key, t.Value));
+                    }
+
+                    options.Add(new JProperty(opt.Key.ToString(), values));
+                }
+                else
+                {
+                    options.Add(new JProperty(opt.Key.ToString(), opt.Value.ToString()));
+                }
+            }
+
+            JObject JHWndInterval = new JObject();
+
+            if (hWndInterval > 0)
+            {
+                JHWndInterval.Add(new JProperty("Time", hWndInterval.ToString()));
+            }
+            else
+            {
+                JHWndInterval.Add(new JProperty("Time", "0"));
+            }
+
+            JObject JPauseBetweenInstanceLaunch = new JObject();
+
+            if (pauseBetweenInstanceLaunch > 0)
+            {
+                JPauseBetweenInstanceLaunch.Add(new JProperty("Time", pauseBetweenInstanceLaunch.ToString()));
+            }
+            else
+            {
+                JPauseBetweenInstanceLaunch.Add(new JProperty("Time", "0"));
+            }
+
+            JObject JCustomLayout = new JObject(new JProperty("Ver", customLayout_Ver),
+                                                new JProperty("Hor", customLayout_Hor),
+                                                new JProperty("Max", CustomLayout_Max));
+            JObject JUseSplitDiv = new JObject(new JProperty("Enabled", useSplitDiv),
+                                               new JProperty("Color", splitDivColor));
+
+            JObject JAutoDesktopScaling = new JObject(new JProperty("Enabled", autoDesktopScaling));
+            JObject JUseNicknames = new JObject(new JProperty("Use", useNicknames));
+            JObject JNetwork = new JObject(new JProperty("Type", network));
+            JObject JAutoPlay = new JObject(new JProperty("Enabled", autoPlay));
+            JObject JAudioInstances = new JObject();
+            JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
+                                                new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
+                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus));
+
+            foreach (KeyValuePair<string, string> JaudioDevice in AudioInstances)
+            {
+                JAudioInstances.Add(new JProperty(JaudioDevice.Key, JaudioDevice.Value));
+            }
+
+            JObject JAudioSettings = new JObject(new JProperty("CustomSettings", audioCustomSettings), new JProperty("DefaultSettings", audioDefaultSettings));
+     
+            List<JObject> playersInfos = new List<JObject>();//Players object
+
+            for (int i = 0; i < PlayerIDs.Count(); i++)//build per players object
+            {                 
+                JObject JOwner = new JObject(
+                                  new JProperty("Type", OwnerType[i]),
+
+                                   new JProperty("UiBounds", new JObject(
+                                                           new JProperty("X", OwnerUIBounds[i].X),
+                                                           new JProperty("Y", OwnerUIBounds[i].Y),
+                                                           new JProperty("Width", OwnerUIBounds[i].Width),
+                                                           new JProperty("Height", OwnerUIBounds[i].Height))),
+
+                                  new JProperty("DisplayIndex", DisplaysIndexes[i]),
+                                  new JProperty("Display", new JObject(
+                                                           new JProperty("X", OwnerDisplays[i].X),
+                                                           new JProperty("Y", OwnerDisplays[i].Y),
+                                                           new JProperty("Width", OwnerDisplays[i].Width),
+                                                           new JProperty("Height", OwnerDisplays[i].Height))));
+
+
+                JObject JMonitorBounds = new JObject(
+                                         new JProperty("X", MonitorBounds[i].X),
+                                         new JProperty("Y", MonitorBounds[i].Y),
+                                         new JProperty("Width", MonitorBounds[i].Width),
+                                         new JProperty("Height", MonitorBounds[i].Height));
+
+                JObject JEditBounds = new JObject(
+                                      new JProperty("X", EditBounds[i].X),
+                                      new JProperty("Y", EditBounds[i].Y),
+                                      new JProperty("Width", EditBounds[i].Width),
+                                      new JProperty("Height", EditBounds[i].Height));
+
+                JObject JProcessor = new JObject();
+
+                if (i < IdealProcessors.Count)
+                {
+                    JProcessor.Add(new JProperty("IdealProcessor", IdealProcessors[i]));
+                }
+
+                if (i < Affinitys.Count)
+                {
+                    JProcessor.Add(new JProperty("ProcessorAffinity", Affinitys[i]));
+                }
+
+                if (i < PriorityClasses.Count)
+                {
+                    JProcessor.Add(new JProperty("ProcessorPriorityClass", PriorityClasses[i]));
+                }
+
+                JObject JPData = new JObject(//build all individual player datas object
+                                 new JProperty("PlayerID", PlayerIDs[i]),
+                                 new JProperty("Nickname", Nicknames[i]),
+                                 new JProperty("SteamID", SteamIDs[i]),
+                                 new JProperty("GamepadGuid", GamepadsGuid[i]),
+                                 new JProperty("IsDInput",IsDInputs[i]),
+                                 new JProperty("IsXInput", IsXInputs[i]),
+                                 new JProperty("Processor", JProcessor),
+                                 new JProperty("IsKeyboardPlayer", IsKeyboardPlayer[i]),
+                                 new JProperty("RawKeyboardDeviceHandle", RawKeyboardDeviceHandles[i]),
+                                 new JProperty("IsRawMouse", IsRawMouse[i]),
+                                 new JProperty("RawMouseDeviceHandle", RawMouseDeviceHandles[i]),
+                                 new JProperty("IsExpanded", IsExpanded[i]),
+                                 new JProperty("ScreenPriority", ScreenPrioritys[i]),
+                                 new JProperty("ScreenIndex",ScreenIndexes[i]),
+                                 new JProperty("EditBounds", JEditBounds),
+                                 new JProperty("MonitorBounds", JMonitorBounds),
+                                 new JProperty("Owner", JOwner)
+                    );
+
+                playersInfos.Add(JPData);
+            }
+
+            List<JObject> JScreens = new List<JObject>();
+
+            for (int s = 0; s < AllScreens.Count(); s++)
+            {
+                JObject JScreen = new JObject(new JProperty("X", AllScreens[s].X),
+                                              new JProperty("Y", AllScreens[s].Y),
+                                              new JProperty("Width", AllScreens[s].Width),
+                                              new JProperty("Height", AllScreens[s].Height)//,
+                                              /*new JProperty("Index", ScreenIndexes[s])*/);
+
+                JScreens.Add(JScreen);
+            }
+
+            JObject profileJson = new JObject//shared settings object
+            (
+               new JProperty("Title", Title),
+               new JProperty("Notes", Notes),
+               new JProperty("Player(s)", PlayerIDs.Count),
+               new JProperty("AutoPlay", JAutoPlay),
+               new JProperty("Data", playersInfos),
+               new JProperty("Options", options),
+               new JProperty("UseNicknames", JUseNicknames),
+               new JProperty("AutoDesktopScaling", JAutoDesktopScaling),
+               new JProperty("UseSplitDiv", JUseSplitDiv),
+               new JProperty("CustomLayout", JCustomLayout),
+               new JProperty("WindowsSetupTiming", JHWndInterval),
+               new JProperty("PauseBetweenInstanceLaunch", JPauseBetweenInstanceLaunch),
+               new JProperty("Network", JNetwork),
+               new JProperty("AudioSettings", JAudioSettings),
+               new JProperty("AudioInstances", JAudioInstances),
+               new JProperty("CutscenesModeSettings", JCts_Settings),
+               new JProperty("AllScreens", JScreens)
+
+            );
+
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    string json = JsonConvert.SerializeObject(profileJson, Formatting.Indented);
+                    writer.Write(json);
+                    stream.Flush();
+                }
+            }
+
+            modeText = $"Profile n°{profileToSave}";
+
+            LogManager.Log("Game Profile Updated");
+            Globals.MainOSD.Settings(1600, Color.GreenYellow, $"Game Profile Updated");          
+        }
+
+        public static void SaveGameProfile(GameProfile profile)
         {
             string path;
             bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
@@ -656,9 +884,7 @@ namespace Nucleus.Gaming.Coop
 
             for (int i = 0; i < players.Count(); i++)//build per players object
             {
-                JObject JOwner = new JObject();
-
-                JOwner = new JObject(
+                JObject JOwner = new JObject(
                                   new JProperty("Type", players[i].Owner.Type),
 
                                    new JProperty("UiBounds", new JObject(
@@ -735,14 +961,15 @@ namespace Nucleus.Gaming.Coop
                 JObject JScreen = new JObject(new JProperty("X", screen.UIBounds.X),
                                               new JProperty("Y", screen.UIBounds.Y),
                                               new JProperty("Width", screen.UIBounds.Width),
-                                              new JProperty("Height", screen.UIBounds.Height),
-                                              new JProperty("Index", s));
+                                              new JProperty("Height", screen.UIBounds.Height)//,
+                                              /*new JProperty("Index", s)*/);
 
                 JScreens.Add(JScreen);
             }
 
             JObject profileJson = new JObject//shared settings object
             (
+               new JProperty("Title", Title),
                new JProperty("Notes", Notes),
                new JProperty("Player(s)", profile.PlayerData.Count),
                new JProperty("AutoPlay", JAutoPlay),

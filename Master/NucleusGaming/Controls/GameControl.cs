@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
 using System;
 using System.Drawing;
@@ -51,8 +52,8 @@ namespace Nucleus.Coop
                 radioSelectedBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
                 userOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
                 userLeaveBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
-                favorite_Unselected = new Bitmap(themePath + "favorite_unselected.png");
-                favorite_Selected = new Bitmap(themePath + "favorite_selected.png");
+                favorite_Unselected = ImageCache.GetImage(themePath + "favorite_unselected.png");
+                favorite_Selected = ImageCache.GetImage(themePath + "favorite_selected.png");
 
                 SuspendLayout();
                 AutoScaleDimensions = new SizeF(96F, 96F);
@@ -77,7 +78,7 @@ namespace Nucleus.Coop
                 playerIcon = new PictureBox
                 {
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = new Bitmap(themePath + "players.png")
+                    Image = ImageCache.GetImage(themePath + "players.png")
                 };
 
                 numPlayersTt = new ToolTip();

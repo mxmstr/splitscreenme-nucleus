@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Net;
 
@@ -7,12 +8,22 @@ namespace Nucleus.Gaming.Coop.Generic
 {
     public class Hub
     {
+        private static int webExceptionCount = 0;
         private bool updateAvailable = false;
-        public static bool Connected;
+
+        private static bool connected;
+        public static bool Connected
+        {
+            set
+            {
+                connected = value;
+                webExceptionCount = 0;
+            }
+        }
 
         public bool IsUpdateAvailable(bool fetch)
         {
-            if (!Connected)
+            if (!connected)
             {
                 return false;
             }
@@ -88,6 +99,7 @@ namespace Nucleus.Gaming.Coop.Generic
         public string GetScreenshotsUri()
         {
             string id = Handler.Id;
+
             if (id == null)
             {
                 return null;
@@ -96,13 +108,19 @@ namespace Nucleus.Gaming.Coop.Generic
             {
                 return null;
             }
+
             string resp = Get($@"https://hub.splitscreen.me/api/v1/screenshots/{id}");
 
             return resp;
         }
-
+       
         public string Get(string uri)
         {
+            if(webExceptionCount >= 2) 
+            {
+                return null;
+            }
+
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
@@ -110,10 +128,9 @@ namespace Nucleus.Gaming.Coop.Generic
 
             try
             {
-
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
                 request.Timeout = 1000;
-                request.Method = "Get"; // As per Lasse's comment
+                request.Method = "Get";
 
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
@@ -122,12 +139,10 @@ namespace Nucleus.Gaming.Coop.Generic
                     return reader.ReadToEnd();
                 }
             }
-            //catch (Exception)
-            //{
-            //    return string.Empty;
-            //}
             catch (WebException)
             {
+                webExceptionCount++;
+                Console.WriteLine(webExceptionCount.ToString());
                 return null;
             }
         }

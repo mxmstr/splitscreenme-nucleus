@@ -30,13 +30,11 @@
         {
             this.SuspendLayout();
             // 
-            // ProfilesPanel
+            // ProfilesList
             // 
-           // this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            //this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "ProfilesPanel";
-            this.Size = new System.Drawing.Size(7655, 4308);
+            this.Name = "ProfilesList";
+            this.Size = new System.Drawing.Size(11137, 6486);
             this.ResumeLayout(false);
 
         }

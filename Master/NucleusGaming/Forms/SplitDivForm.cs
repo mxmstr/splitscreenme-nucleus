@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -35,19 +36,20 @@ namespace Nucleus.Gaming.Forms
 
         private void Setup(GenericGameInfo game, GenericGameHandler handler, Display screen)
         {
-            IDictionary<string, Color> splitColors = new Dictionary<string, Color>();
-
-            splitColors.Add("Black", Color.Black);
-            splitColors.Add("Gray", Color.DimGray);
-            splitColors.Add("White", Color.White);
-            splitColors.Add("Dark Blue", Color.DarkBlue);
-            splitColors.Add("Blue", Color.Blue);
-            splitColors.Add("Purple", Color.Purple);
-            splitColors.Add("Pink", Color.Pink);
-            splitColors.Add("Red", Color.Red);
-            splitColors.Add("Orange", Color.Orange);
-            splitColors.Add("Yellow", Color.Yellow);
-            splitColors.Add("Green", Color.Green);
+            IDictionary<string, Color> splitColors = new Dictionary<string, Color>
+            {
+                { "Black", Color.Black },
+                { "Gray", Color.DimGray },
+                { "White", Color.White },
+                { "Dark Blue", Color.DarkBlue },
+                { "Blue", Color.Blue },
+                { "Purple", Color.Purple },
+                { "Pink", Color.Pink },
+                { "Red", Color.Red },
+                { "Orange", Color.Orange },
+                { "Yellow", Color.Yellow },
+                { "Green", Color.Green }
+            };
 
             foreach (KeyValuePair<string, Color> color in splitColors)
             {
@@ -57,6 +59,7 @@ namespace Nucleus.Gaming.Forms
                 }
 
                 ChoosenColor = color.Value;
+                break;
             }
 
             int interval = 5000;
@@ -96,7 +99,7 @@ namespace Nucleus.Gaming.Forms
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                BackgroundImage = new Bitmap(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{RandomIndex}_{currentGame}.jpeg"));
+                BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{RandomIndex}_{currentGame}.jpeg"));
             }
         }
 

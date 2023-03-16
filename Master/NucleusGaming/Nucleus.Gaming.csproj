@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\ImageCache.cs" />
     <Compile Include="Controls\AlphaTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

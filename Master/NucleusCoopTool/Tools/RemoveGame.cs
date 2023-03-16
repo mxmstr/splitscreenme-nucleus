@@ -40,7 +40,7 @@ namespace Nucleus.Coop.Tools
                             jObject["Games"][i].Remove();
                             string output = JsonConvert.SerializeObject(jObject, Formatting.Indented);
                             File.WriteAllText(userProfile, output);
-                            main.RefreshGames();
+                            main.RefreshGames(false);
 
                             if (!dontConfirm)
                             {

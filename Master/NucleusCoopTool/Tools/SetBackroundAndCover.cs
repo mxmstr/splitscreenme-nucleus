@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using System;
 using System.Drawing;
 using System.IO;
@@ -35,19 +36,20 @@ namespace Nucleus.Coop.Tools
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
             {
-                mainForm.coverImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                //mainForm.coverImg = ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                 mainForm.clientAreaPanel.SuspendLayout();
-                mainForm.cover.BackgroundImage = mainForm.coverImg;
+                mainForm.cover.BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));// mainForm.coverImg;
                 mainForm.clientAreaPanel.ResumeLayout();
                 mainForm.coverFrame.Visible = true;
                 mainForm.cover.Visible = true;
             }
             else
             {
-                mainForm.cover.BackgroundImage = new Bitmap(Globals.Theme + "no_cover.png");
+                mainForm.cover.BackgroundImage = ImageCache.GetImage(Globals.Theme + "no_cover.png");// new Bitmap(Globals.Theme + "no_cover.png");
                 mainForm.cover.Visible = true;
                 mainForm.coverFrame.Visible = true;
             }
+
             //Apply screenshots randomly
             if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")))
             {
@@ -55,13 +57,14 @@ namespace Nucleus.Coop.Tools
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                mainForm.screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));//name(1) => directory name ; name(2) = partial image name 
+                //mainForm.screenshotImg = ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));//name(1) => directory name ; name(2) = partial image name 
                 mainForm.clientAreaPanel.SuspendLayout();
-                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.screenshotImg);
+                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg")));
                 mainForm.clientAreaPanel.ResumeLayout();
             }
             else
             {
+
                 mainForm.clientAreaPanel.SuspendLayout();
                 mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.defBackground);
                 mainForm.clientAreaPanel.ResumeLayout();

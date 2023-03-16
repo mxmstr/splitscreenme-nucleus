@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -63,7 +64,7 @@ namespace Nucleus.Coop.Forms
             ForeColor = label_foreColor;
 
             btn_Download.BackColor = mf.buttonsBackColor;
-            btn_Close.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
+            btn_Close.BackgroundImage = ImageCache.GetImage(mf.theme + "title_close.png");
             btn_Close.FlatAppearance.MouseOverBackColor = Color.Transparent;
 
             BackColor = label_backColor;
@@ -147,7 +148,7 @@ namespace Nucleus.Coop.Forms
 
             txt_AuthDesc.Text = Handler.Description;
 
-            Bitmap bmp = new Bitmap(mf.theme + "no_cover.png");
+            Bitmap bmp = ImageCache.GetImage(mf.theme + "no_cover.png");
             string _cover = $@"https://images.igdb.com/igdb/image/upload/t_cover_small/{Handler.GameCover}.jpg";
 
             ServicePointManager.Expect100Continue = true;
@@ -263,12 +264,12 @@ namespace Nucleus.Coop.Forms
 
         private void btn_Close_MouseEnter(object sender, EventArgs e)
         {
-            btn_Close.BackgroundImage = new Bitmap(mainForm.theme + "title_close_mousehover.png");
+            btn_Close.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close_mousehover.png");
         }
 
         private void btn_Close_MouseLeave(object sender, EventArgs e)
         {
-            btn_Close.BackgroundImage = new Bitmap(mainForm.theme + "title_close.png");
+            btn_Close.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
         }
     }
 }

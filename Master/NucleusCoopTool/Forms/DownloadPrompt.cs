@@ -1,5 +1,6 @@
 ﻿using Ionic.Zip;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,7 +65,7 @@ namespace Nucleus.Coop.Forms
 
                 SuspendLayout();
 
-                BackgroundImage = new Bitmap(mainForm.theme + "other_backgrounds.jpg");
+                BackgroundImage = ImageCache.GetImage(mainForm.theme + "other_backgrounds.jpg");
 
                 if (zipFileName == null)
                 {

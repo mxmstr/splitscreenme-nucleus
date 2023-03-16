@@ -221,7 +221,7 @@ namespace Nucleus.Gaming
 
             Log("High-level error log generated at content/" + file);
 
-            Process.GetCurrentProcess().Kill();
+            //Process.GetCurrentProcess().Kill();
         }
 
         public static void Log(string str, object par1)

@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
@@ -78,7 +79,7 @@ namespace Nucleus.Coop
         private PictureBox instructionImg;
         public PictureBox profileSettings_btn;
         public PictureBox gameProfilesList_btn;
-        public ProfilesList gameProfilesList = new ProfilesList();
+        public ProfilesList gameProfilesList;
         private ImageAttributes flashImageAttributes;
 
         private Bitmap instructionCloseImg;
@@ -166,26 +167,26 @@ namespace Nucleus.Coop
             BackColor = Color.Transparent;
 
             //BackgroundImageLayout = ImageLayout.Stretch;
-            instructionCloseImg = new Bitmap(theme + "instruction_closed.png");
-            instructionOpenImg = new Bitmap(theme + "instruction_opened.png");
-            xinputPic = new Bitmap(theme + "xinput.png");
-            dinputPic = new Bitmap(theme + "dinput.png");
-            keyboardPic = new Bitmap(theme + "keyboard.png");
-            protoKeyboardPic = new Bitmap(theme + "proto_keyboard.png");
-            protoMousePic = new Bitmap(theme + "proto_mouse.png");
-            virtualKeyboardPic = new Bitmap(theme + "virtual_keyboard.png");
-            virtualMousePic = new Bitmap(theme + "virtual_mouse.png");
-            screenimg = new Bitmap(theme + "screen.png");
-            draggingScreenImg = new Bitmap(theme + "dragging_indicator.png");
-            fullscreen = new Bitmap(theme + "fullscreen.png");
-            horizontal2 = new Bitmap(theme + "2horizontal.png");
-            vertical2 = new Bitmap(theme + "2vertical.png");
-            players4 = new Bitmap(theme + "4players.png");
-            players6 = new Bitmap(theme + "6players.png");
-            players8 = new Bitmap(theme + "8players.png");
-            players16 = new Bitmap(theme + "16players.png");
-            customLayout = new Bitmap(theme + "customLayout.png");
-            plyrsSettingsIcon = new Bitmap(theme + "profile_settings.png");
+            instructionCloseImg = ImageCache.GetImage(theme + "instruction_closed.png");
+            instructionOpenImg = ImageCache.GetImage(theme + "instruction_opened.png");
+            xinputPic = ImageCache.GetImage(theme + "xinput.png");
+            dinputPic = ImageCache.GetImage(theme + "dinput.png");
+            keyboardPic = ImageCache.GetImage(theme + "keyboard.png");
+            protoKeyboardPic = ImageCache.GetImage(theme + "proto_keyboard.png");
+            protoMousePic = ImageCache.GetImage(theme + "proto_mouse.png");
+            virtualKeyboardPic = ImageCache.GetImage(theme + "virtual_keyboard.png");
+            virtualMousePic = ImageCache.GetImage(theme + "virtual_mouse.png");
+            screenimg = ImageCache.GetImage(theme + "screen.png");
+            draggingScreenImg = ImageCache.GetImage(theme + "dragging_indicator.png");
+            fullscreen = ImageCache.GetImage(theme + "fullscreen.png");
+            horizontal2 = ImageCache.GetImage(theme + "2horizontal.png");
+            vertical2 = ImageCache.GetImage(theme + "2vertical.png");
+            players4 = ImageCache.GetImage(theme + "4players.png");
+            players6 = ImageCache.GetImage(theme + "6players.png");
+            players8 = ImageCache.GetImage(theme + "8players.png");
+            players16 = ImageCache.GetImage(theme + "16players.png");
+            customLayout = ImageCache.GetImage(theme + "customLayout.png");
+            plyrsSettingsIcon = ImageCache.GetImage(theme + "profile_settings.png");
 
             instruction_btn_Tooltip = new ToolTip();
             instruction_btn_Tooltip.InitialDelay = 100;
@@ -257,10 +258,12 @@ namespace Nucleus.Coop
             gameProfilesList_btn.AutoSize = false;
             gameProfilesList_btn.SizeMode = PictureBoxSizeMode.StretchImage;
             gameProfilesList_btn.BackColor = Color.Transparent;
-            gameProfilesList_btn.Image = new Bitmap(theme + "profiles_list.png");
+            gameProfilesList_btn.Image = ImageCache.GetImage(theme + "profiles_list.png");
             gameProfilesList_btn.Text = "Profiles List";
             gameProfilesList_btn.Cursor = hand_Cursor;
             gameProfilesList_btn.Visible = false;
+
+            gameProfilesList = new ProfilesList(this);
 
             ResumeLayout();
 
@@ -363,7 +366,7 @@ namespace Nucleus.Coop
                 gameProfilesList_btn.Location = new Point(profileSettings_btn.Left - gameProfilesList_btn.Width - 3, instruction_btn.Location.Y);
                 gameProfilesList.UpdateSize(scale);
                 // gameProfilesList.Location = new Point((gameProfilesList_btn.Left - (int)((gameProfilesList.Width)*scale))-5, gameProfilesList_btn.Location.Y + gameProfilesList_btn.Height/2);
-                gameProfilesList.Location = new Point((gameProfilesList_btn.Left - (int)((gameProfilesList.Width) * scale)) - 5, gameProfilesList_btn.Location.Y /*+ gameProfilesList_btn.Height / 2*/);
+               // gameProfilesList.Location = new Point((Right - (int)((gameProfilesList.Width) * scale)) - 5, gameProfilesList_btn.Location.Y /*+ gameProfilesList_btn.Height / 2*/);
                 scaled = true;
             }
 
@@ -1617,11 +1620,6 @@ namespace Nucleus.Coop
             base.OnPaint(e);
 
             Graphics g = e.Graphics;
-
-            //if (gameProfilesList.Visible)
-            //{
-            //    g.DrawRectangle(listPen, gameProfilesList.Location.X - 1, gameProfilesList.Location.Y - 1, gameProfilesList.Width + 2, gameProfilesList.Height + 2));
-            //}
 
             if (totalBounds == Rectangle.Empty)//Avoid resizing conflicts with "OnSizeChange" event.
             {

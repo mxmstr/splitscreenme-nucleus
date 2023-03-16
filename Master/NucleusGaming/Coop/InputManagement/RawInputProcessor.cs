@@ -24,6 +24,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             get
             {
                 IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+                string lockKey = ini.IniReadValue("Hotkeys", "LockKey");
 
                 IDictionary<string, int> lockKeys = new Dictionary<string, int>
                 {
@@ -59,12 +60,15 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                 foreach (KeyValuePair<string, int> key in lockKeys)
                 {
-                    if (key.Key == ini.IniReadValue("Hotkeys", "LockKey"))
+                    if (key.Key != lockKey)
                     {
-                        LockInputKey = key.Value;
+                        continue;
                     }
 
+                    LockInputKey = key.Value;
+                    break;
                 }
+
                 return LockInputKey;
             }
         }

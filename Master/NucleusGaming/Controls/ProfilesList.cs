@@ -1,6 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Games;
+using Jint;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Coop;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Tools.Network;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,11 +13,15 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Windows.Navigation;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Nucleus.Gaming.Controls
 {
-    public partial class ProfilesList : ControlListBox, IDynamicSized
+    public partial class ProfilesList : ControlListBox//, IDynamicSized
     {
+        private IniFile themeIni = Globals.ThemeIni;
+
         private float _scale;
         public static ProfilesList profilesList;
         public bool Locked = false;
@@ -20,17 +29,21 @@ namespace Nucleus.Gaming.Controls
         private ToolTip loadTooltip;
         private ToolTip deleteTooltip;
         private ToolTip unloadTooltip;
-        private IniFile themeIni = Globals.ThemeIni;
+        
         private Color buttonsBackColor;
         public string loadedTitle;
+        private Pen borderPen;
+        private PositionsControl parentControl;
 
-        public ProfilesList()
+        public ProfilesList(PositionsControl parent)
         {
-            InitializeComponent();
+            parentControl = parent;
 
+            InitializeComponent();
+            Parent = parent;
             profilesList = this;
             Name = "ProfilePanel";
-            Size = new Size(100, 3);
+            Size = new Size(300, 3);
             Location = new Point(0, 0);
             Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Visible = false;
@@ -40,6 +53,10 @@ namespace Nucleus.Gaming.Controls
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[3]));
+
+            borderPen = new Pen(Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[0]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[1]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])));
             SetToolTips();
         }
 
@@ -114,7 +131,7 @@ namespace Nucleus.Gaming.Controls
 
             if (GameProfile.currentProfile.LoadUserProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
             {
-                selected.ForeColor = Color.LightGreen;
+                Controls[int.Parse(selected.Name)-1].ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
                 unloadBtn.ForeColor = Color.Orange;
                 loadedTitle = selected.Text;
@@ -125,18 +142,35 @@ namespace Nucleus.Gaming.Controls
         {
             Controls.Clear();
             SetToolTips();
+            
 
-            Size = new Size((int)(100 * _scale), (int)(3 * _scale));
+            List<SizeF> sizes = new List<SizeF>();
+
+            Size = new Size((int)(300* _scale), (int)(3 * _scale));
+            int offset = 5;
 
             Font font = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
             for (int i = 0; i < GameProfile.profilesPathList.Count + 1; i++)
             {
                 string text;
+                offset = 5;
 
                 if (i != GameProfile.profilesPathList.Count)
                 {
-                    text = $"Profile n°{i + 1}";
+                    string jsonString = File.ReadAllText(GameProfile.profilesPathList[i]);
+                    JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
+
+                    if ((string)Jprofile["Title"] != null && (string)Jprofile["Title"] != "")
+                    {
+                        text = (string)Jprofile["Title"];
+                    }
+                    else
+                    {
+                        text = $"Profile n°{i + 1}";
+                    }
+
+                    //text = $"Profile n°{i + 1}";
                 }
                 else
                 {
@@ -156,6 +190,7 @@ namespace Nucleus.Gaming.Controls
 
                 deleteTooltip.SetToolTip(deleteBtn, "Delete this game profile.");
                 deleteBtn.Click += new EventHandler(DeleteBtn_Click);//Delete profile
+                offset += deleteBtn.Width;
 
                 Label previewBtn = new Label()
                 {
@@ -163,7 +198,7 @@ namespace Nucleus.Gaming.Controls
                     Size = new Size((int)(13 * _scale), (int)(20 * _scale)),
                     Font = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0),
                     BackgroundImageLayout = ImageLayout.Zoom,
-                    BackgroundImage = new Bitmap(Globals.Theme + "magnifier.png"),
+                    BackgroundImage = ImageCache.GetImage(Globals.Theme + "magnifier.png"),
                     BackColor = Color.Transparent,
                     ForeColor = Color.Green,
                     FlatStyle = FlatStyle.Flat,
@@ -173,7 +208,7 @@ namespace Nucleus.Gaming.Controls
 
                 notesTooltip.SetToolTip(previewBtn, "Show profile content or user notes.");
                 previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
-
+                offset += previewBtn.Width;
                 Label profileBtn = new Label()
                 {
                     Name = (i + 1).ToString(),
@@ -203,13 +238,21 @@ namespace Nucleus.Gaming.Controls
                     profileBtn.ForeColor = Color.Gray;
                     unloadTooltip.SetToolTip(profileBtn, "Unload current loaded game profile.");
                 }
+     
+                using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new Bitmap(1, 1)))
+                {
+                    sizes.Add(graphics.MeasureString(profileBtn.Text, profileBtn.Font , Size.Width,StringFormat.GenericDefault));
+                }
 
-                profileBtn.Width = Width;
+
                 Height += profileBtn.Height + 1;
                 Controls.Add(profileBtn);
             }
 
-            //Height += 3;
+            var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();
+            Width = (int)((sortedSizes[0].Width) * _scale) + offset;
+
+            Location = new Point((parentControl.gameProfilesList_btn.Left - Width)-5, parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
 
             if (Controls.Count == 1)
             {
@@ -238,10 +281,12 @@ namespace Nucleus.Gaming.Controls
             Control[] scriptAuthorTxt = mainform.Controls.Find("scriptAuthorTxt", true);
             Control[] btn_textSwitcher = mainform.Controls.Find("btn_textSwitcher", true);
             Control[] HandlerNoteTitle = mainform.Controls.Find("HandlerNoteTitle", true);
+            Control[] ScriptAuthorTxtSizer = mainform.Controls.Find("scriptAuthorTxtSizer", true);
+
             string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(preview.Name) - 1]);
             JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
-            string text = string.Empty;
+            string text;
 
             if ((string)Jprofile["Notes"] != "" && (string)Jprofile["Notes"] != null)
             {
@@ -249,19 +294,23 @@ namespace Nucleus.Gaming.Controls
             }
             else
             {
-                text =  Jprofile.ToString();//jsonString.Replace(" ", "").                                
-                                           //Replace(",", "").
-                                           //Replace("\"", "").
-                                           //Replace("{", "").
-                                           //Replace("}", "");
+                text = Jprofile.ToString();//jsonString.Replace(" ", "").                                
+                                               //Replace(",", "").
+                                               //Replace("\"", "").
+                                               //Replace("{", "").
+                                               //Replace("}", "");
+            }
+
+            if (!ScriptAuthorTxtSizer[0].Visible)
+            {
+                ScriptAuthorTxtSizer[0].Visible = true;
             }
 
             scriptAuthorTxt[0].Text = text;
-            btn_textSwitcher[0].Visible = true;
-
             HandlerNoteTitle[0].Text = preview.Text;
+            btn_textSwitcher[0].Visible = true;
         }
-
+      
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
         {
             if (Locked)
@@ -295,15 +344,24 @@ namespace Nucleus.Gaming.Controls
             }
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawRectangle(borderPen, new Rectangle(0, 0, Width-3 , Height-3));
+
+        }
+
         public void UpdateSize(float scale)
         {
-            if (IsDisposed)
-            {
-                DPIManager.Unregister(this);
-                return;
-            }
+            //if (IsDisposed)
+            //{
+            //    DPIManager.Unregister(this);
+            //    return;
+            //}
 
             _scale = scale;
         }
+
+
     }
 }

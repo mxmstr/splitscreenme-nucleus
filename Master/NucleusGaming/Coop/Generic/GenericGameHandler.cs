@@ -360,7 +360,6 @@ namespace Nucleus.Gaming
 
                 foreach (Display dp in ScreensUtil.AllScreensParams())
                 {
-
                     if (screens.Contains(pod) || dp.DisplayIndex != pod)
                     {
                         continue;
@@ -2197,6 +2196,7 @@ namespace Nucleus.Gaming
                             Forms.Prompt prompt = new Forms.Prompt("Press OK when ready to make changes to game processes.");
                             prompt.ShowDialog();
                         }
+
                         ProcessEnd();
 
                         return string.Empty;
@@ -2752,7 +2752,7 @@ namespace Nucleus.Gaming
                                 Log($"Attempting to switch audio endpoint for process {players[pi].ProcessData.Process.ProcessName} pid ({players[pi].ProcessID}) to DeviceID {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
                                 Thread.Sleep(1000);
                                 AudioReroute.SwitchProcessTo(GameProfile.AudioInstances["AudioInstance" + (pi + 1)], AudioReroute.ERole.ERole_enum_count, AudioReroute.EDataFlow.eRender, (uint)players[pi].ProcessID);
-                                //Console.WriteLine($"Player{pi + 1 } audio = {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
+                                Console.WriteLine($"Player{pi + 1 } audio = {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
                             }
                         }
                     }
@@ -3039,7 +3039,7 @@ namespace Nucleus.Gaming
 
             ControllersUINav.EnabledRuntime = false;
 
-            GameProfile.SaveUserProfile(profile);
+            GameProfile.SaveGameProfile(profile);
             gen.OnFinishedSetup?.Invoke();
 
             return string.Empty;
@@ -3435,7 +3435,16 @@ namespace Nucleus.Gaming
                 GlobalWindowMethods.ChangeForegroundWindow();
             }
 
+            if (gen.UseNucleusEnvironment)
+            {
+                RegistryUtil.RestoreUserEnvironmentRegistryPath();//A voir si utile
+            }
+
+            GameProfile.SaveGameProfile(profile); //A voir si utile
+
             ControllersUINav.EnabledRuntime = false;
+            
+            gen.OnFinishedSetup?.Invoke();//A voir si utile
         }
 
         struct TickThread

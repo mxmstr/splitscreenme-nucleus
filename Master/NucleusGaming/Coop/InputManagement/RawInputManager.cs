@@ -48,7 +48,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
         private static void RegisterRawInputInternal(IntPtr windowHandle)
         {
             //GetDeviceList();
-            Logger.WriteLine($"Attempting to RegisterRawInputDevices for window handle {windowHandle}");
+            //Logger.WriteLine($"Attempting to RegisterRawInputDevices for window handle {windowHandle}");
 
             //https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hidclass-hardware-ids-for-top-level-collections
             RAWINPUTDEVICE[] rid = new RAWINPUTDEVICE[2];
@@ -66,7 +66,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             rid[1].hwndTarget = windowHandle;
 
             bool success = WinApi.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[0]));
-            Logger.WriteLine($"Succeeded RegisterRawInputDevices Keyboard = {success}");
+            //Logger.WriteLine($"Succeeded RegisterRawInputDevices Keyboard = {success}");
 
             if (!success)
             {
@@ -75,7 +75,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
 
             success = WinApi.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[1]));
-            Logger.WriteLine($"Succeeded RegisterRawInputDevices Mouse = {success}");
+            //Logger.WriteLine($"Succeeded RegisterRawInputDevices Mouse = {success}");
 
             if (!success)
             {
@@ -107,12 +107,12 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     if (device.dwType == 0)
                     {
                         //Mouse
-                        Logger.WriteLine($"Found mouse. Mouse ID = {device.mouse.dwId}, number of buttons = {device.mouse.dwNumberOfButtons}, sample rate = {device.mouse.dwSampleRate}, has horizontal wheel = {device.mouse.dwSampleRate}");
+                        //Logger.WriteLine($"Found mouse. Mouse ID = {device.mouse.dwId}, number of buttons = {device.mouse.dwNumberOfButtons}, sample rate = {device.mouse.dwSampleRate}, has horizontal wheel = {device.mouse.dwSampleRate}");
                     }
                     else if (device.dwType == 1)
                     {
                         //Keyboard
-                        Logger.WriteLine($"Found keyboard. Keyboard type = {device.keyboard.dwType}, keyboard subtype = {device.keyboard.dwSubType}, scan code mode = {device.keyboard.dwKeyboardMode}, number of keys = {device.keyboard.dwNumberOfKeysTotal}");
+                        //Logger.WriteLine($"Found keyboard. Keyboard type = {device.keyboard.dwType}, keyboard subtype = {device.keyboard.dwSubType}, scan code mode = {device.keyboard.dwKeyboardMode}, number of keys = {device.keyboard.dwNumberOfKeysTotal}");
                     }
 
                     yield return (device, rid.hDevice);

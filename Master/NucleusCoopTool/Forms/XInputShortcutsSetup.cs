@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using SharpDX.XInput;
@@ -41,12 +42,12 @@ namespace Nucleus.Coop.Forms
             refreshTimer.Interval = 500;
             refreshTimer.Start();
 
-            BackgroundImage = new Bitmap(Globals.Theme + "xinput_background.jpg");
+            BackgroundImage = ImageCache.GetImage(Globals.Theme + "xinput_background.jpg");
             BackgroundImageLayout = ImageLayout.Stretch;
 
-            controllerTop = new Bitmap(Nucleus.Coop.Properties.Resources.xboxControllerTop);
-            controllerFront = new Bitmap(Nucleus.Coop.Properties.Resources.xboxControllerFront);
-            Close.BackgroundImage = new Bitmap(Globals.Theme + "title_close.png");
+            controllerTop = Nucleus.Coop.Properties.Resources.xboxControllerTop;
+            controllerFront = Nucleus.Coop.Properties.Resources.xboxControllerFront;
+            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
 
             ToolTip enabled_chk_Tooltip = new ToolTip();
             enabled_chk_Tooltip.InitialDelay = 100;
@@ -616,12 +617,12 @@ namespace Nucleus.Coop.Forms
 
         private void Close_MouseEnter(object sender, EventArgs e)
         {
-            Close.BackgroundImage = new Bitmap(Globals.Theme + "title_close_mousehover.png");
+            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close_mousehover.png");
         }
 
         private void Close_MouseLeave(object sender, EventArgs e)
         {
-            Close.BackgroundImage = new Bitmap(Globals.Theme + "title_close.png");
+            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
         }
     }
 }

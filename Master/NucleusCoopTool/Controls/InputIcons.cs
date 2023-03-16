@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -24,7 +25,7 @@ namespace Nucleus.Coop
                     Name = "icon1",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = new Bitmap(Globals.Theme + "xinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.Theme + "xinput_icon.png")
                 };
 
                 icon.MouseEnter += inputIcons_MouseEnter;
@@ -40,7 +41,7 @@ namespace Nucleus.Coop
                     Name = "icon2",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = new Bitmap(Globals.Theme + "dinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
                 };
 
                 icon.MouseEnter += inputIcons_MouseEnter;
@@ -54,7 +55,7 @@ namespace Nucleus.Coop
                     Name = "icon3",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = new Bitmap(Globals.Theme + "dinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
                 };
 
                 icon.MouseEnter += inputIcons_MouseEnter;
@@ -69,7 +70,7 @@ namespace Nucleus.Coop
                     Name = "icon4",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = new Bitmap(Globals.Theme + "keyboard_icon.png")
+                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
                 };
 
                 icon.MouseEnter += inputIcons_MouseEnter;
@@ -84,7 +85,7 @@ namespace Nucleus.Coop
                     Name = "icon5",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = new Bitmap(Globals.Theme + "keyboard_icon.png")
+                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
                 };
 
                 PictureBox iconKB2 = new PictureBox
@@ -92,7 +93,7 @@ namespace Nucleus.Coop
                     Name = "icon6",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = new Bitmap(Globals.Theme + "keyboard_icon.png")
+                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
                 };
 
                 iconKB1.MouseEnter += inputIcons_MouseEnter;

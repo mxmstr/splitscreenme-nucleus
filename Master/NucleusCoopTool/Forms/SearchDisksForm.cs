@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
@@ -105,7 +106,7 @@ namespace Nucleus.Coop
                                                    int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[2]),
                                                    int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[3]));
 
-            closeBtn.BackgroundImage = new Bitmap(main.theme + "title_close.png");
+            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
             //Controls Image
             btn_addSelection.BackColor = main.buttonsBackColor;
             btn_customPath.BackColor = main.buttonsBackColor;
@@ -586,12 +587,12 @@ namespace Nucleus.Coop
                     UserGameInfo uinfo = GameManager.Instance.TryAddGame(gameToAdd);
                     if (uinfo != null)
                     {
-                        main.NewUserGame(uinfo);
+                        main.NewUserGame(uinfo,false);
                         numAdded++;
                     }
                 }
                 MessageBox.Show(string.Format("{0}/{1} selected games added!", numAdded, checkboxFoundGames.CheckedItems.Count), "Games added");
-                main.RefreshGames();
+                main.RefreshGames(false);
             }
 
             btnSearch.Enabled = true;
@@ -655,12 +656,12 @@ namespace Nucleus.Coop
 
         private void closeBtn_MouseEnter(object sender, EventArgs e)
         {
-            closeBtn.BackgroundImage = new Bitmap(main.theme + "title_close_mousehover.png");
+            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close_mousehover.png");
         }
 
         private void closeBtn_MouseLeave(object sender, EventArgs e)
         {
-            closeBtn.BackgroundImage = new Bitmap(main.theme + "title_close.png");
+            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
         }
     }
 }

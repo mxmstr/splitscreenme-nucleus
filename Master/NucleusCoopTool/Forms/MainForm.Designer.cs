@@ -99,7 +99,7 @@ namespace Nucleus.Coop
             this.btn_Extract = new System.Windows.Forms.Button();
             this.label_StepTitle = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.btnBack = new System.Windows.Forms.Button();
+            this.btn_Prev = new System.Windows.Forms.Button();
             this.btn_Play = new System.Windows.Forms.Button();
             this.btn_Next = new System.Windows.Forms.Button();
             this.btnAutoSearch = new System.Windows.Forms.Button();
@@ -879,7 +879,7 @@ namespace Nucleus.Coop
             this.mainButtonFrame.Controls.Add(this.btn_Extract);
             this.mainButtonFrame.Controls.Add(this.label_StepTitle);
             this.mainButtonFrame.Controls.Add(this.btnSearch);
-            this.mainButtonFrame.Controls.Add(this.btnBack);
+            this.mainButtonFrame.Controls.Add(this.btn_Prev);
             this.mainButtonFrame.Controls.Add(this.btn_Play);
             this.mainButtonFrame.Controls.Add(this.btn_Next);
             this.mainButtonFrame.Controls.Add(this.btnAutoSearch);
@@ -957,22 +957,22 @@ namespace Nucleus.Coop
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // btnBack
+            // btn_Prev
             // 
-            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBack.BackColor = System.Drawing.Color.Transparent;
-            this.btnBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBack.Enabled = false;
-            this.btnBack.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btnBack.FlatAppearance.BorderSize = 0;
-            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Location = new System.Drawing.Point(881, 5);
-            this.btnBack.Margin = new System.Windows.Forms.Padding(2);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(25, 25);
-            this.btnBack.TabIndex = 9;
-            this.btnBack.UseVisualStyleBackColor = false;
-            this.btnBack.Click += new System.EventHandler(this.arrow_Back_Click);
+            this.btn_Prev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Prev.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Prev.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_Prev.Enabled = false;
+            this.btn_Prev.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btn_Prev.FlatAppearance.BorderSize = 0;
+            this.btn_Prev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Prev.Location = new System.Drawing.Point(881, 5);
+            this.btn_Prev.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Prev.Name = "btn_Prev";
+            this.btn_Prev.Size = new System.Drawing.Size(25, 25);
+            this.btn_Prev.TabIndex = 9;
+            this.btn_Prev.UseVisualStyleBackColor = false;
+            this.btn_Prev.Click += new System.EventHandler(this.btn_Prev_Click);
             // 
             // btn_Play
             // 
@@ -1191,7 +1191,7 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Label label_StepTitle;
         private System.Windows.Forms.Button btn_Play;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.Button btn_Prev;
         private System.Windows.Forms.Button btnAutoSearch;
         private System.Windows.Forms.Button btn_Next;
         private System.Windows.Forms.ToolTip toolTip1;

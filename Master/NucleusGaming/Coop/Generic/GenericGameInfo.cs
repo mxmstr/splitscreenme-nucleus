@@ -507,6 +507,7 @@ namespace Nucleus.Gaming
                 }
 
                 EpicLang = lang.Value;
+                break;
             }
 
             return EpicLang;
@@ -555,6 +556,7 @@ namespace Nucleus.Gaming
                 }
 
                 GogLang = lang.Key;
+                break;
             }
 
             return GogLang;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.Cache;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -11,7 +12,7 @@ namespace Nucleus.Gaming.Forms
         public CustomPrompt(string message, string prevAnswer, int i)
         {
             string theme = Globals.Theme;
-            BackgroundImage = Image.FromFile(theme + "other_backgrounds.jpg");
+            BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
             InitializeComponent();
             lbl_Desc.Text = message;
             txt_UserInput.Text = prevAnswer;

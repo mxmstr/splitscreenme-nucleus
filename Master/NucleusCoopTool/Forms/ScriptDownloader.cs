@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Collections.Generic;
@@ -136,7 +137,7 @@ namespace Nucleus.Coop.Forms
             }
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
-            BackgroundImage = new Bitmap(mf.theme + "other_backgrounds.jpg");
+            BackgroundImage = ImageCache.GetImage(mf.theme + "other_backgrounds.jpg");
 
             btn_Next.BackColor = mf.buttonsBackColor;
             btn_Prev.BackColor = mf.buttonsBackColor;
@@ -544,7 +545,7 @@ namespace Nucleus.Coop.Forms
                     vSymb = string.Empty;
                 }
 
-                Bitmap bmp = new Bitmap(mainForm.theme + "no_cover.png");
+                Bitmap bmp = ImageCache.GetImage(mainForm.theme + "no_cover.png");
                 string _cover = $@"https://images.igdb.com/igdb/image/upload/t_micro/{handler.GameCover}.jpg";
 
                 try

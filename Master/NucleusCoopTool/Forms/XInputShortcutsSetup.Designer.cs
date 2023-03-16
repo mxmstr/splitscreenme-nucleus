@@ -609,7 +609,7 @@
             this.UINavContainer.Controls.Add(this.label_12);
             this.UINavContainer.Controls.Add(this.switch12);
             this.UINavContainer.ForeColor = System.Drawing.Color.White;
-            this.UINavContainer.Location = new System.Drawing.Point(12, 261);
+            this.UINavContainer.Location = new System.Drawing.Point(12, 267);
             this.UINavContainer.Name = "UINavContainer";
             this.UINavContainer.Size = new System.Drawing.Size(248, 158);
             this.UINavContainer.TabIndex = 90;
@@ -795,7 +795,7 @@
             this.deadzone_tip.AutoSize = true;
             this.deadzone_tip.BackColor = System.Drawing.Color.Transparent;
             this.deadzone_tip.ForeColor = System.Drawing.Color.White;
-            this.deadzone_tip.Location = new System.Drawing.Point(278, 389);
+            this.deadzone_tip.Location = new System.Drawing.Point(278, 395);
             this.deadzone_tip.Name = "deadzone_tip";
             this.deadzone_tip.Size = new System.Drawing.Size(212, 26);
             this.deadzone_tip.TabIndex = 91;
@@ -811,7 +811,7 @@
             this.enabled_chk.Checked = true;
             this.enabled_chk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.enabled_chk.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.enabled_chk.Location = new System.Drawing.Point(12, 240);
+            this.enabled_chk.Location = new System.Drawing.Point(12, 245);
             this.enabled_chk.Name = "enabled_chk";
             this.enabled_chk.Size = new System.Drawing.Size(348, 17);
             this.enabled_chk.TabIndex = 92;

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Forms;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace Nucleus.Coop
             InitializeComponent();
             this.mainForm = mainForm;
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            BackgroundImage = new Bitmap(mainForm.theme + "showcase-background.png");
+            BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase-background.png");
             BackgroundImageLayout = ImageLayout.Stretch;
             labels = new List<Label>();
             rainbowTimer = new System.Windows.Forms.Timer();
@@ -96,7 +97,7 @@ namespace Nucleus.Coop
                 hubLink.Add(handlers[i]["_id"].ToString());
                 hotness.Add(handlers[i]["stars"].ToString());
 
-                Bitmap bmp = new Bitmap(Globals.Theme + "no_cover.png");
+                Bitmap bmp = ImageCache.GetImage(Globals.Theme + "no_cover.png");
 
                 string _cover = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{GameCover}.jpg";
 
@@ -127,7 +128,7 @@ namespace Nucleus.Coop
                             BackgroundImageLayout = ImageLayout.Stretch,
                             Dock = DockStyle.Fill,
                             BackColor = Color.Transparent,
-                            BackgroundImage = new Bitmap(mainForm.theme + "showcase_cover_layer.png"),
+                            BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase_cover_layer.png"),
                             Cursor = mainForm.hand_Cursor
                         };
 
@@ -137,7 +138,7 @@ namespace Nucleus.Coop
                         {
                             Font = new Font("Franklin Gothic", 8, FontStyle.Bold, GraphicsUnit.Point, 0),
                             BackColor = Color.Transparent,
-                            BackgroundImage = new Bitmap(mainForm.theme + "showcase-labels.png"),
+                            BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase-labels.png"),
                             BackgroundImageLayout = ImageLayout.Stretch,
                             TextAlign = ContentAlignment.TopLeft,
                             Dock = DockStyle.Bottom
@@ -147,7 +148,7 @@ namespace Nucleus.Coop
                         {
                             Font = new Font("Franklin Gothic", 8, FontStyle.Regular, GraphicsUnit.Point, 0),
                             BackColor = Color.Transparent,//Color.DimGray,
-                            BackgroundImage = new Bitmap(mainForm.theme + "showcase-labels.png"),
+                            BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase-labels.png"),
                             BackgroundImageLayout = ImageLayout.Stretch,
                             TextAlign = ContentAlignment.TopLeft,
                             Dock = DockStyle.Bottom

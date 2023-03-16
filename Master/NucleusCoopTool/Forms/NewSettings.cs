@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Windows.Interop;
@@ -102,8 +103,7 @@ namespace Nucleus.Coop
             selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
 
-            Location = new Point(mf.Location.X + mf.Width / 2 - Width / 2, mf.Location.Y + mf.Height / 2 - Height / 2);
-            Visible = false;
+            Location = new Point(mf.Width / 2 - Width / 2, mf.Height / 2 - Height / 2);
 
             _ctrlr_shorcuts = ctrlr_shorcutsBtn;
 
@@ -173,14 +173,14 @@ namespace Nucleus.Coop
                                                    int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[2]),
                                                    int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[3]));
 
-            audioBtnPicture.BackgroundImage = new Bitmap(mf.theme + "audio.png");
-            playersBtnPicture.BackgroundImage = new Bitmap(mf.theme + "players.png");
-            settingsBtnPicture.BackgroundImage = new Bitmap(mf.theme + "shared.png");
-            layoutBtnPicture.BackgroundImage = new Bitmap(mf.theme + "layout.png");
-            closeBtnPicture.BackgroundImage = new Bitmap(mf.theme + "title_close.png");
-            btn_credits.BackgroundImage = new Bitmap(mf.theme + "credits.png");
-            audioRefresh.BackgroundImage = new Bitmap(mf.theme + "refresh.png");
-            btnNext.BackgroundImage = new Bitmap(mf.theme + "page1.png");
+            audioBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "audio.png");
+            playersBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "players.png");
+            settingsBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "shared.png");
+            layoutBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "layout.png");
+            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "title_close.png");
+            btn_credits.BackgroundImage = ImageCache.GetImage(mf.theme + "credits.png");
+            audioRefresh.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
+            btnNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
 
             btn_credits.FlatAppearance.MouseOverBackColor = Color.Transparent;
 
@@ -250,7 +250,7 @@ namespace Nucleus.Coop
             cts_kar.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_unfocus.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
             disableGameProfiles.Checked = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
-            mf.disableGameProfiles = disableGameProfiles.Checked;
+            mf.DisableGameProfiles = disableGameProfiles.Checked;
 
             if (ini.IniReadValue("CustomLayout", "HorizontalLines") != "")
             {
@@ -497,7 +497,6 @@ namespace Nucleus.Coop
                 foreach (JToken nick in JNicks)
                 {
                     jsonNicksList.Add(nick.ToString());
-
                 }
             }
 
@@ -787,7 +786,7 @@ namespace Nucleus.Coop
             if (disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
             {
                 ini.IniWriteValue("Misc", "DisableGameProfiles", disableGameProfiles.Checked.ToString());
-                mainForm.disableGameProfiles = disableGameProfiles.Checked;
+                mainForm.DisableGameProfiles = disableGameProfiles.Checked;
             }
 
             bool needToRestart = false;
@@ -799,11 +798,12 @@ namespace Nucleus.Coop
                 needToRestart = true;
             }
 
-            if (GameProfile.ModeText == "New Profile" && disableGameProfiles.Checked)
+            if (GameProfile.ModeText == "New Profile" || disableGameProfiles.Checked)
             {
                 if (GameProfile.currentProfile != null)
                 {
-                    GameProfile.currentProfile.Reset();                  
+                    GameProfile.currentProfile.Reset();                    
+                    ProfileSettings.ProfileRefreshAudioList();
                 }
             }
 
@@ -924,6 +924,7 @@ namespace Nucleus.Coop
             }
 
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
+
             foreach (MMDevice endpoint in enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
             {
                 if (!audioDevices.ContainsKey(endpoint.FriendlyName))
@@ -1006,22 +1007,22 @@ namespace Nucleus.Coop
 
         private void closeBtnPicture_MouseEnter(object sender, EventArgs e)
         {
-            closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close_mousehover.png");
+            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close_mousehover.png");
         }
 
         private void closeBtnPicture_MouseLeave(object sender, EventArgs e)
         {
-            closeBtnPicture.BackgroundImage = new Bitmap(mainForm.theme + "title_close.png");
+            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
         }
 
         private void btn_credits_MouseEnter(object sender, EventArgs e)
         {
-            btn_credits.BackgroundImage = new Bitmap(mainForm.theme + "credits_mousehover.png");
+            btn_credits.BackgroundImage = ImageCache.GetImage(mainForm.theme + "credits_mousehover.png");
         }
 
         private void btn_credits_MouseLeave(object sender, EventArgs e)
         {
-            btn_credits.BackgroundImage = new Bitmap(mainForm.theme + "credits.png");
+            btn_credits.BackgroundImage = ImageCache.GetImage(mainForm.theme + "credits.png");
         }
 
         private void ctrlr_shorcuts_Click(object sender, EventArgs e)
@@ -1118,7 +1119,7 @@ namespace Nucleus.Coop
             if (page1.Visible)
             {
                 SuspendLayout();
-                btnNext.BackgroundImage = new Bitmap(Globals.Theme + "page2.png");
+                btnNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page2.png");
                 page1.Visible = false;
                 page2.BringToFront();
                 page2.Visible = true;
@@ -1127,7 +1128,7 @@ namespace Nucleus.Coop
             else
             {
                 SuspendLayout();
-                btnNext.BackgroundImage = new Bitmap(Globals.Theme + "page1.png");
+                btnNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page1.png");
                 page2.Visible = false;
                 page1.BringToFront();
                 page1.Visible = true;
