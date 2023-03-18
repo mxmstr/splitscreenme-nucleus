@@ -145,7 +145,7 @@ namespace Nucleus.Coop
                     {
                         control.Click += new System.EventHandler(this.button_Click);
                     }
-                }
+                }              
             }
 
             if (main.useButtonsBorder)
@@ -221,15 +221,14 @@ namespace Nucleus.Coop
                 heightField.SetValue(checkboxFoundGames, addedHeight);
 
             }
-
-            float newFontSize = Font.Size * scale;
+          
             float textBoxFontSize = (Font.Size + 4) * scale;
 
             foreach (Control c in ctrls)
             {
                 if (c.GetType() == typeof(CheckedListBox))
                 {
-                    c.Font = new Font(main.customFont, newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                    c.Font = new Font(main.customFont, c.Font.Size, FontStyle.Regular, GraphicsUnit.Point, 0);
                 }
 
                 if (c.GetType() == typeof(TextBox))
@@ -362,6 +361,7 @@ namespace Nucleus.Coop
                 {
                     Console.Error.WriteLine(ex);
                 }
+
                 if (files != null)
                 {
                     for (int i = 0; i < files.Length; i++)
@@ -374,6 +374,7 @@ namespace Nucleus.Coop
                     }
                 }
             }
+
             if (closed)
             {
                 txt_Path.Text = "";
@@ -545,6 +546,7 @@ namespace Nucleus.Coop
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     disksBox.Items.Add(fbd.SelectedPath, true);
+
                     int freeIndex = 1;
                     for (int x = 1; x <= 100; x++)
                     {
@@ -554,6 +556,7 @@ namespace Nucleus.Coop
                             break;
                         }
                     }
+
                     main.ini.IniWriteValue("SearchPaths", freeIndex.ToString(), fbd.SelectedPath);
                 }
             }
@@ -591,6 +594,7 @@ namespace Nucleus.Coop
                         numAdded++;
                     }
                 }
+
                 MessageBox.Show(string.Format("{0}/{1} selected games added!", numAdded, checkboxFoundGames.CheckedItems.Count), "Games added");
                 main.RefreshGames(false);
             }
