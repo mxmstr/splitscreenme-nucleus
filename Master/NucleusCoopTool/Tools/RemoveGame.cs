@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
 using System.Windows.Forms;
+using Nucleus.Gaming.Cache;
 
 namespace Nucleus.Coop.Tools
 {
@@ -40,7 +41,7 @@ namespace Nucleus.Coop.Tools
                             jObject["Games"][i].Remove();
                             string output = JsonConvert.SerializeObject(jObject, Formatting.Indented);
                             File.WriteAllText(userProfile, output);
-                            main.RefreshGames(false);
+                            main.RefreshUI();
 
                             if (!dontConfirm)
                             {
@@ -52,7 +53,7 @@ namespace Nucleus.Coop.Tools
                                     }
                                     catch (Exception)
                                     {
-                                        main.cover.BackgroundImage.Dispose();
+                                        main.coverImg.Dispose();
                                         File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                                     }
                                 }
@@ -105,7 +106,9 @@ namespace Nucleus.Coop.Tools
                                     File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
                                 }
                             }
-                        }
+
+                            
+                        }                      
                     }
                 }
             }

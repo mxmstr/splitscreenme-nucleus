@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Tools.Network;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace Nucleus.Gaming.Controls
             Location = new Point(0, 0);
             Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Visible = false;
-            BorderStyle = BorderStyle.FixedSingle;
+            BorderStyle = BorderStyle.None;
             BackColor = Color.FromArgb(150, 0, 0, 0);
             buttonsBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[0]),
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
@@ -256,13 +257,16 @@ namespace Nucleus.Gaming.Controls
                 }
 
                 Height += profileBtn.Height + 1;
+              
                 Controls.Add(profileBtn);
             }
 
             var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();
             Width = (int)((sortedSizes[0].Width) * _scale) + offset;
 
-            Location = new Point((parentControl.gameProfilesList_btn.Left - Width)-5, parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
+            Location = new Point((parentControl.gameProfilesList_btn.Left - Width) + 2 , parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
+            BringToFront();
+            //Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 
             if (Controls.Count == 1)
             {
@@ -357,8 +361,21 @@ namespace Nucleus.Gaming.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.DrawRectangle(borderPen, new Rectangle(0, 0, Width-3 , Height-3));
+            g.DrawRectangle(borderPen, new Rectangle(0, 0, Width - 1, Height - 1));
+            //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            //g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 
+
+            //g.DrawArc(borderPen, 0, 0, 15, 15, -90, -90);//Top left angle
+            //g.DrawArc(borderPen, Width - 19, 0, 15, 15, -90, 90);//Top Right angle
+            //g.DrawArc(borderPen, 0, Height - 19, 15, 15, 90, 90);//Bottom left angle
+            //g.DrawArc(borderPen, Width - 19, Height - 19, 15, 15, 90, -90);//Bottom Right angle
+
+            //g.DrawLine(borderPen, 8, 0, Width - 12, 0);//Top edge
+            //g.DrawLine(borderPen, 8, Height - 4, Width - 12, Height - 4);//Bottom edge
+            //g.DrawLine(borderPen, Width - 4, 8, Width - 4, Height - 12);//Right edge
+            //g.DrawLine(borderPen, 0, 8, 0, Width-20);//Left edge
         }
 
         public void UpdateSize(float scale)

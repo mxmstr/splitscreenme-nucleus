@@ -998,7 +998,7 @@ namespace Nucleus.Coop
             list_Games.ResumeLayout();
         }
 
-        private void RefreshUI()
+        public void RefreshUI()
         {
             SuspendLayout();
             rightFrame.Visible = false;
@@ -1329,6 +1329,7 @@ namespace Nucleus.Coop
             if (!canProceed)
             {
                 btn_Prev.Enabled = false;
+
                 if (btn_Play.Text == "PLAY" || btn_Next.Enabled)
                 {
                     btn_Play.Enabled = false;
@@ -1614,7 +1615,7 @@ namespace Nucleus.Coop
             });
         }
 
-        private void UpdateGameManager(object state)
+        private void UpdateGameManager(object state)// TODO: Move handler update thread/its call to Nucleus.Gaming.dll (and its own class), kind of messy as it is currently.
         {
             for (; ; )
             {
@@ -1702,7 +1703,6 @@ namespace Nucleus.Coop
                         }
                         else if (info.Count == 1)
                         {
-
                             UserGameInfo game = GameManager.Instance.TryAddGame(path, info[0]);
                             if (gameContextMenuStrip != null)
                                 MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");

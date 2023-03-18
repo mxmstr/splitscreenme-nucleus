@@ -15,16 +15,14 @@ namespace Nucleus.Coop.Tools
 
         private static Bitmap ApplyBlur(Bitmap screenshot)
         {
-            var blur = new GaussianBlur(screenshot as Bitmap);
-
-            Bitmap result = blur.Process(blurValue);
-
             if (screenshot == null)
             {
                 return main.defBackground;
             }
 
-            main.screenshotImg?.Dispose();
+            var blur = new GaussianBlur(screenshot);
+
+            Bitmap result = blur.Process(blurValue);
 
             return result;
         }
@@ -35,10 +33,11 @@ namespace Nucleus.Coop.Tools
             blurValue = int.Parse(Globals.ini.IniReadValue("Dev", "Blur"));
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
-            {
-                mainForm.clientAreaPanel.SuspendLayout();
-                mainForm.cover.BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));// mainForm.coverImg;
-                mainForm.clientAreaPanel.ResumeLayout();
+            {   
+                mainForm.coverImg = /*ImageCache.GetImage*/new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));// mainForm.coverImg;
+                mainForm.cover.SuspendLayout();
+                mainForm.cover.BackgroundImage = mainForm.coverImg;
+                mainForm.cover.ResumeLayout();
                 mainForm.coverFrame.Visible = true;
                 mainForm.cover.Visible = true;
             }
@@ -55,9 +54,10 @@ namespace Nucleus.Coop.Tools
                 string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")));
                 Random rNum = new Random();
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
-             
+
+                mainForm.screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));
                 mainForm.clientAreaPanel.SuspendLayout();
-                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"))); //name(1) => directory name ; name(2) = partial image path 
+                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.screenshotImg); //name(1) => directory name ; name(2) = partial image path 
                 mainForm.clientAreaPanel.ResumeLayout();
             }
             else

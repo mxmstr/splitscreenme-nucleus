@@ -737,7 +737,7 @@ namespace Nucleus.Coop
             this.btn_gameOptions.Location = new System.Drawing.Point(160, 14);
             this.btn_gameOptions.Margin = new System.Windows.Forms.Padding(2);
             this.btn_gameOptions.Name = "btn_gameOptions";
-            this.btn_gameOptions.Size = new System.Drawing.Size(20, 17);
+            this.btn_gameOptions.Size = new System.Drawing.Size(20, 20);
             this.btn_gameOptions.TabIndex = 21;
             this.btn_gameOptions.UseVisualStyleBackColor = false;
             this.btn_gameOptions.Visible = false;

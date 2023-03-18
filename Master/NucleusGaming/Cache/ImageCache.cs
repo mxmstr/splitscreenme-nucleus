@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 
 namespace Nucleus.Gaming.Cache
-{
-    public class ImageCache
+{    /// <summary>
+     /// Basic cache system(not thread safe)
+     /// </summary>
+    public static class ImageCache
     {
         private static Dictionary<string, Bitmap> cachedImages = new Dictionary<string, Bitmap>();
 
@@ -33,6 +35,14 @@ namespace Nucleus.Gaming.Cache
             }
 
             return true;
+        }
+
+        public static void DeleteFromCache(string path)
+        {           
+            if (cachedImages.ContainsKey(path))
+            {
+                cachedImages.Remove(path);
+            }
         }
 
     }

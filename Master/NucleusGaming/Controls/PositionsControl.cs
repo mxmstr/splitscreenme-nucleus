@@ -1713,6 +1713,7 @@ namespace Nucleus.Coop
                 if (GameProfile.Ready)
                 {
                     CanPlayUpdated(true, true);
+                    GameProfile.Ready = false;
                 }
 
                 if (GameProfile.AutoPlay && GameProfile.Ready)
