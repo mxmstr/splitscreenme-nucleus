@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,6 +23,8 @@ namespace Nucleus.Coop.Forms
         private float fontSize;
         private Cursor default_Cursor;
         private Cursor hand_Cursor;
+        private Pen borderPen;
+
         public void button_Click(object sender, EventArgs e)
         {
             if (mainForm.mouseClick)
@@ -55,7 +58,9 @@ namespace Nucleus.Coop.Forms
             Color label_foreColor = Color.FromArgb(255, 255, 255);
 
             InitializeComponent();
+
             SuspendLayout();
+
             default_Cursor = mf.default_Cursor;
             hand_Cursor = mf.hand_Cursor;
 
@@ -63,7 +68,12 @@ namespace Nucleus.Coop.Forms
 
             ForeColor = label_foreColor;
 
+            borderPen = new Pen(Color.FromArgb(int.Parse(Globals.ThemeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[0]),
+                                               int.Parse(Globals.ThemeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[1]),
+                                               int.Parse(Globals.ThemeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])));
+
             btn_Download.BackColor = mf.buttonsBackColor;
+
             btn_Close.BackgroundImage = ImageCache.GetImage(mf.theme + "title_close.png");
             btn_Close.FlatAppearance.MouseOverBackColor = Color.Transparent;
 
@@ -104,7 +114,11 @@ namespace Nucleus.Coop.Forms
 
             foreach (Control control in ctrls)
             {
-                control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                if (control.GetType() == typeof(TextBox) || control.GetType() == typeof(Label))
+                {
+                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                }
+
                 if (control.GetType() == typeof(Button) || control.Name == "linkLabel_MoreInfo")
                 {
                     control.Cursor = hand_Cursor;
@@ -270,6 +284,13 @@ namespace Nucleus.Coop.Forms
         private void btn_Close_MouseLeave(object sender, EventArgs e)
         {
             btn_Close.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawRectangle(borderPen, new Rectangle(0, 0, Width - 1, Height - 1));
+
         }
     }
 }

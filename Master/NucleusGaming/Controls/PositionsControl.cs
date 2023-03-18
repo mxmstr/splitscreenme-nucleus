@@ -1813,6 +1813,7 @@ namespace Nucleus.Coop
                             string msg = String.Empty;
 
                             Brush brush = myBrush;
+
                             if (GameProfile.TotalPlayers > 0)
                             {
                                 if (TotalPlayers > GameProfile.TotalPlayers)

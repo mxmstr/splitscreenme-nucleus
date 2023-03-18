@@ -126,7 +126,7 @@ namespace Nucleus.Coop.Forms
             // 
             this.txt_GameDesc.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.txt_GameDesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt_GameDesc.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txt_GameDesc.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_GameDesc.ForeColor = System.Drawing.SystemColors.Window;
             this.txt_GameDesc.Location = new System.Drawing.Point(127, 62);
             this.txt_GameDesc.Name = "txt_GameDesc";
@@ -139,7 +139,7 @@ namespace Nucleus.Coop.Forms
             // 
             this.txt_AuthDesc.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.txt_AuthDesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt_AuthDesc.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txt_AuthDesc.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_AuthDesc.ForeColor = System.Drawing.SystemColors.Window;
             this.txt_AuthDesc.Location = new System.Drawing.Point(19, 243);
             this.txt_AuthDesc.Name = "txt_AuthDesc";
@@ -153,12 +153,12 @@ namespace Nucleus.Coop.Forms
             // 
             this.txt_Comm.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.txt_Comm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt_Comm.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txt_Comm.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txt_Comm.ForeColor = System.Drawing.SystemColors.Window;
-            this.txt_Comm.Location = new System.Drawing.Point(19, 340);
+            this.txt_Comm.Location = new System.Drawing.Point(19, 372);
             this.txt_Comm.Name = "txt_Comm";
             this.txt_Comm.ReadOnly = true;
-            this.txt_Comm.Size = new System.Drawing.Size(533, 145);
+            this.txt_Comm.Size = new System.Drawing.Size(533, 113);
             this.txt_Comm.TabIndex = 44;
             this.txt_Comm.Text = "";
             this.txt_Comm.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.txt_Comm_LinkClicked);
@@ -227,7 +227,6 @@ namespace Nucleus.Coop.Forms
             // 
             this.btn_Close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Close.BackColor = System.Drawing.Color.Transparent;
-            //this.btn_Close.BackgroundImage = new Bitmap(Globals.Theme + "no_cover.png");
             this.btn_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Close.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Close.FlatAppearance.BorderSize = 0;
@@ -264,7 +263,7 @@ namespace Nucleus.Coop.Forms
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(15, 348);
+            this.label8.Location = new System.Drawing.Point(19, 351);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(86, 18);
             this.label8.TabIndex = 34;
