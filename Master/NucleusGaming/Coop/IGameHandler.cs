@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 
 namespace Nucleus.Gaming.Coop
@@ -21,7 +22,8 @@ namespace Nucleus.Gaming.Coop
 
         string Play();
 
-        void Update(double delayMS, bool refresh);
+        //void Update(double delayMS, bool refresh);
+        void StartPlayTick(double delayMS);
 
         void End(bool fromStopButton);
 

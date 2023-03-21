@@ -2,6 +2,7 @@
 using Nucleus.Coop.Forms;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -50,7 +51,7 @@ namespace Nucleus.Coop.Tools
                         continue;
                     }
 
-                    var id = game.Game.GetHandlerId();
+                    var id = game.Game.HandlerId;
 
                     if (id == null)
                     {
@@ -71,14 +72,14 @@ namespace Nucleus.Coop.Tools
                     });
 
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
-                    string screenshotsUri = game.Game.GetScreenshots();
+                    string screenshotsUri = game.Game.ScreenshotsUri;
 
                     DownloadDescriptions(handler.GameDescription, game.GameGuid);
                     DownloadCovers(coverUri, game.GameGuid);
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }
 
-                main.Invoke((MethodInvoker)delegate ()
+                main.Invoke((Action)delegate ()
                 {
                     main.glowingLine0.Image = new Bitmap(Globals.Theme + "lightbar_top.gif");
                     main.mainButtonFrame.Enabled = true;

@@ -75,6 +75,15 @@ namespace Nucleus.Gaming
             Options.Add(new GameOption(name, desc, key, value));
         }
 
+        public string ScreenshotsUri => Hub.GetScreenshotsUri();
+
+        public string HandlerId => Hub.Handler.Id;
+
+        public bool IsUpdateAvailable(bool fetch)
+        {
+            return Hub.IsUpdateAvailable(fetch);
+        }
+
         /// <summary>
         /// The relative path to where the games starts in
         /// </summary>
@@ -459,11 +468,10 @@ namespace Nucleus.Gaming
             return context;
         }
 
-        private string EpicLang;
-
         public string GetEpicLanguage()
         {
             string epicLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
+            string EpicLang = "";
 
             IDictionary<string, string> epiclangs = new Dictionary<string, string>
             {
@@ -509,10 +517,10 @@ namespace Nucleus.Gaming
             return EpicLang;
         }
 
-        private string GogLang;
         public string GetGogLanguage()
         {
             string gogLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
+            string GogLang = "";
 
             IDictionary<string, string> epiclangs = new Dictionary<string, string>
             {
@@ -572,20 +580,6 @@ namespace Nucleus.Gaming
 
             return result;
         }
-
-        public bool IsUpdateAvailable(bool fetch)
-        {
-            return Hub.IsUpdateAvailable(fetch);
-        }
-
-        public string GetScreenshots()
-        {
-            return Hub.GetScreenshotsUri();
-        }
-
-        public string GetHandlerId()
-        {
-            return Hub.Handler.Id;
-        }
+      
     }
 }

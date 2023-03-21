@@ -41,7 +41,7 @@ namespace Nucleus.Coop.Tools
                             jObject["Games"][i].Remove();
                             string output = JsonConvert.SerializeObject(jObject, Formatting.Indented);
                             File.WriteAllText(userProfile, output);
-                            main.RefreshUI();
+                            
 
                             if (!dontConfirm)
                             {
@@ -104,10 +104,14 @@ namespace Nucleus.Coop.Tools
                                     }
 
                                     File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
+                                   
                                 }
+
+                                main.RefreshUI(true);
+                                return;
                             }
 
-                            
+                            main.RefreshUI(false);
                         }                      
                     }
                 }

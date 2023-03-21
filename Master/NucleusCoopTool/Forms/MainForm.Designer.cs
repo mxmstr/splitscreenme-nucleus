@@ -338,7 +338,7 @@ namespace Nucleus.Coop
             this.btn_Discord.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_Discord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Discord.ForeColor = System.Drawing.Color.White;
-            this.btn_Discord.Location = new System.Drawing.Point(3, 53);
+            this.btn_Discord.Location = new System.Drawing.Point(4, 53);
             this.btn_Discord.Name = "btn_Discord";
             this.btn_Discord.Size = new System.Drawing.Size(25, 20);
             this.btn_Discord.TabIndex = 39;

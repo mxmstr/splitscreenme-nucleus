@@ -784,6 +784,11 @@ namespace Nucleus.Coop
             ini.IniWriteValue("CustomLayout", "Cts_Unfocus", cts_unfocus.Checked.ToString());
 
             mainForm.handleClickSound(clickSoundChkB.Checked);
+            if (mainForm.disableFastHandlerUpdate != disableQuickUpdate.Checked)
+            {
+                mainForm.disableFastHandlerUpdate = disableQuickUpdate.Checked;
+                mainForm.RefreshGames(false);
+            }
 
             if (disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
             {

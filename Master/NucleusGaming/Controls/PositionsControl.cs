@@ -1710,15 +1710,17 @@ namespace Nucleus.Coop
 
             if (TotalPlayers == GameProfile.TotalPlayers)
             {
-                if (GameProfile.Ready)
+                if (GameProfile.Ready && !GameProfile.AutoPlay)
                 {
                     CanPlayUpdated(true, true);
-                    GameProfile.Ready = false;
+                    GameProfile.Ready = false;  
                 }
 
                 if (GameProfile.AutoPlay && GameProfile.Ready)
                 {
+                    CanPlayUpdated(true, true);
                     btn_Play.PerformClick();
+                    GameProfile.Ready = false;
                     return;
                 }
             }

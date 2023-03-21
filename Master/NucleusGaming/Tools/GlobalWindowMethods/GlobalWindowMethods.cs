@@ -951,7 +951,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             //    PlayerInfo p = players[i];
             //    ProcessData data = p.ProcessData;
 
-            //    //Swaping 4p layout here 
+            //    //Switching 4p layout here 
             //    if (p.Owner.Type == UserScreenType.FourPlayers)
             //    {
             //        if (p.OtherLayout.Count == 0)

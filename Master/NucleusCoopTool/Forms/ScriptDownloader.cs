@@ -677,6 +677,11 @@ namespace Nucleus.Coop.Forms
 
         private void btn_Close_Click(object sender, EventArgs e)
         {
+            if (Location.X == -32000 || Width == 0)
+            {
+                return;
+            }
+
             ini.IniWriteValue("Misc", "DownloaderWindowSize", Width + "X" + Height);
             ini.IniWriteValue("Misc", "DownloaderWindowLocation", Location.X + "X" + Location.Y);
             Visible = false;

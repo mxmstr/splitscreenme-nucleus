@@ -264,7 +264,7 @@ namespace Nucleus.Gaming.Controls
             var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();
             Width = (int)((sortedSizes[0].Width) * _scale) + offset;
 
-            Location = new Point((parentControl.gameProfilesList_btn.Left - Width) + 2 , parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
+            Location = new Point((parentControl.gameProfilesList_btn.Left - Width) + 1 , parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
             BringToFront();
             //Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 

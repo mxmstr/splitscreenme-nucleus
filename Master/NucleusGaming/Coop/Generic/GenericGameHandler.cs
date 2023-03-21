@@ -38,6 +38,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -104,7 +105,7 @@ namespace Nucleus.Gaming
         private static GenericGameHandler instance;
         private Thread statusWinThread;
         private UserGameInfo userGame;
-
+        private GameManager gameManager;
         public ProcessData prevProcessData;
         public Process launchProc;
         public UserScreen owner;
@@ -3453,13 +3454,13 @@ namespace Nucleus.Gaming
             public Action Function;
         }
 
-        public void StartPlayTick(double interval, Action function)
+        public void StartPlayTick(double interval/*,Action function*/)
         {
             Thread t = new Thread(PlayTickThread);
 
             TickThread tick = new TickThread();
             tick.Interval = interval;
-            tick.Function = function;
+            //tick.Function = function;          
             t.Start(tick);
         }
 
@@ -3469,14 +3470,27 @@ namespace Nucleus.Gaming
 
             for (; ; )
             {
+                string error = GameManager.Instance.Error;
+                if (!string.IsNullOrEmpty(error))
+                {
+                    End(false);
+                    break;
+                }
+
                 Thread.Sleep(TimeSpan.FromMilliseconds(t.Interval));
-                t.Function();
+                //t.Function();
+                GlobalWindowMethods.UpdateAndRefreshGameWindows(this, gen, profile, t.Interval, false);
 
                 if (hasEnded)
                 {
                     break;
                 }
             }
+        }
+
+        public void Update(double delayMS, bool refresh)
+        {
+            GlobalWindowMethods.UpdateAndRefreshGameWindows(this, gen, profile, delayMS, refresh);
         }
 
         public void CenterCursor()
@@ -3528,13 +3542,10 @@ namespace Nucleus.Gaming
                 return;
             }
 
-            //if (ControllersUINav.controllersUINavThread != null)
-            //{
             if (ControllersUINav.Enabled)
             {
                 ControllersUINav.EnabledRuntime = true;
             }
-            //}
 
             if (ini.IniReadValue("Misc", "ShowStatus") == "True")
             {
@@ -3760,11 +3771,6 @@ namespace Nucleus.Gaming
             catch { }
 
             Ended?.Invoke();
-        }
-
-        public void Update(double delayMS, bool refresh)
-        {
-            GlobalWindowMethods.UpdateAndRefreshGameWindows(this, gen, profile, delayMS, refresh);
         }
 
         public void Log(StreamWriter writer)

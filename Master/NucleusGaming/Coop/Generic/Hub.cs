@@ -14,6 +14,7 @@ namespace Nucleus.Gaming.Coop.Generic
         private static bool connected;
         public static bool Connected
         {
+            get => connected; 
             set
             {
                 connected = value;
@@ -25,6 +26,7 @@ namespace Nucleus.Gaming.Coop.Generic
         {
             if (!connected)
             {
+                webExceptionCount = 0;
                 return false;
             }
 
@@ -60,7 +62,7 @@ namespace Nucleus.Gaming.Coop.Generic
 
             string id = Handler.Id;
             int newVersion = -1;
-
+         
             string resp = Get("https://hub.splitscreen.me/api/v1/" + "handler/" + id);
 
             if (resp == null)
@@ -92,12 +94,15 @@ namespace Nucleus.Gaming.Coop.Generic
 
             newVersion = int.TryParse(array[0]["currentVersion"].ToString(), out int _v) ? _v : -1;
 
+            
             return newVersion > Handler.Version;
 
         }
 
         public string GetScreenshotsUri()
         {
+            webExceptionCount = 0;
+
             string id = Handler.Id;
 
             if (id == null)
@@ -116,8 +121,8 @@ namespace Nucleus.Gaming.Coop.Generic
        
         public string Get(string uri)
         {
-            if(webExceptionCount >= 2) 
-            {
+            if (webExceptionCount >= 3)
+            {               
                 return null;
             }
 
@@ -129,20 +134,21 @@ namespace Nucleus.Gaming.Coop.Generic
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-                request.Timeout = 1000;
+
+                request.Timeout = 2800;//lower values make the timeout too short for some "big" handlers              
                 request.Method = "Get";
 
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
                 using (StreamReader reader = new StreamReader(stream))
                 {
+                   // Console.WriteLine(reader.ReadToEnd());
                     return reader.ReadToEnd();
                 }
             }
             catch (WebException)
             {
                 webExceptionCount++;
-                Console.WriteLine(webExceptionCount.ToString());
                 return null;
             }
         }

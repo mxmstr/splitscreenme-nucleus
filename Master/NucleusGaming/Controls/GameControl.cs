@@ -201,8 +201,9 @@ namespace Nucleus.Coop
             title.ForeColor = (updateAvailable && !disableFastHandlerUpdate) ? Color.PaleGreen : Color.White;
 
             favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
-            float favoriteY = (209 - playerIcon.Width) * scale;
-            favoriteBox.Location = new Point((int)(favoriteY), players.Location.Y + 3);
+            float favoriteX = (209 * scale) - (playerIcon.Width+5);
+            float favoriteY = Height - (favoriteBox.Height+5);
+            favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
 
             ResumeLayout();
         }

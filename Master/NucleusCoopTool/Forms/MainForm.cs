@@ -23,6 +23,7 @@ using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Windows.Forms;
+using Win32;
 
 
 namespace Nucleus.Coop
@@ -120,7 +121,7 @@ namespace Nucleus.Coop
         private bool DisableOfflineIcon;
         private bool showFavoriteOnly;
         private bool canResize = false;
-        private bool disableFastHandlerUpdate = false;
+        public bool disableFastHandlerUpdate = false;
         private bool hotkeysLocked = false;
 
         private bool disableGameProfiles;
@@ -132,7 +133,7 @@ namespace Nucleus.Coop
                 if (disableGameProfiles != value)
                 {
                     disableGameProfiles = value;
-                    RefreshUI();
+                    RefreshUI(false);
                 }
             }
         }
@@ -176,7 +177,7 @@ namespace Nucleus.Coop
         private Color HandlerNoteTitleFont;
         private Color StripMenuUpdateItemBack;
         private Color StripMenuUpdateItemFont;
-        
+        private Color SelectionBackColor;
         public FileInfo fontPath;
 
         private Label handlerUpdateLabel;
@@ -251,7 +252,7 @@ namespace Nucleus.Coop
             HandlerNoteMagnifierTitleBackColor = Color.FromArgb(int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[0]), int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[1]), int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[2]));
             HandlerNoteTitleFont = Color.FromArgb(int.Parse(rgb_HandlerNoteTitleFontColor[0]), int.Parse(rgb_HandlerNoteTitleFontColor[1]), int.Parse(rgb_HandlerNoteTitleFontColor[2]));
             ButtonsBorderColor = Color.FromArgb(int.Parse(rgb_ButtonsBorderColor[0]), int.Parse(rgb_ButtonsBorderColor[1]), int.Parse(rgb_ButtonsBorderColor[2]));
-         
+            SelectionBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[0]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[1]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[2]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[3])); 
             InitializeComponent();
 
             if (ini.IniReadValue("Misc", "WindowSize") != "")
@@ -334,7 +335,7 @@ namespace Nucleus.Coop
             clientAreaPanel.BackgroundImage = ImageCache.GetImage(theme + "background.jpg");
             btn_textSwitcher.Image = ImageCache.GetImage(theme + "text_switcher.png");
             btnAutoSearch.BackColor = buttonsBackColor;
-            button_UpdateAvailable.BackColor = buttonsBackColor;
+            button_UpdateAvailable.BackColor = Color.FromArgb(150,0,0,0);
             btnSearch.BackColor = buttonsBackColor;
             btn_gameOptions.BackColor = buttonsBackColor;
             btn_Download.BackColor = buttonsBackColor;
@@ -667,16 +668,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private void TriggerHubShowCase()
-        {
-            hubShowcase = new HubShowcase(this);
-            hubShowcase.Location = new Point(game_listSizer.Right, mainButtonFrame.Bottom + (clientAreaPanel.Height / 2 - hubShowcase.Height / 2));
-            hubShowcase.Size = new Size(hubShowcase.Width - 40, hubShowcase.Height);
-            hubShowcase.Visible = true;
-            stepPanelPictureBox.Visible = false;
-            clientAreaPanel.Controls.Add(hubShowcase);
-        }
-
         private void PositionsControl_Paint(object sender, PaintEventArgs e)
         {
             if (positionsControl.isDisconnected)
@@ -843,7 +834,8 @@ namespace Nucleus.Coop
                         return;
                     }
 
-                    I_GameHandler.Update(currentGame.HandlerInterval, true);
+                    //I_GameHandler.Update(currentGame.HandlerInterval, true);
+                    GlobalWindowMethods.UpdateAndRefreshGameWindows(GenericGameHandler.Instance,currentGame,currentProfile,currentGame.HandlerInterval,true);
                 }
                 else
                 {
@@ -995,20 +987,31 @@ namespace Nucleus.Coop
                 ThreadPool.QueueUserWorkItem(GetIcon, game);
             }
 
+            if(currentControl != null)
+            {
+                if (currentControl.TitleText == con.TitleText)
+                    con.BackColor = SelectionBackColor;
+            }
+
             list_Games.ResumeLayout();
         }
 
-        public void RefreshUI()
+        public void RefreshUI(bool refreshAll)
         {
             SuspendLayout();
-            rightFrame.Visible = false;
-            StepPanel.Visible = false;
-            clientAreaPanel.BackgroundImage = defBackground;
-            stepPanelPictureBox.Visible = true;
-            cover.BackgroundImage?.Dispose();
-            rainbowTimer?.Dispose();
-            rainbowTimerRunning = false;
+
+            if (refreshAll)
+            {
+                rightFrame.Visible = false;
+                StepPanel.Visible = false;
+                clientAreaPanel.BackgroundImage = defBackground;
+                stepPanelPictureBox.Visible = true;
+                rainbowTimer?.Dispose();
+                rainbowTimerRunning = false;
+            }
+
             hubShowcase?.Dispose();
+            hubShowcase = null;
 
             if (currentControl != null)
             {
@@ -1076,6 +1079,11 @@ namespace Nucleus.Coop
 
         private void gameControl_MouseEnter(object sender, EventArgs e)
         {
+            if(disableFastHandlerUpdate)
+            {
+                return;
+            }
+
             GameControl c = sender as GameControl;
 
             if (c.updateAvailable)
@@ -1180,7 +1188,7 @@ namespace Nucleus.Coop
             {
                 if (!CheckGameRequirements.MatchRequirements(currentGameInfo.Game))
                 {
-                    RefreshUI();
+                    RefreshUI(true);
                     return;
                 }
             }
@@ -1190,7 +1198,7 @@ namespace Nucleus.Coop
                 profileSettings.Visible = false;
             }
 
-            positionsControl.handlerNoteZoom.Visible = false;
+            positionsControl.textZoomContainer.Visible = false;
             btn_magnifier.Image = ImageCache.GetImage(theme + "magnifier.png");
             btn_textSwitcher.Visible = false;
 
@@ -1206,12 +1214,11 @@ namespace Nucleus.Coop
             else
             {
                 currentGame = currentGameInfo.Game;
-                currentGameSetup = currentControl.UserGameInfo.Game.GameName;
-
                 button_UpdateAvailable.Visible = currentGameInfo.Game.UpdateAvailable;
 
                 HandlerNoteTitle.Text = "Handler Notes";
                 hubShowcase?.Dispose();
+                hubShowcase = null;
 
                 if (!disableGameProfiles)
                 {
@@ -1237,7 +1244,7 @@ namespace Nucleus.Coop
                 }
 
                 InputIcons.SetInputsIcons(this, currentGame);
-                SetBackroundAndCover.ApplyBackgroundAndCover(this, currentControl.UserGameInfo.GameGuid);
+                SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
                 rightFrame.Visible = true;
 
                 btn_Play.Enabled = false;
@@ -1299,7 +1306,7 @@ namespace Nucleus.Coop
 
                 if (!currentGameInfo.KeepSymLink)
                 {
-                    string path = Path.Combine(gameManager.GetAppContentPath(), currentGameInfo.Game.GUID);
+                    string path = Path.Combine(gameManager.GetAppContentPath(), currentGame.GUID);
                     CleanGameContent.CleanContentFolder(path, currentGame);
                 }
 
@@ -1453,6 +1460,7 @@ namespace Nucleus.Coop
                     {
                         EnablePlay();
                     }
+
                     return;
                 }
             }
@@ -1536,8 +1544,9 @@ namespace Nucleus.Coop
 
             if (I_GameHandler.TimerInterval > 0)
             {
-                handlerThread = new Thread(UpdateGameManager);
-                handlerThread.Start();
+                I_GameHandler.StartPlayTick(currentGame.HandlerInterval);
+                //handlerThread = new Thread(UpdateGameManager);
+                //handlerThread.Start();
             }
 
             if (currentGame.HideTaskbar && !useCustomLayout)
@@ -1572,7 +1581,7 @@ namespace Nucleus.Coop
                 WindowState = FormWindowState.Minimized;
             }
 
-            RefreshUI();
+            RefreshUI(true);
         }
 
         private void SetBtnToPlay()
@@ -1586,62 +1595,21 @@ namespace Nucleus.Coop
             User32Util.ShowTaskBar();
             I_GameHandler = null;
 
-            try
-            {
-                if (handlerThread != null)
-                {
-                    handlerThread.Abort();
-                    handlerThread = null;
-                }
-            }
-            catch { }
+            btn_Play.Text = "PLAY";
+            btn_Play.Enabled = false;
+            currentControl = null;
 
-            this.Invoke((MethodInvoker)delegate ()
-            {
-                btn_Play.Text = "PLAY";
-                btn_Play.Enabled = false;
-                currentControl = null;
+            User32Util.ShowTaskBar();
+            GoToStep(0);
+            RefreshGames(false);
+            WindowState = FormWindowState.Normal;
 
-                User32Util.ShowTaskBar();
-                GoToStep(0);
-                RefreshGames(false);
-                WindowState = FormWindowState.Normal;
+            BringToFront();
 
-                BringToFront();
+            stepPanelPictureBox.Focus();
+            positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
+            positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
 
-                stepPanelPictureBox.Focus();
-                positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
-                positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
-            });
-        }
-
-        private void UpdateGameManager(object state)// TODO: Move handler update thread/its call to Nucleus.Gaming.dll (and its own class), kind of messy as it is currently.
-        {
-            for (; ; )
-            {
-                try
-                {
-                    if (gameManager == null || formClosing || I_GameHandler == null)
-                    {
-                        break;
-                    }
-
-                    string error = gameManager.Error;
-                    if (!string.IsNullOrEmpty(error))
-                    {
-                        RegistryUtil.RestoreRegistry("Error Restore from MainForm");
-                        handler_Ended();
-                        return;
-                    }
-
-                    I_GameHandler.Update(I_GameHandler.TimerInterval, false);
-                    Thread.Sleep(TimeSpan.FromMilliseconds(I_GameHandler.TimerInterval));
-                }
-                catch (ThreadAbortException)
-                {
-                    throw;
-                }
-            }
         }
 
         private void btn_Prev_Click(object sender, EventArgs e)
@@ -2457,7 +2425,7 @@ namespace Nucleus.Coop
 
         private void button_UpdateAvailable_Click(object sender, EventArgs e)
         {
-            handler = scriptDownloader.GetHandler(currentGameInfo.Game.GetHandlerId());
+            handler = scriptDownloader.GetHandler(currentGameInfo.Game.HandlerId);
 
             if (handler == null)
             {
@@ -2488,7 +2456,7 @@ namespace Nucleus.Coop
 
         private void updateHandlerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            handler = scriptDownloader.GetHandler(currentGameInfo.Game.GetHandlerId());
+            handler = scriptDownloader.GetHandler(currentGameInfo.Game.HandlerId);
 
             if (handler == null)
             {
@@ -2504,26 +2472,20 @@ namespace Nucleus.Coop
                 list_Games.SuspendLayout();
                 downloadPrompt.ShowDialog();
                 list_Games.ResumeLayout();
-
-                if (currentGameSetup == currentGameInfo.Game.GameName)
-                {
-                    button_UpdateAvailable.Visible = false;
-                }
-
+        
                 for (int i = 0; i < gameManager.User.Games.Count; i++)
                 {
                     if (gameManager.User.Games[i].Game != null)
                     {
                         if (gameManager.User.Games[i].Game.GameName == currentGameInfo.Game.GameName)
-                        {
-
+                        {                  
                             string path = gameManager.User.Games[i].ExePath;
                             gameManager.User.Games.RemoveAt(i);
                             List<GenericGameInfo> info = gameManager.GetGames(path);
 
                             if (info.Count == 1)
                             {
-                                UserGameInfo game = GameManager.Instance.TryAddGame(path, info[0]);
+                                GameManager.Instance.TryAddGame(path, info[0]);
                                 break;
                             }
                         }
@@ -2724,7 +2686,14 @@ namespace Nucleus.Coop
         private void stepPanelPictureBox_Click(object sender, EventArgs e)
         {
             if (connected && hubShowcase == null)
-                TriggerHubShowCase();
+            {
+                hubShowcase = new HubShowcase(this);
+                hubShowcase.Size = new Size(clientAreaPanel.Width - game_listSizer.Width, hubShowcase.Height);
+                hubShowcase.Location = new Point(game_listSizer.Right, mainButtonFrame.Bottom + (clientAreaPanel.Height / 2 - hubShowcase.Height / 2));
+
+                stepPanelPictureBox.Visible = false;
+                clientAreaPanel.Controls.Add(hubShowcase);
+            }
         }
 
         public void button_Click(object sender, EventArgs e)
@@ -2900,6 +2869,11 @@ namespace Nucleus.Coop
 
         private void SaveNucleusWindowPosAndLoc()
         {
+            if(Location.X == -32000 || Width == 0)
+            {
+                return;
+            }
+
             ini.IniWriteValue("Misc", "WindowSize", Width + "X" + Height);
             ini.IniWriteValue("Misc", "WindowLocation", Location.X + "X" + Location.Y);
         }
