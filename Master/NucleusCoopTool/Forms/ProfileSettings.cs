@@ -404,7 +404,7 @@ namespace Nucleus.Coop
             profileInfo.Location = new Point(this.Width / 2 - profileInfo.Width / 2, this.Height / 2 - profileInfo.Height / 2);
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
             warningLabel.Location = new Point(sharedTab.Width / 2 - warningLabel.Width / 2, warningLabel.Location.Y);
-            audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
+            audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);            
 
             tabBorders = new Rectangle[]
             {
@@ -967,6 +967,8 @@ namespace Nucleus.Coop
                     }
                 }
             }
+
+            //audioDefaultDevice.Location = new Point(audioCustomSettingsBox.Width / 2 - audioDefaultDevice.Width / 2, audioDefaultDevice.Location.Y);
         }
 
         private void audioRefresh_Click(object sender, EventArgs e)

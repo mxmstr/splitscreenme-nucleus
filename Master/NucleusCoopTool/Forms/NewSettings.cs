@@ -566,6 +566,7 @@ namespace Nucleus.Coop
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
             audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
+            //audioDefaultDevice.Location = new Point(audioCustomSettingsBox.Width / 2 - audioDefaultDevice.Width / 2, audioDefaultDevice.Location.Y);
 
             tabBorders = new Rectangle[]
             {
@@ -784,6 +785,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("CustomLayout", "Cts_Unfocus", cts_unfocus.Checked.ToString());
 
             mainForm.handleClickSound(clickSoundChkB.Checked);
+
             if (mainForm.disableFastHandlerUpdate != disableQuickUpdate.Checked)
             {
                 mainForm.disableFastHandlerUpdate = disableQuickUpdate.Checked;

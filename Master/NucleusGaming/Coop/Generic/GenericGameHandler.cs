@@ -1390,7 +1390,6 @@ namespace Nucleus.Gaming
 
                 bool setupDll = true;
 
-
                 if (!gen.SymlinkGame && !gen.HardlinkGame && !gen.HardcopyGame && i > 0)
                 {
                     setupDll = false;
@@ -1519,7 +1518,7 @@ namespace Nucleus.Gaming
                 {
                     Log("Using pre-defined epic emu params");
                     context.StartArguments += " ";
-                    context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.GetEpicLanguage()} -epicusername={player.Nickname}  -epicuserid={player.Nickname} ";
+                    context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.GetEpicLanguage()} -epicusername={player.Nickname} -epicuserid={player.Nickname} ";
                 }
 
                 if (gen.EpicEmuArgs)
@@ -2509,7 +2508,6 @@ namespace Nucleus.Gaming
                 data.KilledMutexes = context.KillMutex?.Length == 0;
                 player.ProcessData = data;
 
-
                 if (i < GameProfile.PriorityClasses.Count)
                 {
                     if (GameProfile.PriorityClasses[i] != "Normal")
@@ -2753,7 +2751,7 @@ namespace Nucleus.Gaming
                                 Log($"Attempting to switch audio endpoint for process {players[pi].ProcessData.Process.ProcessName} pid ({players[pi].ProcessID}) to DeviceID {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
                                 Thread.Sleep(1000);
                                 AudioReroute.SwitchProcessTo(GameProfile.AudioInstances["AudioInstance" + (pi + 1)], AudioReroute.ERole.ERole_enum_count, AudioReroute.EDataFlow.eRender, (uint)players[pi].ProcessID);
-                                Console.WriteLine($"Player{pi + 1 } audio = {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
+                                //Console.WriteLine($"Player{pi + 1 } audio = {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
                             }
                         }
                     }
@@ -3441,7 +3439,7 @@ namespace Nucleus.Gaming
                 RegistryUtil.RestoreUserEnvironmentRegistryPath();//A voir si utile
             }
 
-            GameProfile.SaveGameProfile(profile); //A voir si utile
+            GameProfile.SaveGameProfile(profile);//A voir si utile
 
             ControllersUINav.EnabledRuntime = false;
             
@@ -3454,19 +3452,40 @@ namespace Nucleus.Gaming
             public Action Function;
         }
 
-        public void StartPlayTick(double interval/*,Action function*/)
+        public void StartPlayTick(double interval)
         {
             Thread t = new Thread(PlayTickThread);
 
             TickThread tick = new TickThread();
-            tick.Interval = interval;
-            //tick.Function = function;          
+        
             t.Start(tick);
         }
 
         private void PlayTickThread(object state)
         {
-            TickThread t = (TickThread)state;
+            TickThread t = (TickThread)state;           
+        }
+
+        struct UpdateTickThread
+        {
+            public double Interval;
+        }
+
+        public void StartUpdateTick(double interval)
+        {
+            Thread updateTickThread = new Thread(StartUpdateTickThread);
+
+            UpdateTickThread tick = new UpdateTickThread
+            {
+                Interval = interval
+            };
+
+            updateTickThread.Start(tick);
+        }
+
+        private void StartUpdateTickThread(object state)
+        {
+            UpdateTickThread updateTickThread = (UpdateTickThread)state;
 
             for (; ; )
             {
@@ -3477,9 +3496,8 @@ namespace Nucleus.Gaming
                     break;
                 }
 
-                Thread.Sleep(TimeSpan.FromMilliseconds(t.Interval));
-                //t.Function();
-                GlobalWindowMethods.UpdateAndRefreshGameWindows(this, gen, profile, t.Interval, false);
+                Thread.Sleep(TimeSpan.FromMilliseconds(updateTickThread.Interval));
+                Update(updateTickThread.Interval, false);
 
                 if (hasEnded)
                 {

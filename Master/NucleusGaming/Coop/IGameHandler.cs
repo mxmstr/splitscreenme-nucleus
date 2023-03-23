@@ -22,8 +22,9 @@ namespace Nucleus.Gaming.Coop
 
         string Play();
 
-        //void Update(double delayMS, bool refresh);
-        void StartPlayTick(double delayMS);
+        void Update(double delayMS, bool refresh);
+
+        void StartUpdateTick(double delayMS);
 
         void End(bool fromStopButton);
 

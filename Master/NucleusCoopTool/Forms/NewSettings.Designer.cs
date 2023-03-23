@@ -95,21 +95,21 @@ namespace Nucleus.Coop
             this.cmb_Network = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
             this.layoutTab = new BufferedClientAreaPanel();
+            this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.label71 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cts_unfocus = new System.Windows.Forms.CheckBox();
             this.cts_kar = new System.Windows.Forms.CheckBox();
             this.cts_Mute = new System.Windows.Forms.CheckBox();
             this.SplitColors = new System.Windows.Forms.ComboBox();
-            this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.SplitDiv = new System.Windows.Forms.CheckBox();
             this.label49 = new System.Windows.Forms.Label();
             this.layoutSizer = new System.Windows.Forms.Panel();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.audioTab = new BufferedClientAreaPanel();
             this.audioWarningLabel = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
@@ -1271,22 +1271,104 @@ namespace Nucleus.Coop
             // layoutTab
             // 
             this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.layoutTab.Controls.Add(this.label71);
-            this.layoutTab.Controls.Add(this.panel1);
-            this.layoutTab.Controls.Add(this.SplitColors);
             this.layoutTab.Controls.Add(this.numMaxPlyrs);
             this.layoutTab.Controls.Add(this.numUpDownVer);
-            this.layoutTab.Controls.Add(this.SplitDiv);
-            this.layoutTab.Controls.Add(this.label49);
-            this.layoutTab.Controls.Add(this.layoutSizer);
             this.layoutTab.Controls.Add(this.label29);
             this.layoutTab.Controls.Add(this.label27);
             this.layoutTab.Controls.Add(this.label28);
             this.layoutTab.Controls.Add(this.numUpDownHor);
+            this.layoutTab.Controls.Add(this.label71);
+            this.layoutTab.Controls.Add(this.panel1);
+            this.layoutTab.Controls.Add(this.SplitColors);
+            this.layoutTab.Controls.Add(this.SplitDiv);
+            this.layoutTab.Controls.Add(this.label49);
+            this.layoutTab.Controls.Add(this.layoutSizer);
             this.layoutTab.Location = new System.Drawing.Point(0, 26);
             this.layoutTab.Name = "layoutTab";
             this.layoutTab.Size = new System.Drawing.Size(671, 401);
             this.layoutTab.TabIndex = 300;
+            // 
+            // numMaxPlyrs
+            // 
+            this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
+            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numMaxPlyrs.Location = new System.Drawing.Point(297, 249);
+            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
+            this.numMaxPlyrs.Name = "numMaxPlyrs";
+            this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
+            this.numMaxPlyrs.TabIndex = 161;
+            this.numMaxPlyrs.Value = 0;
+            // 
+            // numUpDownVer
+            // 
+            this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownVer.Location = new System.Drawing.Point(295, 151);
+            this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownVer.Name = "numUpDownVer";
+            this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownVer.TabIndex = 159;
+            this.numUpDownVer.Value = 0;
+            // 
+            // label29
+            // 
+            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label29.AutoSize = true;
+            this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label29.Location = new System.Drawing.Point(287, 226);
+            this.label29.Margin = new System.Windows.Forms.Padding(0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(64, 13);
+            this.label29.TabIndex = 158;
+            this.label29.Text = "Max Players";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label27
+            // 
+            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.Transparent;
+            this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label27.Location = new System.Drawing.Point(287, 179);
+            this.label27.Margin = new System.Windows.Forms.Padding(0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(99, 13);
+            this.label27.TabIndex = 156;
+            this.label27.Text = "Horizontal Divisions";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label28
+            // 
+            this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label28.AutoSize = true;
+            this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label28.Location = new System.Drawing.Point(284, 132);
+            this.label28.Margin = new System.Windows.Forms.Padding(0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(90, 13);
+            this.label28.TabIndex = 157;
+            this.label28.Text = " Vertical Divisions";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // numUpDownHor
+            // 
+            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownHor.Location = new System.Drawing.Point(296, 198);
+            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownHor.Name = "numUpDownHor";
+            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownHor.TabIndex = 160;
+            this.numUpDownHor.Value = 0;
             // 
             // label71
             // 
@@ -1351,30 +1433,6 @@ namespace Nucleus.Coop
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
             this.SplitColors.TabIndex = 153;
             // 
-            // numMaxPlyrs
-            // 
-            this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
-            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(320, 245);
-            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
-            this.numMaxPlyrs.Name = "numMaxPlyrs";
-            this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
-            this.numMaxPlyrs.TabIndex = 152;
-            this.numMaxPlyrs.Value = 0;
-            // 
-            // numUpDownVer
-            // 
-            this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(318, 147);
-            this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownVer.Name = "numUpDownVer";
-            this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownVer.TabIndex = 150;
-            this.numUpDownVer.Value = 0;
-            // 
             // SplitDiv
             // 
             this.SplitDiv.AutoSize = true;
@@ -1414,64 +1472,6 @@ namespace Nucleus.Coop
             this.layoutSizer.TabIndex = 147;
             this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
             // 
-            // label29
-            // 
-            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label29.AutoSize = true;
-            this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(310, 222);
-            this.label29.Margin = new System.Windows.Forms.Padding(0);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(64, 13);
-            this.label29.TabIndex = 146;
-            this.label29.Text = "Max Players";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label27
-            // 
-            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.Color.Transparent;
-            this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(310, 175);
-            this.label27.Margin = new System.Windows.Forms.Padding(0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(99, 13);
-            this.label27.TabIndex = 144;
-            this.label27.Text = "Horizontal Divisions";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label28
-            // 
-            this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label28.AutoSize = true;
-            this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(307, 128);
-            this.label28.Margin = new System.Windows.Forms.Padding(0);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(90, 13);
-            this.label28.TabIndex = 145;
-            this.label28.Text = " Vertical Divisions";
-            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // numUpDownHor
-            // 
-            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(319, 194);
-            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownHor.Name = "numUpDownHor";
-            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownHor.TabIndex = 151;
-            this.numUpDownHor.Value = 0;
-            // 
             // audioTab
             // 
             this.audioTab.BackColor = System.Drawing.Color.RosyBrown;
@@ -1508,13 +1508,14 @@ namespace Nucleus.Coop
             // 
             this.audioDefaultDevice.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.audioDefaultDevice.AutoSize = true;
             this.audioDefaultDevice.BackColor = System.Drawing.Color.Transparent;
             this.audioDefaultDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.audioDefaultDevice.ForeColor = System.Drawing.Color.White;
-            this.audioDefaultDevice.Location = new System.Drawing.Point(301, 102);
+            this.audioDefaultDevice.Location = new System.Drawing.Point(94, 136);
             this.audioDefaultDevice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.audioDefaultDevice.Name = "audioDefaultDevice";
-            this.audioDefaultDevice.Size = new System.Drawing.Size(290, 17);
+            this.audioDefaultDevice.Size = new System.Drawing.Size(0, 15);
             this.audioDefaultDevice.TabIndex = 21;
             this.audioDefaultDevice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1737,7 +1738,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio.BackColor = System.Drawing.Color.Transparent;
             this.audioCustomSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.audioCustomSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioCustomSettingsRadio.Location = new System.Drawing.Point(26, 122);
+            this.audioCustomSettingsRadio.Location = new System.Drawing.Point(88, 109);
             this.audioCustomSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
             this.audioCustomSettingsRadio.Name = "audioCustomSettingsRadio";
             this.audioCustomSettingsRadio.Size = new System.Drawing.Size(99, 17);
@@ -1753,7 +1754,7 @@ namespace Nucleus.Coop
             this.audioDefaultSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.audioDefaultSettingsRadio.Checked = true;
             this.audioDefaultSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioDefaultSettingsRadio.Location = new System.Drawing.Point(26, 102);
+            this.audioDefaultSettingsRadio.Location = new System.Drawing.Point(88, 89);
             this.audioDefaultSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
             this.audioDefaultSettingsRadio.Name = "audioDefaultSettingsRadio";
             this.audioDefaultSettingsRadio.Size = new System.Drawing.Size(217, 17);
@@ -3340,10 +3341,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.settingsTab);
+            this.Controls.Add(this.layoutTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -3425,15 +3426,9 @@ namespace Nucleus.Coop
         private CheckBox cts_kar;
         private CheckBox cts_Mute;
         private ComboBox SplitColors;
-        private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
-        private Gaming.Controls.CustomNumericUpDown numUpDownVer;
         private CheckBox SplitDiv;
         private Label label49;
         public Panel layoutSizer;
-        private Label label29;
-        private Label label27;
-        private Label label28;
-        private Gaming.Controls.CustomNumericUpDown numUpDownHor;
         private CheckBox keepAccountsCheck;
         private Button ctrlr_shorcutsBtn;
         private TextBox nucUserPassTxt;
@@ -3595,5 +3590,11 @@ namespace Nucleus.Coop
         private Label label38;
         private ComboBox player28N;
         private CheckBox disableQuickUpdate;
+        private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
+        private Gaming.Controls.CustomNumericUpDown numUpDownVer;
+        private Label label29;
+        private Label label27;
+        private Label label28;
+        private Gaming.Controls.CustomNumericUpDown numUpDownHor;
     }
 }

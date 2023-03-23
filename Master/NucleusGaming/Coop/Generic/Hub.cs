@@ -121,7 +121,7 @@ namespace Nucleus.Gaming.Coop.Generic
        
         public string Get(string uri)
         {
-            if (webExceptionCount >= 3)
+            if (webExceptionCount >= 4)
             {               
                 return null;
             }

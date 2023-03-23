@@ -117,7 +117,7 @@
             this.plus7.Location = new System.Drawing.Point(165, 163);
             this.plus7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus7.Name = "plus7";
-            this.plus7.Size = new System.Drawing.Size(13, 13);
+            this.plus7.Size = new System.Drawing.Size(14, 15);
             this.plus7.TabIndex = 127;
             this.plus7.Text = "+";
             this.plus7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -125,10 +125,11 @@
             // label_7
             // 
             this.label_7.AutoSize = true;
+            this.label_7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_7.Location = new System.Drawing.Point(11, 164);
             this.label_7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_7.Name = "label_7";
-            this.label_7.Size = new System.Drawing.Size(85, 13);
+            this.label_7.Size = new System.Drawing.Size(84, 13);
             this.label_7.TabIndex = 126;
             this.label_7.Text = "Switch Layouts :";
             this.label_7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -152,7 +153,7 @@
             this.plus6.Location = new System.Drawing.Point(165, 139);
             this.plus6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus6.Name = "plus6";
-            this.plus6.Size = new System.Drawing.Size(13, 13);
+            this.plus6.Size = new System.Drawing.Size(14, 15);
             this.plus6.TabIndex = 123;
             this.plus6.Text = "+";
             this.plus6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -160,10 +161,11 @@
             // label_6
             // 
             this.label_6.AutoSize = true;
+            this.label_6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_6.Location = new System.Drawing.Point(3, 140);
             this.label_6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_6.Name = "label_6";
-            this.label_6.Size = new System.Drawing.Size(93, 13);
+            this.label_6.Size = new System.Drawing.Size(92, 13);
             this.label_6.TabIndex = 122;
             this.label_6.Text = "Cutscenes Mode :";
             this.label_6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -187,7 +189,7 @@
             this.plus5.Location = new System.Drawing.Point(165, 115);
             this.plus5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus5.Name = "plus5";
-            this.plus5.Size = new System.Drawing.Size(13, 13);
+            this.plus5.Size = new System.Drawing.Size(14, 15);
             this.plus5.TabIndex = 119;
             this.plus5.Text = "+";
             this.plus5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -195,10 +197,11 @@
             // label_5
             // 
             this.label_5.AutoSize = true;
+            this.label_5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_5.Location = new System.Drawing.Point(11, 115);
             this.label_5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_5.Name = "label_5";
-            this.label_5.Size = new System.Drawing.Size(85, 13);
+            this.label_5.Size = new System.Drawing.Size(82, 13);
             this.label_5.TabIndex = 118;
             this.label_5.Text = "Reset Windows:";
             this.label_5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -210,7 +213,7 @@
             this.plus1.Location = new System.Drawing.Point(165, 19);
             this.plus1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus1.Name = "plus1";
-            this.plus1.Size = new System.Drawing.Size(13, 13);
+            this.plus1.Size = new System.Drawing.Size(14, 15);
             this.plus1.TabIndex = 115;
             this.plus1.Text = "+";
             this.plus1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -230,10 +233,11 @@
             // label_1
             // 
             this.label_1.AutoSize = true;
+            this.label_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_1.Location = new System.Drawing.Point(8, 20);
             this.label_1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_1.Name = "label_1";
-            this.label_1.Size = new System.Drawing.Size(89, 13);
+            this.label_1.Size = new System.Drawing.Size(85, 13);
             this.label_1.TabIndex = 114;
             this.label_1.Text = "Toggle Unfocus :";
             this.label_1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -253,10 +257,11 @@
             // label_8
             // 
             this.label_8.AutoSize = true;
+            this.label_8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_8.Location = new System.Drawing.Point(14, 188);
             this.label_8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_8.Name = "label_8";
-            this.label_8.Size = new System.Drawing.Size(82, 13);
+            this.label_8.Size = new System.Drawing.Size(80, 13);
             this.label_8.TabIndex = 110;
             this.label_8.Text = "Lock Input Key:";
             this.label_8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -292,7 +297,7 @@
             this.plus4.Location = new System.Drawing.Point(165, 91);
             this.plus4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus4.Name = "plus4";
-            this.plus4.Size = new System.Drawing.Size(13, 13);
+            this.plus4.Size = new System.Drawing.Size(14, 15);
             this.plus4.TabIndex = 109;
             this.plus4.Text = "+";
             this.plus4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -304,7 +309,7 @@
             this.plus3.Location = new System.Drawing.Point(165, 66);
             this.plus3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus3.Name = "plus3";
-            this.plus3.Size = new System.Drawing.Size(13, 13);
+            this.plus3.Size = new System.Drawing.Size(14, 15);
             this.plus3.TabIndex = 108;
             this.plus3.Text = "+";
             this.plus3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -316,7 +321,7 @@
             this.plus2.Location = new System.Drawing.Point(165, 43);
             this.plus2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus2.Name = "plus2";
-            this.plus2.Size = new System.Drawing.Size(13, 13);
+            this.plus2.Size = new System.Drawing.Size(14, 15);
             this.plus2.TabIndex = 107;
             this.plus2.Text = "+";
             this.plus2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -324,10 +329,11 @@
             // label_4
             // 
             this.label_4.AutoSize = true;
+            this.label_4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_4.Location = new System.Drawing.Point(5, 92);
             this.label_4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_4.Name = "label_4";
-            this.label_4.Size = new System.Drawing.Size(91, 13);
+            this.label_4.Size = new System.Drawing.Size(87, 13);
             this.label_4.TabIndex = 106;
             this.label_4.Text = "Toggle Top Most:";
             this.label_4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -335,6 +341,7 @@
             // label_3
             // 
             this.label_3.AutoSize = true;
+            this.label_3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_3.Location = new System.Drawing.Point(24, 68);
             this.label_3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_3.Name = "label_3";
@@ -346,10 +353,11 @@
             // label_2
             // 
             this.label_2.AutoSize = true;
+            this.label_2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_2.Location = new System.Drawing.Point(18, 44);
             this.label_2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_2.Name = "label_2";
-            this.label_2.Size = new System.Drawing.Size(78, 13);
+            this.label_2.Size = new System.Drawing.Size(76, 13);
             this.label_2.TabIndex = 104;
             this.label_2.Text = "Close Nucleus:";
             this.label_2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -405,6 +413,7 @@
             this.shortContainer.Controls.Add(this.label_8);
             this.shortContainer.Controls.Add(this.label_1);
             this.shortContainer.Controls.Add(this.slave1);
+            this.shortContainer.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.shortContainer.ForeColor = System.Drawing.Color.White;
             this.shortContainer.Location = new System.Drawing.Point(12, 3);
             this.shortContainer.Name = "shortContainer";
@@ -433,7 +442,7 @@
             this.plus9.Location = new System.Drawing.Point(165, 211);
             this.plus9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus9.Name = "plus9";
-            this.plus9.Size = new System.Drawing.Size(13, 13);
+            this.plus9.Size = new System.Drawing.Size(14, 15);
             this.plus9.TabIndex = 140;
             this.plus9.Text = "+";
             this.plus9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -453,10 +462,11 @@
             // label_9
             // 
             this.label_9.AutoSize = true;
+            this.label_9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_9.Location = new System.Drawing.Point(38, 212);
             this.label_9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_9.Name = "label_9";
-            this.label_9.Size = new System.Drawing.Size(57, 13);
+            this.label_9.Size = new System.Drawing.Size(53, 13);
             this.label_9.TabIndex = 138;
             this.label_9.Text = "ALT+TAB:";
             this.label_9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -481,7 +491,7 @@
             this.plus8.Location = new System.Drawing.Point(165, 187);
             this.plus8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus8.Name = "plus8";
-            this.plus8.Size = new System.Drawing.Size(13, 13);
+            this.plus8.Size = new System.Drawing.Size(14, 15);
             this.plus8.TabIndex = 136;
             this.plus8.Text = "+";
             this.plus8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -608,6 +618,7 @@
             this.UINavContainer.Controls.Add(this.switch13);
             this.UINavContainer.Controls.Add(this.label_12);
             this.UINavContainer.Controls.Add(this.switch12);
+            this.UINavContainer.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.UINavContainer.ForeColor = System.Drawing.Color.White;
             this.UINavContainer.Location = new System.Drawing.Point(12, 267);
             this.UINavContainer.Name = "UINavContainer";
@@ -620,7 +631,7 @@
             // 
             this.switch11.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch11.Location = new System.Drawing.Point(99, 40);
+            this.switch11.Location = new System.Drawing.Point(101, 40);
             this.switch11.Margin = new System.Windows.Forms.Padding(0);
             this.switch11.MaxLength = 1;
             this.switch11.Name = "switch11";
@@ -633,10 +644,10 @@
             // 
             this.plus11.AutoSize = true;
             this.plus11.ForeColor = System.Drawing.Color.White;
-            this.plus11.Location = new System.Drawing.Point(164, 43);
+            this.plus11.Location = new System.Drawing.Point(166, 43);
             this.plus11.Margin = new System.Windows.Forms.Padding(0);
             this.plus11.Name = "plus11";
-            this.plus11.Size = new System.Drawing.Size(13, 13);
+            this.plus11.Size = new System.Drawing.Size(14, 15);
             this.plus11.TabIndex = 152;
             this.plus11.Text = "+";
             this.plus11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -644,7 +655,7 @@
             // slave11
             // 
             this.slave11.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave11.Location = new System.Drawing.Point(181, 40);
+            this.slave11.Location = new System.Drawing.Point(183, 40);
             this.slave11.Margin = new System.Windows.Forms.Padding(0);
             this.slave11.MaxLength = 1;
             this.slave11.Name = "slave11";
@@ -656,10 +667,10 @@
             // label_11
             // 
             this.label_11.AutoSize = true;
-            this.label_11.Location = new System.Drawing.Point(20, 43);
+            this.label_11.Location = new System.Drawing.Point(12, 43);
             this.label_11.Margin = new System.Windows.Forms.Padding(0);
             this.label_11.Name = "label_11";
-            this.label_11.Size = new System.Drawing.Size(76, 13);
+            this.label_11.Size = new System.Drawing.Size(85, 15);
             this.label_11.TabIndex = 150;
             this.label_11.Text = "On screen KB:";
             this.label_11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -668,7 +679,7 @@
             // 
             this.switch10.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch10.Location = new System.Drawing.Point(99, 17);
+            this.switch10.Location = new System.Drawing.Point(101, 17);
             this.switch10.Margin = new System.Windows.Forms.Padding(0);
             this.switch10.MaxLength = 1;
             this.switch10.Name = "switch10";
@@ -681,10 +692,10 @@
             // 
             this.plus10.AutoSize = true;
             this.plus10.ForeColor = System.Drawing.Color.White;
-            this.plus10.Location = new System.Drawing.Point(164, 20);
+            this.plus10.Location = new System.Drawing.Point(166, 20);
             this.plus10.Margin = new System.Windows.Forms.Padding(0);
             this.plus10.Name = "plus10";
-            this.plus10.Size = new System.Drawing.Size(13, 13);
+            this.plus10.Size = new System.Drawing.Size(14, 15);
             this.plus10.TabIndex = 148;
             this.plus10.Text = "+";
             this.plus10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -692,10 +703,10 @@
             // label_15
             // 
             this.label_15.AutoSize = true;
-            this.label_15.Location = new System.Drawing.Point(37, 135);
+            this.label_15.Location = new System.Drawing.Point(29, 135);
             this.label_15.Margin = new System.Windows.Forms.Padding(0);
             this.label_15.Name = "label_15";
-            this.label_15.Size = new System.Drawing.Size(59, 13);
+            this.label_15.Size = new System.Drawing.Size(67, 15);
             this.label_15.TabIndex = 9;
             this.label_15.Text = "Deadzone:";
             this.label_15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -703,7 +714,7 @@
             // slave10
             // 
             this.slave10.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave10.Location = new System.Drawing.Point(181, 17);
+            this.slave10.Location = new System.Drawing.Point(183, 17);
             this.slave10.Margin = new System.Windows.Forms.Padding(0);
             this.slave10.MaxLength = 1;
             this.slave10.Name = "slave10";
@@ -714,7 +725,7 @@
             // 
             // switch15
             // 
-            this.switch15.Location = new System.Drawing.Point(99, 132);
+            this.switch15.Location = new System.Drawing.Point(101, 132);
             this.switch15.Margin = new System.Windows.Forms.Padding(0);
             this.switch15.Name = "switch15";
             this.switch15.Size = new System.Drawing.Size(92, 20);
@@ -725,10 +736,10 @@
             // label_10
             // 
             this.label_10.AutoSize = true;
-            this.label_10.Location = new System.Drawing.Point(12, 20);
+            this.label_10.Location = new System.Drawing.Point(4, 20);
             this.label_10.Margin = new System.Windows.Forms.Padding(0);
             this.label_10.Name = "label_10";
-            this.label_10.Size = new System.Drawing.Size(84, 13);
+            this.label_10.Size = new System.Drawing.Size(93, 15);
             this.label_10.TabIndex = 146;
             this.label_10.Text = "Lock UI Control:";
             this.label_10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -736,17 +747,17 @@
             // label_14
             // 
             this.label_14.AutoSize = true;
-            this.label_14.Location = new System.Drawing.Point(42, 113);
+            this.label_14.Location = new System.Drawing.Point(34, 113);
             this.label_14.Margin = new System.Windows.Forms.Padding(0);
             this.label_14.Name = "label_14";
-            this.label_14.Size = new System.Drawing.Size(54, 13);
+            this.label_14.Size = new System.Drawing.Size(59, 15);
             this.label_14.TabIndex = 7;
             this.label_14.Text = "Left Click:";
             this.label_14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // switch14
             // 
-            this.switch14.Location = new System.Drawing.Point(99, 109);
+            this.switch14.Location = new System.Drawing.Point(101, 109);
             this.switch14.Margin = new System.Windows.Forms.Padding(0);
             this.switch14.Name = "switch14";
             this.switch14.Size = new System.Drawing.Size(92, 20);
@@ -755,17 +766,17 @@
             // label_13
             // 
             this.label_13.AutoSize = true;
-            this.label_13.Location = new System.Drawing.Point(35, 89);
+            this.label_13.Location = new System.Drawing.Point(27, 89);
             this.label_13.Margin = new System.Windows.Forms.Padding(0);
             this.label_13.Name = "label_13";
-            this.label_13.Size = new System.Drawing.Size(61, 13);
+            this.label_13.Size = new System.Drawing.Size(68, 15);
             this.label_13.TabIndex = 5;
             this.label_13.Text = "Right Click:";
             this.label_13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // switch13
             // 
-            this.switch13.Location = new System.Drawing.Point(99, 86);
+            this.switch13.Location = new System.Drawing.Point(101, 86);
             this.switch13.Margin = new System.Windows.Forms.Padding(0);
             this.switch13.Name = "switch13";
             this.switch13.Size = new System.Drawing.Size(92, 20);
@@ -774,17 +785,17 @@
             // label_12
             // 
             this.label_12.AutoSize = true;
-            this.label_12.Location = new System.Drawing.Point(16, 66);
+            this.label_12.Location = new System.Drawing.Point(8, 66);
             this.label_12.Margin = new System.Windows.Forms.Padding(0);
             this.label_12.Name = "label_12";
-            this.label_12.Size = new System.Drawing.Size(80, 13);
+            this.label_12.Size = new System.Drawing.Size(91, 15);
             this.label_12.TabIndex = 3;
             this.label_12.Text = "Drag and Drop:";
             this.label_12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // switch12
             // 
-            this.switch12.Location = new System.Drawing.Point(99, 63);
+            this.switch12.Location = new System.Drawing.Point(101, 63);
             this.switch12.Margin = new System.Windows.Forms.Padding(0);
             this.switch12.Name = "switch12";
             this.switch12.Size = new System.Drawing.Size(92, 20);
@@ -794,13 +805,14 @@
             // 
             this.deadzone_tip.AutoSize = true;
             this.deadzone_tip.BackColor = System.Drawing.Color.Transparent;
+            this.deadzone_tip.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.deadzone_tip.ForeColor = System.Drawing.Color.White;
-            this.deadzone_tip.Location = new System.Drawing.Point(278, 395);
+            this.deadzone_tip.Location = new System.Drawing.Point(262, 393);
             this.deadzone_tip.Name = "deadzone_tip";
-            this.deadzone_tip.Size = new System.Drawing.Size(212, 26);
+            this.deadzone_tip.Size = new System.Drawing.Size(236, 30);
             this.deadzone_tip.TabIndex = 91;
-            this.deadzone_tip.Text = "If the cursor move without touching the\r\n left stick set a higher value(steps of " +
-    "+100) .";
+            this.deadzone_tip.Text = "If the cursor move without touching the\r\nleft stick set a higher value(steps of +" +
+    "100) .";
             this.deadzone_tip.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.deadzone_tip.Visible = false;
             // 
@@ -810,10 +822,11 @@
             this.enabled_chk.BackColor = System.Drawing.Color.Transparent;
             this.enabled_chk.Checked = true;
             this.enabled_chk.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enabled_chk.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.enabled_chk.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.enabled_chk.Location = new System.Drawing.Point(12, 245);
             this.enabled_chk.Name = "enabled_chk";
-            this.enabled_chk.Size = new System.Drawing.Size(348, 17);
+            this.enabled_chk.Size = new System.Drawing.Size(403, 19);
             this.enabled_chk.TabIndex = 92;
             this.enabled_chk.Text = "Enable Controller UI Navigation (Require admin rights for full support)";
             this.enabled_chk.UseVisualStyleBackColor = false;

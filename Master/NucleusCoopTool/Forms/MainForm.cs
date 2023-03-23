@@ -834,8 +834,7 @@ namespace Nucleus.Coop
                         return;
                     }
 
-                    //I_GameHandler.Update(currentGame.HandlerInterval, true);
-                    GlobalWindowMethods.UpdateAndRefreshGameWindows(GenericGameHandler.Instance,currentGame,currentProfile,currentGame.HandlerInterval,true);
+                    I_GameHandler.Update(currentGame.HandlerInterval, true);                   
                 }
                 else
                 {
@@ -1540,13 +1539,12 @@ namespace Nucleus.Coop
             I_GameHandler.Ended += handler_Ended;
 
             GameProfile.Game = currentGame;
+
             gameManager.Play(I_GameHandler);
 
             if (I_GameHandler.TimerInterval > 0)
             {
-                I_GameHandler.StartPlayTick(currentGame.HandlerInterval);
-                //handlerThread = new Thread(UpdateGameManager);
-                //handlerThread.Start();
+                I_GameHandler.StartUpdateTick(currentGame.HandlerInterval);
             }
 
             if (currentGame.HideTaskbar && !useCustomLayout)
@@ -1584,11 +1582,6 @@ namespace Nucleus.Coop
             RefreshUI(true);
         }
 
-        private void SetBtnToPlay()
-        {
-            btn_Play.Text = "PLAY";
-        }
-
         private void handler_Ended()
         {
             Log("Handler ended method called");
@@ -1599,17 +1592,12 @@ namespace Nucleus.Coop
             btn_Play.Enabled = false;
             currentControl = null;
 
-            User32Util.ShowTaskBar();
-            GoToStep(0);
-            RefreshGames(false);
-            WindowState = FormWindowState.Normal;
-
-            BringToFront();
-
-            stepPanelPictureBox.Focus();
             positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
             positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
 
+            WindowState = FormWindowState.Normal;
+            BringToFront();
+            stepPanelPictureBox.Focus();
         }
 
         private void btn_Prev_Click(object sender, EventArgs e)
@@ -1702,11 +1690,6 @@ namespace Nucleus.Coop
         }
 
         private void Form_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            User32Util.ShowTaskBar();
-        }
-
-        private void btnShowTaskbar_Click(object sender, EventArgs e)
         {
             User32Util.ShowTaskBar();
         }
@@ -2331,10 +2314,6 @@ namespace Nucleus.Coop
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    // Create a ImageCache.GetImage object from the picture file on disk,
-                    // and assign that to the PictureBox.Image property
-                    //PictureBox1.Image = ImageCache.GetImage(dlg.FileName);
-
                     if (dlg.FileName.EndsWith(".exe"))
                     {
                         Icon icon = Shell32.GetIcon(dlg.FileName, false);

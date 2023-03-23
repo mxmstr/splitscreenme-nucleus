@@ -666,6 +666,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
             int shift = -2;
             int reset = 0;//set to 1  reset debugging purpose
+
             if (reset == 1)
             {
                 foreach (PlayerInfo pl in players)
@@ -951,7 +952,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             //    PlayerInfo p = players[i];
             //    ProcessData data = p.ProcessData;
 
-            //    //Switching 4p layout here 
+            //    //Swaping 4p layout here 
             //    if (p.Owner.Type == UserScreenType.FourPlayers)
             //    {
             //        if (p.OtherLayout.Count == 0)
