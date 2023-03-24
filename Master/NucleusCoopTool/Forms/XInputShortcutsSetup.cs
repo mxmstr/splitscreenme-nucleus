@@ -207,13 +207,14 @@ namespace Nucleus.Coop.Forms
             }
 
             enabled_chk.Checked = bool.Parse(ini.IniReadValue("XUINav", "Enabled"));
-            switch15.Text = ini.IniReadValue("XUINav", "Deadzone");
+            
             switch12.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "DragDrop"))).ToString();
             switch12.Tag = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
             switch13.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "RightClick"))).ToString();
             switch13.Tag = int.Parse(ini.IniReadValue("XUINav", "RightClick"));
             switch14.Text = ((GamepadButtonFlags)Convert.ToInt32(ini.IniReadValue("XUINav", "LeftClick"))).ToString();
             switch14.Tag = int.Parse(ini.IniReadValue("XUINav", "LeftClick"));
+            switch15.Text = ini.IniReadValue("XUINav", "Deadzone");
 
             foreach (Control c in shortContainer.Controls)
             {
@@ -265,6 +266,11 @@ namespace Nucleus.Coop.Forms
                     c.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
                 }
 
+                if (c.Name == "switch15")
+                {
+                    c.KeyPress += new KeyPressEventHandler(num_KeyPress);
+                }
+
                 if (c.Text.Length > 5)
                 {
                     if (c.GetType() == typeof(TextBox))
@@ -273,6 +279,7 @@ namespace Nucleus.Coop.Forms
                         textBox.CharacterCasing = CharacterCasing.Normal;
                     }
                 }
+
                 if (c.GetType() != typeof(Label) && c.GetType() != typeof(TextBox))
                 {
                     c.Cursor = hand_Cursor;
@@ -516,7 +523,7 @@ namespace Nucleus.Coop.Forms
                     //prevPressed = (int)pressed;
                     if (this.ActiveControl != null)
                     {
-                        if (ActiveControl.GetType() == typeof(TextBox) && ActiveControl.Name != "deadzone_txt")
+                        if (ActiveControl.GetType() == typeof(TextBox) && ActiveControl.Name != "switch15")
                         {
                             activeControl = (TextBox)ActiveControl;
                             if (!isTRigger)
@@ -575,12 +582,19 @@ namespace Nucleus.Coop.Forms
             ini.IniWriteValue("XShortcuts", "LockInputs", switch8.Tag.ToString() + "+" + slave8.Tag.ToString());
             ini.IniWriteValue("XShortcuts", "ReleaseCursor", switch9.Tag.ToString() + "+" + slave9.Tag.ToString());
 
-            ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
+            ini.IniWriteValue("XUINav", "LockUIControl", switch10.Tag.ToString() + "+" + slave10.Tag.ToString());
+            ini.IniWriteValue("XUINav", "OpenOsk", switch11.Tag.ToString() + "+" + slave11.Tag.ToString());
             ini.IniWriteValue("XUINav", "DragDrop", switch12.Tag.ToString());
             ini.IniWriteValue("XUINav", "RightClick", switch13.Tag.ToString());
             ini.IniWriteValue("XUINav", "LeftClick", switch14.Tag.ToString());
-            ini.IniWriteValue("XUINav", "LockUIControl", switch10.Tag.ToString() + "+" + slave10.Tag.ToString());
-            ini.IniWriteValue("XUINav", "OpenOsk", switch11.Tag.ToString() + "+" + slave11.Tag.ToString());
+
+            if(switch15.Text == "")
+            {
+                switch15.Text = "5000";
+            }
+
+            ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
+            
             ControllersShortcuts.UpdateShortcutsValue();
             ControllersUINav.UpdateUINavSettings();
 

@@ -42,7 +42,6 @@ namespace Nucleus.Gaming.Coop.Generic
             this.Value.Size = new System.Drawing.Size(813, 56);
             this.Value.TabIndex = 0;
             this.Value.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Value.TextChanged += new System.EventHandler(this.Value_TextChanged);
             // 
             // OSD
             // 

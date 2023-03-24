@@ -22,6 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 using Win32;
 
@@ -43,8 +44,7 @@ namespace Nucleus.Coop
         private string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public string customFont;
-        private string currentGameSetup;
-
+        public string lockeyIniString;
         public string[] rgb_font;
         public string[] rgb_MouseOverColor;
         public string[] rgb_MenuStripBackColor;
@@ -252,7 +252,9 @@ namespace Nucleus.Coop
             HandlerNoteMagnifierTitleBackColor = Color.FromArgb(int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[0]), int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[1]), int.Parse(rgb_HandlerNoteMagnifierTitleBackColor[2]));
             HandlerNoteTitleFont = Color.FromArgb(int.Parse(rgb_HandlerNoteTitleFontColor[0]), int.Parse(rgb_HandlerNoteTitleFontColor[1]), int.Parse(rgb_HandlerNoteTitleFontColor[2]));
             ButtonsBorderColor = Color.FromArgb(int.Parse(rgb_ButtonsBorderColor[0]), int.Parse(rgb_ButtonsBorderColor[1]), int.Parse(rgb_ButtonsBorderColor[2]));
-            SelectionBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[0]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[1]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[2]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[3])); 
+            SelectionBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[0]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[1]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[2]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[3]));
+            lockeyIniString = ini.IniReadValue("Hotkeys", "LockKey");
+
             InitializeComponent();
 
             if (ini.IniReadValue("Misc", "WindowSize") != "")
@@ -767,13 +769,13 @@ namespace Nucleus.Coop
                         return;
                     }
 
-                    TriggerOSD(2000, "See You Later!");
                     User32Util.ShowTaskBar();
+                    Globals.MainOSD.Dispose();          
                     Close();
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == TopMost_HotkeyID)
@@ -804,7 +806,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == SetFocus_HotkeyID)
@@ -822,7 +824,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == ResetWindows_HotkeyID)
@@ -838,7 +840,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Cutscenes_HotkeyID)
@@ -872,7 +874,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
                 }
             }
 
@@ -888,7 +890,7 @@ namespace Nucleus.Coop
                 hotkeysLockedTimer.Interval = (timerMS); //millisecond
                 hotkeysLockedTimer.Start();
 
-                Globals.MainOSD.Settings(timerMS, Color.YellowGreen, text);
+                Globals.MainOSD.Settings(timerMS, text);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Nucleus.Gaming.Coop.Generic
 {
@@ -8,21 +9,23 @@ namespace Nucleus.Gaming.Coop.Generic
     {
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         private int timing;
+        private Color textColor; 
 
         public OSD()
         {
             InitializeComponent();
             timer.Tick += new EventHandler(TimerTick);
+            textColor = Color.FromArgb(Globals.OSDColor[0], Globals.OSDColor[1],Globals.OSDColor[2]);
             Show();
         }
 
-        public void Settings(int timing, Color color, string text)
+        public void Settings(int timing, string text)
         {
             this.timing = timing;
             this.Invoke((MethodInvoker)delegate ()
             {
                 Value.Text = text;
-                Value.ForeColor = color;
+                Value.ForeColor = textColor;
                 timer.Interval = (timing); //millisecond           
                 Opacity = 1.0D;
                 Show();
@@ -30,16 +33,15 @@ namespace Nucleus.Gaming.Coop.Generic
             });
         }
 
-        private void Value_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void TimerTick(Object Object, EventArgs EventArgs)
         {
-            Opacity = 0.0D;
-            Hide();
-            timer.Stop();
+            this.Invoke((MethodInvoker)delegate ()
+            {
+                Value.Text = string.Empty;
+                Opacity = 0.0D;
+                Hide();
+                timer.Stop();
+            });
         }
 
         public void UpdateSize(float scale)

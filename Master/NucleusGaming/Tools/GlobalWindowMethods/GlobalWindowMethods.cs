@@ -654,7 +654,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             if (profile == null || !GameProfile.Saved || !canSwitch)
             {
-                Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Can't Be Used For Now");
+                Globals.MainOSD.Settings(1600, $"Can't Be Used For Now");
                 return;
             }
 
@@ -984,7 +984,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             if (profile == null || !GameProfile.Saved)
             {
-                Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Can't Be Used For Now");
+                Globals.MainOSD.Settings(1600, $"Can't Be Used For Now");
                 return;
             }
 
@@ -1073,12 +1073,12 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             if (on)
             {
                 canSwitch = false;
-                Globals.MainOSD.Settings(1600, Color.YellowGreen, "Cutscenes Mode On");
+                Globals.MainOSD.Settings(1600, "Cutscenes Mode On");
             }
             else
             {
                 canSwitch = true;
-                Globals.MainOSD.Settings(1600, Color.YellowGreen, "Cutscenes Mode Off");
+                Globals.MainOSD.Settings(1600, "Cutscenes Mode Off");
                 if (GameProfile.Cts_Unfocus)
                 {
                     ChangeForegroundWindow();
@@ -1618,7 +1618,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     }
                     catch
                     { }
-                    Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Game Windows Minimized");
+                    Globals.MainOSD.Settings(1600, $"Game Windows Minimized");
 
                     User32Util.ShowTaskBar();
                     TopMostToggle = false;
@@ -1650,14 +1650,14 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     }
 
                     User32Util.HideTaskbar();
-                    Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Game Windows Restored");
+                    Globals.MainOSD.Settings(1600, $"Game Windows Restored");
 
                     TopMostToggle = true;
                 }
             }
             else
             {
-                Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Unlock Inputs First (Press {Globals.ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                Globals.MainOSD.Settings(1600, $"Unlock Inputs First (Press {Globals.ini.IniReadValue("Hotkeys", "LockKey")} key)");
             }
         }
 

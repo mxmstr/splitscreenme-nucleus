@@ -786,6 +786,8 @@ namespace Nucleus.Coop
 
             mainForm.handleClickSound(clickSoundChkB.Checked);
 
+            mainForm.lockeyIniString = comboBox_lockKey.SelectedItem.ToString();
+
             if (mainForm.disableFastHandlerUpdate != disableQuickUpdate.Checked)
             {
                 mainForm.disableFastHandlerUpdate = disableQuickUpdate.Checked;
@@ -823,7 +825,7 @@ namespace Nucleus.Coop
 
             Visible = false;
 
-            Globals.MainOSD.Settings(500, Color.LimeGreen, "Settings saved");
+            Globals.MainOSD.Settings(500,  "Settings saved");
 
             if (needToRestart)
             {

@@ -61,7 +61,7 @@ namespace Nucleus.Coop.Forms
             this.Name = "Splashscreen";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Splashscreen";
             this.Shown += new System.EventHandler(this.Splashscreen_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gif)).EndInit();

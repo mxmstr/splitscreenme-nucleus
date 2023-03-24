@@ -135,7 +135,7 @@ namespace Nucleus.Gaming.Controls
             {
                 selected.ForeColor = Color.Gray;
                 GameProfile.currentProfile.Reset();
-                Globals.MainOSD.Settings(500, Color.Yellow, "Game Profile Unloaded");
+                Globals.MainOSD.Settings(500, "Game Profile Unloaded");
                 return;
             }
 
@@ -354,7 +354,7 @@ namespace Nucleus.Gaming.Controls
 
                 GameProfile.currentProfile.Reset();
                 Update_ProfilesList();
-                Globals.MainOSD.Settings(500, Color.Yellow, "Game Profile Deleted");
+                Globals.MainOSD.Settings(500, "Game Profile Deleted");
             }
         }
 

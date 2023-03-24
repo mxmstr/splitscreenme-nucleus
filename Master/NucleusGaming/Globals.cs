@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming.Coop.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -10,12 +11,20 @@ namespace Nucleus.Gaming
 
         public static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
-        public static string Theme//return theme path(current theme folder)
-=> Path.Combine(Application.StartupPath, @"gui\theme\" + ini.IniReadValue("Theme", "Theme") + "\\");
+        ///return theme path(current theme folder)
+        public static string Theme => Path.Combine(Application.StartupPath, @"gui\theme\" + ini.IniReadValue("Theme", "Theme") + "\\");
 
-        public static IniFile ThemeIni//return theme.ini file(current theme)
-=> new IniFile(Path.Combine(Theme, "theme.ini"));
+        //return theme.ini file(current theme)
+        public static IniFile ThemeIni => new IniFile(Path.Combine(Theme, "theme.ini"));
 
         public static OSD MainOSD = new OSD();
+
+        public static int[] OSDColor => osdColor;
+
+        private static int[] osdColor => new int[] {
+            int.Parse(ini.IniReadValue("Dev", "OSDColor").Split(',')[0]),
+            int.Parse(ini.IniReadValue("Dev", "OSDColor").Split(',')[1]),
+            int.Parse(ini.IniReadValue("Dev", "OSDColor").Split(',')[2]),
+        };
     }
 }

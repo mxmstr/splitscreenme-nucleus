@@ -480,7 +480,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             return;
                         }
 
-                        Globals.MainOSD.Settings(1000, Color.Yellow, "Inputs Locked");
+                        Globals.MainOSD.Settings(1000, "Inputs Locked");
 
                         LockInput.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
 
@@ -493,7 +493,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     else
                     {
                         LockInput.Unlock(CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
-                        Globals.MainOSD.Settings(1000, Color.Yellow, "Inputs Unlocked");
+                        Globals.MainOSD.Settings(1000, "Inputs Unlocked");
                     }
                 }
 

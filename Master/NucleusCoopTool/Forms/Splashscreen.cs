@@ -38,6 +38,23 @@ namespace Nucleus.Coop.Forms
 
             InitializeComponent();
 
+            if (Globals.ini.IniReadValue("Misc", "WindowSize") != "")
+            {
+                string[] windowSize = Globals.ini.IniReadValue("Misc", "WindowSize").Split('X');
+                Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
+            }
+
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+            if (Globals.ini.IniReadValue("Misc", "WindowLocation") != "")
+            {
+                string[] windowLocation = Globals.ini.IniReadValue("Misc", "WindowLocation").Split('X');
+                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+            }
+            else
+            {
+                CenterToScreen();
+            }
+
             if (roundedcorners)
             {
                 Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));

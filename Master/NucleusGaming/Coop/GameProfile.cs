@@ -496,7 +496,7 @@ namespace Nucleus.Gaming.Coop
                 {
                     if (index > ScreensUtil.AllScreens().Length)
                     {
-                        Globals.MainOSD.Settings(2000, Color.Orange, $"Requires {index + 1} Screens");
+                        Globals.MainOSD.Settings(2000, $"Requires {index + 1} Screens");
                         Reset();
                         return false;
                     }
@@ -520,7 +520,7 @@ namespace Nucleus.Gaming.Coop
 
                 if (hasKeyboard)
                 {
-                    Globals.MainOSD.Settings(2000, Color.Orange, $"Game Profile N°{_profileToLoad} Loaded\nThe Auto Play Option Is Not Compatible With Keyboards");
+                    Globals.MainOSD.Settings(2000, $"Game Profile N°{_profileToLoad} Loaded\nThe Auto Play Option Is Not Compatible With Keyboards");
                     AutoPlay = false;
                 }
 
@@ -535,7 +535,7 @@ namespace Nucleus.Gaming.Coop
             {
                 if (index > ScreensUtil.AllScreens().Length)
                 {
-                    Globals.MainOSD.Settings(2000, Color.Orange, $"Can't Find The Required Screen(s)");
+                    Globals.MainOSD.Settings(2000, $"Can't Find The Required Screen(s)");
                     Reset();
                     return false;
                 }
@@ -553,7 +553,7 @@ namespace Nucleus.Gaming.Coop
                 mod2 = string.Empty;
             }
 
-            Globals.MainOSD.Settings(2000, Color.YellowGreen, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
+            Globals.MainOSD.Settings(2000, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
 
             //LogManager.Log($"Game profile n°{_profileToLoad} Loaded");
             positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
@@ -572,7 +572,7 @@ namespace Nucleus.Gaming.Coop
             {
                 if (!profileDisabled)
                 {
-                    Globals.MainOSD.Settings(2000, Color.Orange, $"Limit Of 20 Profiles Has Been Reach Already");
+                    Globals.MainOSD.Settings(2000, $"Limit Of 20 Profiles Has Been Reach Already");
                 }
 
                 return;
@@ -788,7 +788,7 @@ namespace Nucleus.Gaming.Coop
             modeText = $"Profile n°{profileToSave}";
             //profile.ListGameProfiles();
             //LogManager.Log("Game Profile Updated");
-            Globals.MainOSD.Settings(1600, Color.GreenYellow, $"Game Profile Updated");
+            Globals.MainOSD.Settings(1600, $"Game Profile Updated");
         }
 
         public static void SaveGameProfile(GameProfile profile)
@@ -800,7 +800,7 @@ namespace Nucleus.Gaming.Coop
             {
                 if (!profileDisabled)
                 {
-                    Globals.MainOSD.Settings(2000, Color.Orange, $"Limit Of 20 Profiles Has Been Reach Already");
+                    Globals.MainOSD.Settings(2000, $"Limit Of 20 Profiles Has Been Reach Already");
                 }
 
                 saved = true;
@@ -1011,7 +1011,7 @@ namespace Nucleus.Gaming.Coop
             saved = true;
 
             LogManager.Log("Game Profile Saved");
-            Globals.MainOSD.Settings(1600, Color.GreenYellow, $"Game Profile Saved");
+            Globals.MainOSD.Settings(1600, $"Game Profile Saved");
         }
 
         public static GameProfile CleanClone(GameProfile profile)

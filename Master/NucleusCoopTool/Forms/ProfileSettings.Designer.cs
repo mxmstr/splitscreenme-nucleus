@@ -623,7 +623,7 @@ namespace Nucleus.Coop
             this.audioDefaultDevice.BackColor = System.Drawing.Color.Transparent;
             this.audioDefaultDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.audioDefaultDevice.ForeColor = System.Drawing.Color.White;
-            this.audioDefaultDevice.Location = new System.Drawing.Point(94, 136);
+            this.audioDefaultDevice.Location = new System.Drawing.Point(86, 136);
             this.audioDefaultDevice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.audioDefaultDevice.Name = "audioDefaultDevice";
             this.audioDefaultDevice.Size = new System.Drawing.Size(0, 15);

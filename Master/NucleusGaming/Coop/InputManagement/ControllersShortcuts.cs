@@ -241,13 +241,13 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         if (EnabledRuntime && (pressed == LockUIControl))
                         {
                             EnabledRuntime = false;
-                            Globals.MainOSD.Settings(1600, Color.YellowGreen, $"UI Control Locked");
+                            Globals.MainOSD.Settings(1600, $"UI Control Locked");
                             Thread.Sleep(800);
                         }
                         else if (!EnabledRuntime && (pressed == LockUIControl))
                         {
                             EnabledRuntime = true;
-                            Globals.MainOSD.Settings(1600, Color.YellowGreen, $"UI Control Unlocked");
+                            Globals.MainOSD.Settings(1600, $"UI Control Unlocked");
                             Thread.Sleep(800);
                         }
                     }
@@ -332,14 +332,14 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         if (!oskVisible)
                         {
                             _OpenOsk();
-                            Globals.MainOSD.Settings(1600, Color.YellowGreen, $"On Screen Keyboard Opened");
+                            Globals.MainOSD.Settings(1600, $"On Screen Keyboard Opened");
                             Thread.Sleep(1100);
                             oskVisible = true;
                         }
                         else
                         {
                             KillOsk();
-                            Globals.MainOSD.Settings(1600, Color.YellowGreen, $"On Screen Keyboard Closed");
+                            Globals.MainOSD.Settings(1600, $"On Screen Keyboard Closed");
                             Thread.Sleep(500);
                             oskVisible = false;
                         }
@@ -490,13 +490,13 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         {
                             if (GenericGameHandler.Instance != null)
                                 GenericGameHandler.Instance.Update(GenericGameHandler.Instance.HWndInterval, true);
-                            Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Reseting game windows. Please wait...");
+                            Globals.MainOSD.Settings(1600, $"Reseting game windows. Please wait...");
 
                         }
                         else if ((button == SetFocus || rt == SetFocus || lt == SetFocus))///Unfocus windows
                         {
                             GlobalWindowMethods.ChangeForegroundWindow();
-                            Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Game Windows Unfocused");
+                            Globals.MainOSD.Settings(1600, $"Game Windows Unfocused");
                         }
                         else if ((button == TopMost || rt == TopMost || lt == TopMost))///Minimize/restore windows
                         {
@@ -508,11 +508,11 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             {
                                 if (GenericGameHandler.Instance != null)
                                     GenericGameHandler.Instance.End(true);
-                                Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Session Ended");
+                                Globals.MainOSD.Settings(1600, $"Session Ended");
                             }
                             else
                             {
-                                Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Unlock Inputs First");
+                                Globals.MainOSD.Settings(1600, $"Unlock Inputs First");
                             }
                         }
                         else if (button == Close || rt == Close || lt == Close)///Close nucleus
@@ -523,7 +523,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             }
 
                             User32Util.ShowTaskBar();
-                            Globals.MainOSD.Settings(1600, Color.YellowGreen, $"See You Later!");
+                            Globals.MainOSD.Settings(1600, $"See You Later!");
                             Thread.Sleep(5000);
 
                             if (GenericGameHandler.Instance == null)
@@ -536,7 +536,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         {
                             if (!LockInput.IsLocked)
                             {
-                                Globals.MainOSD.Settings(1000, Color.Yellow, "Inputs Locked");
+                                Globals.MainOSD.Settings(1000, "Inputs Locked");
 
                                 LockInput.Lock(GameProfile.Game?.LockInputSuspendsExplorer ?? true, GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
 
@@ -549,7 +549,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             else
                             {
                                 LockInput.Unlock(GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
-                                Globals.MainOSD.Settings(1000, Color.Yellow, "Inputs Unlocked");
+                                Globals.MainOSD.Settings(1000, "Inputs Unlocked");
                             }
                         }
                         else if (button == ReleaseCursor || rt == LockInputs || lt == LockInputs)///Try to release the cursor from game window by alt+tab inputs

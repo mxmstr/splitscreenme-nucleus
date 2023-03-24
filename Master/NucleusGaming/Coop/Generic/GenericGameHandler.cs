@@ -52,7 +52,7 @@ namespace Nucleus.Gaming
     {
         public void TriggerOSD(int timerMS, string text)
         {
-            Globals.MainOSD.Settings(timerMS, Color.GreenYellow, text);
+            Globals.MainOSD.Settings(timerMS, text);
         }
 
         public List<Form> splitForms = new List<Form>();
