@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Nucleus.Gaming.Coop;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -38,13 +39,6 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
 
                 try
                 {
-                    if (i == 0)
-                    {
-                    }
-                    else
-                    {
-                    }
-
                     JObject emuSettings;
 
                     if (gen.AltEpicEmuArgs)
@@ -57,7 +51,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
                         //new JProperty("log_level", log),
                         new JProperty("savepath", "appdata"),
                         new JProperty("unlock_dlcs", true),
-                        new JProperty("language", gen.GetEpicLanguage()),
+                        new JProperty("language", GetEpicLanguage()),
                         new JProperty("username", player.Nickname)
                         );
                     }
@@ -72,7 +66,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
                         // new JProperty("log_level", log),
                         new JProperty("savepath", "appdata"),
                         new JProperty("unlock_dlcs", true),
-                        new JProperty("language", gen.GetEpicLanguage()),
+                        new JProperty("language", GetEpicLanguage()),
                         new JProperty("username", player.Nickname)
                         );
                     }
@@ -150,6 +144,55 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
             }
 
             genericGameHandler.Log("Epic Emu setup complete");
+        }
+
+        public static string GetEpicLanguage()
+        {
+            string epicLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
+            string EpicLang = "";
+
+            IDictionary<string, string> epiclangs = new Dictionary<string, string>
+            {
+                { "Arabic", "ar" },
+                { "Brazilian", "pt-BR" },
+                { "Bulgarian", "bg" },
+                { "Chinese", "zh" },
+                { "Czech", "cs" },
+                { "Danish", "da" },
+                { "Dutch", "nl" },
+                { "English", "en" },
+                { "Finnish", "fi" },
+                { "French", "fr" },
+                { "German", "de" },
+                { "Greek", "el" },
+                { "Hungarian", "hu" },
+                { "Italian", "it" },
+                { "Japanese", "ja" },
+                { "Koreana", "ko" },
+                { "Norwegian", "no" },
+                { "Polish", "pl" },
+                { "Portuguese", "pt" },
+                { "Romanian", "ro" },
+                { "Russian", "ru" },
+                { "Spanish", "es" },
+                { "Swedish", "sv" },
+                { "Thai", "th" },
+                { "Turkish", "tr" },
+                { "Ukrainian", "uk" }
+            };
+
+            foreach (KeyValuePair<string, string> lang in epiclangs)
+            {
+                if (lang.Key != epicLanguage)
+                {
+                    continue;
+                }
+
+                EpicLang = lang.Value;
+                break;
+            }
+
+            return EpicLang;
         }
     }
 }

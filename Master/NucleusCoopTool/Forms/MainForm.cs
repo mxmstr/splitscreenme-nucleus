@@ -41,8 +41,8 @@ namespace Nucleus.Coop
 
         protected string faq_link = "https://www.splitscreen.me/docs/faq";
         protected string api = "https://hub.splitscreen.me/api/v1/";
-        private string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        private string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string NucleusEnvironmentRoot => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        private string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public string customFont;
         public string lockeyIniString;
         public string[] rgb_font;
@@ -99,7 +99,6 @@ namespace Nucleus.Coop
         private List<Control> ctrls = new List<Control>();
         private List<UserInputControl> stepsList;
 
-        private Thread handlerThread;
         public Action<IntPtr> RawInputAction { get; set; }
 
         public Bitmap defBackground;
@@ -533,7 +532,7 @@ namespace Nucleus.Coop
             hotkeysLockedTimer = new System.Windows.Forms.Timer();
             hotkeysLockedTimer.Tick += new EventHandler(hotkeysLockedTimerTick);
 
-            gameContextMenuStrip.Renderer = new MyRenderer();
+            gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
 
             RefreshGames(true);
 
@@ -1588,18 +1587,22 @@ namespace Nucleus.Coop
         {
             Log("Handler ended method called");
             User32Util.ShowTaskBar();
-            I_GameHandler = null;
 
-            btn_Play.Text = "PLAY";
-            btn_Play.Enabled = false;
-            currentControl = null;
+            this.Invoke((MethodInvoker)delegate ()
+             {
+                 I_GameHandler = null;
 
-            positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
-            positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
+                 btn_Play.Text = "PLAY";
+                 btn_Play.Enabled = false;
+                 currentControl = null;
 
-            WindowState = FormWindowState.Normal;
-            BringToFront();
-            stepPanelPictureBox.Focus();
+                 positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
+                 positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
+
+                 WindowState = FormWindowState.Normal;
+                 BringToFront();
+                 stepPanelPictureBox.Focus();
+             });
         }
 
         private void btn_Prev_Click(object sender, EventArgs e)
@@ -1616,10 +1619,7 @@ namespace Nucleus.Coop
             GoToStep(currentStepIndex);
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            SearchGame();
-        }
+        private void btnSearch_Click(object sender, EventArgs e) => SearchGame();
 
         public void SearchGame(string exeName = null)
         {
@@ -1691,20 +1691,12 @@ namespace Nucleus.Coop
             }
         }
 
-        private void Form_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            User32Util.ShowTaskBar();
-        }
+        private void Form_FormClosed(object sender, FormClosedEventArgs e) => User32Util.ShowTaskBar();
 
-        private void DetailsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            GetGameDetails.GetDetails(gameManager,currentGameInfo);
-        }
+        private void DetailsToolStripMenuItem_Click(object sender, EventArgs e) => GetGameDetails.GetDetails(gameManager, currentGameInfo);
 
-        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            RemoveGame.Remove(this,gameManager, currentGameInfo,false);
-        }
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e) => RemoveGame.Remove(this,gameManager, currentGameInfo,false);
+        
 
         private void GameContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -2098,32 +2090,10 @@ namespace Nucleus.Coop
             }
         }
 
-        ///https://stackoverflow.com/questions/9260303/how-to-change-menu-hover-color
-        private class MyRenderer : ToolStripProfessionalRenderer
-        {
-            public MyRenderer() : base(new MyColors()) { }
-        }
-
-        private class MyColors : ProfessionalColorTable
-        {
-            string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "Selection").Split(',');
-            string[] rgb_MenuStripBackColor = Globals.ThemeIni.IniReadValue("Colors", "MenuStripBack").Split(',');
-
-            public override Color MenuItemSelected => Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
-
-            public override Color MenuItemBorder => Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
-
-            public override Color ImageMarginGradientBegin => Color.FromArgb(int.Parse(rgb_MenuStripBackColor[0]), int.Parse(rgb_MenuStripBackColor[1]), int.Parse(rgb_MenuStripBackColor[2]));
-
-            public override Color ImageMarginGradientMiddle => Color.FromArgb(int.Parse(rgb_MenuStripBackColor[0]), int.Parse(rgb_MenuStripBackColor[1]), int.Parse(rgb_MenuStripBackColor[2]));
-
-            public override Color ImageMarginGradientEnd => Color.FromArgb(int.Parse(rgb_MenuStripBackColor[0]), int.Parse(rgb_MenuStripBackColor[1]), int.Parse(rgb_MenuStripBackColor[2]));
-        }
-
+    
         private void gameContextMenuStrip_Opened(object sender, EventArgs e)
-        {
-            gameContextMenuStrip.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, gameContextMenuStrip.Width - 1, gameContextMenuStrip.Height, 20, 20));
-        }
+        => gameContextMenuStrip.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, gameContextMenuStrip.Width - 1, gameContextMenuStrip.Height, 20, 20));
+        
 
         private void UserProfileOpenSubmenuItem_Click(object sender, EventArgs e)
         {
@@ -2291,14 +2261,10 @@ namespace Nucleus.Coop
         }
 
         private void OpenScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenHandler.OpenRawHandler(gameManager,currentGameInfo);
-        }
+        => OpenHandler.OpenRawHandler(gameManager, currentGameInfo);
 
-        private void OpenDataFolderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenGameContentFolder.OpenDataFolder(gameManager,currentGameInfo);
-        }
+        private void OpenDataFolderToolStripMenuItem_Click(object sender, EventArgs e) 
+        => OpenGameContentFolder.OpenDataFolder(gameManager, currentGameInfo);
 
         private void ChangeIconToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -2538,15 +2504,15 @@ namespace Nucleus.Coop
             }
         }
 
-        private void button1_Click_2(object sender, EventArgs e) { Process.Start("https://hub.splitscreen.me/"); }
+        private void button1_Click_2(object sender, EventArgs e) => Process.Start("https://hub.splitscreen.me/");
 
-        private void button1_Click(object sender, EventArgs e) { Process.Start("https://discord.com/invite/QDUt8HpCvr"); }
+        private void button1_Click(object sender, EventArgs e) => Process.Start("https://discord.com/invite/QDUt8HpCvr");
 
-        private void button2_Click(object sender, EventArgs e) { Process.Start("https://www.reddit.com/r/nucleuscoop/"); }
+        private void button2_Click(object sender, EventArgs e) => Process.Start("https://www.reddit.com/r/nucleuscoop/");
 
-        private void logo_Click(object sender, EventArgs e) { Process.Start("https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases"); }
+        private void logo_Click(object sender, EventArgs e) => Process.Start("https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases");
 
-        private void link_faq_Click(object sender, EventArgs e) { Process.Start(faq_link); }
+        private void link_faq_Click(object sender, EventArgs e) => Process.Start(faq_link);
 
         private void linkLabel4_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/nefarius/ScpToolkit/releases"); third_party_tools_container.Visible = false; }
 
@@ -2558,47 +2524,47 @@ namespace Nucleus.Coop
 
         private void btn_thirdPartytools_Click(object sender, EventArgs e) { if (third_party_tools_container.Visible) { third_party_tools_container.Visible = false; } else { third_party_tools_container.Visible = true; } }
 
-        private void scriptAuthorTxt_LinkClicked(object sender, LinkClickedEventArgs e) { Process.Start(e.LinkText); }
+        private void scriptAuthorTxt_LinkClicked(object sender, LinkClickedEventArgs e) => Process.Start(e.LinkText);
 
-        private void closeBtn_MouseEnter(object sender, EventArgs e) { closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close_mousehover.png"); }
+        private void closeBtn_MouseEnter(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close_mousehover.png");
 
-        private void closeBtn_MouseLeave(object sender, EventArgs e) { closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png"); }
+        private void closeBtn_MouseLeave(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
 
-        private void maximizeBtn_MouseEnter(object sender, EventArgs e) { maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize_mousehover.png"); }
+        private void maximizeBtn_MouseEnter(object sender, EventArgs e) => maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize_mousehover.png");
 
-        private void maximizeBtn_MouseLeave(object sender, EventArgs e) { maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize.png"); }
+        private void maximizeBtn_MouseLeave(object sender, EventArgs e) => maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize.png");
 
-        private void minimizeBtn_MouseLeave(object sender, EventArgs e) { minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png"); }
-
-        private void minimizeBtn_MouseEnter(object sender, EventArgs e) { minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize_mousehover.png"); }
+        private void minimizeBtn_MouseLeave(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
+            
+        private void minimizeBtn_MouseEnter(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize_mousehover.png");
 
         private void btn_settings_MouseEnter(object sender, EventArgs e) { if (profileSettings.Visible) { return; } btn_settings.BackgroundImage = ImageCache.GetImage(theme + "title_settings_mousehover.png"); }
 
-        private void btn_settings_MouseLeave(object sender, EventArgs e) { btn_settings.BackgroundImage = ImageCache.GetImage(theme + "title_settings.png"); }
+        private void btn_settings_MouseLeave(object sender, EventArgs e) => btn_settings.BackgroundImage = ImageCache.GetImage(theme + "title_settings.png");
 
-        private void btn_downloadAssets_MouseEnter(object sender, EventArgs e) { btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets_mousehover.png"); }
+        private void btn_downloadAssets_MouseEnter(object sender, EventArgs e) => btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets_mousehover.png"); 
 
-        private void btn_downloadAssets_MouseLeave(object sender, EventArgs e) { btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets.png"); }
+        private void btn_downloadAssets_MouseLeave(object sender, EventArgs e) => btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets.png");
 
-        private void btn_faq_MouseEnter(object sender, EventArgs e) { btn_faq.BackgroundImage = ImageCache.GetImage(theme + "faq_mousehover.png"); }
+        private void btn_faq_MouseEnter(object sender, EventArgs e) => btn_faq.BackgroundImage = ImageCache.GetImage(theme + "faq_mousehover.png");
 
-        private void btn_faq_MouseLeave(object sender, EventArgs e) { btn_faq.BackgroundImage = ImageCache.GetImage(theme + "faq.png"); }
+        private void btn_faq_MouseLeave(object sender, EventArgs e) => btn_faq.BackgroundImage = ImageCache.GetImage(theme + "faq.png");
 
-        private void btn_reddit_MouseEnter(object sender, EventArgs e) { btn_reddit.BackgroundImage = ImageCache.GetImage(theme + "reddit_mousehover.png"); }
+        private void btn_reddit_MouseEnter(object sender, EventArgs e) => btn_reddit.BackgroundImage = ImageCache.GetImage(theme + "reddit_mousehover.png");
 
-        private void btn_reddit_MouseLeave(object sender, EventArgs e) { btn_reddit.BackgroundImage = ImageCache.GetImage(theme + "reddit.png"); }
+        private void btn_reddit_MouseLeave(object sender, EventArgs e) => btn_reddit.BackgroundImage = ImageCache.GetImage(theme + "reddit.png");
 
-        private void btn_Discord_MouseEnter(object sender, EventArgs e) { btn_Discord.BackgroundImage = ImageCache.GetImage(theme + "discord_mousehover.png"); }
+        private void btn_Discord_MouseEnter(object sender, EventArgs e) => btn_Discord.BackgroundImage = ImageCache.GetImage(theme + "discord_mousehover.png");
 
-        private void btn_Discord_MouseLeave(object sender, EventArgs e) { btn_Discord.BackgroundImage = ImageCache.GetImage(theme + "discord.png"); }
+        private void btn_Discord_MouseLeave(object sender, EventArgs e) => btn_Discord.BackgroundImage = ImageCache.GetImage(theme + "discord.png");
 
-        private void btn_SplitCalculator_MouseEnter(object sender, EventArgs e) { btn_SplitCalculator.BackgroundImage = ImageCache.GetImage(theme + "splitcalculator_mousehover.png"); }
+        private void btn_SplitCalculator_MouseEnter(object sender, EventArgs e) => btn_SplitCalculator.BackgroundImage = ImageCache.GetImage(theme + "splitcalculator_mousehover.png");
 
-        private void btn_SplitCalculator_MouseLeave(object sender, EventArgs e) { btn_SplitCalculator.BackgroundImage = ImageCache.GetImage(theme + "splitcalculator.png"); }
+        private void btn_SplitCalculator_MouseLeave(object sender, EventArgs e) => btn_SplitCalculator.BackgroundImage = ImageCache.GetImage(theme + "splitcalculator.png");
 
-        private void btn_thirdPartytools_MouseEnter(object sender, EventArgs e) { btn_thirdPartytools.BackgroundImage = ImageCache.GetImage(theme + "thirdPartytools_mousehover.png"); }
+        private void btn_thirdPartytools_MouseEnter(object sender, EventArgs e) => btn_thirdPartytools.BackgroundImage = ImageCache.GetImage(theme + "thirdPartytools_mousehover.png");
 
-        private void btn_thirdPartytools_MouseLeave(object sender, EventArgs e) { btn_thirdPartytools.BackgroundImage = ImageCache.GetImage(theme + "thirdPartytools.png"); }
+        private void btn_thirdPartytools_MouseLeave(object sender, EventArgs e) => btn_thirdPartytools.BackgroundImage = ImageCache.GetImage(theme + "thirdPartytools.png");
 
         private void btn_magnifier_Click(object sender, EventArgs e)
         {
@@ -2747,10 +2713,8 @@ namespace Nucleus.Coop
             }
         }
 
-        private void minimizeButton(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
+        private void minimizeButton(object sender, EventArgs e) => WindowState = FormWindowState.Minimized;
+
 
         private void maximizeButton(object sender, EventArgs e)
         {
@@ -2859,9 +2823,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Misc", "WindowLocation", Location.X + "X" + Location.Y);
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            SaveNucleusWindowPosAndLoc();
-        }
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) => SaveNucleusWindowPosAndLoc();
+
     }
 }

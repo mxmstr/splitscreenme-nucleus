@@ -1518,7 +1518,7 @@ namespace Nucleus.Gaming
                 {
                     Log("Using pre-defined epic emu params");
                     context.StartArguments += " ";
-                    context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.GetEpicLanguage()} -epicusername={player.Nickname} -epicuserid={player.Nickname} ";
+                    context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.EpicLang} -epicusername={player.Nickname} -epicuserid={player.Nickname} ";
                 }
 
                 if (gen.EpicEmuArgs)
@@ -1530,7 +1530,7 @@ namespace Nucleus.Gaming
                     {
                         Log("Epic Emu parameters not found in arguments. Adding the necessary parameters to existing starting arguments");
                         //AUTH_LOGIN = unused - AUTH_PASSWORD = cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd - AUTH_TYPE = exchangecode - epicapp = CrabTest - epicenv = Prod - EpicPortal - epiclocale = en - epicusername <= same username than in the.json > -epicuserid <= same epicid than in the.json                     
-                        context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.GetEpicLanguage()} -epicusername={player.Nickname} -epicuserid=0000000000000000000000000player{i + 1} ";
+                        context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.EpicLang} -epicusername={player.Nickname} -epicuserid=0000000000000000000000000player{i + 1} ";
                     }
                 }
 
@@ -2510,13 +2510,12 @@ namespace Nucleus.Gaming
 
                 if (i < GameProfile.PriorityClasses.Count)
                 {
-                    if (GameProfile.PriorityClasses[i] != "Normal")
+                    if (GameProfile.PriorityClasses[i] != "Normal" && GameProfile.PriorityClasses[i] != null)
                     {
                         gen.ProcessorPriorityClass = GameProfile.PriorityClasses[i];
                         ProcessUtil.SetProcessorPriorityClass(gen, proc);
                     }
                 }
-
                 else if (gen.ProcessorPriorityClass?.Length > 0)
                 {
                     ProcessUtil.SetProcessorPriorityClass(gen, proc);
@@ -2524,13 +2523,12 @@ namespace Nucleus.Gaming
 
                 if (i < GameProfile.IdealProcessors.Count)
                 {
-                    if (GameProfile.IdealProcessors[i] != "*")
+                    if (GameProfile.IdealProcessors[i] != "*" && GameProfile.IdealProcessors[i] != null)
                     {
                         gen.IdealProcessor = int.Parse(GameProfile.IdealProcessors[i]) - 1;
                         ProcessUtil.SetIdealProcessor(gen, proc);
                     }
                 }
-
                 else if (gen.IdealProcessor > 0)
                 {
                     ProcessUtil.SetIdealProcessor(gen, proc);
@@ -2538,13 +2536,12 @@ namespace Nucleus.Gaming
 
                 if (i < GameProfile.Affinitys.Count)
                 {
-                    if (GameProfile.Affinitys[i] != "")
+                    if (GameProfile.Affinitys[i] != "" && GameProfile.Affinitys[i] != null)
                     {
                         gen.UseProcessor = GameProfile.Affinitys[i];
                         ProcessUtil.SetProcessorProcessorAffinity(gen, proc);
                     }
                 }
-
                 else if ((gen.UseProcessor != null ? (gen.UseProcessor.Length > 0 ? 1 : 0) : 0) != 0)
                 {
                     ProcessUtil.SetProcessorProcessorAffinity(gen, proc);

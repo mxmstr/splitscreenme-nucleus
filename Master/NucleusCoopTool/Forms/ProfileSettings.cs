@@ -684,7 +684,7 @@ namespace Nucleus.Coop
                 }
 
                 ///Set GameProfile Ideal Processors
-                if (IdealProcessors[i].Text == "")
+                if (IdealProcessors[i].Text == "" || IdealProcessors[i].Text == null)
                 {
                     IdealProcessors[i].Text = "*";
                 }
@@ -704,6 +704,11 @@ namespace Nucleus.Coop
                 GameProfile.IdealProcessors.Add(IdealProcessors[i].Text);
 
                 ///Set GameProfile Processors Affinity
+                if (Affinitys[i].Text == null)
+                {
+                    Affinitys[i].Text = "";
+                }
+
                 int maxValue = Environment.ProcessorCount;
 
                 string[] values = Affinitys[i].Text.Split(',');
@@ -724,6 +729,11 @@ namespace Nucleus.Coop
                 GameProfile.Affinitys.Add(Affinitys[i].Text);
 
                 ///Set GameProfile Priority Classes
+                if (PriorityClasses[i].Text == "" || PriorityClasses[i].Text == null)
+                {
+                    PriorityClasses[i].Text = "Normal";
+                }
+
                 GameProfile.PriorityClasses.Add(PriorityClasses[i].Text);
             }
 

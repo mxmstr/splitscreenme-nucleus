@@ -30,11 +30,11 @@ namespace Nucleus.Gaming.Forms
             BackColor = Color.Black;
             currentGame = game.GUID;
 
-            Setup(game, handler, screen);
+            Setup(game, handler);
         }
 
 
-        private void Setup(GenericGameInfo game, GenericGameHandler handler, Display screen)
+        private void Setup(GenericGameInfo game, GenericGameHandler handler)
         {
             IDictionary<string, Color> splitColors = new Dictionary<string, Color>
             {

@@ -4,6 +4,8 @@ using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Generic.Step;
+using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
+using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -468,104 +470,10 @@ namespace Nucleus.Gaming
             return context;
         }
 
-        public string GetEpicLanguage()
-        {
-            string epicLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
-            string EpicLang = "";
-
-            IDictionary<string, string> epiclangs = new Dictionary<string, string>
-            {
-                { "Arabic", "ar" },
-                { "Brazilian", "pt-BR" },
-                { "Bulgarian", "bg" },
-                { "Chinese", "zh" },
-                { "Czech", "cs" },
-                { "Danish", "da" },
-                { "Dutch", "nl" },
-                { "English", "en" },
-                { "Finnish", "fi" },
-                { "French", "fr" },
-                { "German", "de" },
-                { "Greek", "el" },
-                { "Hungarian", "hu" },
-                { "Italian", "it" },
-                { "Japanese", "ja" },
-                { "Koreana", "ko" },
-                { "Norwegian", "no" },
-                { "Polish", "pl" },
-                { "Portuguese", "pt" },
-                { "Romanian", "ro" },
-                { "Russian", "ru" },
-                { "Spanish", "es" },
-                { "Swedish", "sv" },
-                { "Thai", "th" },
-                { "Turkish", "tr" },
-                { "Ukrainian", "uk" }
-            };
-
-            foreach (KeyValuePair<string, string> lang in epiclangs)
-            {
-                if (lang.Key != epicLanguage)
-                {
-                    continue;                 
-                }
-
-                EpicLang = lang.Value;
-                break;
-            }
-
-            return EpicLang;
-        }
-
-        public string GetGogLanguage()
-        {
-            string gogLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
-            string GogLang = "";
-
-            IDictionary<string, string> epiclangs = new Dictionary<string, string>
-            {
-                { "Arabic", "ar" },
-                { "Brazilian", "pt-BR" },
-                { "Bulgarian", "bg" },
-                { "Chinese", "zh" },
-                { "Czech", "cs" },
-                { "Danish", "da" },
-                { "Dutch", "nl" },
-                { "English", "en" },
-                { "Finnish", "fi" },
-                { "French", "fr" },
-                { "German", "de" },
-                { "Greek", "el" },
-                { "Hungarian", "hu" },
-                { "Italian", "it" },
-                { "Japanese", "ja" },
-                { "Koreana", "ko" },
-                { "Norwegian", "no" },
-                { "Polish", "pl" },
-                { "Portuguese", "pt" },
-                { "Romanian", "ro" },
-                { "Russian", "ru" },
-                { "Spanish", "es" },
-                { "Swedish", "sv" },
-                { "Thai", "th" },
-                { "Turkish", "tr" },
-                { "Ukrainian", "uk" }
-            };
-
-            foreach (KeyValuePair<string, string> lang in epiclangs)
-            {
-                if (lang.Key != gogLanguage)
-                {
-                    continue;
-                }
-
-                GogLang = lang.Key;
-                break;
-            }
-
-            return GogLang;
-        }
-
+        public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
+       
+        public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
+       
         public string GetSteamLanguage()
         {
             string result;

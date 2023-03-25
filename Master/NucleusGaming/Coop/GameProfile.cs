@@ -555,7 +555,6 @@ namespace Nucleus.Gaming.Coop
 
             Globals.MainOSD.Settings(2000, $"{mod1}Game Profile N°{_profileToLoad}{mod2}");
 
-            //LogManager.Log($"Game profile n°{_profileToLoad} Loaded");
             positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
 
             Ready = true;
@@ -923,16 +922,17 @@ namespace Nucleus.Gaming.Coop
 
                 JObject JProcessor = new JObject();
 
+                Console.WriteLine(IdealProcessors.Count);
                 if (i < IdealProcessors.Count)
                 {
                     JProcessor.Add(new JProperty("IdealProcessor", IdealProcessors[i]));
                 }
-
+                Console.WriteLine(Affinitys.Count);
                 if (i < Affinitys.Count)
                 {
                     JProcessor.Add(new JProperty("ProcessorAffinity", Affinitys[i]));
                 }
-
+                Console.WriteLine(PriorityClasses.Count);
                 if (i < PriorityClasses.Count)
                 {
                     JProcessor.Add(new JProperty("ProcessorPriorityClass", PriorityClasses[i]));
@@ -956,7 +956,7 @@ namespace Nucleus.Gaming.Coop
                                  new JProperty("EditBounds", JEditBounds),
                                  new JProperty("MonitorBounds", JMonitorBounds),
                                  new JProperty("Owner", JOwner)
-                    );
+                                 );
 
                 playersInfos.Add(JPData);
             }
@@ -970,8 +970,8 @@ namespace Nucleus.Gaming.Coop
                 JObject JScreen = new JObject(new JProperty("X", screen.UIBounds.X),
                                               new JProperty("Y", screen.UIBounds.Y),
                                               new JProperty("Width", screen.UIBounds.Width),
-                                              new JProperty("Height", screen.UIBounds.Height)//,
-                                              /*new JProperty("Index", s)*/);
+                                              new JProperty("Height", screen.UIBounds.Height)
+                                             );
 
                 JScreens.Add(JScreen);
             }

@@ -1,5 +1,8 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Forms;
+using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
+using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
 using Nucleus.Gaming.Tools.Network;
 using Nucleus.Gaming.Windows;
 using System;
@@ -276,7 +279,6 @@ namespace Nucleus.Gaming
             }
         }
 
-        public bool _hideTaskBar;
         public void HideTaskBar()
         {
             if (PlayerID > 0)
@@ -285,144 +287,19 @@ namespace Nucleus.Gaming
             }
 
             User32Util.HideTaskbar();
-            _hideTaskBar = true;
         }
 
-        private string epicLang;
-        public string EpicLang
-        {
-            get
-            {
-                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
 
-                IDictionary<string, string> epiclangs = new Dictionary<string, string>
-                {
-                    { "Arabic", "ar" },
-                    { "Brazilian", "pt-BR" },
-                    { "Bulgarian", "bg" },
-                    { "Chinese", "zh" },
-                    { "Czech", "cs" },
-                    { "Danish", "da" },
-                    { "Dutch", "nl" },
-                    { "English", "en" },
-                    { "Finnish", "fi" },
-                    { "French", "fr" },
-                    { "German", "de" },
-                    { "Greek", "el" },
-                    { "Hungarian", "hu" },
-                    { "Italian", "it" },
-                    { "Japanese", "ja" },
-                    { "Koreana", "ko" },
-                    { "Norwegian", "no" },
-                    { "Polish", "pl" },
-                    { "Portuguese", "pt" },
-                    { "Romanian", "ro" },
-                    { "Russian", "ru" },
-                    { "Spanish", "es" },
-                    { "Swedish", "sv" },
-                    { "Thai", "th" },
-                    { "Turkish", "tr" },
-                    { "Ukrainian", "uk" }
-                };
+        public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
 
+        public string UserName => Environment.UserName.Trim();
 
-                foreach (KeyValuePair<string, string> lang in epiclangs)
-                {
-                    if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
-                    {
-                        epicLang = lang.Value;
-                    }
-                }
-                return epicLang;
-            }
-        }
-
-        public string UserName
-        {
-            get
-            {
-                Environment.UserName.Trim('\\').Last();
-                return Environment.UserName.Trim();
-            }
-        }
-
-        private string handlersFolder;
-        public string HandlersFolder
-        {
-            get
-            {
-                handlersFolder = Path.Combine(GameManager.Instance.GetJsScriptsPath());
-                return handlersFolder;
-            }
-        }
-
-        private string gogLang;
-        public string GogLang
-        {
-            get
-            {
-                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-
-                IDictionary<string, string> epiclangs = new Dictionary<string, string>
-                {
-                    { "Arabic", "ar" },
-                    { "Brazilian", "pt-BR" },
-                    { "Bulgarian", "bg" },
-                    { "Chinese", "zh" },
-                    { "Czech", "cs" },
-                    { "Danish", "da" },
-                    { "Dutch", "nl" },
-                    { "English", "en" },
-                    { "Finnish", "fi" },
-                    { "French", "fr" },
-                    { "German", "de" },
-                    { "Greek", "el" },
-                    { "Hungarian", "hu" },
-                    { "Italian", "it" },
-                    { "Japanese", "ja" },
-                    { "Koreana", "ko" },
-                    { "Norwegian", "no" },
-                    { "Polish", "pl" },
-                    { "Portuguese", "pt" },
-                    { "Romanian", "ro" },
-                    { "Russian", "ru" },
-                    { "Spanish", "es" },
-                    { "Swedish", "sv" },
-                    { "Thai", "th" },
-                    { "Turkish", "tr" },
-                    { "Ukrainian", "uk" }
-                };
-
-
-                foreach (KeyValuePair<string, string> lang in epiclangs)
-                {
-                    if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
-                    {
-                        gogLang = lang.Key.ToLower();
-                    }
-                }
-                return gogLang;
-            }
-        }
+        public string HandlersFolder => Path.Combine(GameManager.Instance.GetJsScriptsPath());
 
         public string Nickname => pInfo.Nickname;
 
-        public string LocalIP =>
-                //string localIP;
-                //using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
-                //{
-                //    socket.Connect("8.8.8.8", 65530);
-                //    IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-                //    localIP = endPoint.Address.ToString();
-                //}
-
-                //var dadada = GetBestInterface(BitConverter.ToUInt32(IPAddress.Parse("8.8.8.8").GetAddressBytes(), 0), out uint interfaceIndex);
-                //IPAddress xxxd = NetworkInterface.GetAllNetworkInterfaces()
-                //                .Where(netInterface => netInterface.GetIPProperties().GetIPv4Properties().Index == BitConverter.ToInt32(BitConverter.GetBytes(interfaceIndex), 0)).First().GetIPProperties().UnicastAddresses.Where(ipAdd => ipAdd.Address.AddressFamily == AddressFamily.InterNetwork).First().Address;
-
-                //return xxxd.ToString();
-
-                Network.GetLocalIP();
+        public string LocalIP => Network.GetLocalIP();
 
         public string NucleusUserRoot
         {
@@ -469,31 +346,17 @@ namespace Nucleus.Gaming
             }
         }
 
-        public string DocumentsPlayer =>
-                //Log($"TEMP: NucleusDocumentsRoot={NucleusDocumentsRoot}, Nuclues.Folder.Documents={Folder.Documents}, GetFolderPath={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}");
-                $@"{Path.GetDirectoryName(NucleusDocumentsRoot)}\NucleusCoop\{Nickname}\Documents\";
+        public string DocumentsPlayer => $@"{Path.GetDirectoryName(NucleusDocumentsRoot)}\NucleusCoop\{Nickname}\Documents\";
 
         public string DocumentsRoot => $@"{Path.GetDirectoryName(NucleusDocumentsRoot)}\NucleusCoop\";
 
         public string UserProfileConfigPath
         {
-            //get
-            //{
-            //    //return parent.UserProfileConfigPath;
-            //}
-            //set { }
-
             get; set;
         }
 
         public string UserProfileSavePath
         {
-            //get
-            //{
-            //    //return parent.UserProfileSavePath;
-            //}
-            //set { }
-
             get; set;
         }
 
@@ -524,56 +387,22 @@ namespace Nucleus.Gaming
 
         public void HideDesktop()
         {
-            if (PlayerID > 0)
+
+            if (GameProfile.UseSplitDiv || PlayerID > 0)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Run(() =>
+            foreach (Display dp in parent.screensInUse)
             {
-                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-                string splitDivisionBackColor = ini.IniReadValue("CustomLayout", "SplitDivColor");
-                Color ChoosenColor = Color.Black;
-
-                IDictionary<string, Color> splitColors = new Dictionary<string, Color>();
-
-                splitColors.Add("Black", Color.Black);
-                splitColors.Add("Gray", Color.DimGray);
-                splitColors.Add("White", Color.White);
-                splitColors.Add("Dark Blue", Color.DarkBlue);
-                splitColors.Add("Blue", Color.Blue);
-                splitColors.Add("Purple", Color.Purple);
-                splitColors.Add("Pink", Color.Pink);
-                splitColors.Add("Red", Color.Red);
-                splitColors.Add("Orange", Color.Orange);
-                splitColors.Add("Yellow", Color.Yellow);
-                splitColors.Add("Green", Color.Green);
-
-                foreach (KeyValuePair<string, Color> color in splitColors)
+                Globals.MainOSD.Invoke((MethodInvoker)delegate ()
                 {
-                    if (color.Key == splitDivisionBackColor)
-                    {
-                        ChoosenColor = color.Value;
-                    }
-                }
-
-                foreach (Screen screen in Screen.AllScreens)
-                {
-                    Form backgroundForm = new Form
-                    {
-                        Name = "SplitForm",
-                        Text = "SplitForm",
-                        BackColor = ChoosenColor,
-                        Location = new Point(0, 0),
-                        Width = screen.WorkingArea.Size.Width,
-                        Height = screen.WorkingArea.Size.Height + 50,
-                        FormBorderStyle = FormBorderStyle.None,
-                        StartPosition = FormStartPosition.Manual
-                    };
-
-                    backgroundForm.ShowDialog();//Show() make it crash
-                }
-            });
+                    Form backgroundForm = new SplitForm(GameProfile.Game, parent, dp);
+                    backgroundForm.Show();
+                    backgroundForm.BringToFront();
+                    parent.splitForms.Add(backgroundForm);
+                });
+            }
         }
 
         public void BackupFile(string filePath, bool overwrite)

@@ -225,6 +225,7 @@
     <Compile Include="Tools\RemoveGame.cs" />
     <Compile Include="Tools\SetBackroundAndCover.cs" />
     <Compile Include="Tools\StartChecks.cs" />
+    <Compile Include="Tools\CustomToolStripRenderer.cs" />
     <EmbeddedResource Include="Controls\HubShowcase.resx">
       <DependentUpon>HubShowcase.cs</DependentUpon>
     </EmbeddedResource>

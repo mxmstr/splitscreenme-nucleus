@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Nucleus.Gaming.Coop;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -51,7 +52,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasGalaxyEmu
                     new JProperty("enable_lan", true),
                     new JProperty("enable_overlay", false),
                     new JProperty("galaxyid", 14601386556348240 + (i + 1)),
-                    new JProperty("language", gen.GetGogLanguage()),
+                    new JProperty("language", GetGogLanguage()),
                     // new JProperty("log_level", log),
                     new JProperty("productid", 2104387650),
                     new JProperty("savepath", "appdata"),
@@ -127,6 +128,11 @@ namespace Nucleus.Gaming.Tools.NemirtingasGalaxyEmu
             }
 
             genericGameHandler.Log("Galaxy Emu setup complete");
+        }
+
+        public static string GetGogLanguage()
+        {
+            return  Globals.ini.IniReadValue("Misc", "EpicLang").ToLower();
         }
     }
 }
