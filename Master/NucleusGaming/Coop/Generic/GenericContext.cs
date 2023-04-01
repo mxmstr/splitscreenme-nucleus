@@ -387,7 +387,6 @@ namespace Nucleus.Gaming
 
         public void HideDesktop()
         {
-
             if (GameProfile.UseSplitDiv || PlayerID > 0)
             {
                 return;

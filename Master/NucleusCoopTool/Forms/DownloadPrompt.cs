@@ -1,4 +1,5 @@
 ﻿using Ionic.Zip;
+using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using System;
@@ -15,7 +16,6 @@ namespace Nucleus.Coop.Forms
 
     public partial class DownloadPrompt : Form
     {
-
         private Handler Handler;
         private string zipFile;
         private string scriptFolder = Gaming.GameManager.Instance.GetJsScriptsPath();
@@ -160,7 +160,6 @@ namespace Nucleus.Coop.Forms
             zip.ExtractProgress += ExtractProgress;
             numEntries = zip.Entries.Count;
 
-            //zip.ExtractAll(scriptFolder, ExtractExistingFileAction.OverwriteSilently);
             List<string> handlerFolders = new List<string>();
 
             string scriptTempFolder = scriptFolder + "\\temp";
@@ -231,7 +230,6 @@ namespace Nucleus.Coop.Forms
                     zip.Dispose();
                     Directory.Delete(scriptTempFolder, true);
                     File.Delete(Path.Combine(scriptFolder, zipFile));
-                    //MessageBox.Show("Handler extraction aborted.", "Exiting", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
 
                     return;
@@ -294,13 +292,13 @@ namespace Nucleus.Coop.Forms
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    Gaming.GameManager.Instance.AddScript(frmHandleTitle);
-                    mainForm.SearchGame(exeName);
+                    GameManager.Instance.AddScript(frmHandleTitle);
+                    SearchGame.Search(mainForm ,exeName);
                 }
             }
             else
             {
-                Gaming.GameManager.Instance.AddScript(frmHandleTitle);
+                GameManager.Instance.AddScript(frmHandleTitle);
                 gameExeNoUpdate = false;
             }
         }

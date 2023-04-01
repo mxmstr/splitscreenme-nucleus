@@ -44,7 +44,7 @@ namespace Nucleus.Coop
         private string NucleusEnvironmentRoot => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public string customFont;
-        public string lockeyIniString;
+        public string lockKeyIniString;
         public string[] rgb_font;
         public string[] rgb_MouseOverColor;
         public string[] rgb_MenuStripBackColor;
@@ -66,7 +66,7 @@ namespace Nucleus.Coop
 
         private ContentManager content;
         private IGameHandler I_GameHandler;
-        private GameManager gameManager;
+        public GameManager gameManager;
         private Dictionary<UserGameInfo, GameControl> controls;
        
         private GameControl currentControl;
@@ -252,7 +252,7 @@ namespace Nucleus.Coop
             HandlerNoteTitleFont = Color.FromArgb(int.Parse(rgb_HandlerNoteTitleFontColor[0]), int.Parse(rgb_HandlerNoteTitleFontColor[1]), int.Parse(rgb_HandlerNoteTitleFontColor[2]));
             ButtonsBorderColor = Color.FromArgb(int.Parse(rgb_ButtonsBorderColor[0]), int.Parse(rgb_ButtonsBorderColor[1]), int.Parse(rgb_ButtonsBorderColor[2]));
             SelectionBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[0]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[1]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[2]), int.Parse(themeIni.IniReadValue("Colors", "Selection").Split(',')[3]));
-            lockeyIniString = ini.IniReadValue("Hotkeys", "LockKey");
+            lockKeyIniString = ini.IniReadValue("Hotkeys", "LockKey");
 
             InitializeComponent();
 
@@ -774,7 +774,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == TopMost_HotkeyID)
@@ -805,7 +805,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == SetFocus_HotkeyID)
@@ -823,7 +823,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == ResetWindows_HotkeyID)
@@ -839,7 +839,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Cutscenes_HotkeyID)
@@ -873,7 +873,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockeyIniString} key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} key)");
                 }
             }
 
@@ -1386,10 +1386,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void btnNext_Click(object sender, EventArgs e)
-        {
-            GoToStep(currentStepIndex + 1);
-        }
+        private void btnNext_Click(object sender, EventArgs e) => GoToStep(currentStepIndex + 1);
 
         private void KillCurrentStep()
         {
@@ -1619,69 +1616,13 @@ namespace Nucleus.Coop
             GoToStep(currentStepIndex);
         }
 
-        private void btnSearch_Click(object sender, EventArgs e) => SearchGame();
-
-        public void SearchGame(string exeName = null)
-        {
-            try
-            {
-                using (System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog())
-                {
-                    if (string.IsNullOrEmpty(exeName))
-                    {
-                        open.Title = "Select a game executable to add to Nucleus";
-                        open.Filter = "Game Executable Files|*.exe";
-                    }
-                    else
-                    {
-                        open.Title = string.Format("Select {0} to add the game to Nucleus", exeName);
-                        open.Filter = "Game Exe|" + exeName;
-                    }
-
-                    if (open.ShowDialog() == DialogResult.OK)
-                    {
-                        string path = open.FileName;
-
-                        List<GenericGameInfo> info = gameManager.GetGames(path);
-
-                        if (info.Count > 1)
-                        {
-                            GameList list = new GameList(info);
-
-                            if (list.ShowDialog() == DialogResult.OK)
-                            {
-                                UserGameInfo game = GameManager.Instance.TryAddGame(path, list.Selected);
-
-                                if (game != null)
-                                {
-                                    MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
-                                    RefreshGames(false);
-                                }
-                            }
-                        }
-                        else if (info.Count == 1)
-                        {
-                            UserGameInfo game = GameManager.Instance.TryAddGame(path, info[0]);
-                            if (gameContextMenuStrip != null)
-                                MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
-                                RefreshGames(false);
-                        }
-                        else
-                        {
-                            MessageBox.Show(string.Format("The executable '{0}' was not found in any game handler's Game.ExecutableName field. Game has not been added.", Path.GetFileName(path)), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            { }
-        }
+        private void btnSearch_Click(object sender, EventArgs e) => SearchGame.Search(this,null);
 
         private void btnAutoSearch_Click(object sender, EventArgs e)
         {
             if (!searchDisksForm.Visible)
             {
-                searchDisksForm.Location = new Point(Width / 2 - searchDisksForm.Width / 2, Height / 2 - searchDisksForm.Height / 2); ;
+                searchDisksForm.Location = new Point(Width / 2 - searchDisksForm.Width / 2, Height / 2 - searchDisksForm.Height / 2);
                 searchDisksForm.BringToFront();
                 searchDisksForm.Visible = true;
             }
@@ -2611,7 +2552,6 @@ namespace Nucleus.Coop
             }
             else if (HandlerNoteTitle.Text.Contains("Profile n°"))
             {
-
                 if (gameDesExist)
                 {
                     StreamReader desc = new StreamReader(Path.Combine(Application.StartupPath, $@"gui\descriptions\" + currentGame.GUID + ".txt"));
@@ -2714,7 +2654,6 @@ namespace Nucleus.Coop
         }
 
         private void minimizeButton(object sender, EventArgs e) => WindowState = FormWindowState.Minimized;
-
 
         private void maximizeButton(object sender, EventArgs e)
         {

@@ -316,8 +316,6 @@ namespace Nucleus.Gaming.Coop
             positionsControl.UpdatePlayers();
             positionsControl.profileSettings_Tooltip.SetToolTip(positionsControl.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
             ListGameProfiles();
-
-            //Console.WriteLine("Game Profile Unloaded");
         }
 
         public void InitializeDefault(GenericGameInfo game, PositionsControl pc)
@@ -922,17 +920,16 @@ namespace Nucleus.Gaming.Coop
 
                 JObject JProcessor = new JObject();
 
-                Console.WriteLine(IdealProcessors.Count);
                 if (i < IdealProcessors.Count)
                 {
                     JProcessor.Add(new JProperty("IdealProcessor", IdealProcessors[i]));
                 }
-                Console.WriteLine(Affinitys.Count);
+
                 if (i < Affinitys.Count)
                 {
                     JProcessor.Add(new JProperty("ProcessorAffinity", Affinitys[i]));
                 }
-                Console.WriteLine(PriorityClasses.Count);
+
                 if (i < PriorityClasses.Count)
                 {
                     JProcessor.Add(new JProperty("ProcessorPriorityClass", PriorityClasses[i]));

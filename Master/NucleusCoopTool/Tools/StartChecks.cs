@@ -11,8 +11,8 @@ namespace Nucleus.Coop
 {
     internal static class StartChecks
     {
-
         static bool isRunning = false;
+
         private static void ExportRegistry(string strKey, string filepath)
         {
             try

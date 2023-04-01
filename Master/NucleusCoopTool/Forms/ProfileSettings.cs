@@ -329,7 +329,7 @@ namespace Nucleus.Coop
 
             RefreshAudioList();
 
-            string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
+            string path = Path.Combine(Application.StartupPath, $@"games profiles\Nicknames.json");
             if (File.Exists(path))
             {
                 string jsonString = File.ReadAllText(path);
@@ -342,7 +342,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
+            string idspath = Path.Combine(Application.StartupPath, $@"games profiles\SteamIds.json");
             if (File.Exists(idspath))
             {
                 string jsonString = File.ReadAllText(idspath);
@@ -977,8 +977,6 @@ namespace Nucleus.Coop
                     }
                 }
             }
-
-            //audioDefaultDevice.Location = new Point(audioCustomSettingsBox.Width / 2 - audioDefaultDevice.Width / 2, audioDefaultDevice.Location.Y);
         }
 
         private void audioRefresh_Click(object sender, EventArgs e)

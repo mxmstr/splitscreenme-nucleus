@@ -190,10 +190,12 @@ namespace Nucleus.Gaming
 
                 _cursorModule = new CursorModule();
 
-            jsData = new Dictionary<string, string>();
-            jsData.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            jsData.Add(Folder.MainGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
-            jsData.Add(Folder.InstancedGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
+            jsData = new Dictionary<string, string>
+            {
+                { Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) },
+                { Folder.MainGameFolder.ToString(), Path.GetDirectoryName(game.ExePath) },
+                { Folder.InstancedGameFolder.ToString(), Path.GetDirectoryName(game.ExePath) }
+            };
 
             timerInterval = gen.HandlerInterval;
 
@@ -506,7 +508,7 @@ namespace Nucleus.Gaming
                     }
                     else
                     {
-                        player.Nickname = player.Nickname = $"Player{i + 1}";
+                        player.Nickname = $"Player{i + 1}";
                     }
                 }
                 else

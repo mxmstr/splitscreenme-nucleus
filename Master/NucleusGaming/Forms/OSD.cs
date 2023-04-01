@@ -1,32 +1,28 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Nucleus.Gaming.Coop.Generic
 {
     public partial class OSD : Form, IDynamicSized
     {
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-        private int timing;
-        private Color textColor; 
+        private string[] osdColor = Globals.ini.IniReadValue("Dev", "OSDColor").Split(',');
 
         public OSD()
         {
             InitializeComponent();
-            timer.Tick += new EventHandler(TimerTick);
-            textColor = Color.FromArgb(Globals.OSDColor[0], Globals.OSDColor[1],Globals.OSDColor[2]);
+            timer.Tick += new EventHandler(TimerTick);           
             Show();
         }
 
         public void Settings(int timing, string text)
         {
-            this.timing = timing;
             this.Invoke((MethodInvoker)delegate ()
             {
                 Value.Text = text;
-                Value.ForeColor = textColor;
-                timer.Interval = (timing); //millisecond           
+                Value.ForeColor = Color.FromArgb(int.Parse(osdColor[0]), int.Parse(osdColor[1]), int.Parse(osdColor[2]));
+                timer.Interval = timing; //millisecond           
                 Opacity = 1.0D;
                 Show();
                 timer.Start();

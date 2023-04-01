@@ -487,7 +487,7 @@ namespace Nucleus.Coop
             ///network setting
             RefreshCmbNetwork();
 
-            string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
+            string path = Path.Combine(Application.StartupPath, $@"games profiles\Nicknames.json");
 
             if (File.Exists(path))
             {
@@ -501,7 +501,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
+            string idspath = Path.Combine(Application.StartupPath, $@"games profiles\SteamIds.json");
 
             if (File.Exists(idspath))
             {
@@ -566,7 +566,6 @@ namespace Nucleus.Coop
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
             audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
-            //audioDefaultDevice.Location = new Point(audioCustomSettingsBox.Width / 2 - audioDefaultDevice.Width / 2, audioDefaultDevice.Location.Y);
 
             tabBorders = new Rectangle[]
             {
@@ -674,7 +673,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
+            string path = Path.Combine(Application.StartupPath, $@"games profiles\Nicknames.json");
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -687,7 +686,7 @@ namespace Nucleus.Coop
                 stream.Dispose();
             }
 
-            string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
+            string idspath = Path.Combine(Application.StartupPath, $@"games profiles\SteamIds.json");
             using (FileStream stream = new FileStream(idspath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -737,7 +736,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Hotkeys", "Stop", settingsStopCmb.SelectedItem.ToString() + "+" + settingsStopTxt.Text);
             ini.IniWriteValue("Hotkeys", "TopMost", settingsTopCmb.SelectedItem.ToString() + "+" + settingsTopTxt.Text);
             ini.IniWriteValue("Hotkeys", "SetFocus", settingsFocusCmb.SelectedItem.ToString() + "+" + settingsFocusHKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "ResetWindows", r1.SelectedItem.ToString() + "+" + r2.Text);///
+            ini.IniWriteValue("Hotkeys", "ResetWindows", r1.SelectedItem.ToString() + "+" + r2.Text);
             ini.IniWriteValue("Hotkeys", "LockKey", comboBox_lockKey.SelectedItem.ToString());
             ini.IniWriteValue("Hotkeys", "Cutscenes", csm_comboBox.SelectedItem.ToString() + "+" + csm_textBox.Text);
             ini.IniWriteValue("Hotkeys", "Switch", swl_comboBox.SelectedItem.ToString() + "+" + swl_textBox.Text);
@@ -786,7 +785,7 @@ namespace Nucleus.Coop
 
             mainForm.handleClickSound(clickSoundChkB.Checked);
 
-            mainForm.lockeyIniString = comboBox_lockKey.SelectedItem.ToString();
+            mainForm.lockKeyIniString = comboBox_lockKey.SelectedItem.ToString();
 
             if (mainForm.disableFastHandlerUpdate != disableQuickUpdate.Checked)
             {

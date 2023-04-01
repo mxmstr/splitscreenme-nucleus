@@ -1194,7 +1194,7 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Button btnAutoSearch;
         private System.Windows.Forms.Button btn_Next;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ContextMenuStrip gameContextMenuStrip;
+        public System.Windows.Forms.ContextMenuStrip gameContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem nullToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;

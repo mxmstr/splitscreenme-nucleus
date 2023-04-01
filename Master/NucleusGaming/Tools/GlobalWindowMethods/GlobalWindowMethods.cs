@@ -374,7 +374,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             genericGameHandler.Log("Creating raw input window");
 
-            var hWnd = GlobalWindowMethods.WaitForProcWindowHandleNotZero(genericGameHandler, proc);
+            var hWnd = WaitForProcWindowHandleNotZero(genericGameHandler, proc);
 
             var mouseHdev = player.IsRawKeyboard ? player.RawMouseDeviceHandle : (IntPtr)(-1);
             var keyboardHdev = player.IsRawMouse ? player.RawKeyboardDeviceHandle : (IntPtr)(-1);
@@ -839,7 +839,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                                 }
 
-
                                 shift += 3;
 
                                 prev = p;
@@ -848,7 +847,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                             }
                             else//All players above 0
                             {
-
                                 //All Vertical
                                 Rectangle avail1 = new Rectangle(adjust ? prev.OtherLayout[1].Right + 3 : prev.OtherLayout[1].Right,
                                                                  adjust ? screen.MonitorBounds.Y + 2 : screen.MonitorBounds.Y,
@@ -976,7 +974,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             //    }
             //}
 
-            //Globals.MainOSD.Settings(1600, Color.YellowGreen, $"Switching Layouts");
+            //Globals.MainOSD.Settings(1600, $"Switching Layouts");
         }
 
 
@@ -1008,7 +1006,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                 if (on)
                 {
-                    ///need now to not mute sound for only one instance between all screens  it could be a profile setting.
+                    ///need now to not mute sound for only one instance between all screens it could be a profile setting.
 
                     //monitorcbounds ne peut pas etre utiliser pour localiser la position de la fenetre sur un ecran donné (peut etre negatif)                  
                     if (fisrtOfScr)//(p.PlayerID == 0)
@@ -1594,13 +1592,13 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     {
                         foreach (Form back in GenericGameHandler.Instance.splitForms)
                         {
-                            IntPtr splitHandle = GlobalWindowMethods.FindWindow(null, back.Name);//Get the background Form(s)
+                            IntPtr splitHandle = FindWindow(null, back.Name);//Get the background Form(s)
 
                             if (splitHandle != null && splitHandle != IntPtr.Zero)
                             {
                                 User32Interop.SetWindowPos(splitHandle, new IntPtr(-2), 0, 0, 0, 0,
                                 (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                GlobalWindowMethods.ShowWindow(splitHandle, GlobalWindowMethods.ShowWindowEnum.Minimize);
+                                ShowWindow(splitHandle, ShowWindowEnum.Minimize);
                             }
                         }
 
@@ -1612,12 +1610,13 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 IntPtr hWnd = procs[i].NucleusGetMainWindowHandle();
                                 User32Interop.SetWindowPos(hWnd, new IntPtr(-2), 0, 0, 0, 0,
                                 (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                GlobalWindowMethods.ShowWindow(hWnd, GlobalWindowMethods.ShowWindowEnum.Minimize);
+                                ShowWindow(hWnd, ShowWindowEnum.Minimize);
                             }
                         }
                     }
                     catch
                     { }
+
                     Globals.MainOSD.Settings(1600, $"Game Windows Minimized");
 
                     User32Util.ShowTaskBar();
@@ -1627,11 +1626,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 {
                     foreach (Form back in GenericGameHandler.Instance.splitForms)
                     {
-                        IntPtr splitHandle = GlobalWindowMethods.FindWindow(null, back.Name);//Get the background Form(s)
+                        IntPtr splitHandle = FindWindow(null, back.Name);//Get the background Form(s)
 
                         if (splitHandle != null && splitHandle != IntPtr.Zero)
                         {
-                            GlobalWindowMethods.ShowWindow(splitHandle, GlobalWindowMethods.ShowWindowEnum.Restore);
+                            ShowWindow(splitHandle, ShowWindowEnum.Restore);
                             User32Interop.SetWindowPos(splitHandle, new IntPtr(-1), 0, 0, 0, 0,
                                 (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
                         }
@@ -1643,7 +1642,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                         for (int i = 0; i < procs.Length; i++)
                         {
                             IntPtr hWnd = procs[i].NucleusGetMainWindowHandle();
-                            GlobalWindowMethods.ShowWindow(hWnd, GlobalWindowMethods.ShowWindowEnum.Restore);
+                            ShowWindow(hWnd, ShowWindowEnum.Restore);
                             User32Interop.SetWindowPos(hWnd, new IntPtr(-1), 0, 0, 0, 0,
                                 (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
                         }
