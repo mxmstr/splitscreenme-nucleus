@@ -2,6 +2,7 @@
 using Nucleus.Gaming.Windows;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -30,10 +31,9 @@ namespace Nucleus.Coop
                     forcedBadPath = true;
             }
 
-
             connected = StartChecks.CheckNetCon();
 
-            //StartChecks.CheckFilesIntegrity();
+            StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
             StartChecks.CheckAppUpdate();//a decommenter
 
