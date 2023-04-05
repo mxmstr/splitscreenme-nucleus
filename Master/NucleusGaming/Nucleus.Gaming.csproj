@@ -63,6 +63,9 @@
     <Reference Include="EasyHook">
       <HintPath>..\ThirdParty\easyhook\EasyHook.dll</HintPath>
     </Reference>
+    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="Jint, Version=0.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\Jint.2.11.58\lib\net451\Jint.dll</HintPath>
     </Reference>
@@ -352,11 +355,17 @@
     <Compile Include="Tools\DllsInjector\DllsInjector.cs" />
     <Compile Include="Tools\EACBypass\EACBypass.cs" />
     <Compile Include="Tools\NucleusUsers\NucleusUsers.cs" />
+    <Compile Include="Tools\Steam\GoldbergUpdaterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\Steam\GoldbergUpdaterForm.Designer.cs">
+      <DependentUpon>GoldbergUpdaterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\WindowFakeFocus\WindowFakeFocus.cs" />
     <Compile Include="Tools\FlawlessWidescreen\FlawlessWidescreen.cs" />
     <Compile Include="Tools\HexEdit\HexEdit.cs" />
     <Compile Include="Tools\Network\Network.cs" />
-    <Compile Include="Tools\SteamMethods\SteamMethods.cs" />
+    <Compile Include="Tools\Steam\SteamFunctions.cs" />
     <Compile Include="Tools\MonitorsDpiScaling\MonitorsDpiScaling.cs" />
     <Compile Include="Tools\NemirtingasEpicEmu\NemirtingasEpicEmu.cs" />
     <Compile Include="Tools\NemirtingasGalaxyEmu\NemirtingasGalaxyEmu.cs" />
@@ -456,6 +465,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Steam\GoldbergUpdaterForm.resx">
+      <DependentUpon>GoldbergUpdaterForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="GamingKey.snk" />
@@ -474,6 +486,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\gbU_background3.jpg" />
     <Content Include="Resources\icon.ico" />
     <None Include="Resources\instructions.gif" />
     <None Include="Resources\title_dropdown_opened.png" />

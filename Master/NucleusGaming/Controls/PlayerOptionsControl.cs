@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -14,18 +15,15 @@ namespace Nucleus.Coop
     public class PlayerOptionsControl : UserInputControl, IDynamicSized
     {
         private ControlListBox list;
-        private Font nameFont;
-        private Font detailsFont;
-        private string customOption = "";
+        //private string customOption = "";
         public override bool CanProceed => true;
         public override bool CanPlay => true;
         private float _scale;
         public override string Title => "Player Options";
+        private Dictionary<string, object> vals;
 
         public PlayerOptionsControl()
-        {
-            nameFont = new Font("Segoe UI", 18);
-            detailsFont = new Font("Segoe UI", 12);
+        {        
             BackColor = Color.Transparent;
             DPIManager.Register(this);
             DPIManager.Update(this);
@@ -47,7 +45,7 @@ namespace Nucleus.Coop
             };
 
             List<GameOption> options = game.Game.Options;
-            Dictionary<string, object> vals = profile.Options;
+            vals = profile.Options;
 
             for (int j = 0; j < options.Count; j++)
             {
@@ -94,7 +92,6 @@ namespace Nucleus.Coop
                         value = opt.List[0];
                         values = opt.List;
                         //defaultValue = vals[opt.Name];
-
                     }
 
                     for (int i = 0; i < values.Count; i++)
@@ -184,6 +181,7 @@ namespace Nucleus.Coop
                         PropertyInfo prop = props[i];
                         box.Items.Add(prop.GetValue(null, null));
                     }
+
                     box.SelectedIndex = box.Items.IndexOf(value);
 
                     box.Width = (int)(wid * _scale);
@@ -191,7 +189,6 @@ namespace Nucleus.Coop
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
-                    ///box.DropDownStyle = ComboBoxStyle.DropDownList;
                     cool.Controls.Add(box);
 
                     box.Tag = opt;
@@ -204,11 +201,6 @@ namespace Nucleus.Coop
 
                     int border = 10;
 
-                    if (customOption != "")
-                    {
-                        box.Text = customOption;
-                    }
-
                     box.TextChanged += new System.EventHandler(this.box_TextChanged);
                     box.Width = (int)(wid * _scale);
                     box.Height = (int)(40 * _scale);
@@ -219,23 +211,35 @@ namespace Nucleus.Coop
 
                     cool.Controls.Add(box);
                     box.Tag = opt;
-                }
 
+                    ///Check if some custom values were added 
+                    ///before going back to "player setup screen" and add them back in their respective TextBox.
+                    GameOption cast = box.Tag as GameOption;
+                    if (vals.Any(v => (string)v.Key == (string)cast.Key))
+                    {
+                        if (vals[cast.Key].ToString() != "")
+                        {
+                            box.Text = vals[cast.Key].ToString();
+                        }
+                    }
+                }
             }
 
             Controls.Add(list);
-
             list.UpdateSizes();
-            //UpdateSize(_scale);
             CanPlayUpdated(true, false);
-
         }
 
         private void box_TextChanged(object sender, EventArgs e)
         {
             TextBox box = (TextBox)sender;
-            customOption = box.Text;
-            ChangeOption(box.Tag, customOption);
+            ///Cache custom user values in case of user going back to "player setup screen" 
+            ///so they are automatically re-added when coming back to options screen,
+            ///reseted if an other game is selected.
+            GameOption cast = box.Tag as GameOption;
+            vals[cast.Key] = box.Text;
+            ///
+            ChangeOption(box.Tag, box.Text);
         }
 
         private void ChangeOption(object tag, object value)
@@ -243,7 +247,6 @@ namespace Nucleus.Coop
             // boxing but whatever
             GameOption option = (GameOption)tag;
             profile.Options[option.Key] = value;
-
         }
 
         private void box_SelectedValueChanged(object sender, EventArgs e)
@@ -278,7 +281,6 @@ namespace Nucleus.Coop
             }
 
             _scale = scale;
-
         }
 
     }

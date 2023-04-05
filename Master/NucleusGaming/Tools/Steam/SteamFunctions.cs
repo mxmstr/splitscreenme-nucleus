@@ -13,9 +13,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Nucleus.Gaming.Tools.SteamMethods
+namespace Nucleus.Gaming.Tools.Steam
 {
-    public static class SteamMethods
+    public static class SteamFunctions
     {
         private static string startingArgs;
         private static long random_steam_id = 76561199023125438;
@@ -326,7 +326,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
                         }
                     }
 
-                    long steamID = SteamMethods.random_steam_id + i;
+                    long steamID = SteamFunctions.random_steam_id + i;
                     player.SteamID = steamID;
                     bool useSettingsSID = false;
 
@@ -537,7 +537,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
 
             foreach (string nameFile in files)
             {
-                long steamID = SteamMethods.random_steam_id + i;
+                long steamID = SteamFunctions.random_steam_id + i;
                 player.SteamID = steamID;
                 bool useSettingsSID = false;
 
@@ -697,7 +697,7 @@ namespace Nucleus.Gaming.Tools.SteamMethods
             }
             else
             {
-                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", (SteamMethods.random_steam_id + i).ToString());
+                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", (SteamFunctions.random_steam_id + i).ToString());
             }
 
             string lang = "english";

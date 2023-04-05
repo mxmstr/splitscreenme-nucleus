@@ -5,6 +5,7 @@ using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
@@ -61,14 +62,14 @@ namespace Nucleus.Coop
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
-       (
+        (
           int nLeftRect,     // x-coordinate of upper-left corner
           int nTopRect,      // y-coordinate of upper-left corner
           int nRightRect,    // x-coordinate of lower-right corner
           int nBottomRect,   // y-coordinate of lower-right corner
           int nWidthEllipse, // width of ellipse
           int nHeightEllipse // height of ellipse
-       );
+        );
 
         protected override CreateParams CreateParams
         {
@@ -198,6 +199,7 @@ namespace Nucleus.Coop
 
             def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
             ctrlr_shorcutsBtn.FlatAppearance.BorderSize = 1;
+            btn_Gb_Update.FlatAppearance.BorderSize = 1;
 
             settingsTab.Parent = this;
             settingsTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
@@ -1245,6 +1247,12 @@ namespace Nucleus.Coop
             Graphics g = e.Graphics;
 
             g.DrawRectangles(bordersPen, tabBorders);        
+        }
+
+        private void btn_Gb_Update_Click(object sender, EventArgs e)
+        {
+            GoldbergUpdaterForm gbUpdater = new GoldbergUpdaterForm();
+            gbUpdater.ShowDialog();
         }
     }
 }

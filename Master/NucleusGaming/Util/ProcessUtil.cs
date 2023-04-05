@@ -2,7 +2,7 @@
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Interop;
-using Nucleus.Gaming.Tools.SteamMethods;
+using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.Util;
 using System;
 using System.Collections.Generic;
@@ -391,17 +391,17 @@ namespace Nucleus
             {
                 if (string.IsNullOrEmpty(e.Data))
                 {
-                    SteamMethods.readToEnd = true;
+                    SteamFunctions.readToEnd = true;
                     return;
                 }
 
-                if (e.Data.Contains("+connect_lobby") && string.IsNullOrEmpty(SteamMethods.lobbyConnectArg))
+                if (e.Data.Contains("+connect_lobby") && string.IsNullOrEmpty(SteamFunctions.lobbyConnectArg))
                 {
                     string toFind1 = "+connect_lobby ";
                     int start = e.Data.IndexOf(toFind1);
                     string string2 = e.Data.Substring(start);
-                    SteamMethods.lobbyConnectArg = string2;
-                    SteamMethods.readToEnd = true;
+                    SteamFunctions.lobbyConnectArg = string2;
+                    SteamFunctions.readToEnd = true;
                     return;
                 }
 

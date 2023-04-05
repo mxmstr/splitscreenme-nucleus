@@ -21,7 +21,7 @@ using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
 using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
 using Nucleus.Gaming.Tools.Network;
 using Nucleus.Gaming.Tools.NucleusUsers;
-using Nucleus.Gaming.Tools.SteamMethods;
+using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.Tools.WindowFakeFocus;
 using Nucleus.Gaming.Tools.X360ce;
 using Nucleus.Gaming.Tools.XInputPlusDll;
@@ -1400,7 +1400,7 @@ namespace Nucleus.Gaming
                 {
                     Log($"Apply Steamless patch for {gen.ExecutableName} Timing: {gen.SteamlessTiming}ms");
 
-                    SteamMethods.SteamlessProc(exePath, linkBinFolder, gen.ExecutableName, gen.SteamlessArgs, gen.SteamlessTiming);
+                    SteamFunctions.SteamlessProc(exePath, linkBinFolder, gen.ExecutableName, gen.SteamlessArgs, gen.SteamlessTiming);
                     Thread.Sleep(gen.SteamlessTiming + 2000);
                 }
 
@@ -1446,7 +1446,7 @@ namespace Nucleus.Gaming
 
                 if (gen.UseSteamStubDRMPatcher)
                 {
-                    SteamMethods.UseSteamStubDRMPatcher(this, gen, garch, setupDll);
+                    SteamFunctions.UseSteamStubDRMPatcher(this, gen, garch, setupDll);
                 }
 
                 if (gen.UseEACBypass)
@@ -1456,7 +1456,7 @@ namespace Nucleus.Gaming
 
                 if (gen.UseGoldberg)
                 {
-                    SteamMethods.UseGoldberg(this, gen, context, rootFolder, nucleusRootFolder, linkFolder, i, player, players, setupDll, exePath);
+                    SteamFunctions.UseGoldberg(this, gen, context, rootFolder, nucleusRootFolder, linkFolder, i, player, players, setupDll, exePath);
                 }
 
                 if (gen.UseNemirtingasEpicEmu)
@@ -1472,7 +1472,7 @@ namespace Nucleus.Gaming
 
                 if (gen.CreateSteamAppIdByExe)
                 {
-                    SteamMethods.CreateSteamAppIdByExe(this, gen, setupDll);
+                    SteamFunctions.CreateSteamAppIdByExe(this, gen, setupDll);
                 }
 
                 if (gen.XInputPlusDll?.Length > 0 && !gen.ProcessChangesAtEnd)
@@ -1543,10 +1543,10 @@ namespace Nucleus.Gaming
 
                 string startArgs = context.StartArguments;
 
-                if (!string.IsNullOrEmpty(SteamMethods.lobbyConnectArg) && i > 0)
+                if (!string.IsNullOrEmpty(SteamFunctions.lobbyConnectArg) && i > 0)
                 {
-                    startArgs = SteamMethods.lobbyConnectArg + " " + startArgs;
-                    Log("Goldberg Lobby Connect: Will join lobby ID " + SteamMethods.lobbyConnectArg.Substring(15));
+                    startArgs = SteamFunctions.lobbyConnectArg + " " + startArgs;
+                    Log("Goldberg Lobby Connect: Will join lobby ID " + SteamFunctions.lobbyConnectArg.Substring(15));
                 }
 
                 if (context.Hook.CustomDllEnabled && !gen.ProcessChangesAtEnd)
@@ -1556,12 +1556,12 @@ namespace Nucleus.Gaming
 
                 if (!gen.UseGoldberg && GameProfile.UseNicknames)
                 {
-                    SteamMethods.SetSteamIdNoGoldberg(this, gen, i);
+                    SteamFunctions.SetSteamIdNoGoldberg(this, gen, i);
                 }
 
                 if (gen.GoldbergWriteSteamIDAndAccount)
                 {
-                    SteamMethods.GoldbergWriteSteamIDAndAccount(this, gen, linkFolder, i, player);
+                    SteamFunctions.GoldbergWriteSteamIDAndAccount(this, gen, linkFolder, i, player);
                 }
 
                 if (gen.ChangeIPPerInstance && !gen.ProcessChangesAtEnd)
@@ -1592,7 +1592,7 @@ namespace Nucleus.Gaming
 
                 if (context.NeedsSteamEmulation)
                 {
-                    SteamMethods.SmartSteamEmu(this, gen, context, player, i, linkFolder, startArgs, exePath, setupDll);
+                    SteamFunctions.SmartSteamEmu(this, gen, context, player, i, linkFolder, startArgs, exePath, setupDll);
                     proc = null;//leave this here just in case for now
                     Thread.Sleep(5000);
                 }
@@ -2465,7 +2465,7 @@ namespace Nucleus.Gaming
 
                 if (gen.GoldbergLobbyConnect && i == 0)
                 {
-                    SteamMethods.GoldbergLobbyConnect(this);
+                    SteamFunctions.GoldbergLobbyConnect(this);
                 }
 
                 if (i > 0 && gen.ResetWindows && prevProcessData != null)

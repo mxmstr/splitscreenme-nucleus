@@ -41,6 +41,7 @@ namespace Nucleus.Coop
             this.closeBtnPicture = new System.Windows.Forms.PictureBox();
             this.btn_credits = new System.Windows.Forms.Button();
             this.settingsTab = new BufferedClientAreaPanel();
+            this.btn_Gb_Update = new System.Windows.Forms.Button();
             this.disableQuickUpdate = new System.Windows.Forms.CheckBox();
             this.disableGameProfiles = new System.Windows.Forms.CheckBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
@@ -407,6 +408,7 @@ namespace Nucleus.Coop
             // settingsTab
             // 
             this.settingsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.settingsTab.Controls.Add(this.btn_Gb_Update);
             this.settingsTab.Controls.Add(this.disableQuickUpdate);
             this.settingsTab.Controls.Add(this.disableGameProfiles);
             this.settingsTab.Controls.Add(this.keepAccountsCheck);
@@ -433,6 +435,18 @@ namespace Nucleus.Coop
             this.settingsTab.Name = "settingsTab";
             this.settingsTab.Size = new System.Drawing.Size(671, 401);
             this.settingsTab.TabIndex = 42;
+            // 
+            // btn_Gb_Update
+            // 
+            this.btn_Gb_Update.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Gb_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Gb_Update.Location = new System.Drawing.Point(372, 365);
+            this.btn_Gb_Update.Name = "btn_Gb_Update";
+            this.btn_Gb_Update.Size = new System.Drawing.Size(257, 28);
+            this.btn_Gb_Update.TabIndex = 169;
+            this.btn_Gb_Update.Text = "Goldberg Steam Emulator Updater";
+            this.btn_Gb_Update.UseVisualStyleBackColor = false;
+            this.btn_Gb_Update.Click += new System.EventHandler(this.btn_Gb_Update_Click);
             // 
             // disableQuickUpdate
             // 
@@ -486,7 +500,7 @@ namespace Nucleus.Coop
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(372, 351);
+            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(372, 332);
             this.ctrlr_shorcutsBtn.Name = "ctrlr_shorcutsBtn";
             this.ctrlr_shorcutsBtn.Size = new System.Drawing.Size(257, 27);
             this.ctrlr_shorcutsBtn.TabIndex = 164;
@@ -752,7 +766,7 @@ namespace Nucleus.Coop
             this.hotkeyBox.Controls.Add(this.plus2);
             this.hotkeyBox.Controls.Add(this.settingsCloseHKTxt);
             this.hotkeyBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hotkeyBox.Location = new System.Drawing.Point(372, 100);
+            this.hotkeyBox.Location = new System.Drawing.Point(372, 94);
             this.hotkeyBox.Margin = new System.Windows.Forms.Padding(2);
             this.hotkeyBox.Name = "hotkeyBox";
             this.hotkeyBox.Padding = new System.Windows.Forms.Padding(2);
@@ -3341,10 +3355,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.audioTab);
-            this.Controls.Add(this.playersTab);
             this.Controls.Add(this.settingsTab);
             this.Controls.Add(this.layoutTab);
+            this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.playersTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -3596,5 +3610,6 @@ namespace Nucleus.Coop
         private Label label27;
         private Label label28;
         private Gaming.Controls.CustomNumericUpDown numUpDownHor;
+        private Button btn_Gb_Update;
     }
 }
