@@ -768,8 +768,7 @@ namespace Nucleus.Coop
                         return;
                     }
 
-                    User32Util.ShowTaskBar();
-                    Globals.MainOSD.Dispose();          
+                    User32Util.ShowTaskBar();                       
                     Close();
                 }
                 else
@@ -1483,6 +1482,7 @@ namespace Nucleus.Coop
             if (I_GameHandler != null)
             {
                 Log("OnFormClosed method calling Handler End function");
+
                 try
                 {
                     I_GameHandler.End(false);
@@ -1583,22 +1583,19 @@ namespace Nucleus.Coop
         private void handler_Ended()
         {
             Log("Handler ended method called");
+
             User32Util.ShowTaskBar();
 
             this.Invoke((MethodInvoker)delegate ()
              {
                  I_GameHandler = null;
-
-                 btn_Play.Text = "PLAY";
-                 btn_Play.Enabled = false;
                  currentControl = null;
 
                  positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
                  positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
 
-                 WindowState = FormWindowState.Normal;
-                 BringToFront();
-                 stepPanelPictureBox.Focus();
+                 //WindowState = FormWindowState.Normal;
+                // BringToFront();
              });
         }
 
@@ -1631,8 +1628,6 @@ namespace Nucleus.Coop
                 searchDisksForm.Visible = false;
             }
         }
-
-        private void Form_FormClosed(object sender, FormClosedEventArgs e) => User32Util.ShowTaskBar();
 
         private void DetailsToolStripMenuItem_Click(object sender, EventArgs e) => GetGameDetails.GetDetails(gameManager, currentGameInfo);
 

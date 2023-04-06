@@ -299,8 +299,6 @@ namespace Nucleus.Gaming.Tools.AudioReroute
             }
         }
 
-
-
         [Guid("2a59116d-6c4f-45e0-a74f-707e3fef9258")]
         [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
         public interface IAudioPolicyConfigFactory
@@ -334,7 +332,7 @@ namespace Nucleus.Gaming.Tools.AudioReroute
 
         internal sealed class ComBase
         {
-            [DllImport("combase.dll", PreserveSig = false)]
+            [DllImport("combase.dll", PreserveSig = true)]
             public static extern void RoGetActivationFactory(
                 [MarshalAs(UnmanagedType.HString)] string activatableClassId,
                 [In] ref Guid iid,

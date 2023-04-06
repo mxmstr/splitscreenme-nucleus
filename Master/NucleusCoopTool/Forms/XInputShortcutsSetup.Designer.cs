@@ -809,10 +809,10 @@
             this.deadzone_tip.ForeColor = System.Drawing.Color.White;
             this.deadzone_tip.Location = new System.Drawing.Point(262, 393);
             this.deadzone_tip.Name = "deadzone_tip";
-            this.deadzone_tip.Size = new System.Drawing.Size(236, 30);
+            this.deadzone_tip.Size = new System.Drawing.Size(243, 30);
             this.deadzone_tip.TabIndex = 91;
             this.deadzone_tip.Text = "If the cursor move without touching the\r\nleft stick set a higher value(steps of +" +
-    "100) .";
+    "1000) .";
             this.deadzone_tip.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.deadzone_tip.Visible = false;
             // 

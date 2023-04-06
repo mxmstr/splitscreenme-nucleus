@@ -2749,7 +2749,6 @@ namespace Nucleus.Gaming
                                 Log($"Attempting to switch audio endpoint for process {players[pi].ProcessData.Process.ProcessName} pid ({players[pi].ProcessID}) to DeviceID {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
                                 Thread.Sleep(1000);
                                 AudioReroute.SwitchProcessTo(GameProfile.AudioInstances["AudioInstance" + (pi + 1)], AudioReroute.ERole.ERole_enum_count, AudioReroute.EDataFlow.eRender, (uint)players[pi].ProcessID);
-                                //Console.WriteLine($"Player{pi + 1 } audio = {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
                             }
                         }
                     }
@@ -3738,6 +3737,7 @@ namespace Nucleus.Gaming
             User32Util.ShowTaskBar();
 
             hasEnded = true;
+
             GameManager.Instance.ExecuteBackup(userGame.Game);
 
             LogManager.UnregisterForLogCallback(this);

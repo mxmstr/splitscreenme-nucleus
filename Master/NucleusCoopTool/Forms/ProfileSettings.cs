@@ -569,6 +569,11 @@ namespace Nucleus.Coop
                 {
                     if (i < _IdealProcessors.Count)
                     {
+                        if (GameProfile.IdealProcessors[i] == null)
+                        {
+                            GameProfile.IdealProcessors[i] = "*";
+                        }
+
                         IdealProcessors[i].SelectedIndex = IdealProcessors[i].Items.IndexOf(GameProfile.IdealProcessors[i]);
                     }
                     else
@@ -593,6 +598,11 @@ namespace Nucleus.Coop
                 {
                     if (i < _PriorityClasses.Count)
                     {
+                        if (GameProfile.PriorityClasses[i] == null)
+                        {
+                            GameProfile.PriorityClasses[i] = "Normal";
+                        }
+
                         PriorityClasses[i].SelectedIndex = PriorityClasses[i].Items.IndexOf(GameProfile.PriorityClasses[i]);
                     }
                     else
