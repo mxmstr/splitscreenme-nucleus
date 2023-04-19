@@ -327,6 +327,7 @@ namespace Nucleus.Coop
                 instruction_btn.BackgroundImage = instructionOpenImg;
                 ResumeLayout();
                 instructionImg.Visible = true;
+                instructionImg.BringToFront();
             }
         }
 
@@ -1727,7 +1728,7 @@ namespace Nucleus.Coop
 
             if (players.Count == 0)
             {
-                g.DrawString(game.Game.SupportsMultipleKeyboardsAndMice ? "Press a key or move a mouse" : "Waiting for controllers...", playerTextFont, myBrush, new PointF(10, 10));
+                g.DrawString(game.Game.SupportsMultipleKeyboardsAndMice ? "Press A Key Or Move A Mouse" : "Waiting For Controllers...", playerTextFont, myBrush, new PointF(10, 10));
             }
             else
             {
@@ -1821,12 +1822,12 @@ namespace Nucleus.Coop
                             {
                                 if (TotalPlayers > GameProfile.TotalPlayers)
                                 {
-                                    msg = $"There is to much players!";
+                                    msg = $"There Is Too Much Players!";
                                     brush = notEnoughPlyrsSBrush;
                                 }
                                 else if ((GameProfile.TotalPlayers - TotalPlayers) > 0)
                                 {
-                                    string st = GameProfile.TotalPlayers - TotalPlayers > 1 ? "players" : "player";
+                                    string st = GameProfile.TotalPlayers - TotalPlayers > 1 ? "Players" : "Player";
                                     msg = $"Waiting {(GameProfile.PlayerIDs.Count - TotalPlayers)} More {st}";
                                     brush = notEnoughPlyrsSBrush;
                                 }
@@ -1839,7 +1840,7 @@ namespace Nucleus.Coop
                             {
                                 if (game.Game.SupportsMultipleKeyboardsAndMice)
                                 {
-                                    msg = "Drag & Drop device(s) On The Desired Screen(s)";
+                                    msg = "Drag & Drop Device(s) On The Desired Screen(s)";
                                 }
                                 else if (!game.Game.SupportsMultipleKeyboardsAndMice && !game.Game.SupportsKeyboard)
                                 {
@@ -1858,7 +1859,7 @@ namespace Nucleus.Coop
                             if (gamePadPressed == info.GamepadId)
                             {
                                 g.ResetClip();
-                                g.DrawString("Gamepad " + (info.GamepadId + 1), playerTextFont, colors[info.GamepadId], new PointF(10, 10));
+                                g.DrawString("Controller " + (info.GamepadId + 1), playerTextFont, colors[info.GamepadId], new PointF(10, 10));
                             }
                         }
                     }

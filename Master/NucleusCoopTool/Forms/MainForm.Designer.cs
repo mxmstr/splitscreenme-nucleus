@@ -1040,7 +1040,7 @@ namespace Nucleus.Coop
             this.stepPanelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.stepPanelPictureBox.TabIndex = 15;
             this.stepPanelPictureBox.TabStop = false;
-            this.stepPanelPictureBox.Click += new System.EventHandler(this.stepPanelPictureBox_Click);
+            this.stepPanelPictureBox.DoubleClick += new System.EventHandler(this.stepPanelPictureBox_DoubleClick);
             // 
             // txt_version
             // 

@@ -75,6 +75,7 @@ namespace Nucleus.Gaming
                         Size = new Size(list.Width, 120),
                         Data = val
                     };
+
                     control.OnSelected += Control_OnSelected;
 
                     IDictionary<string, object> value = (IDictionary<string, object>)val;
@@ -140,8 +141,16 @@ namespace Nucleus.Gaming
 
         private void Control_OnSelected(object obj)
         {
-            CoolListControl c = obj as CoolListControl;
-            profile.Options[CustomStep.Option.Key] = obj;
+            if (obj.GetType() == typeof(CoolListControl))
+            {
+                CoolListControl c = obj as CoolListControl;
+                profile.Options[CustomStep.Option.Key] = c.Data;
+            }
+            else 
+            {
+                profile.Options[CustomStep.Option.Key] = obj;
+            }
+
             canProceed = true;
             CanPlayUpdated(true, true);
         }

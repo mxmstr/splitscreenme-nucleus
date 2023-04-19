@@ -291,7 +291,6 @@ namespace Nucleus.Gaming
 
         public string Play()
         {
-
             if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
             {
                 MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -644,6 +643,7 @@ namespace Nucleus.Gaming
                         {
                             return "";
                         }
+
                         Thread.Sleep(1000);
 
                         if (gen.KillMutexProcess != null)
@@ -1519,7 +1519,7 @@ namespace Nucleus.Gaming
                 {
                     Log("Using pre-defined epic emu params");
                     context.StartArguments += " ";
-                    context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.EpicLang} -epicusername={player.Nickname} -epicuserid={player.Nickname} ";
+                    context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=Nucleus -epicenv=Prod -EpicPortal -epiclocale={gen.EpicLang} -epicusername={player.Nickname} -epicuserid={player.Nickname} ";
                 }
 
                 if (gen.EpicEmuArgs)
@@ -1531,7 +1531,7 @@ namespace Nucleus.Gaming
                     {
                         Log("Epic Emu parameters not found in arguments. Adding the necessary parameters to existing starting arguments");
                         //AUTH_LOGIN = unused - AUTH_PASSWORD = cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd - AUTH_TYPE = exchangecode - epicapp = CrabTest - epicenv = Prod - EpicPortal - epiclocale = en - epicusername <= same username than in the.json > -epicuserid <= same epicid than in the.json                     
-                        context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=CrabTest -epicenv=Prod -EpicPortal -epiclocale={gen.EpicLang} -epicusername={player.Nickname} -epicuserid=0000000000000000000000000player{i + 1} ";
+                        context.StartArguments += $" -AUTH_LOGIN=unused -AUTH_PASSWORD=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -AUTH_TYPE=exchangecode -epicapp=Nucleus -epicenv=Prod -EpicPortal -epiclocale={gen.EpicLang} -epicusername={player.Nickname} -epicuserid=0000000000000000000000000player{i + 1} ";
                     }
                 }
 
@@ -2198,7 +2198,7 @@ namespace Nucleus.Gaming
                             prompt.ShowDialog();
                         }
 
-                        ProcessEnd();
+                        ProcessChangeAtEnd();
 
                         return string.Empty;
                     }
@@ -2233,6 +2233,7 @@ namespace Nucleus.Gaming
                                 }
                             }
                         }
+
                         continue;
                     }
                 }
@@ -3110,6 +3111,7 @@ namespace Nucleus.Gaming
                 {
                     keyboardProcId = proc.Id;
                 }
+
                 return proc;
             }
 
@@ -3145,6 +3147,7 @@ namespace Nucleus.Gaming
                     }
                 }
             }
+
             ppform.Close();
         }
 
@@ -3194,7 +3197,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        private void ProcessEnd()
+        private void ProcessChangeAtEnd()
         {
             List<PlayerInfo> players = profile.PlayerData;
 
@@ -3212,7 +3215,6 @@ namespace Nucleus.Gaming
 
                 if (gen.ChangeIPPerInstance)
                 {
-                    //ChangeIPPerInstance(i);
                     Network.ChangeIPPerInstance(this, i);
                 }
 
@@ -3540,6 +3542,13 @@ namespace Nucleus.Gaming
 
         public void End(bool fromStopButton)
         {
+            if (fromStopButton && LockInput.IsLocked)
+            {
+                //TODO: For some reason the Stop button is clicked during split screen. Temporary fix is to not end if input is locked.//Should be fixed now by unfocusing the stop button.
+                Log("IGNORING SHUTDOWN BECAUSE INPUT LOCKED");
+                return;
+            }
+
             if (!processingExit)
             {
                 processingExit = true;
@@ -3549,14 +3558,7 @@ namespace Nucleus.Gaming
                 Log("Already processing exit");
                 return;
             }
-
-            if (fromStopButton && LockInput.IsLocked)
-            {
-                //TODO: For some reason the Stop button is clicked during split screen. Temporary fix is to not end if input is locked.//Should be fixed now by unfocusing the stop button.
-                Log("IGNORING SHUTDOWN BECAUSE INPUT LOCKED");
-                return;
-            }
-
+        
             if (ControllersUINav.Enabled)
             {
                 ControllersUINav.EnabledRuntime = true;
@@ -3589,8 +3591,11 @@ namespace Nucleus.Gaming
                     foreach (Form backgroundForm in splitForms)
                     {
                         backgroundForm.Close();
+                        backgroundForm.Dispose();
                     }
                 });
+
+                splitForms.Clear();
             }
 
             LockInput.Unlock(false, gen?.ProtoInput);

@@ -1517,7 +1517,7 @@ namespace Nucleus.Coop
                 GameProfile.currentProfile.Reset();
                 positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
                 positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
-
+                
                 return;
             }
 
@@ -1594,8 +1594,11 @@ namespace Nucleus.Coop
                  positionsControl.gamepadTimer = new System.Threading.Timer(positionsControl.GamepadTimer_Tick, null, 0, 1000);
                  positionsControl.gamepadPollTimer = new System.Threading.Timer(positionsControl.GamepadPollTimer_Tick, null, 0, 1001);
 
-                 //WindowState = FormWindowState.Normal;
-                // BringToFront();
+                 WindowState = FormWindowState.Normal;
+                 stepPanelPictureBox.Focus();
+                 btn_Play.Text = "PLAY";
+                 btn_Play.Enabled = false;
+                 BringToFront();
              });
         }
 
@@ -2026,7 +2029,6 @@ namespace Nucleus.Coop
             }
         }
 
-    
         private void gameContextMenuStrip_Opened(object sender, EventArgs e)
         => gameContextMenuStrip.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, gameContextMenuStrip.Width - 1, gameContextMenuStrip.Height, 20, 20));
         
@@ -2510,6 +2512,7 @@ namespace Nucleus.Coop
                 positionsControl.handlerNoteZoom.Text = scriptAuthorTxt.Text;
                 positionsControl.handlerNoteZoom.Visible = true;
                 positionsControl.textZoomContainer.Visible = true;
+                positionsControl.textZoomContainer.BringToFront();
                 btn_magnifier.Image = ImageCache.GetImage(theme + "magnifier_close.png");
             }
             else
@@ -2563,19 +2566,6 @@ namespace Nucleus.Coop
             }
 
             btn_textSwitcher.Visible = (gameDesExist && notesExist);
-        }
-
-        private void stepPanelPictureBox_Click(object sender, EventArgs e)
-        {
-            if (connected && hubShowcase == null)
-            {
-                hubShowcase = new HubShowcase(this);
-                hubShowcase.Size = new Size(clientAreaPanel.Width - game_listSizer.Width, hubShowcase.Height);
-                hubShowcase.Location = new Point(game_listSizer.Right, mainButtonFrame.Bottom + (clientAreaPanel.Height / 2 - hubShowcase.Height / 2));
-
-                stepPanelPictureBox.Visible = false;
-                clientAreaPanel.Controls.Add(hubShowcase);
-            }
         }
 
         public void button_Click(object sender, EventArgs e)
@@ -2759,5 +2749,17 @@ namespace Nucleus.Coop
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) => SaveNucleusWindowPosAndLoc();
 
+        private void stepPanelPictureBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (connected && hubShowcase == null)
+            {
+                hubShowcase = new HubShowcase(this);
+                hubShowcase.Size = new Size(clientAreaPanel.Width - game_listSizer.Width, hubShowcase.Height);
+                hubShowcase.Location = new Point(game_listSizer.Right, mainButtonFrame.Bottom + (clientAreaPanel.Height / 2 - hubShowcase.Height / 2));
+
+                stepPanelPictureBox.Visible = false;
+                clientAreaPanel.Controls.Add(hubShowcase);
+            }
+        }
     }
 }
