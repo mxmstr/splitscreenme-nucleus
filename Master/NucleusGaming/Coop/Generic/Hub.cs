@@ -93,10 +93,8 @@ namespace Nucleus.Gaming.Coop.Generic
             }
 
             newVersion = int.TryParse(array[0]["currentVersion"].ToString(), out int _v) ? _v : -1;
-
-            
+         
             return newVersion > Handler.Version;
-
         }
 
         public string GetScreenshotsUri()
@@ -135,7 +133,7 @@ namespace Nucleus.Gaming.Coop.Generic
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
 
-                request.Timeout = 2800;//lower values make the timeout too short for some "big" handlers              
+                request.Timeout = 1500;//lower values make the timeout too short for some "big" handlers              
                 request.Method = "Get";
 
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())

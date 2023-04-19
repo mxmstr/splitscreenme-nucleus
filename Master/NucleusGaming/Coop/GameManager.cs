@@ -573,7 +573,6 @@ namespace Nucleus.Gaming
                 }
 
             }
-
         }
 
         public void AddScript(string handlerName)

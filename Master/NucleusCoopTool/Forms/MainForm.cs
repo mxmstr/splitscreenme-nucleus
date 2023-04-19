@@ -237,7 +237,6 @@ namespace Nucleus.Coop
             rgb_ButtonsBorderColor = themeIni.IniReadValue("Colors", "ButtonsBorder").Split(',');
             rgb_HandlerNoteMagnifierTitleBackColor = themeIni.IniReadValue("Colors", "HandlerNoteMagnifierTitleBackColor ").Split(',');
                    
-            disableFastHandlerUpdate = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
             float fontSize = float.Parse(themeIni.IniReadValue("Font", "MainFontSize"));
             bool coverBorderOff = bool.Parse(themeIni.IniReadValue("Misc", "DisableCoverBorder"));
             bool noteBorderOff = bool.Parse(themeIni.IniReadValue("Misc", "DisableNoteBorder"));
@@ -920,7 +919,7 @@ namespace Nucleus.Coop
                 if (games.Count == 0)
                 {
                     noGamesPresent = true;
-                    GameControl con = new GameControl(null, null, false, false)
+                    GameControl con = new GameControl(null, null/*, false*/, false)
                     {
                         Width = game_listSizer.Width,
                         Text = "No games",
@@ -933,7 +932,7 @@ namespace Nucleus.Coop
                 {
                     for (int i = 0; i < games.Count; i++)
                     {
-                        UserGameInfo game = games[i];
+                        UserGameInfo game = games[i];           
                         NewUserGame(game, checkUpdate);
                     }
                 }
@@ -960,12 +959,7 @@ namespace Nucleus.Coop
 
             bool favorite = game.Favorite;
 
-            if (!disableFastHandlerUpdate && connected && checkUpdate)
-            {
-                game.Game.UpdateAvailable = game.Game.IsUpdateAvailable(true);//game.Game.UpdateAvailable;
-            }
-
-            GameControl con = new GameControl(game.Game, game, game.Game.UpdateAvailable, favorite)
+            GameControl con = new GameControl(game.Game, game, favorite)
             {
                 Width = game_listSizer.Width,
             };
@@ -986,7 +980,7 @@ namespace Nucleus.Coop
                 ThreadPool.QueueUserWorkItem(GetIcon, game);
             }
 
-            if(currentControl != null)
+            if (currentControl != null)
             {
                 if (currentControl.TitleText == con.TitleText)
                     con.BackColor = SelectionBackColor;
@@ -1078,15 +1072,11 @@ namespace Nucleus.Coop
 
         private void gameControl_MouseEnter(object sender, EventArgs e)
         {
-            if(disableFastHandlerUpdate)
-            {
-                return;
-            }
-
             GameControl c = sender as GameControl;
-
-            if (c.updateAvailable)
+            
+            if (c.GameInfo.UpdateAvailable)
             {
+                //c.ForeColor = Color.PaleGreen;    
                 handlerUpdateLabel = new Label
                 {
                     Name = "UpdateLabel",

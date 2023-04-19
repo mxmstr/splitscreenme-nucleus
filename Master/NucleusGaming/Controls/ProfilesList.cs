@@ -1,23 +1,18 @@
-﻿using Games;
-using Jint;
-using Jint.Parser;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
-using Nucleus.Gaming.Tools.Network;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Windows.Navigation;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Nucleus.Gaming.Controls
 {
@@ -63,7 +58,7 @@ namespace Nucleus.Gaming.Controls
 
             borderPen = new Pen(Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[1]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])));
+                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])),2.0f);
 
             default_Cursor = new Cursor(Globals.Theme + "cursor.ico");
             hand_Cursor = new Cursor(Globals.Theme + "cursor_hand.ico");
@@ -266,7 +261,7 @@ namespace Nucleus.Gaming.Controls
 
             Location = new Point((parentControl.gameProfilesList_btn.Left - Width) + 1 , parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
             BringToFront();
-            //Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -1, Width, Height, 15, 15));
 
             if (Controls.Count == 1)
             {
@@ -308,11 +303,11 @@ namespace Nucleus.Gaming.Controls
             }
             else
             {
-                text = Jprofile.ToString();//jsonString.Replace(" ", "").                                
-                                               //Replace(",", "").
-                                               //Replace("\"", "").
-                                               //Replace("{", "").
-                                               //Replace("}", "");
+                text = jsonString.Replace(" ", "").
+                                  Replace(",", "").
+                                  Replace("\"", "").
+                                  Replace("{", "").
+                                  Replace("}", "");
             }
 
             if (!ScriptAuthorTxtSizer[0].Visible)
@@ -324,7 +319,7 @@ namespace Nucleus.Gaming.Controls
             HandlerNoteTitle[0].Text = $"Profile n°{preview.Name}";
             btn_textSwitcher[0].Visible = true;
         }
-      
+
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
         {
             if (Locked)
@@ -354,6 +349,11 @@ namespace Nucleus.Gaming.Controls
 
                 GameProfile.currentProfile.Reset();
                 Update_ProfilesList();
+                if (Controls.Count == 0)
+                {
+                    parentControl.gameProfilesList_btn.Image = ImageCache.GetImage(Globals.Theme + "profiles_list.png");
+                }
+
                 Globals.MainOSD.Settings(500, "Game Profile Deleted");
             }
         }
@@ -361,34 +361,28 @@ namespace Nucleus.Gaming.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.DrawRectangle(borderPen, new Rectangle(0, 0, Width - 1, Height - 1));
-            //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            //g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-            //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.InterpolationMode = InterpolationMode.HighQualityBilinear;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.DrawRectangle(borderPen, new Rectangle(1, 1, Width - 3, Height - 3));
+            //g.DrawLine(borderPen, 7, 0, Width - 7, 0);//Top edge
+            //g.DrawLine(borderPen, 7, Height - 3, Width - 10, Height - 3);//Bottom edge
+            //g.DrawLine(borderPen, Width - 3, 7, Width - 3, Height - 8);//Right edge
+            //g.DrawLine(borderPen, 1, 7, 1, Width - 7);//Left edge
 
+            g.DrawArc(borderPen, 0, 0, 16, 16, -90, -90);//Top left angle
+            g.DrawArc(borderPen, 0, Height - 18, 16, 16, 90, 90);//Bottom left angle
 
-            //g.DrawArc(borderPen, 0, 0, 15, 15, -90, -90);//Top left angle
-            //g.DrawArc(borderPen, Width - 19, 0, 15, 15, -90, 90);//Top Right angle
-            //g.DrawArc(borderPen, 0, Height - 19, 15, 15, 90, 90);//Bottom left angle
-            //g.DrawArc(borderPen, Width - 19, Height - 19, 15, 15, 90, -90);//Bottom Right angle
-
-            //g.DrawLine(borderPen, 8, 0, Width - 12, 0);//Top edge
-            //g.DrawLine(borderPen, 8, Height - 4, Width - 12, Height - 4);//Bottom edge
-            //g.DrawLine(borderPen, Width - 4, 8, Width - 4, Height - 12);//Right edge
-            //g.DrawLine(borderPen, 0, 8, 0, Width-20);//Left edge
+            g.DrawArc(borderPen, Width - 18, 0, 16, 16, -90, 90);//Top Right angle   
+            g.DrawArc(borderPen, Width - 18, Height - 18, 16, 16, 90, -90);//Bottom Right angle
+       
         }
 
         public void UpdateSize(float scale)
         {
-            //if (IsDisposed)
-            //{
-            //    DPIManager.Unregister(this);
-            //    return;
-            //}
-
             _scale = scale;
         }
-
 
     }
 }

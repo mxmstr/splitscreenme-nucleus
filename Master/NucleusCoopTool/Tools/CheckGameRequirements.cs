@@ -6,7 +6,6 @@ namespace Nucleus.Coop.Tools
 {
     internal class CheckGameRequirements
     {
-
         public static bool MatchRequirements(GenericGameInfo game)
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
@@ -42,9 +41,5 @@ namespace Nucleus.Coop.Tools
                 return true;
             }
         }
-
-
-
-
     }
 }

@@ -482,7 +482,7 @@ namespace Nucleus.Coop
                 audioCustomSettingsRadio.Checked = true;
             }
 
-            disableQuickUpdate.Checked = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
+            //disableQuickUpdate.Checked = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
 
             RefreshAudioList();
 
@@ -603,11 +603,11 @@ namespace Nucleus.Coop
             disableGameProfiles_Tooltip.AutoPopDelay = 5000;
             disableGameProfiles_Tooltip.SetToolTip(disableGameProfiles, "Simply disable profiles loading/saving, Nucleus will always use global settings instead");
 
-            ToolTip disableQuickUpdate_Tooltip = new ToolTip();
-            disableQuickUpdate_Tooltip.InitialDelay = 100;
-            disableQuickUpdate_Tooltip.ReshowDelay = 100;
-            disableQuickUpdate_Tooltip.AutoPopDelay = 5000;
-            disableQuickUpdate_Tooltip.SetToolTip(disableQuickUpdate, "Speedup startup time, handler still updatable from the \"New Handler Available!\" button");
+            //ToolTip disableQuickUpdate_Tooltip = new ToolTip();
+            //disableQuickUpdate_Tooltip.InitialDelay = 100;
+            //disableQuickUpdate_Tooltip.ReshowDelay = 100;
+            //disableQuickUpdate_Tooltip.AutoPopDelay = 5000;
+            //disableQuickUpdate_Tooltip.SetToolTip(disableQuickUpdate, "Speedup startup time, handler still updatable from the \"New Handler Available!\" button");
         }
 
         private void GetPlayersNickNameAndSteamIds()
@@ -773,7 +773,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
-            ini.IniWriteValue("Dev", "DisableFastHandlerUpdate", disableQuickUpdate.Checked.ToString());
+            //ini.IniWriteValue("Dev", "DisableFastHandlerUpdate", disableQuickUpdate.Checked.ToString());
 
             ini.IniWriteValue("CustomLayout", "SplitDiv", SplitDiv.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "SplitDivColor", SplitColors.Text.ToString());
@@ -789,11 +789,11 @@ namespace Nucleus.Coop
 
             mainForm.lockKeyIniString = comboBox_lockKey.SelectedItem.ToString();
 
-            if (mainForm.disableFastHandlerUpdate != disableQuickUpdate.Checked)
-            {
-                mainForm.disableFastHandlerUpdate = disableQuickUpdate.Checked;
-                mainForm.RefreshGames(false);
-            }
+            //if (mainForm.disableFastHandlerUpdate != disableQuickUpdate.Checked)
+            //{
+            //    mainForm.disableFastHandlerUpdate = disableQuickUpdate.Checked;
+            //    mainForm.RefreshGames(false);
+            //}
 
             if (disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
             {

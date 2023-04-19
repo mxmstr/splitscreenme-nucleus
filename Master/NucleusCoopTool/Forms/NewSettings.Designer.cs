@@ -440,7 +440,7 @@ namespace Nucleus.Coop
             // 
             this.btn_Gb_Update.BackColor = System.Drawing.Color.Transparent;
             this.btn_Gb_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Gb_Update.Location = new System.Drawing.Point(372, 365);
+            this.btn_Gb_Update.Location = new System.Drawing.Point(372, 328);
             this.btn_Gb_Update.Name = "btn_Gb_Update";
             this.btn_Gb_Update.Size = new System.Drawing.Size(257, 28);
             this.btn_Gb_Update.TabIndex = 169;
@@ -455,7 +455,7 @@ namespace Nucleus.Coop
             this.disableQuickUpdate.Checked = true;
             this.disableQuickUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.disableQuickUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.disableQuickUpdate.Location = new System.Drawing.Point(371, 9);
+            this.disableQuickUpdate.Location = new System.Drawing.Point(372, 369);
             this.disableQuickUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.disableQuickUpdate.Name = "disableQuickUpdate";
             this.disableQuickUpdate.Size = new System.Drawing.Size(211, 17);
@@ -463,6 +463,7 @@ namespace Nucleus.Coop
             this.disableQuickUpdate.Tag = "";
             this.disableQuickUpdate.Text = "Disable Fast Handlers Update Function";
             this.disableQuickUpdate.UseVisualStyleBackColor = false;
+            this.disableQuickUpdate.Visible = false;
             // 
             // disableGameProfiles
             // 
@@ -500,7 +501,7 @@ namespace Nucleus.Coop
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(372, 332);
+            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(372, 295);
             this.ctrlr_shorcutsBtn.Name = "ctrlr_shorcutsBtn";
             this.ctrlr_shorcutsBtn.Size = new System.Drawing.Size(257, 27);
             this.ctrlr_shorcutsBtn.TabIndex = 164;
@@ -512,7 +513,7 @@ namespace Nucleus.Coop
             // 
             this.nucUserPassTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nucUserPassTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nucUserPassTxt.Location = new System.Drawing.Point(371, 64);
+            this.nucUserPassTxt.Location = new System.Drawing.Point(371, 27);
             this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
             this.nucUserPassTxt.MaxLength = 127;
             this.nucUserPassTxt.Name = "nucUserPassTxt";
@@ -527,7 +528,7 @@ namespace Nucleus.Coop
             this.password_Label.AutoSize = true;
             this.password_Label.BackColor = System.Drawing.Color.Transparent;
             this.password_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.password_Label.Location = new System.Drawing.Point(368, 45);
+            this.password_Label.Location = new System.Drawing.Point(368, 8);
             this.password_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.password_Label.Name = "password_Label";
             this.password_Label.Size = new System.Drawing.Size(138, 15);
@@ -766,7 +767,7 @@ namespace Nucleus.Coop
             this.hotkeyBox.Controls.Add(this.plus2);
             this.hotkeyBox.Controls.Add(this.settingsCloseHKTxt);
             this.hotkeyBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hotkeyBox.Location = new System.Drawing.Point(372, 94);
+            this.hotkeyBox.Location = new System.Drawing.Point(372, 57);
             this.hotkeyBox.Margin = new System.Windows.Forms.Padding(2);
             this.hotkeyBox.Name = "hotkeyBox";
             this.hotkeyBox.Padding = new System.Windows.Forms.Padding(2);

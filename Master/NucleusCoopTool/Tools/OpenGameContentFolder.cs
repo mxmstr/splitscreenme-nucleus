@@ -13,7 +13,6 @@ namespace Nucleus.Coop.Tools
 {
     internal class OpenGameContentFolder
     {
-
         public static void OpenDataFolder(GameManager gameManager, UserGameInfo currentGameInfo)
         {
             string path = Path.Combine(gameManager.GetAppContentPath(), currentGameInfo.Game.GUID);

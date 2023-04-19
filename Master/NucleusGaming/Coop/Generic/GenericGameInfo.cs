@@ -20,14 +20,16 @@ namespace Nucleus.Gaming
         private Engine engine;
         private string js;
 
-        private Hub Hub = new Hub();
+        public Hub Hub = new Hub();
 
         public GameHookInfo Hook = new GameHookInfo();
         public List<GameOption> Options = new List<GameOption>();
 
         public SaveType SaveType;
         public string SavePath;
+
         public bool UpdateAvailable;
+
         public string[] DirSymlinkExclusions;
         public string[] FileSymlinkExclusions;
         public string[] FileSymlinkCopyInstead;
@@ -348,6 +350,7 @@ namespace Nucleus.Gaming
             engine.SetValue("Game", this);
             engine.SetValue("Hub", Hub);
             engine.Execute("var Nucleus = importNamespace('Nucleus.Gaming');");
+
             try
             {
                 engine.Execute(js);
@@ -365,13 +368,10 @@ namespace Nucleus.Gaming
             }
 
             // Run this in another thread to not block UI
-            if (bool.Parse(Globals.ini.IniReadValue("Dev", "DisableFastHandlerUpdate")))
-            {
-                System.Threading.Tasks.Task.Run(() =>
-                {
-                    UpdateAvailable = Hub.IsUpdateAvailable(true);
-                });
-            }
+            //System.Threading.Tasks.Task.Run(() =>
+            //{
+            //    UpdateAvailable = Hub.IsUpdateAvailable(true);
+            //});
 
             engine.SetValue("Game", (object)null);
         }

@@ -11,8 +11,6 @@ namespace Nucleus.Coop.Tools
 {
     internal static class CustomToolStripRenderer
     {
-
-
         ///https://stackoverflow.com/questions/9260303/how-to-change-menu-hover-color
         public class MyRenderer : ToolStripProfessionalRenderer
         {

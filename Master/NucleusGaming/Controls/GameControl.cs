@@ -1,9 +1,12 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Drawing;
+using System.Windows;
 using System.Windows.Forms;
+using static Nucleus.Gaming.Coop.Generic.Hub;
 
 namespace Nucleus.Coop
 {
@@ -21,8 +24,6 @@ namespace Nucleus.Coop
         private Color radioSelectedBackColor;
         private Color userOverBackColor;
         private Color userLeaveBackColor;
-        public bool updateAvailable;
-        private bool disableFastHandlerUpdate;
         public bool favorite;
         public string TitleText { get; set; }
         public string PlayerText { get; set; }
@@ -39,12 +40,11 @@ namespace Nucleus.Coop
             }
         }
 
-        public GameControl(GenericGameInfo game, UserGameInfo userGame, bool updateAvailable, bool favorite)
+        public GameControl(GenericGameInfo game, UserGameInfo userGame, bool favorite)
         {
             try
             {
                 this.favorite = favorite;
-                this.updateAvailable = updateAvailable;
                 IniFile theme = Globals.ThemeIni;
                 string themePath = Globals.Theme;
                 string[] rgb_SelectionColor = theme.IniReadValue("Colors", "Selection").Split(',');
@@ -55,7 +55,6 @@ namespace Nucleus.Coop
                 userLeaveBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
                 favorite_Unselected = ImageCache.GetImage(themePath + "favorite_unselected.png");
                 favorite_Selected = ImageCache.GetImage(themePath + "favorite_selected.png");
-                disableFastHandlerUpdate = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
 
                 SuspendLayout();
                 AutoScaleDimensions = new SizeF(96F, 96F);
@@ -145,11 +144,26 @@ namespace Nucleus.Coop
                     Controls.Add(favoriteBox);
                 }
 
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    bool UpdateAvailable = game.Hub.IsUpdateAvailable(true);
+                   
+                    if (UpdateAvailable)
+                    {
+                        this.Invoke((MethodInvoker)delegate ()
+                        {
+                            title.ForeColor = Color.PaleGreen;
+                        });
+
+                        game.UpdateAvailable = UpdateAvailable;
+                    }
+                });
+
                 DPIManager.Register(this);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("ERROR - " + ex.Message + "\n\nSTACKTRACE: " + ex.StackTrace);
+                System.Windows.MessageBox.Show("ERROR - " + ex.Message + "\n\nSTACKTRACE: " + ex.StackTrace);
             }
         }
         ~GameControl()
@@ -198,13 +212,11 @@ namespace Nucleus.Coop
                 Height = picture.Bottom + border;//adjust the control Height
             }
 
-            title.ForeColor = (updateAvailable && !disableFastHandlerUpdate) ? Color.PaleGreen : Color.White;
-
             favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
             float favoriteX = (209 * scale) - (playerIcon.Width+5);
             float favoriteY = Height - (favoriteBox.Height+5);
             favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
-
+            
             ResumeLayout();
         }
 
@@ -238,7 +250,7 @@ namespace Nucleus.Coop
 
         private void C_MouseEnter(object sender, EventArgs e)
         {
-            OnMouseEnter(e);
+            OnMouseEnter(e);          
         }
 
         private void C_MouseLeave(object sender, EventArgs e)

@@ -68,6 +68,5 @@ namespace Nucleus.Coop.Tools
             catch (Exception)
             { }
         }
-
     }
 }

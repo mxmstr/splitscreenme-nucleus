@@ -103,8 +103,7 @@ namespace Nucleus.Coop.Tools
                                         }
                                     }
 
-                                    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
-                                   
+                                    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);                              
                                 }
 
                                 main.RefreshUI(true);

@@ -48,41 +48,40 @@ namespace Nucleus.Coop
 
         public Bitmap Process(int radial)
         {
-           
-                var newAlpha = new int[_width * _height];
-                var newRed = new int[_width * _height];
-                var newGreen = new int[_width * _height];
-                var newBlue = new int[_width * _height];
-                var dest = new int[_width * _height];
+            var newAlpha = new int[_width * _height];
+            var newRed = new int[_width * _height];
+            var newGreen = new int[_width * _height];
+            var newBlue = new int[_width * _height];
+            var dest = new int[_width * _height];
 
-                Parallel.Invoke(
-                    () => gaussBlur_4(_alpha, newAlpha, radial),
-                    () => gaussBlur_4(_red, newRed, radial),
-                    () => gaussBlur_4(_green, newGreen, radial),
-                    () => gaussBlur_4(_blue, newBlue, radial));
+            Parallel.Invoke(
+                () => gaussBlur_4(_alpha, newAlpha, radial),
+                () => gaussBlur_4(_red, newRed, radial),
+                () => gaussBlur_4(_green, newGreen, radial),
+                () => gaussBlur_4(_blue, newBlue, radial));
 
-                Parallel.For(0, dest.Length, _pOptions, i =>
-                {
-                    if (newAlpha[i] > 255) newAlpha[i] = 255;
-                    if (newRed[i] > 255) newRed[i] = 255;
-                    if (newGreen[i] > 255) newGreen[i] = 255;
-                    if (newBlue[i] > 255) newBlue[i] = 255;
+            Parallel.For(0, dest.Length, _pOptions, i =>
+            {
+                if (newAlpha[i] > 255) newAlpha[i] = 255;
+                if (newRed[i] > 255) newRed[i] = 255;
+                if (newGreen[i] > 255) newGreen[i] = 255;
+                if (newBlue[i] > 255) newBlue[i] = 255;
 
-                    if (newAlpha[i] < 0) newAlpha[i] = 0;
-                    if (newRed[i] < 0) newRed[i] = 0;
-                    if (newGreen[i] < 0) newGreen[i] = 0;
-                    if (newBlue[i] < 0) newBlue[i] = 0;
+                if (newAlpha[i] < 0) newAlpha[i] = 0;
+                if (newRed[i] < 0) newRed[i] = 0;
+                if (newGreen[i] < 0) newGreen[i] = 0;
+                if (newBlue[i] < 0) newBlue[i] = 0;
 
-                    dest[i] = (int)((uint)(newAlpha[i] << 24) | (uint)(newRed[i] << 16) | (uint)(newGreen[i] << 8) | (uint)newBlue[i]);
-                });
+                dest[i] = (int)((uint)(newAlpha[i] << 24) | (uint)(newRed[i] << 16) | (uint)(newGreen[i] << 8) | (uint)newBlue[i]);
+            });
 
-                var image = new Bitmap(_width, _height);
-                var rct = new Rectangle(0, 0, image.Width, image.Height);
-                var bits2 = image.LockBits(rct, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-                Marshal.Copy(dest, 0, bits2.Scan0, dest.Length);
-                image.UnlockBits(bits2);
-                return image;
-            
+            var image = new Bitmap(_width, _height);
+            var rct = new Rectangle(0, 0, image.Width, image.Height);
+            var bits2 = image.LockBits(rct, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            Marshal.Copy(dest, 0, bits2.Scan0, dest.Length);
+            image.UnlockBits(bits2);
+            return image;
+
         }
 
         private void gaussBlur_4(int[] source, int[] dest, int r)

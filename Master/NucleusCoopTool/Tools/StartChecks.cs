@@ -152,8 +152,7 @@ namespace Nucleus.Coop
                             currentEnvPathBackup.Dispose();
 
                             File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
-                            Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));
-                            
+                            Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));                           
                             //Console.WriteLine("Registry backup is up-to-date");
                         }
                         else
@@ -240,33 +239,6 @@ namespace Nucleus.Coop
                 Process nc = Process.GetCurrentProcess();
                 nc.Kill();
             }
-        }
-
-        public static void CheckForUpdate()
-        {
-            try
-            {
-
-                using (Process proc = new Process())
-                {
-                    proc.StartInfo.FileName = Path.Combine(Application.StartupPath, @"utils\NC_Updater\NC_Updater.exe");
-                    proc.StartInfo.UseShellExecute = false;
-                    //proc.StartInfo.RedirectStandardOutput = true;
-                    // proc.StartInfo.RedirectStandardError = true;
-                    proc.StartInfo.CreateNoWindow = false;
-                    //proc.StartInfo.Arguments = "-quiet";
-                    proc.Start();
-                    Console.WriteLine(proc.ProcessName);
-                    //string stdout = proc.StandardOutput.ReadToEnd();
-                    //string stderr = proc.StandardError.ReadToEnd();
-                    //proc.WaitForExit();
-                }
-                Console.WriteLine("Checking for update");
-
-            }
-            catch (Exception)
-            { }
-
         }
 
         public static bool CheckNetCon()

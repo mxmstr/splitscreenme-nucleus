@@ -34,7 +34,7 @@ namespace Nucleus.Coop.Tools
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
             {   
-                mainForm.coverImg = /*ImageCache.GetImage*/new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));// mainForm.coverImg;
+                mainForm.coverImg = /*ImageCache.GetImage*/new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));//mainForm.coverImg;
                 mainForm.cover.SuspendLayout();
                 mainForm.cover.BackgroundImage = mainForm.coverImg;
                 mainForm.cover.ResumeLayout();
@@ -48,7 +48,7 @@ namespace Nucleus.Coop.Tools
                 mainForm.coverFrame.Visible = true;
             }
 
-            //Apply screenshots randomly
+            ///Apply screenshots randomly
             if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")))
             {
                 string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")));

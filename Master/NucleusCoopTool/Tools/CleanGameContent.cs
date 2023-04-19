@@ -51,6 +51,7 @@ namespace Nucleus.Coop
                     catch
                     {
                         LogManager.Log("Game content cleanup failed. One or more files can't be unlocked by Nucleus.");
+
                         System.Threading.Tasks.Task.Run(() =>
                         {
                             MessageBox.Show($"One or more files from {path} are locked by the system or used by an other program and Nucleus failed to unlock them. You can try to delete/unlock the file(s) manually or restart your computer to unlock the file(s) because it could lead to a crash on game startup. You can ignore this message and risk a crash or unexpected behaviors.", "Risk of crash!", MessageBoxButtons.OK, MessageBoxIcon.Information);
