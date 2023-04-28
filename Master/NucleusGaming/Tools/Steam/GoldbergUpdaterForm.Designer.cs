@@ -49,6 +49,7 @@
             // button
             // 
             this.button.BackColor = System.Drawing.Color.Transparent;
+            this.button.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button.Location = new System.Drawing.Point(97, 40);
@@ -80,7 +81,6 @@
             this.Controls.Add(this.panel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(283, 114);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(283, 114);
             this.Name = "GoldbergUpdaterForm";

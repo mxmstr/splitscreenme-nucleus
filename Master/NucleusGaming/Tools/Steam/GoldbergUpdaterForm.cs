@@ -19,7 +19,7 @@ namespace Nucleus.Gaming.Tools.Steam
             InitializeComponent();
             label.Location = new Point(Width / 2 - label.Width / 2, panel.Height / 2 - label.Height / 2);
             button.Location = new Point(panel.Width / 2 - button.Width / 2, panel.Height/2 - button.Height/2);
-            button.BackColor = Color.FromArgb(150, 0, 0, 0);            
+            button.BackColor = Color.FromArgb(200, 0, 0, 0);            
         }
 
         private void button1_Click(object sender, EventArgs e)

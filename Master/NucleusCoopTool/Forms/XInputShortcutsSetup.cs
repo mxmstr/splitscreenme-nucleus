@@ -286,6 +286,8 @@ namespace Nucleus.Coop.Forms
                 }
             }
 
+            //UINavContainer.Enabled = enabled_chk.Checked;
+
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
@@ -613,10 +615,12 @@ namespace Nucleus.Coop.Forms
         {
             e.Handled = true;
         }
+
         private void enabled_chk_CheckedChanged(object sender, EventArgs e)
         {
             ini.IniWriteValue("XUINav", "Enabled", enabled_chk.Checked.ToString());
             ControllersUINav.UpdateUINavSettings();
+            //UINavContainer.Enabled = enabled_chk.Checked;
         }
 
         private void deadzone_txt_MouseEnter(object sender, EventArgs e)

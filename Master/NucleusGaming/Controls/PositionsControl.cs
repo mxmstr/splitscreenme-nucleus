@@ -236,8 +236,8 @@ namespace Nucleus.Coop
 
             profileSettings_Tooltip = new ToolTip();
             profileSettings_Tooltip.InitialDelay = 100;
-            profileSettings_Tooltip.ReshowDelay = 100;
-            profileSettings_Tooltip.AutoPopDelay = 5000;
+            profileSettings_Tooltip.ReshowDelay = 1000;
+            profileSettings_Tooltip.AutoPopDelay = 1500;
 
             profileSettings_btn = new PictureBox();//using a button cause focus issues
             profileSettings_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -250,8 +250,8 @@ namespace Nucleus.Coop
 
             gameProfilesList_btnTooltip = new ToolTip();
             gameProfilesList_btnTooltip.InitialDelay = 100;
-            gameProfilesList_btnTooltip.ReshowDelay = 100;
-            gameProfilesList_btnTooltip.AutoPopDelay = 5000;
+            gameProfilesList_btnTooltip.ReshowDelay = 1000;
+            gameProfilesList_btnTooltip.AutoPopDelay = 1500;
 
             gameProfilesList_btn = new PictureBox();//using a button cause focus issues
             gameProfilesList_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;

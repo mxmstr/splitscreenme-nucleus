@@ -1175,7 +1175,7 @@ namespace Nucleus.Coop
 
             if (currentGameInfo != null)
             {
-                if (!CheckGameRequirements.MatchRequirements(currentGameInfo.Game))
+                if (!CheckGameRequirements.MatchRequirements(currentGameInfo))
                 {
                     RefreshUI(true);
                     return;

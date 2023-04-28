@@ -143,22 +143,7 @@ namespace Nucleus.Coop
                     Controls.Add(playerIcon);
                     Controls.Add(favoriteBox);
                 }
-
-                System.Threading.Tasks.Task.Run(() =>
-                {
-                    bool UpdateAvailable = game.Hub.IsUpdateAvailable(true);
-                   
-                    if (UpdateAvailable)
-                    {
-                        this.Invoke((MethodInvoker)delegate ()
-                        {
-                            title.ForeColor = Color.PaleGreen;
-                        });
-
-                        game.UpdateAvailable = UpdateAvailable;
-                    }
-                });
-
+               
                 DPIManager.Register(this);
             }
             catch (Exception ex)
@@ -216,7 +201,7 @@ namespace Nucleus.Coop
             float favoriteX = (209 * scale) - (playerIcon.Width+5);
             float favoriteY = Height - (favoriteBox.Height+5);
             favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
-            
+
             ResumeLayout();
         }
 

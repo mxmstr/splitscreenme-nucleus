@@ -426,26 +426,26 @@ namespace Nucleus.Coop
         {
             ToolTip autoPlay_Tooltip = new ToolTip();
             autoPlay_Tooltip.InitialDelay = 100;
-            autoPlay_Tooltip.ReshowDelay = 100;
-            autoPlay_Tooltip.AutoPopDelay = 5000;
+            autoPlay_Tooltip.ReshowDelay = 1000;
+            autoPlay_Tooltip.AutoPopDelay = 1500;
             autoPlay_Tooltip.SetToolTip(autoPlay, "Not Compatible with multiple keyboards & mice");
 
             ToolTip pauseBetweenInstance_Tooltip = new ToolTip();
             pauseBetweenInstance_Tooltip.InitialDelay = 100;
-            pauseBetweenInstance_Tooltip.ReshowDelay = 100;
-            pauseBetweenInstance_Tooltip.AutoPopDelay = 5000;
+            pauseBetweenInstance_Tooltip.ReshowDelay = 1000;
+            pauseBetweenInstance_Tooltip.AutoPopDelay = 1500;
             pauseBetweenInstance_Tooltip.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "Could break any hooks or xinputplus for some games");
 
             ToolTip WindowsSetupTiming_Tooltip = new ToolTip();
             WindowsSetupTiming_Tooltip.InitialDelay = 100;
-            WindowsSetupTiming_Tooltip.ReshowDelay = 100;
-            WindowsSetupTiming_Tooltip.AutoPopDelay = 5000;
+            WindowsSetupTiming_Tooltip.ReshowDelay = 1000;
+            WindowsSetupTiming_Tooltip.AutoPopDelay = 1500;
             WindowsSetupTiming_Tooltip.SetToolTip(WindowsSetupTiming_TextBox, "Could break positioning/resizing for some games");
 
             ToolTip SplitDiv_Tooltip = new ToolTip();
             SplitDiv_Tooltip.InitialDelay = 100;
-            SplitDiv_Tooltip.ReshowDelay = 100;
-            SplitDiv_Tooltip.AutoPopDelay = 5000;
+            SplitDiv_Tooltip.ReshowDelay = 1000;
+            SplitDiv_Tooltip.AutoPopDelay = 1500;
             SplitDiv_Tooltip.SetToolTip(SplitDiv, "May not work for all games");
         }
 
@@ -975,9 +975,16 @@ namespace Nucleus.Coop
                     {
                         if (GameProfile.AudioInstances.Count > 0)
                         {
-                            if (audioDevices.Values.Contains(GameProfile.AudioInstances[cmb.Name]))
+                            if (GameProfile.AudioInstances.Any(device => device.Key == cmb.Name))
                             {
-                                cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == GameProfile.AudioInstances[cmb.Name]).Key;
+                                if (audioDevices.Values.Contains(GameProfile.AudioInstances[cmb.Name]))
+                                {
+                                    cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == GameProfile.AudioInstances[cmb.Name]).Key;
+                                }
+                            }
+                            else
+                            {
+                                cmb.SelectedItem = "Default";
                             }
                         }
                         else
@@ -998,7 +1005,7 @@ namespace Nucleus.Coop
         {
             Control c = sender as Control;
 
-            for(int i = 0; i< tabsButtons.Count;i++)
+            for(int i = 0; i < tabsButtons.Count;i++)
             {
                 if (i < tabs.Count)
                 {

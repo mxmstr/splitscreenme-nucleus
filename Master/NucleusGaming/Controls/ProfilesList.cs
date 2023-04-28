@@ -366,10 +366,6 @@ namespace Nucleus.Gaming.Controls
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.DrawRectangle(borderPen, new Rectangle(1, 1, Width - 3, Height - 3));
-            //g.DrawLine(borderPen, 7, 0, Width - 7, 0);//Top edge
-            //g.DrawLine(borderPen, 7, Height - 3, Width - 10, Height - 3);//Bottom edge
-            //g.DrawLine(borderPen, Width - 3, 7, Width - 3, Height - 8);//Right edge
-            //g.DrawLine(borderPen, 1, 7, 1, Width - 7);//Left edge
 
             g.DrawArc(borderPen, 0, 0, 16, 16, -90, -90);//Top left angle
             g.DrawArc(borderPen, 0, Height - 18, 16, 16, 90, 90);//Bottom left angle

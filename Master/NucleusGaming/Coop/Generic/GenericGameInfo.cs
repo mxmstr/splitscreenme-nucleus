@@ -27,9 +27,7 @@ namespace Nucleus.Gaming
 
         public SaveType SaveType;
         public string SavePath;
-
         public bool UpdateAvailable;
-
         public string[] DirSymlinkExclusions;
         public string[] FileSymlinkExclusions;
         public string[] FileSymlinkCopyInstead;
@@ -368,10 +366,10 @@ namespace Nucleus.Gaming
             }
 
             // Run this in another thread to not block UI
-            //System.Threading.Tasks.Task.Run(() =>
-            //{
-            //    UpdateAvailable = Hub.IsUpdateAvailable(true);
-            //});
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                UpdateAvailable = Hub.IsUpdateAvailable(true);
+            });
 
             engine.SetValue("Game", (object)null);
         }

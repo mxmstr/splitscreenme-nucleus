@@ -546,6 +546,7 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.profileInfo.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.profileInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.profileInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.profileInfo.ForeColor = System.Drawing.Color.White;
             this.profileInfo.Location = new System.Drawing.Point(152, 96);
             this.profileInfo.Multiline = true;
