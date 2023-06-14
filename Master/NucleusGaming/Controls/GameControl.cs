@@ -6,6 +6,7 @@ using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Drawing;
+using System.Security.Policy;
 using System.Windows;
 using System.Windows.Forms;
 using static Nucleus.Gaming.Coop.Generic.Hub;
@@ -121,6 +122,7 @@ namespace Nucleus.Coop
 
                 favoriteBox = new PictureBox
                 {
+                    Name = "favorite",
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     BackColor = Color.Transparent,
                     Cursor = hand_Cursor
@@ -213,19 +215,23 @@ namespace Nucleus.Coop
 
         private void isUpdateAvailable_Tick(object state)
         {
-            if (GameInfo != null)
-            {
-                if (GameInfo.UpdateAvailable)
-                {
-                    title.ForeColor = Color.PaleGreen;
+            Control topLevel = TopLevelControl;
 
-                    TopLevelControl?.Invoke((MethodInvoker)delegate ()
+            if (topLevel != null)
+            {
+                if (TopLevelControl.IsHandleCreated && GameInfo != null)
+                {
+                    if (GameInfo.UpdateAvailable)
                     {
-                        CustomToolTips.SetToolTip(this, "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                    });
+                        title.ForeColor = Color.PaleGreen;
+
+                        TopLevelControl?.Invoke((MethodInvoker)delegate ()
+                        {
+                            CustomToolTips.SetToolTip(this, "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                        });
+                    }
                 }
             }
-            //isUpdateAvailableTimer.Dispose();
         }
 
         protected override void OnControlAdded(ControlEventArgs e)

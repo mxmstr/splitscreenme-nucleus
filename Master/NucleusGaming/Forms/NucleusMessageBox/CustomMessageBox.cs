@@ -22,11 +22,14 @@ namespace Nucleus.Gaming.Forms
 
         internal CustomMessageBox(string title, string message)
         {
+            string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "MouseOver").Split(',');
             InitializeComponent();
             
             Text = title;
             this.message = message;
-            closeBtn.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");         
+            closeBtn.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
+
+            closeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
             BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
             Opacity = 0;//invisible until resized
         }

@@ -103,7 +103,7 @@ namespace Nucleus.Gaming.Forms
             }
         }
 
-        private void loadTimerTick(Object myObject, EventArgs myEventArgs)
+        private void loadTimerTick(Object Object, EventArgs EventArgs)
         {
             slideshow.Dispose();
             loadTimer.Dispose();

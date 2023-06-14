@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Coop.InputManagement.Enums;
+﻿using Jint.Parser.Ast;
+using Nucleus.Gaming.Coop.InputManagement.Enums;
 using Nucleus.Gaming.Coop.InputManagement.Logging;
 using Nucleus.Gaming.Coop.InputManagement.Structs;
 using SharpDX;
@@ -6,6 +7,7 @@ using SharpDX.Win32;
 using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -13,7 +15,7 @@ using System.Threading;
 namespace Nucleus.Gaming.Coop.InputManagement
 {
     public static class RawInputManager
-    {
+    {     
         public static readonly List<Window> windows = new List<Window>();
 
         private static RawInputWindow rawInputWindow;
@@ -125,6 +127,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             RIDI_PREPARSEDDATA = 0x20000005
         }
 
+        
         public static IEnumerable<(RID_DEVICE_INFO deviceInfo, IntPtr deviceHandle,string deviceName)> GetDeviceList()
         {
             uint numDevices = 0;
@@ -155,11 +158,11 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                     if (rid.dwType <= 1)
                     {
-                        name = Marshal.PtrToStringAuto(extraData);
+                        RawInputDeviceName deviceName = new RawInputDeviceName();
+                        name = deviceName.GetDeviceName(extraData);
+                        deviceName.Dispose();
                     }
-
-                    Marshal.FreeHGlobal(extraData);//hope this fix STATUS_HEAP_CORRUPTION crashes during long debbuging sessions.
-
+                    
                     yield return (device, rid.hDevice, name);
                 }
 

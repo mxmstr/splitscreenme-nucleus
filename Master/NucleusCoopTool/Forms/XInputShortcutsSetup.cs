@@ -594,7 +594,7 @@ namespace Nucleus.Coop.Forms
 
             if(switch15.Text == "")
             {
-                switch15.Text = "7000";
+                switch15.Text = "10000";
             }
 
             ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);

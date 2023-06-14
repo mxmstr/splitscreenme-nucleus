@@ -177,6 +177,7 @@
     <Compile Include="Coop\Generic\async.cs" />
     <Compile Include="Coop\Generic\HttpClient.cs" />
     <Compile Include="Coop\InputManagement\ControllersShortcuts.cs" />
+    <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
     <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
     <Compile Include="Coop\ProfilePlayer.cs" />
     <Compile Include="Coop\ProfilePLayersList.cs" />
