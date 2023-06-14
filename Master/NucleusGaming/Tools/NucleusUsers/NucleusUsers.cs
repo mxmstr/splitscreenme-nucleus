@@ -10,6 +10,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Markup.Localizer;
 
 namespace Nucleus.Gaming.Tools.NucleusUsers
 {
@@ -275,86 +276,102 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
             return envPtr;
         }
 
-        public static void DeleteGameContentFolder(GenericGameHandler genericGameHandler, GenericGameInfo gen, UserGameInfo userGame, GameProfile profile)
-        {
-            if (gen.SymlinkGame || gen.HardlinkGame || gen.HardcopyGame)
-            {
-                string backupDir = GameManager.Instance.GempTempFolder(userGame.Game);
+        //public static void DeleteGameContentFolder(GenericGameHandler genericGameHandler, GenericGameInfo gen, UserGameInfo userGame, GameProfile profile)
+        //{
+        //    if (gen.SymlinkGame || gen.HardlinkGame || gen.HardcopyGame)
+        //    {
+        //        string backupDir = GameManager.Instance.GempTempFolder(userGame.Game);
 
-                for (int i = 0; i < profile.PlayerData.Count; i++)
-                {
-                    string linkFolder = Path.Combine(backupDir, "Instance" + i);
-                    genericGameHandler.Log(string.Format("Deleting folder {0} and all of its contents", linkFolder));
-                    int retries = 0;
-                    while (Directory.Exists(linkFolder))
-                    {
-                        try
-                        {
-                            Directory.Delete(linkFolder, true);
-                        }
-                        catch (UnauthorizedAccessException ex)
-                        {
-                            genericGameHandler.Log("ERROR - UnauthorizedAccessException - " + ex.Message);
-                            int pFrom = ex.Message.IndexOf("\'") + 1;
-                            int pTo = ex.Message.LastIndexOf("\'");
-                            string fileName = ex.Message.Substring(pFrom, pTo - pFrom);
+        //        for (int i = 0; i < profile.PlayersList.Count; i++)
+        //        {
+        //            string linkFolder = Path.Combine(backupDir, "Instance" + i);
+        //            genericGameHandler.Log(string.Format("Deleting folder {0} and all of its contents", linkFolder));
+        //            int retries = 0;
+        //            while (Directory.Exists(linkFolder))
+        //            {
+        //                try
+        //                {
+        //                    Directory.Delete(linkFolder, true);
+        //                    if (retries > 10)
+        //                    {
+        //                        break;
+        //                    }
+        //                }
+        //                catch (UnauthorizedAccessException ex)
+        //                {
+        //                    genericGameHandler.Log("ERROR - UnauthorizedAccessException - " + ex.Message);
+        //                    int pFrom = ex.Message.IndexOf("\'") + 1;
+        //                    int pTo = ex.Message.LastIndexOf("\'");
+        //                    string fileName = ex.Message.Substring(pFrom, pTo - pFrom);
 
-                            if (!fileName.Contains("\\"))
-                            {
-                                string[] files = Directory.GetFiles(linkFolder, fileName, SearchOption.AllDirectories);
-                                foreach (string file in files)
-                                {
-                                    FileInfo fi = new FileInfo(file);
-                                    if (fi.IsReadOnly)
-                                    {
-                                        genericGameHandler.Log(string.Format("File was read-only. Setting '{0}' to normal file attributes and deleting", fileName));
-                                        File.SetAttributes(file, FileAttributes.Normal);
-                                        File.Delete(file);
-                                    }
-                                    else
-                                    {
-                                        genericGameHandler.Log("ERROR - Unknown reason why file cannot be deleted. Skipping this file for now");
-                                    }
-                                }
-                            }
+        //                    if (!fileName.Contains("\\"))
+        //                    {
+        //                        string[] files = Directory.GetFiles(linkFolder, fileName, SearchOption.AllDirectories);
+        //                        foreach (string file in files)
+        //                        {
+        //                            FileInfo fi = new FileInfo(file);
+        //                            if (fi.IsReadOnly)
+        //                            {
+        //                                genericGameHandler.Log(string.Format("File was read-only. Setting '{0}' to normal file attributes and deleting", fileName));
+        //                                File.SetAttributes(file, FileAttributes.Normal);
+        //                                File.Delete(file);
+        //                            }
+        //                            else
+        //                            {
+        //                                genericGameHandler.Log("ERROR - Unknown reason why file cannot be deleted. Skipping this file for now");
+        //                            }
+        //                        }
+        //                    }
 
-                            if (retries < 10)
-                            {
-                                retries++;
-                                genericGameHandler.Log("Retrying to delete folder and all its contents");
-                            }
-                            else
-                            {
-                                genericGameHandler.Log("Abandoning trying to delete folder and all its contents");
-                            }
+        //                    if (retries < 10)
+        //                    {
+        //                        retries++;
+        //                        genericGameHandler.Log("Retrying to delete folder and all its contents");
+        //                    }
+        //                    else
+        //                    {
+        //                        genericGameHandler.Log("Abandoning trying to delete folder and all its contents");
+        //                    }
 
-                        }
-                        catch (Exception ex)
-                        {
-                            genericGameHandler.Log("ERROR - " + ex.Message);
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    genericGameHandler.Log("ERROR - " + ex.Message);
 
-                            if (retries < 10)
-                            {
-                                retries++;
-                                genericGameHandler.Log("Retrying to delete folder and all its contents");
-                            }
-                            else
-                            {
-                                genericGameHandler.Log("Abandoning trying to delete folder and all its contents");
-                            }
-                        }
-                        if (Directory.Exists(linkFolder))
-                        {
-                            Thread.Sleep(1000);
-                        }
-                        else
-                        {
-                            genericGameHandler.Log("Folder and all its contents have successfully been deleted");
-                        }
-                    }
-                }
-                genericGameHandler.Log("File deletion complete");
-            }
-        }
+        //                    if (retries < 10)
+        //                    {
+        //                        retries++;
+        //                        genericGameHandler.Log("Retrying to delete folder and all its contents");
+        //                    }
+        //                    else
+        //                    {
+        //                        genericGameHandler.Log("Abandoning trying to delete folder and all its contents");
+        //                    }
+        //                }
+
+        //                if (Directory.Exists(linkFolder))
+        //                {
+        //                    if(retries == 10)
+        //                    {
+        //                        break;
+        //                    }
+
+        //                    Thread.Sleep(1000);
+        //                }
+        //                else
+        //                {
+        //                    genericGameHandler.Log("Folder and all its contents have successfully been deleted");
+        //                }
+                       
+        //            }
+
+        //            if (retries == 10)
+        //            {
+        //                break;
+        //            }
+        //        }
+        //        genericGameHandler.Log("File deletion complete");
+        //    }
+        //}
     }
 }

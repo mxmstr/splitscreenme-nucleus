@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Management.Instrumentation;
 using System.Reflection;
 
 namespace Nucleus.Gaming.Tools.GameStarter
@@ -163,6 +166,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
             lock (locker)
             {
                 string startGamePath = GetStartGamePath();
+           
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = startGamePath
@@ -211,5 +215,19 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
             return true;
         }
+
+        public static void UnlockGameFiles(string origGamefolder)
+        {
+            string[] subDirectories = Directory.GetFileSystemEntries(origGamefolder, "*", SearchOption.AllDirectories);
+
+            Console.WriteLine(origGamefolder);
+
+            foreach (string dir in subDirectories)
+            {
+                Console.WriteLine($"{dir}");
+                File.SetAttributes(dir, FileAttributes.Normal);
+            }
+        }
+
     }
 }

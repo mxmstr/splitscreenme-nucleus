@@ -1,6 +1,9 @@
 ﻿using Nucleus.Gaming.Coop.InputManagement.Enums;
 using Nucleus.Gaming.Coop.InputManagement.Logging;
 using Nucleus.Gaming.Coop.InputManagement.Structs;
+using SharpDX;
+using SharpDX.Win32;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,8 +68,14 @@ namespace Nucleus.Gaming.Coop.InputManagement
             rid[1].dwFlags = (uint)RawInputDevice_dwFlags.RIDEV_INPUTSINK;
             rid[1].hwndTarget = windowHandle;
 
+            ////Gamepad
+            //rid[2].usUsagePage = 0x01;
+            //rid[2].usUsage = 0x05;
+            //rid[2].dwFlags = (uint)RawInputDevice_dwFlags.RIDEV_INPUTSINK;
+            //rid[2].hwndTarget = windowHandle;
+
             bool success = WinApi.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[0]));
-            //Logger.WriteLine($"Succeeded RegisterRawInputDevices Keyboard = {success}");
+            Logger.WriteLine($"Succeeded RegisterRawInputDevices Keyboard = {success}");
 
             if (!success)
             {
@@ -75,16 +84,48 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
 
             success = WinApi.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[1]));
-            //Logger.WriteLine($"Succeeded RegisterRawInputDevices Mouse = {success}");
+            Logger.WriteLine($"Succeeded RegisterRawInputDevices Mouse = {success}");
 
             if (!success)
             {
                 int error = Marshal.GetLastWin32Error();
                 Logger.WriteLine($"Error code = {error}");
             }
+
+            //success = WinApi.RegisterRawInputDevices(rid, (uint)rid.Length, (uint)Marshal.SizeOf(rid[2]));
+            ////Logger.WriteLine($"Succeeded RegisterRawInputDevices Gamepad = {success}");
+
+            //if (!success)
+            //{
+            //    int error = Marshal.GetLastWin32Error();
+            //    Logger.WriteLine($"Error code = {error}");
+            //}
         }
 
-        public static IEnumerable<(RID_DEVICE_INFO deviceInfo, IntPtr deviceHandle)> GetDeviceList()
+        [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern uint GetRawInputDeviceInfo(
+          [In] IntPtr hDevice,
+          [In] RawInputDeviceInformationCommand uiCommand,
+          [In, Out] IntPtr pData,
+          [In, Out] ref uint pcbSize);
+
+        public enum RawInputDeviceInformationCommand : int
+        {
+            /// <summary>
+            /// pData points to a string that contains the device name. For this uiCommand only, the value in pcbSize is the character count (not the byte count).
+            /// </summary>
+            RIDI_DEVICENAME = 0x20000007,
+            /// <summary>
+            /// pData points to an RID_DEVICE_INFO structure.
+            /// </summary>
+            RIDI_DEVICEINFO = 0x2000000b,
+            /// <summary>
+            /// pData points to the previously parsed data.
+            /// </summary>
+            RIDI_PREPARSEDDATA = 0x20000005
+        }
+
+        public static IEnumerable<(RID_DEVICE_INFO deviceInfo, IntPtr deviceHandle,string deviceName)> GetDeviceList()
         {
             uint numDevices = 0;
             int cbSize = Marshal.SizeOf(typeof(RAWINPUTDEVICELIST));
@@ -104,18 +145,22 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     WinApi.GetRawInputDeviceInfo(rid.hDevice, 0x2000000b, pData, ref pcbSize);
                     RID_DEVICE_INFO device = (RID_DEVICE_INFO)Marshal.PtrToStructure(pData, typeof(RID_DEVICE_INFO));
 
-                    if (device.dwType == 0)
+                    IntPtr deviceHandle = rid.hDevice;
+
+                    uint result = GetRawInputDeviceInfo(deviceHandle, RawInputDeviceInformationCommand.RIDI_DEVICENAME, pData, ref pcbSize);
+                    IntPtr extraData = Marshal.AllocHGlobal(((int)pcbSize) * 2);
+                    result = GetRawInputDeviceInfo(deviceHandle, RawInputDeviceInformationCommand.RIDI_DEVICENAME, extraData, ref pcbSize);
+
+                    string name = "";
+
+                    if (rid.dwType <= 1)
                     {
-                        //Mouse
-                        //Logger.WriteLine($"Found mouse. Mouse ID = {device.mouse.dwId}, number of buttons = {device.mouse.dwNumberOfButtons}, sample rate = {device.mouse.dwSampleRate}, has horizontal wheel = {device.mouse.dwSampleRate}");
-                    }
-                    else if (device.dwType == 1)
-                    {
-                        //Keyboard
-                        //Logger.WriteLine($"Found keyboard. Keyboard type = {device.keyboard.dwType}, keyboard subtype = {device.keyboard.dwSubType}, scan code mode = {device.keyboard.dwKeyboardMode}, number of keys = {device.keyboard.dwNumberOfKeysTotal}");
+                        name = Marshal.PtrToStringAuto(extraData);
                     }
 
-                    yield return (device, rid.hDevice);
+                    Marshal.FreeHGlobal(extraData);//hope this fix STATUS_HEAP_CORRUPTION crashes during long debbuging sessions.
+
+                    yield return (device, rid.hDevice, name);
                 }
 
                 Marshal.FreeHGlobal(pRawInputDeviceList);
@@ -126,15 +171,14 @@ namespace Nucleus.Gaming.Coop.InputManagement
         {
             int i = 100;
 
-            foreach ((RID_DEVICE_INFO deviceInfo, IntPtr deviceHandle) device in GetDeviceList().Where(x => x.deviceInfo.dwType <= 1))
+            foreach ((RID_DEVICE_INFO deviceInfo, IntPtr deviceHandle,string deviceName) device in GetDeviceList().Where(x => x.deviceInfo.dwType <= 1))
             {
-
                 PlayerInfo player = new PlayerInfo
                 {
                     GamepadId = i++,
                     IsRawMouse = device.deviceInfo.dwType == 0,
                     IsRawKeyboard = device.deviceInfo.dwType == 1,
-                    HIDDeviceID = "T" + device.deviceInfo.dwType + "PID" + device.deviceInfo.hid.dwProductId + "VID" + device.deviceInfo.hid.dwVendorId + "VN" + device.deviceInfo.hid.dwVersionNumber
+                    HIDDeviceID = new string[] { device.deviceName,""}              
                 };
 
                 if (player.IsRawMouse)
@@ -145,27 +189,30 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 if (player.IsRawKeyboard)
                 {
                     player.RawKeyboardDeviceHandle = device.deviceHandle;
+                  
                 };
 
                 player.IsKeyboardPlayer = true;
+
                 yield return player;
             }
 
             // Zero device handle mouse
             {
                 PlayerInfo playerMouseZero = new PlayerInfo
-                {
+                {                    
                     GamepadId = i++,
                     IsRawMouse = true,
                     IsRawKeyboard = false,
-                    HIDDeviceID = "MouseHandleZero"
+                    HIDDeviceID = new string[] { "MouseHandleZero",""}
                 };
+
                 playerMouseZero.RawMouseDeviceHandle = IntPtr.Zero;
                 playerMouseZero.RawKeyboardDeviceHandle = (IntPtr)(-1);
                 playerMouseZero.IsKeyboardPlayer = true;
+             
                 yield return playerMouseZero;
             }
-
 
             // Zero device handle keyboard
             {
@@ -174,11 +221,13 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     GamepadId = i++,
                     IsRawMouse = false,
                     IsRawKeyboard = true,
-                    HIDDeviceID = "KeyboardHandleZero"
+                    HIDDeviceID = new string[] {"KeyboardHandleZero",""}
                 };
+                 
                 playerKeyboardZero.RawKeyboardDeviceHandle = IntPtr.Zero;
                 playerKeyboardZero.RawMouseDeviceHandle = (IntPtr)(-1);
                 playerKeyboardZero.IsKeyboardPlayer = true;
+
                 yield return playerKeyboardZero;
             }
         }

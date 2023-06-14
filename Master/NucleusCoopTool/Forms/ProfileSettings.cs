@@ -5,6 +5,7 @@ using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -26,7 +27,7 @@ namespace Nucleus.Coop
         private readonly IniFile ini = Globals.ini;
 
         private MainForm mainForm = null;
-        private PositionsControl positionsControl = null;
+        private SetupScreen setupScreen = null;
         private static ProfileSettings profileSettings;
 
         private List<string> nicksList = new List<string>();
@@ -76,12 +77,12 @@ namespace Nucleus.Coop
             }
         }
 
-        public ProfileSettings(MainForm mf, PositionsControl pc)
+        public ProfileSettings(MainForm mf, SetupScreen pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
             profileSettings = this;
             mainForm = mf;
-            positionsControl = pc;
+            setupScreen = pc;
 
             InitializeComponent();
 
@@ -135,11 +136,6 @@ namespace Nucleus.Coop
                 {
                     c.Click += new EventHandler(tabsButtons_highlight);
                     tabsButtons.Add(c);
-                }
-
-                if (c.Name != "profile_info_btn")
-                {
-                    c.Click += new EventHandler(ProfileSettings_Click);
                 }
 
                 if (c is Button)
@@ -316,7 +312,6 @@ namespace Nucleus.Coop
 
             modeLabel.Location = new Point((int)modeLabelX, sharedTabBtn.Location.Y + sharedTabBtn.Height / 2 - modeLabel.Height / 2);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
-            profileInfo.Location = new Point(this.Width / 2 - profileInfo.Width / 2, this.Height / 2 - profileInfo.Height / 2);
             warningLabel.ForeColor = Color.Yellow;
            
             def_sid_comboBox.SelectedIndex = 0;
@@ -330,6 +325,7 @@ namespace Nucleus.Coop
             RefreshAudioList();
 
             string path = Path.Combine(Application.StartupPath, $@"games profiles\Nicknames.json");
+
             if (File.Exists(path))
             {
                 string jsonString = File.ReadAllText(path);
@@ -343,6 +339,7 @@ namespace Nucleus.Coop
             }
 
             string idspath = Path.Combine(Application.StartupPath, $@"games profiles\SteamIds.json");
+
             if (File.Exists(idspath))
             {
                 string jsonString = File.ReadAllText(idspath);
@@ -401,7 +398,6 @@ namespace Nucleus.Coop
 
             modeLabel.Location = new Point((int)modeLabelX, sharedTabBtn.Location.Y + sharedTabBtn.Height / 2 - modeLabel.Height / 2);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
-            profileInfo.Location = new Point(this.Width / 2 - profileInfo.Width / 2, this.Height / 2 - profileInfo.Height / 2);
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
             warningLabel.Location = new Point(sharedTab.Width / 2 - warningLabel.Width / 2, warningLabel.Location.Y);
             audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);            
@@ -424,128 +420,71 @@ namespace Nucleus.Coop
 
         private void SetToolTips()
         {
-            ToolTip autoPlay_Tooltip = new ToolTip();
-            autoPlay_Tooltip.InitialDelay = 100;
-            autoPlay_Tooltip.ReshowDelay = 1000;
-            autoPlay_Tooltip.AutoPopDelay = 1500;
-            autoPlay_Tooltip.SetToolTip(autoPlay, "Not Compatible with multiple keyboards & mice");
-
-            ToolTip pauseBetweenInstance_Tooltip = new ToolTip();
-            pauseBetweenInstance_Tooltip.InitialDelay = 100;
-            pauseBetweenInstance_Tooltip.ReshowDelay = 1000;
-            pauseBetweenInstance_Tooltip.AutoPopDelay = 1500;
-            pauseBetweenInstance_Tooltip.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "Could break any hooks or xinputplus for some games");
-
-            ToolTip WindowsSetupTiming_Tooltip = new ToolTip();
-            WindowsSetupTiming_Tooltip.InitialDelay = 100;
-            WindowsSetupTiming_Tooltip.ReshowDelay = 1000;
-            WindowsSetupTiming_Tooltip.AutoPopDelay = 1500;
-            WindowsSetupTiming_Tooltip.SetToolTip(WindowsSetupTiming_TextBox, "Could break positioning/resizing for some games");
-
-            ToolTip SplitDiv_Tooltip = new ToolTip();
-            SplitDiv_Tooltip.InitialDelay = 100;
-            SplitDiv_Tooltip.ReshowDelay = 1000;
-            SplitDiv_Tooltip.AutoPopDelay = 1500;
-            SplitDiv_Tooltip.SetToolTip(SplitDiv, "May not work for all games");
+            CustomToolTips.SetToolTip(autoPlay, "Automatically launch game instances on profile selection.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "Could break any hooks or xinputplus for some games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(WindowsSetupTiming_TextBox, "Could break positioning/resizing for some games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(SplitDiv, "May not work for all games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndIds()
         {
-            List<long> SteamIDs = GameProfile.SteamIDs;
-            List<string> Nicknames = GameProfile.Nicknames;
+            List<ProfilePlayer> playersList = GameProfile.ProfilePlayersList;
 
-            if (SteamIDs?.Count > 0)
+            steamIdsList.Clear();
+            steamIdsList.AddRange(jsonsteamIdsList.ToArray());
+           
+            nicksList.Clear();
+            nicksList.AddRange(jsonNicksList);
+
+            for (int i = 0; i < 32; i++)
             {
-                steamIdsList.Clear();
+                ProfilePlayer player = null;
 
-                for (int i = 0; i < 32; i++)
+                if (i < playersList.Count)
                 {
-                    if (i <= SteamIDs.Count - 1)
-                    {
-                        steamIdsList.Add(SteamIDs[i].ToString());
-                    }
-                }
+                    player = playersList[i];
 
-                for (int i = 0; i < 32; i++)
+                    steamIds[i].Items.Clear();
+                    steamIds[i].Items.AddRange(steamIdsList.ToArray());
+
+                    steamIds[i].SelectedItem = player.SteamID;
+                    steamIds[i].Text = player.SteamID.ToString();
+                    steamIds[i].Enabled = true;
+                    
+                    controllerNicks[i].Items.Clear();
+                    controllerNicks[i].Items.AddRange(nicksList.ToArray());
+
+                    controllerNicks[i].SelectedItem = player.Nickname;
+                    controllerNicks[i].Text = player.Nickname.ToString();
+                    controllerNicks[i].Enabled = true;
+                }
+                else
                 {
                     steamIds[i].Items.Clear();
                     steamIds[i].Items.AddRange(jsonsteamIdsList.ToArray());
-                    steamIds[i].Items.AddRange(steamIdsList.ToArray());
 
-                    if (i < SteamIDs.Count)
-                    {
-                        steamIds[i].SelectedItem = SteamIDs[i];
-                        steamIds[i].Text = SteamIDs[i].ToString();
-                    }
-                    else
-                    {
-                        steamIds[i].SelectedItem = "";
-                        steamIds[i].Text = "";
-                    }
-                }
-            }
-            else
-            {
-                steamIdsList.Clear();
-
-                for (int i = 0; i < 32; i++)
-                {
-                    steamIds[i].Items.AddRange(jsonsteamIdsList.ToArray());
                     steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
                     steamIds[i].SelectedItem = steamIds[i].Text;
-                }
-            }
-
-            if (Nicknames?.Count > 0)
-            {
-                nicksList.Clear();
-                nicksList.AddRange(jsonNicksList);
-
-                for (int i = 0; i < 32; i++)
-                {
-                    if (i <= Nicknames.Count - 1)
-                    {
-                        nicksList.Add(Nicknames[i]);
-                    }
-                    else
-                    {
-                        nicksList.Add("Player" + (i + 1).ToString());
-                    }
-                }
-
-                for (int i = 0; i < 32; i++)
-                {
+                    steamIds[i].Enabled = false;
+                    
                     controllerNicks[i].Items.Clear();
                     controllerNicks[i].Items.AddRange(nicksList.ToArray());
 
-                    if (i < Nicknames.Count)
-                    {
-                        controllerNicks[i].SelectedItem = Nicknames[i];
-                        controllerNicks[i].Text = Nicknames[i].ToString();
-                    }
-                    else
-                    {
-                        controllerNicks[i].SelectedItem = "Player" + (i + 1).ToString();
-                        controllerNicks[i].Text = "Player" + (i + 1).ToString();
-                    }
-                }
-            }
-            else
-            {
-                nicksList.Clear();
-                nicksList.AddRange(jsonNicksList);
-
-                for (int i = 0; i < 32; i++)
-                {
-                    nicksList.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)));
-                }
-                               
-                for (int i = 0; i < 32; i++)
-                {
-                    controllerNicks[i].Items.Clear();
-                    controllerNicks[i].Items.AddRange(nicksList.ToArray());
+                    controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                     controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                    controllerNicks[i].SelectedItem = controllerNicks[i].Text;
+                    controllerNicks[i].Enabled = false;
+
+                    if (GameProfile.ModeText == "New Profile")
+                    {
+                        if (player != null)
+                        {
+                            player.Nickname = controllerNicks[i].Text;
+                            player.SteamID = long.Parse(steamIds[i].Text);
+                        }
+
+                        steamIds[i].Enabled = true;
+                        controllerNicks[i].Enabled = true;
+                    }
                 }
             }
         }
@@ -559,55 +498,65 @@ namespace Nucleus.Coop
         {
             GetPlayersNickNameAndIds();
 
-            List<string> _IdealProcessors = GameProfile.IdealProcessors;
-            List<string> _Affinitys = GameProfile.Affinitys;
-            List<string> _PriorityClasses = GameProfile.PriorityClasses;
-
             for (int i = 0; i < 32; i++)
             {
-                if (_IdealProcessors != null)
+                ProfilePlayer player = null;
+                
+                if(i < GameProfile.ProfilePlayersList.Count)
                 {
-                    if (i < _IdealProcessors.Count)
-                    {
-                        if (GameProfile.IdealProcessors[i] == null)
-                        {
-                            GameProfile.IdealProcessors[i] = "*";
-                        }
+                    player = GameProfile.ProfilePlayersList[i];
+                }
 
-                        IdealProcessors[i].SelectedIndex = IdealProcessors[i].Items.IndexOf(GameProfile.IdealProcessors[i]);
+                if (player != null)
+                {
+                    if (player.IdealProcessor != null)
+                    {
+                        IdealProcessors[i].SelectedIndex = IdealProcessors[i].Items.IndexOf(player.IdealProcessor);
                     }
                     else
                     {
                         IdealProcessors[i].SelectedIndex = 0;
                     }
-                }
 
-                if (_Affinitys != null)
-                {
-                    if (i < _Affinitys.Count)
+                    if (player.Affinity != null)
                     {
-                        Affinitys[i].Text = GameProfile.Affinitys[i];
+                        Affinitys[i].Text = player.Affinity;
                     }
                     else
                     {
                         Affinitys[i].Text = "";
                     }
-                }
 
-                if (_PriorityClasses != null)
-                {
-                    if (i < _PriorityClasses.Count)
+                    if (player.PriorityClass != null)
                     {
-                        if (GameProfile.PriorityClasses[i] == null)
-                        {
-                            GameProfile.PriorityClasses[i] = "Normal";
-                        }
-
-                        PriorityClasses[i].SelectedIndex = PriorityClasses[i].Items.IndexOf(GameProfile.PriorityClasses[i]);
+                        PriorityClasses[i].SelectedIndex = PriorityClasses[i].Items.IndexOf(player.PriorityClass);
                     }
                     else
                     {
+                        player.PriorityClass = "Normal";
                         PriorityClasses[i].SelectedIndex = 0;
+                    }
+
+                    IdealProcessors[i].Enabled = true;
+                    Affinitys[i].Enabled = true;
+                    PriorityClasses[i].Enabled = true;
+                }
+                else 
+                {
+                    IdealProcessors[i].Text = "*";
+                    IdealProcessors[i].Enabled = false;
+
+                    Affinitys[i].Text = "";
+                    Affinitys[i].Enabled = false;
+
+                    PriorityClasses[i].Text = "Normal";
+                    PriorityClasses[i].Enabled = false;
+
+                    if(GameProfile.ModeText == "New Profile")
+                    {
+                        IdealProcessors[i].Enabled = true;
+                        Affinitys[i].Enabled = true;
+                        PriorityClasses[i].Enabled = true;
                     }
                 }
             }
@@ -657,16 +606,12 @@ namespace Nucleus.Coop
             bool IdealProcessorsWrongValue = false;
             bool affinitysWrongValue = false;
 
-            GameProfile.SteamIDs.Clear();
-            GameProfile.Nicknames.Clear();
-            GameProfile.Affinitys.Clear();
-            GameProfile.IdealProcessors.Clear();
-            GameProfile.PriorityClasses.Clear();
-
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < GameProfile.ProfilePlayersList.Count; i++)
             {
+                ProfilePlayer player = GameProfile.ProfilePlayersList[i];
+
                 ///Set GameProfile Nicknames
-                GameProfile.Nicknames.Add(controllerNicks[i].Text);
+                player.Nickname = controllerNicks[i].Text;
 
                 if (!jsonNicksList.Any(n => n == controllerNicks[i].Text) && controllerNicks[i].Text.ToString() != $"Player{i + 1}")
                 {
@@ -678,7 +623,8 @@ namespace Nucleus.Coop
                 {
                     if (steamIds[i].Text != "")
                     {
-                        GameProfile.SteamIDs.Add(long.Parse(steamIds[i].Text.ToString()));
+                        player.SteamID = long.Parse(steamIds[i].Text.ToString());
+
                         if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0")
                         {
                             jsonsteamIdsList.Add(steamIds[i].Text.ToString());
@@ -710,9 +656,9 @@ namespace Nucleus.Coop
                         break;
                     }
                 }
-
-                GameProfile.IdealProcessors.Add(IdealProcessors[i].Text);
-
+             
+                player.IdealProcessor = IdealProcessors[i].Text;
+                
                 ///Set GameProfile Processors Affinity
                 if (Affinitys[i].Text == null)
                 {
@@ -736,21 +682,20 @@ namespace Nucleus.Coop
                     }
                 }
 
-                GameProfile.Affinitys.Add(Affinitys[i].Text);
-
+                player.Affinity = Affinitys[i].Text;
+                
                 ///Set GameProfile Priority Classes
                 if (PriorityClasses[i].Text == "" || PriorityClasses[i].Text == null)
                 {
                     PriorityClasses[i].Text = "Normal";
                 }
 
-                GameProfile.PriorityClasses.Add(PriorityClasses[i].Text);
+                player.PriorityClass = PriorityClasses[i].Text;             
             }
 
             ///Warn user for invalid Steam ids
             if (sidWrongValue)
             {
-                GameProfile.SteamIDs.Clear();
                 playersTab.BringToFront();
                 MessageBox.Show("Must be 17 numbers e.g. 76561199075562883 ", "Incorrect steam id format!");
                 return;
@@ -759,7 +704,6 @@ namespace Nucleus.Coop
             ///Warn user for invalid ideal processors 
             if (IdealProcessorsWrongValue)
             {
-                GameProfile.IdealProcessors.Clear();
                 processorTab.BringToFront();
                 MessageBox.Show("This PC do not have so much cores ;)", "Invalid CPU core value!");
                 return;
@@ -769,7 +713,6 @@ namespace Nucleus.Coop
             if (affinitysWrongValue)
             {
                 processorTab.BringToFront();
-                GameProfile.Affinitys.Clear();
                 MessageBox.Show("This PC do not have so much cores ;)", "Invalid CPU core value!");
                 return;
             }
@@ -823,7 +766,7 @@ namespace Nucleus.Coop
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
             GameProfile.Cts_Unfocus = cts_unfocus.Checked;
 
-            ///Set GameProfile AudioInstances  (part of shared GameProfile options)
+            ///Set GameProfile AudioInstances (part of shared GameProfile options)
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
                 if (ctrl is ComboBox)
@@ -843,7 +786,7 @@ namespace Nucleus.Coop
             if (GameProfile.ModeText != "New Profile")
             {              
                 GameProfile.UpdateGameProfile(GameProfile.currentProfile);
-                positionsControl.gameProfilesList.Update_ProfilesList();
+                setupScreen.gameProfilesList.Update_ProfilesList();
 
                 ///Send control selection event to the Profiles List (update the list and reload the profile)
                 EventArgs eventArgs = new EventArgs();
@@ -854,23 +797,8 @@ namespace Nucleus.Coop
                     Text = GameProfile.ModeText
                 };
 
-                positionsControl.gameProfilesList.profileBtn_CheckedChanged(selected, eventArgs);
+                setupScreen.gameProfilesList.profileBtn_CheckedChanged(selected, eventArgs);
             }
-            //else
-            //{
-            //    GameProfile.UpdateGameProfile(GameProfile.currentProfile);              
-            //    positionsControl.gameProfilesList.Update_ProfilesList();
-
-            //    EventArgs eventArgs = new EventArgs();
-
-            //    Label selected = new Label
-            //    {
-            //        Name = (GameProfile.profilesPathList.Count).ToString(),
-            //        Text = $"Profile n°{GameProfile.profilesPathList.Count}"
-            //    };
-
-            //    positionsControl.gameProfilesList.profileBtn_CheckedChanged(selected, eventArgs);
-            //}
 
             Visible = false;
         }
@@ -1050,11 +978,6 @@ namespace Nucleus.Coop
                 IdealProcessors[i].BackColor = Color.White;
                 Affinitys[i].BackColor = Color.Gray;
                 Affinitys[i].Text = "";
-
-                if (i < GameProfile.Affinitys.Count)
-                {
-                    GameProfile.Affinitys[i] = "";
-                }
             }
         }
 
@@ -1065,11 +988,6 @@ namespace Nucleus.Coop
                 Affinitys[i].BackColor = Color.White;
                 IdealProcessors[i].BackColor = Color.Gray;
                 IdealProcessors[i].SelectedIndex = 0;
-
-                if (i < GameProfile.IdealProcessors.Count)
-                {
-                    GameProfile.IdealProcessors[i] = "*";
-                }
             }
         }
 
@@ -1116,23 +1034,16 @@ namespace Nucleus.Coop
 
         private void profile_info_btn_Click(object sender, EventArgs e)
         {
-            if (!profileInfo.Visible)
-            {
-                profileInfo.Visible = true;
-                profileInfo.BringToFront();
-            }
-            else
-            {
-                profileInfo.Visible = false;
-            }
-        }
-
-        private void ProfileSettings_Click(object sender, EventArgs e)
-        {
-            if (profileInfo.Visible)
-            {
-                profileInfo.Visible = false;
-            }
+            //if (!profileInfo.Visible)
+            //{
+            //    profileInfo.Visible = true;
+            //    profileInfo.BringToFront();
+            //}
+            //else
+            //{
+            //    profileInfo.Visible = false;
+            //}
+            NucleusMessageBox.Show("info", "Profile will be saved or updated when all instances will be set and ready.\nTo load a profile click the profile list icon in the setup screen and choose the profile to load by clicking on it in the list.\nProfile settings can be ajusted before pressing the play button.\nSome of the settings could break hooks functions or resizing functions so it's better to test the game with the default settings on first run.\nFor more informations or if you have any doubts keep the default settings or ask for help.");
         }
 
         private void cts_Mute_CheckedChanged(object sender, EventArgs e)

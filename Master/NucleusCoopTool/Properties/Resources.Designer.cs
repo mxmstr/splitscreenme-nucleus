@@ -73,6 +73,16 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap title_download_assets {
+            get {
+                object obj = ResourceManager.GetObject("title_download_assets", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap xboxControllerFront {
             get {
                 object obj = ResourceManager.GetObject("xboxControllerFront", resourceCulture);

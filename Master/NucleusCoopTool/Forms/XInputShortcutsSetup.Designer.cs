@@ -727,6 +727,7 @@
             // 
             this.switch15.Location = new System.Drawing.Point(101, 132);
             this.switch15.Margin = new System.Windows.Forms.Padding(0);
+            this.switch15.MaxLength = 5;
             this.switch15.Name = "switch15";
             this.switch15.Size = new System.Drawing.Size(92, 20);
             this.switch15.TabIndex = 8;
@@ -840,6 +841,7 @@
             this.bufferedClientAreaPanel1.Size = new System.Drawing.Size(228, 229);
             this.bufferedClientAreaPanel1.TabIndex = 93;
             this.bufferedClientAreaPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.bufferedClientAreaPanel1_Paint_1);
+            this.bufferedClientAreaPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.bufferedClientAreaPanel1_MouseDown);
             // 
             // XInputShortcutsSetup
             // 
@@ -859,6 +861,7 @@
             this.Name = "XInputShortcutsSetup";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gamepad Shortcuts Setup";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.XInputShortcutsSetup_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.XInputShortcutsSetup_MouseMove);
             this.shortContainer.ResumeLayout(false);
             this.shortContainer.PerformLayout();

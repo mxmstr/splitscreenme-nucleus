@@ -12,8 +12,10 @@ namespace Nucleus.Coop.Tools
 {
     internal class OpenHandler
     {
-        public static void OpenRawHandler(GameManager gameManager,UserGameInfo currentGameInfo)
+        public static void OpenRawHandler(UserGameInfo currentGameInfo)
         {
+            GameManager gameManager = GameManager.Instance;
+
             try
             {
                 if (Globals.ini.IniReadValue("Dev", "TextEditorPath") != "Default")

@@ -25,12 +25,11 @@ namespace Nucleus.Coop.Tools
 
             Label dllabel = new Label
             {
-                BackColor = main.BackColor,
+                BackColor = Color.Transparent,
                 ForeColor = main.ForeColor,
                 AutoSize = true,
             };
 
-            main.glowingLine0.Image = new Bitmap(Globals.Theme + "download_bar.gif");
             main.mainButtonFrame.Enabled = false;
             main.StepPanel.Enabled = false;
             main.button_UpdateAvailable.Enabled = false;
@@ -38,7 +37,9 @@ namespace Nucleus.Coop.Tools
             main.btn_settings.Enabled = false;
             main.btn_downloadAssets.Enabled = false;
             main.game_listSizer.Enabled = false;
-            main.Controls.Add(dllabel);
+            main.mainButtonFrame.Controls.Add(dllabel);
+            dllabel.BringToFront(); 
+            main.Refresh();
 
             System.Threading.Tasks.Task.Run(() =>
             {
@@ -81,7 +82,6 @@ namespace Nucleus.Coop.Tools
 
                 main.Invoke((Action)delegate ()
                 {
-                    main.glowingLine0.Image = new Bitmap(Globals.Theme + "lightbar_top.gif");
                     main.mainButtonFrame.Enabled = true;
                     main.btn_downloadAssets.Enabled = true;
                     main.game_listSizer.Enabled = true;
@@ -92,11 +92,13 @@ namespace Nucleus.Coop.Tools
                     dllabel.Visible = false;
                     main.Controls.Remove(dllabel);
                     main.TriggerOSD(2000, "Download Completed!");
-
-                    if (currentControl != null)
+                   
+                    if (currentControl != null && main.StepPanel.Visible)
                     {
                         SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
                     }
+
+                    main.Refresh();
                 });
 
             });
@@ -119,7 +121,8 @@ namespace Nucleus.Coop.Tools
                     ServicePointManager.DefaultConnectionLimit = 9999;
 
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urls);
-                    request.UserAgent = "request";
+                    request.UserAgent = "request";        
+               
                     using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     using (Stream stream = response.GetResponseStream())
                     using (Image newImage = Image.FromStream(stream))
@@ -165,6 +168,7 @@ namespace Nucleus.Coop.Tools
 
                         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                         request.UserAgent = "request";
+
                         using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                         using (Stream stream = response.GetResponseStream())
                         using (Image newImage = Image.FromStream(stream))

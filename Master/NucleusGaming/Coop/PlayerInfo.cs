@@ -1,6 +1,7 @@
 ﻿using Nucleus.Coop;
 //using SlimDX.DirectInput;
 using SharpDX.DirectInput;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,9 +22,12 @@ namespace Nucleus.Gaming.Coop
         private ProcessData processData;
         public bool Assigned;
 
+        public string IdealProcessor = "*";
+        public string Affinity = "";
+        public string PriorityClass = "Normal";
+
         public UserScreen Owner;
         public int DisplayIndex = -1;
-        public string IsExpanded = "Null";
         public int PlayerID;
         public bool SteamEmu;
         public bool GotLauncher;
@@ -37,7 +41,7 @@ namespace Nucleus.Gaming.Coop
         public bool IsRawKeyboard;
         public bool IsInputUsed;
         public bool IsController;//Good to do not have to loop both Xinput & DInput  
-
+        public bool Vibrate;
         public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
         public IntPtr RawKeyboardDeviceHandle = (IntPtr)(-1);
 
@@ -47,15 +51,17 @@ namespace Nucleus.Gaming.Coop
         public string GamepadName;
         public int GamepadMask;
         public Joystick DInputJoystick;
+        public OpenXinputController XInputJoystick;
+        public IntPtr GamepadHandle;
         public long SteamID;
         // Should be set by a script, then these are sent into Proto Input.
-        // Zero implies no contorller, 1 means controller 1, etc
+        // Zero implies no controller, 1 means controller 1, etc
         public int ProtoController1;
         public int ProtoController2;
         public int ProtoController3;
         public int ProtoController4;
 
-        public string HIDDeviceID;
+        public string[] HIDDeviceID;
         public string Nickname;
         public string InstanceId;
         public string RawHID;
@@ -143,7 +149,7 @@ namespace Nucleus.Gaming.Coop
             if (!ShouldFlash)
             {
                 ShouldFlash = true;
-                PositionsControl.InvalidateFlash();
+                SetupScreen.InvalidateFlash();
             }
 
             flashStopwatch.Restart();
@@ -160,7 +166,7 @@ namespace Nucleus.Gaming.Coop
                     flashTask = null;
 
                     ShouldFlash = false;
-                    PositionsControl.InvalidateFlash();
+                    SetupScreen.InvalidateFlash();
                 });
 
                 flashTask.Start();

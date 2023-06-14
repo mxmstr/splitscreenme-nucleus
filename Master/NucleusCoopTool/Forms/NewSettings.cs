@@ -5,6 +5,8 @@ using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Forms;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.Windows.Interop;
 using System;
@@ -28,7 +30,7 @@ namespace Nucleus.Coop
     {
         private IniFile ini = Globals.ini;
         private MainForm mainForm = null;
-
+        private SetupScreen setupScreen;
         public int KillProcess_HotkeyID = 1;
         public int TopMost_HotkeyID = 2;
         public int StopSession_HotkeyID = 3;
@@ -87,11 +89,11 @@ namespace Nucleus.Coop
                 mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
         }
 
-        public NewSettings(MainForm mf, PositionsControl pc)
+        public NewSettings(MainForm mf, SetupScreen pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
             mainForm = mf;
-
+            setupScreen = pc;
             InitializeComponent();
 
             SuspendLayout();
@@ -112,10 +114,10 @@ namespace Nucleus.Coop
 
             foreach (Control c in ctrls)
             {
-                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label)  || c.GetType() == typeof(RadioButton))
+                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
                 {
-                    if(c.Name != "audioWarningLabel" && c.Name != "warningLabel")
-                       c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
+                        c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
@@ -213,7 +215,7 @@ namespace Nucleus.Coop
 
             layoutTab.Parent = this;
             layoutTab.Location = settingsTab.Location;
-           
+
             page1.Location = new Point(playersTab.Width / 2 - page1.Width / 2, playersTab.Height / 2 - page1.Height / 2);
             page2.Location = page1.Location;
             page1.BringToFront();
@@ -222,7 +224,7 @@ namespace Nucleus.Coop
             btnNext.BackColor = mf.buttonsBackColor;
             btnNext.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btnNext.Location = new Point(page1.Right - btnNext.Width, (page1.Top - btnNext.Height) - 5);
-                                  
+
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
 
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
@@ -263,11 +265,14 @@ namespace Nucleus.Coop
             {
                 numUpDownVer.Value = int.Parse(ini.IniReadValue("CustomLayout", "VerticalLines"));
             }
+
             if (ini.IniReadValue("CustomLayout", "MaxPlayers") != "")
             {
                 numMaxPlyrs.Value = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
             }
 
+            gamepadsAssignMethods.Checked = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
+            gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
             ///network setting
             RefreshCmbNetwork();
 
@@ -318,7 +323,7 @@ namespace Nucleus.Coop
 
             ///epiclangs setting
             cmb_EpicLang.SelectedItem = ini.IniReadValue("Misc", "EpicLang");
-                
+
             ///splash screen setting                   
             splashScreenChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
 
@@ -482,6 +487,7 @@ namespace Nucleus.Coop
                 audioCustomSettingsRadio.Checked = true;
             }
 
+            showUIInfoMsg.Checked = bool.Parse(ini.IniReadValue("Dev", "ShowToolTips"));
             //disableQuickUpdate.Checked = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
 
             RefreshAudioList();
@@ -568,6 +574,7 @@ namespace Nucleus.Coop
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
             audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
+            gamepadsAssignMethods.Location = new Point((page1.Location.X + label7.Location.X) + 2, (page1.Top - 5) - gamepadsAssignMethods.Height);
 
             tabBorders = new Rectangle[]
             {
@@ -585,29 +592,10 @@ namespace Nucleus.Coop
 
         private void SetToolTips()
         {
-            ToolTip btn_credits_Tooltip = new ToolTip();
-            btn_credits_Tooltip.InitialDelay = 100;
-            btn_credits_Tooltip.ReshowDelay = 100;
-            btn_credits_Tooltip.AutoPopDelay = 5000;
-            btn_credits_Tooltip.SetToolTip(btn_credits, "Credits");
-
-            ToolTip SplitDiv_Tooltip = new ToolTip();
-            SplitDiv_Tooltip.InitialDelay = 100;
-            SplitDiv_Tooltip.ReshowDelay = 100;
-            SplitDiv_Tooltip.AutoPopDelay = 5000;
-            SplitDiv_Tooltip.SetToolTip(SplitDiv, "May not work for all games");
-
-            ToolTip disableGameProfiles_Tooltip = new ToolTip();
-            disableGameProfiles_Tooltip.InitialDelay = 100;
-            disableGameProfiles_Tooltip.ReshowDelay = 100;
-            disableGameProfiles_Tooltip.AutoPopDelay = 5000;
-            disableGameProfiles_Tooltip.SetToolTip(disableGameProfiles, "Simply disable profiles loading/saving, Nucleus will always use global settings instead");
-
-            //ToolTip disableQuickUpdate_Tooltip = new ToolTip();
-            //disableQuickUpdate_Tooltip.InitialDelay = 100;
-            //disableQuickUpdate_Tooltip.ReshowDelay = 100;
-            //disableQuickUpdate_Tooltip.AutoPopDelay = 5000;
-            //disableQuickUpdate_Tooltip.SetToolTip(disableQuickUpdate, "Speedup startup time, handler still updatable from the \"New Handler Available!\" button");
+            CustomToolTips.SetToolTip(btn_credits, "Credits", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(SplitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(disableGameProfiles, "Simply disable profiles loading/saving, Nucleus will always use globals settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(gamepadsAssignMethods, "If enabled the profile will not save or load per player gamepad(XInput only), it will use XInput index instead \n(switching mode could require to re-assign gamepad manually).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndSteamIds()
@@ -621,12 +609,10 @@ namespace Nucleus.Coop
             for (int i = 0; i < 32; i++)
             {
                 steamIds[i].Items.AddRange(jsonsteamIdsList.ToArray());
-                steamIds[i].Items.AddRange(steamIdsList.ToArray());
                 steamIds[i].SelectedItem = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
                 steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
 
                 controllerNicks[i].Items.AddRange(jsonNicksList.ToArray());
-                controllerNicks[i].Items.AddRange(nicksList.ToArray());
                 controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                 controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
             }
@@ -773,7 +759,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
-            //ini.IniWriteValue("Dev", "DisableFastHandlerUpdate", disableQuickUpdate.Checked.ToString());
+            ini.IniWriteValue("Dev", "UseXinputIndex", gamepadsAssignMethods.Checked.ToString());
 
             ini.IniWriteValue("CustomLayout", "SplitDiv", SplitDiv.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "SplitDivColor", SplitColors.Text.ToString());
@@ -789,11 +775,12 @@ namespace Nucleus.Coop
 
             mainForm.lockKeyIniString = comboBox_lockKey.SelectedItem.ToString();
 
-            //if (mainForm.disableFastHandlerUpdate != disableQuickUpdate.Checked)
-            //{
-            //    mainForm.disableFastHandlerUpdate = disableQuickUpdate.Checked;
-            //    mainForm.RefreshGames(false);
-            //}
+            ini.IniWriteValue("Dev", "ShowToolTips", showUIInfoMsg.Checked.ToString());
+
+            if (setupScreen != null)
+            {
+                setupScreen.UseXinputIndex = gamepadsAssignMethods.Checked;
+            }
 
             if (disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
             {
@@ -814,7 +801,7 @@ namespace Nucleus.Coop
             {
                 if (GameProfile.currentProfile != null)
                 {
-                    GameProfile.currentProfile.Reset();                    
+                    GameProfile.currentProfile.Reset();
                     ProfileSettings.ProfileRefreshAudioList();
                 }
             }
@@ -826,7 +813,7 @@ namespace Nucleus.Coop
 
             Visible = false;
 
-            Globals.MainOSD.Settings(500,  "Settings saved");
+            Globals.MainOSD.Show(500, "Settings saved");
 
             if (needToRestart)
             {
@@ -1174,7 +1161,8 @@ namespace Nucleus.Coop
 
         private void btn_credits_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Nucleus Co-op - " + mainForm.version +
+           string text = 
+           "Nucleus Co-op - " + mainForm.version +
            "\n " +
            "\nOriginal Nucleus Co-op Project: Lucas Assis(lucasassislar)" +
            "\nNew Nucleus Co-op fork: ZeroFox" +
@@ -1183,14 +1171,15 @@ namespace Nucleus.Coop
            "\nNew UI design, bug fixes, per game profiles and gamepad UI control/shortcuts support : Mikou27(nene27)" +
            "\nHandlers development & testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more." +
            "\nThis new & improved Nucleus Co-op brings a ton of enhancements, such as:" +
-           "\n- Massive increase to the amount of compatible games, 400 + as of now." +
-           "\n- Beautiful new overhauled user interface with support for themes, game covers & screenshots." +
-           "\n- Support for per-game profiles." +
-           "\n- Many quality of life improvements & bug fixes." +
-           "\nAnd so much more!" +
-           "\nSpecial thanks to: Talos91, dr.oldboi, PoundlandBacon, Pizzo and the rest of the Splitscreen Dreams discord community.", "Credits", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           "\n-Massive increase to the amount of compatible games, 400 + as of now." +
+           "\n-Beautiful new overhauled user interface with support for themes, game covers & screenshots." +
+           "\n-Support for per-game profiles." +
+           "\n-Many quality of life improvements & bug fixes." +
+           "\n-And so much more!\n" +
+           "\nSpecial thanks to: Talos91, dr.oldboi, PoundlandBacon, Pizzo and the rest of the Splitscreen Dreams discord community.";
+            NucleusMessageBox.Show("Credits", text);
         }
-
+      
         private void layoutSizer_Paint(object sender, PaintEventArgs e)
         {
             Graphics gs = e.Graphics;
@@ -1254,5 +1243,11 @@ namespace Nucleus.Coop
             GoldbergUpdaterForm gbUpdater = new GoldbergUpdaterForm();
             gbUpdater.ShowDialog();
         }
+
+        private void disableGameProfiles_CheckedChanged(object sender, EventArgs e)
+        {
+            gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
+        }
+
     }
 }

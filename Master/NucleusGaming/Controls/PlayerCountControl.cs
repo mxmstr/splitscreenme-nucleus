@@ -40,11 +40,11 @@ namespace Nucleus.Gaming
 
             int playerCount = int.Parse(((Button)sender).Text);
 
-            profile.PlayerData.Clear();
+            profile.PlayersList.Clear();
             for (int i = 0; i < playerCount; i++)
             {
                 PlayerInfo player = new PlayerInfo();
-                profile.PlayerData.Add(player);
+                profile.PlayersList.Add(player);
             }
 
             CanPlayUpdated(true, true);

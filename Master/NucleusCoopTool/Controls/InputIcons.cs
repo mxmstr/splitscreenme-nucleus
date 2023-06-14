@@ -1,7 +1,10 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Controls;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -10,14 +13,15 @@ namespace Nucleus.Coop
     public static class InputIcons
     {
         private static MainForm main;
-
-        public static void SetInputsIcons(MainForm mainform, GenericGameInfo game)
+             
+        public static Control[] SetInputsIcons(MainForm mainform, GenericGameInfo game)
         {
-            main = mainform;
-            main.icons_Container.Visible = false;
-            main.icons_Container.Controls.Clear();
+            main = mainform;       
+
+            List<PictureBox> icons = new List<PictureBox>();
 
             Size iconsSize = new Size(main.icons_Container.Height + 6, main.icons_Container.Height - 2);
+
             if ((game.Hook.XInputEnabled && !game.Hook.XInputReroute && !game.ProtoInput.DinputDeviceHook) || game.ProtoInput.XinputHook)
             {
                 PictureBox icon = new PictureBox
@@ -28,10 +32,8 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(Globals.Theme + "xinput_icon.png")
                 };
 
-                icon.MouseEnter += inputIcons_MouseEnter;
-                icon.MouseLeave += inputIcons_MouseLeave;
-                main.icons_Container.Controls.Add(icon);
-
+                CustomToolTips.SetToolTip(icon, "Supports xinput gamepads (e.g., X360).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                icons.Add(icon);
             }
 
             if ((game.Hook.DInputEnabled || game.Hook.XInputReroute || game.ProtoInput.DinputDeviceHook) && (game.Hook.XInputEnabled || game.ProtoInput.XinputHook))
@@ -44,9 +46,9 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
                 };
 
-                icon.MouseEnter += inputIcons_MouseEnter;
-                icon.MouseLeave += inputIcons_MouseLeave;
-                main.icons_Container.Controls.Add(icon);
+
+                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g., Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                icons.Add(icon);
             }
             else if ((game.Hook.DInputEnabled || game.Hook.XInputReroute || game.ProtoInput.DinputDeviceHook) && (!game.Hook.XInputEnabled || !game.ProtoInput.XinputHook))
             {
@@ -58,9 +60,8 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
                 };
 
-                icon.MouseEnter += inputIcons_MouseEnter;
-                icon.MouseLeave += inputIcons_MouseLeave;
-                main.icons_Container.Controls.Add(icon);
+                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g., Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                icons.Add(icon);
             }
 
             if (game.SupportsKeyboard)
@@ -73,9 +74,8 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
                 };
 
-                icon.MouseEnter += inputIcons_MouseEnter;
-                icon.MouseLeave += inputIcons_MouseLeave;
-                main.icons_Container.Controls.Add(icon);
+                CustomToolTips.SetToolTip(icon, @"Supports 1 keyboard\mouse.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                icons.Add(icon);
             }
 
             if (game.SupportsMultipleKeyboardsAndMice) //Raw mice/keyboards
@@ -85,7 +85,7 @@ namespace Nucleus.Coop
                     Name = "icon5",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
+                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")               
                 };
 
                 PictureBox iconKB2 = new PictureBox
@@ -96,49 +96,15 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
                 };
 
-                iconKB1.MouseEnter += inputIcons_MouseEnter;
-                iconKB1.MouseLeave += inputIcons_MouseLeave;
-                main.icons_Container.Controls.Add(iconKB1);
 
-                iconKB2.MouseEnter += inputIcons_MouseEnter;
-                iconKB2.MouseLeave += inputIcons_MouseLeave;
-                main.icons_Container.Controls.Add(iconKB2);
+                CustomToolTips.SetToolTip(iconKB1, @"Supports multiple keyboards/mice.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                icons.Add(iconKB1);
+
+                CustomToolTips.SetToolTip(iconKB2, @"Supports multiple keyboards/mice.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                icons.Add(iconKB2);
             }
 
-            main.icons_Container.Visible = true;
-        }
-
-
-        private static void inputIcons_MouseEnter(object sender, EventArgs e)
-        {
-            PictureBox inputIcon = (PictureBox)sender;
-
-            if (inputIcon.Name == "icon1")
-            {
-                main.inputsIconsDesc.Text = "Supports xinput gamepads (e.g., X360)";
-            }
-            else if (inputIcon.Name == "icon2" || inputIcon.Name == "icon3")
-            {
-                main.inputsIconsDesc.Text = "Supports dinput gamepads (e.g., Ps3)";
-            }
-            else if (inputIcon.Name == "icon4")
-            {
-                main.inputsIconsDesc.Text = @"Supports 1 keyboard\mouse";
-            }
-            else if (inputIcon.Name == "icon5" || inputIcon.Name == "icon6")
-            {
-                main.inputsIconsDesc.Text = @"Supports multiple keyboards/mice";
-            }
-
-            main.inputsIconsDesc.Location = new Point((int)main.icons_Container.Left - 5, main.icons_Container.Bottom);
-            main.inputsIconsDesc.BringToFront();
-            main.inputsIconsDesc.Visible = true;
-        }
-
-        private static void inputIcons_MouseLeave(object sender, EventArgs e)
-        {
-            main.inputsIconsDesc.Visible = false;
-            main.inputsIconsDesc.Text = "";
+            return icons.ToArray();
         }
 
     }

@@ -83,7 +83,7 @@ namespace Nucleus.Gaming
             UpdateForm(form);
         }
 
-        private static float getScalingFactor()
+        public static float getScalingFactor()
         {
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             IntPtr desktop = g.GetHdc();

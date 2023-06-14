@@ -32,6 +32,8 @@
             // 
             // AlphaTextBox
             // 
+            this.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ForeColor = System.Drawing.SystemColors.Window;
             this.HideSelection = false;
             this.ResumeLayout(false);
 

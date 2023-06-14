@@ -115,6 +115,10 @@ namespace Nucleus.Gaming
         public int NumKeyboards = 0;
         public bool KeepEditedRegKeys;
 
+
+        //public string[] BackupFiles;
+
+
         private List<string> regKeyPaths = new List<string>();
 
         public string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -285,16 +289,6 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void HideTaskBar()
-        {
-            if (PlayerID > 0)
-            {
-                return;
-            }
-
-            User32Util.HideTaskbar();
-        }
-
         public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
 
         public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
@@ -408,6 +402,40 @@ namespace Nucleus.Gaming
                     parent.splitForms.Add(backgroundForm);
                 });
             }
+        }
+
+        public void HideDesktop(bool hideTaskbar)
+        {
+            if (GameProfile.UseSplitDiv || PlayerID > 0)
+            {
+                return;
+            }
+
+            if(hideTaskbar)
+            {
+                HideTaskBar();
+            }
+
+            foreach (Display dp in parent.screensInUse)
+            {
+                Globals.MainOSD.Invoke((MethodInvoker)delegate ()
+                {
+                    Form backgroundForm = new SplitForm(GameProfile.Game, parent, dp);
+                    backgroundForm.Show();
+                    backgroundForm.BringToFront();
+                    parent.splitForms.Add(backgroundForm);
+                });
+            }
+        }
+
+        public void HideTaskBar()
+        {
+            if (PlayerID > 0)
+            {
+                return;
+            }
+
+            User32Util.HideTaskbar();
         }
 
         public void BackupFile(string filePath, bool overwrite)

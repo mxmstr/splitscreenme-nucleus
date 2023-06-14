@@ -12,8 +12,10 @@ namespace Nucleus.Coop.Tools
 {
     internal class RemoveGame
     {
-        public static void Remove(MainForm main, GameManager gameManager, UserGameInfo currentGameInfo, bool dontConfirm)
+        public static void Remove(MainForm main, UserGameInfo currentGameInfo, bool dontConfirm)
         {
+            GameManager gameManager = GameManager.Instance;
+
             string userProfile = gameManager.GetUserProfilePath();
 
             if (File.Exists(userProfile))
@@ -47,11 +49,13 @@ namespace Nucleus.Coop.Tools
                                     try
                                     {
                                         File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                                        ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                                     }
-                                    catch (Exception)
+                                    catch (IOException)
                                     {
                                         main.coverImg.Dispose();
                                         File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                                        ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                                     }
                                 }
 

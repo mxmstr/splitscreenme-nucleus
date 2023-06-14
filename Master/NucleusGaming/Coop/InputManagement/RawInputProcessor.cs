@@ -79,7 +79,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public static GenericGameInfo CurrentGameInfo { get; set; } = null;
         public static GameProfile CurrentProfile { get; set; } = null;
-        private List<PlayerInfo> PlayerInfos => CurrentProfile?.PlayerData;
+        private List<PlayerInfo> PlayerInfos => CurrentProfile?.PlayersList;
 
         //leftMiddleRight: left=1, middle=2, right=3, xbutton1=4, xbutton2=5
         private readonly Dictionary<RawInputButtonFlags, (MouseEvents msg, uint wParam, ushort leftMiddleRight, bool isButtonDown, int VKey)> _buttonFlagToMouseEvents = new Dictionary<RawInputButtonFlags, (MouseEvents, uint, ushort, bool, int)>()
@@ -455,7 +455,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 if (!splitScreenRunning() && PlayerInfos != null)
                 {
-                    foreach (PlayerInfo toFlash in CurrentProfile?.PlayerData.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
+                    foreach (PlayerInfo toFlash in CurrentProfile?.PlayersList.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
                     {
                         toFlash.FlashIcon();
                     }
@@ -475,25 +475,24 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 {
                     if (!LockInput.IsLocked)
                     {
-                        if (CurrentGameInfo == null || CurrentGameInfo.Play == null || GenericGameHandler.Instance.hasEnded)
+                        if (CurrentGameInfo == null || GenericGameHandler.Instance.hasEnded)
                         {
                             return;
                         }
 
-                        Globals.MainOSD.Settings(1000, "Inputs Locked");
+                        Globals.MainOSD.Show(1000, "Inputs Locked");
 
                         LockInput.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
 
                         if (CurrentGameInfo.ToggleUnfocusOnInputsLock)
                         {
                             GlobalWindowMethods.ChangeForegroundWindow();
-                            //Debug.WriteLine("Toggle Unfocus");
-                        }
+                        }   
                     }
                     else
                     {
                         LockInput.Unlock(CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
-                        Globals.MainOSD.Settings(1000, "Inputs Unlocked");
+                        Globals.MainOSD.Show(1000, "Inputs Unlocked");
                     }
                 }
 

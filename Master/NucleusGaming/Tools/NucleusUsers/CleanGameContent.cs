@@ -1,31 +1,37 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.Gaming.Forms.NucleusMessageBox;
 using System.IO;
+using System.Management.Instrumentation;
 using System.Windows.Forms;
 
-namespace Nucleus.Coop
+namespace Nucleus.Gaming
 {
-    static class CleanGameContent
+    public static class CleanGameContent
     {
-        public static void CleanContentFolder(string path, GenericGameInfo currentGameInfo)
+        public static void CleanContentFolder(GenericGameInfo currentGameInfo)
         {
+            string path = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);
+
             if (Directory.Exists(path))
-            {
-                LogManager.Log("Game content cleaned.");
+            {               
                 string[] instances = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
 
                 try
                 {
                     foreach (string instance in instances)
                     {
-                        if (Directory.Exists(instance) && currentGameInfo.KeepSymLinkOnExit != true)
+                        if (Directory.Exists(instance))
                         {
+                            //Add backup function here
                             Directory.Delete(instance, true);
                         }
                     }
+
+                    LogManager.Log("Game content cleaned.");
                 }
                 catch
                 {
                     LogManager.Log("Nucleus will try to unlock one or more files in order to cleanup game content.");
+
                     try
                     {
                         foreach (string instance in instances)
@@ -45,6 +51,7 @@ namespace Nucleus.Coop
                             if (exists)
                             {
                                 Directory.Delete(instance, true);
+                                LogManager.Log("Game content cleaned.");
                             }
                         }
                     }
@@ -54,7 +61,10 @@ namespace Nucleus.Coop
 
                         System.Threading.Tasks.Task.Run(() =>
                         {
-                            MessageBox.Show($"One or more files from {path} are locked by the system or used by an other program and Nucleus failed to unlock them. You can try to delete/unlock the file(s) manually or restart your computer to unlock the file(s) because it could lead to a crash on game startup. You can ignore this message and risk a crash or unexpected behaviors.", "Risk of crash!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            NucleusMessageBox.Show("Risk of crash!", $"One or more files from {path} are locked by the system or used by an other program \n" +
+                                $"and Nucleus failed to unlock them.You can try to delete/unlock the file(s) manually or restart\n" +
+                                $" your computer to unlock the file(s) because it could lead to a crash on game startup.\n" +
+                                $" You can ignore this message and risk a crash or unexpected behaviors.");
                         });
                     }
                 }

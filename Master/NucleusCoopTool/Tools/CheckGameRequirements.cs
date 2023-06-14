@@ -19,7 +19,7 @@ namespace Nucleus.Coop.Tools
                                                    gamePath.StartsWith(@"C:\Users\") ||
                                                    gamePath.StartsWith(@"C:\Windows\");
             
-            if (userGameInfo.Game.LaunchAsDifferentUsers && imcompatibleGamePath)
+            if ((userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.LaunchAsDifferentUsersAlt) && imcompatibleGamePath)
             {
                 message = $@"This game handler does not support the current {userGameInfo.GameGuid} installation path." + "\n\n" +
                 $@"Do NOT install {userGameInfo.GameGuid} in any of these folders:" + "\n" +

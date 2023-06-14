@@ -34,7 +34,7 @@ namespace Nucleus.Coop.Tools
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
             {   
-                mainForm.coverImg = /*ImageCache.GetImage*/new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));//mainForm.coverImg;
+                mainForm.coverImg = ImageCache.GetImage/*new Bitmap*/(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));//mainForm.coverImg;
                 mainForm.cover.SuspendLayout();
                 mainForm.cover.BackgroundImage = mainForm.coverImg;
                 mainForm.cover.ResumeLayout();
@@ -67,7 +67,7 @@ namespace Nucleus.Coop.Tools
                 mainForm.clientAreaPanel.ResumeLayout();
             }
 
-            mainForm.btn_textSwitcher.Visible = !mainForm.positionsControl.textZoomContainer.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
+            mainForm.btn_textSwitcher.Visible = !mainForm.setupScreen.textZoomContainer.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
         }
 
     }

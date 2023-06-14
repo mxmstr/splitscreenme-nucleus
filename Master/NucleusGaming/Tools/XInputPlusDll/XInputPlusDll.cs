@@ -16,6 +16,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
         {
             genericGameHandler.Log("Setting up XInput Plus");
             string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\XInputPlus");
+           
             if (gen.XInputPlusOldDll)
             {
                 utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\XInputPlus\\old");
@@ -38,6 +39,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                         {
                             xinputDll = "Dinput8.dl_";
                         }
+
                         genericGameHandler.Log("Using " + xinputDll + " (" + garch + ") as base and naming it: " + xinputDllName);
 
                         File.Copy(Path.Combine(utilFolder, garch + "\\" + xinputDll), Path.Combine(genericGameHandler.instanceExeFolder, xinputDllName), true);
@@ -54,7 +56,8 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
             if (!gen.XInputPlusNoIni)
             {
                 List<string> textChanges = new List<string>();
-                if (!player.IsKeyboardPlayer || (player.IsKeyboardPlayer && gen.PlayersPerInstance <= 1))
+
+                if (player.IsController || (player.IsKeyboardPlayer && gen.PlayersPerInstance <= 1))
                 {
                     if (setupDll)
                     {
@@ -62,11 +65,13 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                     }
 
                     genericGameHandler.Log("Copying XInputPlus.ini");
+
                     File.Copy(Path.Combine(utilFolder, "XInputPlus.ini"), Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"), true);
 
                     genericGameHandler.Log("Making changes to the lines in XInputPlus.ini; FileVersion and Controller values");
 
                     gen.XInputPlusDll = Array.ConvertAll(gen.XInputPlusDll, x => x.ToLower());
+
                     if (gen.XInputPlusDll.ToList().Any(val => val.StartsWith("dinput") == true)) //(xinputDll.ToLower().StartsWith("dinput"))
                     {
                         genericGameHandler.Log("A Dinput dll has been detected, also enabling X2Dinput in XInputPlus.ini");
@@ -75,7 +80,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
 
                     textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"), "FileVersion=", SearchType.StartsWith) + "|FileVersion=" + garch);
 
-                    if (!player.IsKeyboardPlayer)
+                    if (player.IsController)
                     {
                         if (gen.PlayersPerInstance > 1)
                         {
@@ -108,7 +113,9 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
             if (setupDll)
             {
                 genericGameHandler.Log(string.Format("Setting up Custom DLL, UseAlpha8CustomDll: {0}", gen.Hook.UseAlpha8CustomDll));
+               
                 byte[] xdata;
+
                 if (gen.Hook.UseAlpha8CustomDll && !genericGameHandler.gameIs64)
                 {
                     xdata = Properties.Resources.xinput1_3;
@@ -135,6 +142,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                     string ogFile = Path.Combine(genericGameHandler.instanceExeFolder, "xinput1_3.dll");
                     FileUtil.FileCheck(genericGameHandler, gen, ogFile);
                     genericGameHandler.Log(string.Format("Writing custom dll xinput1_3.dll to {0}", genericGameHandler.instanceExeFolder));
+                    
                     using (Stream str = File.OpenWrite(ogFile))
                     {
                         str.Write(xdata, 0, xdata.Length);
@@ -143,6 +151,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                 else
                 {
                     string[] xinputs = context.Hook.XInputNames;
+
                     for (int z = 0; z < xinputs.Length; z++)
                     {
                         string xinputName = xinputs[z];
@@ -161,6 +170,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
 
             genericGameHandler.Log(string.Format("Writing ncoop.ini to {0} with Game.Hook values", genericGameHandler.instanceExeFolder));
             string ncoopIni = Path.Combine(genericGameHandler.instanceExeFolder, "ncoop.ini");
+
             using (Stream str = File.OpenWrite(ncoopIni))
             {
                 byte[] ini = Properties.Resources.ncoop;
@@ -169,9 +179,11 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
 
             FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(genericGameHandler.instanceExeFolder, "ncoop.ini"));
             IniFile x360 = new IniFile(ncoopIni);
+
             x360.IniWriteValue("Options", "Log", "0");
             x360.IniWriteValue("Options", "FileLog", "0");
             x360.IniWriteValue("Options", "ForceFocus", gen.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
+
             if (!gen.Hook.UseAlpha8CustomDll)
             {
                 x360.IniWriteValue("Options", "Version", "2");

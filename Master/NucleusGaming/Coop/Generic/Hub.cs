@@ -119,7 +119,7 @@ namespace Nucleus.Gaming.Coop.Generic
        
         public string Get(string uri)
         {
-            if (webExceptionCount >= 4)
+            if (webExceptionCount >= 3)
             {               
                 return null;
             }
@@ -133,18 +133,17 @@ namespace Nucleus.Gaming.Coop.Generic
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
 
-                request.Timeout = 1500;//lower values make the timeout too short for some "big" handlers              
+                request.Timeout = 2500;//lower values make the timeout too short for some "big" handlers (GTAIV)             
                 request.Method = "Get";
 
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                   // Console.WriteLine(reader.ReadToEnd());
                     return reader.ReadToEnd();
                 }
             }
-            catch (WebException)
+            catch (Exception)
             {
                 webExceptionCount++;
                 return null;

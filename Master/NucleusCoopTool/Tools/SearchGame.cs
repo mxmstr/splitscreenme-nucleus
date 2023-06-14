@@ -47,7 +47,7 @@ namespace Nucleus.Coop.Tools
                                 if (game != null)
                                 {
                                     MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
-                                    main.RefreshGames(false);
+                                    main.RefreshGames();
                                 }
                             }
                         }
@@ -56,7 +56,7 @@ namespace Nucleus.Coop.Tools
                             UserGameInfo game = GameManager.Instance.TryAddGame(path, info[0]);
                             if (main.gameContextMenuStrip != null)
                                 MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
-                                main.RefreshGames(false);
+                                main.RefreshGames();
                         }
                         else
                         {

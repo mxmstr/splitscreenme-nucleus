@@ -132,6 +132,7 @@
     <Compile Include="Controls\CustomComboBox.Designer.cs">
       <DependentUpon>CustomComboBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomToolTips.cs" />
     <Compile Include="Controls\HotkeyListener.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,6 +177,16 @@
     <Compile Include="Coop\Generic\async.cs" />
     <Compile Include="Coop\Generic\HttpClient.cs" />
     <Compile Include="Coop\InputManagement\ControllersShortcuts.cs" />
+    <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
+    <Compile Include="Coop\ProfilePlayer.cs" />
+    <Compile Include="Coop\ProfilePLayersList.cs" />
+    <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NucleusMessageBox\NucleusMessageBox.cs" />
     <Compile Include="Forms\OSD.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -283,7 +294,7 @@
     <Compile Include="Controls\GameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PositionsControlBase.cs" />
+    <Compile Include="Controls\SetupScreenBase.cs" />
     <Compile Include="Platform\IO\WinDirectoryUtil.cs" />
     <Compile Include="Platform\MachineSpecs\MachineSpecs.cs" />
     <Compile Include="Platform\Windows\GetNetFrameworkVersion.cs" />
@@ -340,7 +351,7 @@
     <Compile Include="Controls\PlayerOptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PositionsControl.cs">
+    <Compile Include="Controls\SetupScreen.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -354,6 +365,7 @@
     <Compile Include="Tools\DirectX9Wrapper\DirectX9Wrapper.cs" />
     <Compile Include="Tools\DllsInjector\DllsInjector.cs" />
     <Compile Include="Tools\EACBypass\EACBypass.cs" />
+    <Compile Include="Tools\NucleusUsers\CleanGameContent.cs" />
     <Compile Include="Tools\NucleusUsers\NucleusUsers.cs" />
     <Compile Include="Tools\Steam\GoldbergUpdaterForm.cs">
       <SubType>Form</SubType>
@@ -427,6 +439,9 @@
     <EmbeddedResource Include="Controls\JSUserInputControl.resx">
       <DependentUpon>JSUserInputControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NucleusMessageBox\CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OSD.resx">
       <DependentUpon>OSD.cs</DependentUpon>
     </EmbeddedResource>
@@ -451,8 +466,8 @@
     <EmbeddedResource Include="Controls\PlayerOptionsControl.resx">
       <DependentUpon>PlayerOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PositionsControl.resx">
-      <DependentUpon>PositionsControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\SetupScreen.resx">
+      <DependentUpon>SetupScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserInputControl.resx">
       <DependentUpon>UserInputControl.cs</DependentUpon>

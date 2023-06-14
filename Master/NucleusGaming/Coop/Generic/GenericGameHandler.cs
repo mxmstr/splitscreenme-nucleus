@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Nucleus.Coop;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.Generic.Cursor;
@@ -51,7 +52,7 @@ namespace Nucleus.Gaming
     {
         public void TriggerOSD(int timerMS, string text)
         {
-            Globals.MainOSD.Settings(timerMS, text);
+            Globals.MainOSD.Show(timerMS, text);
         }
 
         public List<Form> splitForms = new List<Form>();
@@ -157,7 +158,7 @@ namespace Nucleus.Gaming
 
             Network.iniNetworkInterface = GameProfile.Network;
 
-            List<PlayerInfo> players = profile.PlayerData;
+            List<PlayerInfo> players = profile.PlayersList;
 
             gen = game.Game as GenericGameInfo;
             // see if we have any save game to backup
@@ -214,7 +215,7 @@ namespace Nucleus.Gaming
                 Log($"Set Windows Setup Timing to {HWndInterval} ms");
             }
 
-            totalPlayers = profile.PlayerData.Count;
+            totalPlayers = profile.PlayersList.Count;
             return true;
         }
 
@@ -327,25 +328,34 @@ namespace Nucleus.Gaming
             ProcessUtil.KillRemainingProcess(this, gen);
 
             //Merge raw keyboard/mouse players into one 
-            var groupWindows = profile.PlayerData.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
+            var groupWindows = profile.PlayersList.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
             foreach (var group in groupWindows)
             {
+                if(group.Count() == 1)
+                {
+                    continue;//skip already merged k&m devices on profile load 
+                }
+
                 var firstInGroup = group.First();
+                var secondInGroup = group.Last();
+
                 firstInGroup.IsRawKeyboard = group.Count(x => x.IsRawKeyboard) > 0;
                 firstInGroup.IsRawMouse = group.Count(x => x.IsRawMouse) > 0;
 
                 if (firstInGroup.IsRawKeyboard) firstInGroup.RawKeyboardDeviceHandle = group.First(x => x.RawKeyboardDeviceHandle != (IntPtr)(-1)).RawKeyboardDeviceHandle;
                 if (firstInGroup.IsRawMouse) firstInGroup.RawMouseDeviceHandle = group.First(x => x.RawMouseDeviceHandle != (IntPtr)(-1)).RawMouseDeviceHandle;
 
+                firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0]};              
+
                 foreach (var x in group)
                 {
-                    profile.PlayerData.Remove(x);
+                    profile.PlayersList.Remove(x);
                 }
 
-                profile.PlayerData.Add(firstInGroup);
+                profile.PlayersList.Add(firstInGroup);
             }
 
-            List<PlayerInfo> players = profile.PlayerData.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();//Current new default
+            List<PlayerInfo> players = profile.PlayersList.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();//Current new default
 
             List<int> screens = new List<int>();
 
@@ -369,7 +379,7 @@ namespace Nucleus.Gaming
                     screensInUse.Add(dp);
                     screens.Add(pod);
 
-                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1) || gen.HideDesktop)
+                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayersList.Count != 1) || gen.HideDesktop)
                     {
                         Globals.MainOSD.Invoke((MethodInvoker)delegate ()
                         {
@@ -390,7 +400,7 @@ namespace Nucleus.Gaming
 
                 foreach (Display dp in screensInUse)
                 {
-                    if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayerData.Count != 1)
+                    if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayersList.Count != 1)    
 
                     {
                         if (i == 0)
@@ -434,6 +444,7 @@ namespace Nucleus.Gaming
             string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
             string rootFolder = exeFolder;
             string workingFolder = exeFolder;
+
 
             if (!string.IsNullOrEmpty(gen.BinariesFolder))
             {
@@ -495,26 +506,26 @@ namespace Nucleus.Gaming
             for (int i = 0; i < players.Count; i++)
             {
                 Log($"********** Setting up player {i + 1} **********");
-                PlayerInfo player = players[i];
+
+                PlayerInfo player = players[i];            
+
                 plyrIndex = i;
 
                 if (GameProfile.UseNicknames)
                 {
-                    if (GameProfile.Nicknames.Count - 1 >= i)
+                    if (GameProfile.ProfilePlayersList.Count - 1 >= i)
                     {
-                        player.Nickname = GameProfile.Nicknames[i];
+                        player.Nickname = GameProfile.ProfilePlayersList[i].Nickname;
                     }
-                    else
+                    else 
                     {
-                        player.Nickname = $"Player{i + 1}";
+                        player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                     }
                 }
                 else
                 {
                     player.Nickname = $"Player{i + 1}";
                 }
-
-                TriggerOSD(1600, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{i + 1}");
 
                 ProcessData procData = player.ProcessData;
                 bool hasSetted = procData != null && procData.Setted;
@@ -784,7 +795,6 @@ namespace Nucleus.Gaming
                     if (!string.IsNullOrEmpty(gen.BinariesFolder))
                     {
                         linkBinFolder = Path.Combine(linkFolder, gen.BinariesFolder);
-                        //dirExclusions.Add(gen.BinariesFolder);
                     }
 
                     exePath = Path.Combine(linkBinFolder, userGame.Game.ExecutableName);
@@ -804,14 +814,18 @@ namespace Nucleus.Gaming
                         }
                     }
 
+                   
                     origRootFolder = rootFolder;
                     instanceExeFolder = linkBinFolder;
+
+                    Log("Trying to unlock all game files.");
+                    StartGameUtil.UnlockGameFiles(rootFolder);
 
                     if (!string.IsNullOrEmpty(gen.WorkingFolder))
                     {
                         linkBinFolder = Path.Combine(linkFolder, gen.WorkingFolder);
                         dirExclusions.Add(gen.WorkingFolder);
-                    }
+                    } 
 
                     // some games have save files inside their game folder, so we need to access them inside the loop
                     jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
@@ -1588,6 +1602,10 @@ namespace Nucleus.Gaming
                 if (processingExit)
                 {
                     return string.Empty;
+                }
+                else
+                { 
+                    TriggerOSD(2000, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{i + 1}"); 
                 }
 
                 if (context.NeedsSteamEmulation)
@@ -2510,39 +2528,39 @@ namespace Nucleus.Gaming
                 data.KilledMutexes = context.KillMutex?.Length == 0;
                 player.ProcessData = data;
 
-                if (i < GameProfile.PriorityClasses.Count)
+                ProfilePlayer profilePlayer = null;
+
+                if(GameProfile.ProfilePlayersList.Count > 0)
                 {
-                    if (GameProfile.PriorityClasses[i] != "Normal" && GameProfile.PriorityClasses[i] != null)
-                    {
-                        gen.ProcessorPriorityClass = GameProfile.PriorityClasses[i];
-                        ProcessUtil.SetProcessorPriorityClass(gen, proc);
-                    }
+                    profilePlayer = GameProfile.ProfilePlayersList[i];
+                }
+
+                if (profilePlayer?.PriorityClass != "Normal" && profilePlayer?.PriorityClass != null)
+                {
+                    player.PriorityClass = profilePlayer.PriorityClass;
+                    gen.ProcessorPriorityClass = profilePlayer.PriorityClass;
+                    ProcessUtil.SetProcessorPriorityClass(gen, proc);
                 }
                 else if (gen.ProcessorPriorityClass?.Length > 0)
                 {
                     ProcessUtil.SetProcessorPriorityClass(gen, proc);
                 }
 
-                if (i < GameProfile.IdealProcessors.Count)
-                {
-                    if (GameProfile.IdealProcessors[i] != "*" && GameProfile.IdealProcessors[i] != null)
-                    {
-                        gen.IdealProcessor = int.Parse(GameProfile.IdealProcessors[i]) - 1;
-                        ProcessUtil.SetIdealProcessor(gen, proc);
-                    }
+                if (profilePlayer?.IdealProcessor != "*" && profilePlayer?.IdealProcessor != null)
+                {                  
+                    gen.IdealProcessor = int.Parse(profilePlayer.IdealProcessor) - 1;
+                    ProcessUtil.SetIdealProcessor(gen, proc);
                 }
                 else if (gen.IdealProcessor > 0)
                 {
                     ProcessUtil.SetIdealProcessor(gen, proc);
                 }
 
-                if (i < GameProfile.Affinitys.Count)
+                if (profilePlayer?.Affinity != "" && profilePlayer?.Affinity != null)
                 {
-                    if (GameProfile.Affinitys[i] != "" && GameProfile.Affinitys[i] != null)
-                    {
-                        gen.UseProcessor = GameProfile.Affinitys[i];
-                        ProcessUtil.SetProcessorProcessorAffinity(gen, proc);
-                    }
+                    player.Affinity = profilePlayer.Affinity;
+                    gen.UseProcessor = profilePlayer.Affinity;
+                    ProcessUtil.SetProcessorProcessorAffinity(gen, proc);
                 }
                 else if ((gen.UseProcessor != null ? (gen.UseProcessor.Length > 0 ? 1 : 0) : 0) != 0)
                 {
@@ -3199,7 +3217,7 @@ namespace Nucleus.Gaming
 
         private void ProcessChangeAtEnd()
         {
-            List<PlayerInfo> players = profile.PlayerData;
+            List<PlayerInfo> players = profile.PlayersList;
 
             Log("Starting process end changes");
 
@@ -3512,7 +3530,7 @@ namespace Nucleus.Gaming
 
         public void CenterCursor()
         {
-            List<PlayerInfo> players = profile.PlayerData;
+            List<PlayerInfo> players = profile.PlayersList;
             if (players == null)
             {
                 return;
@@ -3684,7 +3702,8 @@ namespace Nucleus.Gaming
 
             Thread.Sleep(1000);
 
-            List<PlayerInfo> data = profile.PlayerData;
+            List<PlayerInfo> data = profile.PlayersList;
+
             foreach (PlayerInfo player in data)
             {
                 if (player.DInputJoystick != null)
@@ -3770,9 +3789,9 @@ namespace Nucleus.Gaming
                 FileUtil.CleanOriginalgGameFolder(this);
             }
 
-            if (gen.KeepSymLinkOnExit == false && !userGame.KeepSymLink)
+            if (!gen.KeepSymLinkOnExit && !userGame.KeepSymLink)
             {
-                NucleusUsers.DeleteGameContentFolder(this,gen,userGame,profile);
+                CleanGameContent.CleanContentFolder(gen);
             }
 
             if  (!bool.Parse(ini.IniReadValue("Misc", "KeepAccounts")))

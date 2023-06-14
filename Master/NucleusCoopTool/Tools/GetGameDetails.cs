@@ -16,8 +16,9 @@ namespace Nucleus.Coop.Tools
 {
     internal class GetGameDetails
     {
-        public static void GetDetails(GameManager gameManager, UserGameInfo currentGameInfo)
+        public static void GetDetails(UserGameInfo currentGameInfo)
         {
+            GameManager gameManager = GameManager.Instance;
             string userProfile = gameManager.GetUserProfilePath();
 
             if (File.Exists(userProfile))

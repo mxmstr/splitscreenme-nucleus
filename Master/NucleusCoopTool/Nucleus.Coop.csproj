@@ -217,6 +217,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\NewSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -238,7 +241,6 @@
     <Compile Include="Tools\AssetsDownloader.cs" />
     <Compile Include="Tools\blur.cs" />
     <Compile Include="Tools\CheckGameRequirements.cs" />
-    <Compile Include="Tools\CleanGameContent.cs" />
     <Compile Include="Controls\BufferedClientAreaPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -789,6 +791,9 @@
     <Content Include="gui\theme\default\game_options.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\info.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\instruction_closed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -796,9 +801,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\instruction_opened.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\intro.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\keyboard.png">
@@ -946,6 +948,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\unlocked.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\viewAll.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\virtual_keyboard.png">

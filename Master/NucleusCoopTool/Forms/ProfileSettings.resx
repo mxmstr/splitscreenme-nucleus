@@ -117,10 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="profileInfo.Text" xml:space="preserve">
-    <value>Profile will be saved or updated when all instances will be set and ready. 
-To load a profile click the profile list icon in the setup screen and choose the profile to load by clicking on it in the list. Profile settings can be ajusted before pressing the play button. 
-Some of the settings could break hooks functions or resizing functions so it's better to test the game with the default settings on first run. 
-The "Auto play" function doesn't support multiple keyboard and mouse. For more informations or if you have any doubts keep the default settings or ask for help. </value>
-  </data>
 </root>

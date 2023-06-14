@@ -590,13 +590,13 @@ namespace Nucleus.Coop
                     UserGameInfo uinfo = GameManager.Instance.TryAddGame(gameToAdd);
                     if (uinfo != null)
                     {
-                        main.NewUserGame(uinfo,false);
+                        main.NewUserGame(uinfo);
                         numAdded++;
                     }
                 }
 
                 MessageBox.Show(string.Format("{0}/{1} selected games added!", numAdded, checkboxFoundGames.CheckedItems.Count), "Games added");
-                main.RefreshGames(false);
+                main.RefreshGames();
             }
 
             btnSearch.Enabled = true;

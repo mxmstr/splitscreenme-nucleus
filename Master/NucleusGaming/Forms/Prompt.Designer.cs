@@ -35,7 +35,7 @@
             // 
             // lbl_Msg
             // 
-            this.lbl_Msg.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lbl_Msg.BackColor = System.Drawing.Color.Transparent;
             this.lbl_Msg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Msg.ForeColor = System.Drawing.Color.White;
             this.lbl_Msg.Location = new System.Drawing.Point(12, 9);
@@ -47,7 +47,9 @@
             // 
             // btn_Ok
             // 
-            this.btn_Ok.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btn_Ok.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Ok.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_Ok.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Ok.ForeColor = System.Drawing.Color.White;
             this.btn_Ok.Location = new System.Drawing.Point(167, 87);

@@ -1,4 +1,5 @@
-﻿using Nucleus.Interop.User32;
+﻿using Nucleus.Gaming.Coop.InputManagement.Structs;
+using Nucleus.Interop.User32;
 using System;
 using System.Runtime.InteropServices;
 
@@ -199,8 +200,8 @@ namespace Nucleus.Gaming.Windows.Interop
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
-
-
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
 
     }
 }

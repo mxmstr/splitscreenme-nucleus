@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Nucleus.Gaming.Forms;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
@@ -138,11 +141,13 @@ namespace Nucleus.Gaming
             }
 #if RELEASE
 
-            MessageBox.Show($"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n{ex.GetType().Name}\n\n[Message]\n{ex.Message}\n\n{help}\n", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);//[Stacktrace]\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            string error = $"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n\n{ex.GetType().Name}\n\n[Message]\n\n{ex.Message}\n\n{help}";
 #else
 
-            MessageBox.Show($"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n{ex.GetType().Name}\n\n[Message]\n{ex.Message}\n\n{help}\n\n[Stacktrace]\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            string error = $"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n\n{ex.GetType().Name}\n\n[Message]\n\n{ex.Message}\n{help}\n\n[Stacktrace]\n\n{ex.StackTrace}";
 #endif
+
+            NucleusMessageBox.Show("Something went wrong :(", error);
 
             Log("Attempting shut-down procedures in order to clean-up");
 
@@ -172,6 +177,7 @@ namespace Nucleus.Gaming
                     {
                         proc.Dispose();
                     }
+
                     if (!regFilePath.Contains("User Shell Folders"))
                     {
                         File.Delete(regFilePath);
@@ -180,6 +186,7 @@ namespace Nucleus.Gaming
             }
 
             GenericGameHandler.Instance.End(false);
+
             while (!GenericGameHandler.Instance.HasEnded)
             {
                 Thread.Sleep(1000);
@@ -220,8 +227,9 @@ namespace Nucleus.Gaming
             Windows.User32Util.ShowTaskBar();
 
             Log("High-level error log generated at content/" + file);
-
+#if RELEASE
             //Process.GetCurrentProcess().Kill();
+#endif
         }
 
         public static void Log(string str, object par1)

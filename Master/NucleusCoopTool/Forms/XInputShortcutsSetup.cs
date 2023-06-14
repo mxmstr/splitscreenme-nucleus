@@ -2,12 +2,14 @@
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.Windows.Interop;
 using SharpDX.XInput;
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Forms;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace Nucleus.Coop.Forms
 {
@@ -38,6 +40,7 @@ namespace Nucleus.Coop.Forms
             Cursor = default_Cursor;
             shortContainer.Cursor = default_Cursor;
             enabled_chk.Cursor = hand_Cursor;
+
             refreshTimer.Tick += new EventHandler(RefreshTimerTick);
             refreshTimer.Interval = 500;
             refreshTimer.Start();
@@ -222,7 +225,7 @@ namespace Nucleus.Coop.Forms
                 {
                     c.Text = "Guide";
                 }
-                else if (c.Text == "9999")
+                else if (c.Text == "9999" )
                 {
                     c.Text = "RightTrigger";
                 }
@@ -248,22 +251,22 @@ namespace Nucleus.Coop.Forms
 
             foreach (Control c in UINavContainer.Controls)
             {
-                if (c.Text == "1024")
-                {
-                    c.Text = "Guide";
-                }
-                else if (c.Text == "9999")
-                {
-                    c.Text = "RightTrigger";
-                }
-                else if (c.Text == "10000")
-                {
-                    c.Text = "LeftTrigger";
-                }
-
                 if (c.Name != "switch15")
                 {
-                    c.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
+                    if (c.Text == "1024")
+                    {
+                        c.Text = "Guide";
+                    }
+                    else if (c.Text == "9999")
+                    {
+                        c.Text = "RightTrigger";
+                    }
+                    else if (c.Text == "10000")
+                    {
+                        c.Text = "LeftTrigger";
+                    }
+      
+                    c.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);                  
                 }
 
                 if (c.Name == "switch15")
@@ -321,7 +324,6 @@ namespace Nucleus.Coop.Forms
                     if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox))
                     {
                         c.Font = new Font(c.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
                     }
                 }
 
@@ -373,7 +375,7 @@ namespace Nucleus.Coop.Forms
 
             g.DrawImage(controllerTop, top);
             g.DrawImage(controllerFront, front);
-
+            
             float radius = 25;
             float offset = ((radius / 2) / factor) * scale;
             float rec = (30 / factor) * scale;
@@ -396,7 +398,7 @@ namespace Nucleus.Coop.Forms
             RectangleF LT = new RectangleF((top.X + (59 / factor) * scale) - offset, (top.Y + (32 / factor) * scale) - offset, rec, rec);
             RectangleF RT = new RectangleF((top.X + (187 / factor) * scale) - offset, (top.Y + (32 / factor) * scale) - offset, rec, rec);
 
-            RectangleF toFill = RectangleF.Empty;
+            RectangleF highlight = RectangleF.Empty;
 
             for (int i = 0; i < XController.Controllers.Length; i++)
             {
@@ -425,102 +427,102 @@ namespace Nucleus.Coop.Forms
                     {
                         continue;
                     }
-
+                    
                     switch (pressed)
                     {
                         case 1024://Guide button
                             {
-                                toFill = Guide;
+                                highlight = Guide;
                                 break;
                             }
                         case (int)GamepadButtonFlags.RightShoulder:
                             {
 
-                                toFill = RB;
+                                highlight = RB;
                                 break;
                             }
                         case (int)GamepadButtonFlags.LeftShoulder:
                             {
-                                toFill = LB;
+                                highlight = LB;
                                 break;
                             }
 
                         case (int)GamepadButtonFlags.RightThumb:
                             {
-                                toFill = RS;
+                                highlight = RS;
                                 break;
                             }
                         case (int)GamepadButtonFlags.LeftThumb:
                             {
-                                toFill = LS;
+                                highlight = LS;
                                 break;
                             }
                         case (int)GamepadButtonFlags.A:
                             {
-                                toFill = A;
+                                highlight = A;
                                 break;
                             }
                         case (int)GamepadButtonFlags.B:
                             {
-                                toFill = B;
+                                highlight = B;
                                 break;
                             }
                         case (int)GamepadButtonFlags.X:
                             {
-                                toFill = X;
+                                highlight = X;
                                 break;
                             }
                         case (int)GamepadButtonFlags.Y:
                             {
-                                toFill = Y;
+                                highlight = Y;
                                 break;
                             }
                         case (int)GamepadButtonFlags.Back:
                             {
-                                toFill = Back;
+                                highlight = Back;
                                 break;
                             }
                         case (int)GamepadButtonFlags.Start:
                             {
-                                toFill = Start;
+                                highlight = Start;
                                 break;
                             }
                         case (int)GamepadButtonFlags.DPadUp:
                             {
-                                toFill = D_Up;
+                                highlight = D_Up;
                                 break;
                             }
                         case (int)GamepadButtonFlags.DPadRight:
                             {
-                                toFill = D_Right;
+                                highlight = D_Right;
                                 break;
                             }
                         case (int)GamepadButtonFlags.DPadDown:
                             {
-                                toFill = D_Down;
+                                highlight = D_Down;
                                 break;
                             }
                         case (int)GamepadButtonFlags.DPadLeft:
                             {
-                                toFill = D_Left;
+                                highlight = D_Left;
                                 break;
                             }
                     }
 
                     if (isRT)
                     {
-                        toFill = RT;
+                        highlight = RT;
                     }
                     else if (isRL)
                     {
-                        toFill = LT;
+                        highlight = LT;
                     }
 
                     g.ResetClip();
 
-                    g.Clip = new Region(new RectangleF(toFill.X, toFill.Y, toFill.Width, toFill.Height));
+                    g.Clip = new Region(new RectangleF(highlight.X, highlight.Y, highlight.Width, highlight.Height));
 
-                    g.FillEllipse(brush, toFill);
+                    g.FillEllipse(brush, highlight);
 
                     //prevPressed = (int)pressed;
                     if (this.ActiveControl != null)
@@ -592,7 +594,7 @@ namespace Nucleus.Coop.Forms
 
             if(switch15.Text == "")
             {
-                switch15.Text = "5000";
+                switch15.Text = "7000";
             }
 
             ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
@@ -641,6 +643,29 @@ namespace Nucleus.Coop.Forms
         private void Close_MouseLeave(object sender, EventArgs e)
         {
             Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
+        }
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        private void XInputShortcutsSetup_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                User32Interop.ReleaseCapture();
+                IntPtr nucHwnd = User32Interop.FindWindow(null, "Gamepad Shortcuts Setup");
+                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
+            }
+        }
+
+        private void bufferedClientAreaPanel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                User32Interop.ReleaseCapture();
+                IntPtr nucHwnd = User32Interop.FindWindow(null, "Gamepad Shortcuts Setup");
+                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
+            }
         }
     }
 }

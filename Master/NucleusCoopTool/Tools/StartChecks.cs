@@ -36,7 +36,7 @@ namespace Nucleus.Coop
             }
         }
 
-        public static bool IsAlredyRunning()
+        public static bool IsAlreadyRunning()
         {
             Thread.Sleep(1000);//Put this here for the theme switch option.
             if (Process.GetProcessesByName("NucleusCoop").Length > 1)
@@ -50,7 +50,43 @@ namespace Nucleus.Coop
 
         public static void CheckFilesIntegrity()
         {
-            string[] ncFiles = { "Ionic.Zip.Reduced.dll", "EasyHook.dll", "EasyHook32.dll", "EasyHook32Svc.exe", "EasyHook64.dll", "EasyHook64Svc.exe", "EasyHookSvc.exe", "Jint.dll", "NAudio.dll", "Newtonsoft.Json.dll", "Nucleus.Gaming.dll", "Nucleus.Hook32.dll", "Nucleus.Hook64.dll", "Nucleus.IJx64.exe", "Nucleus.IJx86.exe", "Nucleus.SHook32.dll", "Nucleus.SHook64.dll", "openxinput1_3.dll", "ProtoInputHooks32.dll", "ProtoInputHooks64.dll", "ProtoInputHooks64.dll", "ProtoInputHost.exe", "ProtoInputIJ32.exe", "ProtoInputIJ64.exe", "ProtoInputIJP32.dll", "ProtoInputIJP64.dll", "ProtoInputLoader32.dll", "ProtoInputLoader64.dll", "ProtoInputUtilDynamic32.dll", "ProtoInputUtilDynamic64.dll", "SharpDX.DirectInput.dll", "SharpDX.dll", "SharpDX.XInput.dll", "StartGame.exe", "WindowScrape.dll" };
+            string[] ncFiles = { 
+                "Ionic.Zip.Reduced.dll",
+                "EasyHook.dll", 
+                "EasyHook32.dll", 
+                "EasyHook32Svc.exe",
+                "EasyHook64.dll", 
+                "EasyHook64Svc.exe", 
+                "EasyHookSvc.exe", 
+                "Jint.dll", 
+                "NAudio.dll", 
+                "Newtonsoft.Json.dll", 
+                "Nucleus.Gaming.dll", 
+                "Nucleus.Hook32.dll", 
+                "Nucleus.Hook64.dll", 
+                "Nucleus.IJx64.exe", 
+                "Nucleus.IJx86.exe", 
+                "Nucleus.SHook32.dll", 
+                "Nucleus.SHook64.dll", 
+                "openxinput1_3.dll", 
+                "ProtoInputHooks32.dll", 
+                "ProtoInputHooks64.dll", 
+                "ProtoInputHooks64.dll", 
+                "ProtoInputHost.exe", 
+                "ProtoInputIJ32.exe", 
+                "ProtoInputIJ64.exe", 
+                "ProtoInputIJP32.dll", 
+                "ProtoInputIJP64.dll", 
+                "ProtoInputLoader32.dll", 
+                "ProtoInputLoader64.dll", 
+                "ProtoInputUtilDynamic32.dll",
+                "ProtoInputUtilDynamic64.dll",
+                "SharpDX.DirectInput.dll", 
+                "SharpDX.dll", 
+                "SharpDX.XInput.dll",
+                "StartGame.exe", 
+                "WindowScrape.dll" 
+            };
 
             foreach (string file in ncFiles)
             {
@@ -213,7 +249,7 @@ namespace Nucleus.Coop
             return true;
         }
 
-        public static void CheckVCRversion()
+        public static void Check_VCRVersion()
         {
             const string subkeyX86 = @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86";
             const string subkeyX64 = @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64";
@@ -241,7 +277,7 @@ namespace Nucleus.Coop
             }
         }
 
-        public static bool CheckNetCon()
+        public static bool CheckHubResponse()
         {
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -249,8 +285,9 @@ namespace Nucleus.Coop
             ServicePointManager.DefaultConnectionLimit = 9999;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://hub.splitscreen.me/");
-            request.Timeout = 5000;
-            request.Method = "HEAD"; // As per Lasse's comment
+            request.Timeout = 4000;
+            request.Method = "HEAD";// As per Lasse's comment
+
             try
             {
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
@@ -258,7 +295,7 @@ namespace Nucleus.Coop
                     return response.StatusCode == HttpStatusCode.OK;
                 }
             }
-            catch (WebException)
+            catch (Exception)
             {
                 return false;
             }

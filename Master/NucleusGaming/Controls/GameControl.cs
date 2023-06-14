@@ -1,7 +1,9 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Drawing;
 using System.Windows;
@@ -29,6 +31,7 @@ namespace Nucleus.Coop
         public string PlayerText { get; set; }
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
+        private System.Threading.Timer isUpdateAvailableTimer;
 
         protected override CreateParams CreateParams
         {
@@ -87,7 +90,7 @@ namespace Nucleus.Coop
 
                 title = new Label
                 {
-                    AutoSize = false,
+                    AutoSize = true,
                     Font = new Font(customFont, 8, FontStyle.Bold, GraphicsUnit.Point, 0),
                 };
 
@@ -143,19 +146,22 @@ namespace Nucleus.Coop
                     Controls.Add(playerIcon);
                     Controls.Add(favoriteBox);
                 }
-               
+         
                 DPIManager.Register(this);
             }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show("ERROR - " + ex.Message + "\n\nSTACKTRACE: " + ex.StackTrace);
             }
+
+            ///Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
+            isUpdateAvailableTimer = new System.Threading.Timer(isUpdateAvailable_Tick, null, 2600,5200);
         }
         ~GameControl()
         {
             DPIManager.Unregister(this);
         }
-
+      
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -178,7 +184,7 @@ namespace Nucleus.Coop
             players.Text = PlayerText;
 
             title.AutoSize = true;
-            title.MaximumSize = new Size(Width - picture.Width - (border * 2), 0);
+            title.MaximumSize = new Size((int)(209*scale) - picture.Width - (border * 2), 0);
 
             players.Size = plabelSize;
             playerIcon.Size = new Size(players.Size.Height, players.Size.Height);
@@ -203,6 +209,23 @@ namespace Nucleus.Coop
             favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
 
             ResumeLayout();
+        }
+
+        private void isUpdateAvailable_Tick(object state)
+        {
+            if (GameInfo != null)
+            {
+                if (GameInfo.UpdateAvailable)
+                {
+                    title.ForeColor = Color.PaleGreen;
+
+                    TopLevelControl?.Invoke((MethodInvoker)delegate ()
+                    {
+                        CustomToolTips.SetToolTip(this, "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    });
+                }
+            }
+            //isUpdateAvailableTimer.Dispose();
         }
 
         protected override void OnControlAdded(ControlEventArgs e)

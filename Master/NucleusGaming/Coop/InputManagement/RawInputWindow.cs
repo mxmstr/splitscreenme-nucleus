@@ -78,7 +78,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             //hWnd zero for all windows (the mouse pointers are in this loop!)
             while ((bRet = WinApi.GetMessage(out MSG msg, IntPtr.Zero, 0, 0)) != 0)
-            {
+            {               
                 if (bRet == -1)
                 {
                     if (sqErr++ > 10)

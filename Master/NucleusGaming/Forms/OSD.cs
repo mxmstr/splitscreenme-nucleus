@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Nucleus.Gaming.Coop.Generic
 {
@@ -12,12 +13,16 @@ namespace Nucleus.Gaming.Coop.Generic
         public OSD()
         {
             InitializeComponent();
+            TransparencyKey = Color.Black;
             timer.Tick += new EventHandler(TimerTick);           
             Show();
+
+            DPIManager.Register(this);
+            DPIManager.AddForm(this);
         }
 
-        public void Settings(int timing, string text)
-        {
+        public void Show(int timing, string text)        
+        {      
             this.Invoke((MethodInvoker)delegate ()
             {
                 Value.Text = text;
@@ -47,7 +52,8 @@ namespace Nucleus.Gaming.Coop.Generic
                 DPIManager.Unregister(this);
                 return;
             }
+            
+            Size = new Size((int)(Width * scale), (int)(Height * scale));  
         }
-
     }
 }

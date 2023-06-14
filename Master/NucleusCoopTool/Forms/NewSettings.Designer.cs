@@ -42,7 +42,7 @@ namespace Nucleus.Coop
             this.btn_credits = new System.Windows.Forms.Button();
             this.settingsTab = new BufferedClientAreaPanel();
             this.btn_Gb_Update = new System.Windows.Forms.Button();
-            this.disableQuickUpdate = new System.Windows.Forms.CheckBox();
+            this.showUIInfoMsg = new System.Windows.Forms.CheckBox();
             this.disableGameProfiles = new System.Windows.Forms.CheckBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
             this.ctrlr_shorcutsBtn = new System.Windows.Forms.Button();
@@ -135,6 +135,7 @@ namespace Nucleus.Coop
             this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioRefresh = new System.Windows.Forms.Button();
             this.playersTab = new BufferedClientAreaPanel();
+            this.gamepadsAssignMethods = new System.Windows.Forms.CheckBox();
             this.btnNext = new System.Windows.Forms.Button();
             this.def_sid_comboBox = new System.Windows.Forms.ComboBox();
             this.default_sid_list_label = new System.Windows.Forms.Label();
@@ -409,7 +410,7 @@ namespace Nucleus.Coop
             // 
             this.settingsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.settingsTab.Controls.Add(this.btn_Gb_Update);
-            this.settingsTab.Controls.Add(this.disableQuickUpdate);
+            this.settingsTab.Controls.Add(this.showUIInfoMsg);
             this.settingsTab.Controls.Add(this.disableGameProfiles);
             this.settingsTab.Controls.Add(this.keepAccountsCheck);
             this.settingsTab.Controls.Add(this.ctrlr_shorcutsBtn);
@@ -440,7 +441,7 @@ namespace Nucleus.Coop
             // 
             this.btn_Gb_Update.BackColor = System.Drawing.Color.Transparent;
             this.btn_Gb_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Gb_Update.Location = new System.Drawing.Point(372, 328);
+            this.btn_Gb_Update.Location = new System.Drawing.Point(370, 356);
             this.btn_Gb_Update.Name = "btn_Gb_Update";
             this.btn_Gb_Update.Size = new System.Drawing.Size(257, 28);
             this.btn_Gb_Update.TabIndex = 169;
@@ -448,22 +449,21 @@ namespace Nucleus.Coop
             this.btn_Gb_Update.UseVisualStyleBackColor = false;
             this.btn_Gb_Update.Click += new System.EventHandler(this.btn_Gb_Update_Click);
             // 
-            // disableQuickUpdate
+            // showUIInfoMsg
             // 
-            this.disableQuickUpdate.AutoSize = true;
-            this.disableQuickUpdate.BackColor = System.Drawing.Color.Transparent;
-            this.disableQuickUpdate.Checked = true;
-            this.disableQuickUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.disableQuickUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.disableQuickUpdate.Location = new System.Drawing.Point(372, 369);
-            this.disableQuickUpdate.Margin = new System.Windows.Forms.Padding(2);
-            this.disableQuickUpdate.Name = "disableQuickUpdate";
-            this.disableQuickUpdate.Size = new System.Drawing.Size(211, 17);
-            this.disableQuickUpdate.TabIndex = 168;
-            this.disableQuickUpdate.Tag = "";
-            this.disableQuickUpdate.Text = "Disable Fast Handlers Update Function";
-            this.disableQuickUpdate.UseVisualStyleBackColor = false;
-            this.disableQuickUpdate.Visible = false;
+            this.showUIInfoMsg.AutoSize = true;
+            this.showUIInfoMsg.BackColor = System.Drawing.Color.Transparent;
+            this.showUIInfoMsg.Checked = true;
+            this.showUIInfoMsg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showUIInfoMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showUIInfoMsg.Location = new System.Drawing.Point(371, 11);
+            this.showUIInfoMsg.Margin = new System.Windows.Forms.Padding(2);
+            this.showUIInfoMsg.Name = "showUIInfoMsg";
+            this.showUIInfoMsg.Size = new System.Drawing.Size(256, 19);
+            this.showUIInfoMsg.TabIndex = 168;
+            this.showUIInfoMsg.Tag = "";
+            this.showUIInfoMsg.Text = "Show UI Info Messages(Restart Required)";
+            this.showUIInfoMsg.UseVisualStyleBackColor = false;
             // 
             // disableGameProfiles
             // 
@@ -480,6 +480,7 @@ namespace Nucleus.Coop
             this.disableGameProfiles.Tag = "";
             this.disableGameProfiles.Text = "Disable Game Profiles";
             this.disableGameProfiles.UseVisualStyleBackColor = false;
+            this.disableGameProfiles.CheckedChanged += new System.EventHandler(this.disableGameProfiles_CheckedChanged);
             // 
             // keepAccountsCheck
             // 
@@ -501,7 +502,7 @@ namespace Nucleus.Coop
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(372, 295);
+            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(370, 323);
             this.ctrlr_shorcutsBtn.Name = "ctrlr_shorcutsBtn";
             this.ctrlr_shorcutsBtn.Size = new System.Drawing.Size(257, 27);
             this.ctrlr_shorcutsBtn.TabIndex = 164;
@@ -513,7 +514,7 @@ namespace Nucleus.Coop
             // 
             this.nucUserPassTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nucUserPassTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nucUserPassTxt.Location = new System.Drawing.Point(371, 27);
+            this.nucUserPassTxt.Location = new System.Drawing.Point(371, 58);
             this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
             this.nucUserPassTxt.MaxLength = 127;
             this.nucUserPassTxt.Name = "nucUserPassTxt";
@@ -528,7 +529,7 @@ namespace Nucleus.Coop
             this.password_Label.AutoSize = true;
             this.password_Label.BackColor = System.Drawing.Color.Transparent;
             this.password_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.password_Label.Location = new System.Drawing.Point(368, 8);
+            this.password_Label.Location = new System.Drawing.Point(368, 39);
             this.password_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.password_Label.Name = "password_Label";
             this.password_Label.Size = new System.Drawing.Size(138, 15);
@@ -767,7 +768,7 @@ namespace Nucleus.Coop
             this.hotkeyBox.Controls.Add(this.plus2);
             this.hotkeyBox.Controls.Add(this.settingsCloseHKTxt);
             this.hotkeyBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hotkeyBox.Location = new System.Drawing.Point(372, 57);
+            this.hotkeyBox.Location = new System.Drawing.Point(370, 85);
             this.hotkeyBox.Margin = new System.Windows.Forms.Padding(2);
             this.hotkeyBox.Name = "hotkeyBox";
             this.hotkeyBox.Padding = new System.Windows.Forms.Padding(2);
@@ -1307,6 +1308,7 @@ namespace Nucleus.Coop
             // 
             this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
+            this.numMaxPlyrs.Enabled = false;
             this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numMaxPlyrs.Location = new System.Drawing.Point(297, 249);
             this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
@@ -1799,6 +1801,7 @@ namespace Nucleus.Coop
             // playersTab
             // 
             this.playersTab.BackColor = System.Drawing.Color.PaleGreen;
+            this.playersTab.Controls.Add(this.gamepadsAssignMethods);
             this.playersTab.Controls.Add(this.btnNext);
             this.playersTab.Controls.Add(this.def_sid_comboBox);
             this.playersTab.Controls.Add(this.default_sid_list_label);
@@ -1808,6 +1811,18 @@ namespace Nucleus.Coop
             this.playersTab.Name = "playersTab";
             this.playersTab.Size = new System.Drawing.Size(671, 401);
             this.playersTab.TabIndex = 132;
+            // 
+            // gamepadsAssignMethods
+            // 
+            this.gamepadsAssignMethods.AutoSize = true;
+            this.gamepadsAssignMethods.Checked = true;
+            this.gamepadsAssignMethods.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.gamepadsAssignMethods.Location = new System.Drawing.Point(16, 34);
+            this.gamepadsAssignMethods.Name = "gamepadsAssignMethods";
+            this.gamepadsAssignMethods.Size = new System.Drawing.Size(191, 19);
+            this.gamepadsAssignMethods.TabIndex = 295;
+            this.gamepadsAssignMethods.Text = "Follow XInput Gamepad Index\r\n";
+            this.gamepadsAssignMethods.UseVisualStyleBackColor = true;
             // 
             // btnNext
             // 
@@ -3604,7 +3619,7 @@ namespace Nucleus.Coop
         private Label label35;
         private Label label38;
         private ComboBox player28N;
-        private CheckBox disableQuickUpdate;
+        private CheckBox showUIInfoMsg;
         private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
         private Gaming.Controls.CustomNumericUpDown numUpDownVer;
         private Label label29;
@@ -3612,5 +3627,6 @@ namespace Nucleus.Coop
         private Label label28;
         private Gaming.Controls.CustomNumericUpDown numUpDownHor;
         private Button btn_Gb_Update;
+        private CheckBox gamepadsAssignMethods;
     }
 }

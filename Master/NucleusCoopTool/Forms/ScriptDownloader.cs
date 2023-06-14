@@ -3,7 +3,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -77,22 +79,14 @@ namespace Nucleus.Coop.Forms
         private int prevWidth;
         private void ScriptDownloader_ResizeBegin(object sender, EventArgs e)
         {
-            foreach (Control c in ctrls)
-            {
-                c.Visible = false;
-            }
+            mainContainer.Visible = false;
             prevWidth = Width;
             Opacity = 0.6D;
         }
 
         private void ScriptDownloader_ResizeEnd(object sender, EventArgs e)
         {
-            foreach (Control c in ctrls)
-            {
-                if (c.Name != "chkBox_Verified")
-                    c.Visible = true;
-            }
-
+            mainContainer.Visible = true;
             list_Games.Columns[7].Width += Width - prevWidth;
             Opacity = 1.0D;
         }
@@ -137,10 +131,20 @@ namespace Nucleus.Coop.Forms
             if (mf.roundedcorners)
             {
                 Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                mainContainer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
             BackgroundImage = ImageCache.GetImage(mf.theme + "other_backgrounds.jpg");
+            btn_Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
+            btn_Prev.BackgroundImage = ImageCache.GetImage(Globals.Theme + "arrow_left.png");
+            btn_Next.BackgroundImage = ImageCache.GetImage(Globals.Theme + "arrow_right.png");
+            btn_Download.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_download_assets_mousehover.png");
+            //btn_Extract.BackgroundImage = ImageCache.GetImage(Globals.Theme + "extract.png");
+            btn_Info.BackgroundImage = ImageCache.GetImage(Globals.Theme + "info.png");
+            btn_Search.BackgroundImage = ImageCache.GetImage(Globals.Theme + "magnifier.png");
+            btn_ViewAll.BackgroundImage = ImageCache.GetImage(Globals.Theme + "magnifier.png");
+            btn_Maximize.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_maximize.png");
 
             btn_Next.BackColor = mf.buttonsBackColor;
             btn_Prev.BackColor = mf.buttonsBackColor;
@@ -149,7 +153,8 @@ namespace Nucleus.Coop.Forms
             btn_Search.BackColor = mf.buttonsBackColor;
             btn_Close.BackColor = mf.buttonsBackColor;
             btn_Download.BackColor = mf.buttonsBackColor;
-            btn_Extract.BackColor = mf.buttonsBackColor;
+            //btn_Extract.BackColor = mf.buttonsBackColor;
+            btn_Maximize.BackColor = mf.buttonsBackColor;
 
             btn_Next.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Prev.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
@@ -158,7 +163,8 @@ namespace Nucleus.Coop.Forms
             btn_Search.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Close.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Download.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            btn_Extract.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            //btn_Extract.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            btn_Maximize.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
 
             controlscollect();
 
@@ -166,11 +172,11 @@ namespace Nucleus.Coop.Forms
             {
                 control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
-                if (control.GetType() == typeof(Button))
+                if (control.GetType() == typeof(Button) || control.GetType() == typeof(ComboBox))
                 {
                     control.Cursor = hand_Cursor;
 
-                    if (mf.mouseClick)
+                    if (mf.mouseClick & control.GetType() == typeof(Button))
                     {
                         control.Click += new System.EventHandler(this.button_Click);
                     }
@@ -221,8 +227,19 @@ namespace Nucleus.Coop.Forms
                 StartPosition = FormStartPosition.CenterScreen;
             }
 
+            SetToolTips();
+
             DPIManager.Register(this);
             DPIManager.Update(this);
+        }
+
+
+        private void SetToolTips()
+        {
+            CustomToolTips.SetToolTip(btn_ViewAll, "View all handlers.", new int[] { 190, 0, 0, 0 } , new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_Info, "Show some handler informations.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_Search, "Start searching handler(s) for a specific game.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_Download, "Download the selected game handler.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         public new void UpdateSize(float scale)
@@ -458,6 +475,9 @@ namespace Nucleus.Coop.Forms
                 {
                     btn_Next.Enabled = true;
                 }
+
+                btn_Prev.Visible = true;
+                btn_Next.Visible = true;
             }
         }
 
@@ -470,8 +490,8 @@ namespace Nucleus.Coop.Forms
 
             list_Games.Items.Clear();
             searchHandlers.Clear();
-            btn_Download.Enabled = false;
-            btn_Info.Enabled = false;
+            //btn_Download.Enabled = false;
+            //btn_Info.Enabled = false;
 
             list_Games.BeginUpdate();
             Cursor.Current = Cursors.WaitCursor;
@@ -691,7 +711,7 @@ namespace Nucleus.Coop.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                btn_Search_Click(this, new EventArgs());
+                //btn_Search_Click(this, new EventArgs());
             }
         }
 
@@ -740,6 +760,7 @@ namespace Nucleus.Coop.Forms
             myListView.Sort();
             myListView.SetSortIcon(e.Column, lvwColumnSorter.Order);
             myListView.EnsureVisible(0);
+
         }
 
         private void btn_Info_Click(object sender, EventArgs e)
@@ -761,6 +782,7 @@ namespace Nucleus.Coop.Forms
                     MessageBox.Show("Error fetching handler", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
                 HandlerInfo handlerInfo = new HandlerInfo(handler, mainForm);
                 handlerInfo.ShowDialog();
             }
@@ -768,6 +790,9 @@ namespace Nucleus.Coop.Forms
 
         private void btn_Download_Click(object sender, EventArgs e)
         {
+            btn_Download.Visible = false;
+            btn_Info.Visible = false;
+
             if (list_Games.SelectedItems.Count == 1)
             {
                 Handler handler = null;
@@ -791,49 +816,59 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        private void chkBox_Verified_Click(object sender, EventArgs e)
-        {
-            if (chkBox_Verified.Checked)
-            {
-                if (list_Games.Items.Count > 0)
-                {
-                    foreach (ListViewItem game in list_Games.Items)
-                    {
-                        if (game.SubItems[2].Text != "ü")
-                        {
-                            game.Remove();
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (lastSearch == string.Empty)
-                {
-                    grabAll = true;
-                }
-                else
-                {
-                    txt_Search.Text = lastSearch;
-                }
+        //private void chkBox_Verified_Click(object sender, EventArgs e)
+        //{
+        //    if (chkBox_Verified.Checked)
+        //    {
+        //        if (list_Games.Items.Count > 0)
+        //        {
+        //            foreach (ListViewItem game in list_Games.Items)
+        //            {
+        //                if (game.SubItems[2].Text != "ü")
+        //                {
+        //                    game.Remove();
+        //                }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (lastSearch == string.Empty)
+        //        {
+        //            grabAll = true;
+        //        }
+        //        else
+        //        {
+        //            txt_Search.Text = lastSearch;
+        //        }
 
-                btn_Search.PerformClick();
-            }
-        }
+        //        btn_Search.PerformClick();
+        //    }
+        //}
 
         private void btn_ViewAll_Click(object sender, EventArgs e)
         {
             grabAll = true;
+
+            btn_Download.Visible = false;
+            btn_Info.Visible = false;
+
             btn_Search.PerformClick();
+
+
         }
 
         private void btn_Prev_Click(object sender, EventArgs e)
         {
+            btn_Download.Visible = false;
+            btn_Info.Visible = false;
+
             entryIndex -= entriesPerPage;
             if (entryIndex < 0)
             {
                 entryIndex = 0;
             }
+
 
             //chkBox_Verified.Checked = false;
             FetchHandlers(entryIndex);
@@ -841,6 +876,9 @@ namespace Nucleus.Coop.Forms
 
         private void btn_Next_Click(object sender, EventArgs e)
         {
+            btn_Download.Visible = false;
+            btn_Info.Visible = false;
+
             int tot = handlers.Count;
             if (chkBox_Verified.Checked)
             {
@@ -852,6 +890,7 @@ namespace Nucleus.Coop.Forms
             {
                 entryIndex = tot - entriesPerPage;
             }
+
 
             //chkBox_Verified.Checked = false;
             FetchHandlers(entryIndex);
@@ -917,28 +956,28 @@ namespace Nucleus.Coop.Forms
         {
             if (list_Games.SelectedItems.Count == 1)
             {
-                btn_Download.Enabled = true;
-                btn_Info.Enabled = true;
+                btn_Download.Visible = true;
+                btn_Info.Visible = true;
             }
         }
 
-        private void btn_Extract_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                Title = "Select a game handler to extract",
-                DefaultExt = "nc",
-                InitialDirectory = Gaming.GameManager.Instance.GetJsScriptsPath(),
-                Filter = "nc files (*.nc)|*.nc"
-            };
+        //private void btn_Extract_Click(object sender, EventArgs e)
+        //{
+        //    OpenFileDialog ofd = new OpenFileDialog
+        //    {
+        //        Title = "Select a game handler to extract",
+        //        DefaultExt = "nc",
+        //        InitialDirectory = Gaming.GameManager.Instance.GetJsScriptsPath(),
+        //        Filter = "nc files (*.nc)|*.nc"
+        //    };
 
-            DialogResult result = ofd.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                DownloadPrompt downloadPrompt = new DownloadPrompt(null, mainForm, ofd.FileName);
-                downloadPrompt.ShowDialog();
-            }
-        }
+        //    DialogResult result = ofd.ShowDialog();
+        //    if (result == DialogResult.OK)
+        //    {
+        //        DownloadPrompt downloadPrompt = new DownloadPrompt(null, mainForm, ofd.FileName);
+        //        downloadPrompt.ShowDialog();
+        //    }
+        //}
 
         private void ScriptDownloader_ClientSizeChanged(object sender, EventArgs e)
         {
@@ -948,12 +987,33 @@ namespace Nucleus.Coop.Forms
                 if (mainForm.roundedcorners)
                 {
                     Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                    mainContainer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
                 }
                 else
                 {
                     Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+                    mainContainer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
                 }
             }
+        }
+
+        private void btn_Maximize_MouseClick(object sender, MouseEventArgs e)
+        {
+            WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized;
+        }
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+
+        private void mainContainer_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                User32Interop.ReleaseCapture();
+                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
+                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
+            }
+
         }
     }
 }

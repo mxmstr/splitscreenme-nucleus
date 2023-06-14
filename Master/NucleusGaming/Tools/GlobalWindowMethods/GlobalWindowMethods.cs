@@ -76,8 +76,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             if (processData.HWnd == null)
             {
-                profile.PlayerData[i - 1].ProcessData.HWnd = new HwndObject(profile.PlayerData[i - 1].ProcessData.Process.NucleusGetMainWindowHandle());
-                processData.HWnd = profile.PlayerData[i - 1].ProcessData.HWnd;
+                profile.PlayersList[i - 1].ProcessData.HWnd = new HwndObject(profile.PlayersList[i - 1].ProcessData.Process.NucleusGetMainWindowHandle());
+                processData.HWnd = profile.PlayersList[i - 1].ProcessData.HWnd;
                 Thread.Sleep(1000);
             }
 
@@ -654,11 +654,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             if (profile == null || !GameProfile.Saved || !canSwitch)
             {
-                Globals.MainOSD.Settings(1600, $"Can't Be Used For Now");
+                Globals.MainOSD.Show(1600, $"Can't Be Used For Now");
                 return;
             }
 
-            List<PlayerInfo> players = profile.PlayerData.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();
+            List<PlayerInfo> players = profile.PlayersList.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();
             bool adjust = GameProfile.UseSplitDiv;
 
             var screens = ScreensUtil.AllScreens();
@@ -982,11 +982,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             if (profile == null || !GameProfile.Saved)
             {
-                Globals.MainOSD.Settings(1600, $"Can't Be Used For Now");
+                Globals.MainOSD.Show(1600, $"Can't Be Used For Now");
                 return;
             }
 
-            List<PlayerInfo> players = profile.PlayerData;
+            List<PlayerInfo> players = profile.PlayersList;
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -1071,12 +1071,12 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             if (on)
             {
                 canSwitch = false;
-                Globals.MainOSD.Settings(1600, "Cutscenes Mode On");
+                Globals.MainOSD.Show(1600, "Cutscenes Mode On");
             }
             else
             {
                 canSwitch = true;
-                Globals.MainOSD.Settings(1600, "Cutscenes Mode Off");
+                Globals.MainOSD.Show(1600, "Cutscenes Mode Off");
                 if (GameProfile.Cts_Unfocus)
                 {
                     ChangeForegroundWindow();
@@ -1098,7 +1098,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
 
             genericGameHandler.exited = 0;
-            List<PlayerInfo> players = profile.PlayerData;
+            List<PlayerInfo> players = profile.PlayersList;
             genericGameHandler.timer += delayMS;
 
             bool updatedHwnd = false;
@@ -1617,7 +1617,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     catch
                     { }
 
-                    Globals.MainOSD.Settings(1600, $"Game Windows Minimized");
+                    Globals.MainOSD.Show(1600, $"Game Windows Minimized");
 
                     User32Util.ShowTaskBar();
                     TopMostToggle = false;
@@ -1649,14 +1649,14 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     }
 
                     User32Util.HideTaskbar();
-                    Globals.MainOSD.Settings(1600, $"Game Windows Restored");
+                    Globals.MainOSD.Show(1600, $"Game Windows Restored");
 
                     TopMostToggle = true;
                 }
             }
             else
             {
-                Globals.MainOSD.Settings(1600, $"Unlock Inputs First (Press {Globals.ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                Globals.MainOSD.Show(1600, $"Unlock Inputs First (Press {Globals.ini.IniReadValue("Hotkeys", "LockKey")} key)");
             }
         }
 

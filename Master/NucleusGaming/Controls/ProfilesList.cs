@@ -35,9 +35,9 @@ namespace Nucleus.Gaming.Controls
         private Color buttonsBackColor;
         public string loadedTitle;
         private Pen borderPen;
-        private PositionsControl parentControl;
+        private SetupScreen parentControl;
 
-        public ProfilesList(PositionsControl parent)
+        public ProfilesList(SetupScreen parent)
         {
             parentControl = parent;
 
@@ -50,7 +50,8 @@ namespace Nucleus.Gaming.Controls
             Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Visible = false;
             BorderStyle = BorderStyle.None;
-            BackColor = Color.FromArgb(150, 0, 0, 0);
+            BackColor = Color.FromArgb(50,0, 0, 0);
+
             buttonsBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[0]),
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
@@ -62,27 +63,6 @@ namespace Nucleus.Gaming.Controls
 
             default_Cursor = new Cursor(Globals.Theme + "cursor.ico");
             hand_Cursor = new Cursor(Globals.Theme + "cursor_hand.ico");
-            SetToolTips();
-        }
-
-        private void SetToolTips()
-        {
-            notesTooltip = new ToolTip();
-            notesTooltip.InitialDelay = 100;
-            notesTooltip.ReshowDelay = 100;
-            notesTooltip.AutoPopDelay = 5000;
-            loadTooltip = new ToolTip();
-            loadTooltip.InitialDelay = 100;
-            loadTooltip.ReshowDelay = 100;
-            loadTooltip.AutoPopDelay = 5000;
-            deleteTooltip = new ToolTip();
-            deleteTooltip.InitialDelay = 100;
-            deleteTooltip.ReshowDelay = 100;
-            deleteTooltip.AutoPopDelay = 5000;
-            unloadTooltip = new ToolTip();
-            unloadTooltip.InitialDelay = 100;
-            unloadTooltip.ReshowDelay = 100;
-            unloadTooltip.AutoPopDelay = 5000;
         }
 
         public void profileBtn_CheckedChanged(object sender, EventArgs e)
@@ -113,6 +93,7 @@ namespace Nucleus.Gaming.Controls
             if ((selected.Text == "Unload" && selected.ForeColor == Color.Gray) || e == null)
             {
                 Control mainform = TopLevelControl;
+
                 if (mainform != null)
                 {
                     Control[] parent = mainform.Controls.Find("btn_Play", true);
@@ -130,11 +111,11 @@ namespace Nucleus.Gaming.Controls
             {
                 selected.ForeColor = Color.Gray;
                 GameProfile.currentProfile.Reset();
-                Globals.MainOSD.Settings(500, "Game Profile Unloaded");
+                Globals.MainOSD.Show(500, "Game Profile Unloaded");
                 return;
             }
 
-            if (GameProfile.currentProfile.LoadUserProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
+            if (GameProfile.currentProfile.LoadGameProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
             {
                 Controls[int.Parse(selected.Name)-1].ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
@@ -146,8 +127,7 @@ namespace Nucleus.Gaming.Controls
         public void Update_ProfilesList()
         {
             Controls.Clear();
-            SetToolTips();
-            
+                     
             List<SizeF> sizes = new List<SizeF>();
 
             Size = new Size((int)(300* _scale), (int)(3 * _scale));
@@ -191,7 +171,7 @@ namespace Nucleus.Gaming.Controls
                 };
 
                 deleteBtn.Cursor = hand_Cursor;
-                deleteTooltip.SetToolTip(deleteBtn, "Delete this game profile.");
+                deleteTooltip = CustomToolTips.SetToolTip(deleteBtn, "Delete this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 deleteBtn.Click += new EventHandler(DeleteBtn_Click);//Delete profile
 
                 offset += deleteBtn.Width;
@@ -210,7 +190,7 @@ namespace Nucleus.Gaming.Controls
                 };
 
                 previewBtn.Cursor = hand_Cursor;             
-                notesTooltip.SetToolTip(previewBtn, "Show profile content or user notes.");
+                notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show profile content or user notes if available.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
 
                 offset += previewBtn.Width;
@@ -230,7 +210,7 @@ namespace Nucleus.Gaming.Controls
                 };
 
                 profileBtn.Cursor = hand_Cursor;
-                loadTooltip.SetToolTip(profileBtn, "Load this game profile.");
+                loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 profileBtn.Click += new EventHandler(profileBtn_CheckedChanged);
 
                 if (i != GameProfile.profilesPathList.Count)
@@ -243,7 +223,7 @@ namespace Nucleus.Gaming.Controls
                 else
                 {
                     profileBtn.ForeColor = Color.Gray;
-                    unloadTooltip.SetToolTip(profileBtn, "Unload current loaded game profile.");
+                    unloadTooltip = CustomToolTips.SetToolTip(profileBtn, "Unload current loaded game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
      
                 using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new Bitmap(1, 1)))
@@ -256,7 +236,7 @@ namespace Nucleus.Gaming.Controls
                 Controls.Add(profileBtn);
             }
 
-            var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();
+            var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();//Sort profiles titles by Width so the list Width is set to the max value
             Width = (int)((sortedSizes[0].Width) * _scale) + offset;
 
             Location = new Point((parentControl.gameProfilesList_btn.Left - Width) + 1 , parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
@@ -284,40 +264,18 @@ namespace Nucleus.Gaming.Controls
             if (preview.Text == "Unload")
             {
                 return;
-            }
-
-            Control mainform = TopLevelControl;
-            Control[] scriptAuthorTxt = mainform.Controls.Find("scriptAuthorTxt", true);
-            Control[] btn_textSwitcher = mainform.Controls.Find("btn_textSwitcher", true);
-            Control[] HandlerNoteTitle = mainform.Controls.Find("HandlerNoteTitle", true);
-            Control[] ScriptAuthorTxtSizer = mainform.Controls.Find("scriptAuthorTxtSizer", true);
+            }          
 
             string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(preview.Name) - 1]);
             JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
-            string text;
+            Control[] zoom = TopLevelControl.Controls.Find("setupScreen", true);
+            RichTextBox  textbox = zoom[0].Controls.Find("handlerNoteZoom",true)[0] as RichTextBox;
 
-            if ((string)Jprofile["Notes"] != "" && (string)Jprofile["Notes"] != null)
-            {
-                text = (string)Jprofile["Notes"];
-            }
-            else
-            {
-                text = jsonString.Replace(" ", "").
-                                  Replace(",", "").
-                                  Replace("\"", "").
-                                  Replace("{", "").
-                                  Replace("}", "");
-            }
-
-            if (!ScriptAuthorTxtSizer[0].Visible)
-            {
-                ScriptAuthorTxtSizer[0].Visible = true;
-            }
-
-            scriptAuthorTxt[0].Text = text;
-            HandlerNoteTitle[0].Text = $"Profile n°{preview.Name}";
-            btn_textSwitcher[0].Visible = true;
+            textbox.Text = jsonString;
+            textbox.Parent.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, textbox.Parent.Width, textbox.Parent.Height, 20, 20));
+            textbox.Parent.Visible = true;
+            textbox.Parent.BringToFront();
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
@@ -334,6 +292,7 @@ namespace Nucleus.Gaming.Controls
             if (dialogResult == DialogResult.Yes)
             {
                 File.Delete(GameProfile.profilesPathList[int.Parse(deleteBtn.Parent.Name) - 1]);
+
                 List<FileInfo> profilesPath = Directory.GetParent(GameProfile.profilesPathList[int.Parse(deleteBtn.Parent.Name) - 1]).
                                               EnumerateFiles().OrderBy(s => int.Parse(Regex.Match(s.Name, @"\d+").Value)).ToList();
 
@@ -344,17 +303,19 @@ namespace Nucleus.Gaming.Controls
                         continue;
                     }
 
-                    File.Move(profilesPath[i].FullName, $"{Directory.GetParent(profilesPath[i].FullName)}\\Profile[{i + 1}].json");
+                    File.Move(profilesPath[i].FullName, $@"{Directory.GetParent(profilesPath[i].FullName)}\Profile[{i + 1}].json");
                 }
 
                 GameProfile.currentProfile.Reset();
+
                 Update_ProfilesList();
+
                 if (Controls.Count == 0)
                 {
                     parentControl.gameProfilesList_btn.Image = ImageCache.GetImage(Globals.Theme + "profiles_list.png");
                 }
 
-                Globals.MainOSD.Settings(500, "Game Profile Deleted");
+                Globals.MainOSD.Show(500, "Game Profile Deleted");
             }
         }
 
@@ -371,14 +332,12 @@ namespace Nucleus.Gaming.Controls
             g.DrawArc(borderPen, 0, Height - 18, 16, 16, 90, 90);//Bottom left angle
 
             g.DrawArc(borderPen, Width - 18, 0, 16, 16, -90, 90);//Top Right angle   
-            g.DrawArc(borderPen, Width - 18, Height - 18, 16, 16, 90, -90);//Bottom Right angle
-       
+            g.DrawArc(borderPen, Width - 18, Height - 18, 16, 16, 90, -90);//Bottom Right angle 
         }
 
         public void UpdateSize(float scale)
         {
             _scale = scale;
         }
-
     }
 }

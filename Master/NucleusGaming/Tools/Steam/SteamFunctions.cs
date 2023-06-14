@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Util;
 using System;
 using System.Collections.Generic;
@@ -348,11 +349,11 @@ namespace Nucleus.Gaming.Tools.Steam
                         }
                     }
 
-                    if (GameProfile.SteamIDs.Count - 1 >= i)
+                    if (GameProfile.ProfilePlayersList.Count - 1 >= i)
                     {
                         genericGameHandler.Log("Using steam ID from profile");
-                        steamID = GameProfile.SteamIDs[i];
-                        player.SteamID = GameProfile.SteamIDs[i];
+                        steamID = GameProfile.ProfilePlayersList[i].SteamID;
+                        player.SteamID = GameProfile.ProfilePlayersList[i].SteamID;
                     }
 
                     Console.WriteLine(steamID);
@@ -448,6 +449,7 @@ namespace Nucleus.Gaming.Tools.Steam
                             else
                             {
                                 genericGameHandler.Log("Unable to locate steam_interfaces.txt or create one, skipping this file");
+
                                 if (i == 0)
                                 {
                                     MessageBox.Show("Goldberg was unable to locate steam_interfaces.txt or create one. Process will continue without using this file.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -459,8 +461,11 @@ namespace Nucleus.Gaming.Tools.Steam
 
                 if (steamDllFiles == null || steamDllFiles.Length < 1)
                 {
-                    genericGameHandler.Log("Unable to locate a steam_api(64).dll file, Goldberg will not be used");
-                    MessageBox.Show("Goldberg was unable to locate a steam_api(64).dll file. The built-in Goldberg will not be used.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (!gen.GoldbergNoWarning)
+                    {
+                        genericGameHandler.Log("Unable to locate a steam_api(64).dll file, Goldberg will not be used");
+                        NucleusMessageBox.Show("Warning","Goldberg was unable to locate a steam_api(64).dll file.\nThe built-in Goldberg will not be used.");
+                    }
                 }
             }
 
@@ -560,10 +565,10 @@ namespace Nucleus.Gaming.Tools.Steam
 
                 }
 
-                if (GameProfile.SteamIDs.Count - 1 >= i)
+                if (GameProfile.ProfilePlayersList.Count - 1 >= i)
                 {
-                    steamID = GameProfile.SteamIDs[i];
-                    player.SteamID = GameProfile.SteamIDs[i];
+                    steamID = GameProfile.ProfilePlayersList[i].SteamID;
+                    player.SteamID = steamID;
                 }
 
                 genericGameHandler.Log("Generating user_steam_id.txt with user steam ID " + (steamID).ToString());
@@ -687,9 +692,9 @@ namespace Nucleus.Gaming.Tools.Steam
             emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Manual");
 
 
-            if (GameProfile.SteamIDs.Count - 1 >= i)
+            if (GameProfile.ProfilePlayersList.Count - 1 >= i)
             {
-                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", GameProfile.SteamIDs[i].ToString());//ToString?   
+                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", GameProfile.ProfilePlayersList[i].SteamID.ToString());//ToString?   
             }
             else if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
             {

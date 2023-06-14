@@ -18,5 +18,6 @@ namespace Nucleus.Gaming
         public static IniFile ThemeIni => new IniFile(Path.Combine(Theme, "theme.ini"));
 
         public static OSD MainOSD = new OSD();
+
     }
 }

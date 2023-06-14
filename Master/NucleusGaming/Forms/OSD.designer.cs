@@ -35,9 +35,11 @@ namespace Nucleus.Gaming.Coop.Generic
             // Value
             // 
             this.Value.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Value.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Value.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Value.ForeColor = System.Drawing.Color.Orange;
             this.Value.Location = new System.Drawing.Point(0, 0);
+            this.Value.Margin = new System.Windows.Forms.Padding(0);
             this.Value.Name = "Value";
             this.Value.Size = new System.Drawing.Size(813, 56);
             this.Value.TabIndex = 0;
@@ -63,7 +65,7 @@ namespace Nucleus.Gaming.Coop.Generic
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OSD";
             this.TopMost = true;
-            this.TransparencyKey = System.Drawing.Color.Black;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
 
         }

@@ -19,11 +19,11 @@ namespace Nucleus.Coop
         {
             if (!bool.Parse(ini.IniReadValue("Misc", "NucleusMultiInstances")))
             {
-                if (StartChecks.IsAlredyRunning())
+                if (StartChecks.IsAlreadyRunning())
                     return;
             }
     
-            StartChecks.CheckVCRversion();
+            StartChecks.Check_VCRVersion();
          
             if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
             {
@@ -31,7 +31,7 @@ namespace Nucleus.Coop
                     forcedBadPath = true;
             }
 
-            connected = StartChecks.CheckNetCon();
+            connected = StartChecks.CheckHubResponse();
 
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();

@@ -21,7 +21,7 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
 
             if (genericGameInfo.FlawlessWidescreenOverrideDisplay)
             {
-                List<PlayerInfo> players = profile.PlayerData;
+                List<PlayerInfo> players = profile.PlayersList;
 
                 string setPath = utilFolder + "\\settings.xml";
                 string backupPath = Path.GetDirectoryName(setPath) + "\\settings_NUCLEUS_BACKUP.xml";

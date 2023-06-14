@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Tools.GlobalWindowMethods;
+﻿using Nucleus.Gaming.Coop.InputManagement.Structs;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows;
 using SharpDX.XInput;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Win32;
 
 namespace Nucleus.Gaming.Coop.InputManagement
 {
@@ -17,7 +19,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
         [DllImport("xinput1_4.dll", EntryPoint = "#100")]//Enable Menu button on controllers
         public static extern int XInputGetStateSecret
         (
-                 int dwUserIndex,// [in] Index of the gamer associated with the device
+                 int dwUserIndex,// [in] Index of the device
                  ref State pState// [out] Receives the current state
         );
 
@@ -45,7 +47,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                 if (state.Gamepad.RightTrigger != 0)
                 {
-                    //    Console.WriteLine($"{index} Right trigger {(int)state.Gamepad.RightTrigger}");
+                    //Console.WriteLine($"{index} Right trigger {(int)state.Gamepad.RightTrigger}");
                 }
 
                 return (int)state.Gamepad.RightTrigger;
@@ -62,7 +64,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                 if (state.Gamepad.LeftTrigger != 0)
                 {
-                    //    Console.WriteLine($"{index} Left trigger {(int)state.Gamepad.LeftTrigger}");
+                    //Console.WriteLine($"{index} Left trigger {(int)state.Gamepad.LeftTrigger}");
                 }
 
                 return (int)state.Gamepad.LeftTrigger;
@@ -80,7 +82,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 if (state.Gamepad.RightTrigger != 0)
                 {
                     //Console.WriteLine($"{index} Right stick X:{(int)state.Gamepad.LeftThumbX}");
-                    // Console.WriteLine($"{index} Right stick Y:{(int)state.Gamepad.LeftThumbY}");
+                    //Console.WriteLine($"{index} Right stick Y:{(int)state.Gamepad.LeftThumbY}");
                 }
 
                 return ((int)state.Gamepad.RightThumbX, (int)state.Gamepad.RightThumbY);
@@ -121,7 +123,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                 if ((int)state.Gamepad.Buttons != noButtonPressed)
                 {
-                    // Console.WriteLine($"{index} {(int)state.Gamepad.Buttons}");
+                    //Console.WriteLine($"{index} {(int)state.Gamepad.Buttons}");
                 }
 
                 return state;
@@ -182,7 +184,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         private static bool _Enabled;
         public static bool Enabled => _Enabled;
-        public static bool EnabledRuntime;//Can on/off UI navigation later on runtime
+        public static bool EnabledRuntime;///Can on/off UI navigation later on runtime
         private static bool oskCleared = false;
         private static bool oskVisible;
 
@@ -194,7 +196,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             int steps = 1;///How much pixels the cursor will move
             int scrollStep = 1;
-            //Deadzone => Joystick value from where the cursor will start moving
+            ///Deadzone => Joystick value from where the cursor will start moving
             int pollRate = 10;///How often the thread will sleep
             int prevPressed = 0;///previous Xinput button state 
             bool dragging = false;
@@ -208,7 +210,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     {
                         continue;
                     }
-                    //XController.GetBatterieLevel(i);
+
                     GetCursorPos(out POINT cursor);
                     x = cursor.X;
                     y = cursor.Y;
@@ -216,6 +218,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     int pressed = XController.GetPressedButtons(i);/// Current pressed Xinput button
                     int rt = XController.GetRightTriggerValue(i) > 0 ? pressed + RT : RT;//return RT + button or RT
                     int lt = XController.GetLeftTriggerValue(i) > 0 ? pressed + LT : LT;//return LT + button or LT
+
                     ///Adjust the cursor speed to the joystick value
                     int MouveLeftSpeed = (Math.Abs((XController.GetLeftStickValue(i).Item1) / 2000));
                     int MouveRightSpeed = ((XController.GetLeftStickValue(i).Item1) / 2000);
@@ -241,13 +244,13 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         if (EnabledRuntime && (pressed == LockUIControl))
                         {
                             EnabledRuntime = false;
-                            Globals.MainOSD.Settings(1600, $"UI Control Locked");
+                            Globals.MainOSD.Show(1600, $"UI Control Locked");
                             Thread.Sleep(800);
                         }
                         else if (!EnabledRuntime && (pressed == LockUIControl))
                         {
                             EnabledRuntime = true;
-                            Globals.MainOSD.Settings(1600, $"UI Control Unlocked");
+                            Globals.MainOSD.Show(1600, $"UI Control Unlocked");
                             Thread.Sleep(800);
                         }
                     }
@@ -322,8 +325,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         Thread.Sleep(200);
                     }
                     else if (pressed == OpenOsk || rt == OpenOsk || lt == OpenOsk)///Open/close Onscreen Might have to focus nc window before opening need more testing
-                    {
-                        if (!oskCleared)//kill if running before nucleus startup
+                    {                   
+                        if (!oskCleared)///kill osk if running before nucleus startup
                         {
                             KillOsk();
                             oskCleared = true;
@@ -331,19 +334,21 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                         if (!oskVisible)
                         {
+                            GlobalWindowMethods.ChangeForegroundWindow();///need to focus nucleus window in order to toggle the osk
                             _OpenOsk();
-                            Globals.MainOSD.Settings(1600, $"On Screen Keyboard Opened");
+                            Globals.MainOSD.Show(1600, $"On Screen Keyboard Opened");
                             Thread.Sleep(1100);
                             oskVisible = true;
                         }
                         else
                         {
                             KillOsk();
-                            Globals.MainOSD.Settings(1600, $"On Screen Keyboard Closed");
+                            Globals.MainOSD.Show(1600, $"On Screen Keyboard Closed");
                             Thread.Sleep(500);
                             oskVisible = false;
                         }
                     }
+
                     prevPressed = pressed;
                 }
 
@@ -364,6 +369,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 tihProc[p].Kill();
             }
+
             oskCleared = true;
         }
 
@@ -430,22 +436,18 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public static Thread ctrlsShortcuts;
         public static Thread CtrlsShortcuts => ctrlsShortcuts;
+        private static State previousState;
 
+        /// <summary>
+        /// Controller shortcuts handling thread.
+        /// </summary>
         public static void StartSRTCThread()
         {
-            //Console.WriteLine("Controller shortcuts thread started");
-
-            while (!XController.Controllers[0].IsConnected)///Waiting for Controller
-            {
-                Thread.Sleep(1500);
-            }
-
-            State previousState = (State)XController.GetControllerState(0);
-
             while (true)
             {
                 for (int i = 0; i < XController.Controllers.Length; i++)
                 {
+                   
                     if (!XController.Controllers[i].IsConnected)
                     {
                         continue;
@@ -466,8 +468,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     if (previousState.PacketNumber != currentState.PacketNumber)
                     {
                         int button = XController.GetPressedButtons(i);
-                        int rt = XController.GetRightTriggerValue(i) > 0 ? button + RT : RT;//return RT + button or RT
-                        int lt = XController.GetLeftTriggerValue(i) > 0 ? button + LT : LT;//return LT + button or LT
+                        int rt = XController.GetRightTriggerValue(i) > 0 ? button + RT : RT;///return RT + button or RT
+                        int lt = XController.GetLeftTriggerValue(i) > 0 ? button + LT : LT;///return LT + button or LT
 
                         if ((button == Cutscenes || rt == Cutscenes || lt == Cutscenes) && GameProfile.Saved)///cutscenes mode
                         {
@@ -490,13 +492,13 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         {
                             if (GenericGameHandler.Instance != null)
                                 GenericGameHandler.Instance.Update(GenericGameHandler.Instance.HWndInterval, true);
-                            Globals.MainOSD.Settings(1600, $"Reseting game windows. Please wait...");
+                            Globals.MainOSD.Show(1600, $"Reseting game windows. Please wait...");
 
                         }
                         else if ((button == SetFocus || rt == SetFocus || lt == SetFocus))///Unfocus windows
                         {
                             GlobalWindowMethods.ChangeForegroundWindow();
-                            Globals.MainOSD.Settings(1600, $"Game Windows Unfocused");
+                            Globals.MainOSD.Show(1600, $"Game Windows Unfocused");
                         }
                         else if ((button == TopMost || rt == TopMost || lt == TopMost))///Minimize/restore windows
                         {
@@ -508,11 +510,11 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             {
                                 if (GenericGameHandler.Instance != null)
                                     GenericGameHandler.Instance.End(true);
-                                Globals.MainOSD.Settings(1600, $"Session Ended");
+                                Globals.MainOSD.Show(1600, $"Session Ended");
                             }
                             else
                             {
-                                Globals.MainOSD.Settings(1600, $"Unlock Inputs First");
+                                Globals.MainOSD.Show(1600, $"Unlock Inputs First");
                             }
                         }
                         else if (button == Close || rt == Close || lt == Close)///Close nucleus
@@ -523,7 +525,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             }
 
                             User32Util.ShowTaskBar();
-                            Globals.MainOSD.Settings(1600, $"See You Later!");
+                            Globals.MainOSD.Show(1600, $"See You Later!");
                             Thread.Sleep(5000);
 
                             if (GenericGameHandler.Instance == null)
@@ -536,7 +538,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         {
                             if (!LockInput.IsLocked)
                             {
-                                Globals.MainOSD.Settings(1000, "Inputs Locked");
+                                Globals.MainOSD.Show(1000, "Inputs Locked");
 
                                 LockInput.Lock(GameProfile.Game?.LockInputSuspendsExplorer ?? true, GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
 
@@ -549,13 +551,14 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             else
                             {
                                 LockInput.Unlock(GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
-                                Globals.MainOSD.Settings(1000, "Inputs Unlocked");
+                                Globals.MainOSD.Show(1000, "Inputs Unlocked");
                             }
                         }
                         else if (button == ReleaseCursor || rt == LockInputs || lt == LockInputs)///Try to release the cursor from game window by alt+tab inputs
                         {
-                            SendKeys.SendWait("%+{TAB}");
-                            //Thread.Sleep(1000);
+                            //Todo Try by pausing focus loop instead so we can release the cursor from it's current window(what for protoinput hooks?)
+                            SendKeys.SendWait("%{TAB}");
+                            Thread.Sleep(500);
                         }
 
                         Thread.Sleep(135);

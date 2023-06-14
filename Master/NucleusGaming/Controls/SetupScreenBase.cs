@@ -1,6 +1,6 @@
 ﻿namespace Nucleus.Coop
 {
-    public class PositionsControlBase
+    public class SetupScreenBase
     {
     }
 }
