@@ -933,6 +933,7 @@ namespace Nucleus.Coop
                         IsKeyboardPlayer = true,
                         GamepadId = 99,
                         IsInputUsed = true,
+                        HIDDeviceID = new string[] { "Not required", "Not required" },
                         GamepadGuid = new Guid("10000000-1000-1000-1000-100000000000")
                     };
 
@@ -955,7 +956,8 @@ namespace Nucleus.Coop
                             GamepadName = "Player",
                             IsDInput = true,
                             IsFake = true,
-                            IsInputUsed = true
+                            IsInputUsed = true,
+                            HIDDeviceID = new string[] { "Not required", "Not required" }
                         };
 
                         playerData.Add(player);
@@ -974,7 +976,8 @@ namespace Nucleus.Coop
                             IsController = true,
                             GamepadId = i,
                             IsFake = true,
-                            IsInputUsed = true
+                            IsInputUsed = true,
+                            HIDDeviceID = new string[] { "Not required", "Not required" }
                         };
 
                         playerData.Add(player);
@@ -1254,6 +1257,13 @@ namespace Nucleus.Coop
 
                     if (GameProfile.TotalPlayers > 0)
                     {
+                        if (GameProfile.ProfilePlayersList.All(pl => pl.MonitorBounds != divMonitorBounds.Value))
+                        {
+                            monitorBounds = null;
+                            editorBounds = null;
+                            return false;
+                        }
+
                         for (int i = 0; i < GameProfile.TotalPlayers; i++)
                         {
                             ProfilePlayer profilePlayer = GameProfile.ProfilePlayersList[i];
@@ -1272,7 +1282,7 @@ namespace Nucleus.Coop
                                 {
                                     return true;
                                 }                               
-                            }
+                            }                       
                         }
                     }
 
@@ -1370,8 +1380,14 @@ namespace Nucleus.Coop
                 for (int i = 0; i < screens.Length; i++)
                 {
                     UserScreen screen = screens[i];
+                
                     if (screen.SwapTypeBounds.Contains(e.Location))
                     {
+                        if (GameProfile.TotalPlayers > 0)
+                        {
+                            return;
+                        }
+
                         if (screen.Type == UserScreenType.Custom)
                         {
                             screen.Type = 0;
@@ -1447,9 +1463,15 @@ namespace Nucleus.Coop
             {
                 for (int i = 0; i < screens.Length; i++)
                 {
-                    UserScreen screen = screens[i];
+                    UserScreen screen = screens[i];                  
+
                     if (screen.SwapTypeBounds.Contains(e.Location))
                     {
+                        if (GameProfile.TotalPlayers > 0)
+                        {
+                            return;
+                        }
+
                         if (screen.Type == UserScreenType.FullScreen)
                         {
                             screen.Type = UserScreenType.Custom;
@@ -2108,7 +2130,7 @@ namespace Nucleus.Coop
                     else if ((GameProfile.TotalPlayers - TotalPlayers) > 0)
                     {
                         string st = GameProfile.TotalPlayers - TotalPlayers > 1 ? "Players." : "Player.";
-                        msg = $"Requires {GameProfile.GamepadCount} Controller(s), {GameProfile.KeyboardCount} K&M, {GameProfile.AllScreens.Count} Screen(s)"; // $"Waiting {(GameProfile.ProfilePlayersList.Count - TotalPlayers)} More {st}";
+                        msg = $"{GameProfile.GamepadCount} Controller(s), {GameProfile.KeyboardCount} K&M Were Used Last Time.";
                         brush = notEnoughPlyrsSBrush;
                     }
                     else if (GameProfile.TotalPlayers == TotalPlayers)
@@ -2305,7 +2327,7 @@ namespace Nucleus.Coop
                 g.DrawImage(draggingScreenImg, _draggingScreen);
             }
 
-            Console.WriteLine(TotalPlayers);
+            //Console.WriteLine(TotalPlayers);
         }
     }
 }

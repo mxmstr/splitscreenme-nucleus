@@ -1302,7 +1302,7 @@ namespace Nucleus.Gaming
                 }
 
                 context = gen.CreateContext(profile, player, this, hasKeyboardPlayer);
-                context.PlayerID = player.PlayerID;
+                context.PlayerID = player.PlayerID;               
                 context.IsFullscreen = isFullscreen;
                 context.ExePath = exePath;
                 context.RootInstallFolder = exeFolder;
@@ -1310,7 +1310,7 @@ namespace Nucleus.Gaming
                 context.OrigRootFolder = rootFolder;
                 context.UserProfileConfigPath = gen.UserProfileConfigPath;
                 context.UserProfileSavePath = gen.UserProfileSavePath;
-
+             
                 if (gen.SymlinkFiles != null)
                 {
                     Log($"Symlinking {gen.SymlinkFiles.Length} files in Game.SymlinkFiles");

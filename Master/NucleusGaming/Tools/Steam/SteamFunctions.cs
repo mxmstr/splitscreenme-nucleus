@@ -349,12 +349,14 @@ namespace Nucleus.Gaming.Tools.Steam
                         }
                     }
 
-                    if (GameProfile.ProfilePlayersList.Count - 1 >= i)
+                    if (GameProfile.ProfilePlayersList.Count - 1 >= i && player.SteamID == -1)
                     {
                         genericGameHandler.Log("Using steam ID from profile");
                         steamID = GameProfile.ProfilePlayersList[player.PlayerID].SteamID;
                         player.SteamID = steamID;
                     }
+
+                    Console.WriteLine(player.SteamID);
 
                     genericGameHandler.Log("Generating user_steam_id.txt with user steam ID " + (steamID).ToString());
 
@@ -564,8 +566,9 @@ namespace Nucleus.Gaming.Tools.Steam
 
                 }
 
-                if (GameProfile.ProfilePlayersList.Count - 1 >= i)
+                if (GameProfile.ProfilePlayersList.Count - 1 >= i && player.SteamID == -1)
                 {
+                    genericGameHandler.Log("Using steam ID from profile");
                     steamID = GameProfile.ProfilePlayersList[player.PlayerID].SteamID;
                     player.SteamID = steamID;
                 }
@@ -692,8 +695,15 @@ namespace Nucleus.Gaming.Tools.Steam
 
 
             if (GameProfile.ProfilePlayersList.Count - 1 >= i)
-            {
-                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", GameProfile.ProfilePlayersList[player.PlayerID].SteamID.ToString());//ToString?   
+            {  
+                if (player.SteamID != -1)
+                {
+                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", player.SteamID.ToString());
+                }
+                else 
+                {
+                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", GameProfile.ProfilePlayersList[player.PlayerID].SteamID.ToString()); 
+                }
             }
             else if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
             {

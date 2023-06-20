@@ -36,7 +36,7 @@ namespace Nucleus.Gaming
         public bool SupportsKeyboard;
         public string[] ExecutableContext;
         public string ExecutableName;
-        public string SteamID;
+        public string SteamID => pInfo.SteamID.ToString();
         public string GUID;
         public string GameName;
         public int MaxPlayers;

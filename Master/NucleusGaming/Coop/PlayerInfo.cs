@@ -13,26 +13,28 @@ namespace Nucleus.Gaming.Coop
 {
     public class PlayerInfo
     {
+        public List<Rectangle> OtherLayout;
         private Rectangle sourceEditBounds;
         private Rectangle editBounds;
         private Rectangle monitorBounds;
-        private int screenIndex = -1;
-        private object tag;
-        public string test;
-        private ProcessData processData;
 
+        private object tag;
+   
         public string IdealProcessor = "*";
         public string Affinity = "";
         public string PriorityClass = "Normal";
+        public string GamepadName;
+        public string[] HIDDeviceID;
+        public string Nickname;
+        public string InstanceId;
+        public string RawHID;
+        public string SID;
+        public string Adapter;
+        public string UserProfile;
 
-        public UserScreen Owner;
-        public int DisplayIndex = -1;
-        
-        public int PlayerID = -1;
         public bool SteamEmu;
         public bool GotLauncher;
         public bool GotGame;
-
         public bool IsKeyboardPlayer;
         public bool IsXInput;
         public bool IsDInput;
@@ -42,18 +44,28 @@ namespace Nucleus.Gaming.Coop
         public bool IsInputUsed;
         public bool IsController;//Good to do not have to loop both Xinput & DInput  
         public bool Vibrate;
-        public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
-        public IntPtr RawKeyboardDeviceHandle = (IntPtr)(-1);
-
+       
         public Guid GamepadProductGuid;
         public Guid GamepadGuid;
-        public int GamepadId;
-        public string GamepadName;
-        public int GamepadMask;
+       
+        public Display Display;
+        public UserScreen Owner;
         public Joystick DInputJoystick;
         public OpenXinputController XInputJoystick;
-        public IntPtr GamepadHandle;
+        private ProcessData processData;
+
         public long SteamID = -1;
+
+        public uint ProtoInputInstanceHandle = 0;
+
+        public int CurrentLayout = 0;       
+        public int ScreenPriority;
+        public int GamepadId;
+        public int GamepadMask;
+        public int DisplayIndex = -1;
+        private int screenIndex = -1;
+        public int PlayerID = -1;
+        public int ProcessID;
         // Should be set by a script, then these are sent into Proto Input.
         // Zero implies no controller, 1 means controller 1, etc
         public int ProtoController1;
@@ -61,23 +73,9 @@ namespace Nucleus.Gaming.Coop
         public int ProtoController3;
         public int ProtoController4;
 
-        public string[] HIDDeviceID;
-        public string Nickname;
-        public string InstanceId;
-        public string RawHID;
-        public int ProcessID;
-
-        public string SID;
-        public string Adapter;
-        public string UserProfile;
-
-        public Display Display;
-        public List<Rectangle> OtherLayout;
-        public int CurrentLayout = 0;
-        public uint ProtoInputInstanceHandle = 0;
-        public int ScreenPriority;
-
-        // Serialized
+        public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
+        public IntPtr RawKeyboardDeviceHandle = (IntPtr)(-1);
+        public IntPtr GamepadHandle;
 
         /// <summary>
         /// The bounds of this player's game screen
@@ -87,9 +85,6 @@ namespace Nucleus.Gaming.Coop
             get => monitorBounds;
             set => monitorBounds = value;
         }
-
-
-        // Runtime
 
         public Rectangle SourceEditBounds
         {

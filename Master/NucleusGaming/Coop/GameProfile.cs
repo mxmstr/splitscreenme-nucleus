@@ -190,15 +190,15 @@ namespace Nucleus.Gaming.Coop
         /// <summary>
         /// Return a list of all players(connected devices)
         /// </summary>
-        public List<PlayerInfo> PlayersList => playerData;
+        public List<PlayerInfo> PlayersList => GetPlayerList();
 
-        //private List<PlayerInfo> GetPlayerList()
-        //{
-        //    lock (playerData)
-        //    {
-        //        return playerData;
-        //    }
-        //}
+        private List<PlayerInfo> GetPlayerList()
+        {
+            lock (playerData)
+            {
+                return playerData;
+            }
+        }
 
         public static List<ProfilePlayer> ProfilePlayersList = new List<ProfilePlayer>();
 
