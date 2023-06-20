@@ -5,6 +5,7 @@ using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Properties;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using SharpDX;
@@ -667,7 +668,11 @@ namespace Nucleus.Coop
 
                         if (!foundGamepad)
                         {
-                            data[j].DInputJoystick.Unacquire();
+                            if (data[j].DInputJoystick != null)
+                            {
+                                data[j].DInputJoystick.Unacquire();
+                            }
+
                             changed = true;
 
                             if (loadedProfilePlayers.Contains(data[j]))
@@ -883,6 +888,12 @@ namespace Nucleus.Coop
 
                 if (brokenPlayer != null)
                 {
+                    if (loadedProfilePlayers.Contains(brokenPlayer))
+                    {
+                        loadedProfilePlayers.Remove(brokenPlayer);
+                        screens[brokenPlayer.ScreenIndex].PlayerOnScreen--;
+                        TotalPlayers--;
+                    }
                     data.Remove(brokenPlayer);
                 }
             }
@@ -1240,7 +1251,38 @@ namespace Nucleus.Coop
                 {
                     monitorBounds = divMonitorBounds;
                     editorBounds = divEditorBounds;
+
+                    if (GameProfile.TotalPlayers > 0)
+                    {
+                        for (int i = 0; i < GameProfile.TotalPlayers; i++)
+                        {
+                            ProfilePlayer profilePlayer = GameProfile.ProfilePlayersList[i];
+
+                            if (monitorBounds == profilePlayer.MonitorBounds)
+                            {
+                                playerToInsert.PlayerID = profilePlayer.PlayerID;
+                                playerToInsert.Nickname = profilePlayer.Nickname;
+                                playerToInsert.SteamID = profilePlayer.SteamID;
+                                Console.WriteLine(playerToInsert.Nickname);
+                                Console.WriteLine(playerToInsert.PlayerID);
+                                Console.WriteLine(playerToInsert.SteamID);
+                                loadedProfilePlayers.Add(playerToInsert);
+
+                                if (!(playerToInsert.IsRawKeyboard && playerToInsert.IsRawMouse))
+                                {
+                                    return true;
+                                }                               
+                            }
+                        }
+                    }
+
+                    if (players.Any(pl => pl.EditBounds == divEditorBounds) || (playerToInsert.IsRawKeyboard && playerToInsert.IsRawMouse))//found k+m in the ame bounds
+                    {
+                        TotalPlayers++;
+                    }
+
                     return true;
+
                 }
             }
 
@@ -1251,7 +1293,7 @@ namespace Nucleus.Coop
         {
             base.OnMouseDoubleClick(e);
 
-            if (dragging)
+            if (dragging || GameProfile.TotalPlayers > 0)
             {
                 return;
             }
@@ -1270,13 +1312,6 @@ namespace Nucleus.Coop
                         // add all possible players!
                         for (int j = 0; j < playerData.Count; j++)
                         {
-
-                            if (GameProfile.TotalPlayers > 0 && GameProfile.TotalPlayers == TotalPlayers)//avoid adding more players than expected by the game profile
-                            {
-                                UpdatePlayers();
-                                return;
-                            }
-
                             PlayerInfo player = playerData[j];
 
                             bool hasFreeSpace = GetFreeSpace(i, out Rectangle? editor, out Rectangle? monitor, player);
@@ -1294,7 +1329,7 @@ namespace Nucleus.Coop
                                     player.DisplayIndex = screens[i].DisplayIndex;
                                     changed = true;
 
-                                    if (!player.IsRawMouse || (player.IsRawMouse && player.IsRawKeyboard))
+                                    if (!player.IsRawMouse && !player.IsRawKeyboard)
                                     {
                                         screens[i].PlayerOnScreen++;
                                         TotalPlayers++;
@@ -1351,7 +1386,23 @@ namespace Nucleus.Coop
                         {
                             ///return to default position
                             PlayerInfo p = players[j];
-                            if ((p.ScreenIndex == i && !p.IsRawMouse) || (p.ScreenIndex == i && p.IsRawMouse && p.IsRawKeyboard))
+                         
+                            PlayerInfo temp = profile.PlayersList.Where(pl => pl.MonitorBounds.Equals(p.MonitorBounds) && !pl.HIDDeviceID.Contains(p.HIDDeviceID[0])).FirstOrDefault();
+
+                            if ((p.IsRawKeyboard || p.IsRawMouse) && p.ScreenIndex == i && !(p.IsRawKeyboard && p.IsRawMouse))
+                            {
+                                if (temp != null)
+                                {
+                                    screens[i].PlayerOnScreen--;
+                                    TotalPlayers--;
+                                    p.EditBounds = GetDefaultBounds(j);
+                                    p.Owner = null;
+                                    p.ScreenIndex = -1;
+                                    p.MonitorBounds = new Rectangle(0, 0, 0, 0);
+                                    p.DisplayIndex = -1;
+                                }
+                            }
+                            else if (p.ScreenIndex == i)
                             {
                                 screens[i].PlayerOnScreen--;
                                 TotalPlayers--;
@@ -1371,10 +1422,6 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < players.Count; i++)
                 {
-                    if (!players[i].IsInputUsed && !useXinputIndex)
-                    {
-                        continue;
-                    }
 
                     Rectangle r = players[i].EditBounds;
                     if (r.Contains(e.Location))
@@ -1417,7 +1464,22 @@ namespace Nucleus.Coop
                         {
                             // return to default position
                             PlayerInfo p = players[j];
-                            if ((p.ScreenIndex == i && !p.IsRawMouse) || (p.ScreenIndex == i && p.IsRawMouse && p.IsRawKeyboard))
+                            PlayerInfo temp = profile.PlayersList.Where(pl => pl.MonitorBounds.Equals(p.MonitorBounds) && !pl.HIDDeviceID.Contains(p.HIDDeviceID[0])).FirstOrDefault();
+
+                            if ((p.IsRawKeyboard || p.IsRawMouse) && p.ScreenIndex == i && !(p.IsRawKeyboard && p.IsRawMouse))
+                            {
+                                if (temp != null)
+                                {
+                                    screen.PlayerOnScreen--;
+                                    TotalPlayers--;
+                                    p.EditBounds = GetDefaultBounds(j);
+                                    p.ScreenIndex = -1;
+                                    p.MonitorBounds = new Rectangle(0, 0, 0, 0);
+                                    p.Owner = null;
+                                    p.DisplayIndex = -1;
+                                }
+                            }
+                            else if (p.ScreenIndex == i)
                             {
                                 screen.PlayerOnScreen--;
                                 TotalPlayers--;
@@ -1652,14 +1714,25 @@ namespace Nucleus.Coop
 
                     if (draggingScreen != -1)
                     {
-                        if ((p.DisplayIndex != -1 && !p.IsRawMouse) || (p.DisplayIndex != -1 && p.IsRawMouse && p.IsRawKeyboard))
+                        PlayerInfo temp = profile.PlayersList.Where(pl => pl.MonitorBounds.Equals(p.MonitorBounds) && !pl.HIDDeviceID.Contains(p.HIDDeviceID[0])).FirstOrDefault();
+
+                        if ((p.IsRawKeyboard || p.IsRawMouse) && p.DisplayIndex != -1 && !(p.IsRawKeyboard && p.IsRawMouse))
                         {
-                            p.MonitorBounds = new Rectangle(0, 0, 0, 0);
-                            screens[p.ScreenIndex].PlayerOnScreen--;
+                            if (temp != null)
+                            {
+                                screens[p.ScreenIndex].PlayerOnScreen--;
+                                TotalPlayers--;
+                            }
+                        }
+                        else if (p.DisplayIndex != -1)
+                        {                      
+                            screens[p.ScreenIndex].PlayerOnScreen--;                      
                             TotalPlayers--;
                         }
 
-                        if ((p.MonitorBounds == new Rectangle(0, 0, 0, 0) && !p.IsRawMouse) || (p.MonitorBounds == new Rectangle(0, 0, 0, 0) && p.IsRawMouse && p.IsRawKeyboard))
+                        p.MonitorBounds = new Rectangle(0, 0, 0, 0);
+
+                        if (p.MonitorBounds == new Rectangle(0, 0, 0, 0) && (!p.IsRawMouse && !p.IsRawKeyboard))
                         {
                             screens[draggingScreen].PlayerOnScreen++;
                             TotalPlayers++;
@@ -1671,22 +1744,28 @@ namespace Nucleus.Coop
                         p.EditBounds = draggingScreenRec;
                         p.ScreenPriority = screens[draggingScreen].priority;
                         p.DisplayIndex = screens[draggingScreen].DisplayIndex;
-                        //Console.WriteLine(TotalPlayers);
                         draggingScreen = -1;
-
                     }
                     else
                     {
                         for (int i = 0; i < screens.Length; i++)
                         {
-                            if (p.ScreenIndex == i)
-                            {
-                                if (!p.IsRawMouse || (p.IsRawMouse && p.IsRawKeyboard))
+                            PlayerInfo temp = profile.PlayersList.Where(pl => pl.MonitorBounds.Equals(p.MonitorBounds) && !pl.HIDDeviceID.Contains(p.HIDDeviceID[0])).FirstOrDefault();
+                          
+                            if ((p.IsRawKeyboard || p.IsRawMouse) && p.ScreenIndex == i && !(p.IsRawKeyboard && p.IsRawMouse))
+                            {                           
+                                if (temp != null)
                                 {
                                     p.DisplayIndex = -1;
                                     screens[i].PlayerOnScreen--;
                                     TotalPlayers--;
                                 }
+                            }
+                            else if (p.ScreenIndex == i)
+                            {
+                                p.DisplayIndex = -1;
+                                screens[i].PlayerOnScreen--;
+                                TotalPlayers--;
                             }
                         }
 
@@ -1721,6 +1800,7 @@ namespace Nucleus.Coop
 
         public void ResetScreensTotalPlayers()
         {
+            showError = false;
             screens = null;
             UpdateScreens();
 
@@ -1736,144 +1816,170 @@ namespace Nucleus.Coop
         public List<PlayerInfo> loadedProfilePlayers = new List<PlayerInfo>();
 
         private int TotalPlayers = 0;
-
-        private List<PlayerInfo> groupedPlayers = new List<PlayerInfo>();//group m&k device from profile values
+        private bool showError = false;
 
         private void LoadPlayerProfile(PlayerInfo player)
-        {
+        {   
             if (loadedProfilePlayers.Contains(player))
             {
                 return;
             }
 
-            ///Merge raw keyboards and raw mice devices as saved by the game profile to a single player 
-            for (int i = 0; i < GameProfile.TotalPlayers; i++)
+            if (showError)
             {
-                bool goToNext = false;
-                List<PlayerInfo> groupedPlayers = new List<PlayerInfo>();
-                ProfilePlayer profilePlayer = GameProfile.ProfilePlayersList[i];
+                GameProfile.currentProfile.Reset();
+                return;
+            }
 
-                for (int pl = 0; pl < profile.PlayersList.Count; pl++)
+            if (GameProfile.TotalPlayers > 0)
+            {
+                if (TotalPlayers < 0 && !showError)
                 {
-                    PlayerInfo p = profile.PlayersList[pl];
-
-                    if (p.IsRawKeyboard || p.IsRawMouse)
-                    {
-                        if (profilePlayer.HIDDeviceIDs.Any(hid => hid == p.HIDDeviceID[0]))
-                        {
-                            groupedPlayers.Add(p);
-                        }
-                    }
-
-                    if (groupedPlayers.Count == 2)
-                    {
-                        var firstInGroup = groupedPlayers.First();
-                        var secondInGroup = groupedPlayers.Last();
-
-                        firstInGroup.IsRawKeyboard = groupedPlayers.Count(x => x.IsRawKeyboard) > 0;
-                        firstInGroup.IsRawMouse = groupedPlayers.Count(x => x.IsRawMouse) > 0;
-
-                        if (firstInGroup.IsRawKeyboard) firstInGroup.RawKeyboardDeviceHandle = groupedPlayers.First(x => x.RawKeyboardDeviceHandle != (IntPtr)(-1)).RawKeyboardDeviceHandle;
-                        if (firstInGroup.IsRawMouse) firstInGroup.RawMouseDeviceHandle = groupedPlayers.First(x => x.RawMouseDeviceHandle != (IntPtr)(-1)).RawMouseDeviceHandle;
-
-                        firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0] };
-
-                        profile.PlayersList.Remove(secondInGroup);
-                        p = firstInGroup;
-                        p.IsInputUsed = true;///needed else player is invisible and can't be moved
-
-                        break;
-                    }
+                    showError = true;
+                    NucleusMessageBox.Show("error", "Oops!\nSomething went wrong, profile has been unloaded.");
+                    return;
                 }
-
-                ///loop through player list until TotalPlayers == GameProfile.TotalPlayers
-                if (TotalPlayers < GameProfile.TotalPlayers)
+            }
+        
+            if (TotalPlayers < GameProfile.TotalPlayers)
+            {
+                ///Merge raw keyboards and raw mice devices as saved by the game profile to single device
+                for (int i = 0; i < GameProfile.TotalPlayers; i++)
                 {
-                    bool skipGUIDCheck = false;
-                    bool isKbM = false;
-                    bool isProfilePlayerController = false;
+                    List<PlayerInfo> groupedPlayers = new List<PlayerInfo>();
 
-                    if (player.IsRawKeyboard && player.IsRawMouse) ///Merged raw keyboard and raw mouse player
-                    {
-                        isKbM = profilePlayer.HIDDeviceIDs.Contains(player.HIDDeviceID[0]) && profilePlayer.HIDDeviceIDs.Contains(player.HIDDeviceID[1]);
-                    }   
-                    ///skip gamepad guid check if using Xinput index assignation instead of profile values
-                    if (useXinputIndex && player.IsXInput && profilePlayer.IsXInput &&///check if player is XInput in profile datas
-                        !loadedProfilePlayers.Any(pl => pl.GamepadGuid == profilePlayer.GamepadGuid) &&///Avoid dropping multiple controllers to the same player screen
-                        profilePlayer.GamepadGuid.ToString() != "10000000-1000-1000-1000-100000000000")///Avoid skipping single k&m player
-                    {
-                        skipGUIDCheck = true;
-                        player.GamepadGuid = profilePlayer.GamepadGuid;
-                    }
+                    ProfilePlayer kbPlayer = GameProfile.ProfilePlayersList[i];
 
-                    ///check if we have this gamepad or single m&k in profile
-                    isProfilePlayerController = (player.GamepadGuid == profilePlayer.GamepadGuid && !player.IsRawKeyboard && !player.IsRawMouse) && player.IsInputUsed;
-
-                    if (isProfilePlayerController || skipGUIDCheck || isKbM)
+                    for (int pl = 0; pl < profile.PlayersList.Count; pl++)
                     {
-                        for (int j = 0; j < screens.Length; j++)
+                        PlayerInfo p = profile.PlayersList[pl];
+
+                        if (p.IsRawKeyboard || p.IsRawMouse)
                         {
-                            UserScreen scr = screens[j];//j
-
-                            if (j != profilePlayer.ScreenIndex)//i
+                            if (kbPlayer.HIDDeviceIDs.Any(hid => hid == p.HIDDeviceID[0]))
                             {
-                                continue;
+                                groupedPlayers.Add(p);
                             }
+                        }
 
-                            scr.Type = (UserScreenType)profilePlayer.OwnerType;
-                            player.Owner = scr;
-                            player.Owner.Type = scr.Type;
-                            player.ScreenIndex = j;//j
-                            player.ScreenPriority = scr.priority;
-                            player.DisplayIndex = scr.DisplayIndex;
+                        if (groupedPlayers.Count == 2)
+                        {
+                            var firstInGroup = groupedPlayers.First();
+                            var secondInGroup = groupedPlayers.Last();
 
-                            #region Re-calcul screens
+                            firstInGroup.IsRawKeyboard = groupedPlayers.Count(x => x.IsRawKeyboard) > 0;
+                            firstInGroup.IsRawMouse = groupedPlayers.Count(x => x.IsRawMouse) > 0;
 
-                            ///## Re-calcul & scale players edit bounds if needed ##///
-                            Rectangle ogScrUiBounds = GameProfile.AllScreens[j];//j
-                            Rectangle ogEditBounds = profilePlayer.EditBounds;
+                            if (firstInGroup.IsRawKeyboard) firstInGroup.RawKeyboardDeviceHandle = groupedPlayers.First(x => x.RawKeyboardDeviceHandle != (IntPtr)(-1)).RawKeyboardDeviceHandle;
+                            if (firstInGroup.IsRawMouse) firstInGroup.RawMouseDeviceHandle = groupedPlayers.First(x => x.RawMouseDeviceHandle != (IntPtr)(-1)).RawMouseDeviceHandle;
 
-                            Vector2 ogScruiLoc = new Vector2(ogScrUiBounds.X, ogScrUiBounds.Y);///original screen ui location
-                            Vector2 ogpEb = new Vector2(ogEditBounds.X, ogEditBounds.Y);///original on ui screen player location(editbounds)
-                            Vector2 ogOnUIScrLoc = Vector2.Subtract(ogpEb, ogScruiLoc);///relative og ui player loc on og player ui screen
+                            firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0] };
 
-                            float ratioEW = (float)ogScrUiBounds.Width / (float)scr.UIBounds.Width;
-                            float ratioEH = (float)ogScrUiBounds.Height / (float)scr.UIBounds.Height;
-                            player.EditBounds = new Rectangle(scr.UIBounds.X + (Convert.ToInt32(ogOnUIScrLoc.X / ratioEW)), scr.UIBounds.Y + (Convert.ToInt32(ogOnUIScrLoc.Y / ratioEH)), Convert.ToInt32(ogEditBounds.Width / ratioEW), Convert.ToInt32(ogEditBounds.Height / ratioEH));
+                            profile.PlayersList.Remove(secondInGroup);
+                            p = firstInGroup;
+                            p.IsInputUsed = true;///needed else player is invisible and can't be moved
 
-                            ///## Re-calcul & scale players monitor bounds if needed ##///
-                            Rectangle ogScr = profilePlayer.OwnerDisplay;
-                            Rectangle ogMb = profilePlayer.MonitorBounds;
-
-                            Vector2 ogscr = new Vector2(ogScr.X, ogScr.Y);///original player screen location
-                            Vector2 ogPMb = new Vector2(ogMb.X, ogMb.Y);///original on screen player location(monitorBounds)
-                            Vector2 VogOnScrLoc = Vector2.Subtract(ogPMb, ogscr);///relative og player loc on og player screen
-
-                            float ratioMW = (float)ogScr.Width / (float)scr.MonitorBounds.Width;
-                            float ratioMH = (float)ogScr.Height / (float)scr.MonitorBounds.Height;
-                            player.MonitorBounds = new Rectangle(scr.MonitorBounds.X + (Convert.ToInt32(VogOnScrLoc.X / ratioMW)), scr.MonitorBounds.Y + (Convert.ToInt32(VogOnScrLoc.Y / ratioMH)), Convert.ToInt32(ogMb.Width / ratioMW), Convert.ToInt32(ogMb.Height / ratioMH));
-
-                            #endregion
-
-                            player.Nickname = profilePlayer.Nickname;
-                            player.PlayerID = profilePlayer.PlayerID;
-
-                            loadedProfilePlayers.Add(player);
-                            scr.PlayerOnScreen++;
-                            TotalPlayers++;
-
-                            Invalidate();
-
-                            //Console.WriteLine(player.GamepadGuid);
-                            goToNext = true;
                             break;
                         }
                     }
                 }
+              
+                ProfilePlayer profilePlayer = null;
+               
+                bool skipGuid = false;
 
-                if (goToNext)
+                //XInput (follow Xinput indexes)
+                if (player.IsController && useXinputIndex)
                 {
-                    break;
+                    foreach (ProfilePlayer pp in GameProfile.ProfilePlayersList)
+                    {
+                        if (loadedProfilePlayers.Any(lp => lp.MonitorBounds == pp.MonitorBounds))
+                        {
+                            continue;
+                        }
+
+                        profilePlayer = pp;
+                        skipGuid = true;
+                        break;
+                    }
+                }
+
+                //DInput && XInput using GameGuid(do not follow Xinput indexes)
+                if (player.IsController && !skipGuid)
+                {
+                    profilePlayer = GameProfile.ProfilePlayersList.Where(pl => (pl.IsDInput || pl.IsXInput) && (pl.GamepadGuid == player.GamepadGuid)).FirstOrDefault();
+                }
+
+                //single k&m 
+                if (player.IsKeyboardPlayer && (!player.IsRawMouse && !player.IsKeyboardPlayer))
+                {
+                    profilePlayer = GameProfile.ProfilePlayersList.Where(pl => pl.GamepadGuid == player.GamepadGuid).FirstOrDefault();
+                }
+
+                //Multilple k&m
+                if (player.IsRawKeyboard && player.IsRawMouse)///Merged raw keyboard and raw mouse player
+                {
+                    profilePlayer = GameProfile.ProfilePlayersList.Where(pl => (pl.IsRawMouse && pl.IsKeyboardPlayer) && (pl.HIDDeviceIDs.Contains(player.HIDDeviceID[0]) && pl.HIDDeviceIDs.Contains(player.HIDDeviceID[1]))).FirstOrDefault();
+                }
+
+                if (profilePlayer != null)
+                {
+                    for (int j = 0; j < screens.Length; j++)
+                    {
+                        UserScreen scr = screens[j];//j
+
+                        if (j != profilePlayer.ScreenIndex)//j
+                        {
+                            continue;
+                        }
+
+                        scr.Type = (UserScreenType)profilePlayer.OwnerType;
+                        player.Owner = scr;
+                        player.Owner.Type = scr.Type;
+                        player.ScreenIndex = j;//j
+                        player.ScreenPriority = scr.priority;
+                        player.DisplayIndex = scr.DisplayIndex;
+
+                        #region Re-calcul screens
+
+                        ///## Re-calcul & scale players edit bounds if needed ##///
+                        Rectangle ogScrUiBounds = GameProfile.AllScreens[j];//j
+                        Rectangle ogEditBounds = profilePlayer.EditBounds;
+
+                        Vector2 ogScruiLoc = new Vector2(ogScrUiBounds.X, ogScrUiBounds.Y);///original screen ui location
+                        Vector2 ogpEb = new Vector2(ogEditBounds.X, ogEditBounds.Y);///original on ui screen player location(editbounds)
+                        Vector2 ogOnUIScrLoc = Vector2.Subtract(ogpEb, ogScruiLoc);///relative og ui player loc on og player ui screen
+
+                        float ratioEW = (float)ogScrUiBounds.Width / (float)scr.UIBounds.Width;
+                        float ratioEH = (float)ogScrUiBounds.Height / (float)scr.UIBounds.Height;
+                        player.EditBounds = new Rectangle(scr.UIBounds.X + (Convert.ToInt32(ogOnUIScrLoc.X / ratioEW)), scr.UIBounds.Y + (Convert.ToInt32(ogOnUIScrLoc.Y / ratioEH)), Convert.ToInt32(ogEditBounds.Width / ratioEW), Convert.ToInt32(ogEditBounds.Height / ratioEH));
+
+                        ///## Re-calcul & scale players monitor bounds if needed ##///
+                        Rectangle ogScr = profilePlayer.OwnerDisplay;
+                        Rectangle ogMb = profilePlayer.MonitorBounds;
+
+                        Vector2 ogscr = new Vector2(ogScr.X, ogScr.Y);///original player screen location
+                        Vector2 ogPMb = new Vector2(ogMb.X, ogMb.Y);///original on screen player location(monitorBounds)
+                        Vector2 VogOnScrLoc = Vector2.Subtract(ogPMb, ogscr);///relative og player loc on og player screen
+
+                        float ratioMW = (float)ogScr.Width / (float)scr.MonitorBounds.Width;
+                        float ratioMH = (float)ogScr.Height / (float)scr.MonitorBounds.Height;
+                        player.MonitorBounds = new Rectangle(scr.MonitorBounds.X + (Convert.ToInt32(VogOnScrLoc.X / ratioMW)), scr.MonitorBounds.Y + (Convert.ToInt32(VogOnScrLoc.Y / ratioMH)), Convert.ToInt32(ogMb.Width / ratioMW), Convert.ToInt32(ogMb.Height / ratioMH));
+
+                        #endregion
+
+                        player.Nickname = profilePlayer.Nickname;
+                        player.PlayerID = profilePlayer.PlayerID;
+                        player.SteamID = profilePlayer.SteamID;
+                        player.IsInputUsed = true;
+
+                        loadedProfilePlayers.Add(player);
+                        scr.PlayerOnScreen++;
+                        TotalPlayers++;
+
+                        Invalidate();
+                        break;
+                    }
                 }
             }
 
@@ -1885,7 +1991,7 @@ namespace Nucleus.Coop
                     GameProfile.Ready = false;
                 }
 
-                if (GameProfile.AutoPlay && GameProfile.Ready)
+                if (GameProfile.Ready && GameProfile.AutoPlay)
                 {
                     CanPlayUpdated(true, true);
                     btn_Play.PerformClick();
@@ -1893,7 +1999,6 @@ namespace Nucleus.Coop
                     return;
                 }
             }
-
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -2003,7 +2108,7 @@ namespace Nucleus.Coop
                     else if ((GameProfile.TotalPlayers - TotalPlayers) > 0)
                     {
                         string st = GameProfile.TotalPlayers - TotalPlayers > 1 ? "Players." : "Player.";
-                        msg = $"Waiting {(GameProfile.ProfilePlayersList.Count - TotalPlayers)} More {st}";
+                        msg = $"Requires {GameProfile.GamepadCount} Controller(s), {GameProfile.KeyboardCount} K&M, {GameProfile.AllScreens.Count} Screen(s)"; // $"Waiting {(GameProfile.ProfilePlayersList.Count - TotalPlayers)} More {st}";
                         brush = notEnoughPlyrsSBrush;
                     }
                     else if (GameProfile.TotalPlayers == TotalPlayers)
@@ -2200,6 +2305,7 @@ namespace Nucleus.Coop
                 g.DrawImage(draggingScreenImg, _draggingScreen);
             }
 
+            Console.WriteLine(TotalPlayers);
         }
     }
 }

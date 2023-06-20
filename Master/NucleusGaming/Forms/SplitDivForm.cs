@@ -12,7 +12,7 @@ namespace Nucleus.Gaming.Forms
     public partial class SplitForm : Form
     {
         private Color ChoosenColor;
-        private Timer slideshow;
+        private System.Threading.Timer slideshow;
         private Timer loadTimer;
         private string currentGame;
 
@@ -32,7 +32,6 @@ namespace Nucleus.Gaming.Forms
 
             Setup(game, handler);
         }
-
 
         private void Setup(GenericGameInfo game, GenericGameHandler handler)
         {
@@ -81,17 +80,10 @@ namespace Nucleus.Gaming.Forms
             loadTimer.Tick += new EventHandler(loadTimerTick);
             loadTimer.Start();
 
-            slideshow = new Timer
-            {
-                Interval = (8000) //millisecond
-            };
-
-            slideshow.Tick += new EventHandler(slideshowTick);
-            slideshow.Start();
-
+            slideshow = new System.Threading.Timer(slideshowTick, null, 0, 8000);
         }
 
-        private void slideshowTick(Object myObject, EventArgs myEventArgs)
+        private void slideshowTick(object state)
         {
             if (Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")))
             {

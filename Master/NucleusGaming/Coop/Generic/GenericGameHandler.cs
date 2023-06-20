@@ -365,7 +365,10 @@ namespace Nucleus.Gaming
             {
                 PlayerInfo player = players[i];
 
-                player.PlayerID = i;
+                if (player.PlayerID == -1)
+                {
+                    player.PlayerID = i;
+                }
 
                 int pod = player.Owner.DisplayIndex;
 
@@ -426,7 +429,7 @@ namespace Nucleus.Gaming
             }
             else
             {
-                Log("The Windows deskop scale will not be set to 100% because this option has been disabled in game profile settings");
+                Log("The Windows deskop scale will not be set to 100% because this option has been disabled in settings or game profile");
             }
 
             UserScreen[] all = ScreensUtil.AllScreens();
@@ -515,7 +518,10 @@ namespace Nucleus.Gaming
                 {
                     if (GameProfile.ProfilePlayersList.Count - 1 >= i)
                     {
-                        player.Nickname = GameProfile.ProfilePlayersList[i].Nickname;
+                        if (player.Nickname == null)
+                        {
+                            player.Nickname = GameProfile.ProfilePlayersList[player.PlayerID].Nickname;
+                        }
                     }
                     else 
                     {
@@ -526,6 +532,8 @@ namespace Nucleus.Gaming
                 {
                     player.Nickname = $"Player{i + 1}";
                 }
+
+                Console.WriteLine(player.Nickname);
 
                 ProcessData procData = player.ProcessData;
                 bool hasSetted = procData != null && procData.Setted;
@@ -1605,7 +1613,7 @@ namespace Nucleus.Gaming
                 }
                 else
                 { 
-                    TriggerOSD(2000, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{i + 1}"); 
+                    TriggerOSD(2000, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}"); 
                 }
 
                 if (context.NeedsSteamEmulation)

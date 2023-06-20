@@ -172,12 +172,20 @@ namespace Nucleus.Gaming.Coop
             set => cts_Unfocus = value;
         }
 
+        private static int gamepadCount;
+        public static int GamepadCount => gamepadCount;
+
+        private static int keyboardCount;
+        public static int KeyboardCount => keyboardCount;
+
+
+
         private static bool saved = false;
         public static bool Saved => saved;
 
         public static bool Ready = false;
 
-        private bool useXinputIndex;
+        private static bool useXinputIndex;
 
         /// <summary>
         /// Return a list of all players(connected devices)
@@ -186,10 +194,10 @@ namespace Nucleus.Gaming.Coop
 
         //private List<PlayerInfo> GetPlayerList()
         //{
-        //    //lock (playerData)
-        //    //{
+        //    lock (playerData)
+        //    {
         //        return playerData;
-        //    //}
+        //    }
         //}
 
         public static List<ProfilePlayer> ProfilePlayersList = new List<ProfilePlayer>();
@@ -250,17 +258,23 @@ namespace Nucleus.Gaming.Coop
             profileToSave = 0;
             totalPlayers = 0;
 
+            gamepadCount = 0;
+            keyboardCount = 0;
+
             modeText = "New Profile";
 
             Ready = false;
             saved = false;
 
-            if (playerData != null)
+            if (playerData != null)//Switching profile
             {
                 foreach (PlayerInfo player in playerData)
                 {
                     player.EditBounds = player.SourceEditBounds;
                     player.ScreenIndex = -1;
+                    player.PlayerID = -1;
+                    player.SteamID = -1;
+                    player.Nickname = null;
                 }
             }
 
@@ -422,6 +436,15 @@ namespace Nucleus.Gaming.Coop
                 player.Affinity = (string)JplayersInfos[i]["Processor"]["ProcessorAffinity"];
                 player.PriorityClass = (string)JplayersInfos[i]["Processor"]["ProcessorPriorityClass"];
 
+                if (player.IsXInput || player.IsDInput)
+                {
+                    gamepadCount++;
+                }
+                else
+                {
+                    keyboardCount++;
+                }
+
                 ProfilePlayersList.Add(player);
             }
 
@@ -453,6 +476,12 @@ namespace Nucleus.Gaming.Coop
                 AllScreens.Add(new Rectangle((int)JAllscreens[s]["X"], (int)JAllscreens[s]["Y"], (int)JAllscreens[s]["Width"], (int)JAllscreens[s]["Height"]));
             }
 
+            if(ProfilePlayersList.Any(pl => pl.ScreenIndex > ScreensUtil.AllScreens().Count()-1))//ensure that the missing screens are used by any players before showing message
+            {             
+                Globals.MainOSD.Show(2000, $"There Is Not Enough Active Screens");
+                return false;
+            }
+
             totalPlayers = JplayersInfos.Count();
             modeText = $"Profile n°{profileToSave}";
            
@@ -469,7 +498,6 @@ namespace Nucleus.Gaming.Coop
 
             Ready = true;
            
-
             return true;
         }
 
@@ -572,9 +600,21 @@ namespace Nucleus.Gaming.Coop
 
             List<JObject> playersInfos = new List<JObject>();//Players object
 
+            int gamepadCount = 0;
+            int keyboardCount = 0;
+
             for (int i = 0; i < ProfilePlayersList.Count(); i++)//build per players object
             {
                 ProfilePlayer player = ProfilePlayersList[i];
+
+                if(player.IsXInput || player.IsDInput)
+                {
+                    gamepadCount++;
+                }
+                else
+                {
+                    keyboardCount++;
+                }
 
                 JObject JOwner = new JObject(
                                       new JProperty("Type", player.OwnerType),
@@ -650,6 +690,9 @@ namespace Nucleus.Gaming.Coop
                new JProperty("Title", Title),
                new JProperty("Notes", Notes),
                new JProperty("Player(s)", ProfilePlayersList.Count),
+               new JProperty("Controller(s)", gamepadCount),
+               new JProperty("Use XInput Index", useXinputIndex),
+               new JProperty("K&M", keyboardCount),
                new JProperty("AutoPlay", JAutoPlay),
                new JProperty("Data", playersInfos),
                new JProperty("Options", options),
@@ -767,7 +810,9 @@ namespace Nucleus.Gaming.Coop
             JObject JUseNicknames = new JObject(new JProperty("Use", useNicknames));
             JObject JNetwork = new JObject(new JProperty("Type", network));
             JObject JAutoPlay = new JObject(new JProperty("Enabled", autoPlay));
+
             JObject JAudioInstances = new JObject();
+
             JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
                                                 new JProperty("Cutscenes_Unfocus", cts_Unfocus));
@@ -782,8 +827,20 @@ namespace Nucleus.Gaming.Coop
             List<PlayerInfo> players = (List<PlayerInfo>)profile.PlayersList.OrderBy(c => c.PlayerID).ToList();//need to do this because sometimes it's reversed
             List<JObject> playersInfos = new List<JObject>();//Players object
 
+            int gamepadCount = 0;
+            int keyboardCount = 0;
+
             for (int i = 0; i < players.Count(); i++)//build per players object
             {
+                if (players[i].IsXInput || players[i].IsDInput)
+                {
+                    gamepadCount++;
+                }
+                else
+                {
+                    keyboardCount++;
+                }
+
                 JObject JOwner = new JObject(
                                    new JProperty("Type", players[i].Owner.Type),
 
@@ -859,6 +916,9 @@ namespace Nucleus.Gaming.Coop
                new JProperty("Title", Title),
                new JProperty("Notes", Notes),
                new JProperty("Player(s)", profile.playerData.Count),
+               new JProperty("Controller(s)", gamepadCount),
+               new JProperty("K&M", keyboardCount),
+               new JProperty("Use XInput Index", useXinputIndex),
                new JProperty("AutoPlay", JAutoPlay),
                new JProperty("Data", playersInfos),
                new JProperty("Options", options),

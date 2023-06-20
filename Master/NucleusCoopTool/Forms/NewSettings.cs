@@ -594,8 +594,8 @@ namespace Nucleus.Coop
         {
             CustomToolTips.SetToolTip(btn_credits, "Credits", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(SplitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(disableGameProfiles, "Simply disable profiles loading/saving, Nucleus will always use globals settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(gamepadsAssignMethods, "If enabled the profile will not save or load per player gamepad(XInput only), it will use XInput index instead \n(switching mode could require to re-assign gamepad manually).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(disableGameProfiles, "Disable profile, Nucleus will always use globals settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(gamepadsAssignMethods, "If enabled profile will not save per player gamepad but XInput index instead \n(switching mode could break profile loading).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndSteamIds()

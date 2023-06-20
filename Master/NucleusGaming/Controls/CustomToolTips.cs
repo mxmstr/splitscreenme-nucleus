@@ -41,7 +41,7 @@ namespace Nucleus.Gaming.Controls
             {
                 InitialDelay = delay,
                 ReshowDelay = 1500,
-                AutoPopDelay = 3000,
+                AutoPopDelay = 4000,
                 OwnerDraw = true,
                 BackColor = Color.FromArgb(255, rgbBackColor[1], rgbBackColor[2], rgbBackColor[3]),
                 ForeColor = Color.FromArgb(255, rgbForeColor[1], rgbForeColor[2], rgbForeColor[3]),

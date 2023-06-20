@@ -129,7 +129,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 return state;
             }
 
-            return null;
+            return new State();
         }
     }
 

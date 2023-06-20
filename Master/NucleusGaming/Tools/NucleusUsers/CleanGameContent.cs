@@ -61,9 +61,13 @@ namespace Nucleus.Gaming
 
                         System.Threading.Tasks.Task.Run(() =>
                         {
-                            NucleusMessageBox.Show("Risk of crash!", $"One or more files from {path} are locked by the system or used by an other program \n" +
-                                $"and Nucleus failed to unlock them.You can try to delete/unlock the file(s) manually or restart\n" +
-                                $" your computer to unlock the file(s) because it could lead to a crash on game startup.\n" +
+                            NucleusMessageBox.Show("Risk of crash!", 
+                                $"One or more files from {path} are locked\n" +
+                                $"by the system or used by an other program \n" +
+                                $"and Nucleus failed to unlock them.You can try\n" +
+                                $"to delete/unlock the file(s) manually or restart\n" +
+                                $" your computer to unlock the file(s) because it\n" +
+                                $"could lead to a crash on game startup.\n" +
                                 $" You can ignore this message and risk a crash or unexpected behaviors.");
                         });
                     }

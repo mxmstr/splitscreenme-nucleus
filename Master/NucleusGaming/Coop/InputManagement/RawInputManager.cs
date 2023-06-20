@@ -148,18 +148,12 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     WinApi.GetRawInputDeviceInfo(rid.hDevice, 0x2000000b, pData, ref pcbSize);
                     RID_DEVICE_INFO device = (RID_DEVICE_INFO)Marshal.PtrToStructure(pData, typeof(RID_DEVICE_INFO));
 
-                    IntPtr deviceHandle = rid.hDevice;
-
-                    uint result = GetRawInputDeviceInfo(deviceHandle, RawInputDeviceInformationCommand.RIDI_DEVICENAME, pData, ref pcbSize);
-                    IntPtr extraData = Marshal.AllocHGlobal(((int)pcbSize) * 2);
-                    result = GetRawInputDeviceInfo(deviceHandle, RawInputDeviceInformationCommand.RIDI_DEVICENAME, extraData, ref pcbSize);
-
                     string name = "";
 
                     if (rid.dwType <= 1)
                     {
                         RawInputDeviceName deviceName = new RawInputDeviceName();
-                        name = deviceName.GetDeviceName(extraData);
+                        name = deviceName.GetDeviceName(pData, rid.hDevice);
                         deviceName.Dispose();
                     }
                     

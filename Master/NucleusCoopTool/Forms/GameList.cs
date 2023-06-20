@@ -30,13 +30,15 @@ namespace Nucleus.Coop.Forms
             string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "MouseOver").Split(',');
 
             InitializeComponent();
+
             BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
             btnOk.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); ;
-
+            
             GameManager manager = GameManager.Instance;
+
             foreach (GenericGameInfo game in games)
             {
-                GameControl con = new GameControl(game, null, /*false,*/ false)
+                GameControl con = new GameControl(game, null, false)
                 {
                     Width = listGames.Width
                 };
@@ -45,9 +47,9 @@ namespace Nucleus.Coop.Forms
                 con.Click += Con_Click;
                 con.ForeColor = Color.White;
                
-
                 listGames.Controls.Add(con);
             }
+ 
         }
 
         private void Con_Click(object sender, EventArgs e)

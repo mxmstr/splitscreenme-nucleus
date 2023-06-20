@@ -20,7 +20,6 @@ namespace Nucleus.Gaming.Coop
         private object tag;
         public string test;
         private ProcessData processData;
-        public bool Assigned;
 
         public string IdealProcessor = "*";
         public string Affinity = "";
@@ -28,7 +27,8 @@ namespace Nucleus.Gaming.Coop
 
         public UserScreen Owner;
         public int DisplayIndex = -1;
-        public int PlayerID;
+        
+        public int PlayerID = -1;
         public bool SteamEmu;
         public bool GotLauncher;
         public bool GotGame;
@@ -53,7 +53,7 @@ namespace Nucleus.Gaming.Coop
         public Joystick DInputJoystick;
         public OpenXinputController XInputJoystick;
         public IntPtr GamepadHandle;
-        public long SteamID;
+        public long SteamID = -1;
         // Should be set by a script, then these are sent into Proto Input.
         // Zero implies no controller, 1 means controller 1, etc
         public int ProtoController1;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static Nucleus.Gaming.Coop.InputManagement.RawInputManager;
 
 namespace Nucleus.Gaming.Coop.InputManagement
 {
@@ -12,10 +13,20 @@ namespace Nucleus.Gaming.Coop.InputManagement
             Marshal.FreeHGlobal(dataDispose);
         }
 
-        public string GetDeviceName(IntPtr data)
+        public string GetDeviceName(IntPtr data,IntPtr hDevice)
         {
-            dataDispose = data;
-            return Marshal.PtrToStringAuto(data);
+            IntPtr deviceHandle = hDevice;
+            uint pcbSize = 0;
+
+            uint result = GetRawInputDeviceInfo(deviceHandle, RawInputDeviceInformationCommand.RIDI_DEVICENAME, data, ref pcbSize);
+
+            IntPtr extraData = Marshal.AllocHGlobal(((int)pcbSize) * 2);
+
+            result = GetRawInputDeviceInfo(deviceHandle, RawInputDeviceInformationCommand.RIDI_DEVICENAME, extraData, ref pcbSize);
+
+            dataDispose = extraData;
+
+            return Marshal.PtrToStringAuto(extraData);
         }
     }
 }

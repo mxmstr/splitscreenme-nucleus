@@ -220,11 +220,8 @@ namespace Nucleus.Gaming.Tools.GameStarter
         {
             string[] subDirectories = Directory.GetFileSystemEntries(origGamefolder, "*", SearchOption.AllDirectories);
 
-            Console.WriteLine(origGamefolder);
-
             foreach (string dir in subDirectories)
             {
-                Console.WriteLine($"{dir}");
                 File.SetAttributes(dir, FileAttributes.Normal);
             }
         }
