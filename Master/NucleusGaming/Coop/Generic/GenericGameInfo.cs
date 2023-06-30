@@ -37,6 +37,7 @@ namespace Nucleus.Gaming
         public string[] FileSymlinkCopyInstead;
         public string[] DirSymlinkCopyInstead;
         public string[] DirExclusions;
+        public string[] BackupFiles;
 
         public bool KeepSymLinkOnExit;
 

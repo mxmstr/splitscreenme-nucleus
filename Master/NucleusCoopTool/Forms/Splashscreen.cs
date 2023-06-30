@@ -37,7 +37,6 @@ namespace Nucleus.Coop.Forms
 
         private void gif_Click(object sender, EventArgs e)
         {
-           // splayer.Stop();
            Close();
         }
 
@@ -47,7 +46,6 @@ namespace Nucleus.Coop.Forms
             DisposeTimer.Interval = (2500); //millisecond
             DisposeTimer.Tick += new EventHandler(MainTimerTick);
             DisposeTimer.Start();
-            // SoundPlayer(theme + "intro.wav");
         }
 
         private void MainTimerTick(Object Object, EventArgs EventArgs)

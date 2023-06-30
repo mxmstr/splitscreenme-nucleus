@@ -16,15 +16,12 @@ namespace Nucleus.Gaming.Coop
         double TimerInterval { get; }
 
         int TotalPlayers { get; }
-        ///bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight);
 
-        bool Initialize(UserGameInfo game, GameProfile profile);
+        bool Initialize(UserGameInfo game, GameProfile profile,IGameHandler handler);
 
         string Play();
 
         void Update(double delayMS, bool refresh);
-
-        void StartUpdateTick(double delayMS);
 
         void End(bool fromStopButton);
 

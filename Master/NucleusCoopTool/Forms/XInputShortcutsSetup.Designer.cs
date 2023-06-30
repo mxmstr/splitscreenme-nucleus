@@ -862,7 +862,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gamepad Shortcuts Setup";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.XInputShortcutsSetup_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.XInputShortcutsSetup_MouseMove);
             this.shortContainer.ResumeLayout(false);
             this.shortContainer.PerformLayout();
             this.UINavContainer.ResumeLayout(false);

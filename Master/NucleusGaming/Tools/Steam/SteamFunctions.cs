@@ -328,35 +328,42 @@ namespace Nucleus.Gaming.Tools.Steam
                     }
 
                     long steamID = SteamFunctions.random_steam_id + i;
-                    player.SteamID = steamID;
-                    bool useSettingsSID = false;
 
-                    if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
+                    if (player.SteamID == -1)
                     {
-                        genericGameHandler.Log("Using steam ID from Nucleus settings ");
-                        steamID = Convert.ToInt64(genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));//ToString?   
+                        
                         player.SteamID = steamID;
-                        useSettingsSID = true;
-                    }
+                        bool useSettingsSID = false;
 
-                    if (gen.PlayerSteamIDs != null && !useSettingsSID)
-                    {
-                        if (i < gen.PlayerSteamIDs.Length && !string.IsNullOrEmpty(gen.PlayerSteamIDs[i]))
+                        if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
                         {
-                            genericGameHandler.Log("Using steam ID from handler");
-                            steamID = long.Parse(gen.PlayerSteamIDs[i]);
+                            genericGameHandler.Log("Using steam ID from Nucleus settings ");
+                            steamID = Convert.ToInt64(genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));//ToString?   
                             player.SteamID = steamID;
+                            useSettingsSID = true;
                         }
-                    }
 
-                    if (GameProfile.ProfilePlayersList.Count - 1 >= i && player.SteamID == -1)
+                        if (gen.PlayerSteamIDs != null && !useSettingsSID)
+                        {
+                            if (i < gen.PlayerSteamIDs.Length && !string.IsNullOrEmpty(gen.PlayerSteamIDs[i]))
+                            {
+                                genericGameHandler.Log("Using steam ID from handler");
+                                steamID = long.Parse(gen.PlayerSteamIDs[i]);
+                                player.SteamID = steamID;
+                            }
+                        }
+
+                        //if (GameProfile.ProfilePlayersList.Count - 1 >= i && player.SteamID == -1)
+                        //{
+                        //    genericGameHandler.Log("Using steam ID from profile");
+                        //    steamID = GameProfile.ProfilePlayersList[player.PlayerID].SteamID;
+                        //    player.SteamID = steamID;
+                        //}
+                    }
+                    else
                     {
-                        genericGameHandler.Log("Using steam ID from profile");
-                        steamID = GameProfile.ProfilePlayersList[player.PlayerID].SteamID;
-                        player.SteamID = steamID;
+                        steamID = player.SteamID;
                     }
-
-                    Console.WriteLine(player.SteamID);
 
                     genericGameHandler.Log("Generating user_steam_id.txt with user steam ID " + (steamID).ToString());
 
@@ -544,33 +551,42 @@ namespace Nucleus.Gaming.Tools.Steam
             foreach (string nameFile in files)
             {
                 long steamID = SteamFunctions.random_steam_id + i;
-                player.SteamID = steamID;
-                bool useSettingsSID = false;
 
-                if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
+                if (player.SteamID == -1)
                 {
-                    genericGameHandler.Log("Using steam ID from Nucleus settings ");
-                    steamID = Convert.ToInt64(genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));
+                    
                     player.SteamID = steamID;
-                    useSettingsSID = true;
-                }
+                    bool useSettingsSID = false;
 
-                if (genericGameInfo.PlayerSteamIDs != null && !useSettingsSID)
-                {
-                    if (i < genericGameInfo.PlayerSteamIDs.Length && !string.IsNullOrEmpty(genericGameInfo.PlayerSteamIDs[i]))
+                    if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
                     {
-                        genericGameHandler.Log("Using steam ID from handler");
-                        steamID = long.Parse(genericGameInfo.PlayerSteamIDs[i]);
+                        genericGameHandler.Log("Using steam ID from Nucleus settings ");
+                        steamID = Convert.ToInt64(genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));
                         player.SteamID = steamID;
+                        useSettingsSID = true;
                     }
 
-                }
+                    if (genericGameInfo.PlayerSteamIDs != null && !useSettingsSID)
+                    {
+                        if (i < genericGameInfo.PlayerSteamIDs.Length && !string.IsNullOrEmpty(genericGameInfo.PlayerSteamIDs[i]))
+                        {
+                            genericGameHandler.Log("Using steam ID from handler");
+                            steamID = long.Parse(genericGameInfo.PlayerSteamIDs[i]);
+                            player.SteamID = steamID;
+                        }
 
-                if (GameProfile.ProfilePlayersList.Count - 1 >= i && player.SteamID == -1)
+                    }
+
+                    //if (GameProfile.ProfilePlayersList.Count - 1 >= i && player.SteamID == -1)
+                    //{
+                    //    genericGameHandler.Log("Using steam ID from profile");
+                    //    steamID = GameProfile.ProfilePlayersList[player.PlayerID].SteamID;
+                    //    player.SteamID = steamID;
+                    //}
+                }
+                else
                 {
-                    genericGameHandler.Log("Using steam ID from profile");
-                    steamID = GameProfile.ProfilePlayersList[player.PlayerID].SteamID;
-                    player.SteamID = steamID;
+                    steamID = player.SteamID;
                 }
 
                 genericGameHandler.Log("Generating user_steam_id.txt with user steam ID " + (steamID).ToString());
@@ -596,6 +612,11 @@ namespace Nucleus.Gaming.Tools.Steam
 
             while (readToEnd == false)
             {
+                if (GenericGameHandler.Instance.HasEnded)
+                {
+                    break;
+                }
+
                 Thread.Sleep(25);
             }
 
@@ -695,14 +716,14 @@ namespace Nucleus.Gaming.Tools.Steam
 
 
             if (GameProfile.ProfilePlayersList.Count - 1 >= i)
-            {  
+            {
                 if (player.SteamID != -1)
                 {
                     emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", player.SteamID.ToString());
                 }
-                else 
+                else
                 {
-                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", GameProfile.ProfilePlayersList[player.PlayerID].SteamID.ToString()); 
+                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", GameProfile.ProfilePlayersList[player.PlayerID].SteamID.ToString());
                 }
             }
             else if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
@@ -825,6 +846,11 @@ namespace Nucleus.Gaming.Tools.Steam
                     // to kill the mutexes we need to orphanize the process
                     while (!ProcessUtil.RunOrphanProcess(emuExe, genericGameInfo.UseNucleusEnvironment, player.Nickname))
                     {
+                        if(GenericGameHandler.Instance.HasEnded)
+                        {
+                            break;
+                        }
+
                         Thread.Sleep(25);
                     }
                     genericGameHandler.Log("Terminal session launched SmartSteamEmu as an orphan in order to kill mutexes in future");

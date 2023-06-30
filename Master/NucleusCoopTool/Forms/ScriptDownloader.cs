@@ -140,7 +140,6 @@ namespace Nucleus.Coop.Forms
             btn_Prev.BackgroundImage = ImageCache.GetImage(Globals.Theme + "arrow_left.png");
             btn_Next.BackgroundImage = ImageCache.GetImage(Globals.Theme + "arrow_right.png");
             btn_Download.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_download_assets_mousehover.png");
-            //btn_Extract.BackgroundImage = ImageCache.GetImage(Globals.Theme + "extract.png");
             btn_Info.BackgroundImage = ImageCache.GetImage(Globals.Theme + "info.png");
             btn_Search.BackgroundImage = ImageCache.GetImage(Globals.Theme + "magnifier.png");
             btn_ViewAll.BackgroundImage = ImageCache.GetImage(Globals.Theme + "magnifier.png");
@@ -153,7 +152,6 @@ namespace Nucleus.Coop.Forms
             btn_Search.BackColor = mf.buttonsBackColor;
             btn_Close.BackColor = mf.buttonsBackColor;
             btn_Download.BackColor = mf.buttonsBackColor;
-            //btn_Extract.BackColor = mf.buttonsBackColor;
             btn_Maximize.BackColor = mf.buttonsBackColor;
 
             btn_Next.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
@@ -163,7 +161,6 @@ namespace Nucleus.Coop.Forms
             btn_Search.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Close.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Download.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            //btn_Extract.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Maximize.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
 
             controlscollect();
@@ -490,8 +487,6 @@ namespace Nucleus.Coop.Forms
 
             list_Games.Items.Clear();
             searchHandlers.Clear();
-            //btn_Download.Enabled = false;
-            //btn_Info.Enabled = false;
 
             list_Games.BeginUpdate();
             Cursor.Current = Cursors.WaitCursor;
@@ -816,36 +811,6 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        //private void chkBox_Verified_Click(object sender, EventArgs e)
-        //{
-        //    if (chkBox_Verified.Checked)
-        //    {
-        //        if (list_Games.Items.Count > 0)
-        //        {
-        //            foreach (ListViewItem game in list_Games.Items)
-        //            {
-        //                if (game.SubItems[2].Text != "ü")
-        //                {
-        //                    game.Remove();
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (lastSearch == string.Empty)
-        //        {
-        //            grabAll = true;
-        //        }
-        //        else
-        //        {
-        //            txt_Search.Text = lastSearch;
-        //        }
-
-        //        btn_Search.PerformClick();
-        //    }
-        //}
-
         private void btn_ViewAll_Click(object sender, EventArgs e)
         {
             grabAll = true;
@@ -869,8 +834,6 @@ namespace Nucleus.Coop.Forms
                 entryIndex = 0;
             }
 
-
-            //chkBox_Verified.Checked = false;
             FetchHandlers(entryIndex);
         }
 
@@ -891,8 +854,6 @@ namespace Nucleus.Coop.Forms
                 entryIndex = tot - entriesPerPage;
             }
 
-
-            //chkBox_Verified.Checked = false;
             FetchHandlers(entryIndex);
         }
 
@@ -960,24 +921,6 @@ namespace Nucleus.Coop.Forms
                 btn_Info.Visible = true;
             }
         }
-
-        //private void btn_Extract_Click(object sender, EventArgs e)
-        //{
-        //    OpenFileDialog ofd = new OpenFileDialog
-        //    {
-        //        Title = "Select a game handler to extract",
-        //        DefaultExt = "nc",
-        //        InitialDirectory = Gaming.GameManager.Instance.GetJsScriptsPath(),
-        //        Filter = "nc files (*.nc)|*.nc"
-        //    };
-
-        //    DialogResult result = ofd.ShowDialog();
-        //    if (result == DialogResult.OK)
-        //    {
-        //        DownloadPrompt downloadPrompt = new DownloadPrompt(null, mainForm, ofd.FileName);
-        //        downloadPrompt.ShowDialog();
-        //    }
-        //}
 
         private void ScriptDownloader_ClientSizeChanged(object sender, EventArgs e)
         {

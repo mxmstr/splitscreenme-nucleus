@@ -286,7 +286,7 @@ namespace Nucleus.Coop
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://hub.splitscreen.me/");
             request.Timeout = 4000;
-            request.Method = "HEAD";// As per Lasse's comment
+            request.Method = "HEAD";
 
             try
             {

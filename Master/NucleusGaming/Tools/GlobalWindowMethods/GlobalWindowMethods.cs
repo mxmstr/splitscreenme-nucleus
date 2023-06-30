@@ -745,7 +745,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 {
                     foreach (UserScreen screen in ScreensUtil.AllScreens())
                     {
-                        Console.WriteLine(p.Owner.MonitorBounds + " " + screen.MonitorBounds);
+                        //Console.WriteLine(p.Owner.MonitorBounds + " " + screen.MonitorBounds);
                         if (screen.DisplayIndex == p.Owner.DisplayIndex)
                         {
 
@@ -1013,7 +1013,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     {
                         if (!GameProfile.Cts_KeepAspectRatio && !GameProfile.Cts_MuteAudioOnly)//will set player 0 window fullscreened.
                         {
-                            Console.WriteLine($"Set player {p.PlayerID} window fullsceened.");
+                            //Console.WriteLine($"Set player {p.PlayerID} window fullsceened.");
                             Rectangle setfullScreen = new Rectangle(p.Owner.display.X, p.Owner.display.Y, p.Owner.display.Width, p.Owner.display.Height);
 
                             data.HWnd.Size = setfullScreen.Size;
@@ -1021,7 +1021,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                         }
                         else if (!GameProfile.Cts_MuteAudioOnly) //will keep player window size and center it on screen.
                         {
-                            Console.WriteLine($"Set player {p.PlayerID} centered without resizing it.");
+                            //Console.WriteLine($"Set player {p.PlayerID} centered without resizing it.");
                             Rectangle centeredOnly = RectangleUtil.Center(p.MonitorBounds, p.Owner.display);
 
                             data.HWnd.Size = centeredOnly.Size;
@@ -1582,6 +1582,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         }
 
         public static bool TopMostToggle = true;
+
         public static void ShowHideWindows(GenericGameInfo game)
         {
             if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
@@ -1620,6 +1621,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     Globals.MainOSD.Show(1600, $"Game Windows Minimized");
 
                     User32Util.ShowTaskBar();
+
                     TopMostToggle = false;
                 }
                 else if (!TopMostToggle)

@@ -606,6 +606,16 @@ namespace Nucleus.Coop
             bool IdealProcessorsWrongValue = false;
             bool affinitysWrongValue = false;
 
+            if(GameProfile.ProfilePlayersList.Count == 0)
+            {
+                ///Create profile players for new game profile
+                for(int i = 0; i < 32; i++)
+                {
+                     ProfilePlayer player = new ProfilePlayer();    
+                     GameProfile.ProfilePlayersList.Add(player);
+                }
+            }
+
             for (int i = 0; i < GameProfile.ProfilePlayersList.Count; i++)
             {
                 ProfilePlayer player = GameProfile.ProfilePlayersList[i];
@@ -619,13 +629,13 @@ namespace Nucleus.Coop
                 }
 
                 ///Set GameProfile Steam ids
-                if ((Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0) || steamIds[i].Text == "0")
+                if ((Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0) || steamIds[i].Text == "0" || steamIds[i].Text == "-1")
                 {
                     if (steamIds[i].Text != "")
                     {
                         player.SteamID = long.Parse(steamIds[i].Text.ToString());
 
-                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0")
+                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0" && steamIds[i].Text != "-1")
                         {
                             jsonsteamIdsList.Add(steamIds[i].Text.ToString());
                         }
@@ -1034,16 +1044,12 @@ namespace Nucleus.Coop
 
         private void profile_info_btn_Click(object sender, EventArgs e)
         {
-            //if (!profileInfo.Visible)
-            //{
-            //    profileInfo.Visible = true;
-            //    profileInfo.BringToFront();
-            //}
-            //else
-            //{
-            //    profileInfo.Visible = false;
-            //}
-            NucleusMessageBox.Show("info", "Profile will be saved or updated when all instances will be set and ready.\nTo load a profile click the profile list icon in the setup screen and choose the profile to load by clicking on it in the list.\nProfile settings can be ajusted before pressing the play button.\nSome of the settings could break hooks functions or resizing functions so it's better to test the game with the default settings on first run.\nFor more informations or if you have any doubts keep the default settings or ask for help.");
+            NucleusMessageBox.Show(
+                "info", "Profile will be saved when all instances will be set and ready.\n" +
+                "To load a profile click the profile list icon in the setup screen and choose the profile to load by clicking on it in the list.\n" +
+                "Profile settings can be ajusted before pressing the play button.\n" +
+                "Some of the settings could break hooks functions or resizing functions so it's better to launch the game with the default profile settings once.\n" +
+                "For more informations or if you have any doubts keep the default settings or ask for help.");
         }
 
         private void cts_Mute_CheckedChanged(object sender, EventArgs e)

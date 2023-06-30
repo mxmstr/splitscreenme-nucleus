@@ -537,7 +537,7 @@ namespace Nucleus.Coop
             {
                 AutoSize = true,
                 Text = "Favorite Games",
-                BackColor = buttonsBackColor,
+                BackColor = Color.Transparent,
                 ForeColor = this.ForeColor,
             };
 
@@ -558,7 +558,7 @@ namespace Nucleus.Coop
             hotkeysLockedTimer.Tick += new EventHandler(hotkeysLockedTimerTick);
 
             gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
-
+            gameContextMenuStrip.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
             RefreshGames();
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
@@ -1046,6 +1046,8 @@ namespace Nucleus.Coop
                 RefreshGames();
             }
 
+            mainButtonFrame.Focus();
+
             ResumeLayout();
         }
 
@@ -1153,9 +1155,17 @@ namespace Nucleus.Coop
 
         private void List_Games_SelectedChanged(object arg1, Control arg2)
         {
+            if (GenericGameHandler.Instance != null)
+            {
+                if (!GenericGameHandler.Instance.HasEnded)
+                {
+                    return;
+                }
+            }
+
             currentControl = (GameControl)arg1;
-            currentGameInfo = currentControl.UserGameInfo;
-            
+            currentGameInfo = currentControl.UserGameInfo;         
+
             if (currentGameInfo != null)
             {
                 if (!CheckGameRequirements.MatchRequirements(currentGameInfo))
@@ -1450,11 +1460,11 @@ namespace Nucleus.Coop
                 {
                     I_GameHandler.End(false);
                 }
-                catch { }
+                catch {}
             }
 
             User32Util.ShowTaskBar();
-
+           
             if (!restartRequired)
             {
                 Process.GetCurrentProcess().Kill();
@@ -1463,8 +1473,6 @@ namespace Nucleus.Coop
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
-            bool useCustomLayout = GameProfile.UseSplitDiv;
-
             if (btn_Play.Text == "S T O P")
             {
                 try
@@ -1479,7 +1487,6 @@ namespace Nucleus.Coop
 
                 GameProfile.currentProfile.Reset();
                 setupScreen.gamepadTimer = new System.Threading.Timer(setupScreen.GamepadTimer_Tick, null, 0, 500);
-                
                 return;
             }
 
@@ -1495,45 +1502,17 @@ namespace Nucleus.Coop
             currentGameInfo.InitializeDefault(currentGame, currentGameInfo.ExePath);
 
             I_GameHandler = gameManager.MakeHandler(currentGame);
-            I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile));
+                         
+            I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile), I_GameHandler);
             I_GameHandler.Ended += handler_Ended;
 
             GameProfile.Game = currentGame;
-
-            gameManager.Play(I_GameHandler);
-
-            if (I_GameHandler.TimerInterval > 0)
-            {
-                I_GameHandler.StartUpdateTick(currentGame.HandlerInterval);
-            }
-
-            if (currentGame.HideTaskbar && !useCustomLayout)
-            {
-                User32Util.HideTaskbar();
-            }
-
-            if (currentGame.ProtoInput.AutoHideTaskbar || useCustomLayout)
-            {
-                if (ProtoInput.protoInput.GetTaskbarAutohide())
-                {
-                    currentGame.ProtoInput.AutoHideTaskbar = false; ///If already hidden don't change it, and dont set it unhidden after.
-                }
-                else
-                {
-                    ProtoInput.protoInput.SetTaskbarAutohide(true);
-                }
-            }
-
+           
             if (profileSettings.Visible)
             {
                 profileSettings.Visible = false;
             }
-
-            if (btn_Play.ContainsFocus)
-            {
-                mainButtonFrame.Focus();
-            }
-
+                     
             if (!currentGame.ToggleUnfocusOnInputsLock)///Not sure if necessary
             {
                 WindowState = FormWindowState.Minimized;
@@ -1552,13 +1531,13 @@ namespace Nucleus.Coop
              {
                  I_GameHandler = null;
                  currentControl = null;
-
-                 setupScreen.gamepadTimer = new System.Threading.Timer(setupScreen.GamepadTimer_Tick, null, 0, 500);
                 
                  WindowState = FormWindowState.Normal;
+
                  mainButtonFrame.Focus();
                  btn_Play.Text = "PLAY";
                  btn_Play.Enabled = false;
+
                  BringToFront();
              });
         }
@@ -2523,6 +2502,14 @@ namespace Nucleus.Coop
 
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
+            if (GenericGameHandler.Instance != null)
+            {
+                if (!GenericGameHandler.Instance.HasEnded)
+                {
+                    return;
+                }
+            }
+
             if (profileSettings.Visible)
             {
                 return;

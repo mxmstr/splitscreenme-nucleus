@@ -272,9 +272,8 @@ namespace Nucleus.Coop
                     return reader.ReadToEnd();
                 }
             }
-            catch (WebException ex)
+            catch (WebException)
             {         
-                //Console.WriteLine(ex);
                 return null;
             }
         }

@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Controls
 {
-    public partial class ProfilesList : ControlListBox//, IDynamicSized
+    public partial class ProfilesList : ControlListBox
     {
         private IniFile themeIni = Globals.ThemeIni;
 
@@ -84,7 +84,6 @@ namespace Nucleus.Gaming.Controls
 
                 if (e == null && c.Text == "Unload")
                 {
-                    Console.WriteLine(e);
                     c.ForeColor = Color.Gray;
                     selected.Dispose();//dummy control use to reset the unload "button/label"
                 }
@@ -305,6 +304,46 @@ namespace Nucleus.Gaming.Controls
 
                     File.Move(profilesPath[i].FullName, $@"{Directory.GetParent(profilesPath[i].FullName)}\Profile[{i + 1}].json");
                 }
+
+                # region Delete per-game profile game files backup 
+
+                string backupPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop\Game Files Backup\{GameProfile.GameGUID}";
+
+                string backupToDelete = $"{backupPath}\\Profile{deleteBtn.Parent.Name}";
+
+                if (Directory.Exists(backupToDelete))
+                {
+                    Directory.Delete(backupToDelete, true);
+
+                    string[] backupFilesFolders = Directory.GetDirectories(backupPath, "*", SearchOption.TopDirectoryOnly);
+                    List<string> profileBackupsOnly = new List<string>();
+
+                    for (int i = 0; i < backupFilesFolders.Length; i++)
+                    {
+                        string backupFolder = backupFilesFolders[i];
+
+                        if (backupFolder.Contains($"Profile"))
+                        {
+                            profileBackupsOnly.Add(backupFolder);
+                        }
+                    }
+
+                    List<string> profileBackupsOnlySorted = profileBackupsOnly.OrderBy(s => int.Parse(Regex.Match(s, @"\d+").Value)).ToList();
+
+                    for (int i = 0; i < profileBackupsOnlySorted.Count; i++)
+                    {
+                        string toRename = profileBackupsOnlySorted[i];
+
+                        if (toRename == $"{backupPath}\\Profile{i + 1}")
+                        {
+                            continue;
+                        }
+
+                        Directory.Move(toRename, $"{backupPath}\\Profile{i + 1}");
+                    }
+                }
+
+                #endregion
 
                 GameProfile.currentProfile.Reset();
 

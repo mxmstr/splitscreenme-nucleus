@@ -43,7 +43,7 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
                 return;
             }
 
-            //while(ControllersUINav.EnabledRuntime)//A voir
+            //while(ControllersUINav.EnabledRuntime)
             //{
             //    Thread.Sleep(1000);
             //}
@@ -86,7 +86,7 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
 
             try
             {
-                while (true)
+                while (!GenericGameHandler.Instance.HasEnded)//orig true
                 {
                     Thread.Sleep(gen.FakeFocusInterval);
 
@@ -132,6 +132,8 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
                         }
                     }
                 }
+
+                //Console.WriteLine("Fake focus window thread released");
             }
             catch (Exception)
             {

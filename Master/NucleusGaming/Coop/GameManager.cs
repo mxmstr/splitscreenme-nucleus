@@ -524,6 +524,7 @@ namespace Nucleus.Gaming
                 {
                     Console.WriteLine(e.Message);
                 }
+
                 isSaving = false;
             }
         }
@@ -615,46 +616,8 @@ namespace Nucleus.Gaming
                 MessageBox.Show(ex.InnerException + ": " + ex.Message, "Error with handler " + f.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //continue;
             }
-
-
         }
+
         #endregion
-
-        public void Play(IGameHandler handler)
-        {
-            // Start the Play method in another thread, so the
-            // handler can update while it's still loading
-            error = null;
-            ThreadPool.QueueUserWorkItem(play, handler);
-        }
-
-        private void play(object state)
-        {
-#if RELEASE || true
-            try
-            {
-                error = ((IGameHandler)state).Play();
-            }
-            catch (Exception ex)
-            {
-                error = ex.Message;
-                try
-                {
-                    RegistryUtil.RestoreRegistry("Error Restore from GameManager");
-
-                    // try to save the exception
-                    LogManager.Instance.LogExceptionFile(ex);
-                }
-                catch
-                {
-                    LogManager.Instance.LogExceptionFile(ex);
-                    error = "We failed so hard we failed while trying to record the reason we failed initially. Sorry.";
-                    return;
-                }
-            }
-#else
-            error = ((IGameHandler)state).Play();
-#endif
-        }
     }
 }

@@ -50,10 +50,12 @@ namespace Nucleus.Coop
             {
                 this.favorite = favorite;
                 IniFile theme = Globals.ThemeIni;
+
                 string themePath = Globals.Theme;
                 string[] rgb_SelectionColor = theme.IniReadValue("Colors", "Selection").Split(',');
                 string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
                 string customFont = theme.IniReadValue("Font", "FontFamily");
+
                 radioSelectedBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
                 userOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
                 userLeaveBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));

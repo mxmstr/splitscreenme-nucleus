@@ -30,10 +30,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             if (Controllers[index].IsConnected)
             {
                 State state = (State)GetControllerState(index);
-                if (state.Gamepad.Buttons != 0)
-                {
-                    //Console.WriteLine($"{index} Right trigger {(int)state.Gamepad.Buttons}");
-                }
+
                 return (int)state.Gamepad.Buttons;
             }
             return 0;
@@ -44,11 +41,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
             if (Controllers[index].IsConnected)
             {
                 State state = (State)GetControllerState(index);
-
-                if (state.Gamepad.RightTrigger != 0)
-                {
-                    //Console.WriteLine($"{index} Right trigger {(int)state.Gamepad.RightTrigger}");
-                }
 
                 return (int)state.Gamepad.RightTrigger;
             }
@@ -62,11 +54,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 State state = (State)GetControllerState(index);
 
-                if (state.Gamepad.LeftTrigger != 0)
-                {
-                    //Console.WriteLine($"{index} Left trigger {(int)state.Gamepad.LeftTrigger}");
-                }
-
                 return (int)state.Gamepad.LeftTrigger;
             }
 
@@ -79,12 +66,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 State state = (State)GetControllerState(index);
 
-                if (state.Gamepad.RightTrigger != 0)
-                {
-                    //Console.WriteLine($"{index} Right stick X:{(int)state.Gamepad.LeftThumbX}");
-                    //Console.WriteLine($"{index} Right stick Y:{(int)state.Gamepad.LeftThumbY}");
-                }
-
                 return ((int)state.Gamepad.RightThumbX, (int)state.Gamepad.RightThumbY);
             }
 
@@ -96,12 +77,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
             if (Controllers[index].IsConnected)
             {
                 State state = (State)GetControllerState(index);
-
-                if (state.Gamepad.RightTrigger != 0)
-                {
-                    //Console.WriteLine($"{index} Left stick X: {(int)state.Gamepad.LeftThumbX}");
-                    //Console.WriteLine($"{index} Left stick Y:{(int)state.Gamepad.LeftThumbY}");
-                }
 
                 return ((int)state.Gamepad.LeftThumbX, (int)state.Gamepad.LeftThumbY);
             }
@@ -120,11 +95,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 XInputGetStateSecret(index, ref state);
 
                 int.TryParse("None", out int noButtonPressed);
-
-                if ((int)state.Gamepad.Buttons != noButtonPressed)
-                {
-                    //Console.WriteLine($"{index} {(int)state.Gamepad.Buttons}");
-                }
 
                 return state;
             }

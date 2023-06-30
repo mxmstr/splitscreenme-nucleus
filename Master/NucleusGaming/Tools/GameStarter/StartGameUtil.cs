@@ -153,6 +153,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
             if (string.IsNullOrEmpty(e.Data))
             {
                 return;
+
             }
             Console.WriteLine($"Redirected output: {e.Data}");
             lastLine = e.Data;

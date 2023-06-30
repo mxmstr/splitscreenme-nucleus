@@ -64,13 +64,13 @@ namespace Nucleus.Coop
         public override bool CanProceed => canProceed;
         public override bool CanPlay => false;
         private bool profileDisabled;
-        private bool useXinputIndex;
+        private bool useGamepadApiIndex;
         public bool UseXinputIndex
         {
-            get => useXinputIndex;
+            get => useGamepadApiIndex;
             set
             {
-                useXinputIndex = value;
+                useGamepadApiIndex = value;
                 if (profile != null)
                 {
                     profile.Reset();
@@ -151,17 +151,18 @@ namespace Nucleus.Coop
             string[] rgb_PositionControlsFontColor = themeIni.IniReadValue("Colors", "SetupScreenFont").Split(',');
             string[] rgb_PositionScreenColor = themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',');
             string[] rgb_PositionPlayerScreenColor = themeIni.IniReadValue("Colors", "SetupScreenPlayerBorder").Split(',');
+
             controllerIdentification = bool.Parse(themeIni.IniReadValue("Misc", "ControllerIdentificationOn"));
             UseSetupScreenBorder = bool.Parse(themeIni.IniReadValue("Misc", "UseSetupScreenBorder"));
             UseLayoutSelectionBorder = bool.Parse(themeIni.IniReadValue("Misc", "UseLayoutSelectionBorder"));
             UseSetupScreenImage = bool.Parse(themeIni.IniReadValue("Misc", "UseSetupScreenImage"));
             customFont = themeIni.IniReadValue("Font", "FontFamily");
-            useXinputIndex = bool.Parse(Globals.ini.IniReadValue("Dev", "UseXinputIndex"));
+            useGamepadApiIndex = bool.Parse(Globals.ini.IniReadValue("Dev", "UseXinputIndex"));
 
-            if (gamepadTimer == null)
-            {
-                gamepadTimer = new System.Threading.Timer(GamepadTimer_Tick, null, 0, 500);
-            }
+            //if (gamepadTimer == null)
+            //{
+            //    gamepadTimer = new System.Threading.Timer(GamepadTimer_Tick, null, 0, 500);
+            //}
 
             SuspendLayout();
 
@@ -335,7 +336,7 @@ namespace Nucleus.Coop
             {
                 gamepadTimer = new System.Threading.Timer(GamepadTimer_Tick, null, 0, 500);
             }
-
+               
             profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
 
             if (!profileDisabled)
@@ -458,7 +459,15 @@ namespace Nucleus.Coop
 
         private void ClearDInputDevicesList()
         {
-            JoyStickList = new List<Joystick>();
+            foreach(Joystick joystick in JoyStickList)
+            {
+                if (!joystick.IsDisposed)
+                {
+                    joystick.Dispose();
+                }
+            }
+
+            JoyStickList.Clear();
         }
 
         private bool PollDInputGamepad(PlayerInfo player)
@@ -483,18 +492,15 @@ namespace Nucleus.Coop
             }
             catch (Exception)
             {
-                if (player.IsDInput)
-                {
-                    player.DInputJoystick.Unacquire();
-                    player.DInputJoystick = null;
-                }
+                player.DInputJoystick.Dispose();
+                player.DInputJoystick = null;         
                 return false;
             }
 
             return false;
         }
 
-        public void Vibration_Tick(object state)
+        private void Vibration_Tick(object state)
         {
             if (profile == null)
             {
@@ -523,96 +529,116 @@ namespace Nucleus.Coop
             vibrationTimer.Dispose();
         }
 
+        private void Vibrate(PlayerInfo player)
+        {
+            if (!player.Vibrate)
+            {
+                Vibration vibration = new Vibration
+                {
+                    RightMotorSpeed = (ushort)65535,///make it full strenght because controllers can have different sensitivity
+                    LeftMotorSpeed = (ushort)65535///make it full strenght because controllers can have different sensitivity
+                };
+
+                player.XInputJoystick.SetVibration(vibration);
+                vibrationTimer = new System.Threading.Timer(Vibration_Tick, null, 90, 0);
+                player.Vibrate = true;
+            }
+        }
+
+        private bool polling = false;
+
         private bool PollXInputGamepad(PlayerInfo player)
         {
+            if (polling)
+            {
+                return false;
+            }
+
             try
             {
-                int pressedCount = 0;
-
                 if (!player.XInputJoystick.IsConnected)
                 {
                     return false;
                 }
 
-                Joystick newPlayerJoystick = null;
-
                 if (player.XInputJoystick.GetState().Gamepad.Buttons != 0)
                 {
+                    if (useGamepadApiIndex)
+                    {
+                        Vibrate(player);
+                        return true;
+                    }
+
                     if (player.DInputJoystick == null)
                     {
+                        int pressedCount = 0;
+
+                        Joystick joystick = null;
+
                         for (int i = 0; i < JoyStickList.Count; i++)
                         {
-                            Joystick joystick = JoyStickList[i];
-
-                            joystick.Acquire();
+                            joystick = JoyStickList[i];
 
                             if (joystick.GetCurrentState().Buttons.Any(b => b == true))
                             {
+                                player.DInputJoystick = joystick;
                                 ++pressedCount;
-                                newPlayerJoystick = joystick;
-                            }
-
-                            if (pressedCount > 1)
-                            {
-                                newPlayerJoystick.Unacquire();
-                                Globals.MainOSD.Show(1000, $"Poll One Gamepad At Once");
-
-                                return false;
                             }
                         }
 
-                        if (newPlayerJoystick == null)///dinput devices list is empty for now
+                        if (pressedCount > 1)
                         {
+                            //Globals.MainOSD.Show(1000, $"Poll One Gamepad At Once");
+                            player.DInputJoystick.Dispose();
+                            player.DInputJoystick = null;
+
+                            ClearDInputDevicesList();//Clear all beacause if one is broken all others could potentialy be too.
+
                             return false;
                         }
 
-                        if (!useXinputIndex)
+                        if (pressedCount == 0)//if 0 the device does not return any state so it's a "broken" one.
                         {
-                            if (player.DInputJoystick == null && !profile.PlayersList.Any(pl => pl.GamepadGuid == newPlayerJoystick.Information.InstanceGuid))
-                            {
-                                player.DInputJoystick = newPlayerJoystick;
-                                player.GamepadGuid = newPlayerJoystick.Information.InstanceGuid;
-                                player.GamepadProductGuid = newPlayerJoystick.Information.ProductGuid;
-                                player.GamepadName = newPlayerJoystick.Information.InstanceName;
-                                string hid = player.DInputJoystick.Properties.InterfacePath;
-                                player.RawHID = hid;
-                                int start = hid.IndexOf("hid#");
-                                int end = hid.LastIndexOf("#{");
-                                string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
-                                player.HIDDeviceID = new string[] { fhid, "" };
-                                player.IsInputUsed = true;
-                            }
+                            ClearDInputDevicesList();
+
+                            return false;
                         }
 
-                        if (!player.Vibrate)
+                        if (player.DInputJoystick != null)
                         {
-                            Vibration vibration = new Vibration
-                            {
-                                RightMotorSpeed = (ushort)65535,///make it full strenght because controllers can have different sensitivity
-                                LeftMotorSpeed = (ushort)65535///make it full strenght because controllers can have different sensitivity
-                            };
-
-                            player.XInputJoystick.SetVibration(vibration);
-                            vibrationTimer = new System.Threading.Timer(Vibration_Tick, null, 90, 0);
-                            player.Vibrate = true;
+                            player.GamepadGuid = player.DInputJoystick.Information.InstanceGuid;
+                            player.GamepadProductGuid = player.DInputJoystick.Information.ProductGuid;
+                            player.GamepadName = player.DInputJoystick.Information.InstanceName;
+                            string hid = player.DInputJoystick.Properties.InterfacePath;
+                            player.RawHID = hid;
+                            int start = hid.IndexOf("hid#");
+                            int end = hid.LastIndexOf("#{");
+                            string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
+                            player.HIDDeviceID = new string[] { fhid, "" };
+                            player.IsInputUsed = true;
+                            Vibrate(player);                         
                         }
                     }
+            
+                    if (player.DInputJoystick != null)
+                    {
+                        return true;
+                    }
 
-                    //Console.WriteLine(player.GamepadGuid);
-                    return true;
+                    return false;
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ///Some wireless devices can disconnect even with the receiver plugged which mess everything up           
-                if (ex.HResult == -2147220983)
-                {
-                    profile.Reset();
-                    ClearDInputDevicesList();
-                    UpdatePlayers();
-                    //Console.WriteLine("Something went wrong with one or more DInput device(s)");
-                }
+                profile.Reset();
+
+                ClearDInputDevicesList();
+
+                UpdatePlayers();
+
+                Console.WriteLine("Something went wrong with one or more DInput device(s)");
 
                 return false;
             }
@@ -671,6 +697,7 @@ namespace Nucleus.Coop
                             if (data[j].DInputJoystick != null)
                             {
                                 data[j].DInputJoystick.Unacquire();
+                                data[j].DInputJoystick.Dispose();
                             }
 
                             changed = true;
@@ -747,15 +774,16 @@ namespace Nucleus.Coop
                 for (int x = 0; x < dInputList.Count; x++)
                 {
                     DeviceInstance device = dInputList[x];
-
-                    if (!JoyStickList.Any(j => j.Information.InstanceGuid == device.InstanceGuid))
-                    {
+                  
+                    if (JoyStickList.All(j => j.Information.InstanceGuid != device.InstanceGuid))
+                    {                     
                         Joystick joy = new Joystick(dinput, device.InstanceGuid);
+                        joy.Acquire();
+                        //joy.Disposed += new EventHandler<EventArgs>(DisposeJoystick);
                         JoyStickList.Add(joy);
                     }
                 }
 
-                long xinputIndex = 200000000001;
                 ///Using OpenXinput with more than 4 players means we can use more than 4 xinput controllers
                 if ((g.Hook.XInputEnabled && !g.Hook.XInputReroute && !g.ProtoInput.DinputDeviceHook) || g.ProtoInput.XinputHook)
                 {
@@ -771,8 +799,8 @@ namespace Nucleus.Coop
                             {
                                 if (data[j].DInputJoystick != null)
                                 {
-                                    data[j].DInputJoystick.Unacquire();
-                                    JoyStickList.Remove(data[j].DInputJoystick);
+                                    JoyStickList.Remove(data[j].DInputJoystick);                                  
+                                    data[j].DInputJoystick.Dispose();
                                 }
 
                                 changed = true;
@@ -839,9 +867,9 @@ namespace Nucleus.Coop
                             player.IsController = true;
                             player.GamepadId = i;
 
-                            if (useXinputIndex || profileDisabled)
+                            if (useGamepadApiIndex || profileDisabled)
                             {
-                                player.GamepadGuid = new Guid($"00000000-0000-0000-0000-{xinputIndex++}");
+                                player.GamepadGuid = new Guid($"00000000-0000-0000-0000-20000000000{player.GamepadId + 1}");
                                 player.IsInputUsed = true;
                             }
 
@@ -894,6 +922,7 @@ namespace Nucleus.Coop
                         screens[brokenPlayer.ScreenIndex].PlayerOnScreen--;
                         TotalPlayers--;
                     }
+
                     data.Remove(brokenPlayer);
                 }
             }
@@ -1257,6 +1286,7 @@ namespace Nucleus.Coop
 
                     if (GameProfile.TotalPlayers > 0)
                     {
+                        //Check if these bounds corresponds to a profile player
                         if (GameProfile.ProfilePlayersList.All(pl => pl.MonitorBounds != divMonitorBounds.Value))
                         {
                             monitorBounds = null;
@@ -1273,9 +1303,6 @@ namespace Nucleus.Coop
                                 playerToInsert.PlayerID = profilePlayer.PlayerID;
                                 playerToInsert.Nickname = profilePlayer.Nickname;
                                 playerToInsert.SteamID = profilePlayer.SteamID;
-                                Console.WriteLine(playerToInsert.Nickname);
-                                Console.WriteLine(playerToInsert.PlayerID);
-                                Console.WriteLine(playerToInsert.SteamID);
                                 loadedProfilePlayers.Add(playerToInsert);
 
                                 if (!(playerToInsert.IsRawKeyboard && playerToInsert.IsRawMouse))
@@ -1286,13 +1313,12 @@ namespace Nucleus.Coop
                         }
                     }
 
-                    if (players.Any(pl => pl.EditBounds == divEditorBounds) || (playerToInsert.IsRawKeyboard && playerToInsert.IsRawMouse))//found k+m in the ame bounds
+                    if (players.Any(pl => pl.EditBounds == divEditorBounds) || (playerToInsert.IsRawKeyboard && playerToInsert.IsRawMouse))//found k+m in the same bounds
                     {
                         TotalPlayers++;
                     }
 
                     return true;
-
                 }
             }
 
@@ -1402,7 +1428,7 @@ namespace Nucleus.Coop
                         {
                             ///return to default position
                             PlayerInfo p = players[j];
-                         
+                          
                             PlayerInfo temp = profile.PlayersList.Where(pl => pl.MonitorBounds.Equals(p.MonitorBounds) && !pl.HIDDeviceID.Contains(p.HIDDeviceID[0])).FirstOrDefault();
 
                             if ((p.IsRawKeyboard || p.IsRawMouse) && p.ScreenIndex == i && !(p.IsRawKeyboard && p.IsRawMouse))
@@ -1438,10 +1464,14 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < players.Count; i++)
                 {
-
                     Rectangle r = players[i].EditBounds;
+                    
                     if (r.Contains(e.Location))
                     {
+                        if (!players[i].IsInputUsed)
+                        {
+                            return;
+                        }
                         dragging = true;
                         draggingIndex = i;
                         draggingOffset = new Point(r.X - e.X, r.Y - e.Y);
@@ -1744,12 +1774,14 @@ namespace Nucleus.Coop
                             {
                                 screens[p.ScreenIndex].PlayerOnScreen--;
                                 TotalPlayers--;
+                                p.ScreenIndex = -1;
                             }
                         }
                         else if (p.DisplayIndex != -1)
                         {                      
                             screens[p.ScreenIndex].PlayerOnScreen--;                      
                             TotalPlayers--;
+                            p.ScreenIndex = -1;
                         }
 
                         p.MonitorBounds = new Rectangle(0, 0, 0, 0);
@@ -1841,7 +1873,7 @@ namespace Nucleus.Coop
         private bool showError = false;
 
         private void LoadPlayerProfile(PlayerInfo player)
-        {   
+        {
             if (loadedProfilePlayers.Contains(player))
             {
                 return;
@@ -1862,7 +1894,7 @@ namespace Nucleus.Coop
                     return;
                 }
             }
-        
+
             if (TotalPlayers < GameProfile.TotalPlayers)
             {
                 ///Merge raw keyboards and raw mice devices as saved by the game profile to single device
@@ -1905,40 +1937,43 @@ namespace Nucleus.Coop
                         }
                     }
                 }
-              
+
                 ProfilePlayer profilePlayer = null;
-               
+
                 bool skipGuid = false;
 
-                //XInput (follow Xinput indexes)
-                if (player.IsController && useXinputIndex)
+                //XInput (follow gamepad api indexes)
+                if (player.IsController && useGamepadApiIndex)
                 {
                     foreach (ProfilePlayer pp in GameProfile.ProfilePlayersList)
                     {
-                        if (loadedProfilePlayers.Any(lp => lp.MonitorBounds == pp.MonitorBounds))
+                        if (loadedProfilePlayers.Any(lp => lp.MonitorBounds == pp.MonitorBounds && lp.IsController))
                         {
                             continue;
                         }
 
-                        profilePlayer = pp;
-                        skipGuid = true;
-                        break;
+                        if (loadedProfilePlayers.All(pl => pl.MonitorBounds != pp.MonitorBounds))
+                        {
+                            profilePlayer = pp;
+                            skipGuid = true;
+                            break;
+                        }
                     }
                 }
 
-                //DInput && XInput using GameGuid(do not follow Xinput indexes)
+                //DInput && XInput using GameGuid(do not follow gamepad api indexes)
                 if (player.IsController && !skipGuid)
                 {
                     profilePlayer = GameProfile.ProfilePlayersList.Where(pl => (pl.IsDInput || pl.IsXInput) && (pl.GamepadGuid == player.GamepadGuid)).FirstOrDefault();
                 }
 
                 //single k&m 
-                if (player.IsKeyboardPlayer && (!player.IsRawMouse && !player.IsKeyboardPlayer))
+                if (player.GamepadGuid.ToString() == "10000000-1000-1000-1000-100000000000")
                 {
-                    profilePlayer = GameProfile.ProfilePlayersList.Where(pl => pl.GamepadGuid == player.GamepadGuid).FirstOrDefault();
+                    profilePlayer = GameProfile.ProfilePlayersList.Where(pl => pl.GamepadGuid.ToString() == "10000000-1000-1000-1000-100000000000").FirstOrDefault();
                 }
 
-                //Multilple k&m
+                //Multiple k&m
                 if (player.IsRawKeyboard && player.IsRawMouse)///Merged raw keyboard and raw mouse player
                 {
                     profilePlayer = GameProfile.ProfilePlayersList.Where(pl => (pl.IsRawMouse && pl.IsKeyboardPlayer) && (pl.HIDDeviceIDs.Contains(player.HIDDeviceID[0]) && pl.HIDDeviceIDs.Contains(player.HIDDeviceID[1]))).FirstOrDefault();
@@ -2007,17 +2042,20 @@ namespace Nucleus.Coop
 
             if (TotalPlayers == GameProfile.TotalPlayers)
             {
-                if (GameProfile.Ready && !GameProfile.AutoPlay)
+                if (GameProfile.Ready && (!GameProfile.AutoPlay || GameProfile.Updating))
                 {
                     CanPlayUpdated(true, true);
-                    GameProfile.Ready = false;
+                    GameProfile.Updating = false;
+
+                    return;
                 }
 
-                if (GameProfile.Ready && GameProfile.AutoPlay)
+                if (GameProfile.Ready && GameProfile.AutoPlay && !GameProfile.Updating)
                 {
                     CanPlayUpdated(true, true);
                     btn_Play.PerformClick();
                     GameProfile.Ready = false;
+
                     return;
                 }
             }
@@ -2144,7 +2182,7 @@ namespace Nucleus.Coop
 
                     if (game.Game.SupportsMultipleKeyboardsAndMice)
                     {
-                        if (useXinputIndex || profileDisabled)
+                        if (useGamepadApiIndex || profileDisabled)
                         {
                             msg = $"Drop Devices {screenText}.";
                         }
@@ -2162,7 +2200,7 @@ namespace Nucleus.Coop
                     }
                     else if (!game.Game.SupportsMultipleKeyboardsAndMice && !game.Game.SupportsKeyboard)
                     {
-                        if (useXinputIndex || profileDisabled)
+                        if (useGamepadApiIndex || profileDisabled)
                         {
                             msg = $"Drop Gamepads {screenText}.";
                         }
@@ -2173,7 +2211,7 @@ namespace Nucleus.Coop
                     }
                     else
                     {
-                        if (useXinputIndex || profileDisabled)
+                        if (useGamepadApiIndex || profileDisabled)
                         {
                             msg = $"Drop Gamepads Or Keyboard & Mouse {screenText}.";
                         }
@@ -2219,6 +2257,7 @@ namespace Nucleus.Coop
 
                         if (PollXInputGamepad(player))
                         {
+                            polling = true;
                             g.DrawImage(xinputPic, gamepadRect, 0, 0, xinputPic.Width, xinputPic.Height, GraphicsUnit.Pixel, flashImageAttributes);
                         }
                         else
@@ -2294,7 +2333,7 @@ namespace Nucleus.Coop
                         }
 
                         if (PollDInputGamepad(player))
-                        {
+                        {   
                             g.DrawImage(dinputPic, gamepadRect, 0, 0, dinputPic.Width, dinputPic.Height, GraphicsUnit.Pixel, flashImageAttributes);
                         }
                         else
@@ -2327,7 +2366,7 @@ namespace Nucleus.Coop
                 g.DrawImage(draggingScreenImg, _draggingScreen);
             }
 
-            //Console.WriteLine(TotalPlayers);
+            polling = false;
         }
     }
 }

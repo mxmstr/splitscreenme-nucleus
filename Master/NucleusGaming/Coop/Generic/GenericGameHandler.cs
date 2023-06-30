@@ -8,6 +8,7 @@ using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Platform.PCSpecs;
 using Nucleus.Gaming.Tools.AudioReroute;
+using Nucleus.Gaming.Tools.BackupFiles;
 using Nucleus.Gaming.Tools.DevReorder;
 using Nucleus.Gaming.Tools.DInputBlocker;
 using Nucleus.Gaming.Tools.DirectX9Wrapper;
@@ -101,6 +102,7 @@ namespace Nucleus.Gaming
         internal CursorModule _cursorModule { get; set; }
         private GameProfile profile;
         private GenericGameInfo gen;
+        public GenericGameInfo currentGameInfo => gen;
         public GenericContext context;
         private static GenericGameHandler instance;
         private Thread statusWinThread;
@@ -111,7 +113,7 @@ namespace Nucleus.Gaming
         public UserScreen owner;
         public readonly IniFile ini = Globals.ini;
         public Thread FakeFocus => WindowFakeFocus.fakeFocus;
-        public Thread _ControllersShortcuts = ControllersShortcuts.ctrlsShortcuts;
+        //public Thread _ControllersShortcuts = ControllersShortcuts.ctrlsShortcuts;
 
         public event Action Ended;
         public static GenericGameHandler Instance => instance;
@@ -143,12 +145,14 @@ namespace Nucleus.Gaming
         public bool isDebug;
         public bool dllResize = false;
         public bool dllRepos = false;
+        public string error;
 
-        public bool Initialize(UserGameInfo game, GameProfile profile)
+        public bool Initialize(UserGameInfo game, GameProfile profile,IGameHandler handler)
         {
             instance = this;
             userGame = game;
             this.profile = profile;
+
             GlobalWindowMethods.profile = profile;
 
             if (ini.IniReadValue("Misc", "DebugLog") == "True")
@@ -216,7 +220,44 @@ namespace Nucleus.Gaming
             }
 
             totalPlayers = profile.PlayersList.Count;
+
+            if (TimerInterval > 0)
+            {
+                StartUpdateTick(gen.HandlerInterval);
+            }
+
+            error = null;
+
+            ThreadPool.QueueUserWorkItem(StartPlay, handler);
+
             return true;
+        }
+
+        private void StartPlay(object handler)
+        {
+            try
+            {
+                error = ((IGameHandler)handler).Play();
+                //Console.WriteLine("Play thread completed " + error );
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+
+                try
+                {
+                    RegistryUtil.RestoreRegistry("Error Restore from GenericGameHandler");
+
+                    // try to save the exception
+                    LogManager.Instance.LogExceptionFile(ex);
+                }
+                catch
+                {
+                    LogManager.Instance.LogExceptionFile(ex);
+                    error = "We failed so hard we failed while trying to record the reason we failed initially. Sorry.";
+                    return;
+                }
+            }
         }
 
         public void ShowStatus()
@@ -327,6 +368,24 @@ namespace Nucleus.Gaming
 
             ProcessUtil.KillRemainingProcess(this, gen);
 
+            if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
+            {
+                User32Util.HideTaskbar();
+            }
+
+            if (gen.ProtoInput.AutoHideTaskbar || GameProfile.UseSplitDiv)
+            {
+                if (ProtoInput.protoInput.GetTaskbarAutohide())
+                {
+                    gen.ProtoInput.AutoHideTaskbar = false; ///If already hidden don't change it, and dont set it unhidden after.
+                }
+                else
+                {
+                    ProtoInput.protoInput.SetTaskbarAutohide(true);
+                    User32Util.HideTaskbar();
+                }
+            }
+
             //Merge raw keyboard/mouse players into one 
             var groupWindows = profile.PlayersList.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
             foreach (var group in groupWindows)
@@ -364,12 +423,9 @@ namespace Nucleus.Gaming
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo player = players[i];
-
-                if (player.PlayerID == -1)
-                {
-                    player.PlayerID = i;
-                }
-
+            
+                player.PlayerID = i;
+                
                 int pod = player.Owner.DisplayIndex;
 
                 foreach (Display dp in ScreensUtil.AllScreensParams())
@@ -448,7 +504,6 @@ namespace Nucleus.Gaming
             string rootFolder = exeFolder;
             string workingFolder = exeFolder;
 
-
             if (!string.IsNullOrEmpty(gen.BinariesFolder))
             {
                 rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder.ToLower(), "");
@@ -465,6 +520,7 @@ namespace Nucleus.Gaming
             Window nextWindowToInject = null;
 
             numPlayers = players.Count;
+
             Log(string.Format("Number of players: {0}", numPlayers));
 
             if (ini.IniReadValue("Misc", "ShowStatus") == "True")
@@ -508,6 +564,11 @@ namespace Nucleus.Gaming
 
             for (int i = 0; i < players.Count; i++)
             {
+                if (processingExit)
+                {
+                    return string.Empty;
+                }
+
                 Log($"********** Setting up player {i + 1} **********");
 
                 PlayerInfo player = players[i];            
@@ -532,8 +593,6 @@ namespace Nucleus.Gaming
                 {
                     player.Nickname = $"Player{i + 1}";
                 }
-
-                Console.WriteLine(player.Nickname);
 
                 ProcessData procData = player.ProcessData;
                 bool hasSetted = procData != null && procData.Setted;
@@ -602,6 +661,11 @@ namespace Nucleus.Gaming
                         {
                             break;
                         }
+
+                        if (processingExit)
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -644,10 +708,16 @@ namespace Nucleus.Gaming
                                         break;
                                     }
                                 }
+
                             }
                             else
                             {
                                 break;
+                            }
+
+                            if (processingExit)
+                            {
+                                return string.Empty;
                             }
                         }
                     }
@@ -712,6 +782,12 @@ namespace Nucleus.Gaming
                         else
                         {
                             break;
+                        }
+
+                        if (processingExit)
+                        {
+                            break;
+
                         }
                     }
                 }
@@ -821,8 +897,7 @@ namespace Nucleus.Gaming
                             }
                         }
                     }
-
-                   
+                  
                     origRootFolder = rootFolder;
                     instanceExeFolder = linkBinFolder;
 
@@ -1017,6 +1092,11 @@ namespace Nucleus.Gaming
                             FileUtil.CopyDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
                             while (exitCode != 1)
                             {
+                                if (processingExit)
+                                {
+                                    return string.Empty;
+                                }
+
                                 Thread.Sleep(25);
                             }
                         }
@@ -1028,6 +1108,11 @@ namespace Nucleus.Gaming
                                 int exitCode;
                                 while (!StartGameUtil.SymlinkGame(rootFolder, linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true, gen.SymlinkFolders, players.Count))
                                 {
+                                    if (processingExit)
+                                    {
+                                        return string.Empty;
+                                    }
+
                                     Thread.Sleep(25);
                                 }
                             }
@@ -1040,6 +1125,11 @@ namespace Nucleus.Gaming
                                 int exitCode;
                                 while (!StartGameUtil.SymlinkGame(rootFolder, linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, false, gen.SymlinkFolders, players.Count))
                                 {
+                                    if (processingExit)
+                                    {
+                                        return string.Empty;
+                                    }
+
                                     Thread.Sleep(25);
                                 }
                             }
@@ -1216,6 +1306,11 @@ namespace Nucleus.Gaming
                             }
                         }
                     }
+                }
+
+                if (i == 0)
+                {
+                    BackupFiles.StartFilesRestoration(gen);
                 }
 
                 if (processingExit)
@@ -2320,6 +2415,11 @@ namespace Nucleus.Gaming
                             }
                             counter++;
                             Thread.Sleep(1000);
+
+                            if (processingExit)
+                            {
+                                return string.Empty;
+                            }
                         }
 
                         Thread.Sleep(1000);
@@ -2348,6 +2448,11 @@ namespace Nucleus.Gaming
 
                             counter++;
                             Thread.Sleep(1000);
+
+                            if (processingExit)
+                            {
+                                return string.Empty;
+                            }
                         }
                     }
 
@@ -2447,11 +2552,11 @@ namespace Nucleus.Gaming
                     attached.Add(proc);
                     attachedIds.Add(proc.Id);
                     player.ProcessID = proc.Id;
+
                     if (player.IsKeyboardPlayer && !player.IsRawKeyboard)
                     {
                         keyboardProcId = proc.Id;
                     }
-
                 }
 
                 if (processingExit)
@@ -2811,6 +2916,11 @@ namespace Nucleus.Gaming
                             {
                                 break;
                             }
+
+                            if (processingExit)
+                            {
+                                return string.Empty;
+                            }
                         }
                     }
 
@@ -2823,7 +2933,7 @@ namespace Nucleus.Gaming
 
                     if (gen.FakeFocus)
                     {
-                        Log("Start sending fake focus messages every 1000 ms");
+                        Log($"Start sending fake focus messages every {gen.FakeFocusInterval} ms");
                         WindowFakeFocus.Initialize(this, gen, profile);
                         WindowFakeFocus.fakeFocus = new Thread(WindowFakeFocus.SendFocusMsgs);
                         WindowFakeFocus.fakeFocus.Start();
@@ -2950,7 +3060,7 @@ namespace Nucleus.Gaming
                     }
 
                     // Fake mouse cursors
-                    if (gen.DrawFakeMouseCursor)//&& gen.SupportsMultipleKeyboardsAndMice)
+                    if (gen.DrawFakeMouseCursor)
                     {
                         RawInputManager.CreateCursorsOnWindowThread(gen.UpdateFakeMouseWithInternalInput, gen.DrawFakeMouseCursorForControllers);
                     }
@@ -3063,6 +3173,28 @@ namespace Nucleus.Gaming
             ControllersUINav.EnabledRuntime = false;
 
             GameProfile.SaveGameProfile(profile);
+
+            if (gen.BackupFiles != null)
+            {
+                //Game.FilesToBackup
+                if (gen.BackupFiles.Length > 0)
+                {
+                    BackupFiles.StartFilesBackup(gen, gen.BackupFiles);
+                }
+            }
+
+            if (context != null)
+            {
+                if (context.BackupFiles != null)
+                {
+                    //Context.FilesToBackup
+                    if (context.BackupFiles.Length > 0)
+                    {
+                        BackupFiles.StartFilesBackup(gen, context.BackupFiles);
+                    }
+                }
+            }
+
             gen.OnFinishedSetup?.Invoke();
 
             return string.Empty;
@@ -3403,6 +3535,11 @@ namespace Nucleus.Gaming
                         {
                             break;
                         }
+
+                        if (processingExit)
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -3414,15 +3551,10 @@ namespace Nucleus.Gaming
 
                 Thread.Sleep(3000);
 
-                if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
-                {
-                    User32Util.HideTaskbar();
-                }
-
-                if (gen.ProtoInput.AutoHideTaskbar && GameProfile.UseSplitDiv)
-                {
-                    ProtoInput.protoInput.SetTaskbarAutohide(false);
-                }
+                //if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
+                //{
+                //    User32Util.HideTaskbar();
+                //}
 
                 if (i == (players.Count - 1))
                 {
@@ -3466,6 +3598,27 @@ namespace Nucleus.Gaming
 
             GameProfile.SaveGameProfile(profile);//A voir si utile
 
+            if (gen.BackupFiles != null)
+            {
+                //Game.FilesToBackup
+                if (gen.BackupFiles.Length > 0)
+                {
+                    BackupFiles.StartFilesBackup(gen, gen.BackupFiles);
+                }
+            }
+
+            if (context != null)
+            {
+                if (context.BackupFiles != null)
+                {
+                    //Context.FilesToBackup
+                    if (context.BackupFiles.Length > 0)
+                    {
+                        BackupFiles.StartFilesBackup(gen, context.BackupFiles);
+                    }
+                }
+            }
+
             ControllersUINav.EnabledRuntime = false;
             
             gen.OnFinishedSetup?.Invoke();//A voir si utile
@@ -3475,20 +3628,6 @@ namespace Nucleus.Gaming
         {
             public double Interval;
             public Action Function;
-        }
-
-        public void StartPlayTick(double interval)
-        {
-            Thread t = new Thread(PlayTickThread);
-
-            TickThread tick = new TickThread();
-        
-            t.Start(tick);
-        }
-
-        private void PlayTickThread(object state)
-        {
-            TickThread t = (TickThread)state;           
         }
 
         struct UpdateTickThread
@@ -3514,7 +3653,8 @@ namespace Nucleus.Gaming
 
             for (; ; )
             {
-                string error = GameManager.Instance.Error;
+                //string error = GameManager.Instance.Error;
+
                 if (!string.IsNullOrEmpty(error))
                 {
                     End(false);
@@ -3525,7 +3665,7 @@ namespace Nucleus.Gaming
                 Update(updateTickThread.Interval, false);
 
                 if (hasEnded)
-                {
+                {                   
                     break;
                 }
             }
@@ -3720,11 +3860,11 @@ namespace Nucleus.Gaming
                 }
             }
 
-            if (WindowFakeFocus.fakeFocus != null && WindowFakeFocus.fakeFocus.IsAlive)
-            {
-                Log("Aborting thread to send fake focus messages");
-                WindowFakeFocus.fakeFocus.Abort();
-            }
+            //if (WindowFakeFocus.fakeFocus != null && WindowFakeFocus.fakeFocus.IsAlive)
+            //{
+            //    Log("Aborting thread to send fake focus messages");
+            //   // WindowFakeFocus.fakeFocus.Abort();
+            //}
 
             if (!earlyExit)
             {
@@ -3767,7 +3907,7 @@ namespace Nucleus.Gaming
             }
 
             User32Util.ShowTaskBar();
-
+            
             hasEnded = true;
 
             GameManager.Instance.ExecuteBackup(userGame.Game);
@@ -3787,10 +3927,31 @@ namespace Nucleus.Gaming
             }
 
             Thread.Sleep(1000);
-            // delete symlink folder
-
+           
             RawInputManager.EndSplitScreen();
 
+            //if (gen.FilesToBackup != null)
+            //{
+            //    //Game.FilesToBackup
+            //    if (gen.FilesToBackup.Length > 0)
+            //    {
+            //        BackupFiles.StartFilesBackup(gen, gen.FilesToBackup);
+            //    }
+            //}
+
+            //if (context != null)
+            //{
+            //    if (context.FilesToBackup != null)
+            //    {
+            //        //Context.FilesToBackup
+            //        if (context.FilesToBackup.Length > 0)
+            //        {
+            //            BackupFiles.StartFilesBackup(gen, context.FilesToBackup);
+            //        }
+            //    }
+            //}
+
+            // delete symlink folder and users accounts 
 #if RELEASE
             if (!gen.SymlinkGame && !gen.HardlinkGame && !gen.HardcopyGame)
             {
@@ -3807,7 +3968,7 @@ namespace Nucleus.Gaming
                 WindowsUsersUtil.DeleteCreatedWindowsUserFolder(this);
             }
 #endif
-            Log("All done closing operations. Exiting Nucleus.");
+            Log("All done closing operations.");
 
             try
             {
@@ -3818,7 +3979,7 @@ namespace Nucleus.Gaming
             }
             catch { }
 
-            Ended?.Invoke();
+            Ended?.Invoke();          
         }
 
         public void Log(StreamWriter writer)

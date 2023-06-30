@@ -114,7 +114,7 @@ namespace Nucleus.Gaming
         public int NumControllers = 0;
         public int NumKeyboards = 0;
         public bool KeepEditedRegKeys;
-
+        public string[] BackupFiles;
 
         //public string[] BackupFiles;
 
@@ -285,7 +285,7 @@ namespace Nucleus.Gaming
                 string s = filesToSymlink[f].ToLower();
                 // make sure it's lower case
                 CmdUtil.MkLinkFile(Path.Combine(OrigRootFolder, s), Path.Combine(RootFolder, s), out int exitCode);
-                Console.WriteLine(OrigRootFolder + s + " => Instance folder " + RootFolder + s);
+                //Console.WriteLine(OrigRootFolder + s + " => Instance folder " + RootFolder + s);
             }
         }
 

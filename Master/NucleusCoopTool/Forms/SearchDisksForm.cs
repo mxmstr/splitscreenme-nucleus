@@ -98,7 +98,6 @@ namespace Nucleus.Coop
             hand_Cursor = main.hand_Cursor;
             Location = new Point(main.Location.X + main.Width / 2 - Width / 2, main.Location.Y + main.Height / 2 - Height / 2);
 
-            //Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
             BackColor = BackColor = Color.FromArgb(int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[0]),
@@ -107,16 +106,14 @@ namespace Nucleus.Coop
                                                    int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[3]));
 
             closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
-            //Controls Image
+
             btn_addSelection.BackColor = main.buttonsBackColor;
             btn_customPath.BackColor = main.buttonsBackColor;
             btnSearch.BackColor = main.buttonsBackColor;
             btn_delPath.BackColor = main.buttonsBackColor;
             btn_selectAll.BackColor = main.buttonsBackColor;
             btn_deselectAll.BackColor = main.buttonsBackColor;
-            //
-            //MouseOverColor
-            //
+    
             btn_addSelection.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
             btn_customPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
             btnSearch.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
@@ -180,7 +177,6 @@ namespace Nucleus.Coop
                     disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
                 }
             }
-
 
             DPIManager.Register(this);
             DPIManager.Update(this);
@@ -438,7 +434,6 @@ namespace Nucleus.Coop
                         }
 
                         //UpdateProgress(increment);
-
                         if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == exeFilePath.ToLower()))
                         {
                             continue;

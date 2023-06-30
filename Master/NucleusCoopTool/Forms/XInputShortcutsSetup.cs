@@ -289,8 +289,6 @@ namespace Nucleus.Coop.Forms
                 }
             }
 
-            //UINavContainer.Enabled = enabled_chk.Checked;
-
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
@@ -523,8 +521,7 @@ namespace Nucleus.Coop.Forms
                     g.Clip = new Region(new RectangleF(highlight.X, highlight.Y, highlight.Width, highlight.Height));
 
                     g.FillEllipse(brush, highlight);
-
-                    //prevPressed = (int)pressed;
+                   
                     if (this.ActiveControl != null)
                     {
                         if (ActiveControl.GetType() == typeof(TextBox) && ActiveControl.Name != "switch15")
@@ -563,15 +560,6 @@ namespace Nucleus.Coop.Forms
                     }
                 }
             }
-        }
-
-        //private Point mousePos;
-        private void XInputShortcutsSetup_MouseMove(object sender, MouseEventArgs e)
-        {
-            //mousePos = e.Location;
-            //Console.WriteLine(Height - front.Y);
-            //Console.WriteLine("X" + (e.X - top.X)+" "+ "Y" + (e.Y - top.Y));//postion in image rectangle
-            //Console.WriteLine("X" + (e.X - front.X) + " " + "Y" + (e.Y - front.Y));
         }
 
         private void Close_Click(object sender, EventArgs e)
@@ -622,7 +610,6 @@ namespace Nucleus.Coop.Forms
         {
             ini.IniWriteValue("XUINav", "Enabled", enabled_chk.Checked.ToString());
             ControllersUINav.UpdateUINavSettings();
-            //UINavContainer.Enabled = enabled_chk.Checked;
         }
 
         private void deadzone_txt_MouseEnter(object sender, EventArgs e)

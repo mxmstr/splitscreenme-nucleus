@@ -1,24 +1,25 @@
 ﻿using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using static Nucleus.Gaming.Tools.WindowFakeFocus.WindowFakeFocus;
 
 namespace Nucleus.Gaming.Forms
 {
     public partial class SplitForm : Form
     {
         private Color ChoosenColor;
-        private System.Threading.Timer slideshow;
         private Timer loadTimer;
         private string currentGame;
         private System.Threading.Timer fading;
         private int alpha = 0;
         private bool stopPainting;
-
+        private IntPtr handle;
         public SplitForm(GenericGameInfo game, GenericGameHandler handler, Display screen)
         {
             InitializeComponent();
@@ -26,12 +27,13 @@ namespace Nucleus.Gaming.Forms
             Text = $"SplitForm{screen.DisplayIndex}";
             Location = new Point(screen.Bounds.X, screen.Bounds.Y);
             Width = screen.Bounds.Width;
-            Height = screen.Bounds.Height;// + 50;
+            Height = screen.Bounds.Height;
             BackgroundImageLayout = ImageLayout.Stretch;
             FormBorderStyle = FormBorderStyle.None;
             StartPosition = FormStartPosition.Manual;
             BackColor = Color.Black;
             currentGame = game.GUID;
+            handle = this.Handle;
             Setup(game, handler);
         }
 
@@ -82,30 +84,36 @@ namespace Nucleus.Gaming.Forms
             loadTimer.Tick += new EventHandler(loadTimerTick);
             loadTimer.Start();
 
-            slideshow = new System.Threading.Timer(slideshowTick, null, 0, 0);
+            SlideshowStart();
         }
 
         private bool fullApha;
+        private int imgIndex = 0;
+
         private void fadingTick(object state)
         {
-
-            if (!fullApha)
-            {
-                alpha++;
-            }
-
             if (alpha == 255)
             {
                 if (Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")))
                 {
                     string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")));
-                    Random rNum = new Random();
-                    int RandomIndex = rNum.Next(0, imgsPath.Count());
-                    
-                    BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{RandomIndex}_{currentGame}.jpeg"));
+
+                    BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{imgIndex}_{currentGame}.jpeg"));
+                 
+                    imgIndex++;
+
+                    if (imgIndex == imgsPath.Length)
+                    {
+                        imgIndex = 0;
+                    }
                 }
 
                 fullApha = true;
+            }
+
+            if (!fullApha)
+            {
+                alpha++;
             }
 
             if (fullApha)
@@ -117,11 +125,11 @@ namespace Nucleus.Gaming.Forms
             {
                 fullApha = false;
             }
-
+   
             Invalidate();
         }
 
-        private void slideshowTick(object state)
+        private void SlideshowStart()
         {
             if (fading == null)
             {
@@ -130,22 +138,21 @@ namespace Nucleus.Gaming.Forms
                 if (Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")))
                 {
                     string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")));
-                    Random rNum = new Random();
-                    int RandomIndex = rNum.Next(0, imgsPath.Count());
 
-                    BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{RandomIndex}_{currentGame}.jpeg"));
+                    BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{imgIndex}_{currentGame}.jpeg"));
+                    imgIndex++;
                 }
             }
         }
 
         private void loadTimerTick(Object Object, EventArgs EventArgs)
         {
-            slideshow.Dispose();
             loadTimer.Dispose();
             fading.Dispose();
             BackgroundImage = null;
             BackColor = ChoosenColor;
             stopPainting = true;
+            Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -154,7 +161,9 @@ namespace Nucleus.Gaming.Forms
             {
                 Rectangle back = new Rectangle(0, 0, Width, Height);
                 SolidBrush backBrush = new SolidBrush(Color.FromArgb(alpha, 0, 0, 0));
+                
                 e.Graphics.FillRectangle(backBrush, back);
+                backBrush.Dispose();
             }
         }
     }

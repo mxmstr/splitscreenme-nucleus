@@ -180,7 +180,6 @@
     <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
     <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
     <Compile Include="Coop\ProfilePlayer.cs" />
-    <Compile Include="Coop\ProfilePLayersList.cs" />
     <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -361,12 +360,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Tools\AudioReroute\AudioReroute.cs" />
+    <Compile Include="Tools\BackupFiles\BackupFiles.cs" />
     <Compile Include="Tools\DevReorder\DevReorder.cs" />
     <Compile Include="Tools\DInputBlocker\DInputBlocker.cs" />
     <Compile Include="Tools\DirectX9Wrapper\DirectX9Wrapper.cs" />
     <Compile Include="Tools\DllsInjector\DllsInjector.cs" />
     <Compile Include="Tools\EACBypass\EACBypass.cs" />
-    <Compile Include="Tools\NucleusUsers\CleanGameContent.cs" />
+    <Compile Include="Tools\CleanGameContent\CleanGameContent.cs" />
     <Compile Include="Tools\NucleusUsers\NucleusUsers.cs" />
     <Compile Include="Tools\Steam\GoldbergUpdaterForm.cs">
       <SubType>Form</SubType>

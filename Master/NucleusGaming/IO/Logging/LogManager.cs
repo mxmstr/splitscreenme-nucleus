@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Forms;
+﻿using Jint.Parser.Ast;
+using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using System;
 using System.Collections.Generic;

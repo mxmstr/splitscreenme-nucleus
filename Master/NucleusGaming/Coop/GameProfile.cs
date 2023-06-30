@@ -32,8 +32,11 @@ namespace Nucleus.Gaming.Coop
         public static int TotalPlayers => totalPlayers;
 
         private static int profilesCount = 0;//Used to check if we need to create a new profile 
-        private static int profileToSave;
+        public static int ProfilesCount => profilesCount;
 
+        private static int profileToSave;
+        public static int CurrentProfileId => profileToSave;
+       
         private static string modeText = "New Profile";
         public static string ModeText => modeText;
 
@@ -186,6 +189,14 @@ namespace Nucleus.Gaming.Coop
         public static bool Ready = false;
 
         private static bool useXinputIndex;
+
+        //Avoid "Autoplay" to be applied right after setting the option in profile settings
+        private static bool updating = false;
+        public static bool Updating
+        {
+            get => updating;
+            set => updating = value;
+        }
 
         /// <summary>
         /// Return a list of all players(connected devices)
@@ -476,7 +487,7 @@ namespace Nucleus.Gaming.Coop
                 AllScreens.Add(new Rectangle((int)JAllscreens[s]["X"], (int)JAllscreens[s]["Y"], (int)JAllscreens[s]["Width"], (int)JAllscreens[s]["Height"]));
             }
 
-            if(ProfilePlayersList.Any(pl => pl.ScreenIndex > ScreensUtil.AllScreens().Count()-1))//ensure that the missing screens are used by any players before showing message
+            if(ProfilePlayersList.Any(pl => pl.ScreenIndex > ScreensUtil.AllScreens().Count()-1))//ensure that the missing screens are used by any players before showing the message
             {             
                 Globals.MainOSD.Show(2000, $"There Is Not Enough Active Screens");
                 return false;
@@ -495,9 +506,9 @@ namespace Nucleus.Gaming.Coop
             }
 
             setupScreen.profileSettings_Tooltip.SetToolTip(setupScreen.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
-
-            Ready = true;
            
+            Ready = true;
+   
             return true;
         }
 
@@ -721,6 +732,8 @@ namespace Nucleus.Gaming.Coop
             }
 
             modeText = $"Profile n°{profileToSave}";
+
+            updating = true;
 
             Globals.MainOSD.Show(1600, $"Game Profile Updated");
         }
