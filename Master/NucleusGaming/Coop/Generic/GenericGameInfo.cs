@@ -14,8 +14,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Nucleus.Gaming
 {
@@ -38,6 +36,7 @@ namespace Nucleus.Gaming
         public string[] DirSymlinkCopyInstead;
         public string[] DirExclusions;
         public string[] BackupFiles;
+        public string[] BackupFolders;
 
         public bool KeepSymLinkOnExit;
 

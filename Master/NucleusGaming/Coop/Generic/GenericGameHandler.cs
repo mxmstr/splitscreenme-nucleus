@@ -388,9 +388,10 @@ namespace Nucleus.Gaming
 
             //Merge raw keyboard/mouse players into one 
             var groupWindows = profile.PlayersList.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
+
             foreach (var group in groupWindows)
             {
-                if(group.Count() == 1)
+                if (group.Count() == 1)
                 {
                     continue;//skip already merged k&m devices on profile load 
                 }
@@ -404,7 +405,7 @@ namespace Nucleus.Gaming
                 if (firstInGroup.IsRawKeyboard) firstInGroup.RawKeyboardDeviceHandle = group.First(x => x.RawKeyboardDeviceHandle != (IntPtr)(-1)).RawKeyboardDeviceHandle;
                 if (firstInGroup.IsRawMouse) firstInGroup.RawMouseDeviceHandle = group.First(x => x.RawMouseDeviceHandle != (IntPtr)(-1)).RawMouseDeviceHandle;
 
-                firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0]};              
+                firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0] };
 
                 foreach (var x in group)
                 {
@@ -423,9 +424,12 @@ namespace Nucleus.Gaming
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo player = players[i];
-            
-                player.PlayerID = i;
-                
+
+                if (player.PlayerID == -1)
+                {
+                    player.PlayerID = i;
+                }
+
                 int pod = player.Owner.DisplayIndex;
 
                 foreach (Display dp in ScreensUtil.AllScreensParams())
@@ -459,8 +463,7 @@ namespace Nucleus.Gaming
 
                 foreach (Display dp in screensInUse)
                 {
-                    if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayersList.Count != 1)    
-
+                    if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayersList.Count != 1)
                     {
                         if (i == 0)
                         {
@@ -571,7 +574,7 @@ namespace Nucleus.Gaming
 
                 Log($"********** Setting up player {i + 1} **********");
 
-                PlayerInfo player = players[i];            
+                PlayerInfo player = players[i];
 
                 plyrIndex = i;
 
@@ -584,7 +587,7 @@ namespace Nucleus.Gaming
                             player.Nickname = GameProfile.ProfilePlayersList[player.PlayerID].Nickname;
                         }
                     }
-                    else 
+                    else
                     {
                         player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                     }
@@ -897,7 +900,7 @@ namespace Nucleus.Gaming
                             }
                         }
                     }
-                  
+
                     origRootFolder = rootFolder;
                     instanceExeFolder = linkBinFolder;
 
@@ -908,7 +911,7 @@ namespace Nucleus.Gaming
                     {
                         linkBinFolder = Path.Combine(linkFolder, gen.WorkingFolder);
                         dirExclusions.Add(gen.WorkingFolder);
-                    } 
+                    }
 
                     // some games have save files inside their game folder, so we need to access them inside the loop
                     jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
@@ -1311,6 +1314,10 @@ namespace Nucleus.Gaming
                 if (i == 0)
                 {
                     BackupFiles.StartFilesRestoration(gen);
+
+                    Thread.Sleep(200);
+
+                    BackupFiles.StartFoldersRestoration(gen);
                 }
 
                 if (processingExit)
@@ -1397,7 +1404,7 @@ namespace Nucleus.Gaming
                 }
 
                 context = gen.CreateContext(profile, player, this, hasKeyboardPlayer);
-                context.PlayerID = player.PlayerID;               
+                context.PlayerID = player.PlayerID;
                 context.IsFullscreen = isFullscreen;
                 context.ExePath = exePath;
                 context.RootInstallFolder = exeFolder;
@@ -1405,7 +1412,7 @@ namespace Nucleus.Gaming
                 context.OrigRootFolder = rootFolder;
                 context.UserProfileConfigPath = gen.UserProfileConfigPath;
                 context.UserProfileSavePath = gen.UserProfileSavePath;
-             
+
                 if (gen.SymlinkFiles != null)
                 {
                     Log($"Symlinking {gen.SymlinkFiles.Length} files in Game.SymlinkFiles");
@@ -1707,8 +1714,8 @@ namespace Nucleus.Gaming
                     return string.Empty;
                 }
                 else
-                { 
-                    TriggerOSD(2000, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}"); 
+                {
+                    TriggerOSD(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
                 }
 
                 if (context.NeedsSteamEmulation)
@@ -2643,7 +2650,7 @@ namespace Nucleus.Gaming
 
                 ProfilePlayer profilePlayer = null;
 
-                if(GameProfile.ProfilePlayersList.Count > 0)
+                if (GameProfile.ProfilePlayersList.Count > 0)
                 {
                     profilePlayer = GameProfile.ProfilePlayersList[i];
                 }
@@ -2660,7 +2667,7 @@ namespace Nucleus.Gaming
                 }
 
                 if (profilePlayer?.IdealProcessor != "*" && profilePlayer?.IdealProcessor != null)
-                {                  
+                {
                     gen.IdealProcessor = int.Parse(profilePlayer.IdealProcessor) - 1;
                     ProcessUtil.SetIdealProcessor(gen, proc);
                 }
@@ -3174,6 +3181,14 @@ namespace Nucleus.Gaming
 
             GameProfile.SaveGameProfile(profile);
 
+            gen.OnFinishedSetup?.Invoke();
+
+            return string.Empty;
+        }
+
+        #region Here we backup files/folders added if any specified in the game handler
+        private void ProceedBackup()
+        {
             if (gen.BackupFiles != null)
             {
                 //Game.FilesToBackup
@@ -3195,10 +3210,29 @@ namespace Nucleus.Gaming
                 }
             }
 
-            gen.OnFinishedSetup?.Invoke();
+            if (gen.BackupFolders != null)
+            {
+                //Game.BackupFolders
+                if (gen.BackupFolders.Length > 0)
+                {
+                    BackupFiles.StartFoldersBackup(gen, gen.BackupFolders);
+                }
+            }
 
-            return string.Empty;
+            if (context != null)
+            {
+                if (context.BackupFolders != null)
+                {
+                    //Context.BackupFolders
+                    if (context.BackupFolders.Length > 0)
+                    {
+                        BackupFiles.StartFoldersBackup(gen, context.BackupFolders);
+                    }
+                }
+            }
         }
+
+        #endregion
 
         private Process LaunchProcessPick(PlayerInfo player)
         {
@@ -3596,31 +3630,10 @@ namespace Nucleus.Gaming
                 RegistryUtil.RestoreUserEnvironmentRegistryPath();//A voir si utile
             }
 
-            GameProfile.SaveGameProfile(profile);//A voir si utile
-
-            if (gen.BackupFiles != null)
-            {
-                //Game.FilesToBackup
-                if (gen.BackupFiles.Length > 0)
-                {
-                    BackupFiles.StartFilesBackup(gen, gen.BackupFiles);
-                }
-            }
-
-            if (context != null)
-            {
-                if (context.BackupFiles != null)
-                {
-                    //Context.FilesToBackup
-                    if (context.BackupFiles.Length > 0)
-                    {
-                        BackupFiles.StartFilesBackup(gen, context.BackupFiles);
-                    }
-                }
-            }
-
             ControllersUINav.EnabledRuntime = false;
-            
+
+            GameProfile.SaveGameProfile(profile);//A voir si utile
+                               
             gen.OnFinishedSetup?.Invoke();//A voir si utile
         }
 
@@ -3930,26 +3943,7 @@ namespace Nucleus.Gaming
            
             RawInputManager.EndSplitScreen();
 
-            //if (gen.FilesToBackup != null)
-            //{
-            //    //Game.FilesToBackup
-            //    if (gen.FilesToBackup.Length > 0)
-            //    {
-            //        BackupFiles.StartFilesBackup(gen, gen.FilesToBackup);
-            //    }
-            //}
-
-            //if (context != null)
-            //{
-            //    if (context.FilesToBackup != null)
-            //    {
-            //        //Context.FilesToBackup
-            //        if (context.FilesToBackup.Length > 0)
-            //        {
-            //            BackupFiles.StartFilesBackup(gen, context.FilesToBackup);
-            //        }
-            //    }
-            //}
+            ProceedBackup();
 
             // delete symlink folder and users accounts 
 #if RELEASE

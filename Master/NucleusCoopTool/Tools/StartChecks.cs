@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Nucleus.Gaming;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -305,6 +306,25 @@ namespace Nucleus.Coop
         {
             if (File.Exists(Path.Combine(Application.StartupPath, "Updater.exe")))
                 Process.Start(Path.Combine(Application.StartupPath, "Updater.exe"));
+        }
+
+        public static void CheckDebugLogSize(IniFile ini)
+        {
+            string logPath = Path.Combine(Application.StartupPath, "debug-log.txt");
+
+            if (File.Exists(logPath))
+            {
+                FileStream debugLog = File.OpenRead(logPath);
+                long LogSize = debugLog.Length;
+
+                debugLog.Close();
+
+                if (LogSize >= 150000)//150ko
+                {
+                    File.Delete(logPath);
+                    ini.IniWriteValue("Misc", "DebugLog", "False");
+                }
+            }
         }
     }
 }

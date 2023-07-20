@@ -115,9 +115,7 @@ namespace Nucleus.Gaming
         public int NumKeyboards = 0;
         public bool KeepEditedRegKeys;
         public string[] BackupFiles;
-
-        //public string[] BackupFiles;
-
+        public string[] BackupFolders;
 
         private List<string> regKeyPaths = new List<string>();
 
@@ -917,30 +915,45 @@ namespace Nucleus.Gaming
 
         public string[] FindFiles(string rootFolder, string fileName)
         {
-            //if (!Directory.Exists(rootFolder))
-            //{
-            //    string[] empty = { };
-            //    Log(rootFolder + " not Found!");
-            //    //MessageBox.Show($"Directory not found at : \n{rootFolder}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "Directory not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return empty;
-            //}
             string[] files = Directory.GetFiles(rootFolder, fileName, SearchOption.TopDirectoryOnly);
             return files;
         }
 
         public string[] FindFiles(string rootFolder, string fileName, bool searchAll)
         {
-            //if (!Directory.Exists(rootFolder))
-            //{
-            //    string[] empty = { };
-            //    Log(rootFolder + " not Found!");
-            //    //MessageBox.Show($"Directory not found at : \n{rootFolder}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "Directory not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return empty;
-            //}
-
             SearchOption searchOp = searchAll ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             string[] files = Directory.GetFiles(rootFolder, fileName, searchOp);
             return files;
+        }
+
+
+        public string GetFileName(string fileFullPath)
+        {
+            Log("File name = " + fileFullPath.Split('\\').Last());
+            return fileFullPath.Split('\\').Last();//Get file name by splitting the full file path
+        }
+
+        public string[] FindFilePartialName(string rootFolder, string[] partialFileNames/*, bool firstOnly*/)
+        {
+            Log("Looking for files by partial name in => " + rootFolder);
+
+            string[] files = Directory.GetFileSystemEntries(rootFolder, "*", SearchOption.AllDirectories);
+
+            List<string> filesFound = new List<string>();
+
+            foreach (string file in files)
+            {
+                foreach (string name in partialFileNames)
+                {
+                    if (file.Contains(name))
+                    {
+                        filesFound.Add(file);
+                        Log("File found by partial name  => " + file);
+                    }
+                }
+            }
+
+            return filesFound.ToArray();
         }
 
         public void WriteTextFile(string path, string[] lines)

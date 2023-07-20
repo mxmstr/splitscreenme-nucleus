@@ -249,7 +249,7 @@ namespace Nucleus.Gaming.Controls
             }
         }
 
-        private void Profile_Preview(object sender, EventArgs e)//Show profile config in handler note textBox (Must be improved)
+        private void Profile_Preview(object sender, EventArgs e)//Show profile config in handler note "zoomed" textbox
         {
             if (Locked)
             {
@@ -269,7 +269,7 @@ namespace Nucleus.Gaming.Controls
             JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
             Control[] zoom = TopLevelControl.Controls.Find("setupScreen", true);
-            RichTextBox  textbox = zoom[0].Controls.Find("handlerNoteZoom",true)[0] as RichTextBox;
+            RichTextBox textbox = zoom[0].Controls.Find("handlerNoteZoom",true)[0] as RichTextBox;
 
             textbox.Text = jsonString;
             textbox.Parent.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, textbox.Parent.Width, textbox.Parent.Height, 20, 20));

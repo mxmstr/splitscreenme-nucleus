@@ -237,6 +237,11 @@ namespace Nucleus.Gaming.Coop
             return path;
         }
 
+        public static  void SortPlayersList()
+        {
+            currentProfile.playerData = currentProfile.playerData.OrderBy(c => c.PlayerID).ToList();//.ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();//Current new default
+        }
+
         public void Reset()
         {
             ProfilePlayersList.Clear();
@@ -400,7 +405,7 @@ namespace Nucleus.Gaming.Coop
                 player.OwnerType = (int)JplayersInfos[i]["Owner"]["Type"];
                 player.DisplayIndex = (int)JplayersInfos[i]["Owner"]["DisplayIndex"];
 
-                player.OwnerDisplay =new Rectangle(
+                player.OwnerDisplay = new Rectangle(
                                                (int)JplayersInfos[i]["Owner"]["Display"]["X"],
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Y"],
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Width"],
@@ -962,6 +967,7 @@ namespace Nucleus.Gaming.Coop
             saved = true;
 
             LogManager.Log("Game Profile Saved");
+
             Globals.MainOSD.Show(1600, $"Game Profile Saved");
         }
 
@@ -973,8 +979,12 @@ namespace Nucleus.Gaming.Coop
                 screens = profile.screens.ToList(),
             };
 
-            List<PlayerInfo> source = profile.playerData;
+            if (modeText != "New Profile")
+            {
+                SortPlayersList();
+            }
 
+            List<PlayerInfo> source = profile.playerData;
 
             for (int i = 0; i < source.Count; i++)
             {
@@ -988,6 +998,7 @@ namespace Nucleus.Gaming.Coop
             }
 
             Dictionary<string, object> noptions = new Dictionary<string, object>();
+
             foreach (KeyValuePair<string, object> opt in profile.Options)
             {
                 noptions.Add(opt.Key, opt.Value);

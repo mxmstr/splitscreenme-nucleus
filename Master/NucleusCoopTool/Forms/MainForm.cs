@@ -1721,6 +1721,7 @@ namespace Nucleus.Coop
                         {
                             (gameContextMenuStrip.Items[8] as ToolStripMenuItem).DropDownItems.Clear();
                             (gameContextMenuStrip.Items[9] as ToolStripMenuItem).DropDownItems.Clear();
+
                             if (currentGameInfo.Game.UserProfileConfigPath?.Length > 0)
                             {
                                 if (profilePaths.Count > 0)

@@ -159,10 +159,10 @@ namespace Nucleus.Coop
             customFont = themeIni.IniReadValue("Font", "FontFamily");
             useGamepadApiIndex = bool.Parse(Globals.ini.IniReadValue("Dev", "UseXinputIndex"));
 
-            //if (gamepadTimer == null)
-            //{
-            //    gamepadTimer = new System.Threading.Timer(GamepadTimer_Tick, null, 0, 500);
-            //}
+            if (gamepadTimer == null)
+            {
+                gamepadTimer = new System.Threading.Timer(GamepadTimer_Tick, null, 0, 500);
+            }
 
             SuspendLayout();
 
@@ -332,11 +332,8 @@ namespace Nucleus.Coop
 
             ClearDInputDevicesList();
 
-            if (gamepadTimer == null)
-            {
-                gamepadTimer = new System.Threading.Timer(GamepadTimer_Tick, null, 0, 500);
-            }
-               
+            gamepadTimer = new System.Threading.Timer(GamepadTimer_Tick, null, 0, 500);
+                   
             profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
 
             if (!profileDisabled)
@@ -1286,7 +1283,7 @@ namespace Nucleus.Coop
 
                     if (GameProfile.TotalPlayers > 0)
                     {
-                        //Check if these bounds corresponds to a profile player
+                        //Check if these bounds corresponds to a profile player. Note: this will not work for negative screens if the Windows screen layout has been change since profile creation.
                         if (GameProfile.ProfilePlayersList.All(pl => pl.MonitorBounds != divMonitorBounds.Value))
                         {
                             monitorBounds = null;
@@ -1297,7 +1294,7 @@ namespace Nucleus.Coop
                         for (int i = 0; i < GameProfile.TotalPlayers; i++)
                         {
                             ProfilePlayer profilePlayer = GameProfile.ProfilePlayersList[i];
-
+                       
                             if (monitorBounds == profilePlayer.MonitorBounds)
                             {
                                 playerToInsert.PlayerID = profilePlayer.PlayerID;
@@ -1942,17 +1939,17 @@ namespace Nucleus.Coop
 
                 bool skipGuid = false;
 
-                //XInput (follow gamepad api indexes)
+                //DInput && XInput (follow gamepad api indexes)
                 if (player.IsController && useGamepadApiIndex)
                 {
                     foreach (ProfilePlayer pp in GameProfile.ProfilePlayersList)
                     {
-                        if (loadedProfilePlayers.Any(lp => lp.MonitorBounds == pp.MonitorBounds && lp.IsController))
-                        {
-                            continue;
-                        }
+                        //if (loadedProfilePlayers.Any(lp => lp.MonitorBounds == pp.MonitorBounds && lp.IsController))
+                        //{
+                        //    continue;
+                        //}
 
-                        if (loadedProfilePlayers.All(pl => pl.MonitorBounds != pp.MonitorBounds))
+                        if (/*loadedProfilePlayers.All(pl => pl.MonitorBounds != pp.MonitorBounds) &&*/ loadedProfilePlayers.All(lp => lp.PlayerID != pp.PlayerID))
                         {
                             profilePlayer = pp;
                             skipGuid = true;
@@ -1962,7 +1959,7 @@ namespace Nucleus.Coop
                 }
 
                 //DInput && XInput using GameGuid(do not follow gamepad api indexes)
-                if (player.IsController && !skipGuid)
+                if (player.IsController && !skipGuid && !useGamepadApiIndex)
                 {
                     profilePlayer = GameProfile.ProfilePlayersList.Where(pl => (pl.IsDInput || pl.IsXInput) && (pl.GamepadGuid == player.GamepadGuid)).FirstOrDefault();
                 }
@@ -2045,8 +2042,7 @@ namespace Nucleus.Coop
                 if (GameProfile.Ready && (!GameProfile.AutoPlay || GameProfile.Updating))
                 {
                     CanPlayUpdated(true, true);
-                    GameProfile.Updating = false;
-
+                    GameProfile.Updating = false;            
                     return;
                 }
 
@@ -2055,7 +2051,6 @@ namespace Nucleus.Coop
                     CanPlayUpdated(true, true);
                     btn_Play.PerformClick();
                     GameProfile.Ready = false;
-
                     return;
                 }
             }

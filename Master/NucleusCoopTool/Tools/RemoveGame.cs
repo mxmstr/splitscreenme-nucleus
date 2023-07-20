@@ -49,13 +49,13 @@ namespace Nucleus.Coop.Tools
                                     try
                                     {
                                         File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                                        ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                                        //ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                                     }
                                     catch (IOException)
                                     {
                                         main.coverImg.Dispose();
                                         File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                                        ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                                        //ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                                     }
                                 }
 
