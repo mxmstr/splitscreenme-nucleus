@@ -1,5 +1,6 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows.Interop;
@@ -52,11 +53,7 @@ namespace Nucleus.Coop.Forms
             controllerFront = Nucleus.Coop.Properties.Resources.xboxControllerFront;
             Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
 
-            ToolTip enabled_chk_Tooltip = new ToolTip();
-            enabled_chk_Tooltip.InitialDelay = 100;
-            enabled_chk_Tooltip.ReshowDelay = 100;
-            enabled_chk_Tooltip.AutoPopDelay = 5000;
-            enabled_chk_Tooltip.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready");
+            CustomToolTips.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             brush = new SolidBrush(Color.FromArgb(90, 0, 255, 60));
             switch15.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
@@ -534,7 +531,7 @@ namespace Nucleus.Coop.Forms
                                     return;
                                 }
 
-                                if (pressed != 1024)//Guide button only have int returned
+                                if (pressed != 1024)//Guide button only return an int
                                 {
                                     activeControl.Text = ((GamepadButtonFlags)pressed).ToString();
                                     activeControl.Tag = pressed;

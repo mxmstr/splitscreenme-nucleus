@@ -3380,6 +3380,7 @@ namespace Nucleus.Coop
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "NewSettings";
             this.Size = new System.Drawing.Size(674, 430);
+            this.VisibleChanged += new System.EventHandler(this.NewSettings_VisibleChanged);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.ProfileSettings_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).EndInit();

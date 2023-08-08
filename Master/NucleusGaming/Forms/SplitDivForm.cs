@@ -20,6 +20,7 @@ namespace Nucleus.Gaming.Forms
         private int alpha = 0;
         private bool stopPainting;
         private IntPtr handle;
+
         public SplitForm(GenericGameInfo game, GenericGameHandler handler, Display screen)
         {
             InitializeComponent();

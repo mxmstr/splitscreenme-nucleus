@@ -362,6 +362,7 @@ namespace Nucleus.Gaming.Tools.Steam
                     }
                     else
                     {
+                        genericGameHandler.Log("Using steam ID from game profile");
                         steamID = player.SteamID;
                     }
 
@@ -389,6 +390,7 @@ namespace Nucleus.Gaming.Tools.Steam
                         {
                             lang = gen.GetSteamLanguage();
                         }
+
                         genericGameHandler.Log("Generating language.txt with language set to " + lang);
                         genericGameHandler.addedFiles.Add(Path.Combine(instanceSteamSettingsFolder, "language.txt"));
                         File.WriteAllText(Path.Combine(instanceSteamSettingsFolder, "language.txt"), lang);
@@ -586,6 +588,7 @@ namespace Nucleus.Gaming.Tools.Steam
                 }
                 else
                 {
+                    genericGameHandler.Log("Using steam ID from game profile");
                     steamID = player.SteamID;
                 }
 
@@ -857,7 +860,6 @@ namespace Nucleus.Gaming.Tools.Steam
                 }
                 else
                 {
-
                     IntPtr envPtr = IntPtr.Zero;
 
                     if (genericGameInfo.UseNucleusEnvironment)
@@ -935,7 +937,6 @@ namespace Nucleus.Gaming.Tools.Steam
             genericGameHandler.Log("SmartSteamEmu setup complete");
 
         }
-
 
         public static void UseSteamStubDRMPatcher(GenericGameHandler genericGameHandler, GenericGameInfo gen, string garch, bool setupDll)
         {

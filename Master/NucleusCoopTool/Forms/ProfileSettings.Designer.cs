@@ -862,9 +862,9 @@ namespace Nucleus.Coop
             this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label72.Location = new System.Drawing.Point(316, 171);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(60, 13);
+            this.label72.Size = new System.Drawing.Size(118, 13);
             this.label72.TabIndex = 145;
-            this.label72.Text = "User Notes";
+            this.label72.Text = "User Notes (facultative)";
             // 
             // notes_text
             // 
@@ -4769,11 +4769,11 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
-            this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.sharedTab);
             this.Controls.Add(this.processorTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.layoutTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);

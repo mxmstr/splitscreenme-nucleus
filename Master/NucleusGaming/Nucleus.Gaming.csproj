@@ -105,6 +105,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\ImageCache.cs" />
+    <Compile Include="Cache\SteamIdsCache.cs" />
+    <Compile Include="Cache\NicknamesCache.cs" />
     <Compile Include="Controls\AlphaTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

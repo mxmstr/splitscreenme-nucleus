@@ -546,7 +546,7 @@ namespace Nucleus.Coop
 
         private bool PollXInputGamepad(PlayerInfo player)
         {
-            if (polling)
+            if (polling || player.IsFake)
             {
                 return false;
             }
@@ -585,7 +585,6 @@ namespace Nucleus.Coop
 
                         if (pressedCount > 1)
                         {
-                            //Globals.MainOSD.Show(1000, $"Poll One Gamepad At Once");
                             player.DInputJoystick.Dispose();
                             player.DInputJoystick = null;
 
@@ -1302,7 +1301,7 @@ namespace Nucleus.Coop
                                 playerToInsert.SteamID = profilePlayer.SteamID;
                                 loadedProfilePlayers.Add(playerToInsert);
 
-                                if (!(playerToInsert.IsRawKeyboard && playerToInsert.IsRawMouse))
+                                if (/*!(playerToInsert.IsRawKeyboard && playerToInsert.IsRawMouse) &&*/ !playerToInsert.IsRawKeyboard && !playerToInsert.IsRawMouse)
                                 {
                                     return true;
                                 }                               
@@ -1949,7 +1948,7 @@ namespace Nucleus.Coop
                         //    continue;
                         //}
 
-                        if (/*loadedProfilePlayers.All(pl => pl.MonitorBounds != pp.MonitorBounds) &&*/ loadedProfilePlayers.All(lp => lp.PlayerID != pp.PlayerID))
+                        if (/*loadedProfilePlayers.All(pl => pl.MonitorBounds != pp.MonitorBounds) &&*/ loadedProfilePlayers.All(lp => lp.PlayerID != pp.PlayerID) && (pp.IsDInput || pp.IsXInput))
                         {
                             profilePlayer = pp;
                             skipGuid = true;

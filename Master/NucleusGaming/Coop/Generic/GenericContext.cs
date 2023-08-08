@@ -36,7 +36,8 @@ namespace Nucleus.Gaming
         public bool SupportsKeyboard;
         public string[] ExecutableContext;
         public string ExecutableName;
-        public string SteamID => pInfo.SteamID.ToString();
+        public string PlayerSteamID => pInfo.SteamID.ToString();
+        public string SteamID;
         public string GUID;
         public string GameName;
         public int MaxPlayers;
@@ -929,7 +930,7 @@ namespace Nucleus.Gaming
 
         public string GetFileName(string fileFullPath)
         {
-            Log("File name = " + fileFullPath.Split('\\').Last());
+            //Log("File name = " + fileFullPath.Split('\\').Last());
             return fileFullPath.Split('\\').Last();//Get file name by splitting the full file path
         }
 
@@ -1287,7 +1288,7 @@ namespace Nucleus.Gaming
             File.WriteAllLines(path, lines, Encoding.GetEncoding(encoder));
         }
 
-        public void EditTextFile(string path, string[] refLines, string[] newLines, string encoder)//require the file to be added in the exclusion list
+        public void EditTextFile(string path, string[] refLines, string[] newLines, string encoder)
         {
             //if (!File.Exists(path))
             //{
@@ -1531,7 +1532,7 @@ namespace Nucleus.Gaming
             //    return;
             //}
 
-            Log("Patching file");
+            Log($"Patching {patchedFile}");
             //Format original hex pattern
             string formatedOrigPattern = origPattern.Replace(" ", "");
 
@@ -1607,7 +1608,8 @@ namespace Nucleus.Gaming
             //    //MessageBox.Show($"File not found at : \n{originalFile}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             //    return;
             //}
-            Log("Patching file");
+            Log($"Patching {patchedFile}");
+
             //Format original hex pattern
             string formatedOrigPattern = origPattern.Replace(" ", "");
 

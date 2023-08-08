@@ -1,6 +1,7 @@
 ﻿using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
@@ -14,6 +15,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -44,6 +46,8 @@ namespace Nucleus.Coop
         private List<string> jsonNicksList = new List<string>();
         private List<string> jsonsteamIdsList = new List<string>();
         private string prevTheme;
+        private string currentNickname;
+        private string currentSteamId;
 
         private List<Panel> tabs = new List<Panel>();
         private List<Control> tabsButtons = new List<Control>();
@@ -241,13 +245,24 @@ namespace Nucleus.Coop
                 player1N, player2N, player3N, player4N, player5N, player6N, player7N, player8N,
                 player9N, player10N, player11N, player12N, player13N, player14N, player15N, player16N,
                 player17N, player18N, player19N, player20N, player21N, player22N, player23N, player24N,
-                player25N, player26N, player27N, player28N, player29N, player30N, player31N, player32N};
+                player25N, player26N, player27N, player28N, player29N, player30N, player31N, player32N};         
 
             steamIds = new ComboBox[] {
                 steamid1, steamid2, steamid3, steamid4, steamid5, steamid6, steamid7, steamid8,
                 steamid9, steamid10, steamid11, steamid12, steamid13, steamid14, steamid15, steamid16,
                 steamid17, steamid18, steamid19, steamid20, steamid21, steamid22, steamid23, steamid24,
                 steamid25, steamid26, steamid27, steamid28, steamid29, steamid30, steamid31, steamid32};
+
+            for (int i = 0; i < 32; i++)
+            {
+                controllerNicks[i].TextChanged += new EventHandler(SwapNickname);
+                controllerNicks[i].MouseHover += new EventHandler(CacheNickname);
+                controllerNicks[i].LostFocus += new EventHandler(UpdateControllerNickItems);
+
+                steamIds[i].TextChanged += new EventHandler(SwapSteamId);
+                steamIds[i].MouseHover += new EventHandler(CacheSteamId);
+                steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems); 
+            }
 
             SplitDiv.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
             cts_Mute.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
@@ -505,7 +520,7 @@ namespace Nucleus.Coop
 
                 foreach (JToken nick in JNicks)
                 {
-                    jsonNicksList.Add(nick.ToString());
+                    NicknamesCache.Add(nick.ToString());
                 }
             }
 
@@ -519,7 +534,7 @@ namespace Nucleus.Coop
 
                 foreach (JToken id in JIds)
                 {
-                    jsonsteamIdsList.Add(id.ToString());
+                    SteamIdsCache.Add(id.ToString());
                 }
             }
 
@@ -595,7 +610,7 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(btn_credits, "Credits", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(SplitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(disableGameProfiles, "Disable profile, Nucleus will always use globals settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(gamepadsAssignMethods, "If enabled profile will not save per player gamepad but use gamepads API indexes instead \n(switching mode could break profile loading).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(gamepadsAssignMethods, "If enabled profile will not save per player gamepad but use gamepads API indexes instead \n(switching modes could prevent some profiles to load properly).\nNote: Nucleus will return to the main screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndSteamIds()
@@ -608,11 +623,20 @@ namespace Nucleus.Coop
 
             for (int i = 0; i < 32; i++)
             {
-                steamIds[i].Items.AddRange(jsonsteamIdsList.ToArray());
+                steamIds[i].Items.AddRange(SteamIdsCache.Get.ToArray());
                 steamIds[i].SelectedItem = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
                 steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
 
-                controllerNicks[i].Items.AddRange(jsonNicksList.ToArray());
+                controllerNicks[i].Items.AddRange(NicknamesCache.Get.ToArray());
+
+                foreach(string nick in nicksList)
+                {
+                    if(!controllerNicks[i].Items.Contains(nick))
+                    {
+                        controllerNicks[i].Items.Add(nick);
+                    }
+                }
+
                 controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                 controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
             }
@@ -630,9 +654,19 @@ namespace Nucleus.Coop
             {
                 ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
 
-                if (!jsonNicksList.Any(n => n == controllerNicks[i].Text) && controllerNicks[i].Text.ToString() != $"Player{i + 1}")
+                if (!NicknamesCache.Get.Any(n => n == controllerNicks[i].Text))
                 {
-                    jsonNicksList.Add(controllerNicks[i].Text);
+                    NicknamesCache.Add(controllerNicks[i].Text);               
+                }
+
+                for (int n = 0; n < 32; n++)
+                {
+                    if(controllerNicks[n].Items.Contains(controllerNicks[i].Text))
+                    {
+                        continue;
+                    }
+
+                    controllerNicks[n].Items.Add(controllerNicks[i].Text);
                 }
 
                 if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0)
@@ -641,9 +675,9 @@ namespace Nucleus.Coop
                     {
                         ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
 
-                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()))
+                        if (!SteamIdsCache.Get.Any(n => n == steamIds[i].Text.ToString()))
                         {
-                            jsonsteamIdsList.Add(steamIds[i].Text.ToString());
+                            SteamIdsCache.Add(steamIds[i].Text.ToString());
                         }
                     }
                 }
@@ -666,7 +700,7 @@ namespace Nucleus.Coop
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    string json = JsonConvert.SerializeObject(jsonNicksList, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(NicknamesCache.Get, Formatting.Indented);
                     writer.Write(json);
                     stream.Flush();
                 }
@@ -679,7 +713,7 @@ namespace Nucleus.Coop
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    string json = JsonConvert.SerializeObject(jsonsteamIdsList, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(SteamIdsCache.Get, Formatting.Indented);
                     writer.Write(json);
                     stream.Flush();
                 }
@@ -779,7 +813,11 @@ namespace Nucleus.Coop
 
             if (setupScreen != null)
             {
-                setupScreen.UseXinputIndex = gamepadsAssignMethods.Checked;
+                if (setupScreen.UseXinputIndex != gamepadsAssignMethods.Checked)
+                {
+                    setupScreen.UseXinputIndex = gamepadsAssignMethods.Checked;
+                    mainForm.RefreshUI(true);
+                }
             }
 
             if (disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
@@ -917,6 +955,7 @@ namespace Nucleus.Coop
         {
             audioDevices = new Dictionary<string, string>();
             audioDevices.Clear();
+
             if (!audioDevices.ContainsKey("Default"))
             {
                 audioDevices.Add("Default", "Default");
@@ -1235,7 +1274,7 @@ namespace Nucleus.Coop
         {
             Graphics g = e.Graphics;
 
-            g.DrawRectangles(bordersPen, tabBorders);        
+            g.DrawRectangles(bordersPen, tabBorders);
         }
 
         private void btn_Gb_Update_Click(object sender, EventArgs e)
@@ -1247,6 +1286,126 @@ namespace Nucleus.Coop
         private void disableGameProfiles_CheckedChanged(object sender, EventArgs e)
         {
             gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
+        }
+
+        private void CacheNickname(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+            currentNickname = cb.Text;
+        }
+
+        private void SwapNickname(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+
+            if (cb.Text == "")
+            {
+                return;
+            }
+
+            ComboBox ch = controllerNicks.Where(tb => tb.Text == cb.Text && tb != cb).FirstOrDefault();
+
+            if (ch != null)
+            {
+                ch.Text = currentNickname;
+                currentNickname = cb.Text;
+            }
+        }
+
+        private void CacheSteamId(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+
+            currentSteamId = cb.Text;
+        }
+
+        private void SwapSteamId(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+
+            if (cb.Text == "")
+            {
+                return;
+            }
+
+            ComboBox ch = steamIds.Where(tb => tb.Text == cb.Text && tb != cb).FirstOrDefault();
+
+            if (ch != null)
+            {
+                ch.Text = currentSteamId;
+                currentSteamId = cb.Text;
+            }
+        }
+
+        private void UpdateControllerNickItems(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+            
+            if(cb.Text == "")
+            {
+                return;
+            }
+
+            if(!NicknamesCache.Get.Any( n => n == cb.Text))
+            {
+                NicknamesCache.Add(cb.Text);
+            }
+
+            for (int i = 0; i < 32; i++)
+            {
+                if(!controllerNicks[i].Items.Contains(cb.Text))
+                {
+                    controllerNicks[i].Items.Add(cb.Text);
+                }
+            }
+        }
+
+        private void UpdateSteamIdsItems(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+
+            if (cb.Text == "")
+            {
+                return;
+            }
+
+            if (!SteamIdsCache.Get.Any(n => n == cb.Text))
+            {
+                SteamIdsCache.Add(cb.Text);
+            }
+
+            for (int i = 0; i < 32; i++)
+            {
+                if (!steamIds[i].Items.Contains(cb.Text))
+                {
+                    steamIds[i].Items.Add(cb.Text);
+                }
+            }
+        }
+
+        private void NewSettings_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible)
+            {
+                for (int i = 0; i < 32; i++)
+                {
+                    foreach (string nick in NicknamesCache.Get)
+                    {
+                        if (!controllerNicks[i].Items.Contains(nick))
+                        {
+                            controllerNicks[i].Items.Add(nick);
+                        }
+                    }
+
+                    foreach (string sid in SteamIdsCache.Get)
+                    {
+                        if (!steamIds[i].Items.Contains(sid))
+                        {
+                            steamIds[i].Items.Add(sid);
+                        }
+                    }
+                }
+            }
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
@@ -34,6 +35,9 @@ namespace Nucleus.Coop
         private List<string> steamIdsList = new List<string>();
         private List<string> jsonNicksList = new List<string>();
         private List<string> jsonsteamIdsList = new List<string>();
+        private string currentNickname;
+        private string currentSteamId;
+
         private List<Panel> tabs = new List<Panel>();
         private List<Control> tabsButtons = new List<Control>();
 
@@ -221,6 +225,18 @@ namespace Nucleus.Coop
                 PriorityClass17, PriorityClass18, PriorityClass19, PriorityClass20, PriorityClass21, PriorityClass22, PriorityClass23, PriorityClass24,
                 PriorityClass25, PriorityClass26, PriorityClass27, PriorityClass28, PriorityClass29, PriorityClass30, PriorityClass31, PriorityClass32};
 
+
+            for (int i = 0; i < 32; i++)
+            {
+                controllerNicks[i].TextChanged += new EventHandler(SwapNickname);
+                controllerNicks[i].MouseHover += new EventHandler(CacheNickname);
+                controllerNicks[i].LostFocus += new EventHandler(UpdateControllerNickItems);
+
+                steamIds[i].TextChanged += new EventHandler(SwapSteamId);
+                steamIds[i].MouseHover += new EventHandler(CacheSteamId);
+                steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems);              
+            }
+
             for (int p = 0; p < Environment.ProcessorCount; p++)
             {
                 for (int all = 0; all < IdealProcessors.Length; all++)
@@ -334,7 +350,7 @@ namespace Nucleus.Coop
 
                 foreach (JToken nick in JNicks)
                 {
-                    jsonNicksList.Add(nick.ToString());
+                    NicknamesCache.Add(nick.ToString());
                 }
             }
 
@@ -348,7 +364,7 @@ namespace Nucleus.Coop
 
                 foreach (JToken id in JIds)
                 {
-                    jsonsteamIdsList.Add(id.ToString());
+                    SteamIdsCache.Add(id.ToString());
                 }
             }
 
@@ -433,15 +449,25 @@ namespace Nucleus.Coop
             List<ProfilePlayer> playersList = GameProfile.ProfilePlayersList;
 
             steamIdsList.Clear();
-            steamIdsList.AddRange(jsonsteamIdsList.ToArray());
+
+            for (int nic = 0; nic < 32; nic++)
+            {
+                if (!NicknamesCache.Get.Any(n => n == "Player" + (nic + 1)))
+                {
+                    NicknamesCache.Add(ini.IniReadValue("ControllerMapping", "Player_" + (nic + 1)));
+                }
+            }
+
+            steamIdsList.AddRange(SteamIdsCache.Get.ToArray());
            
             nicksList.Clear();
-            nicksList.AddRange(jsonNicksList);
-
+            nicksList.AddRange(NicknamesCache.Get);
+           
             for (int i = 0; i < 32; i++)
             {
                 ProfilePlayer player = null;
 
+              
                 if (i < playersList.Count)
                 {
                     player = playersList[i];
@@ -449,7 +475,7 @@ namespace Nucleus.Coop
                     steamIds[i].Items.Clear();
                     steamIds[i].Items.AddRange(steamIdsList.ToArray());
 
-                    steamIds[i].SelectedItem = player.SteamID;
+                    steamIds[i].SelectedItem = player.SteamID.ToString();
                     steamIds[i].Text = player.SteamID.ToString();
                     steamIds[i].Enabled = true;
                     
@@ -463,7 +489,7 @@ namespace Nucleus.Coop
                 else
                 {
                     steamIds[i].Items.Clear();
-                    steamIds[i].Items.AddRange(jsonsteamIdsList.ToArray());
+                    steamIds[i].Items.AddRange(SteamIdsCache.Get.ToArray());
 
                     steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
                     steamIds[i].SelectedItem = steamIds[i].Text;
@@ -625,9 +651,9 @@ namespace Nucleus.Coop
                 ///Set GameProfile Nicknames
                 player.Nickname = controllerNicks[i].Text;
 
-                if (!jsonNicksList.Any(n => n == controllerNicks[i].Text) && controllerNicks[i].Text.ToString() != $"Player{i + 1}")
+                if (!NicknamesCache.Get.Any(n => n != controllerNicks[i].Text))
                 {
-                    jsonNicksList.Add(controllerNicks[i].Text);
+                    NicknamesCache.Add(controllerNicks[i].Text);
                 }
 
                 ///Set GameProfile Steam ids
@@ -637,9 +663,9 @@ namespace Nucleus.Coop
                     {
                         player.SteamID = long.Parse(steamIds[i].Text.ToString());
 
-                        if (!jsonsteamIdsList.Any(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0" && steamIds[i].Text != "-1")
+                        if (!SteamIdsCache.Get.Any(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0" && steamIds[i].Text != "-1")
                         {
-                            jsonsteamIdsList.Add(steamIds[i].Text.ToString());
+                            SteamIdsCache.Add(steamIds[i].Text.ToString());
                         }
                     }
                 }
@@ -735,7 +761,7 @@ namespace Nucleus.Coop
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    string json = JsonConvert.SerializeObject(jsonNicksList, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(NicknamesCache.Get, Formatting.Indented);
                     writer.Write(json);
                     stream.Flush();
                 }
@@ -749,7 +775,7 @@ namespace Nucleus.Coop
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    string json = JsonConvert.SerializeObject(jsonsteamIdsList, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(SteamIdsCache.Get, Formatting.Indented);
                     writer.Write(json);
                     stream.Flush();
                 }
@@ -1202,6 +1228,109 @@ namespace Nucleus.Coop
             Graphics g = e.Graphics;
          
             g.DrawRectangles(bordersPen, tabBorders);
+        }
+
+        private void CacheNickname(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+            currentNickname = cb.Text;
+        }
+
+        private void SwapNickname(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+
+            if (cb.Text == "")
+            {
+                return;
+            }
+
+            ComboBox ch = controllerNicks.Where(tb => tb.Text == cb.Text && tb != cb).FirstOrDefault();
+
+            if (ch != null)
+            {
+                ch.Text = currentNickname;
+                currentNickname = cb.Text;
+            }
+        }
+
+        private void CacheSteamId(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+            currentSteamId = cb.Text;
+        }
+
+        private void SwapSteamId(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+
+            if (cb.Text == "")
+            {
+                return;
+            }
+
+            ComboBox ch = steamIds.Where(tb => tb.Text == cb.Text && tb != cb).FirstOrDefault();
+
+            if (ch?.Text == "" || ch?.Text == null)
+            {
+                return;
+            }
+
+            if (ch != null)
+            {
+                if (currentSteamId != null)
+                {
+                    ch.Text = currentSteamId;
+                }
+
+                currentSteamId = cb.Text;
+            }
+        }
+
+        private void UpdateControllerNickItems(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+
+            if (cb.Text == "")
+            {
+                return;
+            }
+
+            if (!NicknamesCache.Get.Any(n => n == cb.Text))
+            {               
+                NicknamesCache.Add(cb.Text);
+            }
+
+            for (int i = 0; i < 32; i++)
+            {
+                if (!controllerNicks[i].Items.Contains(cb.Text))
+                {
+                    controllerNicks[i].Items.Add(cb.Text);
+                }
+            }
+        }
+
+        private void UpdateSteamIdsItems(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+
+            if (cb.Text == "")
+            {
+                return;
+            }
+
+            if (!SteamIdsCache.Get.Any(n => n == cb.Text))
+            {
+                SteamIdsCache.Add(cb.Text);
+            }
+
+            for (int i = 0; i < 32; i++)
+            {
+                if (!steamIds[i].Items.Contains(cb.Text))
+                {
+                    steamIds[i].Items.Add(cb.Text);
+                }
+            }
         }
     }
 }

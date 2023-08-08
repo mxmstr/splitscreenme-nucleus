@@ -201,7 +201,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     bool canMouveUp = XController.GetLeftStickValue(i).Item2 <= -Deadzone;
                     bool canMouveDown = XController.GetLeftStickValue(i).Item2 >= Deadzone;
 
-                    ///Adjust scrolling the cursor speed to the joystick value
+                    ///Adjust scrolling speed to the joystick value
                     int ScrollUpSpeed = Math.Abs((XController.GetRightStickValue(i).Item2) / 1000);
                     int ScrollDownSpeed = (XController.GetRightStickValue(i).Item2) / 1000;
 
@@ -357,6 +357,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             Dragdrop = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
             RightClick = int.Parse(ini.IniReadValue("XUINav", "RightClick"));
             LeftClick = int.Parse(ini.IniReadValue("XUINav", "LeftClick"));
+
             if (ini.IniReadValue("XUINav", "LockUIControl").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XUINav", "LockUIControl").Split('+');

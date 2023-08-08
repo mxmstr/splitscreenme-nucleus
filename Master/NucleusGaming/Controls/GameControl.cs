@@ -6,6 +6,7 @@ using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Security.Policy;
 using System.Windows;
 using System.Windows.Forms;
@@ -23,7 +24,7 @@ namespace Nucleus.Coop
         private PictureBox favoriteBox;
         private Label title;
         private Label players;
-        private ToolTip numPlayersTt;
+        
         private Color radioSelectedBackColor;
         private Color userOverBackColor;
         private Color userLeaveBackColor;
@@ -68,7 +69,7 @@ namespace Nucleus.Coop
                 AutoSize = false;
                 Name = "GameControl";
                 Size = new Size(209, 42);
-               
+
                 GameInfo = game;
                 UserGameInfo = userGame;
 
@@ -88,8 +89,7 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(themePath + "players.png")
                 };
 
-                numPlayersTt = new ToolTip();
-                numPlayersTt.SetToolTip(playerIcon, "Number of players");
+                CustomToolTips.SetToolTip(playerIcon, "Number of players.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
                 title = new Label
                 {
@@ -150,7 +150,7 @@ namespace Nucleus.Coop
                     Controls.Add(playerIcon);
                     Controls.Add(favoriteBox);
                 }
-         
+
                 DPIManager.Register(this);
             }
             catch (Exception ex)
@@ -159,13 +159,13 @@ namespace Nucleus.Coop
             }
 
             ///Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
-            isUpdateAvailableTimer = new System.Threading.Timer(isUpdateAvailable_Tick, null, 2600,5200);
+            isUpdateAvailableTimer = new System.Threading.Timer(isUpdateAvailable_Tick, null, 2600, 5200);
         }
         ~GameControl()
         {
             DPIManager.Unregister(this);
         }
-      
+
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -188,7 +188,7 @@ namespace Nucleus.Coop
             players.Text = PlayerText;
 
             title.AutoSize = true;
-            title.MaximumSize = new Size((int)(209*scale) - picture.Width - (border * 2), 0);
+            title.MaximumSize = new Size((int)(209 * scale) - picture.Width - (border * 2), 0);
 
             players.Size = plabelSize;
             playerIcon.Size = new Size(players.Size.Height, players.Size.Height);
@@ -208,8 +208,8 @@ namespace Nucleus.Coop
             }
 
             favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
-            float favoriteX = (209 * scale) - (playerIcon.Width+5);
-            float favoriteY = Height - (favoriteBox.Height+5);
+            float favoriteX = (209 * scale) - (playerIcon.Width + 5);
+            float favoriteY = Height - (favoriteBox.Height + 5);
             favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
 
             ResumeLayout();
@@ -266,7 +266,7 @@ namespace Nucleus.Coop
 
         private void C_MouseEnter(object sender, EventArgs e)
         {
-            OnMouseEnter(e);          
+            OnMouseEnter(e);
         }
 
         private void C_MouseLeave(object sender, EventArgs e)

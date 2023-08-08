@@ -221,14 +221,14 @@ namespace Nucleus.Gaming
 
             totalPlayers = profile.PlayersList.Count;
 
+            error = null;
+
+            ThreadPool.QueueUserWorkItem(StartPlay, handler);
+
             if (TimerInterval > 0)
             {
                 StartUpdateTick(gen.HandlerInterval);
             }
-
-            error = null;
-
-            ThreadPool.QueueUserWorkItem(StartPlay, handler);
 
             return true;
         }
@@ -238,7 +238,6 @@ namespace Nucleus.Gaming
             try
             {
                 error = ((IGameHandler)handler).Play();
-                //Console.WriteLine("Play thread completed " + error );
             }
             catch (Exception ex)
             {
@@ -3627,14 +3626,14 @@ namespace Nucleus.Gaming
 
             if (gen.UseNucleusEnvironment)
             {
-                RegistryUtil.RestoreUserEnvironmentRegistryPath();//A voir si utile
+                RegistryUtil.RestoreUserEnvironmentRegistryPath();
             }
 
             ControllersUINav.EnabledRuntime = false;
 
-            GameProfile.SaveGameProfile(profile);//A voir si utile
-                               
-            gen.OnFinishedSetup?.Invoke();//A voir si utile
+            GameProfile.SaveGameProfile(profile);
+            
+            gen.OnFinishedSetup?.Invoke();
         }
 
         struct TickThread

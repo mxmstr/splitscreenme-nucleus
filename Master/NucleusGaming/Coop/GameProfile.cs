@@ -36,8 +36,8 @@ namespace Nucleus.Gaming.Coop
 
         private static int profileToSave;
         public static int CurrentProfileId => profileToSave;
-       
-        private static string modeText = "New Profile";
+
+        private static string modeText;// = "New Profile";
         public static string ModeText => modeText;
 
         public static string GameGUID;
@@ -499,6 +499,7 @@ namespace Nucleus.Gaming.Coop
             }
 
             totalPlayers = JplayersInfos.Count();
+
             modeText = $"Profile n°{profileToSave}";
            
             if(ProfilePlayersList.Any(x => x.IsXInput == true) && !useXinputIndex)

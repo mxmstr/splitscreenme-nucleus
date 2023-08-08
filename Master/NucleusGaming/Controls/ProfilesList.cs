@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Nucleus.Gaming.Controls
 {
@@ -271,7 +272,22 @@ namespace Nucleus.Gaming.Controls
             Control[] zoom = TopLevelControl.Controls.Find("setupScreen", true);
             RichTextBox textbox = zoom[0].Controls.Find("handlerNoteZoom",true)[0] as RichTextBox;
 
-            textbox.Text = jsonString;
+            string text;
+
+            if ((string)Jprofile["Notes"] != "" && (string)Jprofile["Notes"] != null)
+            {
+                text = (string)Jprofile["Notes"];
+            }
+            else
+            {
+                text = jsonString;//jsonString.Replace(" ", "").                                
+                                           //Replace(",", "").
+                                           //Replace("\"", "").
+                                           //Replace("{", "").
+                                           //Replace("}", "");
+            }
+
+            textbox.Text = text;
             textbox.Parent.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, textbox.Parent.Width, textbox.Parent.Height, 20, 20));
             textbox.Parent.Visible = true;
             textbox.Parent.BringToFront();

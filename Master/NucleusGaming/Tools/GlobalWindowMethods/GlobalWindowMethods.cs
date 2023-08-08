@@ -82,6 +82,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
 
             genericGameHandler.Log("Attempting to reposition, resize and strip borders for instance " + (i - 1) + $" - {processData.Process.ProcessName} (pid {processData.Process.Id})");
+
             try
             {
                 if (!genericGameInfo.DontRemoveBorders)
@@ -1077,6 +1078,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             {
                 canSwitch = true;
                 Globals.MainOSD.Show(1600, "Cutscenes Mode Off");
+
                 if (GameProfile.Cts_Unfocus)
                 {
                     ChangeForegroundWindow();

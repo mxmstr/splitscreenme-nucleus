@@ -315,6 +315,7 @@ namespace Nucleus.Coop
             if (File.Exists(logPath))
             {
                 FileStream debugLog = File.OpenRead(logPath);
+
                 long LogSize = debugLog.Length;
 
                 debugLog.Close();
