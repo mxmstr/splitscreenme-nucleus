@@ -1077,7 +1077,7 @@ namespace Nucleus.Coop
                 "To load a profile click the profile list icon in the setup screen and choose the profile to load by clicking on it in the list.\n" +
                 "Profile settings can be ajusted before pressing the play button.\n" +
                 "Some of the settings could break hooks functions or resizing functions so it's better to launch the game with the default profile settings once.\n" +
-                "For more informations or if you have any doubts keep the default settings or ask for help.");
+                "For more informations or if you have any doubts keep the default settings or ask for help.", false);
         }
 
         private void cts_Mute_CheckedChanged(object sender, EventArgs e)

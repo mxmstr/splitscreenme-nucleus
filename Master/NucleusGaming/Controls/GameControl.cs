@@ -159,7 +159,7 @@ namespace Nucleus.Coop
             }
 
             ///Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
-            isUpdateAvailableTimer = new System.Threading.Timer(isUpdateAvailable_Tick, null, 2600, 5200);
+            isUpdateAvailableTimer = new System.Threading.Timer(IsUpdateAvailable_Tick, null, 2600, 5200);
         }
         ~GameControl()
         {
@@ -215,7 +215,7 @@ namespace Nucleus.Coop
             ResumeLayout();
         }
 
-        private void isUpdateAvailable_Tick(object state)
+        private void IsUpdateAvailable_Tick(object state)
         {
             Control topLevel = TopLevelControl;
 

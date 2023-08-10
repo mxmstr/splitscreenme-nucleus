@@ -148,7 +148,7 @@ namespace Nucleus.Gaming
             string error = $"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n\n{ex.GetType().Name}\n\n[Message]\n\n{ex.Message}\n{help}\n\n[Stacktrace]\n\n{ex.StackTrace}";
 #endif
 
-            NucleusMessageBox.Show("Something went wrong :(", error);
+            NucleusMessageBox.Show("Something went wrong :(", error, false);
 
             Log("Attempting shut-down procedures in order to clean-up");
 

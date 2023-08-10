@@ -372,7 +372,7 @@ namespace Nucleus.Gaming
                     $"- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format\n(for example: methods using Context must be within the Game.Play function)" +
                     $"\n\n{1} {2} \nError at line {numLine / 2}";
 
-                    NucleusMessageBox.Show("Error in handler", error);
+                    NucleusMessageBox.Show("Error in handler", error,false);
 
                 });
             }

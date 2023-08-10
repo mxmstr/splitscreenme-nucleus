@@ -20,18 +20,52 @@ namespace Nucleus.Gaming.Forms
         private string message;
         private bool sized;
 
-        internal CustomMessageBox(string title, string message)
+        internal CustomMessageBox(string title, string message, bool format)
         {
             string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "MouseOver").Split(',');
             InitializeComponent();
             
             Text = title;
-            this.message = message;
+            this.message = format ? FormatText(message) : message;
             closeBtn.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
 
             closeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
             BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
             Opacity = 0;//invisible until resized
+            
+        }
+
+        private string FormatText(string message)
+        {
+            string removedNewLineJump = message.Replace('\n',' ');
+            string[] words = removedNewLineJump.Split(' ');
+            string formated = string.Empty;
+
+            int wordsBeforeNewLine = 10;
+            int start = wordsBeforeNewLine;
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (start == i)
+                {
+                    formated += words[i] + '\n';
+                    start += wordsBeforeNewLine;
+                }
+                else
+                {
+                    if (words[i].EndsWith("."))
+                    {
+                        formated += words[i] + '\n';
+                        start += wordsBeforeNewLine;
+                    }
+                    else 
+                    {
+                        formated += words[i] + ' ';
+                    }                 
+                }        
+            }
+
+            return formated;
         }
 
         private void CustomMessaBox_Paint(object sender, PaintEventArgs e)

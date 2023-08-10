@@ -159,9 +159,9 @@ namespace Nucleus.Coop.Forms
             btn_ViewAll.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Info.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Search.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            btn_Close.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            //btn_Close.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
             btn_Download.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
-            btn_Maximize.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
+            //btn_Maximize.FlatAppearance.MouseOverBackColor = mf.MouseOverBackColor;
 
             controlscollect();
 
@@ -957,6 +957,26 @@ namespace Nucleus.Coop.Forms
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
 
+        }
+
+        private void btn_Maximize_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Maximize.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_maximize_mousehover.png");
+        }
+
+        private void btn_Maximize_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Maximize.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_maximize.png");
+        }
+
+        private void btn_Close_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close_mousehover.png");
+        }
+
+        private void btn_Close_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
         }
     }
 }

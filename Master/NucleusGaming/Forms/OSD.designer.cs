@@ -65,6 +65,7 @@ namespace Nucleus.Gaming.Coop.Generic
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OSD";
             this.TopMost = true;
+            this.TransparencyKey = System.Drawing.Color.Black;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
 

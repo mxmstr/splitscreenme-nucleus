@@ -474,7 +474,7 @@ namespace Nucleus.Gaming.Tools.Steam
                     if (!gen.GoldbergNoWarning)
                     {
                         genericGameHandler.Log("Unable to locate a steam_api(64).dll file, Goldberg will not be used");
-                        NucleusMessageBox.Show("Warning","Goldberg was unable to locate a steam_api(64).dll file.\nThe built-in Goldberg will not be used.");
+                        NucleusMessageBox.Show("Warning","Goldberg was unable to locate a steam_api(64).dll file.\nThe built-in Goldberg will not be used.",false);
                     }
                 }
             }

@@ -472,7 +472,7 @@ namespace Nucleus.Coop
             this.disableGameProfiles.Checked = true;
             this.disableGameProfiles.CheckState = System.Windows.Forms.CheckState.Checked;
             this.disableGameProfiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.disableGameProfiles.Location = new System.Drawing.Point(18, 376);
+            this.disableGameProfiles.Location = new System.Drawing.Point(18, 351);
             this.disableGameProfiles.Margin = new System.Windows.Forms.Padding(2);
             this.disableGameProfiles.Name = "disableGameProfiles";
             this.disableGameProfiles.Size = new System.Drawing.Size(129, 17);
@@ -487,7 +487,7 @@ namespace Nucleus.Coop
             this.keepAccountsCheck.AutoSize = true;
             this.keepAccountsCheck.BackColor = System.Drawing.Color.Transparent;
             this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.keepAccountsCheck.Location = new System.Drawing.Point(18, 334);
+            this.keepAccountsCheck.Location = new System.Drawing.Point(18, 309);
             this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
             this.keepAccountsCheck.Name = "keepAccountsCheck";
             this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
@@ -568,13 +568,14 @@ namespace Nucleus.Coop
             this.splashScreenChkB.BackColor = System.Drawing.Color.Transparent;
             this.splashScreenChkB.Checked = true;
             this.splashScreenChkB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.splashScreenChkB.Location = new System.Drawing.Point(18, 287);
+            this.splashScreenChkB.Location = new System.Drawing.Point(218, 285);
             this.splashScreenChkB.Margin = new System.Windows.Forms.Padding(2);
             this.splashScreenChkB.Name = "splashScreenChkB";
             this.splashScreenChkB.Size = new System.Drawing.Size(148, 19);
             this.splashScreenChkB.TabIndex = 161;
             this.splashScreenChkB.Text = "Enable Splash Screen";
             this.splashScreenChkB.UseVisualStyleBackColor = false;
+            this.splashScreenChkB.Visible = false;
             // 
             // clickSoundChkB
             // 
@@ -582,7 +583,7 @@ namespace Nucleus.Coop
             this.clickSoundChkB.BackColor = System.Drawing.Color.Transparent;
             this.clickSoundChkB.Checked = true;
             this.clickSoundChkB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.clickSoundChkB.Location = new System.Drawing.Point(18, 311);
+            this.clickSoundChkB.Location = new System.Drawing.Point(18, 286);
             this.clickSoundChkB.Margin = new System.Windows.Forms.Padding(2);
             this.clickSoundChkB.Name = "clickSoundChkB";
             this.clickSoundChkB.Size = new System.Drawing.Size(133, 19);
@@ -1239,7 +1240,7 @@ namespace Nucleus.Coop
             this.scaleOptionCbx.Checked = true;
             this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
             this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scaleOptionCbx.Location = new System.Drawing.Point(18, 355);
+            this.scaleOptionCbx.Location = new System.Drawing.Point(18, 330);
             this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
             this.scaleOptionCbx.Name = "scaleOptionCbx";
             this.scaleOptionCbx.Size = new System.Drawing.Size(185, 17);
@@ -3371,10 +3372,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.playersTab);
             this.Controls.Add(this.settingsTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.playersTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);

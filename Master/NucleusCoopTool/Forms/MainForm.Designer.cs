@@ -1106,6 +1106,7 @@ namespace Nucleus.Coop
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1120, 640);
             this.Name = "MainForm";
+            this.Opacity = 0D;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Nucleus Co-op";

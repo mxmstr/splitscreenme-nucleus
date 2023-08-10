@@ -68,7 +68,7 @@ namespace Nucleus.Gaming
                                 $"to delete/unlock the file(s) manually or restart\n" +
                                 $" your computer to unlock the file(s) because it\n" +
                                 $"could lead to a crash on game startup.\n" +
-                                $" You can ignore this message and risk a crash or unexpected behaviors.");
+                                $" You can ignore this message and risk a crash or unexpected behaviors.", false);
                         });
                     }
                 }

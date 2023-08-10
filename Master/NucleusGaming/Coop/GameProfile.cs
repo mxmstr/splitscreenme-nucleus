@@ -425,10 +425,10 @@ namespace Nucleus.Gaming.Coop
                                                (int)JplayersInfos[i]["MonitorBounds"]["Height"]);
 
                 player.EditBounds = new Rectangle(
-                                            (int)JplayersInfos[i]["EditBounds"]["X"],
-                                            (int)JplayersInfos[i]["EditBounds"]["Y"],
-                                            (int)JplayersInfos[i]["EditBounds"]["Width"],
-                                            (int)JplayersInfos[i]["EditBounds"]["Height"]);
+                                              (int)JplayersInfos[i]["EditBounds"]["X"],
+                                              (int)JplayersInfos[i]["EditBounds"]["Y"],
+                                              (int)JplayersInfos[i]["EditBounds"]["Width"],
+                                              (int)JplayersInfos[i]["EditBounds"]["Height"]);
 
 
                 player.IsDInput = (bool)JplayersInfos[i]["IsDInput"];

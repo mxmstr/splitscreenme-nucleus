@@ -96,6 +96,8 @@
             this.btn_Maximize.BackColor = System.Drawing.Color.Silver;
             this.btn_Maximize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Maximize.FlatAppearance.BorderSize = 0;
+            this.btn_Maximize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_Maximize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_Maximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Maximize.Location = new System.Drawing.Point(810, 0);
             this.btn_Maximize.Name = "btn_Maximize";
@@ -103,6 +105,8 @@
             this.btn_Maximize.TabIndex = 61;
             this.btn_Maximize.UseVisualStyleBackColor = false;
             this.btn_Maximize.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btn_Maximize_MouseClick);
+            this.btn_Maximize.MouseEnter += new System.EventHandler(this.btn_Maximize_MouseEnter);
+            this.btn_Maximize.MouseLeave += new System.EventHandler(this.btn_Maximize_MouseLeave);
             // 
             // btn_Download
             // 
@@ -125,6 +129,8 @@
             this.btn_Close.BackColor = System.Drawing.Color.Silver;
             this.btn_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Close.FlatAppearance.BorderSize = 0;
+            this.btn_Close.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_Close.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_Close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Close.Location = new System.Drawing.Point(832, 0);
             this.btn_Close.Name = "btn_Close";
@@ -132,6 +138,8 @@
             this.btn_Close.TabIndex = 47;
             this.btn_Close.UseVisualStyleBackColor = false;
             this.btn_Close.Click += new System.EventHandler(this.btn_Close_Click);
+            this.btn_Close.MouseEnter += new System.EventHandler(this.btn_Close_MouseEnter);
+            this.btn_Close.MouseLeave += new System.EventHandler(this.btn_Close_MouseLeave);
             // 
             // btn_Search
             // 

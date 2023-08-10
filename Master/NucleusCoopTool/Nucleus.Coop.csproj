@@ -259,12 +259,6 @@
     <Compile Include="Forms\DownloadPrompt.Designer.cs">
       <DependentUpon>DownloadPrompt.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Splashscreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Splashscreen.Designer.cs">
-      <DependentUpon>Splashscreen.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\GameList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -330,9 +324,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProfileSettings.resx">
       <DependentUpon>ProfileSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Splashscreen.resx">
-      <DependentUpon>Splashscreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>

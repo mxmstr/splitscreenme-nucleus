@@ -340,7 +340,7 @@ namespace Nucleus.Coop
             cmb_EpicLang.SelectedItem = ini.IniReadValue("Misc", "EpicLang");
 
             ///splash screen setting                   
-            splashScreenChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
+            //splashScreenChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
 
             ///mouse click sound setting          
             clickSoundChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "MouseClick"));
@@ -791,7 +791,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Misc", "AutoDesktopScaling", scaleOptionCbx.Checked.ToString());
 
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
-            ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
+            //ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "UseXinputIndex", gamepadsAssignMethods.Checked.ToString());
 
@@ -1216,7 +1216,7 @@ namespace Nucleus.Coop
            "\n-Many quality of life improvements & bug fixes." +
            "\n-And so much more!\n" +
            "\nSpecial thanks to: Talos91, dr.oldboi, PoundlandBacon, Pizzo and the rest of the Splitscreen Dreams discord community.";
-            NucleusMessageBox.Show("Credits", text);
+            NucleusMessageBox.Show("Credits", text,false);
         }
       
         private void layoutSizer_Paint(object sender, PaintEventArgs e)

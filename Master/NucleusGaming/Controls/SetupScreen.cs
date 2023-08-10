@@ -250,13 +250,17 @@ namespace Nucleus.Coop
                 ///Size\Location  see => UpdateScreens() 
             };
 
-            closeZoomBtn.Click += new EventHandler(CloseZoomBtn_Click);
+
+            closeZoomBtn.MouseEnter += new EventHandler(closeZoomBtn_MouseEnter);
+            closeZoomBtn.MouseLeave+= new EventHandler(closeZoomBtn_MouseLeave);
+            closeZoomBtn.Click += new EventHandler(closeZoomBtn_Click);
 
             textZoomContainer = new Panel();
             textZoomContainer.Visible = false;
             textZoomContainer.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             textZoomContainer.BorderStyle = BorderStyle.None;
             textZoomContainer.BackgroundImageLayout = ImageLayout.Stretch;
+            textZoomContainer.BackColor = Color.FromArgb(255,20,20,20);
             textZoomContainer.Controls.Add(handlerNoteZoom);
             textZoomContainer.Controls.Add(closeZoomBtn);
 
@@ -319,7 +323,11 @@ namespace Nucleus.Coop
             RemoveFlicker();
         }
 
-        private void CloseZoomBtn_Click(object sender, EventArgs e)
+        private void closeZoomBtn_MouseEnter(object sender, EventArgs e) => closeZoomBtn.Image = ImageCache.GetImage(theme + "title_close_mousehover.png");
+
+        private void closeZoomBtn_MouseLeave(object sender, EventArgs e) => closeZoomBtn.Image = ImageCache.GetImage(theme + "title_close.png");
+
+        private void closeZoomBtn_Click(object sender, EventArgs e)
         {
             textZoomContainer.Visible = false;
             PictureBox btn_magnifier = TopLevelControl.Controls.Find("btn_magnifier", true)[0] as PictureBox;
@@ -406,8 +414,8 @@ namespace Nucleus.Coop
                 gameProfilesList_btn.Location = new Point(profileSettings_btn.Left - gameProfilesList_btn.Width - 3, instruction_btn.Location.Y);
                 gameProfilesList.UpdateSize(scale);
 
-                closeZoomBtn.Size = new Size(20, 20);
-                closeZoomBtn.Location = new Point(textZoomContainer.Width - (closeZoomBtn.Width+2), 0);
+                closeZoomBtn.Size = new Size(18, 18);
+                closeZoomBtn.Location = new Point(textZoomContainer.Width - (closeZoomBtn.Width+4), 1);
 
                 scaled = true;
             }
@@ -1886,7 +1894,7 @@ namespace Nucleus.Coop
                 if (TotalPlayers < 0 && !showError)
                 {
                     showError = true;
-                    NucleusMessageBox.Show("error", "Oops!\nSomething went wrong, profile has been unloaded.");
+                    NucleusMessageBox.Show("error", "Oops!\nSomething went wrong, profile has been unloaded.",false);
                     return;
                 }
             }

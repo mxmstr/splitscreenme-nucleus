@@ -9,6 +9,7 @@ using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.ProtoInput;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Platform.PCSpecs;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
@@ -113,7 +114,7 @@ namespace Nucleus.Coop
 
         public bool restartRequired = false;
 
-        private bool Splash_On;
+        //private bool Splash_On;
         private bool ToggleCutscenes = false;
         private bool formClosing;
         private bool noGamesPresent;
@@ -226,12 +227,67 @@ namespace Nucleus.Coop
             }
         }
 
+        private System.Windows.Forms.Timer FadeInTimer;
+
+        private void FadeIn()
+        {
+            FadeInTimer = new System.Windows.Forms.Timer();
+            FadeInTimer.Interval = (50); //millisecond
+            FadeInTimer.Tick += new EventHandler(FadeInTick);
+            FadeInTimer.Start();
+        }
+
+        private void FadeInTick(Object Object, EventArgs EventArgs)
+        {
+            if (Opacity < 1.0F)
+            {
+                Opacity += .08;
+            }
+            else
+            {
+                FadeInTimer.Dispose();
+            }
+        }
+
+        private System.Windows.Forms.Timer FadeOutTimer;
+
+        private void FadeOut()
+        {
+            FadeOutTimer = new System.Windows.Forms.Timer();
+            FadeOutTimer.Interval = (50); //millisecond
+            FadeOutTimer.Tick += new EventHandler(FadeOutTick);
+            FadeOutTimer.Start();
+        }
+
+        private void FadeOutTick(Object Object, EventArgs EventArgs)
+        {
+            if (Opacity > 0.0F)
+            {
+                Opacity -= .08;
+            }
+            else
+            {
+                SaveNucleusWindowPosAndLoc();
+
+                Process[] processes = Process.GetProcessesByName("SplitCalculator");
+                foreach (Process SplitCalculator in processes)
+                {
+                    SplitCalculator.Kill();
+                }
+
+                Process.GetCurrentProcess().Kill();
+            }
+        }
+
+
         public MainForm()
         {
+            FadeIn();
+
             connected = Program.connected;
             Hub.Connected = connected;
             iconsIni = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
-            Splash_On = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
+            //Splash_On = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
             DisableOfflineIcon = bool.Parse(ini.IniReadValue("Dev", "DisableOfflineIcon"));
             showFavoriteOnly = bool.Parse(ini.IniReadValue("Dev", "ShowFavoriteOnly"));
             mouseClick = bool.Parse(ini.IniReadValue("Dev", "MouseClick"));
@@ -498,7 +554,7 @@ namespace Nucleus.Coop
 
             setupScreen = new SetupScreen();
 
-            setupScreen.textZoomContainer.BackColor = HandlerNoteMagnifierTitleBackColor;
+            //setupScreen.textZoomContainer.BackColor = HandlerNoteMagnifierTitleBackColor;
             setupScreen.handlerNoteZoom.BackColor = HandlerNoteBackColor;
             setupScreen.handlerNoteZoom.ForeColor = HandlerNoteFontColor;
             setupScreen.profileSettings_btn.Click += new EventHandler(this.ProfileSettings_btn_Click);
@@ -562,6 +618,7 @@ namespace Nucleus.Coop
             RefreshGames();
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
+
             if (ini.IniReadValue("Misc", "WindowLocation") != "")
             {
                 string[] windowLocation = ini.IniReadValue("Misc", "WindowLocation").Split('X');
@@ -596,9 +653,7 @@ namespace Nucleus.Coop
 
             DPIManager.Register(this);
             DPIManager.AddForm(this);
-        }
-
-        
+        }      
 
         private void FavoriteOnly_Click(object sender, EventArgs e)
         {
@@ -659,17 +714,6 @@ namespace Nucleus.Coop
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            DisposeTimer = new System.Windows.Forms.Timer();
-            DisposeTimer.Interval = (2900); //millisecond
-            DisposeTimer.Tick += new EventHandler(MainTimerTick);
-            DisposeTimer.Start();
-
-            if (Splash_On)
-            {
-                Splashscreen splashscreen = new Splashscreen(this.Size,this.Location,this.roundedcorners);
-                splashscreen.Show();
-            }
-
             DPIManager.ForceUpdate();
         }
 
@@ -795,8 +839,9 @@ namespace Nucleus.Coop
                         return;
                     }
 
-                    User32Util.ShowTaskBar();                       
+                    User32Util.ShowTaskBar();
                     Close();
+                    //FadeOut();
                 }
                 else
                 {
@@ -1285,7 +1330,7 @@ namespace Nucleus.Coop
                 // content manager is shared within the same game
                 content = new ContentManager(currentGame);
 
-                GoToStep(0);             
+                GoToStep(0);
             }
         }
 
@@ -2196,7 +2241,7 @@ namespace Nucleus.Coop
 
         private void ScriptNotesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(currentGameInfo.Game.Description, "Handler Author's Notes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            NucleusMessageBox.Show("Handler Author's Notes", currentGameInfo.Game.Description,true);
         }
 
         private void GameOptions_Click(object sender, EventArgs e)
@@ -2640,15 +2685,7 @@ namespace Nucleus.Coop
 
         private void closeButton(object sender, EventArgs e)
         {
-            SaveNucleusWindowPosAndLoc();
-
-            Process[] processes = Process.GetProcessesByName("SplitCalculator");
-            foreach (Process SplitCalculator in processes)
-            {
-                SplitCalculator.Kill();
-            }
-
-            Process.GetCurrentProcess().Kill();
+            FadeOut();       
         }
 
         private void keepInstancesFolderToolStripMenuItem_Click(object sender, EventArgs e)

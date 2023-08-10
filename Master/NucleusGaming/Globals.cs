@@ -11,7 +11,7 @@ namespace Nucleus.Gaming
 
         public static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
-        ///return theme path(current theme folder)
+        //return theme path(current theme folder)
         public static string Theme => Path.Combine(Application.StartupPath, $@"gui\theme\{ini.IniReadValue("Theme", "Theme")}\");
 
         //return theme.ini file(current theme)
