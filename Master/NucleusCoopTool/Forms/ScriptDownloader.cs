@@ -5,6 +5,7 @@ using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;

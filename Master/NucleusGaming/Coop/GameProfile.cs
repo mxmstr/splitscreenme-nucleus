@@ -26,7 +26,7 @@ namespace Nucleus.Gaming.Coop
 
         public static GameProfile currentProfile;
         public static GenericGameInfo Game;
-        private SetupScreen setupScreen = null;
+        private static SetupScreen setupScreen = null;
 
         private static int totalPlayers = 0;
         public static int TotalPlayers => totalPlayers;
@@ -221,7 +221,7 @@ namespace Nucleus.Gaming.Coop
 
             if (path != null)
             {
-                profilesPathList = Directory.EnumerateFiles(path).OrderBy(s => int.Parse(Regex.Match(s, @"\d+").Value)).ToList();
+                profilesPathList = Directory.EnumerateFiles(path).OrderBy(s => s.Length).ToList();
                 profilesCount = profilesPathList.Count();
             }
         }
@@ -286,6 +286,7 @@ namespace Nucleus.Gaming.Coop
             {
                 foreach (PlayerInfo player in playerData)
                 {
+                    player.MonitorBounds = new Rectangle(0, 0, 0, 0);
                     player.EditBounds = player.SourceEditBounds;
                     player.ScreenIndex = -1;
                     player.PlayerID = -1;
@@ -306,6 +307,7 @@ namespace Nucleus.Gaming.Coop
             setupScreen.ResetScreensTotalPlayers();
             setupScreen.gameProfilesList.profileBtn_CheckedChanged(unload, null);
             setupScreen.loadedProfilePlayers.Clear();
+            setupScreen.devicesToMerge.Clear();
 
             setupScreen.profileSettings_Tooltip = CustomToolTips.SetToolTip(setupScreen.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             ListGameProfiles();
@@ -495,6 +497,7 @@ namespace Nucleus.Gaming.Coop
             if(ProfilePlayersList.Any(pl => pl.ScreenIndex > ScreensUtil.AllScreens().Count()-1))//ensure that the missing screens are used by any players before showing the message
             {             
                 Globals.MainOSD.Show(2000, $"There Is Not Enough Active Screens");
+                Reset();
                 return false;
             }
 
@@ -974,29 +977,13 @@ namespace Nucleus.Gaming.Coop
 
         public static GameProfile CleanClone(GameProfile profile)
         {
+            setupScreen.loadedProfilePlayers.AddRange(setupScreen.devicesToMerge);
+
             GameProfile nprof = new GameProfile
             {
-                playerData = new List<PlayerInfo>(),
+                playerData = setupScreen.loadedProfilePlayers,
                 screens = profile.screens.ToList(),
             };
-
-            if (modeText != "New Profile")
-            {
-                SortPlayersList();
-            }
-
-            List<PlayerInfo> source = profile.playerData;
-
-            for (int i = 0; i < source.Count; i++)
-            {
-                PlayerInfo player = source[i];
-
-                if (player.ScreenIndex != -1)
-                {
-                    // only add valid players to the clean version
-                    nprof.playerData.Add(player);
-                }
-            }
 
             Dictionary<string, object> noptions = new Dictionary<string, object>();
 

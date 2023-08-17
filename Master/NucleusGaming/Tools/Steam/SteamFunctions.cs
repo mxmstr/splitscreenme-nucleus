@@ -5,6 +5,7 @@ using Nucleus.Gaming.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -327,23 +328,20 @@ namespace Nucleus.Gaming.Tools.Steam
                         }
                     }
 
-                    long steamID = SteamFunctions.random_steam_id + i;
-
+                    long steamID;
+                                            
                     if (player.SteamID == -1)
                     {
-                        
+                        steamID = SteamFunctions.random_steam_id + i;
+
+                        while (genericGameHandler.profile.PlayersList.Any(p => p.SteamID == steamID))                                    
+                        { 
+                            steamID = SteamFunctions.random_steam_id++;
+                        }       
+
                         player.SteamID = steamID;
-                        bool useSettingsSID = false;
 
-                        if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
-                        {
-                            genericGameHandler.Log("Using steam ID from Nucleus settings ");
-                            steamID = Convert.ToInt64(genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));//ToString?   
-                            player.SteamID = steamID;
-                            useSettingsSID = true;
-                        }
-
-                        if (gen.PlayerSteamIDs != null && !useSettingsSID)
+                        if (gen.PlayerSteamIDs != null)
                         {
                             if (i < gen.PlayerSteamIDs.Length && !string.IsNullOrEmpty(gen.PlayerSteamIDs[i]))
                             {
@@ -352,17 +350,9 @@ namespace Nucleus.Gaming.Tools.Steam
                                 player.SteamID = steamID;
                             }
                         }
-
-                        //if (GameProfile.ProfilePlayersList.Count - 1 >= i && player.SteamID == -1)
-                        //{
-                        //    genericGameHandler.Log("Using steam ID from profile");
-                        //    steamID = GameProfile.ProfilePlayersList[player.PlayerID].SteamID;
-                        //    player.SteamID = steamID;
-                        //}
                     }
                     else
                     {
-                        genericGameHandler.Log("Using steam ID from game profile");
                         steamID = player.SteamID;
                     }
 
@@ -552,23 +542,20 @@ namespace Nucleus.Gaming.Tools.Steam
 
             foreach (string nameFile in files)
             {
-                long steamID = SteamFunctions.random_steam_id + i;
+                long steamID;
 
                 if (player.SteamID == -1)
                 {
-                    
-                    player.SteamID = steamID;
-                    bool useSettingsSID = false;
+                    steamID = SteamFunctions.random_steam_id + i;
 
-                    if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
+                    while (genericGameHandler.profile.PlayersList.Any(p => p.SteamID == steamID))
                     {
-                        genericGameHandler.Log("Using steam ID from Nucleus settings ");
-                        steamID = Convert.ToInt64(genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));
-                        player.SteamID = steamID;
-                        useSettingsSID = true;
+                        steamID = SteamFunctions.random_steam_id ++;
                     }
 
-                    if (genericGameInfo.PlayerSteamIDs != null && !useSettingsSID)
+                    player.SteamID = steamID;
+
+                    if (genericGameInfo.PlayerSteamIDs != null)
                     {
                         if (i < genericGameInfo.PlayerSteamIDs.Length && !string.IsNullOrEmpty(genericGameInfo.PlayerSteamIDs[i]))
                         {
@@ -576,19 +563,10 @@ namespace Nucleus.Gaming.Tools.Steam
                             steamID = long.Parse(genericGameInfo.PlayerSteamIDs[i]);
                             player.SteamID = steamID;
                         }
-
                     }
-
-                    //if (GameProfile.ProfilePlayersList.Count - 1 >= i && player.SteamID == -1)
-                    //{
-                    //    genericGameHandler.Log("Using steam ID from profile");
-                    //    steamID = GameProfile.ProfilePlayersList[player.PlayerID].SteamID;
-                    //    player.SteamID = steamID;
-                    //}
                 }
                 else
                 {
-                    genericGameHandler.Log("Using steam ID from game profile");
                     steamID = player.SteamID;
                 }
 
@@ -717,25 +695,33 @@ namespace Nucleus.Gaming.Tools.Steam
             emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
             emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Manual");
 
+            long steamID;         
 
-            if (GameProfile.ProfilePlayersList.Count - 1 >= i)
+            if (player.SteamID == -1)
             {
-                if (player.SteamID != -1)
+                steamID = SteamFunctions.random_steam_id + i;
+
+                while (genericGameHandler.profile.PlayersList.Any(p => p.SteamID == steamID))
                 {
-                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", player.SteamID.ToString());
+                    steamID = SteamFunctions.random_steam_id++;
                 }
-                else
+
+                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", (steamID).ToString());
+                player.SteamID = steamID;
+
+                if (genericGameInfo.PlayerSteamIDs != null)
                 {
-                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", GameProfile.ProfilePlayersList[player.PlayerID].SteamID.ToString());
+                    if (i < genericGameInfo.PlayerSteamIDs.Length && !string.IsNullOrEmpty(genericGameInfo.PlayerSteamIDs[i]))
+                    {
+                        genericGameHandler.Log("Using steam ID from handler");
+                        emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", genericGameInfo.PlayerSteamIDs[i].ToString());
+                        player.SteamID = long.Parse(genericGameInfo.PlayerSteamIDs[i]);
+                    }
                 }
-            }
-            else if (genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
-            {
-                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", genericGameHandler.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());//ToString?   
             }
             else
             {
-                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", (SteamFunctions.random_steam_id + i).ToString());
+                emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", player.SteamID.ToString());             
             }
 
             string lang = "english";
@@ -966,27 +952,26 @@ namespace Nucleus.Gaming.Tools.Steam
             }
         }
 
-        private static string steamlessExePath;
-        public static void SteamlessProc(string symlinkedGamePath, string symlinkedGameFolder, string exeName, string args, int timing)
+        public static void SteamlessProc(string linkBinFolder, string executableName, string args, int timing)
         {
             try
             {
-                steamlessExePath = Path.Combine(Directory.GetCurrentDirectory() + @"\utils\Steamless\Steamless.CLI.exe");
+                string steamlessExePath = Path.Combine($@"{Directory.GetCurrentDirectory()}\utils\Steamless\Steamless.CLI.exe");
 
-                string steamlessArgs = $"{args} {symlinkedGameFolder} \\ {exeName}";
+                string steamlessArgs = $@"{args} {linkBinFolder} \ {executableName}";
 
                 ProcessStartInfo sl = new ProcessStartInfo(steamlessExePath);
-                sl.WorkingDirectory = symlinkedGameFolder;
+                sl.WorkingDirectory = linkBinFolder;
                 sl.UseShellExecute = true;
                 sl.WindowStyle = ProcessWindowStyle.Hidden;
                 sl.Arguments = steamlessArgs;
                 Process.Start(sl);
                 Thread.Sleep(timing);
 
-                if (File.Exists(symlinkedGameFolder + @"\" + exeName + ".unpacked.exe"))
+                if (File.Exists($@"{linkBinFolder}\{executableName}.unpacked.exe"))
                 {
-                    File.Delete(symlinkedGameFolder + @"\" + exeName);
-                    File.Move(symlinkedGameFolder + @"\" + exeName + ".unpacked.exe", symlinkedGameFolder + @"\" + exeName);
+                    File.Delete($@"{linkBinFolder}\{executableName}");
+                    File.Move($@"{linkBinFolder}\{executableName}.unpacked.exe", $@"{linkBinFolder}\{executableName}");
                 }
             }
             catch (Exception ex)

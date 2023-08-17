@@ -671,10 +671,10 @@ namespace Nucleus.Coop
 
                 if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0)
                 {
+                    ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
+
                     if (steamIds[i].Text != "")
                     {
-                        ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
-
                         if (!SteamIdsCache.Get.Any(n => n == steamIds[i].Text.ToString()))
                         {
                             SteamIdsCache.Add(steamIds[i].Text.ToString());

@@ -15,6 +15,7 @@ namespace Nucleus.Gaming.Util
                 {
                     File.Delete(Path.Combine(instanceExeFolder, newExe));
                 }
+
                 File.Copy(Path.Combine(instanceExeFolder, userGame.Game.ExecutableName), Path.Combine(instanceExeFolder, newExe));
                 genericGameHandler.Log("Changed game executable from " + gen.ExecutableName + " to " + newExe);
             }

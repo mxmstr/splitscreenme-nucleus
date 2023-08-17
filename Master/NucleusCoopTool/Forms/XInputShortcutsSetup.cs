@@ -637,7 +637,7 @@ namespace Nucleus.Coop.Forms
             if (e.Button == MouseButtons.Left)
             {
                 User32Interop.ReleaseCapture();
-                IntPtr nucHwnd = User32Interop.FindWindow(null, "Gamepad Shortcuts Setup");
+                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
         }
@@ -647,7 +647,7 @@ namespace Nucleus.Coop.Forms
             if (e.Button == MouseButtons.Left)
             {
                 User32Interop.ReleaseCapture();
-                IntPtr nucHwnd = User32Interop.FindWindow(null, "Gamepad Shortcuts Setup");
+                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
         }

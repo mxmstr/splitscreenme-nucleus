@@ -100,7 +100,7 @@ namespace Nucleus.Gaming
         public int HWndInterval = 10000;
 
         internal CursorModule _cursorModule { get; set; }
-        private GameProfile profile;
+        public GameProfile profile;
         private GenericGameInfo gen;
         public GenericGameInfo currentGameInfo => gen;
         public GenericContext context;
@@ -404,17 +404,20 @@ namespace Nucleus.Gaming
                 if (firstInGroup.IsRawKeyboard) firstInGroup.RawKeyboardDeviceHandle = group.First(x => x.RawKeyboardDeviceHandle != (IntPtr)(-1)).RawKeyboardDeviceHandle;
                 if (firstInGroup.IsRawMouse) firstInGroup.RawMouseDeviceHandle = group.First(x => x.RawMouseDeviceHandle != (IntPtr)(-1)).RawMouseDeviceHandle;
 
-                firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0] };
+               
+                firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0]};
+
+                int insertAt = profile.PlayersList.FindIndex(toInsert => toInsert == firstInGroup);//Get index of the player so it can be re-inserted where it was.
 
                 foreach (var x in group)
                 {
                     profile.PlayersList.Remove(x);
                 }
 
-                profile.PlayersList.Add(firstInGroup);
+                profile.PlayersList.Insert(insertAt,firstInGroup);//Re-insert the player where it was before its deletion  
             }
 
-            List<PlayerInfo> players = profile.PlayersList.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();//Current new default
+            List<PlayerInfo> players = profile.PlayersList;//.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();//Current new default
 
             List<int> screens = new List<int>();
 
@@ -424,10 +427,10 @@ namespace Nucleus.Gaming
             {
                 PlayerInfo player = players[i];
 
-                if (player.PlayerID == -1)
-                {
+              //  if (player.PlayerID == -1)
+               // {
                     player.PlayerID = i;
-                }
+              //  }
 
                 int pod = player.Owner.DisplayIndex;
 
@@ -577,25 +580,37 @@ namespace Nucleus.Gaming
 
                 plyrIndex = i;
 
-                if (GameProfile.UseNicknames)
-                {
-                    if (GameProfile.ProfilePlayersList.Count - 1 >= i)
-                    {
-                        if (player.Nickname == null)
-                        {
-                            player.Nickname = GameProfile.ProfilePlayersList[player.PlayerID].Nickname;
-                        }
-                    }
-                    else
-                    {
-                        player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                    }
-                }
-                else
-                {
+                //if (GameProfile.UseNicknames)
+                //{
+
+                //    if(GameProfile.ProfilePlayersList.Count > 0)
+                //    {
+                //        player.Nickname = GameProfile.ProfilePlayersList[players.FindIndex(p => p == player)].Nickname;
+                //    }
+                //    else 
+                //    {
+                //        player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
+                //    }
+                //    //if (GameProfile.ProfilePlayersList.Count - 1 >= i)
+                //    //{
+                //    //    if (player.Nickname == null)
+                //    //    {
+                //    //        player.Nickname = GameProfile.ProfilePlayersList[player.PlayerID].Nickname;
+                //    //    }
+                //    //}
+                //    //else
+                //    //{
+                //    //    player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
+                //    //}
+                //}
+                //else
+                if (!GameProfile.UseNicknames)
+                { 
                     player.Nickname = $"Player{i + 1}";
                 }
 
+
+                Console.WriteLine(player.Nickname);
                 ProcessData procData = player.ProcessData;
                 bool hasSetted = procData != null && procData.Setted;
 
@@ -1523,7 +1538,7 @@ namespace Nucleus.Gaming
                 {
                     Log($"Apply Steamless patch for {gen.ExecutableName} Timing: {gen.SteamlessTiming}ms");
 
-                    SteamFunctions.SteamlessProc(exePath, linkBinFolder, gen.ExecutableName, gen.SteamlessArgs, gen.SteamlessTiming);
+                    SteamFunctions.SteamlessProc(linkBinFolder, gen.ExecutableName, gen.SteamlessArgs, gen.SteamlessTiming);
                     Thread.Sleep(gen.SteamlessTiming + 2000);
                 }
 
@@ -1798,6 +1813,7 @@ namespace Nucleus.Gaming
                             }
 
                             Log(string.Format("Launching game located at {0} through StartGameUtil", exePath));
+
                             uint sguOutPID = StartGameUtil.StartGame(exePath, startArgs,
                                 gen.HookInit, gen.HookInitDelay, gen.RenameNotKillMutex, mu, gen.SetWindowHookStart, isDebug, nucleusRootFolder, gen.BlockRawInput, gen.UseNucleusEnvironment, player.Nickname, startupHooksEnabled, gen.CreateSingleDeviceFile, player.RawHID, player.MonitorBounds.Width, player.MonitorBounds.Height, player.MonitorBounds.X
                                 , player.MonitorBounds.Y, DocumentsRoot, useDocs);
@@ -3113,6 +3129,7 @@ namespace Nucleus.Gaming
                         WindowFakeFocus.SendFakeFocusMsg();
                     }
                 }
+                Console.WriteLine(player.SteamID);
             }
 
             if (gen.LockInputAtStart)

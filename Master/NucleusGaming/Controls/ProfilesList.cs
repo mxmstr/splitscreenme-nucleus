@@ -13,7 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Nucleus.Gaming.Controls
 {
@@ -302,7 +301,7 @@ namespace Nucleus.Gaming.Controls
 
             Label deleteBtn = (Label)sender;
 
-            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete this game profile?", "Are you sure?!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult dialogResult = MessageBox.Show($"Are you sure you want to delete Profile n°{deleteBtn.Parent.Name} ?", "Are you sure?!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (dialogResult == DialogResult.Yes)
             {
