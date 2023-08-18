@@ -427,11 +427,8 @@ namespace Nucleus.Gaming
             {
                 PlayerInfo player = players[i];
 
-              //  if (player.PlayerID == -1)
-               // {
-                    player.PlayerID = i;
-              //  }
-
+                player.PlayerID = i;
+              
                 int pod = player.Owner.DisplayIndex;
 
                 foreach (Display dp in ScreensUtil.AllScreensParams())

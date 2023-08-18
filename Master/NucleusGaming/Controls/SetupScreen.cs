@@ -2096,6 +2096,16 @@ namespace Nucleus.Coop
                         TotalPlayers++;
 
                         Invalidate();
+
+                        if (TotalPlayers == GameProfile.TotalPlayers && GameProfile.Ready && 
+                            GameProfile.AutoPlay && !GameProfile.Updating)
+                        {
+                            CanPlayUpdated(true, true);
+                            btn_Play.PerformClick();
+                            GameProfile.Ready = false;
+                            return;
+                        }
+
                         break;
                     }
                 }
@@ -2108,15 +2118,7 @@ namespace Nucleus.Coop
                     CanPlayUpdated(true, true);
                     GameProfile.Updating = false;
                     return;
-                }
-
-                if (GameProfile.Ready && GameProfile.AutoPlay && !GameProfile.Updating)
-                {
-                    CanPlayUpdated(true, true);
-                    btn_Play.PerformClick();
-                    GameProfile.Ready = false;
-                    return;
-                }
+                }           
             }
         }
 
@@ -2383,11 +2385,11 @@ namespace Nucleus.Coop
                         g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 1, s.Height + 1));
                         g.DrawRectangle(PositionPlayerScreenPen, s);
 
-                        var second = loadedProfilePlayers.Where(pl => pl.EditBounds == player.EditBounds && pl != player && pl.ScreenIndex != -1).FirstOrDefault();
+                        var secondInBounds = loadedProfilePlayers.Where(pl => pl.EditBounds == player.EditBounds && pl != player && pl.ScreenIndex != -1).FirstOrDefault();
 
-                        if (loadedProfilePlayers.Contains(player) || second != null)
+                        if (loadedProfilePlayers.Contains(player) || secondInBounds != null)
                         {
-                            PlayerInfo plToUpdate = second != null ? second : player;
+                            PlayerInfo plToUpdate = secondInBounds != null ? secondInBounds : player;
                             UserScreen screen = screens[plToUpdate.ScreenIndex];
 
                             if ((s.Height + s.Y) - (screen.UIBounds.Height + screen.UIBounds.Y) == -1)
@@ -2397,7 +2399,7 @@ namespace Nucleus.Coop
 
                             int playerIndex = loadedProfilePlayers.FindIndex(pl => pl == plToUpdate);
                             int ProfilePlayersListCount = GameProfile.ProfilePlayersList.Count;
-                            string nickname = ProfilePlayersListCount != 0  && ProfilePlayersListCount >= playerIndex ? GameProfile.ProfilePlayersList[playerIndex].Nickname :
+                            string nickname = ProfilePlayersListCount != 0 && ProfilePlayersListCount >= playerIndex ? GameProfile.ProfilePlayersList[playerIndex].Nickname :
                                               Globals.ini.IniReadValue("ControllerMapping", "Player_" + (playerIndex + 1).ToString());
 
                             string tag = $"P{playerIndex + 1}: {nickname}";
@@ -2435,7 +2437,7 @@ namespace Nucleus.Coop
                             g.FillRectangle(tagBrush, tagBack);
                             g.DrawRectangle(PositionScreenPen, tagBorder);
                             g.DrawString(tag, playerTextFont, /*plToUpdate.GamepadId < colors.Length ? colors[plToUpdate.GamepadId] :*/ Brushes.GreenYellow, tagLocation.X, tagLocation.Y);
-                            //Console.WriteLine(playerIndex + " " + plToUpdate.Nickname);
+                            //Console.WriteLine(playerIndex + " " + plToUpdate.SteamID);
                         }
                     }
                 }
@@ -2455,7 +2457,6 @@ namespace Nucleus.Coop
             //Console.WriteLine("loaded count " + loadedProfilePlayers.Count);
             //Console.WriteLine("Total " + TotalPlayers);
             //Console.WriteLine("deviceToMerge="+devicesToMerge.Count);
-
         }
     }
 }

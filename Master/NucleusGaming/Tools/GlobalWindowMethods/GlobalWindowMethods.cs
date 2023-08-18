@@ -1349,6 +1349,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                         {
                                             ChangeForegroundWindow();
                                         }
+
                                         genericGameHandler.TriggerOSD(2000, "Game Windows Reseted");
                                         resetingWindows = false;
                                     }

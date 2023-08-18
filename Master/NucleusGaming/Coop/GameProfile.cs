@@ -978,7 +978,7 @@ namespace Nucleus.Gaming.Coop
         public static GameProfile CleanClone(GameProfile profile)
         {
             setupScreen.loadedProfilePlayers.AddRange(setupScreen.devicesToMerge);
-
+       
             GameProfile nprof = new GameProfile
             {
                 playerData = setupScreen.loadedProfilePlayers,
