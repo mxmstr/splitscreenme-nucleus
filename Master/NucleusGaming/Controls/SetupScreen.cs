@@ -143,7 +143,7 @@ namespace Nucleus.Coop
 
         public List<PlayerInfo> loadedProfilePlayers = new List<PlayerInfo>();
 
-        //second device (keyboard or mouse) is add to a side list(devicesToMerge).
+        //second device (keyboard or mouse) is added to an other list(devicesToMerge).
         //devicesToMerge & loadedProfilePlayers are merged in GameProfile.
         public List<PlayerInfo> devicesToMerge = new List<PlayerInfo>();
 
@@ -1306,7 +1306,8 @@ namespace Nucleus.Coop
                     if (GameProfile.TotalPlayers > 0)
                     {
                         //Check if these bounds corresponds to a profile player. Note: this will not work for negative screens if the Windows screen layout has been change since profile creation.
-                        if (GameProfile.ProfilePlayersList.All(pl => pl.MonitorBounds != divMonitorBounds.Value))
+                        if (GameProfile.ProfilePlayersList.All(pl => pl.MonitorBounds != divMonitorBounds.Value)//avoid more players than expected
+                            /*&& !GameProfile.ProfilePlayersList.Any(pl => pl.MonitorBounds.Width == divMonitorBounds.Value.Width * 2) && !GameProfile.ProfilePlayersList.Any(pl => pl.MonitorBounds.Height == divMonitorBounds.Value.Height * 2)*/)//let drop a player if any player got is bounds expanded
                         {
                             monitorBounds = null;
                             editorBounds = null;
@@ -1990,7 +1991,7 @@ namespace Nucleus.Coop
 
                             profile.PlayersList.Remove(secondInGroup);
                             p = firstInGroup;
-                            p.IsInputUsed = true;///needed else player is invisible and can't be moved
+                            p.IsInputUsed = true;///needed else device is invisible and can't be moved
 
                             break;
                         }
@@ -2015,7 +2016,7 @@ namespace Nucleus.Coop
                     }
                 }
 
-                //DInput && XInput using GameGuid(do not follow gamepad api indexes)
+                //DInput && XInput using GamepadGuid(do not follow gamepad api indexes)
                 if (player.IsController && !skipGuid && !useGamepadApiIndex)
                 {
                     profilePlayer = GameProfile.ProfilePlayersList.Where(pl => (pl.IsDInput || pl.IsXInput) && (pl.GamepadGuid == player.GamepadGuid)).FirstOrDefault();
@@ -2032,6 +2033,8 @@ namespace Nucleus.Coop
                 {
                     profilePlayer = GameProfile.ProfilePlayersList.Where(pl => (pl.IsRawMouse && pl.IsKeyboardPlayer) && (pl.HIDDeviceIDs.Contains(player.HIDDeviceID[0]) && pl.HIDDeviceIDs.Contains(player.HIDDeviceID[1]))).FirstOrDefault();
                 }
+
+                
 
                 if (profilePlayer != null && loadedProfilePlayers.All(lpp => lpp.MonitorBounds != profilePlayer.MonitorBounds))
                 {
@@ -2405,7 +2408,7 @@ namespace Nucleus.Coop
                             string tag = $"P{playerIndex + 1}: {nickname}";
 
                             SizeF tagSize = g.MeasureString(tag, playerTextFont);
-                            Point tagLocation = new Point(((int)s.Left + (int)s.Width / 2) - ((int)tagSize.Width / 2)/*(int)(s.Right - tagSize.Width)*/, (int)(s.Bottom - tagSize.Height));
+                            Point tagLocation = new Point(((int)s.Left + (int)s.Width / 2) - ((int)tagSize.Width / 2)/*(int)(s.Right - tagSize.Width)*/, (int)(s.Bottom+1 - tagSize.Height));
                             RectangleF tagBack = new RectangleF(tagLocation.X, tagLocation.Y, tagSize.Width, tagSize.Height);
                             Rectangle tagBorder = new Rectangle(tagLocation.X, tagLocation.Y, (int)tagSize.Width, (int)tagSize.Height);
 
@@ -2437,7 +2440,6 @@ namespace Nucleus.Coop
                             g.FillRectangle(tagBrush, tagBack);
                             g.DrawRectangle(PositionScreenPen, tagBorder);
                             g.DrawString(tag, playerTextFont, /*plToUpdate.GamepadId < colors.Length ? colors[plToUpdate.GamepadId] :*/ Brushes.GreenYellow, tagLocation.X, tagLocation.Y);
-                            //Console.WriteLine(playerIndex + " " + plToUpdate.SteamID);
                         }
                     }
                 }
@@ -2454,9 +2456,6 @@ namespace Nucleus.Coop
 
             polling = false;
 
-            //Console.WriteLine("loaded count " + loadedProfilePlayers.Count);
-            //Console.WriteLine("Total " + TotalPlayers);
-            //Console.WriteLine("deviceToMerge="+devicesToMerge.Count);
         }
     }
 }

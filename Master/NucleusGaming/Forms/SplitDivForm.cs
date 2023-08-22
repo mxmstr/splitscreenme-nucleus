@@ -151,9 +151,9 @@ namespace Nucleus.Gaming.Forms
             loadTimer.Dispose();
             fading.Dispose();
             BackgroundImage = null;
-            BackColor = ChoosenColor;
-            stopPainting = true;
+            BackColor = ChoosenColor;     
             Invalidate();
+            stopPainting = true;
         }
 
         protected override void OnPaint(PaintEventArgs e)

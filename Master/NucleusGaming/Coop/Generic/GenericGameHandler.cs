@@ -417,7 +417,7 @@ namespace Nucleus.Gaming
                 profile.PlayersList.Insert(insertAt,firstInGroup);//Re-insert the player where it was before its deletion  
             }
 
-            List<PlayerInfo> players = profile.PlayersList;//.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();//Current new default
+            List<PlayerInfo> players = profile.PlayersList;
 
             List<int> screens = new List<int>();
 
@@ -577,30 +577,6 @@ namespace Nucleus.Gaming
 
                 plyrIndex = i;
 
-                //if (GameProfile.UseNicknames)
-                //{
-
-                //    if(GameProfile.ProfilePlayersList.Count > 0)
-                //    {
-                //        player.Nickname = GameProfile.ProfilePlayersList[players.FindIndex(p => p == player)].Nickname;
-                //    }
-                //    else 
-                //    {
-                //        player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                //    }
-                //    //if (GameProfile.ProfilePlayersList.Count - 1 >= i)
-                //    //{
-                //    //    if (player.Nickname == null)
-                //    //    {
-                //    //        player.Nickname = GameProfile.ProfilePlayersList[player.PlayerID].Nickname;
-                //    //    }
-                //    //}
-                //    //else
-                //    //{
-                //    //    player.Nickname = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                //    //}
-                //}
-                //else
                 if (!GameProfile.UseNicknames)
                 { 
                     player.Nickname = $"Player{i + 1}";
