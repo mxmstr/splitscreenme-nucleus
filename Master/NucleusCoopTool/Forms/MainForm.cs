@@ -241,7 +241,7 @@ namespace Nucleus.Coop
         {
             if (Opacity < 1.0F)
             {
-                Opacity += .08;
+                Opacity += .1;
             }
             else
             {
@@ -263,7 +263,7 @@ namespace Nucleus.Coop
         {
             if (Opacity > 0.0F)
             {
-                Opacity -= .08;
+                Opacity -= .1;
             }
             else
             {

@@ -1303,18 +1303,14 @@ namespace Nucleus.Coop
                 !playersInDiv.Any())
                 {
                     if (GameProfile.TotalPlayers > 0)
-                    {                       
+                    {
                         //Check if these bounds corresponds to a profile player. 
-                        if (TotalPlayers == GameProfile.TotalPlayers ||
-                            //GameProfile.ProfilePlayersList.Where(ppl => TranslateBounds(ppl, ppl.ScreenIndex).Item1 == divMonitorBounds.Value).Count() == 0 &&
-                            GameProfile.ProfilePlayersList.Where(ppl => TranslateBounds(ppl, ppl.ScreenIndex).Item1.Location == divMonitorBounds.Value.Location).Count() == 0)
+                        ProfilePlayer profilePlayer = GameProfile.ProfilePlayersList.Where(ppl => TranslateBounds(ppl, ppl.ScreenIndex).Item1.Location == divMonitorBounds.Value.Location).FirstOrDefault();
+                                 
+                        if (TotalPlayers == GameProfile.TotalPlayers || profilePlayer == null)
                         {
-                            monitorBounds = null;
-                            editorBounds = null;
                             continue;
                         }
-
-                        ProfilePlayer profilePlayer = GameProfile.ProfilePlayersList.Where(ppl => TranslateBounds(ppl, ppl.ScreenIndex).Item1.Location == divMonitorBounds.Value.Location).First();
 
                         var translatedBounds = TranslateBounds(profilePlayer, profilePlayer.ScreenIndex);
 
@@ -2491,7 +2487,6 @@ namespace Nucleus.Coop
                             g.FillRectangle(tagBrush, tagBack);
                             g.DrawRectangle(PositionScreenPen, tagBorder);
                             g.DrawString(tag, playerTextFont, Brushes.GreenYellow, tagLocation.X, tagLocation.Y);
-                           
                         }                      
                     }     
                 }
