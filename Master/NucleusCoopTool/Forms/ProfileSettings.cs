@@ -495,7 +495,7 @@ namespace Nucleus.Coop
                     steamIds[i].SelectedItem = steamIds[i].Text;
                     steamIds[i].Enabled = false;
                     
-                    controllerNicks[i].Items.Clear();
+                    controllerNicks[i].Items.Clear(); 
                     controllerNicks[i].Items.AddRange(nicksList.ToArray());
 
                     controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
@@ -667,6 +667,10 @@ namespace Nucleus.Coop
                         {
                             SteamIdsCache.Add(steamIds[i].Text.ToString());
                         }
+                    }
+                    else
+                    {
+                        player.SteamID = -1;
                     }
                 }
                 else

@@ -31,6 +31,7 @@ namespace Nucleus.Coop.Tools
         {
             main = mainForm;
             blurValue = int.Parse(Globals.ini.IniReadValue("Dev", "Blur"));
+
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
             {   
