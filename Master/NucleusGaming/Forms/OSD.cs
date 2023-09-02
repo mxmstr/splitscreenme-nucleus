@@ -14,7 +14,7 @@ namespace Nucleus.Gaming.Coop.Generic
         {
             InitializeComponent();
             TransparencyKey = Color.Black;
-            timer.Tick += new EventHandler(TimerTick);           
+            timer.Tick += new EventHandler(TimerTick);            
             Show();
 
             DPIManager.Register(this);
@@ -27,8 +27,9 @@ namespace Nucleus.Gaming.Coop.Generic
             {
                 Value.Text = text;
                 Value.ForeColor = Color.FromArgb(int.Parse(osdColor[0]), int.Parse(osdColor[1]), int.Parse(osdColor[2]));
-                timer.Interval = timing; //millisecond           
+                timer.Interval = timing; //millisecond                                       
                 Opacity = 1.0D;
+                CenterToScreen();
                 Show();
                 timer.Start();
             });

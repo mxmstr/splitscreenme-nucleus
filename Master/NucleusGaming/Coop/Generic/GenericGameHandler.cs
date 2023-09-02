@@ -331,7 +331,7 @@ namespace Nucleus.Gaming
         }
 
         public string Play()
-        {
+        { 
             if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
             {
                 MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -366,25 +366,7 @@ namespace Nucleus.Gaming
             }
 
             ProcessUtil.KillRemainingProcess(this, gen);
-
-            if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
-            {
-                User32Util.HideTaskbar();
-            }
-
-            if (gen.ProtoInput.AutoHideTaskbar || GameProfile.UseSplitDiv)
-            {
-                if (ProtoInput.protoInput.GetTaskbarAutohide())
-                {
-                    gen.ProtoInput.AutoHideTaskbar = false; ///If already hidden don't change it, and dont set it unhidden after.
-                }
-                else
-                {
-                    ProtoInput.protoInput.SetTaskbarAutohide(true);
-                    User32Util.HideTaskbar();
-                }
-            }
-
+       
             //Merge raw keyboard/mouse players into one 
             var groupWindows = profile.PlayersList.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
 
@@ -426,9 +408,9 @@ namespace Nucleus.Gaming
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo player = players[i];
-
+                
                 player.PlayerID = i;
-              
+                             
                 int pod = player.Owner.DisplayIndex;
 
                 foreach (Display dp in ScreensUtil.AllScreensParams())
@@ -582,8 +564,6 @@ namespace Nucleus.Gaming
                     player.Nickname = $"Player{i + 1}";
                 }
 
-
-                Console.WriteLine(player.Nickname);
                 ProcessData procData = player.ProcessData;
                 bool hasSetted = procData != null && procData.Setted;
 
@@ -2871,11 +2851,14 @@ namespace Nucleus.Gaming
                     {
                         for (int pi = 0; pi < players.Count; pi++)
                         {
-                            if (GameProfile.AudioCustomSettings && GameProfile.AudioInstances["AudioInstance" + (pi + 1)] != "Default")
+                            if ((pi + 1) < GameProfile.AudioInstances.Count())
                             {
-                                Log($"Attempting to switch audio endpoint for process {players[pi].ProcessData.Process.ProcessName} pid ({players[pi].ProcessID}) to DeviceID {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
-                                Thread.Sleep(1000);
-                                AudioReroute.SwitchProcessTo(GameProfile.AudioInstances["AudioInstance" + (pi + 1)], AudioReroute.ERole.ERole_enum_count, AudioReroute.EDataFlow.eRender, (uint)players[pi].ProcessID);
+                                if (GameProfile.AudioCustomSettings && GameProfile.AudioInstances["AudioInstance" + (pi + 1)] != "Default")
+                                {
+                                    Log($"Attempting to switch audio endpoint for process {players[pi].ProcessData.Process.ProcessName} pid ({players[pi].ProcessID}) to DeviceID {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
+                                    Thread.Sleep(1000);
+                                    AudioReroute.SwitchProcessTo(GameProfile.AudioInstances["AudioInstance" + (pi + 1)], AudioReroute.ERole.ERole_enum_count, AudioReroute.EDataFlow.eRender, (uint)players[pi].ProcessID);
+                                }
                             }
                         }
                     }
@@ -3152,7 +3135,24 @@ namespace Nucleus.Gaming
                 RegistryUtil.RestoreUserEnvironmentRegistryPath();
             }
 
-            Log("All done!");
+            if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
+            {
+                User32Util.HideTaskbar();
+            }
+
+            if (gen.ProtoInput.AutoHideTaskbar || GameProfile.UseSplitDiv)
+            {
+                if (ProtoInput.protoInput.GetTaskbarAutohide())
+                {
+                    gen.ProtoInput.AutoHideTaskbar = false; ///If already hidden don't change it, and dont set it unhidden after.
+                }
+                else
+                {
+                    ProtoInput.protoInput.SetTaskbarAutohide(true);
+                    User32Util.HideTaskbar();
+                }
+            }
+          
             try
             {
                 if (statusWinThread != null && statusWinThread.IsAlive)
@@ -3171,6 +3171,8 @@ namespace Nucleus.Gaming
             GameProfile.SaveGameProfile(profile);
 
             gen.OnFinishedSetup?.Invoke();
+
+            Log("All done!");
 
             return string.Empty;
         }
@@ -3574,11 +3576,6 @@ namespace Nucleus.Gaming
 
                 Thread.Sleep(3000);
 
-                //if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
-                //{
-                //    User32Util.HideTaskbar();
-                //}
-
                 if (i == (players.Count - 1))
                 {
                     Log("End process changes - All done!");
@@ -3622,7 +3619,25 @@ namespace Nucleus.Gaming
             ControllersUINav.EnabledRuntime = false;
 
             GameProfile.SaveGameProfile(profile);
-            
+
+            if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
+            {
+                User32Util.HideTaskbar();
+            }
+
+            if (gen.ProtoInput.AutoHideTaskbar || GameProfile.UseSplitDiv)
+            {
+                if (ProtoInput.protoInput.GetTaskbarAutohide())
+                {
+                    gen.ProtoInput.AutoHideTaskbar = false; ///If already hidden don't change it, and dont set it unhidden after.
+                }
+                else
+                {
+                    ProtoInput.protoInput.SetTaskbarAutohide(true);
+                    User32Util.HideTaskbar();
+                }
+            }
+           
             gen.OnFinishedSetup?.Invoke();
         }
 

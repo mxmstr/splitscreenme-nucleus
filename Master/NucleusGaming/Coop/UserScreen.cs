@@ -19,7 +19,6 @@ namespace Nucleus.Gaming.Coop
             set => playerOnScreen = value;
         }
 
-
         public Rectangle SwapTypeBounds
         {
             get => swapTypeRect;

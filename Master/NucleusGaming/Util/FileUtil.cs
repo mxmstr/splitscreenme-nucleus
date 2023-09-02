@@ -266,12 +266,6 @@ namespace Nucleus.Gaming
 
         public static void FileCheck(GenericGameHandler genericGameHandler, GenericGameInfo gen, string file)
         {
-            //if (genericGameHandler.playerDied != -1)
-            //{
-
-            //    return;
-            //}
-
             if (File.Exists(file))
             {
                 if (!gen.SymlinkGame && !gen.HardlinkGame && !gen.HardcopyGame)
@@ -291,8 +285,6 @@ namespace Nucleus.Gaming
                 }
                 else
                 {
-
-
                     genericGameHandler.Log($"Deleting {Path.GetFileName(file)}");
                     File.Delete(file);
                 }

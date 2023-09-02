@@ -31,6 +31,8 @@ namespace Nucleus.Gaming.Coop
         private static int totalPlayers = 0;
         public static int TotalPlayers => totalPlayers;
 
+        public static bool Loaded => totalPlayers > 0;
+
         private static int profilesCount = 0;//Used to check if we need to create a new profile 
         public static int ProfilesCount => profilesCount;
 

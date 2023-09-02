@@ -1560,7 +1560,7 @@ namespace Nucleus.Coop
                      
             if (!currentGame.ToggleUnfocusOnInputsLock)///Not sure if necessary
             {
-                WindowState = FormWindowState.Minimized;
+                 WindowState = FormWindowState.Minimized;
             }
 
             RefreshUI(true);

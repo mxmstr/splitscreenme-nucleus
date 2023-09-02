@@ -633,8 +633,9 @@ namespace Nucleus.Coop
             bool sidWrongValue = false;
             bool IdealProcessorsWrongValue = false;
             bool affinitysWrongValue = false;
+            bool hasEmptyNickname = false;
 
-            if(GameProfile.ProfilePlayersList.Count == 0)
+            if (GameProfile.ProfilePlayersList.Count == 0)
             {
                 ///Create profile players for new game profile
                 for(int i = 0; i < 32; i++)
@@ -648,12 +649,19 @@ namespace Nucleus.Coop
             {
                 ProfilePlayer player = GameProfile.ProfilePlayersList[i];
 
-                ///Set GameProfile Nicknames
-                player.Nickname = controllerNicks[i].Text;
-
-                if (!NicknamesCache.Get.Any(n => n != controllerNicks[i].Text))
+                if (controllerNicks[i].Text != "")
                 {
-                    NicknamesCache.Add(controllerNicks[i].Text);
+                    ///Set GameProfile Nicknames
+                    player.Nickname = controllerNicks[i].Text;
+
+                    if (!NicknamesCache.Get.Any(n => n != controllerNicks[i].Text))
+                    {
+                        NicknamesCache.Add(controllerNicks[i].Text);
+                    }
+                }
+                else
+                {
+                    hasEmptyNickname = true;
                 }
 
                 ///Set GameProfile Steam ids
@@ -733,6 +741,14 @@ namespace Nucleus.Coop
                 }
 
                 player.PriorityClass = PriorityClasses[i].Text;             
+            }
+
+            ///Warn user for empty nickame fields
+            if (hasEmptyNickname)
+            {
+                playersTab.BringToFront();
+                MessageBox.Show("Nickname fields can't be empty!");
+                return;
             }
 
             ///Warn user for invalid Steam ids

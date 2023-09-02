@@ -650,23 +650,32 @@ namespace Nucleus.Coop
             }
 
             bool sidWrongValue = false;
+            bool hasEmptyNickname = false;
+
             for (int i = 0; i < 32; i++)
             {
-                ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
-
-                if (!NicknamesCache.Get.Any(n => n == controllerNicks[i].Text))
+                if (controllerNicks[i].Text != "")
                 {
-                    NicknamesCache.Add(controllerNicks[i].Text);               
-                }
+                    ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
 
-                for (int n = 0; n < 32; n++)
-                {
-                    if(controllerNicks[n].Items.Contains(controllerNicks[i].Text))
+                    if (!NicknamesCache.Get.Any(n => n == controllerNicks[i].Text))
                     {
-                        continue;
+                        NicknamesCache.Add(controllerNicks[i].Text);
                     }
 
-                    controllerNicks[n].Items.Add(controllerNicks[i].Text);
+                    for (int n = 0; n < 32; n++)
+                    {
+                        if (controllerNicks[n].Items.Contains(controllerNicks[i].Text))
+                        {
+                            continue;
+                        }
+
+                        controllerNicks[n].Items.Add(controllerNicks[i].Text);
+                    }
+                }
+                else 
+                {
+                    hasEmptyNickname = true;
                 }
 
                 if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0)
@@ -686,6 +695,13 @@ namespace Nucleus.Coop
                     steamIds[i].BackColor = Color.Red;
                     sidWrongValue = true;
                 }
+            }
+
+            if (hasEmptyNickname)
+            {
+                playersTab.BringToFront();
+                MessageBox.Show("Nickname fields can't be empty!");
+                return;
             }
 
             if (sidWrongValue)

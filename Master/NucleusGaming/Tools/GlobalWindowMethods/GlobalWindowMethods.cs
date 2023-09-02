@@ -1086,12 +1086,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
         }
 
-        public static void RevivePlayer(GenericGameHandler genericGameHandler, GenericGameInfo gen, GameProfile profile, PlayerInfo p)
-        {
-            genericGameHandler.Play();
-            Console.WriteLine(p.PlayerID);
-        }
-
         public static void UpdateAndRefreshGameWindows(GenericGameHandler genericGameHandler, GenericGameInfo gen, GameProfile profile, double delayMS, bool refresh)
         {
             if (profile == null)
