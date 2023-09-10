@@ -1,14 +1,16 @@
 ﻿using Nucleus.Gaming.Coop.BasicTypes;
 using Nucleus.Gaming.Coop.InputManagement.Enums;
 using Nucleus.Gaming.Coop.InputManagement.Structs;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows;
 
 namespace Nucleus.Gaming.Coop.InputManagement
 {
@@ -16,7 +18,60 @@ namespace Nucleus.Gaming.Coop.InputManagement
     {
         private static RawInputProcessor rawInputProcessor = null;
 
-        public static int ToggleLockInputKey { get; set; } = 0x23;//End
+        private static int LockInputKey;
+        public static int ToggleLockInputKey
+        {
+            get
+            {
+                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+                string lockKey = ini.IniReadValue("Hotkeys", "LockKey");
+
+                IDictionary<string, int> lockKeys = new Dictionary<string, int>
+                {
+                    { "End", 0x23 },
+                    { "Home", 0x24 },
+                    { "Delete", 0x2E },
+                    { "Multiply", 0x6A },
+                    { "F1", 0x70 },
+                    { "F2", 0x71 },
+                    { "F3", 0x72 },
+                    { "F4", 0x73 },
+                    { "F5", 0x74 },
+                    { "F6", 0x75 },
+                    { "F7", 0x76 },
+                    { "F8", 0x77 },
+                    { "F9", 0x78 },
+                    { "F10", 0x79 },
+                    { "F11", 0x7A },
+                    { "F12", 0x7B },
+                    { "+", 0xBB },
+                    { "-", 0xBD },
+                    { "Numpad 0", 0x60 },
+                    { "Numpad 1", 0x61 },
+                    { "Numpad 2", 0x62 },
+                    { "Numpad 3", 0x63 },
+                    { "Numpad 4", 0x64 },
+                    { "Numpad 5", 0x65 },
+                    { "Numpad 6", 0x66 },
+                    { "Numpad 7", 0x67 },
+                    { "Numpad 8", 0x68 },
+                    { "Numpad 9", 0x69 }
+                };
+
+                foreach (KeyValuePair<string, int> key in lockKeys)
+                {
+                    if (key.Key != lockKey)
+                    {
+                        continue;
+                    }
+
+                    LockInputKey = key.Value;
+                    break;
+                }
+
+                return LockInputKey;
+            }
+        }
 
         private readonly Func<bool> splitScreenRunning;
 
@@ -24,7 +79,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public static GenericGameInfo CurrentGameInfo { get; set; } = null;
         public static GameProfile CurrentProfile { get; set; } = null;
-        private List<PlayerInfo> PlayerInfos => CurrentProfile?.PlayerData;
+        private List<PlayerInfo> PlayerInfos => CurrentProfile?.PlayersList;
 
         //leftMiddleRight: left=1, middle=2, right=3, xbutton1=4, xbutton2=5
         private readonly Dictionary<RawInputButtonFlags, (MouseEvents msg, uint wParam, ushort leftMiddleRight, bool isButtonDown, int VKey)> _buttonFlagToMouseEvents = new Dictionary<RawInputButtonFlags, (MouseEvents, uint, ushort, bool, int)>()
@@ -400,15 +455,14 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 if (!splitScreenRunning() && PlayerInfos != null)
                 {
-                    foreach (PlayerInfo toFlash in PlayerInfos.Where(x => x != null && ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
+                    foreach (PlayerInfo toFlash in CurrentProfile?.PlayersList.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
                     {
                         toFlash.FlashIcon();
                     }
                 }
             }
-            catch (Exception)// ex)
+            catch (Exception)
             {
-                Console.WriteLine("Iteration failed");
                 return;
             }
 
@@ -419,14 +473,26 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                 if (keyboardMessage == (uint)KeyboardEvents.WM_KEYUP && (rawBuffer.data.keyboard.Flags | 1) != 0 && rawBuffer.data.keyboard.VKey == ToggleLockInputKey)
                 {
-                    Debug.WriteLine("Lock input key pressed");
                     if (!LockInput.IsLocked)
                     {
+                        if (CurrentGameInfo == null || GenericGameHandler.Instance.hasEnded)
+                        {
+                            return;
+                        }
+
+                        Globals.MainOSD.Show(1000, "Inputs Locked");
+
                         LockInput.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
+
+                        if (CurrentGameInfo.ToggleUnfocusOnInputsLock)
+                        {
+                            GlobalWindowMethods.ChangeForegroundWindow();
+                        }   
                     }
                     else
                     {
                         LockInput.Unlock(CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
+                        Globals.MainOSD.Show(1000, "Inputs Unlocked");
                     }
                 }
 

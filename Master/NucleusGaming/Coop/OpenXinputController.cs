@@ -5,10 +5,11 @@ using SharpDX;
 using SharpDX.Mathematics.Interop;
 using SharpDX.Win32;
 using SharpDX.XInput;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Nucleus.Gaming.Coop
-{
+{  
     public class OpenXinputController
     {
         public static class NativeOpenXinput

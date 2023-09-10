@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Management.Instrumentation;
 using System.Reflection;
 
 namespace Nucleus.Gaming.Tools.GameStarter
@@ -144,11 +147,13 @@ namespace Nucleus.Gaming.Tools.GameStarter
                 return uint.Parse(lastLine.Split(':')[1]);
             }
         }
+
         public static void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (string.IsNullOrEmpty(e.Data))
             {
                 return;
+
             }
             Console.WriteLine($"Redirected output: {e.Data}");
             lastLine = e.Data;
@@ -157,12 +162,12 @@ namespace Nucleus.Gaming.Tools.GameStarter
         public static bool SymlinkGame(string root, string destination, out int exitCode,
             string[] dirExclusions, string[] fileExclusions, string[] fileCopyInstead, bool hardLink, bool symFolders, int numPlayers)
         {
-
             exitCode = 1;
 
             lock (locker)
             {
                 string startGamePath = GetStartGamePath();
+           
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = startGamePath
@@ -211,5 +216,16 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
             return true;
         }
+
+        public static void UnlockGameFiles(string origGamefolder)
+        {
+            string[] subDirectories = Directory.GetFileSystemEntries(origGamefolder, "*", SearchOption.AllDirectories);
+
+            foreach (string dir in subDirectories)
+            {
+                File.SetAttributes(dir, FileAttributes.Normal);
+            }
+        }
+
     }
 }

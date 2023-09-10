@@ -75,7 +75,7 @@ namespace Nucleus.Coop
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.closeBtn);
@@ -112,14 +112,13 @@ namespace Nucleus.Coop
             // 
             // closeBtn
             // 
-            this.closeBtn.BackColor = System.Drawing.Color.Black;
+            this.closeBtn.BackColor = System.Drawing.Color.Transparent;
             this.closeBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("closeBtn.BackgroundImage")));
             this.closeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.closeBtn.FlatAppearance.BorderSize = 0;
             this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeBtn.Location = new System.Drawing.Point(456, 3);
+            this.closeBtn.Location = new System.Drawing.Point(453, 3);
             this.closeBtn.Name = "closeBtn";
             this.closeBtn.Size = new System.Drawing.Size(20, 20);
             this.closeBtn.TabIndex = 16;
@@ -132,8 +131,9 @@ namespace Nucleus.Coop
             // 
             this.checkBoxSizer2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxSizer2.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxSizer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.checkBoxSizer2.Controls.Add(this.checkboxFoundGames);
-            this.checkBoxSizer2.Location = new System.Drawing.Point(250, 34);
+            this.checkBoxSizer2.Location = new System.Drawing.Point(248, 34);
             this.checkBoxSizer2.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxSizer2.Name = "checkBoxSizer2";
             this.checkBoxSizer2.Size = new System.Drawing.Size(220, 234);
@@ -141,16 +141,15 @@ namespace Nucleus.Coop
             // 
             // checkboxFoundGames
             // 
-            this.checkboxFoundGames.BackColor = System.Drawing.Color.White;
+            this.checkboxFoundGames.BackColor = System.Drawing.Color.Black;
             this.checkboxFoundGames.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.checkboxFoundGames.CheckOnClick = true;
-            this.checkboxFoundGames.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkboxFoundGames.Enabled = false;
+            this.checkboxFoundGames.ForeColor = System.Drawing.Color.White;
             this.checkboxFoundGames.FormattingEnabled = true;
             this.checkboxFoundGames.HorizontalScrollbar = true;
             this.checkboxFoundGames.IntegralHeight = false;
             this.checkboxFoundGames.Location = new System.Drawing.Point(0, 0);
-            this.checkboxFoundGames.Margin = new System.Windows.Forms.Padding(0);
             this.checkboxFoundGames.Name = "checkboxFoundGames";
             this.checkboxFoundGames.Size = new System.Drawing.Size(221, 236);
             this.checkboxFoundGames.TabIndex = 10;
@@ -158,24 +157,23 @@ namespace Nucleus.Coop
             // checkBoxSizer1
             // 
             this.checkBoxSizer1.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxSizer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.checkBoxSizer1.Controls.Add(this.disksBox);
             this.checkBoxSizer1.Location = new System.Drawing.Point(9, 33);
-            this.checkBoxSizer1.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxSizer1.Name = "checkBoxSizer1";
             this.checkBoxSizer1.Size = new System.Drawing.Size(220, 234);
             this.checkBoxSizer1.TabIndex = 17;
             // 
             // disksBox
             // 
-            this.disksBox.BackColor = System.Drawing.Color.White;
+            this.disksBox.BackColor = System.Drawing.Color.Black;
             this.disksBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.disksBox.CheckOnClick = true;
-            this.disksBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.disksBox.ForeColor = System.Drawing.Color.White;
             this.disksBox.FormattingEnabled = true;
             this.disksBox.HorizontalScrollbar = true;
             this.disksBox.IntegralHeight = false;
-            this.disksBox.Location = new System.Drawing.Point(0, 1);
-            this.disksBox.Margin = new System.Windows.Forms.Padding(0);
+            this.disksBox.Location = new System.Drawing.Point(0, 0);
             this.disksBox.Name = "disksBox";
             this.disksBox.Size = new System.Drawing.Size(220, 236);
             this.disksBox.TabIndex = 0;
@@ -187,20 +185,23 @@ namespace Nucleus.Coop
             this.txt_Path.BackColor = System.Drawing.Color.Black;
             this.txt_Path.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txt_Path.Enabled = false;
-            this.txt_Path.Location = new System.Drawing.Point(9, 370);
+            this.txt_Path.Font = new System.Drawing.Font("Franklin Gothic Medium", 6.25F);
+            this.txt_Path.Location = new System.Drawing.Point(9, 368);
             this.txt_Path.Name = "txt_Path";
-            this.txt_Path.Size = new System.Drawing.Size(462, 20);
+            this.txt_Path.Size = new System.Drawing.Size(460, 17);
             this.txt_Path.TabIndex = 16;
+            this.txt_Path.Visible = false;
             // 
             // progressBar1
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar1.BackColor = System.Drawing.Color.White;
             this.progressBar1.ForeColor = System.Drawing.Color.Black;
-            this.progressBar1.Location = new System.Drawing.Point(120, 343);
+            this.progressBar1.Location = new System.Drawing.Point(118, 341);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(350, 21);
             this.progressBar1.TabIndex = 6;
+            this.progressBar1.Visible = false;
             // 
             // txt_Stage
             // 
@@ -210,23 +211,23 @@ namespace Nucleus.Coop
             this.txt_Stage.Enabled = false;
             this.txt_Stage.Font = new System.Drawing.Font("Franklin Gothic Medium", 12.5F);
             this.txt_Stage.ForeColor = System.Drawing.Color.Black;
-            this.txt_Stage.Location = new System.Drawing.Point(9, 344);
+            this.txt_Stage.Location = new System.Drawing.Point(9, 342);
             this.txt_Stage.Margin = new System.Windows.Forms.Padding(0);
             this.txt_Stage.Name = "txt_Stage";
             this.txt_Stage.Size = new System.Drawing.Size(105, 19);
             this.txt_Stage.TabIndex = 15;
             this.txt_Stage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txt_Stage.Visible = false;
             // 
             // btn_deselectAll
             // 
             this.btn_deselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_deselectAll.BackColor = System.Drawing.Color.Transparent;
             this.btn_deselectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_deselectAll.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_deselectAll.Enabled = false;
             this.btn_deselectAll.FlatAppearance.BorderSize = 0;
             this.btn_deselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_deselectAll.Location = new System.Drawing.Point(250, 306);
+            this.btn_deselectAll.Location = new System.Drawing.Point(248, 304);
             this.btn_deselectAll.Name = "btn_deselectAll";
             this.btn_deselectAll.Size = new System.Drawing.Size(220, 30);
             this.btn_deselectAll.TabIndex = 14;
@@ -239,11 +240,10 @@ namespace Nucleus.Coop
             this.btn_selectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_selectAll.BackColor = System.Drawing.Color.Transparent;
             this.btn_selectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_selectAll.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_selectAll.Enabled = false;
             this.btn_selectAll.FlatAppearance.BorderSize = 0;
             this.btn_selectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_selectAll.Location = new System.Drawing.Point(362, 271);
+            this.btn_selectAll.Location = new System.Drawing.Point(360, 269);
             this.btn_selectAll.Name = "btn_selectAll";
             this.btn_selectAll.Size = new System.Drawing.Size(108, 30);
             this.btn_selectAll.TabIndex = 13;
@@ -256,10 +256,9 @@ namespace Nucleus.Coop
             this.btn_delPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_delPath.BackColor = System.Drawing.Color.Transparent;
             this.btn_delPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_delPath.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_delPath.FlatAppearance.BorderSize = 0;
             this.btn_delPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_delPath.Location = new System.Drawing.Point(9, 306);
+            this.btn_delPath.Location = new System.Drawing.Point(9, 304);
             this.btn_delPath.Name = "btn_delPath";
             this.btn_delPath.Size = new System.Drawing.Size(220, 30);
             this.btn_delPath.TabIndex = 12;
@@ -272,11 +271,10 @@ namespace Nucleus.Coop
             this.btn_addSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_addSelection.BackColor = System.Drawing.Color.Transparent;
             this.btn_addSelection.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_addSelection.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_addSelection.Enabled = false;
             this.btn_addSelection.FlatAppearance.BorderSize = 0;
             this.btn_addSelection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_addSelection.Location = new System.Drawing.Point(250, 271);
+            this.btn_addSelection.Location = new System.Drawing.Point(248, 269);
             this.btn_addSelection.Name = "btn_addSelection";
             this.btn_addSelection.Size = new System.Drawing.Size(108, 30);
             this.btn_addSelection.TabIndex = 11;
@@ -289,10 +287,9 @@ namespace Nucleus.Coop
             this.btn_customPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_customPath.BackColor = System.Drawing.Color.Transparent;
             this.btn_customPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_customPath.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_customPath.FlatAppearance.BorderSize = 0;
             this.btn_customPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_customPath.Location = new System.Drawing.Point(9, 271);
+            this.btn_customPath.Location = new System.Drawing.Point(9, 269);
             this.btn_customPath.Name = "btn_customPath";
             this.btn_customPath.Size = new System.Drawing.Size(108, 30);
             this.btn_customPath.TabIndex = 9;
@@ -305,10 +302,9 @@ namespace Nucleus.Coop
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSearch.BackColor = System.Drawing.Color.Transparent;
             this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Location = new System.Drawing.Point(121, 271);
+            this.btnSearch.Location = new System.Drawing.Point(121, 269);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(108, 30);
             this.btnSearch.TabIndex = 8;
@@ -322,8 +318,7 @@ namespace Nucleus.Coop
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.DimGray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(479, 399);
-            this.ControlBox = false;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.checkBoxSizer2);
             this.Controls.Add(this.checkBoxSizer1);
@@ -338,16 +333,8 @@ namespace Nucleus.Coop
             this.Controls.Add(this.btnSearch);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "SearchDisksForm";
-            this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Search for Games";
-            this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SearchDisksForm_FormClosing);
+            this.Size = new System.Drawing.Size(477, 397);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.checkBoxSizer2.ResumeLayout(false);

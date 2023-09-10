@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.Cache;
+using System;
 using System.Threading;
 using System.Windows.Forms;
 //using System.IO;
@@ -9,10 +10,27 @@ namespace Nucleus.Gaming.Forms
     {
         private bool hasOpenFileDialog = false;
         private string exeName;
-
+        public bool onpaint = false;
         public Prompt(string message)
         {
+            onpaint = false;
             InitializeComponent();
+            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
+            lbl_Msg.Text = message;
+
+            hasOpenFileDialog = false;
+
+            TopMost = true;
+            TopMost = false;
+            TopMost = true;
+
+            WindowScrape.Static.HwndInterface.MakeTopMost(Handle);
+        }
+
+        public Prompt(string message, bool onpaint)
+        {
+            InitializeComponent();
+            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
             lbl_Msg.Text = message;
 
             hasOpenFileDialog = false;
@@ -26,7 +44,9 @@ namespace Nucleus.Gaming.Forms
 
         public Prompt(string message, bool isOFD, string launcherFileName)
         {
+            onpaint = false;
             InitializeComponent();
+            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
             lbl_Msg.Text = message;
 
             hasOpenFileDialog = isOFD;
@@ -64,6 +84,7 @@ namespace Nucleus.Gaming.Forms
 
             btn_Ok.PerformClick();
         }
+
         private void btn_Ok_Click(object sender, EventArgs e)
         {
 

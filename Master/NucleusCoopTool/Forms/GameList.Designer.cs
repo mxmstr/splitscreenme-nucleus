@@ -41,6 +41,7 @@ namespace Nucleus.Coop.Forms
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listGames.AutoScroll = true;
+            this.listGames.BackColor = System.Drawing.Color.Transparent;
             this.listGames.Border = 1;
             this.listGames.Location = new System.Drawing.Point(12, 12);
             this.listGames.Name = "listGames";
@@ -52,14 +53,16 @@ namespace Nucleus.Coop.Forms
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOk.BackColor = System.Drawing.Color.Transparent;
             this.btnOk.Enabled = false;
             this.btnOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOk.ForeColor = System.Drawing.Color.White;
             this.btnOk.Location = new System.Drawing.Point(12, 610);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(400, 49);
             this.btnOk.TabIndex = 1;
             this.btnOk.Text = "O K";
-            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.UseVisualStyleBackColor = false;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // GameList

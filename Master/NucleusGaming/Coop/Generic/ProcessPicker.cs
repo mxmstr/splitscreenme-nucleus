@@ -1,26 +1,33 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Coop.Generic
-{ 
+{
     public partial class ProcessPicker : Form, IDynamicSized
     {
-
-        private float oldScale;
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+          int nLeftRect,     // x-coordinate of upper-left corner
+          int nTopRect,      // y-coordinate of upper-left corner
+          int nRightRect,    // x-coordinate of lower-right corner
+          int nBottomRect,   // y-coordinate of lower-right corner
+          int nWidthEllipse, // width of ellipse
+          int nHeightEllipse // height of ellipse
+        );
 
         public ProcessPicker()
         {
             InitializeComponent();
             MaximizeBox = false;
             MinimizeBox = false;
+
             DPIManager.Register(this);
             DPIManager.AddForm(this);
             DPIManager.Update(this);
         }
-
-        private bool scaled = false;
 
         public void UpdateSize(float scale)
         {
@@ -29,31 +36,12 @@ namespace Nucleus.Gaming.Coop.Generic
                 DPIManager.Unregister(this);
                 return;
             }
-            if (!scaled)
-            {
-                oldScale = scale;
-                scaled = true;
-            }
+
+            float ratio = ((float)Height / (float)Width);
+            Height = (int)((float)Height / (float)ratio);
+            pplistBox.Font = new Font("Franklin Gothic", pplistBox.Font.Size * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
         }
-
-        public void ScaleList()
-        {
-            float newFontSize = Font.Size * oldScale;
-            foreach (Control c in Controls)
-            {
-                if (c.GetType() == typeof(Panel))
-                {
-                    foreach (Control list in c.Controls)
-                    {
-                        list.Font = new Font("Microsoft Sans Serif", newFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-                        list.SuspendLayout();
-                        list.ResumeLayout();
-                    }
-                }
-            }
-        }
-
-
     }
 
 }

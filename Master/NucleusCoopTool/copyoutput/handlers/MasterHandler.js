@@ -91,5 +91,27 @@ Game.Play = function () {
    var savePath = Context.SavePath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\steam_api.dll"; 
    var savePkgOrigin = System.IO.Path.Combine(Game.Folder, "steam_api.dll"); 
    System.IO.File.Copy(savePkgOrigin, savePath, true);
- 
+
+   //Functions to hex edit/patch the bytes in a file, make sure you add the file to Game.FileSymlinkExclusions first.
+
+   Context.PatchFile(System.IO.Path.Combine(Context.RootInstallFolder, "game.exe"),
+   System.IO.Path.Combine(Context.RootFolder, "game.exe"), 
+   [0x76, 0x1D, 0xC7, 0x05],//bytes to search for, make sure the pattern is unique.
+   [0xEB, 0x1D, 0xC7, 0x05]);//bytes to change.
+
+   Context.PatchFileFindAll(System.IO.Path.Combine(Context.RootInstallFolder, "Folder\\File.dll"),
+   System.IO.Path.Combine(Context.RootFolder, "Folder\\File.dll"),
+   [0x39, 0x8E, 0xE3, 0x3F],
+   Context.ConvertToBytes(Context.AspectRatioDecimal));
+   //searches for all matching patterns of bytes and patches them based on the aspect ratio of the instance.
+
+   Context.PatchFileFindPattern(System.IO.Path.Combine(Context.RootInstallFolder, 'game.exe'), 
+   System.IO.Path.Combine(Context.RootFolder, 'game.exe'), "0E 1F BA 0E 00 B4 09 CD 21",Context.Height,3,true);
+                                                                //^^--------------[offset]-------------^
+                                                          
+   Context.PatchFileFindPattern(System.IO.Path.Combine(Context.RootInstallFolder, 'game.exe'), 
+   System.IO.Path.Combine(Context.RootFolder, 'game.exe'), "69 73 20 70 72 6F 67 72 61","00 00 00 00 00 00 00 00 00",true)
+
+   //New function in Nucleus 2.1.2, searches for the pattern of bytes and patches it with the one you want or based on the context Height or Width of the instance. The number offset value is the offset in your hex string, from where to start patching the search pattern (left) with the patch pattern (right).
+   //If the boolean is true all found patterns will be patched, if false only the first found will be patched.
 }; 

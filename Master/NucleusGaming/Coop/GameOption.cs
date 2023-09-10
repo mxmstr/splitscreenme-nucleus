@@ -39,6 +39,7 @@ namespace Nucleus.Gaming.Coop
         public string Key => key;
 
         public IList List => list;
+
         public bool Hidden { get; set; }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace Nucleus.Gaming.Coop
             if (value is IList)
             {
                 list = (IList)value;
-                this.value = 0;
+                this.value = "";
             }
         }
 
@@ -72,7 +73,7 @@ namespace Nucleus.Gaming.Coop
             if (value is IList)
             {
                 list = (IList)value;
-                this.value = 0;
+                this.value = "";
             }
         }
 

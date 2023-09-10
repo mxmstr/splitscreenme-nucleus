@@ -36,7 +36,7 @@ namespace Nucleus.Coop.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HandlerInfo));
-            this.linkLabel_MoreInfo = new System.Windows.Forms.LinkLabel();
+            this.linkLabel_MoreInfo = new System.Windows.Forms.Label();
             this.txt_Updated = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.txt_Created = new System.Windows.Forms.TextBox();
@@ -64,11 +64,10 @@ namespace Nucleus.Coop.Forms
             // 
             // linkLabel_MoreInfo
             // 
-            this.linkLabel_MoreInfo.ActiveLinkColor = System.Drawing.Color.LawnGreen;
             this.linkLabel_MoreInfo.AutoSize = true;
-            this.linkLabel_MoreInfo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkLabel_MoreInfo.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel_MoreInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel_MoreInfo.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.linkLabel_MoreInfo.ForeColor = System.Drawing.Color.Aqua;
             this.linkLabel_MoreInfo.Location = new System.Drawing.Point(504, 25);
             this.linkLabel_MoreInfo.Name = "linkLabel_MoreInfo";
             this.linkLabel_MoreInfo.Size = new System.Drawing.Size(58, 13);
@@ -76,7 +75,7 @@ namespace Nucleus.Coop.Forms
             this.linkLabel_MoreInfo.TabStop = true;
             this.linkLabel_MoreInfo.Text = "More Info";
             this.linkLabel_MoreInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkLabel_MoreInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_MoreInfo_LinkClicked);
+            this.linkLabel_MoreInfo.Click += new System.EventHandler(this.Label_MoreInfo_LinkClicked);
             // 
             // txt_Updated
             // 
@@ -127,7 +126,7 @@ namespace Nucleus.Coop.Forms
             // 
             this.txt_GameDesc.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.txt_GameDesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt_GameDesc.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txt_GameDesc.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_GameDesc.ForeColor = System.Drawing.SystemColors.Window;
             this.txt_GameDesc.Location = new System.Drawing.Point(127, 62);
             this.txt_GameDesc.Name = "txt_GameDesc";
@@ -140,7 +139,7 @@ namespace Nucleus.Coop.Forms
             // 
             this.txt_AuthDesc.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.txt_AuthDesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt_AuthDesc.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txt_AuthDesc.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_AuthDesc.ForeColor = System.Drawing.SystemColors.Window;
             this.txt_AuthDesc.Location = new System.Drawing.Point(19, 243);
             this.txt_AuthDesc.Name = "txt_AuthDesc";
@@ -154,12 +153,12 @@ namespace Nucleus.Coop.Forms
             // 
             this.txt_Comm.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.txt_Comm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt_Comm.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txt_Comm.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txt_Comm.ForeColor = System.Drawing.SystemColors.Window;
-            this.txt_Comm.Location = new System.Drawing.Point(19, 371);
+            this.txt_Comm.Location = new System.Drawing.Point(19, 372);
             this.txt_Comm.Name = "txt_Comm";
             this.txt_Comm.ReadOnly = true;
-            this.txt_Comm.Size = new System.Drawing.Size(533, 145);
+            this.txt_Comm.Size = new System.Drawing.Size(533, 113);
             this.txt_Comm.TabIndex = 44;
             this.txt_Comm.Text = "";
             this.txt_Comm.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.txt_Comm_LinkClicked);
@@ -228,7 +227,6 @@ namespace Nucleus.Coop.Forms
             // 
             this.btn_Close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Close.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Close.BackgroundImage = global::Nucleus.Coop.Properties.Resources.close_button_alpha;
             this.btn_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Close.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Close.FlatAppearance.BorderSize = 0;
@@ -250,23 +248,22 @@ namespace Nucleus.Coop.Forms
             this.btn_Download.BackColor = System.Drawing.Color.Transparent;
             this.btn_Download.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_Download.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Download.FlatAppearance.BorderSize = 0;
+            this.btn_Download.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_Download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Download.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Download.Location = new System.Drawing.Point(19, 989);
+            this.btn_Download.Location = new System.Drawing.Point(20, 495);
             this.btn_Download.Name = "btn_Download";
-            this.btn_Download.Size = new System.Drawing.Size(120, 35);
+            this.btn_Download.Size = new System.Drawing.Size(120, 24);
             this.btn_Download.TabIndex = 37;
-            this.btn_Download.Text = "Download";
+            this.btn_Download.Text = "Download Handler";
             this.btn_Download.UseVisualStyleBackColor = false;
-            this.btn_Download.Visible = false;
             this.btn_Download.Click += new System.EventHandler(this.btn_Download_Click);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(15, 348);
+            this.label8.Location = new System.Drawing.Point(19, 351);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(86, 18);
             this.label8.TabIndex = 34;
@@ -417,6 +414,6 @@ namespace Nucleus.Coop.Forms
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txt_Updated;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.LinkLabel linkLabel_MoreInfo;
+        private System.Windows.Forms.Label linkLabel_MoreInfo;
     }
 }

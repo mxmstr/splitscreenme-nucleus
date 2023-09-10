@@ -3,14 +3,17 @@ using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.ProtoInput;
+using Nucleus.Gaming.Forms;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
+using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
+using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
@@ -19,19 +22,22 @@ namespace Nucleus.Gaming
         private Engine engine;
         private string js;
 
-        private Hub Hub = new Hub();
+        public Hub Hub = new Hub();
 
         public GameHookInfo Hook = new GameHookInfo();
         public List<GameOption> Options = new List<GameOption>();
 
         public SaveType SaveType;
         public string SavePath;
-
+        public bool UpdateAvailable;
         public string[] DirSymlinkExclusions;
         public string[] FileSymlinkExclusions;
         public string[] FileSymlinkCopyInstead;
         public string[] DirSymlinkCopyInstead;
         public string[] DirExclusions;
+        public string[] BackupFiles;
+        public string[] BackupFolders;
+
         public bool KeepSymLinkOnExit;
 
         public double HandlerInterval;
@@ -63,7 +69,7 @@ namespace Nucleus.Gaming
         public bool SendFakeFocusMsg;
         public bool SplitDivCompatibility = true;
         public bool SetTopMostAtEnd;
-
+        public bool Favorite;
 
         public void AddOption(string name, string desc, string key, object value, object defaultValue)
         {
@@ -73,6 +79,15 @@ namespace Nucleus.Gaming
         public void AddOption(string name, string desc, string key, object value)
         {
             Options.Add(new GameOption(name, desc, key, value));
+        }
+
+        public string ScreenshotsUri => Hub.GetScreenshotsUri();
+
+        public string HandlerId => Hub.Handler.Id;
+
+        public bool IsUpdateAvailable(bool fetch)
+        {
+            return Hub.IsUpdateAvailable(fetch);
         }
 
         /// <summary>
@@ -120,6 +135,7 @@ namespace Nucleus.Gaming
         public bool ResetWindows;
         public bool PartialMutexSearch;
         public bool UseGoldberg;
+        public bool GoldbergNoWarning = false;
         public string OrigSteamDllPath;
         public bool GoldbergNeedSteamInterface;
         public bool XboxOneControllerFix;
@@ -209,6 +225,7 @@ namespace Nucleus.Gaming
         public bool UserProfileSavePathNoCopy;
         public bool LauncherExeIgnoreFileCheck;
         public bool ForceBindIPDelay;
+        public bool ForceBindIPNoDummy = false;
         public string[] CustomUserGeneralPrompts;
         public bool SaveCustomUserGeneralValues;
         public string[] CustomUserPlayerPrompts;
@@ -266,8 +283,6 @@ namespace Nucleus.Gaming
         public string ForceGameArch;
         public string[] SSEAdditionalLines;
         public string[] DeleteOnClose;
-      
-
         // -- From USS
         //Effectively a switch for all of USS features
         public bool SupportsMultipleKeyboardsAndMice;
@@ -288,7 +303,6 @@ namespace Nucleus.Gaming
         public bool HookReRegisterRawInputKeyboard = true;
         public bool InjectHookXinput = false;
         public bool InjectDinputToXinputTranslation = false;
-
         //Not hooks
         public bool SendNormalMouseInput = true;
         public bool SendNormalKeyboardInput = true;
@@ -302,11 +316,15 @@ namespace Nucleus.Gaming
         public bool PreventGameFocus = false;
         public int LockInputToggleKey = 0x23;//End by default. Keys: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
         public bool ForceEnvironmentUse;
-        public bool ForceLauncherExeIgnoreFileCheck;                                  
+        public bool ForceLauncherExeIgnoreFileCheck;
 
+        public bool UseSteamless = false;
+        public string SteamlessArgs;
+        public int SteamlessTiming = 2500;
         // Proto Input
         public ProtoInputOptions ProtoInput = new ProtoInputOptions();
         public bool LockInputSuspendsExplorer = false;
+        public bool ToggleUnfocusOnInputsLock = false;//v.2.1.2 see RawInputProcessor & GenericGameHandler
 
         public Type HandlerType => typeof(GenericGameHandler);
 
@@ -320,10 +338,10 @@ namespace Nucleus.Gaming
             {
                 while (!sr.EndOfStream)
                 {
-                    
+
                     string line = sr.ReadLine();
                     {
-                        js += "\r\n" + line + "\r\n";                   
+                        js += "\r\n" + line + "\r\n";
                     }
                 }
             }
@@ -335,6 +353,7 @@ namespace Nucleus.Gaming
             engine.SetValue("Game", this);
             engine.SetValue("Hub", Hub);
             engine.Execute("var Nucleus = importNamespace('Nucleus.Gaming');");
+
             try
             {
                 engine.Execute(js);
@@ -347,24 +366,30 @@ namespace Nucleus.Gaming
                     string splited = lineSplit[0];
                     string[] getNum = splited.Split(' ');
                     int numLine = Convert.ToInt32(getNum[1]);
-                    MessageBox.Show(string.Format("There is an error in the game handler {0}. The game this handler is for will not appear in the list. If the issue has been fixed, please try re-adding the game.\n\nCommon errors include:\n- A syntax error (such as a \',\' \';\' or \']\' missing)\n- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format (for example: methods using Context must be within the Game.Play function)\n\n{1} {2}", fileName,"", "Error at line: " ) + numLine / 2, "Error in handler", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string error = $"There is an error in the game handler {fileName}.\n" +
+                    $"\nThe game this handler is for will not appear in the list. If the issue has been fixed,\n" +
+                    $"please try re-adding the game.\n\nCommon errors include:\n- A syntax error (such as a \',\' \';\' or \']\' missing)\n" +
+                    $"- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format\n(for example: methods using Context must be within the Game.Play function)" +
+                    $"\n\n{1} {2} \nError at line {numLine / 2}";
+
+                    NucleusMessageBox.Show("Error in handler", error,false);
+
                 });
             }
 
             // Run this in another thread to not block UI
             System.Threading.Tasks.Task.Run(() =>
             {
-                bool update = Hub.IsUpdateAvailable(true);
+                UpdateAvailable = Hub.IsUpdateAvailable(true);
             });
 
             engine.SetValue("Game", (object)null);
         }
 
-
         public CustomStep ShowOptionAsStep(string optionKey, bool required, string title)
         {
             GameOption option = Options.First(c => c.Key == optionKey);
-            option.Hidden = true;  
+            option.Hidden = true;
 
             CustomStep step = new CustomStep
             {
@@ -455,95 +480,10 @@ namespace Nucleus.Gaming
             return context;
         }
 
-        private string EpicLang;
-        
-        public string GetEpicLanguage()
-        {
-            IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-
-            IDictionary<string, string> epiclangs = new Dictionary<string, string>();
-                epiclangs.Add("Arabic", "ar");
-                epiclangs.Add("Brazilian", "pt-BR");
-                epiclangs.Add("Bulgarian", "bg");
-                epiclangs.Add("Chinese", "zh");
-                epiclangs.Add("Czech", "cs");
-                epiclangs.Add("Danish", "da");
-                epiclangs.Add("Dutch", "nl");
-                epiclangs.Add("English", "en");
-                epiclangs.Add("Finnish", "fi");
-                epiclangs.Add("French", "fr");
-                epiclangs.Add("German", "de");
-                epiclangs.Add("Greek", "el");
-                epiclangs.Add("Hungarian", "hu");
-                epiclangs.Add("Italian", "it");
-                epiclangs.Add("Japanese", "ja");
-                epiclangs.Add("Koreana", "ko");
-                epiclangs.Add("Norwegian", "no");
-                epiclangs.Add("Polish", "pl");
-                epiclangs.Add("Portuguese", "pt");
-                epiclangs.Add("Romanian", "ro");
-                epiclangs.Add("Russian", "ru");
-                epiclangs.Add("Spanish", "es");
-                epiclangs.Add("Swedish", "sv");
-                epiclangs.Add("Thai", "th");
-                epiclangs.Add("Turkish", "tr");
-                epiclangs.Add("Ukrainian", "uk");
+        public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
        
-            foreach (KeyValuePair<string, string> lang in epiclangs)
-            {
-                if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
-                {
-                    EpicLang = lang.Value;
-                    Console.WriteLine(EpicLang);
-                }
-            }
-            return EpicLang;
-        }
-
-        private string GogLang;
-        public string GetGogLanguage()
-        {
-            IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-
-            IDictionary<string, string> epiclangs = new Dictionary<string, string>();
-            epiclangs.Add("Arabic", "ar");
-            epiclangs.Add("Brazilian", "pt-BR");
-            epiclangs.Add("Bulgarian", "bg");
-            epiclangs.Add("Chinese", "zh");
-            epiclangs.Add("Czech", "cs");
-            epiclangs.Add("Danish", "da");
-            epiclangs.Add("Dutch", "nl");
-            epiclangs.Add("English", "en");
-            epiclangs.Add("Finnish", "fi");
-            epiclangs.Add("French", "fr");
-            epiclangs.Add("German", "de");
-            epiclangs.Add("Greek", "el");
-            epiclangs.Add("Hungarian", "hu");
-            epiclangs.Add("Italian", "it");
-            epiclangs.Add("Japanese", "ja");
-            epiclangs.Add("Koreana", "ko");
-            epiclangs.Add("Norwegian", "no");
-            epiclangs.Add("Polish", "pl");
-            epiclangs.Add("Portuguese", "pt");
-            epiclangs.Add("Romanian", "ro");
-            epiclangs.Add("Russian", "ru");
-            epiclangs.Add("Spanish", "es");
-            epiclangs.Add("Swedish", "sv");
-            epiclangs.Add("Thai", "th");
-            epiclangs.Add("Turkish", "tr");
-            epiclangs.Add("Ukrainian", "uk");
-
-            foreach (KeyValuePair<string, string> lang in epiclangs)
-            {
-                if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
-                {
-                    GogLang = lang.Key;
-                    Console.WriteLine(GogLang);
-                }
-            }
-            return GogLang;
-        }
-
+        public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
+       
         public string GetSteamLanguage()
         {
             string result;
@@ -558,20 +498,6 @@ namespace Nucleus.Gaming
 
             return result;
         }
-
-        public bool IsUpdateAvailable(bool fetch)
-        {
-            return Hub.IsUpdateAvailable(fetch);
-        }
-
-        public string GetScreenshots()
-        {
-            return Hub.GetScreenshots();
-        }
-
-        public string GetHubId()
-        {
-            return Hub.Handler.Id;
-        }
+      
     }
 }

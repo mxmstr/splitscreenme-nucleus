@@ -1,6 +1,6 @@
 # Nucleus Co-op 
 
-![alt text](https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/hknucleus.png?raw=true)
+![alt text](https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/hk211.png?raw=true)
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
 
@@ -11,12 +11,12 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 - New player and input order processing (left to right).
 - New player nickname assignation.
 - New optional splitscreen divisions setting (visually  similar to native splitscreen games).
-- Massive increase to the amount of compatible games, 450+ as of now.
+- Massive increase to the amount of compatible games, 500+ as of now.
 - Much more game handlers customization.
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
 
-View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op 2.1 here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
+View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 
 # Disclaimer
 Nucleus Co-op was originally created by Lucas Assis.
@@ -33,7 +33,7 @@ Nucleus Co-op symlinks and opens multiple instances of the same game files (some
 Note that Nucleus does not add multiplayer or co-op to single player games, the game needs to already have some form of online or LAN multiplayer, or another way to connect the instances, like via mods for example.
 
 # Installation:
-1. Download the latest [release](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
+1. Download latest [release](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
 
 # Prerequisites:
@@ -57,9 +57,10 @@ Thank you ^_^
 - Website & handler API: [r-mach](https://github.com/r-mach)  
 - Handlers development and general testing: [Talos91](https://github.com/Talos910), PoundlandBacon, Pizzo, dr.oldboi and many more.
   
-Additional credits to all original developers of third party utilities Nucleus uses:
+Additional credits to all original developers of the third party utilities Nucleus Co-op uses:
 - Mr_Goldberg ([Goldberg Emulator](https://gitlab.com/Mr_Goldberg/goldberg_emulator))
 - syahmixp ([SmartSteamEmu](https://github.com/MAXBURAOT/SmartSteamEmu))
+- atom0s ([Steamless](https://github.com/atom0s/Steamless))
 - EJocys ([x360ce](https://github.com/x360ce/x360ce))
 - 0dd14 Lab ([Xinput Plus](https://sites.google.com/site/0dd14lab/xinput-plus))
 - r1ch ([ForceBindIP](https://r1ch.net/projects/forcebindip))

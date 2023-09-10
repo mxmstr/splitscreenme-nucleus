@@ -12,6 +12,8 @@ namespace Nucleus.Gaming
         public event Action<object, Control> SelectedChanged;
         public Size Offset { get; set; }
         public Control SelectedControl { get; protected set; }
+        private readonly IniFile themeIni = Globals.ThemeIni;
+        private string[] rgb_SelectionColor;
 
         public int Border
         {
@@ -21,12 +23,14 @@ namespace Nucleus.Gaming
 
         public ControlListBox()
         {
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            rgb_SelectionColor = themeIni.IniReadValue("Colors", "Selection").Split(',');
+
+            AutoScaleDimensions = new SizeF(96F, 96F);
             HorizontalScroll.Maximum = 0;
             VerticalScroll.Visible = false;
             AutoScroll = true;
             DoubleBuffered = true;
-            Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         }
 
         public override bool AutoScroll
@@ -57,6 +61,7 @@ namespace Nucleus.Gaming
             {
                 return;
             }
+
             VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
             updatingSize = true;
 
@@ -86,7 +91,6 @@ namespace Nucleus.Gaming
                 UpdateSizes(); // need to update again
                 VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
             }
-
         }
 
         private void C_SizeChanged(object sender, EventArgs e)
@@ -119,9 +123,9 @@ namespace Nucleus.Gaming
                 c.Location = new Point(0, totalHeight);
                 totalHeight += s.Height + border;
             }
+
+            UpdateSizes();
         }
-
-
 
         private void C_ControlAdded(object sender, ControlEventArgs e)
         {
@@ -187,9 +191,15 @@ namespace Nucleus.Gaming
                 }
             }
 
-            if (parent != null &&
-                parent != SelectedControl)
+            if (parent != null && parent != SelectedControl)
             {
+                if (SelectedControl != null &&
+                    SelectedControl.GetType() != typeof(ComboBox) &&
+                    SelectedControl.GetType() != typeof(TextBox))
+                {
+                    SelectedControl.BackColor = Color.Transparent;
+                }
+
                 if (SelectedChanged != null)
                 {
                     SelectedControl = parent;
@@ -199,8 +209,16 @@ namespace Nucleus.Gaming
 
             SelectedControl = parent;
 
+            if (SelectedControl.GetType() != typeof(ComboBox) &&
+                SelectedControl.GetType() != typeof(TextBox) && SelectedControl.GetType() != typeof(Label))
+            {
+                SelectedControl.BackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]),
+                                                           int.Parse(rgb_SelectionColor[1]),
+                                                           int.Parse(rgb_SelectionColor[2]),
+                                                           int.Parse(rgb_SelectionColor[3]));
+            }
+
             OnClick(e);
         }
-
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Nucleus.Coop;
 //using SlimDX.DirectInput;
 using SharpDX.DirectInput;
+using SharpDX.XInput;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -9,68 +11,71 @@ using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop
 {
-    public class PlayerInfo
+    public class PlayerInfo : ICloneable
     {
+        public List<Rectangle> OtherLayout;
         private Rectangle sourceEditBounds;
         private Rectangle editBounds;
         private Rectangle monitorBounds;
-        private int screenIndex = -1;
+
         private object tag;
-
-        private ProcessData processData;
-        private bool assigned;
-
-        public UserScreen Owner;
-
-        public int PlayerID;
-        public bool SteamEmu;
-        public bool GotLauncher;
-        public bool GotGame;
-
-        public bool IsKeyboardPlayer;
-        public bool IsXInput;
-        public bool IsDInput;
-        public bool IsFake;
-       // public bool IsInputUsed;
-        public bool IsRawMouse;
-        public bool IsRawKeyboard;
-        public bool IsInputUsed;
-
-        //public IntPtr RawDeviceHandle = (IntPtr)(-1);
-        public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
-        public IntPtr RawKeyboardDeviceHandle = (IntPtr)(-1);
-
-        public Guid GamepadProductGuid;
-        public Guid GamepadGuid;
-        public int GamepadId;
+   
+        public string IdealProcessor = "*";
+        public string Affinity = "";
+        public string PriorityClass = "Normal";
         public string GamepadName;
-        public int GamepadMask;
-        public Joystick DInputJoystick;
-
-        // Should be set by a script, then these are sent into Proto Input.
-        // Zero implies no contorller, 1 means controller 1, etc
-        public int ProtoController1;
-        public int ProtoController2;
-        public int ProtoController3;
-        public int ProtoController4;
-        public int Row;
-        public int Col;
-        // public bool isfirstPlayer;
-        public string HIDDeviceID;
+        public string[] HIDDeviceID;
         public string Nickname;
         public string InstanceId;
         public string RawHID;
-        public int ProcessID;
-
         public string SID;
         public string Adapter;
         public string UserProfile;
 
+        public bool SteamEmu;
+        public bool GotLauncher;
+        public bool GotGame;
+        public bool IsKeyboardPlayer;
+        public bool IsXInput;
+        public bool IsDInput;
+        public bool IsFake;
+        public bool IsRawMouse;
+        public bool IsRawKeyboard;
+        public bool IsInputUsed;
+        public bool IsController;//Good to do not have to loop both Xinput & DInput  
+        public bool Vibrate;
+       
+        public Guid GamepadProductGuid;
+        public Guid GamepadGuid;
+       
         public Display Display;
+        public UserScreen Owner;
+        public Joystick DInputJoystick;
+        public OpenXinputController XInputJoystick;
+        private ProcessData processData;
+
+        public long SteamID = -1;
 
         public uint ProtoInputInstanceHandle = 0;
 
-        // Serialized
+        public int CurrentLayout = 0;       
+        public int ScreenPriority;
+        public int GamepadId;
+        public int GamepadMask;
+        public int DisplayIndex = -1;
+        private int screenIndex = -1;
+        public int PlayerID = -1;
+        public int ProcessID;
+        // Should be set by a script, then these are sent into Proto Input.
+        // Zero implies no controller, 1 means controller 1, etc
+        public int ProtoController1;
+        public int ProtoController2;
+        public int ProtoController3;
+        public int ProtoController4;
+
+        public IntPtr RawMouseDeviceHandle = (IntPtr)(-1);
+        public IntPtr RawKeyboardDeviceHandle = (IntPtr)(-1);
+        public IntPtr GamepadHandle;
 
         /// <summary>
         /// The bounds of this player's game screen
@@ -80,9 +85,6 @@ namespace Nucleus.Gaming.Coop
             get => monitorBounds;
             set => monitorBounds = value;
         }
-
-
-        // Runtime
 
         public Rectangle SourceEditBounds
         {
@@ -142,7 +144,7 @@ namespace Nucleus.Gaming.Coop
             if (!ShouldFlash)
             {
                 ShouldFlash = true;
-                PositionsControl.InvalidateFlash();
+                SetupScreen.InvalidateFlash();
             }
 
             flashStopwatch.Restart();
@@ -159,12 +161,18 @@ namespace Nucleus.Gaming.Coop
                     flashTask = null;
 
                     ShouldFlash = false;
-                    PositionsControl.InvalidateFlash();
+                    SetupScreen.InvalidateFlash();
                 });
 
                 flashTask.Start();
             }
         }
         #endregion
+
+        public object Clone()
+        {
+            var clone = this.MemberwiseClone();
+            return clone;
+        }
     }
 }

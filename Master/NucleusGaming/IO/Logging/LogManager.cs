@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Jint.Parser.Ast;
+using Nucleus.Gaming.Forms;
+using Nucleus.Gaming.Forms.NucleusMessageBox;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
@@ -11,7 +16,7 @@ namespace Nucleus.Gaming
     {
         public static readonly long MaxSize = 1024 * 1024 * 1024; // 1mb
 
-        private static readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private static readonly IniFile ini = Globals.ini;
 
         private static LogManager instance;
         public static LogManager Instance
@@ -98,31 +103,55 @@ namespace Nucleus.Gaming
         {
             Instance.PLog(str);
 
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
-            {
-                if (str.StartsWith("Found game info"))
-                {
-                    return;
-                }
-                using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
-                {
-                    writer.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]LOGMANAGER: {str}");
-                    writer.Close();
-                }
-            }
+            //if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            //{
+            //    if (str.StartsWith("Found game info"))
+            //    {
+            //        return;
+            //    }
+            //    using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
+            //    {
+            //        writer.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]LOGMANAGER: {str}");
+            //        writer.Close();
+            //    }
+            //}
         }
 
         public void LogExceptionFile(Exception ex)
         {
             Log("ERROR - " + ex.Message + " | Stacktrace: " + ex.StackTrace);
-
+            string version = "Nucleus v " + Globals.Version;
             string local = GetAppDataPath();
             DateTime now = DateTime.Now;
             string file = string.Format("{0}{1}{2}_{3}{4}{5}", now.Day.ToString("00"), now.Month.ToString("00"), now.Year.ToString("0000"), now.Hour.ToString("00"), now.Minute.ToString("00"), now.Second.ToString("00")) + ".log";
-            MessageBox.Show($"Nucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n{ex.GetType().Name}\n\n[Message]\n{ex.Message}\n\n[Stacktrace]\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            
+            string help = string.Empty;
+
+            // if(Regex.IsMatch(ex.Message, ".*(.cfg|.ini|.xml|.conf|.scr|.json|.kgs).") && !Regex.IsMatch(ex.Message, ".*(XinputPlus.ini).") && ex.GetType().Name != "UnauthorizedAccessException")FileNotFoundExeption
+            if (ex.GetType().Name == "FileNotFoundException")
+            {
+                help = "Nucleus Co-op can't find the game's configuration file, make you sure you ran your main game at least once without Nucleus and that you changed some graphic settings and applied them, that way you make sure the proper configuration files got generated.\n" +
+                       "If you are still getting this error after doing that, select the game in the Nucleus Co-op user interface, click on Game Options and select Delete UserProfile Config Path for all players. You can also try deleting Nucleus Co-op content folder and adding the game again.";
+            }
+            else if (ex.GetType().Name == "UnauthorizedAccessException" || ex.GetType().Name == "IOException")
+            {
+                help = "Nucleus Co-op doesn't have the necessary permissions or is trying to access a file that is already in use,\n" +
+                       "a file could be missing(For helpers: in case of \"IOException\" check if all required files from \"Game.Play = function()\" exists.)\n" +
+                       "please make sure Nucleus Co-op is outside any game files or protected folders,\n" +
+                       "placing Nucleus Co-op app folder in the root of your main drive is recommended to avoid permission issues: C:\\NucleusCo-op.\n" +
+                       "Make sure other apps are not using any of the files Nucleus is trying to access. If all else fails run Nucleus Co-op with admin rights.";
+            }
+#if RELEASE
+
+            string error = $"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n\n{ex.GetType().Name}\n\n[Message]\n\n{ex.Message}\n\n{help}";
+#else
+
+            string error = $"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n\n{ex.GetType().Name}\n\n[Message]\n\n{ex.Message}\n{help}\n\n[Stacktrace]\n\n{ex.StackTrace}";
+#endif
+
+            NucleusMessageBox.Show("Something went wrong :(", error, false);
+
             Log("Attempting shut-down procedures in order to clean-up");
-  
+
             string[] regFiles = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
             if (regFiles.Length > 0)
             {
@@ -146,9 +175,10 @@ namespace Nucleus.Gaming
                         LogManager.Log($"Imported {Path.GetFileName(regFilePath)}");
                     }
                     catch (Exception)
-                    {                      
+                    {
                         proc.Dispose();
                     }
+
                     if (!regFilePath.Contains("User Shell Folders"))
                     {
                         File.Delete(regFilePath);
@@ -157,6 +187,7 @@ namespace Nucleus.Gaming
             }
 
             GenericGameHandler.Instance.End(false);
+
             while (!GenericGameHandler.Instance.HasEnded)
             {
                 Thread.Sleep(1000);
@@ -197,8 +228,9 @@ namespace Nucleus.Gaming
             Windows.User32Util.ShowTaskBar();
 
             Log("High-level error log generated at content/" + file);
-
-            Application.Exit();
+#if RELEASE
+            //Process.GetCurrentProcess().Kill();
+#endif
         }
 
         public static void Log(string str, object par1)

@@ -33,7 +33,7 @@ namespace Nucleus.Gaming.Coop.Generic
             this.refrshBtn = new System.Windows.Forms.Button();
             this.selBtn = new System.Windows.Forms.Button();
             this.ppDesc = new System.Windows.Forms.Label();
-            this.container = new System.Windows.Forms.Panel();
+            this.pplistBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // refrshBtn
@@ -78,29 +78,29 @@ namespace Nucleus.Gaming.Coop.Generic
             this.ppDesc.TabIndex = 2;
             this.ppDesc.Text = "Select a process for Nucleus to use for process manipulation. ";
             // 
-            // container
+            // pplistBox
             // 
-            this.container.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.container.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.container.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.container.Location = new System.Drawing.Point(0, 30);
-            this.container.Margin = new System.Windows.Forms.Padding(0);
-            this.container.Name = "container";
-            this.container.Size = new System.Drawing.Size(196, 199);
-            this.container.TabIndex = 3;
+            this.pplistBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pplistBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pplistBox.FormattingEnabled = true;
+            this.pplistBox.ItemHeight = 18;
+            this.pplistBox.Location = new System.Drawing.Point(0, 30);
+            this.pplistBox.Name = "pplistBox";
+            this.pplistBox.ScrollAlwaysVisible = true;
+            this.pplistBox.Size = new System.Drawing.Size(196, 159);
+            this.pplistBox.TabIndex = 3;
             // 
             // ProcessPicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(196, 229);
-            this.ControlBox = false;
+            this.Controls.Add(this.pplistBox);
             this.Controls.Add(this.refrshBtn);
             this.Controls.Add(this.selBtn);
-            this.Controls.Add(this.container);
             this.Controls.Add(this.ppDesc);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -114,10 +114,9 @@ namespace Nucleus.Gaming.Coop.Generic
         }
 
         #endregion
-
-        private System.Windows.Forms.Button refrshBtn;
-        private System.Windows.Forms.Button selBtn;
         private System.Windows.Forms.Label ppDesc;
-        private System.Windows.Forms.Panel container;
+        public System.Windows.Forms.ListBox pplistBox;
+        public System.Windows.Forms.Button refrshBtn;
+        public System.Windows.Forms.Button selBtn;
     }
 }

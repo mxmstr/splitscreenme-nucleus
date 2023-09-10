@@ -3,7 +3,6 @@ using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -11,10 +10,8 @@ namespace Nucleus.Gaming
 {
     public static class DPIManager
     {
-        public static float Scale = 1f;
+        public static float Scale = 1.0f;
         private static List<IDynamicSized> components = new List<IDynamicSized>();
-        private static int i = 0;
-        private static readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         public static Font Font;
 
@@ -46,34 +43,24 @@ namespace Nucleus.Gaming
 
         public static void PreInitialize()
         {
-            if (ini.IniReadValue("Advanced", "Scale") != "")
-            {
-                Scale = float.Parse(ini.IniReadValue("Advanced", "Scale"));
-            }
-            else
-            {
-                Scale = User32Util.GetDPIScalingFactor();
-            }
+            Scale = User32Util.GetDPIScalingFactor();
         }
 
-        private static void UpdateFont()
+        private static void UpdateForm(Form form)
         {
-            if (Font != null)
-            {
-                Font.Dispose();
-            }
+            uint val = Convert.ToUInt32(GetDpi());
+            float newScale = val / 96.0f;
 
-            int fontSize = (int)(12 / DPIManager.Scale);
-            //if (Scale > 1)
-            //{
-            //    fontSize = (int)(12 / (0.7 * DPIManager.Scale));
-            //}
-            if (ini.IniReadValue("Advanced", "Font") != "")
-            {
-                fontSize = int.Parse(ini.IniReadValue("Advanced", "Font"));
-            }
+            float dif = Math.Abs(newScale - Scale);
 
-            Font = new Font("Segoe UI", fontSize, GraphicsUnit.Point);
+            if (dif > 0.001f)
+            {
+                Scale = newScale;
+                form.Invoke((Action)delegate ()
+                {
+                    UpdateAll();
+                });
+            }
         }
 
         public static void AddForm(Form form)
@@ -86,70 +73,39 @@ namespace Nucleus.Gaming
                 // custom DPI by window
                 form.LocationChanged += AppForm_LocationChanged;
             }
-            UpdateFont();
+
+            UpdateForm(form);
         }
 
         private static void AppForm_LocationChanged(object sender, EventArgs e)
         {
             Form form = (Form)sender;
-            //uint val = Convert.ToUInt32(User32Util.GetDPIScalingFactor() * 96.0f); //User32Util.GetDpiForWindow(form.Handle);
-            //uint val = User32Util.GetDpiForWindow(form.Handle);
-            uint val = Convert.ToUInt32(GetDpi());
-
-            //uint val = 96;
-            float newScale = val / 96.0f;
-            if (ini.IniReadValue("Advanced", "Scale") != "")
-            {
-                newScale = Scale;
-            }
-            float dif = Math.Abs(newScale - Scale);
-
-            //MessageBox.Show("val: " + val + " \nnewScale: " + newScale + "\nUser32Util.GetDPIScalingFactor(): " + User32Util.GetDPIScalingFactor() + "\nUser32Util.GetDpiForWindow(form.Handle): " + User32Util.GetDpiForWindow(form.Handle));
-            if (dif > 0.001f)
-            {
-                // DPI changed
-                Scale = newScale;
-                UpdateFont();
-
-                // update all components
-                form.Invoke((Action)delegate ()
-                {
-                    UpdateAll();
-                });
-            }
+            UpdateForm(form);
         }
-        
-        //public enum DeviceCap
-        //{
-        //    VERTRES = 10,
-        //    DESKTOPVERTRES = 117,
 
-        //    // http://pinvoke.net/default.aspx/gdi32/GetDeviceCaps.html
-        //}
-
-
-        private static float getScalingFactor()
+        public static float getScalingFactor()
         {
-            //DeviceCapEnum enumerator = new DeviceCapEnum();
-            
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             IntPtr desktop = g.GetHdc();
             int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCapEnum.DeviceCap.VERTRES);
-            int PhysicalScreenHeight = GetDeviceCaps(desktop,(int)DeviceCapEnum.DeviceCap.DESKTOPVERTRES);
+            int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCapEnum.DeviceCap.DESKTOPVERTRES);
 
             float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
 
             return ScreenScalingFactor; // 1.25 = 125%
         }
+
         public static void ForceUpdate()
         {
-            UpdateAll();          
+            UpdateAll();
         }
+
         private static void UpdateAll()
         {
             for (int i = 0; i < components.Count; i++)
             {
                 IDynamicSized comp = components[i];
+
                 comp.UpdateSize(Scale);
             }
         }

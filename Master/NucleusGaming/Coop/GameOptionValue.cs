@@ -3,13 +3,13 @@
     public abstract class GameOptionValue
     {
         private string name;
-        private int value;
+        private object value;
 
         public string Name => name;
 
-        public int Value => value;
+        public object Value => value;
 
-        public GameOptionValue(string nam, int val)
+        public GameOptionValue(string nam, object val)
         {
             name = nam;
             value = val;
