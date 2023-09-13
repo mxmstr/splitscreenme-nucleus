@@ -7,7 +7,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using static Nucleus.Gaming.Tools.WindowFakeFocus.WindowFakeFocus;
 
 namespace Nucleus.Gaming.Forms
 {
@@ -79,7 +78,7 @@ namespace Nucleus.Gaming.Forms
 
             loadTimer = new Timer
             {
-                Interval = interval 
+                Interval = interval
             };
 
             loadTimer.Tick += new EventHandler(loadTimerTick);
@@ -100,7 +99,7 @@ namespace Nucleus.Gaming.Forms
                     string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")));
 
                     BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{imgIndex}_{currentGame}.jpeg"));
-                 
+
                     imgIndex++;
 
                     if (imgIndex == imgsPath.Length)
@@ -126,7 +125,7 @@ namespace Nucleus.Gaming.Forms
             {
                 fullApha = false;
             }
-   
+
             Invalidate();
         }
 
@@ -151,20 +150,22 @@ namespace Nucleus.Gaming.Forms
             loadTimer.Dispose();
             fading.Dispose();
             BackgroundImage = null;
-            BackColor = ChoosenColor;     
+            BackColor = ChoosenColor;
             Invalidate();
             stopPainting = true;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            Rectangle back = new Rectangle(0, 0, Width, Height);
+            SolidBrush backBrush = new SolidBrush(Color.FromArgb(alpha, 0, 0, 0));
+
+            e.Graphics.FillRectangle(backBrush, back);
+            backBrush.Dispose();
+
             if (!stopPainting)
             {
-                Rectangle back = new Rectangle(0, 0, Width, Height);
-                SolidBrush backBrush = new SolidBrush(Color.FromArgb(alpha, 0, 0, 0));
-                
-                e.Graphics.FillRectangle(backBrush, back);
-                backBrush.Dispose();
+                return;
             }
         }
     }

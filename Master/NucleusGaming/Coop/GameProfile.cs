@@ -288,7 +288,7 @@ namespace Nucleus.Gaming.Coop
             {
                 foreach (PlayerInfo player in playerData)
                 {
-                    player.MonitorBounds = new Rectangle(0, 0, 0, 0);
+                    player.MonitorBounds = Rectangle.Empty;
                     player.EditBounds = player.SourceEditBounds;
                     player.ScreenIndex = -1;
                     player.PlayerID = -1;

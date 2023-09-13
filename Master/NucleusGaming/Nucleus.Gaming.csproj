@@ -388,6 +388,7 @@
     <Compile Include="Tools\X360ce\X360ce.cs" />
     <Compile Include="Tools\XInputPlusDll\XInputPlusDll.cs" />
     <Compile Include="Util\ExecutableUtil.cs" />
+    <Compile Include="Util\FormGraphicsUtil.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />

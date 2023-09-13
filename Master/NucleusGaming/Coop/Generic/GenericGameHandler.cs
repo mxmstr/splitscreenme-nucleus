@@ -191,8 +191,9 @@ namespace Nucleus.Gaming
             }
 
             if (gen.LockMouse)
-
+            {
                 _cursorModule = new CursorModule();
+            }
 
             jsData = new Dictionary<string, string>
             {
@@ -331,7 +332,24 @@ namespace Nucleus.Gaming
         }
 
         public string Play()
-        { 
+        {
+            if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
+            {
+                User32Util.HideTaskbar();
+            }
+
+            if (gen.ProtoInput.AutoHideTaskbar || GameProfile.UseSplitDiv)
+            {
+                if (ProtoInput.protoInput.GetTaskbarAutohide())
+                {
+                    gen.ProtoInput.AutoHideTaskbar = false; // If already hidden don't change it, and dont set it unhidden after.
+                }
+                else
+                {
+                    ProtoInput.protoInput.SetTaskbarAutohide(true);
+                }
+            }
+
             if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
             {
                 MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -410,7 +428,20 @@ namespace Nucleus.Gaming
                 PlayerInfo player = players[i];
                 
                 player.PlayerID = i;
-                             
+
+                if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayersList.Count != 1)
+                {
+                    if (i == 0)
+                    {
+                        Log("Setup splitscreen division");
+                    }
+
+                    player.MonitorBounds = new Rectangle(player.MonitorBounds.X + 1,
+                                                         player.MonitorBounds.Y + 1,
+                                                         player.MonitorBounds.Width - 2,
+                                                         player.MonitorBounds.Height - 2);
+                }
+
                 int pod = player.Owner.DisplayIndex;
 
                 foreach (Display dp in ScreensUtil.AllScreensParams())
@@ -435,28 +466,7 @@ namespace Nucleus.Gaming
                     }
 
                     break;
-                }
-            }
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                PlayerInfo player = players[i];
-
-                foreach (Display dp in screensInUse)
-                {
-                    if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayersList.Count != 1)
-                    {
-                        if (i == 0)
-                        {
-                            Log("Setup splitscreen division");
-                        }
-
-                        player.MonitorBounds = new Rectangle(player.MonitorBounds.X + 1,
-                                                             player.MonitorBounds.Y + 1,
-                                                             player.MonitorBounds.Width - 2,
-                                                             player.MonitorBounds.Height - 2);
-                    }
-                }
+                }                                
             }
 
             gen.SetPlayerList(players);
@@ -644,12 +654,14 @@ namespace Nucleus.Gaming
                     if (!gen.RenameNotKillMutex && i > 0 && (gen.KillMutex?.Length > 0 || !hasSetted))
                     {
                         PlayerInfo before = players[i - 1];
+
                         for (; ; )
                         {
                             if (exited > 0)
                             {
                                 return "";
                             }
+
                             Thread.Sleep(1000);
 
                             if (gen.KillMutex != null)
@@ -696,6 +708,7 @@ namespace Nucleus.Gaming
                 if (i > 0 && (gen.KillMutexProcess?.Length > 0))
                 {
                     Log("A process has been provided for Nucleus to kill mutexes in");
+
                     for (; ; )
                     {
                         if (exited > 0)
@@ -928,6 +941,7 @@ namespace Nucleus.Gaming
                             fileExclusions.Add("xinput1_3.dll");
                             fileExclusions.Add("ncoop.ini");
                         }
+
                         if (!gen.SymlinkExe)
                         {
                             Log($"Game executable ({gen.ExecutableName}) will be copied and not symlinked");
@@ -3134,25 +3148,7 @@ namespace Nucleus.Gaming
             {
                 RegistryUtil.RestoreUserEnvironmentRegistryPath();
             }
-
-            if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
-            {
-                User32Util.HideTaskbar();
-            }
-
-            if (gen.ProtoInput.AutoHideTaskbar || GameProfile.UseSplitDiv)
-            {
-                if (ProtoInput.protoInput.GetTaskbarAutohide())
-                {
-                    gen.ProtoInput.AutoHideTaskbar = false; ///If already hidden don't change it, and dont set it unhidden after.
-                }
-                else
-                {
-                    ProtoInput.protoInput.SetTaskbarAutohide(true);
-                    User32Util.HideTaskbar();
-                }
-            }
-          
+         
             try
             {
                 if (statusWinThread != null && statusWinThread.IsAlive)
@@ -3619,24 +3615,6 @@ namespace Nucleus.Gaming
             ControllersUINav.EnabledRuntime = false;
 
             GameProfile.SaveGameProfile(profile);
-
-            if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
-            {
-                User32Util.HideTaskbar();
-            }
-
-            if (gen.ProtoInput.AutoHideTaskbar || GameProfile.UseSplitDiv)
-            {
-                if (ProtoInput.protoInput.GetTaskbarAutohide())
-                {
-                    gen.ProtoInput.AutoHideTaskbar = false; ///If already hidden don't change it, and dont set it unhidden after.
-                }
-                else
-                {
-                    ProtoInput.protoInput.SetTaskbarAutohide(true);
-                    User32Util.HideTaskbar();
-                }
-            }
            
             gen.OnFinishedSetup?.Invoke();
         }
@@ -3670,8 +3648,6 @@ namespace Nucleus.Gaming
 
             for (; ; )
             {
-                //string error = GameManager.Instance.Error;
-
                 if (!string.IsNullOrEmpty(error))
                 {
                     End(false);

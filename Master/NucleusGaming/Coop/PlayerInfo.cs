@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop
 {
-    public class PlayerInfo : ICloneable
+    public class PlayerInfo 
     {
         public List<Rectangle> OtherLayout;
         private Rectangle sourceEditBounds;
@@ -169,10 +169,5 @@ namespace Nucleus.Gaming.Coop
         }
         #endregion
 
-        public object Clone()
-        {
-            var clone = this.MemberwiseClone();
-            return clone;
-        }
     }
 }

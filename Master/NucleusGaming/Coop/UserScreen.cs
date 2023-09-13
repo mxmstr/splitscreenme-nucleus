@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace Nucleus.Gaming.Coop
 {
@@ -38,6 +39,8 @@ namespace Nucleus.Gaming.Coop
         }
 
         public Rectangle MonitorBounds => display;
+
+        public Dictionary<Rectangle, Rectangle> SubScreensBounds;
 
         public UserScreen(Rectangle display)
         {
