@@ -327,7 +327,7 @@ namespace Nucleus.Coop
             Controls.Add(gameProfilesList);
             Controls.Add(instructionImg);
 
-            MouseWheel += MouseWheelValue;
+            MouseWheel += EditPlayerBounds;
 
             ///Flash image attributes
             {
@@ -1519,7 +1519,7 @@ namespace Nucleus.Coop
         private Rectangle sizerBtnBottom;
         private bool hightDensityGrid;
 
-        private void MouseWheelValue(object sender, MouseEventArgs e)
+        private void EditPlayerBounds(object sender, MouseEventArgs e)
         {
             Cursor = hand_Cursor;
 
@@ -1533,20 +1533,13 @@ namespace Nucleus.Coop
                 {
                     UserScreen screen = screens[p.ScreenIndex];
 
-                    Rectangle peb = p.EditBounds;
                     Rectangle pmb = p.MonitorBounds;
-                    Rectangle pib = Rectangle.Empty;
-
-                    int mSubScreenWidth = screen.SubScreensBounds.ElementAt(0).Key.Width;
-                    int mSubScreenHeight = screen.SubScreensBounds.ElementAt(0).Key.Height;
-
-                    int eSubScreenWidth = screen.SubScreensBounds.ElementAt(0).Value.Width;
-                    int eSubScreenHeight = screen.SubScreensBounds.ElementAt(0).Value.Height;
+                    Rectangle peb = p.EditBounds;
+                    
+                    Size mSubScreen = new Size(screen.SubScreensBounds.ElementAt(0).Key.Width, screen.SubScreensBounds.ElementAt(0).Key.Height);
+                    Size eSubScreen = new Size(screen.SubScreensBounds.ElementAt(0).Value.Width, screen.SubScreensBounds.ElementAt(0).Value.Height);
 
                     PlayerInfo playerInbounds = players.Where(pl => (pl != p) && pl.MonitorBounds == pmb).FirstOrDefault();
-
-                    int pmbW = pmb.Width;
-                    int pebW = peb.Width;
 
                     if (sizerBtnLeft.Contains(e.Location))
                     {
@@ -1555,36 +1548,22 @@ namespace Nucleus.Coop
                             if (pmb.Left != screen.MonitorBounds.Left && players.Where(pl => (pl != p) && pl.MonitorBounds.Right == pmb.Left && pl.MonitorBounds.Y == pmb.Y && pl != playerInbounds).Count() == 0)
                             {
                                 PlayerInfo other = players.Where(pl => (pl != p && pl.ScreenIndex != -1) && pl.MonitorBounds != p.MonitorBounds && pl.MonitorBounds.Right < pmb.Left && pl.MonitorBounds.Y == pmb.Y && pl != playerInbounds).FirstOrDefault();
+                                                           
+                                pmb.Width += mSubScreen.Width;
+                                peb.Width += eSubScreen.Width;
+                            
+                                pmb.Location = new Point(pmb.X - mSubScreen.Width, pmb.Y);
+                                peb.Location = new Point(peb.X - eSubScreen.Width, peb.Y);
 
-                                pmb.Width += mSubScreenWidth;
-                                peb.Width += eSubScreenWidth;
-
-                                peb.Location = new Point(peb.X - (peb.Width - pebW), peb.Y);
-                                pmb.Location = new Point(pmb.X - (pmb.Width - pmbW), pmb.Y);
-
-                                int mboundsLimit;
-                                int eboundsLimit;
-
-                                if (other == null)
-                                {
-                                    mboundsLimit = screen.MonitorBounds.X;
-                                    eboundsLimit = screen.UIBounds.X;
-                                }
-                                else
-                                {
-                                    mboundsLimit = other.MonitorBounds.Right;
-                                    eboundsLimit = other.EditBounds.Right;
-                                }
+                                int mboundsLimit = other == null ? screen.MonitorBounds.X : other.MonitorBounds.Right;
+                                int eboundsLimit = other == null ? screen.UIBounds.X : other.EditBounds.Right;
 
                                 if (pmb.Left >= mboundsLimit && players.Where(pl => (pl != p) && pl.MonitorBounds.IntersectsWith(pmb) && pl != playerInbounds).Count() == 0)
                                 {
-                                    if (other == null)
+                                    if ((screen.MonitorBounds.Right - pmb.Right) < mSubScreen.Width && Math.Abs(mboundsLimit - pmb.Left) < mSubScreen.Width && other == null)
                                     {
-                                        if ((screen.MonitorBounds.Right - pmb.Right) < mSubScreenWidth && Math.Abs(mboundsLimit - pmb.Left) < mSubScreenWidth)
-                                        {
-                                            pmb.Width = screen.MonitorBounds.Width;
-                                            pmb.X = screen.MonitorBounds.X;
-                                        }
+                                        pmb.Width = screen.MonitorBounds.Width;
+                                        pmb.X = screen.MonitorBounds.X;
                                     }
 
                                     p.MonitorBounds = pmb;
@@ -1600,13 +1579,13 @@ namespace Nucleus.Coop
                         }
                         else if (e.Delta >= 120)
                         {
-                            if (pmb.Width > mSubScreenWidth)
+                            if (pmb.Width > mSubScreen.Width)
                             {
-                                pmb.Width -= mSubScreenWidth;
-                                peb.Width -= eSubScreenWidth;
+                                pmb.Width -= mSubScreen.Width;
+                                peb.Width -= eSubScreen.Width;
 
-                                pmb.Location = new Point(pmb.X + mSubScreenWidth, pmb.Y);
-                                peb.Location = new Point(peb.X + eSubScreenWidth, peb.Y);
+                                pmb.Location = new Point(pmb.X + mSubScreen.Width, pmb.Y);
+                                peb.Location = new Point(peb.X + eSubScreen.Width, peb.Y);
 
                                 p.MonitorBounds = pmb;
                                 p.EditBounds = peb;
@@ -1626,37 +1605,20 @@ namespace Nucleus.Coop
                         {
                             if (pmb.Right != screen.MonitorBounds.Right && players.Where(pl => (pl != p) && pl.MonitorBounds.Left == pmb.Right && pl.MonitorBounds.Y == pmb.Y && pl != playerInbounds).Count() == 0)
                             {
-                                pmbW = pmb.Width;
-                                pebW = peb.Width;
-
                                 PlayerInfo other = players.Where(pl => (pl != p && pl.ScreenIndex != -1) && pl.MonitorBounds != p.MonitorBounds && pl.MonitorBounds.Left > pmb.Right && pl.MonitorBounds.Y == pmb.Y && pl != playerInbounds).FirstOrDefault();
 
-                                pmb.Width += mSubScreenWidth;
-                                peb.Width += eSubScreenWidth;
+                                pmb.Width += mSubScreen.Width;
+                                peb.Width += eSubScreen.Width;
 
-                                int mboundsLimit;
-                                int eboundsLimit;
-
-                                if (other == null)
-                                {
-                                    mboundsLimit = screen.MonitorBounds.Right;
-                                    eboundsLimit = screen.UIBounds.Right;
-                                }
-                                else
-                                {
-                                    mboundsLimit = other.MonitorBounds.Left;
-                                    eboundsLimit = other.EditBounds.Left;
-                                }
+                                int mboundsLimit = other == null ? screen.MonitorBounds.Right : other.MonitorBounds.Left;
+                                int eboundsLimit = other == null ? screen.UIBounds.Right : other.EditBounds.Left;
 
                                 if (pmb.Right <= mboundsLimit && players.Where(pl => (pl != p) && pl.MonitorBounds.IntersectsWith(pmb) && pl != playerInbounds).Count() == 0)
                                 {
-                                    if (other == null)
+                                    if (pmb.Left == screen.MonitorBounds.Left && Math.Abs(mboundsLimit - pmb.Right) < mSubScreen.Width && other == null)
                                     {
-                                        if (pmb.Left == screen.MonitorBounds.Left && Math.Abs(mboundsLimit - pmb.Right) < mSubScreenWidth)
-                                        {
-                                            pmb.Width = screen.MonitorBounds.Width;
-                                            pmb.X = screen.MonitorBounds.X;
-                                        }
+                                        pmb.Width = screen.MonitorBounds.Width;
+                                        pmb.X = screen.MonitorBounds.X;
                                     }
 
                                     p.MonitorBounds = pmb;
@@ -1672,10 +1634,10 @@ namespace Nucleus.Coop
                         }
                         else if (e.Delta <= -120)
                         {
-                            if (pmb.Width > mSubScreenWidth)
+                            if (pmb.Width > mSubScreen.Width)
                             {
-                                pmb.Width -= mSubScreenWidth;
-                                peb.Width -= eSubScreenWidth;
+                                pmb.Width -= mSubScreen.Width;
+                                peb.Width -= eSubScreen.Width;
 
                                 p.MonitorBounds = pmb;
                                 p.EditBounds = peb;
@@ -1694,41 +1656,23 @@ namespace Nucleus.Coop
                         {
                             if (pmb.Top != screen.MonitorBounds.Top && players.Where(pl => (pl != p) && pl.MonitorBounds.Bottom == pmb.Top && pl.MonitorBounds.X == pmb.X && pl != playerInbounds).Count() == 0)
                             {
-
-                                int pmbH = mSubScreenHeight;
-                                int pebH = eSubScreenHeight;
-
                                 PlayerInfo other = players.Where(pl => (pl != p && pl.ScreenIndex != -1) && pl.MonitorBounds != p.MonitorBounds && pl.MonitorBounds.Bottom > pmb.Top && pl.MonitorBounds.X == pmb.X && pl.MonitorBounds.Top != pmb.Bottom && pl != playerInbounds).FirstOrDefault();
 
-                                pmb.Location = new Point(pmb.X, pmb.Y - pmbH);
-                                peb.Location = new Point(peb.X, peb.Y - pebH);
+                                pmb.Height += mSubScreen.Height;
+                                peb.Height += eSubScreen.Height;
 
-                                pmb.Height += pmbH;
-                                peb.Height += pebH;
+                                pmb.Location = new Point(pmb.X, pmb.Y - mSubScreen.Height);
+                                peb.Location = new Point(peb.X, peb.Y - eSubScreen.Height);
 
-                                int mboundsLimit;
-                                int eboundsLimit;
-
-                                if (other == null)
-                                {
-                                    mboundsLimit = screen.MonitorBounds.Top;
-                                    eboundsLimit = screen.UIBounds.Top;
-                                }
-                                else
-                                {
-                                    mboundsLimit = other.MonitorBounds.Bottom;
-                                    eboundsLimit = other.EditBounds.Bottom;
-                                }
+                                int mboundsLimit = other == null ? screen.MonitorBounds.Top : other.MonitorBounds.Bottom;
+                                int eboundsLimit = other == null ? screen.UIBounds.Top : other.EditBounds.Bottom;
 
                                 if (pmb.Top >= mboundsLimit && players.Where(pl => (pl != p) && pl.MonitorBounds.IntersectsWith(pmb) && pl != playerInbounds && pl != playerInbounds).Count() == 0)
                                 {
-                                    if (other == null)
+                                    if ((screen.MonitorBounds.Height - pmb.Bottom) < mSubScreen.Height && Math.Abs(screen.MonitorBounds.Top - pmb.Top) < mSubScreen.Height && other == null)
                                     {
-                                        if ((screen.MonitorBounds.Height - pmb.Bottom) < mSubScreenHeight && Math.Abs(screen.MonitorBounds.Top - pmb.Top) < mSubScreenHeight)
-                                        {
-                                            pmb.Height = screen.MonitorBounds.Height;
-                                            pmb.Y = screen.MonitorBounds.Y;
-                                        }
+                                        pmb.Height = screen.MonitorBounds.Height;
+                                        pmb.Y = screen.MonitorBounds.Y;
                                     }
 
                                     p.MonitorBounds = pmb;
@@ -1744,13 +1688,13 @@ namespace Nucleus.Coop
                         }
                         else if (e.Delta <= -120)
                         {
-                            if (pmb.Height > mSubScreenHeight)
+                            if (pmb.Height > mSubScreen.Height)
                             {
-                                pmb.Height -= mSubScreenHeight;
-                                peb.Height -= eSubScreenHeight;
+                                pmb.Height -= mSubScreen.Height;
+                                peb.Height -= eSubScreen.Height;
 
-                                pmb.Location = new Point(pmb.X, pmb.Y + mSubScreenHeight);
-                                peb.Location = new Point(peb.X, peb.Y + eSubScreenHeight);
+                                pmb.Location = new Point(pmb.X, pmb.Y + mSubScreen.Height);
+                                peb.Location = new Point(peb.X, peb.Y + eSubScreen.Height);
 
                                 p.MonitorBounds = pmb;
                                 p.EditBounds = peb;
@@ -1769,37 +1713,20 @@ namespace Nucleus.Coop
                         {
                             if (pmb.Bottom <= screen.MonitorBounds.Bottom && players.Where(pl => (pl != p) && pl.MonitorBounds.Top == pmb.Bottom && pl.MonitorBounds.X == pmb.X && pl != playerInbounds).Count() == 0)
                             {
-                                int pmbH = mSubScreenHeight;
-                                int pebH = eSubScreenHeight;
-
                                 PlayerInfo other = players.Where(pl => (pl != p && pl.ScreenIndex != -1) && pl.MonitorBounds != p.MonitorBounds && pl.MonitorBounds.Top > pmb.Bottom && pl.MonitorBounds.X == pmb.X && pl.MonitorBounds.Bottom != pmb.Bottom && pl != playerInbounds).FirstOrDefault();
 
-                                pmb.Height += pmbH;
-                                peb.Height += pebH;
+                                pmb.Height += mSubScreen.Height;
+                                peb.Height += eSubScreen.Height;
 
-                                int mboundsLimit;
-                                int eboundsLimit;
-
-                                if (other == null)
-                                {
-                                    mboundsLimit = screen.MonitorBounds.Bottom;
-                                    eboundsLimit = screen.UIBounds.Bottom;
-                                }
-                                else
-                                {
-                                    mboundsLimit = other.MonitorBounds.Top;
-                                    eboundsLimit = other.EditBounds.Top;
-                                }
+                                int mboundsLimit = other == null ? screen.MonitorBounds.Bottom : other.MonitorBounds.Top;
+                                int eboundsLimit = other == null ? screen.UIBounds.Bottom : other.EditBounds.Top;
 
                                 if (pmb.Bottom <= mboundsLimit && players.Where(pl => (pl != p) && pl.MonitorBounds.IntersectsWith(pmb) && pl != playerInbounds).Count() == 0)
                                 {
-                                    if (other == null)
+                                    if (pmb.Top == screen.MonitorBounds.Y && Math.Abs(mboundsLimit - pmb.Bottom) < mSubScreen.Height && other == null)
                                     {
-                                        if (pmb.Top == screen.MonitorBounds.Y && Math.Abs(mboundsLimit - pmb.Bottom) < mSubScreenHeight)
-                                        {
-                                            pmb.Height = screen.MonitorBounds.Height;
-                                            pmb.Y = screen.MonitorBounds.Y;
-                                        }
+                                        pmb.Height = screen.MonitorBounds.Height;
+                                        pmb.Y = screen.MonitorBounds.Y;
                                     }
 
                                     p.MonitorBounds = pmb;
@@ -1815,10 +1742,10 @@ namespace Nucleus.Coop
                         }
                         else if (e.Delta >= 120)
                         {
-                            if (pmb.Height > mSubScreenHeight)
+                            if (pmb.Height > mSubScreen.Height)
                             {
-                                pmb.Height -= mSubScreenHeight;
-                                peb.Height -= eSubScreenHeight;
+                                pmb.Height -= mSubScreen.Height;
+                                peb.Height -= eSubScreen.Height;
 
                                 p.MonitorBounds = pmb;
                                 p.EditBounds = peb;
