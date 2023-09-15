@@ -9,6 +9,7 @@
         SixPlayers = 4,
         EightPlayers = 5,
         SixteenPlayers = 6,
-        Custom = 7
+        Custom = 7,
+        Manual = 8 
     }
 }

@@ -415,11 +415,11 @@ namespace Nucleus.Gaming.Coop
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Width"],
                                                (int)JplayersInfos[i]["Owner"]["Display"]["Height"]);
 
-                player.OwnerUIBounds = new Rectangle(
-                                               (int)JplayersInfos[i]["Owner"]["UiBounds"]["X"],
-                                               (int)JplayersInfos[i]["Owner"]["UiBounds"]["Y"],
-                                               (int)JplayersInfos[i]["Owner"]["UiBounds"]["Width"],
-                                               (int)JplayersInfos[i]["Owner"]["UiBounds"]["Height"]);
+                player.OwnerUIBounds = new RectangleF(
+                                               (float)JplayersInfos[i]["Owner"]["UiBounds"]["X"],
+                                               (float)JplayersInfos[i]["Owner"]["UiBounds"]["Y"],
+                                               (float)JplayersInfos[i]["Owner"]["UiBounds"]["Width"],
+                                               (float)JplayersInfos[i]["Owner"]["UiBounds"]["Height"]);
 
 
                 player.MonitorBounds = new Rectangle(
@@ -428,11 +428,11 @@ namespace Nucleus.Gaming.Coop
                                                (int)JplayersInfos[i]["MonitorBounds"]["Width"],
                                                (int)JplayersInfos[i]["MonitorBounds"]["Height"]);
 
-                player.EditBounds = new Rectangle(
-                                              (int)JplayersInfos[i]["EditBounds"]["X"],
-                                              (int)JplayersInfos[i]["EditBounds"]["Y"],
-                                              (int)JplayersInfos[i]["EditBounds"]["Width"],
-                                              (int)JplayersInfos[i]["EditBounds"]["Height"]);
+                player.EditBounds = new RectangleF(
+                                              (float)JplayersInfos[i]["EditBounds"]["X"],
+                                              (float)JplayersInfos[i]["EditBounds"]["Y"],
+                                              (float)JplayersInfos[i]["EditBounds"]["Width"],
+                                              (float)JplayersInfos[i]["EditBounds"]["Height"]);
 
 
                 player.IsDInput = (bool)JplayersInfos[i]["IsDInput"];

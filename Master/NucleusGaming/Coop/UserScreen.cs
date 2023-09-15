@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Documents;
 
 namespace Nucleus.Gaming.Coop
 {
     public class UserScreen
     {
-        private Rectangle uiBounds;
+        private RectangleF uiBounds;
         private Rectangle swapTypeRect;
         private UserScreenType type;
 
@@ -14,6 +15,7 @@ namespace Nucleus.Gaming.Coop
         public int priority;
         public int DisplayIndex;
         private int playerOnScreen = 0;
+
         public int PlayerOnScreen
         {
             get => playerOnScreen;
@@ -26,7 +28,7 @@ namespace Nucleus.Gaming.Coop
             set => swapTypeRect = value;
         }
 
-        public Rectangle UIBounds
+        public RectangleF UIBounds
         {
             get => uiBounds;
             set => uiBounds = value;
@@ -40,7 +42,7 @@ namespace Nucleus.Gaming.Coop
 
         public Rectangle MonitorBounds => display;
 
-        public Dictionary<Rectangle, Rectangle> SubScreensBounds;
+        public Dictionary<Rectangle, RectangleF> SubScreensBounds;
 
         public UserScreen(Rectangle display)
         {
@@ -65,7 +67,7 @@ namespace Nucleus.Gaming.Coop
                 case UserScreenType.SixteenPlayers:
                     return 16;
                 case UserScreenType.Custom:
-                    return GameProfile.CustomLayout_Max; //int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
+                    return GameProfile.CustomLayout_Max;
                 default:
                     return -1;
             }

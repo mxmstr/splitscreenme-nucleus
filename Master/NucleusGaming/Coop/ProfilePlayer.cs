@@ -11,8 +11,8 @@ namespace Nucleus.Gaming.Coop
     {
         public Rectangle MonitorBounds;
         public Rectangle OwnerDisplay;
-        public Rectangle OwnerUIBounds;
-        public Rectangle EditBounds;
+        public RectangleF OwnerUIBounds;
+        public RectangleF EditBounds;
 
         public Guid GamepadGuid;
 

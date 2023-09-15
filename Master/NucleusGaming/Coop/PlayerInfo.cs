@@ -14,8 +14,8 @@ namespace Nucleus.Gaming.Coop
     public class PlayerInfo 
     {
         public List<Rectangle> OtherLayout;
-        private Rectangle sourceEditBounds;
-        private Rectangle editBounds;
+        private RectangleF sourceEditBounds;
+        private RectangleF editBounds;
         private Rectangle monitorBounds;
 
         private object tag;
@@ -86,7 +86,7 @@ namespace Nucleus.Gaming.Coop
             set => monitorBounds = value;
         }
 
-        public Rectangle SourceEditBounds
+        public RectangleF SourceEditBounds
         {
             get => sourceEditBounds;
             set => sourceEditBounds = value;
@@ -96,7 +96,7 @@ namespace Nucleus.Gaming.Coop
         /// A temporary rectangle to show the user
         /// where the game screen is going to be located
         /// </summary>
-        public Rectangle EditBounds
+        public RectangleF EditBounds
         {
             get => editBounds;
             set => editBounds = value;
