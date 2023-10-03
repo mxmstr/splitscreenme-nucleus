@@ -37,7 +37,7 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
 
         public static void SendFocusMsgs()
         {
-            List<PlayerInfo> players = profile.PlayersList;
+            List<PlayerInfo> players = profile.DevicesList;
             if (players == null)
             {
                 return;
@@ -149,7 +149,7 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
             //    Thread.Sleep(1000);
             //}
 
-            foreach (PlayerInfo plyr in profile.PlayersList)
+            foreach (PlayerInfo plyr in profile.DevicesList)
             {
                 Thread.Sleep(1000);
                 genericGameHandler.Log("Send fake focus messages to process " + plyr.ProcessData.Process.Id);

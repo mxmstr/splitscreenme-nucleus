@@ -4,6 +4,7 @@ using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.Generic.Cursor;
 using Nucleus.Gaming.Coop.InputManagement;
+using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Platform.PCSpecs;
@@ -162,7 +163,7 @@ namespace Nucleus.Gaming
 
             Network.iniNetworkInterface = GameProfile.Network;
 
-            List<PlayerInfo> players = profile.PlayersList;
+            List<PlayerInfo> players = profile.DevicesList;
 
             gen = game.Game as GenericGameInfo;
             // see if we have any save game to backup
@@ -220,7 +221,7 @@ namespace Nucleus.Gaming
                 Log($"Set Windows Setup Timing to {HWndInterval} ms");
             }
 
-            totalPlayers = profile.PlayersList.Count;
+            totalPlayers = profile.DevicesList.Count;
 
             error = null;
 
@@ -333,6 +334,12 @@ namespace Nucleus.Gaming
 
         public string Play()
         {
+
+            if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
+            {
+                MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
             if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
             {
                 User32Util.HideTaskbar();
@@ -349,12 +356,7 @@ namespace Nucleus.Gaming
                     ProtoInput.protoInput.SetTaskbarAutohide(true);
                 }
             }
-
-            if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
-            {
-                MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
+           
             garch = "x86";
             if (MachineSpecs.GetMachineArch(userGame.ExePath) == true)
             {
@@ -386,7 +388,7 @@ namespace Nucleus.Gaming
             ProcessUtil.KillRemainingProcess(this, gen);
        
             //Merge raw keyboard/mouse players into one 
-            var groupWindows = profile.PlayersList.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
+            var groupWindows = profile.DevicesList.Where(x => x.IsRawKeyboard || x.IsRawMouse).GroupBy(x => x.MonitorBounds).ToList();
 
             foreach (var group in groupWindows)
             {
@@ -407,66 +409,40 @@ namespace Nucleus.Gaming
                
                 firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0]};
 
-                int insertAt = profile.PlayersList.FindIndex(toInsert => toInsert == firstInGroup);//Get index of the player so it can be re-inserted where it was.
+                int insertAt = profile.DevicesList.FindIndex(toInsert => toInsert == firstInGroup);//Get index of the player so it can be re-inserted where it was.
 
                 foreach (var x in group)
                 {
-                    profile.PlayersList.Remove(x);
+                    profile.DevicesList.Remove(x);
                 }
 
-                profile.PlayersList.Insert(insertAt,firstInGroup);//Re-insert the player where it was before its deletion  
+                profile.DevicesList.Insert(insertAt,firstInGroup);//Re-insert the player where it was before its deletion  
             }
 
-            List<PlayerInfo> players = profile.PlayersList;
-
-            List<int> screens = new List<int>();
+            List<PlayerInfo> players = profile.DevicesList;
 
             Log("Determining which monitors will be used by Nucleus");
 
-            for (int i = 0; i < players.Count; i++)
+            foreach (Display dp in ScreensUtil.AllScreensParams())
             {
-                PlayerInfo player = players[i];
-                
-                player.PlayerID = i;
-
-                if (GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayersList.Count != 1)
+                if (players.Any(p => p.Owner.DisplayIndex == dp.DisplayIndex))
                 {
-                    if (i == 0)
-                    {
-                        Log("Setup splitscreen division");
-                    }
-
-                    player.MonitorBounds = new Rectangle(player.MonitorBounds.X + 1,
-                                                         player.MonitorBounds.Y + 1,
-                                                         player.MonitorBounds.Width - 2,
-                                                         player.MonitorBounds.Height - 2);
+                    screensInUse.Add(dp);
                 }
 
-                int pod = player.Owner.DisplayIndex;
-
-                foreach (Display dp in ScreensUtil.AllScreensParams())
+                if (screensInUse.Contains(dp))
                 {
-                    if (screens.Contains(pod) || dp.DisplayIndex != pod)
-                    {
-                        continue;
-                    }
-
-                    screensInUse.Add(dp);
-                    screens.Add(pod);
-
-                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.PlayersList.Count != 1) || gen.HideDesktop)
+                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.DevicesList.Count != 1) || gen.HideDesktop)
                     {
                         Globals.MainOSD.Invoke((MethodInvoker)delegate ()
                         {
-                            Form backgroundForm = new SplitForm(gen, this, dp);
+                            Form backgroundForm = new SplitForm(gen, dp);
                             backgroundForm.Show();
                             backgroundForm.BringToFront();
                             splitForms.Add(backgroundForm);
                         });
                     }
-
-                    break;
-                }                                
+                }
             }
 
             gen.SetPlayerList(players);
@@ -482,7 +458,7 @@ namespace Nucleus.Gaming
                 Log("The Windows deskop scale will not be set to 100% because this option has been disabled in settings or game profile");
             }
 
-            UserScreen[] all = ScreensUtil.AllScreens();
+            UserScreen[] all = profile.Screens.ToArray();
 
             Log(string.Format("Display - DPIHandling: {0}, DPI Scale: {1}", gen.DPIHandling, DPIManager.Scale));
             for (int x = 0; x < all.Length; x++)
@@ -566,6 +542,8 @@ namespace Nucleus.Gaming
                 Log($"********** Setting up player {i + 1} **********");
 
                 PlayerInfo player = players[i];
+
+                player.PlayerID = i;
 
                 plyrIndex = i;
 
@@ -1659,11 +1637,6 @@ namespace Nucleus.Gaming
                     XInputPlusDll.CustomDllEnabled(this, gen, context, player, playerBounds, i, setupDll);
                 }
 
-                if (!gen.UseGoldberg && GameProfile.UseNicknames)
-                {
-                    SteamFunctions.SetSteamIdNoGoldberg(this, gen, i);
-                }
-
                 if (gen.GoldbergWriteSteamIDAndAccount)
                 {
                     SteamFunctions.GoldbergWriteSteamIDAndAccount(this, gen, linkFolder, i, player);
@@ -1694,10 +1667,10 @@ namespace Nucleus.Gaming
                 {
                     return string.Empty;
                 }
-                else
-                {
-                    TriggerOSD(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
-                }
+                //else
+                //{
+                //    TriggerOSD(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
+                //}
 
                 if (context.NeedsSteamEmulation)
                 {
@@ -3162,9 +3135,12 @@ namespace Nucleus.Gaming
             }
             catch { }
 
-            ControllersUINav.EnabledRuntime = false;
+            if (!processingExit)
+            {
+                GamepadNavigation.EnabledRuntime = false;
 
-            GameProfile.SaveGameProfile(profile);
+                GameProfile.SaveGameProfile(profile);
+            }
 
             gen.OnFinishedSetup?.Invoke();
 
@@ -3378,7 +3354,7 @@ namespace Nucleus.Gaming
 
         private void ProcessChangeAtEnd()
         {
-            List<PlayerInfo> players = profile.PlayersList;
+            List<PlayerInfo> players = profile.DevicesList;
 
             Log("Starting process end changes");
 
@@ -3612,10 +3588,13 @@ namespace Nucleus.Gaming
                 RegistryUtil.RestoreUserEnvironmentRegistryPath();
             }
 
-            ControllersUINav.EnabledRuntime = false;
+            if (!processingExit)
+            {
+                GamepadNavigation.EnabledRuntime = false;
 
-            GameProfile.SaveGameProfile(profile);
-           
+                GameProfile.SaveGameProfile(profile);
+            }
+
             gen.OnFinishedSetup?.Invoke();
         }
 
@@ -3671,7 +3650,7 @@ namespace Nucleus.Gaming
 
         public void CenterCursor()
         {
-            List<PlayerInfo> players = profile.PlayersList;
+            List<PlayerInfo> players = profile.DevicesList;
             if (players == null)
             {
                 return;
@@ -3689,8 +3668,6 @@ namespace Nucleus.Gaming
                         continue;
                     }
 
-                    Rectangle r = p.MonitorBounds;
-                    //Cursor.Clip = r;
                     if (data.HWnd != null)
                     {
                         User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
@@ -3718,9 +3695,9 @@ namespace Nucleus.Gaming
                 return;
             }
         
-            if (ControllersUINav.Enabled)
+            if (GamepadNavigation.Enabled)
             {
-                ControllersUINav.EnabledRuntime = true;
+                GamepadNavigation.EnabledRuntime = true;
             }
 
             if (ini.IniReadValue("Misc", "ShowStatus") == "True")
@@ -3843,7 +3820,7 @@ namespace Nucleus.Gaming
 
             Thread.Sleep(1000);
 
-            List<PlayerInfo> data = profile.PlayersList;
+            List<PlayerInfo> data = profile.DevicesList;
 
             foreach (PlayerInfo player in data)
             {

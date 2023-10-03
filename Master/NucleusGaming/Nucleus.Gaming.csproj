@@ -76,6 +76,9 @@
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX.Direct2D1, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct2D1.4.2.0\lib\net45\SharpDX.Direct2D1.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX.DirectInput, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.DirectInput.4.2.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
     </Reference>
@@ -104,12 +107,6 @@
     <Compile Include="Cache\ImageCache.cs" />
     <Compile Include="Cache\SteamIdsCache.cs" />
     <Compile Include="Cache\NicknamesCache.cs" />
-    <Compile Include="Controls\AlphaTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\AlphaTextBox.Designer.cs">
-      <DependentUpon>AlphaTextBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -143,15 +140,15 @@
     </Compile>
     <Compile Include="Controls\ICanProceed.cs" />
     <Compile Include="Controls\IHighlightControl.cs" />
-    <Compile Include="Controls\NButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\PictureButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\PictureButton.Designer.cs">
       <DependentUpon>PictureButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SetupScreen\BoundsFunctions.cs" />
+    <Compile Include="Controls\SetupScreen\DevicesFunctions.cs" />
+    <Compile Include="Controls\SetupScreen\Draw.cs" />
     <Compile Include="Controls\SizeableCheckbox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -178,7 +175,11 @@
     <Compile Include="Coop\BasicTypes\Ref.cs" />
     <Compile Include="Coop\Generic\async.cs" />
     <Compile Include="Coop\Generic\HttpClient.cs" />
-    <Compile Include="Coop\InputManagement\ControllersShortcuts.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\GamepadButtons.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\GamepadNavigation.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\GamepadState.cs" />
+    <Compile Include="Coop\InputManagement\Osk.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\GamepadShortcuts.cs" />
     <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
     <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
     <Compile Include="Coop\ProfilePlayer.cs" />
@@ -245,7 +246,7 @@
     <Compile Include="Coop\ProtoInput\ProtoInputLauncher.cs" />
     <Compile Include="Coop\ProtoInput\ProtoInputOptions.cs" />
     <Compile Include="Coop\Window.cs" />
-    <Compile Include="DirectInput\DInputManager.cs" />
+    <Compile Include="DirectInputLib\DInputManager.cs" />
     <Compile Include="Coop\GameOption.cs" />
     <Compile Include="Coop\GameOptionValue.cs" />
     <Compile Include="Coop\GameProfile.cs" />
@@ -296,7 +297,6 @@
     <Compile Include="Controls\GameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\SetupScreenBase.cs" />
     <Compile Include="Platform\IO\WinDirectoryUtil.cs" />
     <Compile Include="Platform\MachineSpecs\MachineSpecs.cs" />
     <Compile Include="Platform\Windows\GetNetFrameworkVersion.cs" />
@@ -353,7 +353,7 @@
     <Compile Include="Controls\PlayerOptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\SetupScreen.cs">
+    <Compile Include="Controls\SetupScreen\SetupScreenControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -413,9 +413,6 @@
     <Compile Include="Util\WindowsUsersUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\AlphaTextBox.resx">
-      <DependentUpon>AlphaTextBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlListBox.resx">
       <DependentUpon>ControlListBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -470,8 +467,8 @@
     <EmbeddedResource Include="Controls\PlayerOptionsControl.resx">
       <DependentUpon>PlayerOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SetupScreen.resx">
-      <DependentUpon>SetupScreen.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\SetupScreen\SetupScreenControl.resx">
+      <DependentUpon>SetupScreenControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserInputControl.resx">
       <DependentUpon>UserInputControl.cs</DependentUpon>
@@ -526,6 +523,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

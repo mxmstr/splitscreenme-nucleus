@@ -1,4 +1,5 @@
 ﻿using Nucleus.Coop;
+using Nucleus.Gaming.Controls.SetupScreen;
 //using SlimDX.DirectInput;
 using SharpDX.DirectInput;
 using SharpDX.XInput;
@@ -144,7 +145,7 @@ namespace Nucleus.Gaming.Coop
             if (!ShouldFlash)
             {
                 ShouldFlash = true;
-                SetupScreen.InvalidateFlash();
+                SetupScreenControl.InvalidateFlash();
             }
 
             flashStopwatch.Restart();
@@ -161,7 +162,7 @@ namespace Nucleus.Gaming.Coop
                     flashTask = null;
 
                     ShouldFlash = false;
-                    SetupScreen.InvalidateFlash();
+                    SetupScreenControl.InvalidateFlash();
                 });
 
                 flashTask.Start();

@@ -395,7 +395,7 @@ namespace Nucleus.Gaming
             {
                 Globals.MainOSD.Invoke((MethodInvoker)delegate ()
                 {
-                    Form backgroundForm = new SplitForm(GameProfile.Game, parent, dp);
+                    Form backgroundForm = new SplitForm(GameProfile.Game, dp);
                     backgroundForm.Show();
                     backgroundForm.BringToFront();
                     parent.splitForms.Add(backgroundForm);
@@ -419,7 +419,7 @@ namespace Nucleus.Gaming
             {
                 Globals.MainOSD.Invoke((MethodInvoker)delegate ()
                 {
-                    Form backgroundForm = new SplitForm(GameProfile.Game, parent, dp);
+                    Form backgroundForm = new SplitForm(GameProfile.Game, dp);
                     backgroundForm.Show();
                     backgroundForm.BringToFront();
                     parent.splitForms.Add(backgroundForm);

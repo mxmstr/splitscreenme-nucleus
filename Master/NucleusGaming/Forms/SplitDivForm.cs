@@ -13,14 +13,13 @@ namespace Nucleus.Gaming.Forms
     public partial class SplitForm : Form
     {
         private Color ChoosenColor;
-        private Timer loadTimer;
-        private string currentGame;
+        private string gameGUID;
         private System.Threading.Timer fading;
         private int alpha = 0;
         private bool stopPainting;
-        private IntPtr handle;
+        private SolidBrush backBrush;
 
-        public SplitForm(GenericGameInfo game, GenericGameHandler handler, Display screen)
+        public SplitForm(GenericGameInfo game, Display screen)
         {
             InitializeComponent();
             Name = $"SplitForm{screen.DisplayIndex}";
@@ -32,12 +31,12 @@ namespace Nucleus.Gaming.Forms
             FormBorderStyle = FormBorderStyle.None;
             StartPosition = FormStartPosition.Manual;
             BackColor = Color.Black;
-            currentGame = game.GUID;
-            handle = this.Handle;
-            Setup(game, handler);
+            gameGUID = game.GUID;
+            game.OnFinishedSetup += SetupFinished;
+            Setup();
         }
 
-        private void Setup(GenericGameInfo game, GenericGameHandler handler)
+        private void Setup()
         {
             IDictionary<string, Color> splitColors = new Dictionary<string, Color>
             {
@@ -65,25 +64,6 @@ namespace Nucleus.Gaming.Forms
                 break;
             }
 
-            int interval = 5000;
-
-            if (GameProfile.PauseBetweenInstanceLaunch > 0)
-            {
-                interval += (GameProfile.PauseBetweenInstanceLaunch * 1000) * handler.TotalPlayers;
-            }
-            else
-            {
-                interval += (game.PauseBetweenStarts * 1000) * handler.TotalPlayers;
-            }
-
-            loadTimer = new Timer
-            {
-                Interval = interval
-            };
-
-            loadTimer.Tick += new EventHandler(loadTimerTick);
-            loadTimer.Start();
-
             SlideshowStart();
         }
 
@@ -94,11 +74,11 @@ namespace Nucleus.Gaming.Forms
         {
             if (alpha == 255)
             {
-                if (Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")))
+                if (Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{gameGUID}")))
                 {
-                    string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")));
+                    string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $@"gui\screenshots\{gameGUID}")));
 
-                    BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{imgIndex}_{currentGame}.jpeg"));
+                    BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{gameGUID}\{imgIndex}_{gameGUID}.jpeg"));
 
                     imgIndex++;
 
@@ -126,6 +106,7 @@ namespace Nucleus.Gaming.Forms
                 fullApha = false;
             }
 
+            backBrush = new SolidBrush(Color.FromArgb(alpha, 0, 0, 0));
             Invalidate();
         }
 
@@ -135,35 +116,31 @@ namespace Nucleus.Gaming.Forms
             {
                 fading = new System.Threading.Timer(fadingTick, null, 0, 30);
 
-                if (Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")))
+                if (Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{gameGUID}")))
                 {
-                    string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}")));
+                    string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $@"gui\screenshots\{gameGUID}")));
 
-                    BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{currentGame}\{imgIndex}_{currentGame}.jpeg"));
+                    BackgroundImage = ImageCache.GetImage(Path.Combine(Application.StartupPath, $@"gui\screenshots\{gameGUID}\{imgIndex}_{gameGUID}.jpeg"));
                     imgIndex++;
                 }
             }
         }
 
-        private void loadTimerTick(Object Object, EventArgs EventArgs)
+        private void SetupFinished()
         {
-            loadTimer.Dispose();
             fading.Dispose();
+
             BackgroundImage = null;
             BackColor = ChoosenColor;
             Invalidate();
-            stopPainting = true;
+            stopPainting = true;    
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Rectangle back = new Rectangle(0, 0, Width, Height);
-            SolidBrush backBrush = new SolidBrush(Color.FromArgb(alpha, 0, 0, 0));
-
-            e.Graphics.FillRectangle(backBrush, back);
-            backBrush.Dispose();
-
-            if (!stopPainting)
+            e.Graphics.FillRectangle(backBrush, new Rectangle(0, 0, Width, Height));
+          
+            if (stopPainting)
             {
                 return;
             }

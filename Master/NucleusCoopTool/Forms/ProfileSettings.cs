@@ -5,6 +5,7 @@ using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
+using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using System;
@@ -28,13 +29,12 @@ namespace Nucleus.Coop
         private readonly IniFile ini = Globals.ini;
 
         private MainForm mainForm = null;
-        private SetupScreen setupScreen = null;
+        private SetupScreenControl setupScreen = null;
         private static ProfileSettings profileSettings;
 
         private List<string> nicksList = new List<string>();
         private List<string> steamIdsList = new List<string>();
-        private List<string> jsonNicksList = new List<string>();
-        private List<string> jsonsteamIdsList = new List<string>();
+
         private string currentNickname;
         private string currentSteamId;
 
@@ -60,17 +60,6 @@ namespace Nucleus.Coop
 
         private Pen bordersPen;
 
-        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-        private static extern IntPtr CreateRoundRectRgn
-        (
-          int nLeftRect,     // x-coordinate of upper-left corner
-          int nTopRect,      // y-coordinate of upper-left corner
-          int nRightRect,    // x-coordinate of lower-right corner
-          int nBottomRect,   // y-coordinate of lower-right corner
-          int nWidthEllipse, // width of ellipse
-          int nHeightEllipse // height of ellipse
-        );
-
         protected override CreateParams CreateParams
         {
             get
@@ -81,7 +70,7 @@ namespace Nucleus.Coop
             }
         }
 
-        public ProfileSettings(MainForm mf, SetupScreen pc)
+        public ProfileSettings(MainForm mf, SetupScreenControl pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
             profileSettings = this;
@@ -466,8 +455,7 @@ namespace Nucleus.Coop
             for (int i = 0; i < 32; i++)
             {
                 ProfilePlayer player = null;
-
-              
+           
                 if (i < playersList.Count)
                 {
                     player = playersList[i];
@@ -588,7 +576,7 @@ namespace Nucleus.Coop
                     }
                 }
             }
-        
+
             if (GameProfile.ModeText == "New Profile")
             {
                 GameProfile.AudioInstances.Clear();
@@ -617,7 +605,7 @@ namespace Nucleus.Coop
             notes_text.Text = GameProfile.Notes;
             profileTitle.Text = GameProfile.Title;
 
-            if (GameProfile.currentProfile != null)
+            if (GameProfile._GameProfile != null)
             {
                 modeLabel.Text = GameProfile.ModeText;
             }
@@ -840,10 +828,10 @@ namespace Nucleus.Coop
             ///Unlock profiles list on close          
             ProfilesList.profilesList.Locked = false;
 
-            ///Update profile .json file
+            ///Update profile[#].json file
             if (GameProfile.ModeText != "New Profile")
             {              
-                GameProfile.UpdateGameProfile(GameProfile.currentProfile);
+                GameProfile.UpdateGameProfile(GameProfile._GameProfile);
                 setupScreen.gameProfilesList.Update_ProfilesList();
 
                 ///Send control selection event to the Profiles List (update the list and reload the profile)

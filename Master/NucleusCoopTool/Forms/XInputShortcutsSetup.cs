@@ -1,7 +1,7 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
-using Nucleus.Gaming.Coop.InputManagement;
+using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows.Interop;
 using SharpDX.XInput;
@@ -10,7 +10,6 @@ using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Forms;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace Nucleus.Coop.Forms
 {
@@ -61,8 +60,8 @@ namespace Nucleus.Coop.Forms
             if (roundedcorners)
             {
                 Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-
             }
+
             if (ini.IniReadValue("XShortcuts", "SetFocus").Contains('+'))
             {
                 string[] SetFocus = ini.IniReadValue("XShortcuts", "SetFocus").Split('+');
@@ -395,12 +394,12 @@ namespace Nucleus.Coop.Forms
 
             RectangleF highlight = RectangleF.Empty;
 
-            for (int i = 0; i < XController.Controllers.Length; i++)
+            for (int i = 0; i < GamepadState.Controllers.Length; i++)
             {
                 {////draw a circle at the pressed button location
-                    int pressed = XController.GetPressedButtons(i);
-                    int rtValue = XController.GetRightTriggerValue(i);
-                    int rlValue = XController.GetLeftTriggerValue(i);
+                    int pressed = GamepadState.GetPressedButtons(i);
+                    int rtValue = GamepadState.GetRightTriggerValue(i);
+                    int rlValue = GamepadState.GetLeftTriggerValue(i);
                     bool isRT = false;
                     bool isRL = false;
                     bool isTRigger = false;
@@ -432,7 +431,6 @@ namespace Nucleus.Coop.Forms
                             }
                         case (int)GamepadButtonFlags.RightShoulder:
                             {
-
                                 highlight = RB;
                                 break;
                             }
@@ -441,7 +439,6 @@ namespace Nucleus.Coop.Forms
                                 highlight = LB;
                                 break;
                             }
-
                         case (int)GamepadButtonFlags.RightThumb:
                             {
                                 highlight = RS;
@@ -554,6 +551,8 @@ namespace Nucleus.Coop.Forms
                                 activeControl.Tag = 10000;
                             }
                         }
+
+                        //activeControl.BackgroundImage = GamepadButtons.Image(pressed,""/* settings selected gamepad type (xbox,playstation etc)*/);
                     }
                 }
             }
@@ -584,8 +583,8 @@ namespace Nucleus.Coop.Forms
 
             ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
             
-            ControllersShortcuts.UpdateShortcutsValue();
-            ControllersUINav.UpdateUINavSettings();
+            GamepadShortcuts.UpdateShortcutsValue();
+            GamepadNavigation.UpdateUINavSettings();
 
             Visible = false;
         }
@@ -606,7 +605,7 @@ namespace Nucleus.Coop.Forms
         private void enabled_chk_CheckedChanged(object sender, EventArgs e)
         {
             ini.IniWriteValue("XUINav", "Enabled", enabled_chk.Checked.ToString());
-            ControllersUINav.UpdateUINavSettings();
+            GamepadNavigation.UpdateUINavSettings();
         }
 
         private void deadzone_txt_MouseEnter(object sender, EventArgs e)

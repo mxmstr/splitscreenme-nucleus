@@ -32,11 +32,8 @@ namespace Nucleus.Gaming.Controls
             ToolTip tooltipToRemove;
             tooltipList.TryRemove(control, out tooltipToRemove);
 
-            if (tooltipToRemove != null)
-            {
-                tooltipToRemove.Dispose();
-            }
-
+            tooltipToRemove?.Dispose();
+            
             ToolTip tooltip = new ToolTip
             {
                 InitialDelay = delay,

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace Nucleus.Gaming.DirectInput
+namespace Nucleus.Gaming.DirectInputLib
 {
     public static class DInputManager
     {

@@ -38,7 +38,7 @@ namespace Nucleus.Gaming
 
         }
 
-        protected virtual void CanPlayUpdated(bool canPlay, bool autoProceed)
+        public virtual void CanPlayUpdated(bool canPlay, bool autoProceed)
         {
             if (OnCanPlayUpdated != null)
             {

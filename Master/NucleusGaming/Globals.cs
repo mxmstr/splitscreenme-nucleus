@@ -19,5 +19,9 @@ namespace Nucleus.Gaming
 
         public static OSD MainOSD = new OSD();
 
+        public static Button PlayButton;
+        public static RichTextBox NoteZoomTextBox;
+        public static PictureBox NoteZoomButton;
+
     }
 }

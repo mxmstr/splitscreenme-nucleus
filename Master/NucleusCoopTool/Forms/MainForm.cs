@@ -1,14 +1,13 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Nucleus.Coop.Forms;
+﻿using Nucleus.Coop.Forms;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
+using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.InputManagement;
-using Nucleus.Gaming.Coop.ProtoInput;
+using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Platform.PCSpecs;
@@ -22,14 +21,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
 using System.Media;
-using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
-using Win32;
 
 
 namespace Nucleus.Coop
@@ -63,7 +58,6 @@ namespace Nucleus.Coop
         public string[] rgb_HandlerNoteBackColor;
         public string[] rgb_HandlerNoteMagnifierTitleBackColor;
 
-        public Thread _ControllersShortcuts = ControllersShortcuts.ctrlsShortcuts;
         public XInputShortcutsSetup Xinput_S_Setup;
         private NewSettings settings = null;
         private ProfileSettings profileSettings = null;
@@ -81,7 +75,7 @@ namespace Nucleus.Coop
         private GameProfile currentProfile;
         
         private UserInputControl currentStep;
-        public SetupScreen setupScreen;
+        public SetupScreenControl setupScreen;
         private PlayerOptionsControl optionsControl;
         private JSUserInputControl jsControl;
         private Handler handler = null;
@@ -499,6 +493,9 @@ namespace Nucleus.Coop
             gameContextMenuStrip.Cursor = hand_Cursor;
             button_UpdateAvailable.Cursor = hand_Cursor;
 
+            Globals.PlayButton = btn_Play;
+            Globals.NoteZoomButton = btn_magnifier;
+
             if (coverBorderOff)
             {
                 cover.BorderStyle = BorderStyle.None;
@@ -546,13 +543,13 @@ namespace Nucleus.Coop
 #endif
             ResumeLayout();
 
-            minimizeBtn.Click += new EventHandler(this.minimizeButton);
-            maximizeBtn.Click += new EventHandler(this.maximizeButton);
-            closeBtn.Click += new EventHandler(this.closeButton);
+            minimizeBtn.Click += new EventHandler(this.minimizeButtonClick);
+            maximizeBtn.Click += new EventHandler(this.maximizeButtonClick);
+            closeBtn.Click += new EventHandler(this.closeButtonClick);
 
             defBackground = clientAreaPanel.BackgroundImage as Bitmap;
 
-            setupScreen = new SetupScreen();
+            setupScreen = new SetupScreenControl();
 
             //setupScreen.textZoomContainer.BackColor = HandlerNoteMagnifierTitleBackColor;
             setupScreen.handlerNoteZoom.BackColor = HandlerNoteBackColor;
@@ -561,8 +558,7 @@ namespace Nucleus.Coop
             setupScreen.gameProfilesList_btn.Click += new EventHandler(this.gameProfilesList_btn_Click);
             setupScreen.OnCanPlayUpdated += StepCanPlay;
             setupScreen.Click += new EventHandler(this_Click);
-            setupScreen.btn_Play = btn_Play;
-
+            
             settings = new NewSettings(this, setupScreen);
             profileSettings = new ProfileSettings(this, setupScreen);
             searchDisksForm = new SearchDisksForm(this);
@@ -635,21 +631,19 @@ namespace Nucleus.Coop
             if (!windowsVersion.Contains("Windows 7") &&
                 !windowsVersion.Contains("Windows Vista"))
             {
-                ControllersShortcuts.ctrlsShortcuts = new Thread(ControllersShortcuts.StartSRTCThread);
-                ControllersShortcuts.ctrlsShortcuts.Start();
-                ControllersShortcuts.UpdateShortcutsValue();
+                GamepadShortcuts.GamepadShortcutsThread = new Thread(GamepadShortcuts.GamepadShortcutsUpdate);
+                GamepadShortcuts.GamepadShortcutsThread.Start();
+                GamepadShortcuts.UpdateShortcutsValue();
 
-                ControllersUINav.controllersUINavThread = new Thread(ControllersUINav.StartXConNavThread);
-                ControllersUINav.controllersUINavThread.Start();
-                ControllersUINav.UpdateUINavSettings();
+                GamepadNavigation.GamepadNavigationThread = new Thread(GamepadNavigation.GamepadNavigationUpdate);
+                GamepadNavigation.GamepadNavigationThread.Start();
+                GamepadNavigation.UpdateUINavSettings();
             }
             else
             {
                 NewSettings._ctrlr_shorcuts.Text = "Windows 8™ and up only";
                 NewSettings._ctrlr_shorcuts.Enabled = false;
             }
-
-            mainButtonFrame.Focus();
 
             DPIManager.Register(this);
             DPIManager.AddForm(this);
@@ -741,10 +735,10 @@ namespace Nucleus.Coop
 
         private void setupScreen_Paint(object sender, PaintEventArgs e)
         {
-            if (setupScreen.isDisconnected)
+            if (DevicesFunctions.isDisconnected)
             {
                 DPIManager.ForceUpdate();
-                setupScreen.isDisconnected = false;
+                DevicesFunctions.isDisconnected = false;
             }
         }
 
@@ -801,9 +795,9 @@ namespace Nucleus.Coop
             }
 
             Point cursorPos = PointToClient(Cursor.Position);
-            Rectangle inRect = new Rectangle(10, 10, Width - 20, Height - 20);
+            Rectangle outRect = new Rectangle(RESIZE_HANDLE_SIZE, RESIZE_HANDLE_SIZE, Width - RESIZE_HANDLE_SIZE*2, Height - RESIZE_HANDLE_SIZE*2);
 
-            if (!inRect.Contains(cursorPos))
+            if (!outRect.Contains(cursorPos))
             {
                 canResize = true;
             }
@@ -841,7 +835,6 @@ namespace Nucleus.Coop
 
                     User32Util.ShowTaskBar();
                     Close();
-                    //FadeOut();
                 }
                 else
                 {
@@ -1157,7 +1150,7 @@ namespace Nucleus.Coop
                 return;
             }
            
-            assetsDownloader.DownloadGameAssets(this, gameManager, scriptDownloader, currentControl);
+            assetsDownloader.DownloadGameAssets(this, gameManager, scriptDownloader, currentControl);          
         }
 
         private int r = 0;
@@ -1234,6 +1227,14 @@ namespace Nucleus.Coop
             else
             {
                 currentGame = currentGameInfo.Game;
+
+                if (!currentGameInfo.KeepSymLink && !currentGameInfo.Game.KeepSymLinkOnExit)
+                {
+                    //Cursor.Current = Cursors.WaitCursor;
+                    CleanGameContent.CleanContentFolder(currentGame);
+                    //Cursor.Current = default_Cursor;
+                }
+
                 button_UpdateAvailable.Visible = currentGameInfo.Game.UpdateAvailable;
 
                 HandlerNoteTitle.Text = "Handler Notes";
@@ -1247,10 +1248,8 @@ namespace Nucleus.Coop
                     rainbowTimer.Tick += new EventHandler(rainbowTimerTick);
                     rainbowTimer.Start();
                     rainbowTimerRunning = true;
-                }
-        
-                SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
-               
+                }             
+                         
                 icons_Container.Controls.Clear();
                 icons_Container.Controls.AddRange(InputIcons.SetInputsIcons(this, currentGame));
               
@@ -1260,6 +1259,17 @@ namespace Nucleus.Coop
                 StepPanel.Visible = true;
                 setupScreen.textZoomContainer.Visible = false;
                 stepPanelPictureBox.Visible = false;
+
+                SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
+
+                game_listSizer.Refresh();
+                mainButtonFrame.Refresh();
+                StepPanel.Refresh();
+                rightFrame.Refresh();
+
+                currentProfile = new GameProfile();
+
+                GameProfile.GameGUID = currentGame.GUID;
 
                 stepsList = new List<UserInputControl>
                 {
@@ -1272,9 +1282,8 @@ namespace Nucleus.Coop
                     stepsList.Add(jsControl);
                 }
 
-                currentProfile = new GameProfile();
+               
 
-                GameProfile.GameGUID = currentGame.GUID;
                 currentProfile.InitializeDefault(currentGame, setupScreen);
                 gameManager.UpdateCurrentGameProfile(currentProfile);
 
@@ -1322,11 +1331,7 @@ namespace Nucleus.Coop
 
                 content?.Dispose();
 
-                if (!currentGameInfo.KeepSymLink && !currentGameInfo.Game.KeepSymLinkOnExit)
-                {                 
-                    CleanGameContent.CleanContentFolder(currentGame);
-                }
-
+              
                 // content manager is shared within the same game
                 content = new ContentManager(currentGame);
 
@@ -1530,8 +1535,8 @@ namespace Nucleus.Coop
                 }
                 catch { }
 
-                GameProfile.currentProfile.Reset();
-                setupScreen.gamepadTimer = new System.Threading.Timer(setupScreen.GamepadTimer_Tick, null, 0, 500);
+                GameProfile._GameProfile.Reset();
+                DevicesFunctions.gamepadTimer = new System.Threading.Timer(DevicesFunctions.GamepadTimer_Tick, null, 0, 500);
                 return;
             }
 
@@ -2417,7 +2422,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void this_Click(object sender, System.EventArgs e)
+        private void this_Click(object sender, EventArgs e)
         {
             linksPanel.Visible = false;
             btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_closed.png");
@@ -2616,9 +2621,9 @@ namespace Nucleus.Coop
             }
         }
 
-        private void minimizeButton(object sender, EventArgs e) => WindowState = FormWindowState.Minimized;
+        private void minimizeButtonClick(object sender, EventArgs e) => WindowState = FormWindowState.Minimized;
 
-        private void maximizeButton(object sender, EventArgs e)
+        private void maximizeButtonClick(object sender, EventArgs e)
         {
             WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized;
         }
@@ -2645,16 +2650,22 @@ namespace Nucleus.Coop
             if (settings != null) settings.Visible = false;
             if (searchDisksForm != null) searchDisksForm.Visible = false;
 
-            if (setupScreen != null)
+            if (setupScreen != null && I_GameHandler == null)
             {
                 setupScreen.textZoomContainer.Visible = false;
                 btn_magnifier.Image = ImageCache.GetImage(theme + "magnifier.png");
-            }
 
-            if (ProfilesList.profilesList != null)
-            {
-                ProfilesList.profilesList.Locked = false;
-            }
+                GameProfile._GameProfile?.Reset();
+                if (stepsList != null)
+                {
+                    GoToStep(0);
+                }
+
+                if (ProfilesList.profilesList != null)
+                {
+                    ProfilesList.profilesList.Locked = false;
+                }
+            }         
         }
 
         private void MainForm_ResizeBegin(object sender, EventArgs e)
@@ -2683,7 +2694,7 @@ namespace Nucleus.Coop
             Opacity = 1.0D;
         }
 
-        private void closeButton(object sender, EventArgs e)
+        private void closeButtonClick(object sender, EventArgs e)
         {
             FadeOut();       
         }
@@ -2762,7 +2773,8 @@ namespace Nucleus.Coop
             linearGradientBrush.InterpolationColors = cblend;
 
             e.Graphics.FillRectangle(linearGradientBrush, top);
-            e.Graphics.FillRectangle(linearGradientBrush, bottom);
+            e.Graphics.FillRectangle(linearGradientBrush, bottom);        
         }
+
     }
 }

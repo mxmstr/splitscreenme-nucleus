@@ -5,6 +5,7 @@ using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
+using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
@@ -32,7 +33,7 @@ namespace Nucleus.Coop
     {
         private IniFile ini = Globals.ini;
         private MainForm mainForm = null;
-        private SetupScreen setupScreen;
+        private SetupScreenControl setupScreen;
         public int KillProcess_HotkeyID = 1;
         public int TopMost_HotkeyID = 2;
         public int StopSession_HotkeyID = 3;
@@ -43,8 +44,7 @@ namespace Nucleus.Coop
 
         private List<string> nicksList = new List<string>();
         private List<string> steamIdsList = new List<string>();
-        private List<string> jsonNicksList = new List<string>();
-        private List<string> jsonsteamIdsList = new List<string>();
+
         private string prevTheme;
         private string currentNickname;
         private string currentSteamId;
@@ -66,17 +66,6 @@ namespace Nucleus.Coop
         private Rectangle[] tabBorders;
         private Pen bordersPen;
 
-        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-        private static extern IntPtr CreateRoundRectRgn
-        (
-          int nLeftRect,     // x-coordinate of upper-left corner
-          int nTopRect,      // y-coordinate of upper-left corner
-          int nRightRect,    // x-coordinate of lower-right corner
-          int nBottomRect,   // y-coordinate of lower-right corner
-          int nWidthEllipse, // width of ellipse
-          int nHeightEllipse // height of ellipse
-        );
-
         protected override CreateParams CreateParams
         {
             get
@@ -93,7 +82,7 @@ namespace Nucleus.Coop
                 mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
         }
 
-        public NewSettings(MainForm mf, SetupScreen pc)
+        public NewSettings(MainForm mf, SetupScreenControl pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
             mainForm = mf;
@@ -288,6 +277,9 @@ namespace Nucleus.Coop
 
             gamepadsAssignMethods.Checked = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
             gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
+
+            DevicesFunctions.UseGamepadApiIndex = gamepadsAssignMethods.Checked;
+
             ///network setting
             RefreshCmbNetwork();
 
@@ -338,9 +330,6 @@ namespace Nucleus.Coop
 
             ///epiclangs setting
             cmb_EpicLang.SelectedItem = ini.IniReadValue("Misc", "EpicLang");
-
-            ///splash screen setting                   
-            //splashScreenChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
 
             ///mouse click sound setting          
             clickSoundChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "MouseClick"));
@@ -807,7 +796,6 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Misc", "AutoDesktopScaling", scaleOptionCbx.Checked.ToString());
 
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
-            //ini.IniWriteValue("Dev", "SplashScreen_On", splashScreenChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "UseXinputIndex", gamepadsAssignMethods.Checked.ToString());
 
@@ -829,14 +817,16 @@ namespace Nucleus.Coop
 
             if (setupScreen != null)
             {
-                if (setupScreen.UseXinputIndex != gamepadsAssignMethods.Checked)
+                if (DevicesFunctions.UseGamepadApiIndex != gamepadsAssignMethods.Checked)
                 {
-                    setupScreen.UseXinputIndex = gamepadsAssignMethods.Checked;
+                    DevicesFunctions.UseGamepadApiIndex = gamepadsAssignMethods.Checked;
                     mainForm.RefreshUI(true);
                 }
             }
 
-            if (disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
+            bool disableGameProfileschanged = disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
+
+            if (disableGameProfileschanged)
             {
                 ini.IniWriteValue("Misc", "DisableGameProfiles", disableGameProfiles.Checked.ToString());
                 mainForm.DisableGameProfiles = disableGameProfiles.Checked;
@@ -851,11 +841,11 @@ namespace Nucleus.Coop
                 needToRestart = true;
             }
 
-            if (GameProfile.ModeText == "New Profile" || disableGameProfiles.Checked)
+            if (GameProfile.ModeText == "New Profile" || disableGameProfileschanged)
             {
-                if (GameProfile.currentProfile != null)
+                if (GameProfile._GameProfile != null)
                 {
-                    GameProfile.currentProfile.Reset();
+                    GameProfile._GameProfile.Reset();
                     ProfileSettings.ProfileRefreshAudioList();
                 }
             }

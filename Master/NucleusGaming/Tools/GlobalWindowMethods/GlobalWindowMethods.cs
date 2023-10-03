@@ -76,8 +76,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             if (processData.HWnd == null)
             {
-                profile.PlayersList[i - 1].ProcessData.HWnd = new HwndObject(profile.PlayersList[i - 1].ProcessData.Process.NucleusGetMainWindowHandle());
-                processData.HWnd = profile.PlayersList[i - 1].ProcessData.HWnd;
+                profile.DevicesList[i - 1].ProcessData.HWnd = new HwndObject(profile.DevicesList[i - 1].ProcessData.Process.NucleusGetMainWindowHandle());
+                processData.HWnd = profile.DevicesList[i - 1].ProcessData.HWnd;
                 Thread.Sleep(1000);
             }
 
@@ -649,17 +649,17 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
         public static bool finish = false;
         public static GameProfile profile;
-        private static bool canSwitch = true;
+        private static bool canSwitchLayout = true;
 
         public static void SwitchLayout()
         {
-            if (profile == null || !GameProfile.Saved || !canSwitch)
+            if (profile == null || !GameProfile.Saved || !canSwitchLayout)
             {
                 Globals.MainOSD.Show(1600, $"Can't Be Used For Now");
                 return;
             }
 
-            List<PlayerInfo> players = profile.PlayersList.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();
+            List<PlayerInfo> players = profile.DevicesList.OrderBy(c => c.ScreenPriority).ThenBy(c => c.MonitorBounds.Y).ThenBy(c => c.MonitorBounds.X).ToList();
             bool adjust = GameProfile.UseSplitDiv;
 
             var screens = ScreensUtil.AllScreens();
@@ -987,11 +987,13 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 return;
             }
 
-            List<PlayerInfo> players = profile.PlayersList;
+            List<PlayerInfo> players = profile.DevicesList;
 
-            for (int i = 0; i < players.Count; i++)
+            List<UserScreen> screens = profile.Screens;
+
+            foreach (UserScreen screen in screens)
             {
-                PlayerInfo p = players[i];
+                PlayerInfo p = profile.DevicesList.Where(pl => pl.MonitorBounds.IntersectsWith(screen.SubScreensBounds.ElementAt(0).Key)).First();
                 ProcessData data = p.ProcessData;
 
                 if (data == null)
@@ -999,89 +1001,70 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     continue;
                 }
 
-                Rectangle localizeFirstOfScr = new Rectangle(p.Owner.display.Location.X, p.Owner.display.Location.Y, 20, 20);
-                Rectangle playerWindow = new Rectangle(data.HWnd.Location.X, data.HWnd.Location.Y, data.HWnd.Size.Width, data.HWnd.Size.Height);
-                bool fisrtOfScr = localizeFirstOfScr.IntersectsWith(playerWindow);
-
-                // Console.WriteLine(fisrtOfScr + " " + p.PlayerID);
-
                 if (on)
                 {
-                    ///need now to not mute sound for only one instance between all screens it could be a profile setting.
-
-                    //monitorcbounds ne peut pas etre utiliser pour localiser la position de la fenetre sur un ecran donné (peut etre negatif)                  
-                    if (fisrtOfScr)//(p.PlayerID == 0)
+                    //First player on this screen
+                    if (!GameProfile.Cts_KeepAspectRatio && !GameProfile.Cts_MuteAudioOnly)//will set player 0 window fullscreened.
                     {
-                        if (!GameProfile.Cts_KeepAspectRatio && !GameProfile.Cts_MuteAudioOnly)//will set player 0 window fullscreened.
-                        {
-                            //Console.WriteLine($"Set player {p.PlayerID} window fullsceened.");
-                            Rectangle setfullScreen = new Rectangle(p.Owner.display.X, p.Owner.display.Y, p.Owner.display.Width, p.Owner.display.Height);
-
-                            data.HWnd.Size = setfullScreen.Size;
-                            data.HWnd.Location = new Point(setfullScreen.X, setfullScreen.Y);
-                        }
-                        else if (!GameProfile.Cts_MuteAudioOnly) //will keep player window size and center it on screen.
-                        {
-                            //Console.WriteLine($"Set player {p.PlayerID} centered without resizing it.");
-                            Rectangle centeredOnly = RectangleUtil.Center(p.MonitorBounds, p.Owner.display);
-
-                            data.HWnd.Size = centeredOnly.Size;
-                            data.HWnd.Location = centeredOnly.Location;
-                        }
+                        Rectangle setfullScreen = new Rectangle(p.Owner.display.X, p.Owner.display.Y, p.Owner.display.Width, p.Owner.display.Height);
+                        data.HWnd.Size = setfullScreen.Size;
+                        data.HWnd.Location = new Point(setfullScreen.X, setfullScreen.Y);
                     }
-                    else//Move all other player windows in the wild and mute sound 
+                    else if (!GameProfile.Cts_MuteAudioOnly)//will keep player window size and center it on screen.
+                    {
+                        Rectangle centeredOnly = RectangleUtil.Center(p.MonitorBounds, p.Owner.display);
+                        data.HWnd.Size = centeredOnly.Size;
+                        data.HWnd.Location = centeredOnly.Location;
+                    }
+
+                    //All other players on this screen
+                    foreach (PlayerInfo player in players.Where(player => player.ProcessData != null && player != p && player.ScreenIndex == p.ScreenIndex))
                     {
                         if (!GameProfile.Cts_MuteAudioOnly)
                         {
                             Rectangle hiddenWindow = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
-
-                            data.HWnd.Location = new Point(-32000, -32000);//Minizing is probably a better option
-                            data.HWnd.Size = hiddenWindow.Size;
+                            player.ProcessData.HWnd.Location = new Point(-32000, -32000);
+                            player.ProcessData.HWnd.Size = hiddenWindow.Size;
                         }
 
-                        VolumeMixer.SetApplicationVolume(data.Process.Id, 0.0f);
+                        VolumeMixer.SetApplicationVolume(player.ProcessData.Process.Id, 0.0f);
                     }
+
+                    canSwitchLayout = false;
+                    Globals.MainOSD.Show(1600, "Cutscenes Mode On");
                 }
                 else//Reset all player windows and unmute
                 {
-                    if (fisrtOfScr)//(p.PlayerID == 0)
+                    //First player on this screen
+                    if (!GameProfile.Cts_MuteAudioOnly)
                     {
-                        if (!GameProfile.Cts_MuteAudioOnly)//Reset player 0 window
-                        {
-                            Rectangle resizeReposition = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
+                        Rectangle resizeReposition = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
 
-                            data.HWnd.Location = resizeReposition.Location;
-                            data.HWnd.Size = resizeReposition.Size;
-                        }
+                        data.HWnd.Location = resizeReposition.Location;
+                        data.HWnd.Size = resizeReposition.Size;
                     }
-                    else
+
+                    //All other players on this screen
+                    foreach (PlayerInfo player in players.Where(player => player.ProcessData != null && player != p && player.ScreenIndex == p.ScreenIndex))
                     {
                         if (!GameProfile.Cts_MuteAudioOnly)//Reset all other player window
                         {
-                            Rectangle reposition = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
+                            Rectangle reposition = new Rectangle(player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height);
 
-                            data.HWnd.Location = reposition.Location;
-                            data.HWnd.Size = reposition.Size;
+                            player.ProcessData.HWnd.Location = reposition.Location;
+                            player.ProcessData.HWnd.Size = reposition.Size;
                         }
 
-                        VolumeMixer.SetApplicationVolume(data.Process.Id, 100.0f);
+                        VolumeMixer.SetApplicationVolume(player.ProcessData.Process.Id, 100.0f);
                     }
-                }
-            }
 
-            if (on)
-            {
-                canSwitch = false;
-                Globals.MainOSD.Show(1600, "Cutscenes Mode On");
-            }
-            else
-            {
-                canSwitch = true;
-                Globals.MainOSD.Show(1600, "Cutscenes Mode Off");
+                    canSwitchLayout = true;
+                    Globals.MainOSD.Show(1600, "Cutscenes Mode Off");
 
-                if (GameProfile.Cts_Unfocus)
-                {
-                    ChangeForegroundWindow();
+                    if (GameProfile.Cts_Unfocus)
+                    {
+                        ChangeForegroundWindow();
+                    }
                 }
             }
         }
@@ -1094,7 +1077,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
 
             genericGameHandler.exited = 0;
-            List<PlayerInfo> players = profile.PlayersList;
+            List<PlayerInfo> players = profile.DevicesList;
             genericGameHandler.timer += delayMS;
 
             bool updatedHwnd = false;

@@ -7,7 +7,7 @@ namespace Nucleus.Gaming.Coop
     public class UserScreen
     {
         private RectangleF uiBounds;
-        private Rectangle swapTypeRect;
+        private RectangleF swapTypeRect;
         private UserScreenType type;
 
         public Rectangle display;
@@ -15,6 +15,7 @@ namespace Nucleus.Gaming.Coop
         public int priority;
         public int DisplayIndex;
         private int playerOnScreen = 0;
+        public int Index;
 
         public int PlayerOnScreen
         {
@@ -22,7 +23,7 @@ namespace Nucleus.Gaming.Coop
             set => playerOnScreen = value;
         }
 
-        public Rectangle SwapTypeBounds
+        public RectangleF SwapTypeBounds
         {
             get => swapTypeRect;
             set => swapTypeRect = value;

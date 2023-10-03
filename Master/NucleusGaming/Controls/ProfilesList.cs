@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
@@ -27,17 +28,12 @@ namespace Nucleus.Gaming.Controls
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
 
-        private ToolTip notesTooltip;
-        private ToolTip loadTooltip;
-        private ToolTip deleteTooltip;
-        private ToolTip unloadTooltip;
-        
         private Color buttonsBackColor;
         public string loadedTitle;
         private Pen borderPen;
-        private SetupScreen parentControl;
+        private SetupScreenControl parentControl;
 
-        public ProfilesList(SetupScreen parent)
+        public ProfilesList(SetupScreenControl parent)
         {
             parentControl = parent;
 
@@ -91,30 +87,20 @@ namespace Nucleus.Gaming.Controls
 
             if ((selected.Text == "Unload" && selected.ForeColor == Color.Gray) || e == null)
             {
-                Control mainform = TopLevelControl;
-
-                if (mainform != null)
-                {
-                    Control[] parent = mainform.Controls.Find("btn_Play", true);
-                    foreach (Control playbtn in parent)
-                    {
-                        playbtn.Text = "PLAY";
-                        playbtn.Enabled = false;
-                    }
-                }
-
+                Globals.PlayButton.Text = "PLAY";
+                Globals.PlayButton.Enabled = false;
                 return;
             }
 
             if (selected.Text == "Unload")
             {
                 selected.ForeColor = Color.Gray;
-                GameProfile.currentProfile.Reset();
+                GameProfile._GameProfile.Reset();
                 Globals.MainOSD.Show(500, "Game Profile Unloaded");
                 return;
             }
 
-            if (GameProfile.currentProfile.LoadGameProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
+            if (GameProfile._GameProfile.LoadGameProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
             {
                 Controls[int.Parse(selected.Name)-1].ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
@@ -170,7 +156,7 @@ namespace Nucleus.Gaming.Controls
                 };
 
                 deleteBtn.Cursor = hand_Cursor;
-                deleteTooltip = CustomToolTips.SetToolTip(deleteBtn, "Delete this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                ToolTip deleteTooltip = CustomToolTips.SetToolTip(deleteBtn, "Delete this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 deleteBtn.Click += new EventHandler(DeleteBtn_Click);//Delete profile
 
                 offset += deleteBtn.Width;
@@ -188,8 +174,8 @@ namespace Nucleus.Gaming.Controls
                     TextAlign = ContentAlignment.MiddleCenter,
                 };
 
-                previewBtn.Cursor = hand_Cursor;             
-                notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show profile content or user notes if available.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                previewBtn.Cursor = hand_Cursor;
+                ToolTip notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show profile content or user notes if available.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
 
                 offset += previewBtn.Width;
@@ -209,7 +195,7 @@ namespace Nucleus.Gaming.Controls
                 };
 
                 profileBtn.Cursor = hand_Cursor;
-                loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 profileBtn.Click += new EventHandler(profileBtn_CheckedChanged);
 
                 if (i != GameProfile.profilesPathList.Count)
@@ -222,7 +208,7 @@ namespace Nucleus.Gaming.Controls
                 else
                 {
                     profileBtn.ForeColor = Color.Gray;
-                    unloadTooltip = CustomToolTips.SetToolTip(profileBtn, "Unload current loaded game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    ToolTip unloadTooltip = CustomToolTips.SetToolTip(profileBtn, "Unload current loaded game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
      
                 using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new Bitmap(1, 1)))
@@ -249,7 +235,9 @@ namespace Nucleus.Gaming.Controls
             }
         }
 
-        private void Profile_Preview(object sender, EventArgs e)//Show profile config in handler note "zoomed" textbox
+
+        //Show profile config or user notesin handler note "zoomed" textbox
+        private void Profile_Preview(object sender, EventArgs e)
         {
             if (Locked)
             {
@@ -268,9 +256,6 @@ namespace Nucleus.Gaming.Controls
             string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(preview.Name) - 1]);
             JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
-            Control[] zoom = TopLevelControl.Controls.Find("setupScreen", true);
-            RichTextBox textbox = zoom[0].Controls.Find("handlerNoteZoom",true)[0] as RichTextBox;
-
             string text;
 
             if ((string)Jprofile["Notes"] != "" && (string)Jprofile["Notes"] != null)
@@ -286,11 +271,12 @@ namespace Nucleus.Gaming.Controls
                                            //Replace("}", "");
             }
 
-            textbox.Text = text;
-            textbox.Parent.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, textbox.Parent.Width, textbox.Parent.Height, 20, 20));
-            textbox.Parent.Visible = true;
-            textbox.Parent.BringToFront();
+            Globals.NoteZoomTextBox.Text = text;
+            Globals.NoteZoomTextBox.Parent.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Globals.NoteZoomTextBox.Parent.Width, Globals.NoteZoomTextBox.Parent.Height, 20, 20));
+            Globals.NoteZoomTextBox.Parent.Visible = true;
+            Globals.NoteZoomTextBox.Parent.BringToFront();
         }
+
 
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
         {
@@ -320,7 +306,7 @@ namespace Nucleus.Gaming.Controls
                     File.Move(profilesPath[i].FullName, $@"{Directory.GetParent(profilesPath[i].FullName)}\Profile[{i + 1}].json");
                 }
 
-                # region Delete per-game profile game files backup 
+                # region Delete per game profile game files backup 
 
                 string backupPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop\Game Files Backup\{GameProfile.GameGUID}";
 
@@ -360,7 +346,7 @@ namespace Nucleus.Gaming.Controls
 
                 #endregion
 
-                GameProfile.currentProfile.Reset();
+                GameProfile._GameProfile.Reset();
 
                 Update_ProfilesList();
 
@@ -372,6 +358,7 @@ namespace Nucleus.Gaming.Controls
                 Globals.MainOSD.Show(500, "Game Profile Deleted");
             }
         }
+
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -388,6 +375,7 @@ namespace Nucleus.Gaming.Controls
             g.DrawArc(borderPen, Width - 18, 0, 16, 16, -90, 90);//Top Right angle   
             g.DrawArc(borderPen, Width - 18, Height - 18, 16, 16, 90, -90);//Bottom Right angle 
         }
+
 
         public void UpdateSize(float scale)
         {

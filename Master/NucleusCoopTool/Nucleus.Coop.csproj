@@ -812,6 +812,9 @@
     <Content Include="gui\theme\default\magnifier_close.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\manualLayout.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\page1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

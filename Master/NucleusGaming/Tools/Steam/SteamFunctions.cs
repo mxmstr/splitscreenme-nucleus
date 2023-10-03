@@ -334,7 +334,7 @@ namespace Nucleus.Gaming.Tools.Steam
                     {
                         steamID = SteamFunctions.random_steam_id + i;
 
-                        while (genericGameHandler.profile.PlayersList.Any(p => p.SteamID == steamID))                                    
+                        while (genericGameHandler.profile.DevicesList.Any(p => p.SteamID == steamID))                                    
                         { 
                             steamID = SteamFunctions.random_steam_id++;
                         }       
@@ -548,7 +548,7 @@ namespace Nucleus.Gaming.Tools.Steam
                 {
                     steamID = SteamFunctions.random_steam_id + i;
 
-                    while (genericGameHandler.profile.PlayersList.Any(p => p.SteamID == steamID))
+                    while (genericGameHandler.profile.DevicesList.Any(p => (p != player) && p.SteamID == steamID))
                     {
                         steamID = SteamFunctions.random_steam_id ++;
                     }
@@ -701,7 +701,7 @@ namespace Nucleus.Gaming.Tools.Steam
             {
                 steamID = SteamFunctions.random_steam_id + i;
 
-                while (genericGameHandler.profile.PlayersList.Any(p => p.SteamID == steamID))
+                while (genericGameHandler.profile.DevicesList.Any(p => (p != player) && p.SteamID == steamID))
                 {
                     steamID = SteamFunctions.random_steam_id++;
                 }
@@ -978,29 +978,6 @@ namespace Nucleus.Gaming.Tools.Steam
             {
                 Console.WriteLine(ex);
             };
-        }
-
-        public static void SetSteamIdNoGoldberg(GenericGameHandler genericGameHandler, GenericGameInfo gen, int i)//Useless
-        {
-            long steamID = random_steam_id + i;
-
-            bool useSettingsSID = false;
-
-            if (Globals.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)) != "")
-            {
-                genericGameHandler.Log("Using steam ID from Nucleus settings ");
-                steamID = Convert.ToInt64(Globals.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)));//ToString?   
-                useSettingsSID = true;
-            }
-
-            if (gen.PlayerSteamIDs != null && !useSettingsSID)
-            {
-                if (i < gen.PlayerSteamIDs.Length && !string.IsNullOrEmpty(gen.PlayerSteamIDs[i]))
-                {
-                    genericGameHandler.Log("Using steam ID from handler");
-                    steamID = long.Parse(gen.PlayerSteamIDs[i]);
-                }
-            }
         }
     }
 }
