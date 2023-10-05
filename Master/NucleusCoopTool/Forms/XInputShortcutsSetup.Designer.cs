@@ -32,63 +32,91 @@
             this.Close = new System.Windows.Forms.Button();
             this.plus7 = new System.Windows.Forms.Label();
             this.label_7 = new System.Windows.Forms.Label();
-            this.slave7 = new System.Windows.Forms.TextBox();
+            this.slave7 = new System.Windows.Forms.PictureBox();
             this.plus6 = new System.Windows.Forms.Label();
             this.label_6 = new System.Windows.Forms.Label();
-            this.slave6 = new System.Windows.Forms.TextBox();
+            this.slave6 = new System.Windows.Forms.PictureBox();
             this.plus5 = new System.Windows.Forms.Label();
             this.label_5 = new System.Windows.Forms.Label();
             this.plus1 = new System.Windows.Forms.Label();
-            this.slave5 = new System.Windows.Forms.TextBox();
+            this.slave5 = new System.Windows.Forms.PictureBox();
             this.label_1 = new System.Windows.Forms.Label();
-            this.slave1 = new System.Windows.Forms.TextBox();
+            this.slave1 = new System.Windows.Forms.PictureBox();
             this.label_8 = new System.Windows.Forms.Label();
-            this.slave4 = new System.Windows.Forms.TextBox();
-            this.slave3 = new System.Windows.Forms.TextBox();
+            this.slave4 = new System.Windows.Forms.PictureBox();
+            this.slave3 = new System.Windows.Forms.PictureBox();
             this.plus4 = new System.Windows.Forms.Label();
             this.plus3 = new System.Windows.Forms.Label();
             this.plus2 = new System.Windows.Forms.Label();
             this.label_4 = new System.Windows.Forms.Label();
             this.label_3 = new System.Windows.Forms.Label();
             this.label_2 = new System.Windows.Forms.Label();
-            this.slave2 = new System.Windows.Forms.TextBox();
+            this.slave2 = new System.Windows.Forms.PictureBox();
             this.shortContainer = new System.Windows.Forms.GroupBox();
-            this.switch9 = new System.Windows.Forms.TextBox();
+            this.switch9 = new System.Windows.Forms.PictureBox();
             this.plus9 = new System.Windows.Forms.Label();
-            this.slave9 = new System.Windows.Forms.TextBox();
+            this.slave9 = new System.Windows.Forms.PictureBox();
             this.label_9 = new System.Windows.Forms.Label();
-            this.switch8 = new System.Windows.Forms.TextBox();
+            this.switch8 = new System.Windows.Forms.PictureBox();
             this.plus8 = new System.Windows.Forms.Label();
-            this.slave8 = new System.Windows.Forms.TextBox();
-            this.switch2 = new System.Windows.Forms.TextBox();
-            this.switch7 = new System.Windows.Forms.TextBox();
-            this.switch6 = new System.Windows.Forms.TextBox();
-            this.switch3 = new System.Windows.Forms.TextBox();
-            this.switch4 = new System.Windows.Forms.TextBox();
-            this.switch5 = new System.Windows.Forms.TextBox();
-            this.switch1 = new System.Windows.Forms.TextBox();
+            this.slave8 = new System.Windows.Forms.PictureBox();
+            this.switch2 = new System.Windows.Forms.PictureBox();
+            this.switch7 = new System.Windows.Forms.PictureBox();
+            this.switch6 = new System.Windows.Forms.PictureBox();
+            this.switch3 = new System.Windows.Forms.PictureBox();
+            this.switch4 = new System.Windows.Forms.PictureBox();
+            this.switch5 = new System.Windows.Forms.PictureBox();
+            this.switch1 = new System.Windows.Forms.PictureBox();
             this.UINavContainer = new System.Windows.Forms.GroupBox();
-            this.switch11 = new System.Windows.Forms.TextBox();
+            this.switch11 = new System.Windows.Forms.PictureBox();
             this.plus11 = new System.Windows.Forms.Label();
-            this.slave11 = new System.Windows.Forms.TextBox();
+            this.slave11 = new System.Windows.Forms.PictureBox();
             this.label_11 = new System.Windows.Forms.Label();
-            this.switch10 = new System.Windows.Forms.TextBox();
+            this.switch10 = new System.Windows.Forms.PictureBox();
             this.plus10 = new System.Windows.Forms.Label();
             this.label_15 = new System.Windows.Forms.Label();
-            this.slave10 = new System.Windows.Forms.TextBox();
+            this.slave10 = new System.Windows.Forms.PictureBox();
             this.switch15 = new System.Windows.Forms.TextBox();
             this.label_10 = new System.Windows.Forms.Label();
             this.label_14 = new System.Windows.Forms.Label();
-            this.switch14 = new System.Windows.Forms.TextBox();
+            this.switch14 = new System.Windows.Forms.PictureBox();
             this.label_13 = new System.Windows.Forms.Label();
-            this.switch13 = new System.Windows.Forms.TextBox();
+            this.switch13 = new System.Windows.Forms.PictureBox();
             this.label_12 = new System.Windows.Forms.Label();
-            this.switch12 = new System.Windows.Forms.TextBox();
-            this.deadzone_tip = new System.Windows.Forms.Label();
+            this.switch12 = new System.Windows.Forms.PictureBox();
             this.enabled_chk = new System.Windows.Forms.CheckBox();
-            this.bufferedClientAreaPanel1 = new BufferedClientAreaPanel();
+            this.radioButtonXbox = new System.Windows.Forms.RadioButton();
+            this.radioButtonPs = new System.Windows.Forms.RadioButton();
+            this.groupBoxType = new System.Windows.Forms.GroupBox();
+            this.gamepadTopFront = new BufferedClientAreaPanel();
+            ((System.ComponentModel.ISupportInitialize)(this.slave7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave2)).BeginInit();
             this.shortContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.switch9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch1)).BeginInit();
             this.UINavContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.switch11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch12)).BeginInit();
+            this.groupBoxType.SuspendLayout();
             this.SuspendLayout();
             // 
             // Close
@@ -101,7 +129,7 @@
             this.Close.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Close.ForeColor = System.Drawing.Color.Wheat;
-            this.Close.Location = new System.Drawing.Point(471, 5);
+            this.Close.Location = new System.Drawing.Point(664, 5);
             this.Close.Name = "Close";
             this.Close.Size = new System.Drawing.Size(23, 23);
             this.Close.TabIndex = 0;
@@ -114,7 +142,7 @@
             // 
             this.plus7.AutoSize = true;
             this.plus7.ForeColor = System.Drawing.Color.White;
-            this.plus7.Location = new System.Drawing.Point(165, 163);
+            this.plus7.Location = new System.Drawing.Point(139, 256);
             this.plus7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus7.Name = "plus7";
             this.plus7.Size = new System.Drawing.Size(14, 15);
@@ -126,7 +154,7 @@
             // 
             this.label_7.AutoSize = true;
             this.label_7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_7.Location = new System.Drawing.Point(11, 164);
+            this.label_7.Location = new System.Drawing.Point(7, 256);
             this.label_7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_7.Name = "label_7";
             this.label_7.Size = new System.Drawing.Size(84, 13);
@@ -136,21 +164,18 @@
             // 
             // slave7
             // 
-            this.slave7.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave7.Location = new System.Drawing.Point(183, 161);
+            this.slave7.Location = new System.Drawing.Point(158, 245);
             this.slave7.Margin = new System.Windows.Forms.Padding(2);
-            this.slave7.MaxLength = 1;
             this.slave7.Name = "slave7";
-            this.slave7.ShortcutsEnabled = false;
-            this.slave7.Size = new System.Drawing.Size(61, 20);
+            this.slave7.Size = new System.Drawing.Size(35, 35);
             this.slave7.TabIndex = 125;
-            this.slave7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave7.TabStop = false;
             // 
             // plus6
             // 
             this.plus6.AutoSize = true;
             this.plus6.ForeColor = System.Drawing.Color.White;
-            this.plus6.Location = new System.Drawing.Point(165, 139);
+            this.plus6.Location = new System.Drawing.Point(139, 219);
             this.plus6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus6.Name = "plus6";
             this.plus6.Size = new System.Drawing.Size(14, 15);
@@ -162,7 +187,7 @@
             // 
             this.label_6.AutoSize = true;
             this.label_6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_6.Location = new System.Drawing.Point(3, 140);
+            this.label_6.Location = new System.Drawing.Point(2, 221);
             this.label_6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_6.Name = "label_6";
             this.label_6.Size = new System.Drawing.Size(92, 13);
@@ -172,21 +197,18 @@
             // 
             // slave6
             // 
-            this.slave6.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave6.Location = new System.Drawing.Point(183, 137);
+            this.slave6.Location = new System.Drawing.Point(158, 207);
             this.slave6.Margin = new System.Windows.Forms.Padding(2);
-            this.slave6.MaxLength = 1;
             this.slave6.Name = "slave6";
-            this.slave6.ShortcutsEnabled = false;
-            this.slave6.Size = new System.Drawing.Size(61, 20);
+            this.slave6.Size = new System.Drawing.Size(35, 35);
             this.slave6.TabIndex = 121;
-            this.slave6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave6.TabStop = false;
             // 
             // plus5
             // 
             this.plus5.AutoSize = true;
             this.plus5.ForeColor = System.Drawing.Color.White;
-            this.plus5.Location = new System.Drawing.Point(165, 115);
+            this.plus5.Location = new System.Drawing.Point(139, 182);
             this.plus5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus5.Name = "plus5";
             this.plus5.Size = new System.Drawing.Size(14, 15);
@@ -198,7 +220,7 @@
             // 
             this.label_5.AutoSize = true;
             this.label_5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_5.Location = new System.Drawing.Point(11, 115);
+            this.label_5.Location = new System.Drawing.Point(12, 184);
             this.label_5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_5.Name = "label_5";
             this.label_5.Size = new System.Drawing.Size(82, 13);
@@ -210,7 +232,7 @@
             // 
             this.plus1.AutoSize = true;
             this.plus1.ForeColor = System.Drawing.Color.White;
-            this.plus1.Location = new System.Drawing.Point(165, 19);
+            this.plus1.Location = new System.Drawing.Point(139, 32);
             this.plus1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus1.Name = "plus1";
             this.plus1.Size = new System.Drawing.Size(14, 15);
@@ -220,21 +242,18 @@
             // 
             // slave5
             // 
-            this.slave5.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave5.Location = new System.Drawing.Point(183, 113);
+            this.slave5.Location = new System.Drawing.Point(158, 169);
             this.slave5.Margin = new System.Windows.Forms.Padding(2);
-            this.slave5.MaxLength = 1;
             this.slave5.Name = "slave5";
-            this.slave5.ShortcutsEnabled = false;
-            this.slave5.Size = new System.Drawing.Size(61, 20);
+            this.slave5.Size = new System.Drawing.Size(35, 35);
             this.slave5.TabIndex = 117;
-            this.slave5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave5.TabStop = false;
             // 
             // label_1
             // 
             this.label_1.AutoSize = true;
             this.label_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_1.Location = new System.Drawing.Point(8, 20);
+            this.label_1.Location = new System.Drawing.Point(6, 34);
             this.label_1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_1.Name = "label_1";
             this.label_1.Size = new System.Drawing.Size(85, 13);
@@ -244,21 +263,18 @@
             // 
             // slave1
             // 
-            this.slave1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave1.Location = new System.Drawing.Point(183, 17);
+            this.slave1.Location = new System.Drawing.Point(158, 17);
             this.slave1.Margin = new System.Windows.Forms.Padding(2);
-            this.slave1.MaxLength = 1;
             this.slave1.Name = "slave1";
-            this.slave1.ShortcutsEnabled = false;
-            this.slave1.Size = new System.Drawing.Size(61, 20);
+            this.slave1.Size = new System.Drawing.Size(35, 35);
             this.slave1.TabIndex = 113;
-            this.slave1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave1.TabStop = false;
             // 
             // label_8
             // 
             this.label_8.AutoSize = true;
             this.label_8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_8.Location = new System.Drawing.Point(14, 188);
+            this.label_8.Location = new System.Drawing.Point(14, 296);
             this.label_8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_8.Name = "label_8";
             this.label_8.Size = new System.Drawing.Size(80, 13);
@@ -268,33 +284,27 @@
             // 
             // slave4
             // 
-            this.slave4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave4.Location = new System.Drawing.Point(183, 89);
+            this.slave4.Location = new System.Drawing.Point(158, 131);
             this.slave4.Margin = new System.Windows.Forms.Padding(2);
-            this.slave4.MaxLength = 1;
             this.slave4.Name = "slave4";
-            this.slave4.ShortcutsEnabled = false;
-            this.slave4.Size = new System.Drawing.Size(61, 20);
+            this.slave4.Size = new System.Drawing.Size(35, 35);
             this.slave4.TabIndex = 103;
-            this.slave4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave4.TabStop = false;
             // 
             // slave3
             // 
-            this.slave3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave3.Location = new System.Drawing.Point(183, 65);
+            this.slave3.Location = new System.Drawing.Point(158, 93);
             this.slave3.Margin = new System.Windows.Forms.Padding(2);
-            this.slave3.MaxLength = 1;
             this.slave3.Name = "slave3";
-            this.slave3.ShortcutsEnabled = false;
-            this.slave3.Size = new System.Drawing.Size(61, 20);
+            this.slave3.Size = new System.Drawing.Size(35, 35);
             this.slave3.TabIndex = 101;
-            this.slave3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave3.TabStop = false;
             // 
             // plus4
             // 
             this.plus4.AutoSize = true;
             this.plus4.ForeColor = System.Drawing.Color.White;
-            this.plus4.Location = new System.Drawing.Point(165, 91);
+            this.plus4.Location = new System.Drawing.Point(139, 144);
             this.plus4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus4.Name = "plus4";
             this.plus4.Size = new System.Drawing.Size(14, 15);
@@ -306,7 +316,7 @@
             // 
             this.plus3.AutoSize = true;
             this.plus3.ForeColor = System.Drawing.Color.White;
-            this.plus3.Location = new System.Drawing.Point(165, 66);
+            this.plus3.Location = new System.Drawing.Point(139, 106);
             this.plus3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus3.Name = "plus3";
             this.plus3.Size = new System.Drawing.Size(14, 15);
@@ -318,7 +328,7 @@
             // 
             this.plus2.AutoSize = true;
             this.plus2.ForeColor = System.Drawing.Color.White;
-            this.plus2.Location = new System.Drawing.Point(165, 43);
+            this.plus2.Location = new System.Drawing.Point(139, 68);
             this.plus2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus2.Name = "plus2";
             this.plus2.Size = new System.Drawing.Size(14, 15);
@@ -330,7 +340,7 @@
             // 
             this.label_4.AutoSize = true;
             this.label_4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_4.Location = new System.Drawing.Point(5, 92);
+            this.label_4.Location = new System.Drawing.Point(6, 146);
             this.label_4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_4.Name = "label_4";
             this.label_4.Size = new System.Drawing.Size(87, 13);
@@ -342,7 +352,7 @@
             // 
             this.label_3.AutoSize = true;
             this.label_3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_3.Location = new System.Drawing.Point(24, 68);
+            this.label_3.Location = new System.Drawing.Point(21, 108);
             this.label_3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_3.Name = "label_3";
             this.label_3.Size = new System.Drawing.Size(72, 13);
@@ -354,7 +364,7 @@
             // 
             this.label_2.AutoSize = true;
             this.label_2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_2.Location = new System.Drawing.Point(18, 44);
+            this.label_2.Location = new System.Drawing.Point(17, 70);
             this.label_2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_2.Name = "label_2";
             this.label_2.Size = new System.Drawing.Size(76, 13);
@@ -364,15 +374,12 @@
             // 
             // slave2
             // 
-            this.slave2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave2.Location = new System.Drawing.Point(183, 41);
+            this.slave2.Location = new System.Drawing.Point(158, 55);
             this.slave2.Margin = new System.Windows.Forms.Padding(2);
-            this.slave2.MaxLength = 1;
             this.slave2.Name = "slave2";
-            this.slave2.ShortcutsEnabled = false;
-            this.slave2.Size = new System.Drawing.Size(61, 20);
+            this.slave2.Size = new System.Drawing.Size(35, 35);
             this.slave2.TabIndex = 99;
-            this.slave2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave2.TabStop = false;
             // 
             // shortContainer
             // 
@@ -415,31 +422,28 @@
             this.shortContainer.Controls.Add(this.slave1);
             this.shortContainer.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.shortContainer.ForeColor = System.Drawing.Color.White;
-            this.shortContainer.Location = new System.Drawing.Point(12, 3);
+            this.shortContainer.Location = new System.Drawing.Point(240, 5);
             this.shortContainer.Name = "shortContainer";
-            this.shortContainer.Size = new System.Drawing.Size(248, 234);
+            this.shortContainer.Size = new System.Drawing.Size(208, 368);
             this.shortContainer.TabIndex = 89;
             this.shortContainer.TabStop = false;
             this.shortContainer.Text = "Shortcuts";
             // 
             // switch9
             // 
-            this.switch9.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch9.Location = new System.Drawing.Point(99, 209);
+            this.switch9.Location = new System.Drawing.Point(99, 321);
             this.switch9.Margin = new System.Windows.Forms.Padding(2);
-            this.switch9.MaxLength = 1;
             this.switch9.Name = "switch9";
-            this.switch9.ShortcutsEnabled = false;
-            this.switch9.Size = new System.Drawing.Size(61, 20);
+            this.switch9.Size = new System.Drawing.Size(35, 35);
             this.switch9.TabIndex = 141;
-            this.switch9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch9.TabStop = false;
             // 
             // plus9
             // 
             this.plus9.AutoSize = true;
             this.plus9.ForeColor = System.Drawing.Color.White;
-            this.plus9.Location = new System.Drawing.Point(165, 211);
+            this.plus9.Location = new System.Drawing.Point(139, 332);
             this.plus9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus9.Name = "plus9";
             this.plus9.Size = new System.Drawing.Size(14, 15);
@@ -449,21 +453,18 @@
             // 
             // slave9
             // 
-            this.slave9.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave9.Location = new System.Drawing.Point(183, 209);
+            this.slave9.Location = new System.Drawing.Point(158, 321);
             this.slave9.Margin = new System.Windows.Forms.Padding(2);
-            this.slave9.MaxLength = 1;
             this.slave9.Name = "slave9";
-            this.slave9.ShortcutsEnabled = false;
-            this.slave9.Size = new System.Drawing.Size(61, 20);
+            this.slave9.Size = new System.Drawing.Size(35, 35);
             this.slave9.TabIndex = 139;
-            this.slave9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave9.TabStop = false;
             // 
             // label_9
             // 
             this.label_9.AutoSize = true;
             this.label_9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.label_9.Location = new System.Drawing.Point(38, 212);
+            this.label_9.Location = new System.Drawing.Point(38, 334);
             this.label_9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_9.Name = "label_9";
             this.label_9.Size = new System.Drawing.Size(53, 13);
@@ -473,22 +474,19 @@
             // 
             // switch8
             // 
-            this.switch8.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch8.Location = new System.Drawing.Point(99, 185);
+            this.switch8.Location = new System.Drawing.Point(99, 283);
             this.switch8.Margin = new System.Windows.Forms.Padding(2);
-            this.switch8.MaxLength = 1;
             this.switch8.Name = "switch8";
-            this.switch8.ShortcutsEnabled = false;
-            this.switch8.Size = new System.Drawing.Size(61, 20);
+            this.switch8.Size = new System.Drawing.Size(35, 35);
             this.switch8.TabIndex = 137;
-            this.switch8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch8.TabStop = false;
             // 
             // plus8
             // 
             this.plus8.AutoSize = true;
             this.plus8.ForeColor = System.Drawing.Color.White;
-            this.plus8.Location = new System.Drawing.Point(165, 187);
+            this.plus8.Location = new System.Drawing.Point(139, 294);
             this.plus8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.plus8.Name = "plus8";
             this.plus8.Size = new System.Drawing.Size(14, 15);
@@ -498,106 +496,82 @@
             // 
             // slave8
             // 
-            this.slave8.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave8.Location = new System.Drawing.Point(183, 185);
+            this.slave8.Location = new System.Drawing.Point(158, 283);
             this.slave8.Margin = new System.Windows.Forms.Padding(2);
-            this.slave8.MaxLength = 1;
             this.slave8.Name = "slave8";
-            this.slave8.ShortcutsEnabled = false;
-            this.slave8.Size = new System.Drawing.Size(61, 20);
+            this.slave8.Size = new System.Drawing.Size(35, 35);
             this.slave8.TabIndex = 135;
-            this.slave8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave8.TabStop = false;
             // 
             // switch2
             // 
-            this.switch2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch2.Location = new System.Drawing.Point(99, 41);
+            this.switch2.Location = new System.Drawing.Point(99, 55);
             this.switch2.Margin = new System.Windows.Forms.Padding(2);
-            this.switch2.MaxLength = 1;
             this.switch2.Name = "switch2";
-            this.switch2.ShortcutsEnabled = false;
-            this.switch2.Size = new System.Drawing.Size(61, 20);
+            this.switch2.Size = new System.Drawing.Size(35, 35);
             this.switch2.TabIndex = 128;
-            this.switch2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch2.TabStop = false;
             // 
             // switch7
             // 
-            this.switch7.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch7.Location = new System.Drawing.Point(99, 161);
+            this.switch7.Location = new System.Drawing.Point(99, 245);
             this.switch7.Margin = new System.Windows.Forms.Padding(2);
-            this.switch7.MaxLength = 1;
             this.switch7.Name = "switch7";
-            this.switch7.ShortcutsEnabled = false;
-            this.switch7.Size = new System.Drawing.Size(61, 20);
+            this.switch7.Size = new System.Drawing.Size(35, 35);
             this.switch7.TabIndex = 134;
-            this.switch7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch7.TabStop = false;
             // 
             // switch6
             // 
-            this.switch6.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch6.Location = new System.Drawing.Point(99, 137);
+            this.switch6.Location = new System.Drawing.Point(99, 207);
             this.switch6.Margin = new System.Windows.Forms.Padding(2);
-            this.switch6.MaxLength = 1;
             this.switch6.Name = "switch6";
-            this.switch6.ShortcutsEnabled = false;
-            this.switch6.Size = new System.Drawing.Size(61, 20);
+            this.switch6.Size = new System.Drawing.Size(35, 35);
             this.switch6.TabIndex = 133;
-            this.switch6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch6.TabStop = false;
             // 
             // switch3
             // 
-            this.switch3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch3.Location = new System.Drawing.Point(99, 65);
+            this.switch3.Location = new System.Drawing.Point(99, 93);
             this.switch3.Margin = new System.Windows.Forms.Padding(2);
-            this.switch3.MaxLength = 1;
             this.switch3.Name = "switch3";
-            this.switch3.ShortcutsEnabled = false;
-            this.switch3.Size = new System.Drawing.Size(61, 20);
+            this.switch3.Size = new System.Drawing.Size(35, 35);
             this.switch3.TabIndex = 129;
-            this.switch3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch3.TabStop = false;
             // 
             // switch4
             // 
-            this.switch4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch4.Location = new System.Drawing.Point(99, 89);
+            this.switch4.Location = new System.Drawing.Point(99, 131);
             this.switch4.Margin = new System.Windows.Forms.Padding(2);
-            this.switch4.MaxLength = 1;
             this.switch4.Name = "switch4";
-            this.switch4.ShortcutsEnabled = false;
-            this.switch4.Size = new System.Drawing.Size(61, 20);
+            this.switch4.Size = new System.Drawing.Size(35, 35);
             this.switch4.TabIndex = 130;
-            this.switch4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch4.TabStop = false;
             // 
             // switch5
             // 
-            this.switch5.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch5.Location = new System.Drawing.Point(99, 113);
+            this.switch5.Location = new System.Drawing.Point(99, 169);
             this.switch5.Margin = new System.Windows.Forms.Padding(2);
-            this.switch5.MaxLength = 1;
             this.switch5.Name = "switch5";
-            this.switch5.ShortcutsEnabled = false;
-            this.switch5.Size = new System.Drawing.Size(61, 20);
+            this.switch5.Size = new System.Drawing.Size(35, 35);
             this.switch5.TabIndex = 132;
-            this.switch5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch5.TabStop = false;
             // 
             // switch1
             // 
-            this.switch1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.switch1.Location = new System.Drawing.Point(99, 17);
             this.switch1.Margin = new System.Windows.Forms.Padding(2);
-            this.switch1.MaxLength = 20;
             this.switch1.Name = "switch1";
-            this.switch1.ShortcutsEnabled = false;
-            this.switch1.Size = new System.Drawing.Size(61, 20);
+            this.switch1.Size = new System.Drawing.Size(35, 35);
             this.switch1.TabIndex = 131;
-            this.switch1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch1.TabStop = false;
             // 
             // UINavContainer
             // 
@@ -620,31 +594,28 @@
             this.UINavContainer.Controls.Add(this.switch12);
             this.UINavContainer.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.UINavContainer.ForeColor = System.Drawing.Color.White;
-            this.UINavContainer.Location = new System.Drawing.Point(12, 267);
+            this.UINavContainer.Location = new System.Drawing.Point(12, 139);
             this.UINavContainer.Name = "UINavContainer";
-            this.UINavContainer.Size = new System.Drawing.Size(248, 158);
+            this.UINavContainer.Size = new System.Drawing.Size(211, 234);
             this.UINavContainer.TabIndex = 90;
             this.UINavContainer.TabStop = false;
             this.UINavContainer.Text = "UI Navigation Settings";
             // 
             // switch11
             // 
-            this.switch11.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch11.Location = new System.Drawing.Point(101, 40);
+            this.switch11.Location = new System.Drawing.Point(101, 54);
             this.switch11.Margin = new System.Windows.Forms.Padding(0);
-            this.switch11.MaxLength = 1;
             this.switch11.Name = "switch11";
-            this.switch11.ShortcutsEnabled = false;
-            this.switch11.Size = new System.Drawing.Size(61, 20);
+            this.switch11.Size = new System.Drawing.Size(35, 35);
             this.switch11.TabIndex = 153;
-            this.switch11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch11.TabStop = false;
             // 
             // plus11
             // 
             this.plus11.AutoSize = true;
             this.plus11.ForeColor = System.Drawing.Color.White;
-            this.plus11.Location = new System.Drawing.Point(166, 43);
+            this.plus11.Location = new System.Drawing.Point(142, 64);
             this.plus11.Margin = new System.Windows.Forms.Padding(0);
             this.plus11.Name = "plus11";
             this.plus11.Size = new System.Drawing.Size(14, 15);
@@ -654,20 +625,17 @@
             // 
             // slave11
             // 
-            this.slave11.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave11.Location = new System.Drawing.Point(183, 40);
+            this.slave11.Location = new System.Drawing.Point(162, 54);
             this.slave11.Margin = new System.Windows.Forms.Padding(0);
-            this.slave11.MaxLength = 1;
             this.slave11.Name = "slave11";
-            this.slave11.ShortcutsEnabled = false;
-            this.slave11.Size = new System.Drawing.Size(61, 20);
+            this.slave11.Size = new System.Drawing.Size(35, 35);
             this.slave11.TabIndex = 151;
-            this.slave11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave11.TabStop = false;
             // 
             // label_11
             // 
             this.label_11.AutoSize = true;
-            this.label_11.Location = new System.Drawing.Point(12, 43);
+            this.label_11.Location = new System.Drawing.Point(10, 64);
             this.label_11.Margin = new System.Windows.Forms.Padding(0);
             this.label_11.Name = "label_11";
             this.label_11.Size = new System.Drawing.Size(85, 15);
@@ -677,22 +645,19 @@
             // 
             // switch10
             // 
-            this.switch10.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.switch10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.switch10.Location = new System.Drawing.Point(101, 17);
+            this.switch10.Location = new System.Drawing.Point(101, 16);
             this.switch10.Margin = new System.Windows.Forms.Padding(0);
-            this.switch10.MaxLength = 1;
             this.switch10.Name = "switch10";
-            this.switch10.ShortcutsEnabled = false;
-            this.switch10.Size = new System.Drawing.Size(61, 20);
+            this.switch10.Size = new System.Drawing.Size(35, 35);
             this.switch10.TabIndex = 149;
-            this.switch10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.switch10.TabStop = false;
             // 
             // plus10
             // 
             this.plus10.AutoSize = true;
             this.plus10.ForeColor = System.Drawing.Color.White;
-            this.plus10.Location = new System.Drawing.Point(166, 20);
+            this.plus10.Location = new System.Drawing.Point(142, 26);
             this.plus10.Margin = new System.Windows.Forms.Padding(0);
             this.plus10.Name = "plus10";
             this.plus10.Size = new System.Drawing.Size(14, 15);
@@ -703,7 +668,7 @@
             // label_15
             // 
             this.label_15.AutoSize = true;
-            this.label_15.Location = new System.Drawing.Point(29, 135);
+            this.label_15.Location = new System.Drawing.Point(27, 209);
             this.label_15.Margin = new System.Windows.Forms.Padding(0);
             this.label_15.Name = "label_15";
             this.label_15.Size = new System.Drawing.Size(67, 15);
@@ -713,31 +678,28 @@
             // 
             // slave10
             // 
-            this.slave10.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.slave10.Location = new System.Drawing.Point(183, 17);
+            this.slave10.Location = new System.Drawing.Point(162, 16);
             this.slave10.Margin = new System.Windows.Forms.Padding(0);
-            this.slave10.MaxLength = 1;
             this.slave10.Name = "slave10";
-            this.slave10.ShortcutsEnabled = false;
-            this.slave10.Size = new System.Drawing.Size(61, 20);
+            this.slave10.Size = new System.Drawing.Size(35, 35);
             this.slave10.TabIndex = 147;
-            this.slave10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.slave10.TabStop = false;
             // 
             // switch15
             // 
-            this.switch15.Location = new System.Drawing.Point(101, 132);
+            this.switch15.BackColor = System.Drawing.Color.Black;
+            this.switch15.ForeColor = System.Drawing.Color.White;
+            this.switch15.Location = new System.Drawing.Point(101, 207);
             this.switch15.Margin = new System.Windows.Forms.Padding(0);
             this.switch15.MaxLength = 5;
             this.switch15.Name = "switch15";
-            this.switch15.Size = new System.Drawing.Size(92, 20);
+            this.switch15.Size = new System.Drawing.Size(63, 20);
             this.switch15.TabIndex = 8;
-            this.switch15.MouseEnter += new System.EventHandler(this.deadzone_txt_MouseEnter);
-            this.switch15.MouseLeave += new System.EventHandler(this.deadzone_txt_MouseLeave);
             // 
             // label_10
             // 
             this.label_10.AutoSize = true;
-            this.label_10.Location = new System.Drawing.Point(4, 20);
+            this.label_10.Location = new System.Drawing.Point(3, 22);
             this.label_10.Margin = new System.Windows.Forms.Padding(0);
             this.label_10.Name = "label_10";
             this.label_10.Size = new System.Drawing.Size(93, 15);
@@ -748,7 +710,7 @@
             // label_14
             // 
             this.label_14.AutoSize = true;
-            this.label_14.Location = new System.Drawing.Point(34, 113);
+            this.label_14.Location = new System.Drawing.Point(36, 179);
             this.label_14.Margin = new System.Windows.Forms.Padding(0);
             this.label_14.Name = "label_14";
             this.label_14.Size = new System.Drawing.Size(59, 15);
@@ -758,16 +720,17 @@
             // 
             // switch14
             // 
-            this.switch14.Location = new System.Drawing.Point(101, 109);
+            this.switch14.Location = new System.Drawing.Point(101, 167);
             this.switch14.Margin = new System.Windows.Forms.Padding(0);
             this.switch14.Name = "switch14";
-            this.switch14.Size = new System.Drawing.Size(92, 20);
+            this.switch14.Size = new System.Drawing.Size(35, 35);
             this.switch14.TabIndex = 6;
+            this.switch14.TabStop = false;
             // 
             // label_13
             // 
             this.label_13.AutoSize = true;
-            this.label_13.Location = new System.Drawing.Point(27, 89);
+            this.label_13.Location = new System.Drawing.Point(27, 142);
             this.label_13.Margin = new System.Windows.Forms.Padding(0);
             this.label_13.Name = "label_13";
             this.label_13.Size = new System.Drawing.Size(68, 15);
@@ -777,16 +740,17 @@
             // 
             // switch13
             // 
-            this.switch13.Location = new System.Drawing.Point(101, 86);
+            this.switch13.Location = new System.Drawing.Point(101, 130);
             this.switch13.Margin = new System.Windows.Forms.Padding(0);
             this.switch13.Name = "switch13";
-            this.switch13.Size = new System.Drawing.Size(92, 20);
+            this.switch13.Size = new System.Drawing.Size(35, 35);
             this.switch13.TabIndex = 4;
+            this.switch13.TabStop = false;
             // 
             // label_12
             // 
             this.label_12.AutoSize = true;
-            this.label_12.Location = new System.Drawing.Point(8, 66);
+            this.label_12.Location = new System.Drawing.Point(5, 103);
             this.label_12.Margin = new System.Windows.Forms.Padding(0);
             this.label_12.Name = "label_12";
             this.label_12.Size = new System.Drawing.Size(91, 15);
@@ -796,26 +760,12 @@
             // 
             // switch12
             // 
-            this.switch12.Location = new System.Drawing.Point(101, 63);
+            this.switch12.Location = new System.Drawing.Point(101, 92);
             this.switch12.Margin = new System.Windows.Forms.Padding(0);
             this.switch12.Name = "switch12";
-            this.switch12.Size = new System.Drawing.Size(92, 20);
+            this.switch12.Size = new System.Drawing.Size(35, 35);
             this.switch12.TabIndex = 2;
-            // 
-            // deadzone_tip
-            // 
-            this.deadzone_tip.AutoSize = true;
-            this.deadzone_tip.BackColor = System.Drawing.Color.Transparent;
-            this.deadzone_tip.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.deadzone_tip.ForeColor = System.Drawing.Color.White;
-            this.deadzone_tip.Location = new System.Drawing.Point(262, 393);
-            this.deadzone_tip.Name = "deadzone_tip";
-            this.deadzone_tip.Size = new System.Drawing.Size(243, 30);
-            this.deadzone_tip.TabIndex = 91;
-            this.deadzone_tip.Text = "If the cursor move without touching the\r\nleft stick set a higher value(steps of +" +
-    "1000) .";
-            this.deadzone_tip.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.deadzone_tip.Visible = false;
+            this.switch12.TabStop = false;
             // 
             // enabled_chk
             // 
@@ -825,34 +775,76 @@
             this.enabled_chk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.enabled_chk.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.enabled_chk.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.enabled_chk.Location = new System.Drawing.Point(12, 245);
+            this.enabled_chk.Location = new System.Drawing.Point(12, 98);
             this.enabled_chk.Name = "enabled_chk";
-            this.enabled_chk.Size = new System.Drawing.Size(403, 19);
+            this.enabled_chk.Size = new System.Drawing.Size(197, 19);
             this.enabled_chk.TabIndex = 92;
-            this.enabled_chk.Text = "Enable Controller UI Navigation (Require admin rights for full support)";
+            this.enabled_chk.Text = "Enable Controller UI Navigation";
             this.enabled_chk.UseVisualStyleBackColor = false;
             this.enabled_chk.CheckedChanged += new System.EventHandler(this.enabled_chk_CheckedChanged);
             // 
-            // bufferedClientAreaPanel1
+            // radioButtonXbox
             // 
-            this.bufferedClientAreaPanel1.BackColor = System.Drawing.Color.Transparent;
-            this.bufferedClientAreaPanel1.Location = new System.Drawing.Point(266, 5);
-            this.bufferedClientAreaPanel1.Name = "bufferedClientAreaPanel1";
-            this.bufferedClientAreaPanel1.Size = new System.Drawing.Size(228, 229);
-            this.bufferedClientAreaPanel1.TabIndex = 93;
-            this.bufferedClientAreaPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.bufferedClientAreaPanel1_Paint_1);
-            this.bufferedClientAreaPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.bufferedClientAreaPanel1_MouseDown);
+            this.radioButtonXbox.AutoSize = true;
+            this.radioButtonXbox.BackColor = System.Drawing.Color.Transparent;
+            this.radioButtonXbox.ForeColor = System.Drawing.Color.White;
+            this.radioButtonXbox.Location = new System.Drawing.Point(6, 19);
+            this.radioButtonXbox.Name = "radioButtonXbox";
+            this.radioButtonXbox.Size = new System.Drawing.Size(49, 17);
+            this.radioButtonXbox.TabIndex = 94;
+            this.radioButtonXbox.TabStop = true;
+            this.radioButtonXbox.Tag = "Xbox";
+            this.radioButtonXbox.Text = "Xbox";
+            this.radioButtonXbox.UseVisualStyleBackColor = false;
+            this.radioButtonXbox.CheckedChanged += new System.EventHandler(this.radioButtonXbox_CheckedChanged);
+            // 
+            // radioButtonPs
+            // 
+            this.radioButtonPs.AutoSize = true;
+            this.radioButtonPs.BackColor = System.Drawing.Color.Transparent;
+            this.radioButtonPs.ForeColor = System.Drawing.Color.White;
+            this.radioButtonPs.Location = new System.Drawing.Point(6, 42);
+            this.radioButtonPs.Name = "radioButtonPs";
+            this.radioButtonPs.Size = new System.Drawing.Size(76, 17);
+            this.radioButtonPs.TabIndex = 95;
+            this.radioButtonPs.TabStop = true;
+            this.radioButtonPs.Tag = "Playstation";
+            this.radioButtonPs.Text = "Playstation";
+            this.radioButtonPs.UseVisualStyleBackColor = false;
+            this.radioButtonPs.CheckedChanged += new System.EventHandler(this.radioButtonPs_CheckedChanged);
+            // 
+            // groupBoxType
+            // 
+            this.groupBoxType.Controls.Add(this.radioButtonXbox);
+            this.groupBoxType.Controls.Add(this.radioButtonPs);
+            this.groupBoxType.ForeColor = System.Drawing.Color.White;
+            this.groupBoxType.Location = new System.Drawing.Point(12, 5);
+            this.groupBoxType.Name = "groupBoxType";
+            this.groupBoxType.Size = new System.Drawing.Size(130, 63);
+            this.groupBoxType.TabIndex = 96;
+            this.groupBoxType.TabStop = false;
+            this.groupBoxType.Text = "Gamepad Type";
+            // 
+            // gamepadTopFront
+            // 
+            this.gamepadTopFront.BackColor = System.Drawing.Color.Transparent;
+            this.gamepadTopFront.Location = new System.Drawing.Point(454, 75);
+            this.gamepadTopFront.Name = "gamepadTopFront";
+            this.gamepadTopFront.Size = new System.Drawing.Size(228, 229);
+            this.gamepadTopFront.TabIndex = 93;
+            this.gamepadTopFront.Paint += new System.Windows.Forms.PaintEventHandler(this.gamepadTopFront_Paint);
+            this.gamepadTopFront.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gamepadTopFront_MouseDown);
             // 
             // XInputShortcutsSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(500, 431);
+            this.ClientSize = new System.Drawing.Size(693, 381);
+            this.Controls.Add(this.groupBoxType);
             this.Controls.Add(this.Close);
-            this.Controls.Add(this.bufferedClientAreaPanel1);
+            this.Controls.Add(this.gamepadTopFront);
             this.Controls.Add(this.enabled_chk);
-            this.Controls.Add(this.deadzone_tip);
             this.Controls.Add(this.UINavContainer);
             this.Controls.Add(this.shortContainer);
             this.DoubleBuffered = true;
@@ -862,10 +854,37 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gamepad Shortcuts Setup";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.XInputShortcutsSetup_MouseDown);
+            ((System.ComponentModel.ISupportInitialize)(this.slave7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave2)).EndInit();
             this.shortContainer.ResumeLayout(false);
             this.shortContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.switch9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch1)).EndInit();
             this.UINavContainer.ResumeLayout(false);
             this.UINavContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.switch11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slave10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.switch12)).EndInit();
+            this.groupBoxType.ResumeLayout(false);
+            this.groupBoxType.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -876,60 +895,62 @@
         private System.Windows.Forms.Button Close;
         private System.Windows.Forms.Label plus7;
         private System.Windows.Forms.Label label_7;
-        private System.Windows.Forms.TextBox slave7;
+        private System.Windows.Forms.PictureBox slave7;
         private System.Windows.Forms.Label plus6;
         private System.Windows.Forms.Label label_6;
-        private System.Windows.Forms.TextBox slave6;
+        private System.Windows.Forms.PictureBox slave6;
         private System.Windows.Forms.Label plus5;
         private System.Windows.Forms.Label label_5;
         private System.Windows.Forms.Label plus1;
-        private System.Windows.Forms.TextBox slave5;
+        private System.Windows.Forms.PictureBox slave5;
         private System.Windows.Forms.Label label_1;
-        private System.Windows.Forms.TextBox slave1;
+        private System.Windows.Forms.PictureBox slave1;
         private System.Windows.Forms.Label label_8;
-        private System.Windows.Forms.TextBox slave4;
-        private System.Windows.Forms.TextBox slave3;
+        private System.Windows.Forms.PictureBox slave4;
+        private System.Windows.Forms.PictureBox slave3;
         private System.Windows.Forms.Label plus4;
         private System.Windows.Forms.Label plus3;
         private System.Windows.Forms.Label plus2;
         private System.Windows.Forms.Label label_4;
         private System.Windows.Forms.Label label_3;
         private System.Windows.Forms.Label label_2;
-        private System.Windows.Forms.TextBox slave2;
+        private System.Windows.Forms.PictureBox slave2;
         private System.Windows.Forms.GroupBox shortContainer;
-        private System.Windows.Forms.TextBox switch2;
-        private System.Windows.Forms.TextBox switch7;
-        private System.Windows.Forms.TextBox switch6;
-        private System.Windows.Forms.TextBox switch3;
-        private System.Windows.Forms.TextBox switch4;
-        private System.Windows.Forms.TextBox switch5;
-        private System.Windows.Forms.TextBox switch1;
-        private System.Windows.Forms.TextBox switch8;
+        private System.Windows.Forms.PictureBox switch2;
+        private System.Windows.Forms.PictureBox switch7;
+        private System.Windows.Forms.PictureBox switch6;
+        private System.Windows.Forms.PictureBox switch3;
+        private System.Windows.Forms.PictureBox switch4;
+        private System.Windows.Forms.PictureBox switch5;
+        private System.Windows.Forms.PictureBox switch1;
+        private System.Windows.Forms.PictureBox switch8;
         private System.Windows.Forms.Label plus8;
-        private System.Windows.Forms.TextBox slave8;
+        private System.Windows.Forms.PictureBox slave8;
         private System.Windows.Forms.GroupBox UINavContainer;
         private System.Windows.Forms.Label label_12;
-        private System.Windows.Forms.TextBox switch12;
+        private System.Windows.Forms.PictureBox switch12;
         private System.Windows.Forms.Label label_14;
-        private System.Windows.Forms.TextBox switch14;
+        private System.Windows.Forms.PictureBox switch14;
         private System.Windows.Forms.Label label_13;
-        private System.Windows.Forms.TextBox switch13;
-        private System.Windows.Forms.Label deadzone_tip;
-        private System.Windows.Forms.TextBox switch9;
+        private System.Windows.Forms.PictureBox switch13;
+        private System.Windows.Forms.PictureBox switch9;
         private System.Windows.Forms.Label plus9;
-        private System.Windows.Forms.TextBox slave9;
+        private System.Windows.Forms.PictureBox slave9;
         private System.Windows.Forms.Label label_9;
         private System.Windows.Forms.CheckBox enabled_chk;
-        private System.Windows.Forms.TextBox switch10;
+        private System.Windows.Forms.PictureBox switch10;
         private System.Windows.Forms.Label plus10;
         private System.Windows.Forms.Label label_15;
-        private System.Windows.Forms.TextBox slave10;
+        private System.Windows.Forms.PictureBox slave10;
         private System.Windows.Forms.TextBox switch15;
         private System.Windows.Forms.Label label_10;
-        private System.Windows.Forms.TextBox switch11;
+        private System.Windows.Forms.PictureBox switch11;
         private System.Windows.Forms.Label plus11;
-        private System.Windows.Forms.TextBox slave11;
+        private System.Windows.Forms.PictureBox slave11;
         private System.Windows.Forms.Label label_11;
-        private BufferedClientAreaPanel bufferedClientAreaPanel1;
+        private BufferedClientAreaPanel gamepadTopFront;
+        private System.Windows.Forms.RadioButton radioButtonXbox;
+        private System.Windows.Forms.RadioButton radioButtonPs;
+        private System.Windows.Forms.GroupBox groupBoxType;
     }
 }

@@ -24,10 +24,10 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         {
             if (Controllers[index].IsConnected)
             {
-                State state = (State)GetControllerState(index);
-
+                State state = (State)GetControllerState(index);                
                 return (int)state.Gamepad.Buttons;
             }
+           
             return 0;
         }
 
