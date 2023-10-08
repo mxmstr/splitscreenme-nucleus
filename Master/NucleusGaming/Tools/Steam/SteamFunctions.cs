@@ -995,27 +995,27 @@ namespace Nucleus.Gaming.Tools.Steam
 
                     Console.WriteLine("Starting Steam client...");
                     Process.Start(sc);
-                }
-                else //steam client exe has be moved?
-                {
-                    Console.WriteLine("Searching Steam client executable path...");
+                }//MFTReader need admin rights :(
+                //else //steam client exe has be moved?
+                //{
+                //    Console.WriteLine("Searching Steam client executable path...");
 
-                    steamClientPath = MFTReader.SeachFileOnallDrives("steam.exe");
+                //    steamClientPath = MFTReader.SeachFileOnallDrives("steam.exe");
 
-                    if (steamClientPath != null)
-                    {
-                        Console.WriteLine($@"Found Steam client executable at {steamClientPath}.");
+                //    if (steamClientPath != null)
+                //    {
+                //        Console.WriteLine($@"Found Steam client executable at {steamClientPath}.");
 
-                        Globals.ini.IniWriteValue("SearchPaths", "SteamClientExePath", steamClientPath);
+                //        Globals.ini.IniWriteValue("SearchPaths", "SteamClientExePath", steamClientPath);
 
-                        ProcessStartInfo sc = new ProcessStartInfo(steamClientPath);
-                        sc.UseShellExecute = true;
-                        sc.Arguments = "-silent";
+                //        ProcessStartInfo sc = new ProcessStartInfo(steamClientPath);
+                //        sc.UseShellExecute = true;
+                //        sc.Arguments = "-silent";
 
-                        Console.WriteLine("Starting Steam client...");
-                        Process.Start(sc);
-                    }
-                }
+                //        Console.WriteLine("Starting Steam client...");
+                //        Process.Start(sc);
+                //    }
+                //}
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Coop.Forms;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
@@ -108,7 +109,7 @@ namespace Nucleus.Coop
             {
                 if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
                 {
-                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
+                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel" && c.Name != "btn_SteamExePath")
                         c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
@@ -163,11 +164,6 @@ namespace Nucleus.Coop
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
 
-            //BackColor = Color.FromArgb(int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[0]),
-            //                                       int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[1]),
-            //                                       int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[2]),
-            //                                       int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[3]));
-
             audioBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "audio.png");
             playersBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "players.png");
             settingsBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "shared.png");
@@ -194,6 +190,9 @@ namespace Nucleus.Coop
             def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
             ctrlr_shorcutsBtn.FlatAppearance.BorderSize = 1;
             btn_Gb_Update.FlatAppearance.BorderSize = 1;
+
+            btn_SteamExePath.ForeColor = ForeColor;
+            btn_SteamExePath.Cursor = hand_Cursor;
 
             settingsTab.Parent = this;
             settingsTab.Location = new Point(0, settingsTabBtn.Bottom);
@@ -1448,6 +1447,41 @@ namespace Nucleus.Coop
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
 
             }
+        }
+
+        private void btn_SteamExePath_Click(object sender, EventArgs e)
+        {
+            using (System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog())
+            {
+
+                open.Title = "Select the steam client executable(steam.exe)";
+                open.Filter = "Steam Client Exe|*steam.exe";
+
+                if (open.ShowDialog() == DialogResult.OK)
+                {
+                    string path = open.FileName;
+
+                    Globals.ini.IniWriteValue("SearchPaths", "SteamClientExePath", open.FileName);
+                }
+            }
+        }
+
+        private void btn_SteamExePath_MouseEnter(object sender, EventArgs e)
+        {
+            Label lb = (Label)sender;
+            lb.BackColor = selectionColor;
+        }
+
+        private void btn_SteamExePath_MouseLeave(object sender, EventArgs e)
+        {
+            Label lb = (Label)sender;
+            lb.BackColor = Color.Transparent;
+        }
+
+        private void settingsTab_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawRectangle(new Pen(ForeColor), new Rectangle(btn_SteamExePath.Location.X-1, btn_SteamExePath.Location.Y-1, btn_SteamExePath.Width+2, btn_SteamExePath.Height+2));
         }
     }
 }

@@ -12,6 +12,7 @@ using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Platform.PCSpecs;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
 using System;
@@ -638,14 +639,11 @@ namespace Nucleus.Coop
                 Settings._ctrlr_shorcuts.Text = "Windows 8™ and up only";
                 Settings._ctrlr_shorcuts.Enabled = false;
             }
-         
+
             DPIManager.Register(this);
             DPIManager.AddForm(this);
-        } 
-        
-
-       
-
+        }         
+     
         private void FavoriteOnly_Click(object sender, EventArgs e)
         {
             bool selected = favoriteOnly.Image.Equals(favorite_Selected);
