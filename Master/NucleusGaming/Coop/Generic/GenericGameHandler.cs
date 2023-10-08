@@ -39,6 +39,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -47,6 +48,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using WindowScrape.Constants;
+
 
 namespace Nucleus.Gaming
 {
@@ -340,6 +342,11 @@ namespace Nucleus.Gaming
                 MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
+            if (gen.NeedSteamClient)
+            {
+                SteamFunctions.StartSteamClient();
+            }
+
             if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
             {
                 User32Util.HideTaskbar();
@@ -531,7 +538,7 @@ namespace Nucleus.Gaming
             {
                 nucleusUserAccountsPassword = ini.IniReadValue("Misc", "NucleusAccountPassword");
             }
-
+           
             for (int i = 0; i < players.Count; i++)
             {
                 if (processingExit)

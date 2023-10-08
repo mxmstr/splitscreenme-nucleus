@@ -1,4 +1,5 @@
-﻿using Nucleus.Coop.Forms;
+﻿using NAudio.Gui;
+using Nucleus.Coop.Forms;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
@@ -6,13 +7,11 @@ using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
-using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Platform.PCSpecs;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
-using Nucleus.Gaming.Util;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
 using System;
@@ -23,7 +22,6 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Media;
 using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
 
 
@@ -59,7 +57,7 @@ namespace Nucleus.Coop
         public string[] rgb_HandlerNoteMagnifierTitleBackColor;
 
         public XInputShortcutsSetup Xinput_S_Setup;
-        private NewSettings settings = null;
+        private Settings settings = null;
         private ProfileSettings profileSettings = null;
         private SearchDisksForm searchDisksForm = null;
 
@@ -551,7 +549,6 @@ namespace Nucleus.Coop
 
             setupScreen = new SetupScreenControl();
 
-            //setupScreen.textZoomContainer.BackColor = HandlerNoteMagnifierTitleBackColor;
             setupScreen.handlerNoteZoom.BackColor = HandlerNoteBackColor;
             setupScreen.handlerNoteZoom.ForeColor = HandlerNoteFontColor;
             setupScreen.profileSettings_btn.Click += new EventHandler(this.ProfileSettings_btn_Click);
@@ -559,13 +556,9 @@ namespace Nucleus.Coop
             setupScreen.OnCanPlayUpdated += StepCanPlay;
             setupScreen.Click += new EventHandler(this_Click);
             
-            settings = new NewSettings(this, setupScreen);
+            settings = new Settings(this, setupScreen);
             profileSettings = new ProfileSettings(this, setupScreen);
             searchDisksForm = new SearchDisksForm(this);
-
-            clientAreaPanel.Controls.Add(settings);
-            clientAreaPanel.Controls.Add(profileSettings);
-            clientAreaPanel.Controls.Add(searchDisksForm);
 
             setupScreen.Paint += setupScreen_Paint;
 
@@ -611,6 +604,7 @@ namespace Nucleus.Coop
 
             gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
             gameContextMenuStrip.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
+
             RefreshGames();
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
@@ -641,13 +635,16 @@ namespace Nucleus.Coop
             }
             else
             {
-                NewSettings._ctrlr_shorcuts.Text = "Windows 8™ and up only";
-                NewSettings._ctrlr_shorcuts.Enabled = false;
+                Settings._ctrlr_shorcuts.Text = "Windows 8™ and up only";
+                Settings._ctrlr_shorcuts.Enabled = false;
             }
-
+         
             DPIManager.Register(this);
             DPIManager.AddForm(this);
-        }      
+        } 
+        
+
+       
 
         private void FavoriteOnly_Click(object sender, EventArgs e)
         {
@@ -1612,7 +1609,6 @@ namespace Nucleus.Coop
         {
             if (!searchDisksForm.Visible)
             {
-                searchDisksForm.Location = new Point(Width / 2 - searchDisksForm.Width / 2, Height / 2 - searchDisksForm.Height / 2);
                 searchDisksForm.BringToFront();
                 searchDisksForm.Visible = true;
             }
@@ -2567,8 +2563,7 @@ namespace Nucleus.Coop
             }
 
             if (!settings.Visible)
-            {
-                settings.Location = new Point(Width / 2 - settings.Width / 2, Height / 2 - settings.Height / 2);
+            {            
                 settings.BringToFront();
                 settings.Visible = true;
             }
@@ -2613,7 +2608,6 @@ namespace Nucleus.Coop
 
             if (!profileSettings.Visible)
             {
-                profileSettings.Location = new Point(Width / 2 - profileSettings.Width / 2, Height / 2 - profileSettings.Height / 2);
                 profileSettings.BringToFront();
                 profileSettings.Visible = true;
                 ProfilesList.profilesList.Locked = true;

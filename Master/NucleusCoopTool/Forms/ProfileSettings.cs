@@ -8,6 +8,7 @@ using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,9 +25,8 @@ using System.Windows.Forms;
 namespace Nucleus.Coop
 {
 
-    public partial class ProfileSettings : UserControl, IDynamicSized
+    public partial class ProfileSettings : BaseForm, IDynamicSized
     {
-        private readonly IniFile ini = Globals.ini;
 
         private MainForm mainForm = null;
         private SetupScreenControl setupScreen = null;
@@ -89,7 +89,8 @@ namespace Nucleus.Coop
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
-            Location = new Point(mf.Width / 2 - Width / 2, mf.Height / 2 - Height / 2);
+           
+            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
 
             controlscollect();
 
@@ -156,11 +157,6 @@ namespace Nucleus.Coop
             }
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
-
-            BackColor = Color.FromArgb(int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[0]),
-                                                   int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[1]),
-                                                   int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[2]),
-                                                   int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[3]));
 
             audioBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "audio.png");
             playersBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "players.png");
@@ -272,7 +268,7 @@ namespace Nucleus.Coop
             RefreshCmbNetwork();
 
             sharedTab.Parent = this;
-            sharedTab.Location = new Point(sharedTabBtn.Location.X - 1, sharedTabBtn.Bottom);
+            sharedTab.Location = new Point(0, sharedTabBtn.Bottom);
 
             playersTab.Parent = this;
             playersTab.Location = sharedTab.Location;
@@ -308,7 +304,6 @@ namespace Nucleus.Coop
             btnProcessorNext.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btnProcessorNext.Location = new Point(processorPage1.Right - btnProcessorNext.Width, (processorPage1.Top - btnProcessorNext.Height) - 5);
             
-
             sharedTab.BringToFront();
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
 
@@ -359,6 +354,18 @@ namespace Nucleus.Coop
 
             GetPlayersNickNameAndIds();
 
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+
+            if (ini.IniReadValue("Misc", "ProfileSettingsLocation") != "")
+            {
+                string[] windowLocation = ini.IniReadValue("Misc", "ProfileSettingsLocation").Split('X');
+                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+            }
+            else
+            {
+                StartPosition = FormStartPosition.CenterScreen;
+            }
+
             SetToolTips();
 
             ResumeLayout();
@@ -403,21 +410,22 @@ namespace Nucleus.Coop
 
             modeLabel.Location = new Point((int)modeLabelX, sharedTabBtn.Location.Y + sharedTabBtn.Height / 2 - modeLabel.Height / 2);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
-            default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
+            default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2));
             warningLabel.Location = new Point(sharedTab.Width / 2 - warningLabel.Width / 2, warningLabel.Location.Y);
-            audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);            
+            audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
+
+            int tabButtonsY = sharedTabBtn.Location.Y - 1;
+            int tabButtonsHeight = sharedTabBtn.Height + 1;
 
             tabBorders = new Rectangle[]
             {
-               new Rectangle(sharedTabBtn.Location.X-1,sharedTabBtn.Location.Y-1,sharedTabBtn.Width+sharedBtnPicture.Width+2,sharedTabBtn.Height+1),
-               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
-               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
-               new Rectangle(processorTabBtn.Location.X-1,processorTabBtn.Location.Y-1,processorTabBtn.Width+processorBtnPicture.Width+2,processorTabBtn.Height+1),
-               new Rectangle(sharedTab.Location.X,sharedTab.Location.Y,sharedTab.Width,sharedTab.Height),
-               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
-               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
-               new Rectangle(layoutTab.Location.X,layoutTab.Location.Y,layoutTab.Width,layoutTab.Height),
-               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
+               new Rectangle(0, tabButtonsY, sharedTabBtn.Width + sharedBtnPicture.Width+1, tabButtonsHeight),
+               new Rectangle(sharedBtnPicture.Right, tabButtonsY, playersTabBtn.Width + playersBtnPicture.Width + 2, tabButtonsHeight),
+               new Rectangle(playersBtnPicture.Right, tabButtonsY, audioTabBtn.Width + audioBtnPicture.Width + 2, tabButtonsHeight),
+               new Rectangle(audioBtnPicture.Right, tabButtonsY, processorTabBtn.Width + processorBtnPicture.Width + 2, tabButtonsHeight),
+               new Rectangle(processorBtnPicture.Right, tabButtonsY ,layoutTabBtn.Width + layoutBtnPicture.Width + 2, tabButtonsHeight),
+
+               new Rectangle(sharedTab.Location.X, sharedTab.Location.Y, sharedTab.Width - 1, sharedTab.Height),
             };
 
             ResumeLayout();
@@ -846,6 +854,8 @@ namespace Nucleus.Coop
                 setupScreen.gameProfilesList.profileBtn_CheckedChanged(selected, eventArgs);
             }
 
+            ini.IniWriteValue("Misc", "ProfileSettingsLocation", Location.X + "X" + Location.Y);
+
             Visible = false;
         }
 
@@ -1234,7 +1244,6 @@ namespace Nucleus.Coop
         private void ProfileSettings_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-         
             g.DrawRectangles(bordersPen, tabBorders);
         }
 
@@ -1338,6 +1347,31 @@ namespace Nucleus.Coop
                 {
                     steamIds[i].Items.Add(cb.Text);
                 }
+            }
+        }
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+
+        private void ProfileSettings_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                User32Interop.ReleaseCapture();
+                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
+                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
+
+            }
+        }
+
+        private void modeLabel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                User32Interop.ReleaseCapture();
+                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
+                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
+
             }
         }
     }

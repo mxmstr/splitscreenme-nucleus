@@ -95,6 +95,7 @@ namespace Nucleus.Gaming
         /// </summary>
         public string WorkingFolder;
         public bool NeedsSteamEmulation;
+        public bool NeedSteamClient;
         public string[] KillMutex;
         public string KillMutexType = "Mutant";
         public int KillMutexDelay;

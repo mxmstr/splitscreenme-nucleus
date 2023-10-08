@@ -401,7 +401,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
 
             DevicesFunctions.polling = false;
-            Console.WriteLine(GameProfile.TotalAssignedPlayers);
+            //Console.WriteLine(GameProfile.TotalAssignedPlayers);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Util;
+using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -978,6 +979,44 @@ namespace Nucleus.Gaming.Tools.Steam
             {
                 Console.WriteLine(ex);
             };
+        }
+
+        public static void StartSteamClient()
+        {
+            string steamClientPath = Globals.ini.IniReadValue("SearchPaths", "SteamClientExePath");
+
+            if (Process.GetProcessesByName("steam").Length == 0)
+            {
+                if (File.Exists(steamClientPath))
+                {
+                    ProcessStartInfo sc = new ProcessStartInfo(steamClientPath);
+                    sc.UseShellExecute = true;
+                    sc.Arguments = "-silent";
+
+                    Console.WriteLine("Starting Steam client...");
+                    Process.Start(sc);
+                }
+                else //steam client exe has be moved?
+                {
+                    Console.WriteLine("Searching Steam client executable path...");
+
+                    steamClientPath = MFTReader.SeachFileOnallDrives("steam.exe");
+
+                    if (steamClientPath != null)
+                    {
+                        Console.WriteLine($@"Found Steam client executable at {steamClientPath}.");
+
+                        Globals.ini.IniWriteValue("SearchPaths", "SteamClientExePath", steamClientPath);
+
+                        ProcessStartInfo sc = new ProcessStartInfo(steamClientPath);
+                        sc.UseShellExecute = true;
+                        sc.Arguments = "-silent";
+
+                        Console.WriteLine("Starting Steam client...");
+                        Process.Start(sc);
+                    }
+                }
+            }
         }
     }
 }

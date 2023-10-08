@@ -220,14 +220,14 @@
     <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\NewSettings.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="Forms\Settings.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NewSettings.Designer.cs">
-      <DependentUpon>NewSettings.cs</DependentUpon>
+    <Compile Include="Forms\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProfileSettings.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ProfileSettings.Designer.cs">
       <DependentUpon>ProfileSettings.cs</DependentUpon>
@@ -287,7 +287,7 @@
       <DependentUpon>ScriptDownloader.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchDisksForm.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\SearchDisksForm.Designer.cs">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
@@ -319,8 +319,8 @@
     <EmbeddedResource Include="Forms\DownloadPrompt.resx">
       <DependentUpon>DownloadPrompt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewSettings.resx">
-      <DependentUpon>NewSettings.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProfileSettings.resx">
       <DependentUpon>ProfileSettings.cs</DependentUpon>

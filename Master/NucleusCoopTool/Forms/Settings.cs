@@ -29,9 +29,8 @@ using System.Windows.Forms;
 namespace Nucleus.Coop
 {
 
-    public partial class NewSettings : UserControl, IDynamicSized
+    public partial class Settings : BaseForm, IDynamicSized
     {
-        private IniFile ini = Globals.ini;
         private MainForm mainForm = null;
         private SetupScreenControl setupScreen;
         public int KillProcess_HotkeyID = 1;
@@ -82,15 +81,16 @@ namespace Nucleus.Coop
                 mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
         }
 
-        public NewSettings(MainForm mf, SetupScreenControl pc)
+        public Settings(MainForm mf, SetupScreenControl pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
             mainForm = mf;
             setupScreen = pc;
             InitializeComponent();
-
+         
             SuspendLayout();
 
+            FormBorderStyle = FormBorderStyle.None;
             default_Cursor = mf.default_Cursor;
             Cursor = default_Cursor;
             hand_Cursor = mf.hand_Cursor;
@@ -98,8 +98,7 @@ namespace Nucleus.Coop
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
-
-            Location = new Point(mf.Width / 2 - Width / 2, mf.Height / 2 - Height / 2);
+            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
 
             _ctrlr_shorcuts = ctrlr_shorcutsBtn;
 
@@ -164,10 +163,10 @@ namespace Nucleus.Coop
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
 
-            BackColor = Color.FromArgb(int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[0]),
-                                                   int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[1]),
-                                                   int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[2]),
-                                                   int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[3]));
+            //BackColor = Color.FromArgb(int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[0]),
+            //                                       int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[1]),
+            //                                       int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[2]),
+            //                                       int.Parse(mf.themeIni.IniReadValue("Colors", "ProfileSettingsBackground").Split(',')[3]));
 
             audioBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "audio.png");
             playersBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "players.png");
@@ -197,7 +196,7 @@ namespace Nucleus.Coop
             btn_Gb_Update.FlatAppearance.BorderSize = 1;
 
             settingsTab.Parent = this;
-            settingsTab.Location = new Point(settingsTabBtn.Location.X - 1, settingsTabBtn.Bottom);
+            settingsTab.Location = new Point(0, settingsTabBtn.Bottom);
             settingsTab.BringToFront();
 
             playersTab.Parent = this;
@@ -529,6 +528,18 @@ namespace Nucleus.Coop
 
             GetPlayersNickNameAndSteamIds();
 
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+
+            if (ini.IniReadValue("Misc", "SettingsLocation") != "")
+            {
+                string[] windowLocation = ini.IniReadValue("Misc", "SettingsLocation").Split('X');
+                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+            }
+            else
+            {
+                StartPosition = FormStartPosition.CenterScreen;
+            }
+
             SetToolTips();
 
             ResumeLayout();
@@ -537,7 +548,7 @@ namespace Nucleus.Coop
             DPIManager.Update(this);
         }
 
-        public NewSettings()
+        public Settings()
         {
             DPIManager.Unregister(this);
         }
@@ -580,15 +591,17 @@ namespace Nucleus.Coop
             audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
             gamepadsAssignMethods.Location = new Point((page1.Location.X + label7.Location.X) + 2, (page1.Top - 5) - gamepadsAssignMethods.Height);
 
+            int tabButtonsY = settingsTabBtn.Location.Y - 1;
+            int tabButtonsHeight = settingsTabBtn.Height + 1;
+
             tabBorders = new Rectangle[]
             {
-               new Rectangle(settingsTabBtn.Location.X-1,settingsTabBtn.Location.Y-1,settingsTabBtn.Width+settingsBtnPicture.Width+2,settingsTabBtn.Height+1),
-               new Rectangle(playersTabBtn.Location.X-1,playersTabBtn.Location.Y-1,playersTabBtn.Width+playersBtnPicture.Width+2,playersTabBtn.Height+1),
-               new Rectangle(audioTabBtn.Location.X-1,audioTabBtn.Location.Y-1,audioTabBtn.Width+audioBtnPicture.Width+2,audioTabBtn.Height+1),
-               new Rectangle(layoutTabBtn.Location.X-1,layoutTabBtn.Location.Y-1,layoutTabBtn.Width+layoutBtnPicture.Width+2,layoutTabBtn.Height+1),
-               new Rectangle(settingsTab.Location.X,settingsTab.Location.Y,settingsTab.Width,settingsTab.Height),
-               new Rectangle(playersTab.Location.X,playersTab.Location.Y,playersTab.Width,playersTab.Height),
-               new Rectangle(audioTab.Location.X,audioTab.Location.Y,audioTab.Width,audioTab.Height),
+               new Rectangle(0, tabButtonsY,settingsTabBtn.Width + settingsBtnPicture.Width+1, tabButtonsHeight),
+               new Rectangle(settingsBtnPicture.Right, tabButtonsY, playersTabBtn.Width + playersBtnPicture.Width + 2, tabButtonsHeight),
+               new Rectangle(playersBtnPicture.Right, tabButtonsY,audioTabBtn.Width + audioBtnPicture.Width + 2 , tabButtonsHeight),
+               new Rectangle(audioBtnPicture.Right, tabButtonsY ,layoutTabBtn.Width + layoutBtnPicture.Width + 2, tabButtonsHeight),
+
+               new Rectangle(settingsTab.Location.X, settingsTab.Location.Y, settingsTab.Width - 1, settingsTab.Height),
             };
 
             ResumeLayout();
@@ -857,14 +870,22 @@ namespace Nucleus.Coop
 
             Visible = false;
 
+            if (Location.X == -32000 || Width == 0)
+            {
+                return;
+            }       
+
             Globals.MainOSD.Show(500, "Settings saved");
 
             if (needToRestart)
             {
+                ini.IniWriteValue("Misc", "SettingsLocation", Location.X + "X" + Location.Y);
                 Thread.Sleep(300);
                 Application.Restart();
                 Process.GetCurrentProcess().Kill();
             }
+
+            ini.IniWriteValue("Misc", "SettingsLocation", Location.X + "X" + Location.Y);
         }
 
         private int GetMod(string modifier)
@@ -1276,12 +1297,12 @@ namespace Nucleus.Coop
             gs.Dispose();
         }
 
-        private void ProfileSettings_Paint(object sender, PaintEventArgs e)
+        private void Settings_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-
             g.DrawRectangles(bordersPen, tabBorders);
         }
+
 
         private void btn_Gb_Update_Click(object sender, EventArgs e)
         {
@@ -1389,7 +1410,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void NewSettings_VisibleChanged(object sender, EventArgs e)
+        private void Settings_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible)
             {
@@ -1414,5 +1435,19 @@ namespace Nucleus.Coop
             }
         }
 
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+
+        private void Settings_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                User32Interop.ReleaseCapture();
+                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
+                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
+
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
-    public partial class SearchDisksForm : UserControl, IDynamicSized
+    public partial class SearchDisksForm : BaseForm, IDynamicSized
     {
         public struct SearchDriveInfo
         {
@@ -39,17 +40,6 @@ namespace Nucleus.Coop
 
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
-
-        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-        private static extern IntPtr CreateRoundRectRgn
-        (
-         int nLeftRect,     // x-coordinate of upper-left corner
-         int nTopRect,      // y-coordinate of upper-left corner
-         int nRightRect,    // x-coordinate of lower-right corner
-         int nBottomRect,   // y-coordinate of lower-right corner
-         int nWidthEllipse, // width of ellipse
-         int nHeightEllipse // height of ellipse
-        );
 
         private void controlscollect()
         {
@@ -82,6 +72,7 @@ namespace Nucleus.Coop
             txt_Stage.Visible = false;
             progressBar1.Visible = false;
             txt_Path.Visible = false;
+            ini.IniWriteValue("Misc", "AutoSearchLocation", Location.X + "X" + Location.Y);
             this.Visible = false;
         }
 
@@ -96,15 +87,11 @@ namespace Nucleus.Coop
             default_Cursor = main.default_Cursor;
             Cursor.Current = default_Cursor;
             hand_Cursor = main.hand_Cursor;
-            Location = new Point(main.Location.X + main.Width / 2 - Width / 2, main.Location.Y + main.Height / 2 - Height / 2);
-
+            
             fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
-            BackColor = BackColor = Color.FromArgb(int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[0]),
-                                                   int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[1]),
-                                                   int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[2]),
-                                                   int.Parse(main.themeIni.IniReadValue("Colors", "AutoSearchBackground").Split(',')[3]));
-
+            
+            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
             closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
 
             btn_addSelection.BackColor = main.buttonsBackColor;
@@ -176,6 +163,18 @@ namespace Nucleus.Coop
                 {
                     disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
                 }
+            }
+
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+
+            if (ini.IniReadValue("Misc", "AutoSearchLocation") != "")
+            {
+                string[] windowLocation = ini.IniReadValue("Misc", "AutoSearchLocation").Split('X');
+                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+            }
+            else
+            {
+                StartPosition = FormStartPosition.CenterScreen;
             }
 
             DPIManager.Register(this);
@@ -267,6 +266,7 @@ namespace Nucleus.Coop
             {
                 return;
             }
+
             txt_Stage.Visible = true;
             progressBar1.Visible = true;
             txt_Path.Visible = true;
@@ -322,6 +322,7 @@ namespace Nucleus.Coop
             while (queue.Count > 0)
             {
                 Application.DoEvents();
+
                 if (closed)
                 {
                     break;
@@ -329,6 +330,7 @@ namespace Nucleus.Coop
 
                 path = queue.Dequeue();
                 txt_Path.Text = path;
+
                 try
                 {
                     foreach (string subDir in Directory.GetDirectories(path))
@@ -344,7 +346,9 @@ namespace Nucleus.Coop
                 {
                     Console.Error.WriteLine(ex);
                 }
+
                 string[] files = null;
+
                 try
                 {
                     if (closed)
@@ -661,6 +665,20 @@ namespace Nucleus.Coop
         private void closeBtn_MouseLeave(object sender, EventArgs e)
         {
             closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
+        }
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                User32Interop.ReleaseCapture();
+                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
+                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
+
+            }
         }
     }
 }

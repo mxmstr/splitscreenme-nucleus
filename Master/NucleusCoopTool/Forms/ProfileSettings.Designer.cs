@@ -48,6 +48,7 @@ namespace Nucleus.Coop
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProfileSettings));
             this.sharedTabBtn = new System.Windows.Forms.Button();
             this.playersTabBtn = new System.Windows.Forms.Button();
             this.audioTabBtn = new System.Windows.Forms.Button();
@@ -393,7 +394,7 @@ namespace Nucleus.Coop
             this.sharedTabBtn.BackColor = System.Drawing.Color.Transparent;
             this.sharedTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.sharedTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.sharedTabBtn.Location = new System.Drawing.Point(1, 2);
+            this.sharedTabBtn.Location = new System.Drawing.Point(0, 2);
             this.sharedTabBtn.Margin = new System.Windows.Forms.Padding(0);
             this.sharedTabBtn.Name = "sharedTabBtn";
             this.sharedTabBtn.Size = new System.Drawing.Size(80, 23);
@@ -409,7 +410,7 @@ namespace Nucleus.Coop
             this.playersTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.playersTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.playersTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playersTabBtn.Location = new System.Drawing.Point(102, 2);
+            this.playersTabBtn.Location = new System.Drawing.Point(101, 2);
             this.playersTabBtn.Margin = new System.Windows.Forms.Padding(0);
             this.playersTabBtn.Name = "playersTabBtn";
             this.playersTabBtn.Size = new System.Drawing.Size(80, 23);
@@ -425,7 +426,7 @@ namespace Nucleus.Coop
             this.audioTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.audioTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.audioTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.audioTabBtn.Location = new System.Drawing.Point(203, 2);
+            this.audioTabBtn.Location = new System.Drawing.Point(202, 2);
             this.audioTabBtn.Margin = new System.Windows.Forms.Padding(0);
             this.audioTabBtn.Name = "audioTabBtn";
             this.audioTabBtn.Size = new System.Drawing.Size(80, 23);
@@ -442,7 +443,7 @@ namespace Nucleus.Coop
             this.processorTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.processorTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.processorTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.processorTabBtn.Location = new System.Drawing.Point(304, 2);
+            this.processorTabBtn.Location = new System.Drawing.Point(303, 2);
             this.processorTabBtn.Margin = new System.Windows.Forms.Padding(0);
             this.processorTabBtn.Name = "processorTabBtn";
             this.processorTabBtn.Size = new System.Drawing.Size(80, 23);
@@ -456,7 +457,7 @@ namespace Nucleus.Coop
             // 
             this.audioBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.audioBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.audioBtnPicture.Location = new System.Drawing.Point(284, 4);
+            this.audioBtnPicture.Location = new System.Drawing.Point(283, 4);
             this.audioBtnPicture.Name = "audioBtnPicture";
             this.audioBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.audioBtnPicture.TabIndex = 294;
@@ -467,7 +468,7 @@ namespace Nucleus.Coop
             // 
             this.playersBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.playersBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.playersBtnPicture.Location = new System.Drawing.Point(183, 4);
+            this.playersBtnPicture.Location = new System.Drawing.Point(182, 4);
             this.playersBtnPicture.Name = "playersBtnPicture";
             this.playersBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.playersBtnPicture.TabIndex = 295;
@@ -478,7 +479,7 @@ namespace Nucleus.Coop
             // 
             this.sharedBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.sharedBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.sharedBtnPicture.Location = new System.Drawing.Point(82, 4);
+            this.sharedBtnPicture.Location = new System.Drawing.Point(81, 4);
             this.sharedBtnPicture.Name = "sharedBtnPicture";
             this.sharedBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.sharedBtnPicture.TabIndex = 296;
@@ -489,7 +490,7 @@ namespace Nucleus.Coop
             // 
             this.processorBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.processorBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.processorBtnPicture.Location = new System.Drawing.Point(385, 4);
+            this.processorBtnPicture.Location = new System.Drawing.Point(384, 4);
             this.processorBtnPicture.Name = "processorBtnPicture";
             this.processorBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.processorBtnPicture.TabIndex = 297;
@@ -500,7 +501,7 @@ namespace Nucleus.Coop
             // 
             this.closeBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.closeBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtnPicture.Location = new System.Drawing.Point(653, 2);
+            this.closeBtnPicture.Location = new System.Drawing.Point(654, 1);
             this.closeBtnPicture.Name = "closeBtnPicture";
             this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.closeBtnPicture.TabIndex = 298;
@@ -517,18 +518,19 @@ namespace Nucleus.Coop
             this.modeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.modeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.modeLabel.ForeColor = System.Drawing.Color.Orange;
-            this.modeLabel.Location = new System.Drawing.Point(539, 5);
+            this.modeLabel.Location = new System.Drawing.Point(519, 5);
             this.modeLabel.Name = "modeLabel";
-            this.modeLabel.Size = new System.Drawing.Size(95, 16);
+            this.modeLabel.Size = new System.Drawing.Size(111, 16);
             this.modeLabel.TabIndex = 299;
-            this.modeLabel.Text = "New Profile";
+            this.modeLabel.Text = "Profile Settings";
             this.modeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.modeLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.modeLabel_MouseDown);
             // 
             // profile_info_btn
             // 
             this.profile_info_btn.BackColor = System.Drawing.Color.Transparent;
             this.profile_info_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.profile_info_btn.Location = new System.Drawing.Point(634, 2);
+            this.profile_info_btn.Location = new System.Drawing.Point(635, 1);
             this.profile_info_btn.Name = "profile_info_btn";
             this.profile_info_btn.Size = new System.Drawing.Size(19, 19);
             this.profile_info_btn.TabIndex = 301;
@@ -541,7 +543,7 @@ namespace Nucleus.Coop
             // 
             this.layoutBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.layoutBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.layoutBtnPicture.Location = new System.Drawing.Point(486, 4);
+            this.layoutBtnPicture.Location = new System.Drawing.Point(485, 4);
             this.layoutBtnPicture.Name = "layoutBtnPicture";
             this.layoutBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.layoutBtnPicture.TabIndex = 303;
@@ -554,7 +556,7 @@ namespace Nucleus.Coop
             this.layoutTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.layoutTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.layoutTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.layoutTabBtn.Location = new System.Drawing.Point(405, 2);
+            this.layoutTabBtn.Location = new System.Drawing.Point(404, 2);
             this.layoutTabBtn.Margin = new System.Windows.Forms.Padding(0);
             this.layoutTabBtn.Name = "layoutTabBtn";
             this.layoutTabBtn.Size = new System.Drawing.Size(80, 23);
@@ -771,6 +773,9 @@ namespace Nucleus.Coop
             // 
             // sharedTab
             // 
+            this.sharedTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.sharedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.sharedTab.Controls.Add(this.titleLabel);
             this.sharedTab.Controls.Add(this.profileTitle);
@@ -788,16 +793,16 @@ namespace Nucleus.Coop
             this.sharedTab.Controls.Add(this.pauseBetweenInstanceLaunch_TxtBox);
             this.sharedTab.Controls.Add(this.pauseBetweenInstanceLauch_Label);
             this.sharedTab.Controls.Add(this.label32);
-            this.sharedTab.Location = new System.Drawing.Point(1, 33);
+            this.sharedTab.Location = new System.Drawing.Point(1, 48);
             this.sharedTab.Name = "sharedTab";
-            this.sharedTab.Size = new System.Drawing.Size(671, 401);
+            this.sharedTab.Size = new System.Drawing.Size(674, 391);
             this.sharedTab.TabIndex = 42;
             // 
             // titleLabel
             // 
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.titleLabel.Location = new System.Drawing.Point(315, 108);
+            this.titleLabel.Location = new System.Drawing.Point(318, 102);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(210, 13);
             this.titleLabel.TabIndex = 159;
@@ -809,7 +814,7 @@ namespace Nucleus.Coop
             this.profileTitle.BackColor = System.Drawing.SystemColors.InfoText;
             this.profileTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.profileTitle.ForeColor = System.Drawing.Color.White;
-            this.profileTitle.Location = new System.Drawing.Point(316, 125);
+            this.profileTitle.Location = new System.Drawing.Point(319, 115);
             this.profileTitle.MaximumSize = new System.Drawing.Size(341, 81);
             this.profileTitle.MaxLength = 35;
             this.profileTitle.Name = "profileTitle";
@@ -860,7 +865,7 @@ namespace Nucleus.Coop
             // 
             this.label72.AutoSize = true;
             this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label72.Location = new System.Drawing.Point(316, 171);
+            this.label72.Location = new System.Drawing.Point(319, 163);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(118, 13);
             this.label72.TabIndex = 145;
@@ -872,7 +877,7 @@ namespace Nucleus.Coop
             this.notes_text.BackColor = System.Drawing.SystemColors.InfoText;
             this.notes_text.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notes_text.ForeColor = System.Drawing.Color.White;
-            this.notes_text.Location = new System.Drawing.Point(318, 188);
+            this.notes_text.Location = new System.Drawing.Point(321, 178);
             this.notes_text.MaximumSize = new System.Drawing.Size(341, 81);
             this.notes_text.Multiline = true;
             this.notes_text.Name = "notes_text";
@@ -986,6 +991,9 @@ namespace Nucleus.Coop
             // 
             // processorTab
             // 
+            this.processorTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.processorTab.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.processorTab.Controls.Add(this.label96);
             this.processorTab.Controls.Add(this.label97);
@@ -995,9 +1003,9 @@ namespace Nucleus.Coop
             this.processorTab.Controls.Add(this.label99);
             this.processorTab.Controls.Add(this.processorPage1);
             this.processorTab.Controls.Add(this.processorPage2);
-            this.processorTab.Location = new System.Drawing.Point(0, 26);
+            this.processorTab.Location = new System.Drawing.Point(0, 62);
             this.processorTab.Name = "processorTab";
-            this.processorTab.Size = new System.Drawing.Size(671, 401);
+            this.processorTab.Size = new System.Drawing.Size(674, 391);
             this.processorTab.TabIndex = 300;
             // 
             // label96
@@ -2899,6 +2907,9 @@ namespace Nucleus.Coop
             // 
             // audioTab
             // 
+            this.audioTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.audioTab.BackColor = System.Drawing.Color.RosyBrown;
             this.audioTab.Controls.Add(this.audioWarningLabel);
             this.audioTab.Controls.Add(this.audioDefaultDevice);
@@ -2906,9 +2917,9 @@ namespace Nucleus.Coop
             this.audioTab.Controls.Add(this.audioCustomSettingsRadio);
             this.audioTab.Controls.Add(this.audioDefaultSettingsRadio);
             this.audioTab.Controls.Add(this.audioRefresh);
-            this.audioTab.Location = new System.Drawing.Point(1, 30);
+            this.audioTab.Location = new System.Drawing.Point(1, 39);
             this.audioTab.Name = "audioTab";
-            this.audioTab.Size = new System.Drawing.Size(671, 401);
+            this.audioTab.Size = new System.Drawing.Size(674, 391);
             this.audioTab.TabIndex = 292;
             // 
             // audioWarningLabel
@@ -3201,13 +3212,16 @@ namespace Nucleus.Coop
             this.audioRefresh.Location = new System.Drawing.Point(318, 349);
             this.audioRefresh.Margin = new System.Windows.Forms.Padding(2);
             this.audioRefresh.Name = "audioRefresh";
-            this.audioRefresh.Size = new System.Drawing.Size(23, 23);
+            this.audioRefresh.Size = new System.Drawing.Size(26, 23);
             this.audioRefresh.TabIndex = 23;
             this.audioRefresh.UseVisualStyleBackColor = false;
             this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
             // 
             // playersTab
             // 
+            this.playersTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.playersTab.BackColor = System.Drawing.Color.PaleGreen;
             this.playersTab.Controls.Add(this.btnNext);
             this.playersTab.Controls.Add(this.def_sid_comboBox);
@@ -3216,7 +3230,7 @@ namespace Nucleus.Coop
             this.playersTab.Controls.Add(this.page2);
             this.playersTab.Location = new System.Drawing.Point(-1, 26);
             this.playersTab.Name = "playersTab";
-            this.playersTab.Size = new System.Drawing.Size(671, 401);
+            this.playersTab.Size = new System.Drawing.Size(674, 391);
             this.playersTab.TabIndex = 132;
             // 
             // btnNext
@@ -3264,7 +3278,7 @@ namespace Nucleus.Coop
             this.def_sid_comboBox.Margin = new System.Windows.Forms.Padding(0);
             this.def_sid_comboBox.MaxLength = 30;
             this.def_sid_comboBox.Name = "def_sid_comboBox";
-            this.def_sid_comboBox.Size = new System.Drawing.Size(175, 21);
+            this.def_sid_comboBox.Size = new System.Drawing.Size(178, 21);
             this.def_sid_comboBox.TabIndex = 296;
             // 
             // default_sid_list_label
@@ -4756,6 +4770,9 @@ namespace Nucleus.Coop
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(674, 418);
+            this.Controls.Add(this.sharedTab);
+            this.Controls.Add(this.processorTab);
             this.Controls.Add(this.layoutBtnPicture);
             this.Controls.Add(this.layoutTabBtn);
             this.Controls.Add(this.profile_info_btn);
@@ -4769,17 +4786,19 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
-            this.Controls.Add(this.sharedTab);
-            this.Controls.Add(this.processorTab);
-            this.Controls.Add(this.audioTab);
-            this.Controls.Add(this.playersTab);
             this.Controls.Add(this.layoutTab);
+            this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.audioTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "ProfileSettings";
-            this.Size = new System.Drawing.Size(674, 430);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "Profile Settings";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.ProfileSettings_Paint);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ProfileSettings_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharedBtnPicture)).EndInit();

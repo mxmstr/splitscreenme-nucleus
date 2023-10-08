@@ -777,9 +777,9 @@
             this.enabled_chk.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.enabled_chk.Location = new System.Drawing.Point(12, 98);
             this.enabled_chk.Name = "enabled_chk";
-            this.enabled_chk.Size = new System.Drawing.Size(197, 19);
+            this.enabled_chk.Size = new System.Drawing.Size(199, 19);
             this.enabled_chk.TabIndex = 92;
-            this.enabled_chk.Text = "Enable Controller UI Navigation";
+            this.enabled_chk.Text = "Enable Gamepad UI Navigation";
             this.enabled_chk.UseVisualStyleBackColor = false;
             this.enabled_chk.CheckedChanged += new System.EventHandler(this.enabled_chk_CheckedChanged);
             // 
@@ -787,10 +787,11 @@
             // 
             this.radioButtonXbox.AutoSize = true;
             this.radioButtonXbox.BackColor = System.Drawing.Color.Transparent;
+            this.radioButtonXbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.radioButtonXbox.ForeColor = System.Drawing.Color.White;
             this.radioButtonXbox.Location = new System.Drawing.Point(6, 19);
             this.radioButtonXbox.Name = "radioButtonXbox";
-            this.radioButtonXbox.Size = new System.Drawing.Size(49, 17);
+            this.radioButtonXbox.Size = new System.Drawing.Size(53, 19);
             this.radioButtonXbox.TabIndex = 94;
             this.radioButtonXbox.TabStop = true;
             this.radioButtonXbox.Tag = "Xbox";
@@ -802,10 +803,11 @@
             // 
             this.radioButtonPs.AutoSize = true;
             this.radioButtonPs.BackColor = System.Drawing.Color.Transparent;
+            this.radioButtonPs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.radioButtonPs.ForeColor = System.Drawing.Color.White;
             this.radioButtonPs.Location = new System.Drawing.Point(6, 42);
             this.radioButtonPs.Name = "radioButtonPs";
-            this.radioButtonPs.Size = new System.Drawing.Size(76, 17);
+            this.radioButtonPs.Size = new System.Drawing.Size(84, 19);
             this.radioButtonPs.TabIndex = 95;
             this.radioButtonPs.TabStop = true;
             this.radioButtonPs.Tag = "Playstation";
@@ -817,6 +819,7 @@
             // 
             this.groupBoxType.Controls.Add(this.radioButtonXbox);
             this.groupBoxType.Controls.Add(this.radioButtonPs);
+            this.groupBoxType.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.groupBoxType.ForeColor = System.Drawing.Color.White;
             this.groupBoxType.Location = new System.Drawing.Point(12, 5);
             this.groupBoxType.Name = "groupBoxType";
@@ -851,7 +854,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "XInputShortcutsSetup";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Gamepad Shortcuts Setup";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.XInputShortcutsSetup_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.slave7)).EndInit();

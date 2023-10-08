@@ -2,25 +2,27 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Nucleus.Gaming
 {
-    public class MFTReader
+    public static class MFTReader
     {
-        private Dictionary<ulong, FileNameAndParentFrn> _directories = new Dictionary<ulong, FileNameAndParentFrn>();
+        private static Dictionary<ulong, FileNameAndParentFrn> _directories = new Dictionary<ulong, FileNameAndParentFrn>();
 
-        public Dictionary<ulong, FileNameAndParentFrn> Directories
+        public static Dictionary<ulong, FileNameAndParentFrn> Directories
         {
             get => _directories;
             set => _directories = value;
         }
 
-        private IntPtr _changeJournalRootHandle;
-        private string _drive;
+        private static IntPtr _changeJournalRootHandle;
+        private static string _drive;
 
-        public string Drive
+        public static string Drive
         {
             get => _drive;
             set => _drive = value.Replace(@"\", "");
@@ -154,7 +156,7 @@ namespace Nucleus.Gaming
 
         #endregion
 
-        public void EnumerateVolume(out Dictionary<ulong, FileNameAndParentFrn> files, string[] fileExtensions)
+        public static void EnumerateVolume(out Dictionary<ulong, FileNameAndParentFrn> files, string[] fileExtensions)
         {
             files = new Dictionary<ulong, FileNameAndParentFrn>();
             IntPtr medBuffer = IntPtr.Zero;
@@ -192,7 +194,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        private void GetRootFrnEntry()
+        private static void GetRootFrnEntry()
         {
             string driveRoot = string.Concat("\\\\.\\", _drive);
             driveRoot = string.Concat(driveRoot, Path.DirectorySeparatorChar);
@@ -229,7 +231,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        private void GetRootHandle()
+        private static void GetRootHandle()
         {
             string vol = string.Concat("\\\\.\\", _drive);
             _changeJournalRootHandle = MFTReader.CreateFile(vol,
@@ -246,7 +248,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public string GetFullPath(FileNameAndParentFrn frn)
+        public static string GetFullPath(FileNameAndParentFrn frn)
         {
             string address = "";
             while (frn.ParentFrn != 0)
@@ -258,7 +260,7 @@ namespace Nucleus.Gaming
             return Drive + @"\" + address;
         }
 
-        public unsafe void EnumerateFiles(IntPtr medBuffer, ref Dictionary<ulong, FileNameAndParentFrn> files, string[] fileExtensions)
+        public static unsafe void EnumerateFiles(IntPtr medBuffer, ref Dictionary<ulong, FileNameAndParentFrn> files, string[] fileExtensions)
         {
             IntPtr pData = Marshal.AllocHGlobal(sizeof(ulong) + 0x10000);
             MFTReader.ZeroMemory(pData, sizeof(ulong) + 0x10000);
@@ -372,7 +374,7 @@ namespace Nucleus.Gaming
             Marshal.FreeHGlobal(pData);
         }
 
-        private unsafe void CreateChangeJournal()
+        private static unsafe void CreateChangeJournal()
         {
             // This function creates a journal on the volume. If a journal already  
             // exists this function will adjust the MaximumSize and AllocationDelta  
@@ -396,7 +398,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        private unsafe void SetupMFT_Enum_DataBuffer(ref IntPtr medBuffer)
+        private static unsafe void SetupMFT_Enum_DataBuffer(ref IntPtr medBuffer)
         {
             MFTReader.USN_JOURNAL_DATA ujd = new MFTReader.USN_JOURNAL_DATA();
 
@@ -423,6 +425,51 @@ namespace Nucleus.Gaming
             {
                 throw new IOException("DeviceIoControl() returned false", new Win32Exception(Marshal.GetLastWin32Error()));
             }
+        }
+
+
+        public static string SeachFileOnallDrives(string fileName)
+        {
+            #region MFTReader Testing
+            List<DriveInfo> drives = DriveInfo.GetDrives().ToList();
+           
+            string filePath = null;
+            string[] splitName = fileName.Split('.');
+            string[] extensions = new string[] { "." + splitName[splitName.Length - 1] };
+
+            Stopwatch watch = Stopwatch.StartNew();
+
+            foreach (DriveInfo drive in drives)
+            {
+                Console.WriteLine(drive.Name);
+
+                MFTReader.Drive = drive.Name.ToLower();
+
+                MFTReader.Directories?.Clear();
+
+                MFTReader.EnumerateVolume(out Dictionary<ulong, FileNameAndParentFrn> files, extensions);
+
+                foreach (KeyValuePair<ulong, FileNameAndParentFrn> opt in files)
+                {
+                    if (opt.Value.Name.ToString() == fileName)
+                    {
+                        filePath = MFTReader.GetFullPath(opt.Value);
+                        break;
+                    }
+                }
+
+                if (filePath != null)
+                {
+                    watch.Stop();
+                    float elapsedMs = (float)watch.ElapsedMilliseconds / (float)1000;
+                    Console.WriteLine(elapsedMs);
+                    break;
+                }
+            }
+
+
+            return filePath;
+            #endregion
         }
     }
 

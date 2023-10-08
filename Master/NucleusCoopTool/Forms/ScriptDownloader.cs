@@ -6,6 +6,7 @@ using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
@@ -45,17 +46,6 @@ namespace Nucleus.Coop.Forms
         private SortOrder sortOrder = SortOrder.Ascending;
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
-
-        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-        private static extern IntPtr CreateRoundRectRgn
-       (
-       int nLeftRect,     // x-coordinate of upper-left corner
-       int nTopRect,      // y-coordinate of upper-left corner
-       int nRightRect,    // x-coordinate of lower-right corner
-       int nBottomRect,   // y-coordinate of lower-right corner
-       int nWidthEllipse, // width of ellipse
-       int nHeightEllipse // height of ellipse
-       );
 
         private void controlscollect()
         {
@@ -131,8 +121,8 @@ namespace Nucleus.Coop.Forms
 
             if (mf.roundedcorners)
             {
-                Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-                mainContainer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                mainContainer.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
@@ -930,13 +920,13 @@ namespace Nucleus.Coop.Forms
             {
                 if (mainForm.roundedcorners)
                 {
-                    Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-                    mainContainer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                    mainContainer.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
                 }
                 else
                 {
-                    Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
-                    mainContainer.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+                    mainContainer.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
                 }
             }
         }

@@ -231,51 +231,21 @@ namespace Nucleus.Coop.Forms
                 }
             }
 
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+
+            if (ini.IniReadValue("Misc", "GamepadSettingsLocation") != "")
+            {
+                string[] windowLocation = ini.IniReadValue("Misc", "GamepadSettingsLocation").Split('X');
+                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+            }
+            else
+            {
+                StartPosition = FormStartPosition.CenterScreen;
+            }
+
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
-
-
-        private void UpdateGamepadType()
-        {
-            foreach (Control c in shortContainer.Controls)
-            {
-                if (c.GetType() == typeof(PictureBox))
-                {
-                    PictureBox pictureBox = (PictureBox)c;
-                    pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
-                }
-            }
-
-            foreach (Control c in UINavContainer.Controls)
-            {
-                if (c.GetType() == typeof(PictureBox))
-                {
-                    PictureBox pictureBox = (PictureBox)c;
-                    pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
-                }
-            }
-        }
-
-
-        private void SetActiveControl(object sender, EventArgs e)
-        {
-            if (sender.GetType() != typeof(PictureBox))
-            {
-                return;
-            }
-
-            PictureBox pb = sender as PictureBox;
-
-            if (activeControl != null)
-            {
-                activeControl.BorderStyle = BorderStyle.None;
-            }
-
-            pb.BorderStyle = BorderStyle.FixedSingle;
-            activeControl = pb;
-        }
-
 
         public void UpdateSize(float scale)
         {
@@ -503,7 +473,6 @@ namespace Nucleus.Coop.Forms
 
                     if (activeControl != null)
                     {
-
                         if (!isTRigger)
                         {
                             if ((int)pressed == noButtonPressed)
@@ -511,14 +480,8 @@ namespace Nucleus.Coop.Forms
                                 return;
                             }
 
-                            if (pressed != 1024)//Guide button only return an int
-                            {
-                                activeControl.Tag = pressed;
-                            }
-                            else
-                            {
-                                activeControl.Tag = pressed;
-                            }
+                            activeControl.Tag = pressed;
+
                         }
                         else if (isRT)
                         {
@@ -535,44 +498,31 @@ namespace Nucleus.Coop.Forms
                 }
             }
         }
-
-        private void Close_Click(object sender, EventArgs e)
-        {
-            ini.IniWriteValue("XShortcuts", "SetFocus", switch1.Tag.ToString() + "+" + slave1.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Close", switch2.Tag.ToString() + "+" + slave2.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Stop", switch3.Tag.ToString() + "+" + slave3.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "TopMost", switch4.Tag.ToString() + "+" + slave4.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "ResetWindows", switch5.Tag.ToString() + "+" + slave5.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Cutscenes", switch6.Tag.ToString() + "+" + slave6.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Switch", switch7.Tag.ToString() + "+" + slave7.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "LockInputs", switch8.Tag.ToString() + "+" + slave8.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "ReleaseCursor", switch9.Tag.ToString() + "+" + slave9.Tag.ToString());
-
-            ini.IniWriteValue("XUINav", "LockUIControl", switch10.Tag.ToString() + "+" + slave10.Tag.ToString());
-            ini.IniWriteValue("XUINav", "OpenOsk", switch11.Tag.ToString() + "+" + slave11.Tag.ToString());
-            ini.IniWriteValue("XUINav", "DragDrop", switch12.Tag.ToString());
-            ini.IniWriteValue("XUINav", "RightClick", switch13.Tag.ToString());
-            ini.IniWriteValue("XUINav", "LeftClick", switch14.Tag.ToString());
-
-            if (switch15.Text == "")
-            {
-                switch15.Text = "10000";
-            }
-
-            ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
-
-            GamepadShortcuts.UpdateShortcutsValue();
-            GamepadNavigation.UpdateUINavSettings();
-
-            Visible = false;
-        }
-
+       
         private void num_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
                 e.Handled = true;
             }
+        }
+
+        private void SetActiveControl(object sender, EventArgs e)
+        {
+            if (sender.GetType() != typeof(PictureBox))
+            {
+                return;
+            }
+
+            PictureBox pb = sender as PictureBox;
+
+            if (activeControl != null)
+            {
+                activeControl.BorderStyle = BorderStyle.None;
+            }
+
+            pb.BorderStyle = BorderStyle.FixedSingle;
+            activeControl = pb;
         }
 
         private void enabled_chk_CheckedChanged(object sender, EventArgs e)
@@ -602,6 +552,59 @@ namespace Nucleus.Coop.Forms
                 gamepadType = radio.Tag.ToString();
                 UpdateGamepadType();
             }
+        }
+
+        private void UpdateGamepadType()
+        {
+            foreach (Control c in shortContainer.Controls)
+            {
+                if (c.GetType() == typeof(PictureBox))
+                {
+                    PictureBox pictureBox = (PictureBox)c;
+                    pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
+                }
+            }
+
+            foreach (Control c in UINavContainer.Controls)
+            {
+                if (c.GetType() == typeof(PictureBox))
+                {
+                    PictureBox pictureBox = (PictureBox)c;
+                    pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
+                }
+            }
+        }
+
+        private void Close_Click(object sender, EventArgs e)
+        {
+            ini.IniWriteValue("XShortcuts", "SetFocus", switch1.Tag.ToString() + "+" + slave1.Tag.ToString());
+            ini.IniWriteValue("XShortcuts", "Close", switch2.Tag.ToString() + "+" + slave2.Tag.ToString());
+            ini.IniWriteValue("XShortcuts", "Stop", switch3.Tag.ToString() + "+" + slave3.Tag.ToString());
+            ini.IniWriteValue("XShortcuts", "TopMost", switch4.Tag.ToString() + "+" + slave4.Tag.ToString());
+            ini.IniWriteValue("XShortcuts", "ResetWindows", switch5.Tag.ToString() + "+" + slave5.Tag.ToString());
+            ini.IniWriteValue("XShortcuts", "Cutscenes", switch6.Tag.ToString() + "+" + slave6.Tag.ToString());
+            ini.IniWriteValue("XShortcuts", "Switch", switch7.Tag.ToString() + "+" + slave7.Tag.ToString());
+            ini.IniWriteValue("XShortcuts", "LockInputs", switch8.Tag.ToString() + "+" + slave8.Tag.ToString());
+            ini.IniWriteValue("XShortcuts", "ReleaseCursor", switch9.Tag.ToString() + "+" + slave9.Tag.ToString());
+
+            ini.IniWriteValue("XUINav", "LockUIControl", switch10.Tag.ToString() + "+" + slave10.Tag.ToString());
+            ini.IniWriteValue("XUINav", "OpenOsk", switch11.Tag.ToString() + "+" + slave11.Tag.ToString());
+            ini.IniWriteValue("XUINav", "DragDrop", switch12.Tag.ToString());
+            ini.IniWriteValue("XUINav", "RightClick", switch13.Tag.ToString());
+            ini.IniWriteValue("XUINav", "LeftClick", switch14.Tag.ToString());
+
+            if (switch15.Text == "")
+            {
+                switch15.Text = "10000";
+            }
+
+            ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
+            ini.IniWriteValue("Misc", "GamepadSettingsLocation", Location.X + "X" + Location.Y);
+
+            GamepadShortcuts.UpdateShortcutsValue();
+            GamepadNavigation.UpdateUINavSettings();
+
+            Visible = false;
         }
 
         private void Close_MouseEnter(object sender, EventArgs e)

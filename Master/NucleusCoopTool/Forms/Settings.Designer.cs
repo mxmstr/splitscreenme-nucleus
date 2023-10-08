@@ -2,7 +2,7 @@
 
 namespace Nucleus.Coop
 {
-    partial class NewSettings
+    partial class Settings
     {
         /// <summary>
         /// Required designer variable.
@@ -30,16 +30,17 @@ namespace Nucleus.Coop
         /// </summary>
         private void InitializeComponent()
         {
-            this.settingsTabBtn = new System.Windows.Forms.Button();
-            this.playersTabBtn = new System.Windows.Forms.Button();
-            this.audioTabBtn = new System.Windows.Forms.Button();
-            this.layoutTabBtn = new System.Windows.Forms.Button();
-            this.audioBtnPicture = new System.Windows.Forms.PictureBox();
-            this.playersBtnPicture = new System.Windows.Forms.PictureBox();
-            this.settingsBtnPicture = new System.Windows.Forms.PictureBox();
-            this.layoutBtnPicture = new System.Windows.Forms.PictureBox();
-            this.closeBtnPicture = new System.Windows.Forms.PictureBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.btn_credits = new System.Windows.Forms.Button();
+            this.closeBtnPicture = new System.Windows.Forms.PictureBox();
+            this.layoutBtnPicture = new System.Windows.Forms.PictureBox();
+            this.settingsBtnPicture = new System.Windows.Forms.PictureBox();
+            this.playersBtnPicture = new System.Windows.Forms.PictureBox();
+            this.audioBtnPicture = new System.Windows.Forms.PictureBox();
+            this.layoutTabBtn = new System.Windows.Forms.Button();
+            this.audioTabBtn = new System.Windows.Forms.Button();
+            this.playersTabBtn = new System.Windows.Forms.Button();
+            this.settingsTabBtn = new System.Windows.Forms.Button();
             this.settingsTab = new BufferedClientAreaPanel();
             this.btn_Gb_Update = new System.Windows.Forms.Button();
             this.showUIInfoMsg = new System.Windows.Forms.CheckBox();
@@ -50,7 +51,6 @@ namespace Nucleus.Coop
             this.password_Label = new System.Windows.Forms.Label();
             this.themeLabel = new System.Windows.Forms.Label();
             this.themeCbx = new System.Windows.Forms.ComboBox();
-            this.splashScreenChkB = new System.Windows.Forms.CheckBox();
             this.clickSoundChkB = new System.Windows.Forms.CheckBox();
             this.cmb_EpicLang = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -249,11 +249,11 @@ namespace Nucleus.Coop
             this.label35 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.player28N = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.settingsBtnPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBtnPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).BeginInit();
             this.settingsTab.SuspendLayout();
             this.hotkeyBox.SuspendLayout();
             this.layoutTab.SuspendLayout();
@@ -264,127 +264,6 @@ namespace Nucleus.Coop
             this.page1.SuspendLayout();
             this.page2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // settingsTabBtn
-            // 
-            this.settingsTabBtn.BackColor = System.Drawing.Color.Transparent;
-            this.settingsTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.settingsTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsTabBtn.Location = new System.Drawing.Point(1, 2);
-            this.settingsTabBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.settingsTabBtn.Name = "settingsTabBtn";
-            this.settingsTabBtn.Size = new System.Drawing.Size(80, 23);
-            this.settingsTabBtn.TabIndex = 38;
-            this.settingsTabBtn.Tag = "settingsTab";
-            this.settingsTabBtn.Text = "Settings";
-            this.settingsTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.settingsTabBtn.UseVisualStyleBackColor = false;
-            // 
-            // playersTabBtn
-            // 
-            this.playersTabBtn.BackColor = System.Drawing.Color.Transparent;
-            this.playersTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.playersTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.playersTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playersTabBtn.Location = new System.Drawing.Point(102, 2);
-            this.playersTabBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.playersTabBtn.Name = "playersTabBtn";
-            this.playersTabBtn.Size = new System.Drawing.Size(80, 23);
-            this.playersTabBtn.TabIndex = 43;
-            this.playersTabBtn.Tag = "playersTab";
-            this.playersTabBtn.Text = "Players";
-            this.playersTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.playersTabBtn.UseVisualStyleBackColor = false;
-            // 
-            // audioTabBtn
-            // 
-            this.audioTabBtn.BackColor = System.Drawing.Color.Transparent;
-            this.audioTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.audioTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.audioTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.audioTabBtn.Location = new System.Drawing.Point(203, 2);
-            this.audioTabBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.audioTabBtn.Name = "audioTabBtn";
-            this.audioTabBtn.Size = new System.Drawing.Size(80, 23);
-            this.audioTabBtn.TabIndex = 44;
-            this.audioTabBtn.Tag = "audioTab";
-            this.audioTabBtn.Text = "Audio";
-            this.audioTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.audioTabBtn.UseVisualStyleBackColor = false;
-            this.audioTabBtn.Click += new System.EventHandler(this.audioBtnPicture_Click);
-            // 
-            // layoutTabBtn
-            // 
-            this.layoutTabBtn.BackColor = System.Drawing.Color.Transparent;
-            this.layoutTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.layoutTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.layoutTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.layoutTabBtn.Location = new System.Drawing.Point(304, 2);
-            this.layoutTabBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.layoutTabBtn.Name = "layoutTabBtn";
-            this.layoutTabBtn.Size = new System.Drawing.Size(80, 23);
-            this.layoutTabBtn.TabIndex = 45;
-            this.layoutTabBtn.Tag = "layoutTab";
-            this.layoutTabBtn.Text = "Layout";
-            this.layoutTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.layoutTabBtn.UseVisualStyleBackColor = false;
-            // 
-            // audioBtnPicture
-            // 
-            this.audioBtnPicture.BackColor = System.Drawing.Color.Transparent;
-            this.audioBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.audioBtnPicture.Location = new System.Drawing.Point(284, 4);
-            this.audioBtnPicture.Name = "audioBtnPicture";
-            this.audioBtnPicture.Size = new System.Drawing.Size(19, 19);
-            this.audioBtnPicture.TabIndex = 294;
-            this.audioBtnPicture.TabStop = false;
-            this.audioBtnPicture.Tag = "audioTab";
-            // 
-            // playersBtnPicture
-            // 
-            this.playersBtnPicture.BackColor = System.Drawing.Color.Transparent;
-            this.playersBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.playersBtnPicture.Location = new System.Drawing.Point(183, 4);
-            this.playersBtnPicture.Name = "playersBtnPicture";
-            this.playersBtnPicture.Size = new System.Drawing.Size(19, 19);
-            this.playersBtnPicture.TabIndex = 295;
-            this.playersBtnPicture.TabStop = false;
-            this.playersBtnPicture.Tag = "playersTab";
-            // 
-            // settingsBtnPicture
-            // 
-            this.settingsBtnPicture.BackColor = System.Drawing.Color.Transparent;
-            this.settingsBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.settingsBtnPicture.Location = new System.Drawing.Point(82, 4);
-            this.settingsBtnPicture.Name = "settingsBtnPicture";
-            this.settingsBtnPicture.Size = new System.Drawing.Size(19, 19);
-            this.settingsBtnPicture.TabIndex = 296;
-            this.settingsBtnPicture.TabStop = false;
-            this.settingsBtnPicture.Tag = "settingsTab";
-            // 
-            // layoutBtnPicture
-            // 
-            this.layoutBtnPicture.BackColor = System.Drawing.Color.Transparent;
-            this.layoutBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.layoutBtnPicture.Location = new System.Drawing.Point(385, 4);
-            this.layoutBtnPicture.Name = "layoutBtnPicture";
-            this.layoutBtnPicture.Size = new System.Drawing.Size(19, 19);
-            this.layoutBtnPicture.TabIndex = 297;
-            this.layoutBtnPicture.TabStop = false;
-            this.layoutBtnPicture.Tag = "layoutTab";
-            // 
-            // closeBtnPicture
-            // 
-            this.closeBtnPicture.BackColor = System.Drawing.Color.Transparent;
-            this.closeBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtnPicture.Location = new System.Drawing.Point(653, 2);
-            this.closeBtnPicture.Name = "closeBtnPicture";
-            this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
-            this.closeBtnPicture.TabIndex = 298;
-            this.closeBtnPicture.TabStop = false;
-            this.closeBtnPicture.Click += new System.EventHandler(this.closeBtnPicture_Click);
-            this.closeBtnPicture.MouseEnter += new System.EventHandler(this.closeBtnPicture_MouseEnter);
-            this.closeBtnPicture.MouseLeave += new System.EventHandler(this.closeBtnPicture_MouseLeave);
             // 
             // btn_credits
             // 
@@ -406,8 +285,132 @@ namespace Nucleus.Coop
             this.btn_credits.MouseEnter += new System.EventHandler(this.btn_credits_MouseEnter);
             this.btn_credits.MouseLeave += new System.EventHandler(this.btn_credits_MouseLeave);
             // 
+            // closeBtnPicture
+            // 
+            this.closeBtnPicture.BackColor = System.Drawing.Color.Transparent;
+            this.closeBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.closeBtnPicture.Location = new System.Drawing.Point(654, 1);
+            this.closeBtnPicture.Name = "closeBtnPicture";
+            this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
+            this.closeBtnPicture.TabIndex = 298;
+            this.closeBtnPicture.TabStop = false;
+            this.closeBtnPicture.Click += new System.EventHandler(this.closeBtnPicture_Click);
+            this.closeBtnPicture.MouseEnter += new System.EventHandler(this.closeBtnPicture_MouseEnter);
+            this.closeBtnPicture.MouseLeave += new System.EventHandler(this.closeBtnPicture_MouseLeave);
+            // 
+            // layoutBtnPicture
+            // 
+            this.layoutBtnPicture.BackColor = System.Drawing.Color.Transparent;
+            this.layoutBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.layoutBtnPicture.Location = new System.Drawing.Point(384, 4);
+            this.layoutBtnPicture.Name = "layoutBtnPicture";
+            this.layoutBtnPicture.Size = new System.Drawing.Size(19, 19);
+            this.layoutBtnPicture.TabIndex = 297;
+            this.layoutBtnPicture.TabStop = false;
+            this.layoutBtnPicture.Tag = "layoutTab";
+            // 
+            // settingsBtnPicture
+            // 
+            this.settingsBtnPicture.BackColor = System.Drawing.Color.Transparent;
+            this.settingsBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.settingsBtnPicture.Location = new System.Drawing.Point(81, 4);
+            this.settingsBtnPicture.Name = "settingsBtnPicture";
+            this.settingsBtnPicture.Size = new System.Drawing.Size(19, 19);
+            this.settingsBtnPicture.TabIndex = 296;
+            this.settingsBtnPicture.TabStop = false;
+            this.settingsBtnPicture.Tag = "settingsTab";
+            // 
+            // playersBtnPicture
+            // 
+            this.playersBtnPicture.BackColor = System.Drawing.Color.Transparent;
+            this.playersBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.playersBtnPicture.Location = new System.Drawing.Point(182, 4);
+            this.playersBtnPicture.Name = "playersBtnPicture";
+            this.playersBtnPicture.Size = new System.Drawing.Size(19, 19);
+            this.playersBtnPicture.TabIndex = 295;
+            this.playersBtnPicture.TabStop = false;
+            this.playersBtnPicture.Tag = "playersTab";
+            // 
+            // audioBtnPicture
+            // 
+            this.audioBtnPicture.BackColor = System.Drawing.Color.Transparent;
+            this.audioBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.audioBtnPicture.Location = new System.Drawing.Point(283, 4);
+            this.audioBtnPicture.Name = "audioBtnPicture";
+            this.audioBtnPicture.Size = new System.Drawing.Size(19, 19);
+            this.audioBtnPicture.TabIndex = 294;
+            this.audioBtnPicture.TabStop = false;
+            this.audioBtnPicture.Tag = "audioTab";
+            // 
+            // layoutTabBtn
+            // 
+            this.layoutTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.layoutTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.layoutTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.layoutTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.layoutTabBtn.Location = new System.Drawing.Point(303, 2);
+            this.layoutTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.layoutTabBtn.Name = "layoutTabBtn";
+            this.layoutTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.layoutTabBtn.TabIndex = 45;
+            this.layoutTabBtn.Tag = "layoutTab";
+            this.layoutTabBtn.Text = "Layout";
+            this.layoutTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.layoutTabBtn.UseVisualStyleBackColor = false;
+            // 
+            // audioTabBtn
+            // 
+            this.audioTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.audioTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.audioTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.audioTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.audioTabBtn.Location = new System.Drawing.Point(202, 2);
+            this.audioTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.audioTabBtn.Name = "audioTabBtn";
+            this.audioTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.audioTabBtn.TabIndex = 44;
+            this.audioTabBtn.Tag = "audioTab";
+            this.audioTabBtn.Text = "Audio";
+            this.audioTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.audioTabBtn.UseVisualStyleBackColor = false;
+            this.audioTabBtn.Click += new System.EventHandler(this.audioBtnPicture_Click);
+            // 
+            // playersTabBtn
+            // 
+            this.playersTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.playersTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.playersTabBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.playersTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playersTabBtn.Location = new System.Drawing.Point(101, 2);
+            this.playersTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.playersTabBtn.Name = "playersTabBtn";
+            this.playersTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.playersTabBtn.TabIndex = 43;
+            this.playersTabBtn.Tag = "playersTab";
+            this.playersTabBtn.Text = "Players";
+            this.playersTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.playersTabBtn.UseVisualStyleBackColor = false;
+            // 
+            // settingsTabBtn
+            // 
+            this.settingsTabBtn.BackColor = System.Drawing.Color.Transparent;
+            this.settingsTabBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.settingsTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.settingsTabBtn.Location = new System.Drawing.Point(0, 2);
+            this.settingsTabBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.settingsTabBtn.Name = "settingsTabBtn";
+            this.settingsTabBtn.Size = new System.Drawing.Size(80, 23);
+            this.settingsTabBtn.TabIndex = 38;
+            this.settingsTabBtn.Tag = "settingsTab";
+            this.settingsTabBtn.Text = "Settings";
+            this.settingsTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.settingsTabBtn.UseVisualStyleBackColor = false;
+            // 
             // settingsTab
             // 
+            this.settingsTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.settingsTab.Controls.Add(this.btn_Gb_Update);
             this.settingsTab.Controls.Add(this.showUIInfoMsg);
@@ -418,7 +421,6 @@ namespace Nucleus.Coop
             this.settingsTab.Controls.Add(this.password_Label);
             this.settingsTab.Controls.Add(this.themeLabel);
             this.settingsTab.Controls.Add(this.themeCbx);
-            this.settingsTab.Controls.Add(this.splashScreenChkB);
             this.settingsTab.Controls.Add(this.clickSoundChkB);
             this.settingsTab.Controls.Add(this.cmb_EpicLang);
             this.settingsTab.Controls.Add(this.label1);
@@ -432,16 +434,16 @@ namespace Nucleus.Coop
             this.settingsTab.Controls.Add(this.useNicksCheck);
             this.settingsTab.Controls.Add(this.cmb_Network);
             this.settingsTab.Controls.Add(this.label32);
-            this.settingsTab.Location = new System.Drawing.Point(1, 28);
+            this.settingsTab.Location = new System.Drawing.Point(1, 55);
             this.settingsTab.Name = "settingsTab";
-            this.settingsTab.Size = new System.Drawing.Size(671, 401);
+            this.settingsTab.Size = new System.Drawing.Size(674, 391);
             this.settingsTab.TabIndex = 42;
             // 
             // btn_Gb_Update
             // 
             this.btn_Gb_Update.BackColor = System.Drawing.Color.Transparent;
             this.btn_Gb_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Gb_Update.Location = new System.Drawing.Point(370, 356);
+            this.btn_Gb_Update.Location = new System.Drawing.Point(374, 356);
             this.btn_Gb_Update.Name = "btn_Gb_Update";
             this.btn_Gb_Update.Size = new System.Drawing.Size(257, 28);
             this.btn_Gb_Update.TabIndex = 169;
@@ -502,7 +504,7 @@ namespace Nucleus.Coop
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(370, 323);
+            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(374, 323);
             this.ctrlr_shorcutsBtn.Name = "ctrlr_shorcutsBtn";
             this.ctrlr_shorcutsBtn.Size = new System.Drawing.Size(257, 27);
             this.ctrlr_shorcutsBtn.TabIndex = 164;
@@ -514,7 +516,7 @@ namespace Nucleus.Coop
             // 
             this.nucUserPassTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nucUserPassTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nucUserPassTxt.Location = new System.Drawing.Point(371, 58);
+            this.nucUserPassTxt.Location = new System.Drawing.Point(374, 58);
             this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
             this.nucUserPassTxt.MaxLength = 127;
             this.nucUserPassTxt.Name = "nucUserPassTxt";
@@ -529,7 +531,7 @@ namespace Nucleus.Coop
             this.password_Label.AutoSize = true;
             this.password_Label.BackColor = System.Drawing.Color.Transparent;
             this.password_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.password_Label.Location = new System.Drawing.Point(368, 39);
+            this.password_Label.Location = new System.Drawing.Point(371, 39);
             this.password_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.password_Label.Name = "password_Label";
             this.password_Label.Size = new System.Drawing.Size(138, 15);
@@ -561,21 +563,6 @@ namespace Nucleus.Coop
             this.themeCbx.Name = "themeCbx";
             this.themeCbx.Size = new System.Drawing.Size(142, 23);
             this.themeCbx.TabIndex = 162;
-            // 
-            // splashScreenChkB
-            // 
-            this.splashScreenChkB.AutoSize = true;
-            this.splashScreenChkB.BackColor = System.Drawing.Color.Transparent;
-            this.splashScreenChkB.Checked = true;
-            this.splashScreenChkB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.splashScreenChkB.Location = new System.Drawing.Point(218, 285);
-            this.splashScreenChkB.Margin = new System.Windows.Forms.Padding(2);
-            this.splashScreenChkB.Name = "splashScreenChkB";
-            this.splashScreenChkB.Size = new System.Drawing.Size(148, 19);
-            this.splashScreenChkB.TabIndex = 161;
-            this.splashScreenChkB.Text = "Enable Splash Screen";
-            this.splashScreenChkB.UseVisualStyleBackColor = false;
-            this.splashScreenChkB.Visible = false;
             // 
             // clickSoundChkB
             // 
@@ -769,7 +756,7 @@ namespace Nucleus.Coop
             this.hotkeyBox.Controls.Add(this.plus2);
             this.hotkeyBox.Controls.Add(this.settingsCloseHKTxt);
             this.hotkeyBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hotkeyBox.Location = new System.Drawing.Point(370, 85);
+            this.hotkeyBox.Location = new System.Drawing.Point(373, 85);
             this.hotkeyBox.Margin = new System.Windows.Forms.Padding(2);
             this.hotkeyBox.Name = "hotkeyBox";
             this.hotkeyBox.Padding = new System.Windows.Forms.Padding(2);
@@ -1287,6 +1274,9 @@ namespace Nucleus.Coop
             // 
             // layoutTab
             // 
+            this.layoutTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.layoutTab.Controls.Add(this.numMaxPlyrs);
             this.layoutTab.Controls.Add(this.numUpDownVer);
@@ -1300,9 +1290,9 @@ namespace Nucleus.Coop
             this.layoutTab.Controls.Add(this.SplitDiv);
             this.layoutTab.Controls.Add(this.label49);
             this.layoutTab.Controls.Add(this.layoutSizer);
-            this.layoutTab.Location = new System.Drawing.Point(0, 26);
+            this.layoutTab.Location = new System.Drawing.Point(0, 42);
             this.layoutTab.Name = "layoutTab";
-            this.layoutTab.Size = new System.Drawing.Size(671, 401);
+            this.layoutTab.Size = new System.Drawing.Size(674, 391);
             this.layoutTab.TabIndex = 300;
             // 
             // numMaxPlyrs
@@ -1311,7 +1301,7 @@ namespace Nucleus.Coop
             this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
             this.numMaxPlyrs.Enabled = false;
             this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(297, 249);
+            this.numMaxPlyrs.Location = new System.Drawing.Point(300, 249);
             this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
             this.numMaxPlyrs.Name = "numMaxPlyrs";
             this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
@@ -1323,7 +1313,7 @@ namespace Nucleus.Coop
             this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(295, 151);
+            this.numUpDownVer.Location = new System.Drawing.Point(298, 151);
             this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownVer.Name = "numUpDownVer";
             this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
@@ -1337,7 +1327,7 @@ namespace Nucleus.Coop
             this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(287, 226);
+            this.label29.Location = new System.Drawing.Point(290, 226);
             this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(64, 13);
@@ -1353,7 +1343,7 @@ namespace Nucleus.Coop
             this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(287, 179);
+            this.label27.Location = new System.Drawing.Point(290, 179);
             this.label27.Margin = new System.Windows.Forms.Padding(0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(99, 13);
@@ -1368,7 +1358,7 @@ namespace Nucleus.Coop
             this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(284, 132);
+            this.label28.Location = new System.Drawing.Point(287, 132);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(90, 13);
@@ -1381,7 +1371,7 @@ namespace Nucleus.Coop
             this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(296, 198);
+            this.numUpDownHor.Location = new System.Drawing.Point(299, 198);
             this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownHor.Name = "numUpDownHor";
             this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
@@ -1481,7 +1471,7 @@ namespace Nucleus.Coop
             // 
             this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
-            this.layoutSizer.Location = new System.Drawing.Point(413, 113);
+            this.layoutSizer.Location = new System.Drawing.Point(416, 113);
             this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
             this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
@@ -1492,6 +1482,9 @@ namespace Nucleus.Coop
             // 
             // audioTab
             // 
+            this.audioTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.audioTab.BackColor = System.Drawing.Color.RosyBrown;
             this.audioTab.Controls.Add(this.audioWarningLabel);
             this.audioTab.Controls.Add(this.audioDefaultDevice);
@@ -1499,9 +1492,9 @@ namespace Nucleus.Coop
             this.audioTab.Controls.Add(this.audioCustomSettingsRadio);
             this.audioTab.Controls.Add(this.audioDefaultSettingsRadio);
             this.audioTab.Controls.Add(this.audioRefresh);
-            this.audioTab.Location = new System.Drawing.Point(1, 30);
+            this.audioTab.Location = new System.Drawing.Point(1, 34);
             this.audioTab.Name = "audioTab";
-            this.audioTab.Size = new System.Drawing.Size(671, 401);
+            this.audioTab.Size = new System.Drawing.Size(674, 391);
             this.audioTab.TabIndex = 292;
             // 
             // audioWarningLabel
@@ -1794,13 +1787,16 @@ namespace Nucleus.Coop
             this.audioRefresh.Location = new System.Drawing.Point(318, 349);
             this.audioRefresh.Margin = new System.Windows.Forms.Padding(2);
             this.audioRefresh.Name = "audioRefresh";
-            this.audioRefresh.Size = new System.Drawing.Size(23, 23);
+            this.audioRefresh.Size = new System.Drawing.Size(26, 23);
             this.audioRefresh.TabIndex = 23;
             this.audioRefresh.UseVisualStyleBackColor = false;
             this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
             // 
             // playersTab
             // 
+            this.playersTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.playersTab.BackColor = System.Drawing.Color.PaleGreen;
             this.playersTab.Controls.Add(this.gamepadsAssignMethods);
             this.playersTab.Controls.Add(this.btnNext);
@@ -1810,7 +1806,7 @@ namespace Nucleus.Coop
             this.playersTab.Controls.Add(this.page2);
             this.playersTab.Location = new System.Drawing.Point(-1, 26);
             this.playersTab.Name = "playersTab";
-            this.playersTab.Size = new System.Drawing.Size(671, 401);
+            this.playersTab.Size = new System.Drawing.Size(675, 391);
             this.playersTab.TabIndex = 132;
             // 
             // gamepadsAssignMethods
@@ -1870,7 +1866,7 @@ namespace Nucleus.Coop
             this.def_sid_comboBox.Margin = new System.Windows.Forms.Padding(0);
             this.def_sid_comboBox.MaxLength = 30;
             this.def_sid_comboBox.Name = "def_sid_comboBox";
-            this.def_sid_comboBox.Size = new System.Drawing.Size(175, 21);
+            this.def_sid_comboBox.Size = new System.Drawing.Size(179, 21);
             this.def_sid_comboBox.TabIndex = 135;
             // 
             // default_sid_list_label
@@ -3356,12 +3352,13 @@ namespace Nucleus.Coop
             this.player28N.Size = new System.Drawing.Size(69, 21);
             this.player28N.TabIndex = 324;
             // 
-            // NewSettings
+            // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(674, 418);
             this.Controls.Add(this.btn_credits);
             this.Controls.Add(this.closeBtnPicture);
             this.Controls.Add(this.layoutBtnPicture);
@@ -3373,21 +3370,25 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
             this.Controls.Add(this.settingsTab);
-            this.Controls.Add(this.layoutTab);
-            this.Controls.Add(this.audioTab);
             this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.layoutTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "NewSettings";
-            this.Size = new System.Drawing.Size(674, 430);
-            this.VisibleChanged += new System.EventHandler(this.NewSettings_VisibleChanged);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.ProfileSettings_Paint);
-            ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.settingsBtnPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).EndInit();
+            this.Name = "Settings";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "Settings";
+            this.VisibleChanged += new System.EventHandler(this.Settings_VisibleChanged);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Settings_Paint);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBtnPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playersBtnPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).EndInit();
             this.settingsTab.ResumeLayout(false);
             this.settingsTab.PerformLayout();
             this.hotkeyBox.ResumeLayout(false);
@@ -3467,7 +3468,6 @@ namespace Nucleus.Coop
         private Label password_Label;
         private Label themeLabel;
         private ComboBox themeCbx;
-        private CheckBox splashScreenChkB;
         private CheckBox clickSoundChkB;
         private ComboBox cmb_EpicLang;
         private Label label1;

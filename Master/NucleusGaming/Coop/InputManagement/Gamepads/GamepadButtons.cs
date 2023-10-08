@@ -11,18 +11,15 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
     public static class GamepadButtons
     {
-        private static readonly IniFile themeIni = Globals.ThemeIni;
-        private static readonly string theme = Globals.Theme;
-
-        public static Bitmap Image(int button,string gamepadType)
+        public static Bitmap Image(int button, string gamepadType)
         {
             Bitmap bmp = null;
-          
+
             switch (button)
             {
                 case 1024://Guide
 
-                return ImageCache.GetImage($"{Globals.Theme}gamepads\\{gamepadType}\\h.png");
+                    return ImageCache.GetImage($"{Globals.Theme}gamepads\\{gamepadType}\\h.png");
 
                 case 512://RightShoulder
 
