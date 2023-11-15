@@ -202,7 +202,6 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
                         if (!oskVisible)
                         {
-                            //GlobalWindowMethods.ChangeForegroundWindow();
                             ToggleOsk();
                             Thread.Sleep(1100);
                             oskVisible = true;

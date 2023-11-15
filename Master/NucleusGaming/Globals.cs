@@ -17,8 +17,8 @@ namespace Nucleus.Gaming
         //return theme.ini file(current theme)
         public static IniFile ThemeIni => new IniFile(Path.Combine(Theme, "theme.ini"));
 
-        public static OSD MainOSD = new OSD();
-
+        public static WPF_OSD MainOSD = new WPF_OSD();
+        
         public static Button PlayButton;
         public static RichTextBox NoteZoomTextBox;
         public static PictureBox NoteZoomButton;

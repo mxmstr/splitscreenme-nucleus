@@ -58,7 +58,7 @@ namespace Nucleus.Gaming
             Globals.MainOSD.Show(timerMS, text);
         }
 
-        public List<Form> splitForms = new List<Form>();
+        public List<WPFDiv> splitForms = new List<WPFDiv>();
         private string keyboardInstance;
         private string logMsg;
         private string origExePath;
@@ -95,16 +95,16 @@ namespace Nucleus.Gaming
         public int TotalPlayers => totalPlayers;
 
         public double origRatio = 1;
-        public double timer { get; set; }
+        public double Timer { get; set; }
         protected double timerInterval = 1000;
         public double TimerInterval => timerInterval;
 
         public int HWndInterval = 10000;
 
-        internal CursorModule _cursorModule { get; set; }
+        internal CursorModule CursorModule { get; set; }
         public GameProfile profile;
         private GenericGameInfo gen;
-        public GenericGameInfo currentGameInfo => gen;
+        public GenericGameInfo CurrentGameInfo => gen;
         public GenericContext context;
         private static GenericGameHandler instance;
         private Thread statusWinThread;
@@ -115,7 +115,6 @@ namespace Nucleus.Gaming
         public UserScreen owner;
         public readonly IniFile ini = Globals.ini;
         public Thread FakeFocus => WindowFakeFocus.fakeFocus;
-        //public Thread _ControllersShortcuts = ControllersShortcuts.ctrlsShortcuts;
 
         public event Action Ended;
         public static GenericGameHandler Instance => instance;
@@ -142,7 +141,7 @@ namespace Nucleus.Gaming
         private bool hasKeyboardPlayer = false;
         public bool hasEnded;
         public virtual bool HasEnded => hasEnded;
-        public bool gameIs64 { get; set; }
+        public bool GameIs64 { get; set; }
         public bool UsingNucleusAccounts;
         public bool isDebug;
         public bool dllResize = false;
@@ -194,7 +193,7 @@ namespace Nucleus.Gaming
 
             if (gen.LockMouse)
             {
-                _cursorModule = new CursorModule();
+                CursorModule = new CursorModule();
             }
 
             jsData = new Dictionary<string, string>
@@ -366,7 +365,7 @@ namespace Nucleus.Gaming
             garch = "x86";
             if (MachineSpecs.GetMachineArch(userGame.ExePath) == true)
             {
-                gameIs64 = true;
+                GameIs64 = true;
                 garch = "x64";
             }
 
@@ -374,12 +373,12 @@ namespace Nucleus.Gaming
             {
                 if (gen.ForceGameArch == "x86")
                 {
-                    gameIs64 = false;
+                    GameIs64 = false;
                     garch = "x86";
                 }
                 else if (gen.ForceGameArch == "x64")
                 {
-                    gameIs64 = true;
+                    GameIs64 = true;
                     garch = "x64";
                 }
             }
@@ -438,15 +437,14 @@ namespace Nucleus.Gaming
 
                 if (screensInUse.Contains(dp))
                 {
-                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.DevicesList.Count != 1) || gen.HideDesktop)
+                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true /*&& profile.DevicesList.Count != 1*/) || gen.HideDesktop)
                     {
-                        Globals.MainOSD.Invoke((MethodInvoker)delegate ()
-                        {
-                            Form backgroundForm = new SplitForm(gen, dp);
+                        Globals.MainOSD.Dispatcher.Invoke(new Action(() => {
+                        
+                            WPFDiv backgroundForm = new WPFDiv(gen,dp);
                             backgroundForm.Show();
-                            backgroundForm.BringToFront();
                             splitForms.Add(backgroundForm);
-                        });
+                       }));
                     }
                 }
             }
@@ -881,6 +879,7 @@ namespace Nucleus.Gaming
                     jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
 
                     Thread.Sleep(1000);
+
                     if (i == 0 && (gen.LauncherExe?.Length > 0 && gen.LauncherExe.EndsWith("NucleusDefined")))
                     {
                         string exeName = null;
@@ -899,6 +898,7 @@ namespace Nucleus.Gaming
                         }
 
                         Thread.Sleep(1000);
+
                         gen.LauncherExe = ofdPath;
 
                         if (ofdPath != null && !string.IsNullOrEmpty(ofdPath))
@@ -1673,10 +1673,10 @@ namespace Nucleus.Gaming
                 {
                     return string.Empty;
                 }
-                //else
-                //{
-                //    TriggerOSD(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
-                //}
+                else
+                {
+                    TriggerOSD(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
+                }
 
                 if (context.NeedsSteamEmulation)
                 {
@@ -2056,7 +2056,7 @@ namespace Nucleus.Gaming
                                 {
                                     string forceBindexe = string.Empty;
 
-                                    if (gameIs64)
+                                    if (GameIs64)
                                     {
                                         forceBindexe = "ForceBindIP64.exe";
                                     }
@@ -2349,8 +2349,12 @@ namespace Nucleus.Gaming
                 if (gen.LauncherExe?.Length > 0 && gen.RunLauncherAndExe)
                 {
                     Log("Launching exe " + origExePath);
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.FileName = origExePath;
+
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        FileName = origExePath
+                    };
+
                     proc = Process.Start(startInfo);
 
                     int counter = 0;
@@ -2358,8 +2362,12 @@ namespace Nucleus.Gaming
                     if (gen.GameName == "Ghost Recon Wildlands" && i > 0)
                     {
                         Log("Launching exe again " + origExePath);
-                        startInfo = new ProcessStartInfo();
-                        startInfo.FileName = origExePath;
+
+                        startInfo = new ProcessStartInfo
+                        {
+                            FileName = origExePath
+                        };
+
                         proc = Process.Start(startInfo);
 
                         Log("Waiting to find process by window title");
@@ -3728,14 +3736,13 @@ namespace Nucleus.Gaming
 
             if (splitForms.Count > 0)
             {
-                Globals.MainOSD.Invoke((MethodInvoker)delegate ()
-                {
-                    foreach (Form backgroundForm in splitForms)
+                Globals.MainOSD.Dispatcher.Invoke(new Action(() => {
+                
+                    foreach (WPFDiv backgroundForm in splitForms)
                     {
-                        backgroundForm.Close();
-                        backgroundForm.Dispose();
+                        backgroundForm.Close();                       
                     }
-                });
+                }));
 
                 splitForms.Clear();
             }
@@ -3897,9 +3904,9 @@ namespace Nucleus.Gaming
 
             Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
 
-            if (_cursorModule != null)
+            if (CursorModule != null)
             {
-                _cursorModule.Stop();
+                CursorModule.Stop();
             }
 
             Thread.Sleep(1000);

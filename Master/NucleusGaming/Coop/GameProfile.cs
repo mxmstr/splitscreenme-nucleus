@@ -294,7 +294,7 @@ namespace Nucleus.Gaming.Coop
 
                 Label unload = new Label();
 
-                setupScreen.gameProfilesList.profileBtn_CheckedChanged(unload, null);
+                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(unload, null);
                 loadedProfilePlayers.Clear();
                 devicesToMerge.Clear();
 
@@ -536,7 +536,6 @@ namespace Nucleus.Gaming.Coop
                 UserScreen s = BoundsFunctions.screens[i];
                 s.PlayerOnScreen = 0;            
             }
-            //TotalAssignedPlayers = 0;
         }
 
         public static void UpdateSharedSettings()

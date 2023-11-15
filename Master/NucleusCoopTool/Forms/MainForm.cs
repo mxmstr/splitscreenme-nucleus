@@ -268,6 +268,11 @@ namespace Nucleus.Coop
                     SplitCalculator.Kill();
                 }
 
+                if(Globals.MainOSD != null)
+                {
+                    Globals.MainOSD.Close();
+                }
+
                 Process.GetCurrentProcess().Kill();
             }
         }
@@ -640,6 +645,8 @@ namespace Nucleus.Coop
                 Settings._ctrlr_shorcuts.Enabled = false;
             }
 
+            
+
             DPIManager.Register(this);
             DPIManager.AddForm(this);
         }         
@@ -829,6 +836,12 @@ namespace Nucleus.Coop
                     }
 
                     User32Util.ShowTaskBar();
+
+                   if( Globals.MainOSD != null)
+                   {
+                        Globals.MainOSD.Close();
+                   }
+
                     Close();
                 }
                 else
@@ -1325,8 +1338,7 @@ namespace Nucleus.Coop
                 }
 
                 content?.Dispose();
-
-              
+                      
                 // content manager is shared within the same game
                 content = new ContentManager(currentGame);
 
@@ -1509,7 +1521,12 @@ namespace Nucleus.Coop
             }
 
             User32Util.ShowTaskBar();
-           
+
+            if (Globals.MainOSD != null)
+            {
+                Globals.MainOSD.Close();
+            }
+
             if (!restartRequired)
             {
                 Process.GetCurrentProcess().Kill();

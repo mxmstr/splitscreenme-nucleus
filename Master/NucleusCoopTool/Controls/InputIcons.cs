@@ -12,12 +12,8 @@ namespace Nucleus.Coop
 
     public static class InputIcons
     {
-        private static MainForm main;
-             
-        public static Control[] SetInputsIcons(MainForm mainform, GenericGameInfo game)
+        public static Control[] SetInputsIcons(MainForm main, GenericGameInfo game)
         {
-            main = mainform;       
-
             List<PictureBox> icons = new List<PictureBox>();
 
             Size iconsSize = new Size(main.icons_Container.Height + 6, main.icons_Container.Height - 2);

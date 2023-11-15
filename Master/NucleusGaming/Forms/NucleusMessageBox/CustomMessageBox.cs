@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+//using System.Windows;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Forms
@@ -84,7 +84,7 @@ namespace Nucleus.Gaming.Forms
             }
         }
 
-        private void closeBtn_Click(object sender, EventArgs e)
+        private void CloseBtn_Click(object sender, EventArgs e)
         {
             Close();
         }

@@ -103,7 +103,7 @@ namespace Nucleus.Coop
             this.showcaseBanner1.Size = new System.Drawing.Size(850, 251);
             this.showcaseBanner1.TabIndex = 69;
             this.showcaseBanner1.WrapContents = false;
-            this.showcaseBanner1.Paint += new System.Windows.Forms.PaintEventHandler(this.showcaseBanner1_Paint);
+            this.showcaseBanner1.Paint += new System.Windows.Forms.PaintEventHandler(this.ShowcaseBanner1_Paint);
             // 
             // last_Updated_0
             // 

@@ -393,13 +393,12 @@ namespace Nucleus.Gaming
 
             foreach (Display dp in parent.screensInUse)
             {
-                Globals.MainOSD.Invoke((MethodInvoker)delegate ()
-                {
-                    Form backgroundForm = new SplitForm(GameProfile.Game, dp);
+                Globals.MainOSD.Dispatcher.Invoke(new Action(() => {
+                    WPFDiv backgroundForm = new WPFDiv(GameProfile.Game, dp);
                     backgroundForm.Show();
-                    backgroundForm.BringToFront();
+                    //backgroundForm.BringToFront();
                     parent.splitForms.Add(backgroundForm);
-                });
+                }));
             }
         }
 
@@ -417,13 +416,12 @@ namespace Nucleus.Gaming
 
             foreach (Display dp in parent.screensInUse)
             {
-                Globals.MainOSD.Invoke((MethodInvoker)delegate ()
-                {
-                    Form backgroundForm = new SplitForm(GameProfile.Game, dp);
+                Globals.MainOSD.Dispatcher.Invoke(new Action(() => {
+                    WPFDiv backgroundForm = new WPFDiv(GameProfile.Game, dp);
                     backgroundForm.Show();
-                    backgroundForm.BringToFront();
+                    //backgroundForm.BringToFront();
                     parent.splitForms.Add(backgroundForm);
-                });
+                }));
             }
         }
 

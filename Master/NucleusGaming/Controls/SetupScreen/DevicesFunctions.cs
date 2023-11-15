@@ -450,13 +450,14 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                             changed = true;
 
                             //new gamepad
-                            PlayerInfo player = new PlayerInfo();
-
-                            player.HIDDeviceID = new string[] { "Not required", "Not required" };
-                            player.XInputJoystick = c;
-                            player.IsXInput = true;
-                            player.IsController = true;
-                            player.GamepadId = i;
+                            PlayerInfo player = new PlayerInfo
+                            {
+                                HIDDeviceID = new string[] { "Not required", "Not required" },
+                                XInputJoystick = c,
+                                IsXInput = true,
+                                IsController = true,
+                                GamepadId = i
+                            };
 
                             if (useGamepadApiIndex || Parent.profileDisabled)
                             {

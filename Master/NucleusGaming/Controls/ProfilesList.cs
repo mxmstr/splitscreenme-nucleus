@@ -61,7 +61,7 @@ namespace Nucleus.Gaming.Controls
             hand_Cursor = new Cursor(Globals.Theme + "cursor_hand.ico");
         }
 
-        public void profileBtn_CheckedChanged(object sender, EventArgs e)
+        public void ProfileBtn_CheckedChanged(object sender, EventArgs e)
         {
             if (Locked)
             {
@@ -144,7 +144,7 @@ namespace Nucleus.Gaming.Controls
                     text = "Unload";
                 }
 
-                Label deleteBtn = new Label()
+                Label deleteBtn = new Label
                 {
                     Anchor = AnchorStyles.Right,
                     Size = new Size((int)(20 * _scale), (int)(20 * _scale)),
@@ -152,16 +152,16 @@ namespace Nucleus.Gaming.Controls
                     ForeColor = Color.Red,
                     FlatStyle = FlatStyle.Flat,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    Text = "X"
+                    Text = "X",
+                    Cursor = hand_Cursor
                 };
 
-                deleteBtn.Cursor = hand_Cursor;
                 ToolTip deleteTooltip = CustomToolTips.SetToolTip(deleteBtn, "Delete this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 deleteBtn.Click += new EventHandler(DeleteBtn_Click);//Delete profile
 
                 offset += deleteBtn.Width;
 
-                Label previewBtn = new Label()
+                Label previewBtn = new Label
                 {
                     Anchor = AnchorStyles.Right,
                     Size = new Size((int)(13 * _scale), (int)(20 * _scale)),
@@ -172,15 +172,15 @@ namespace Nucleus.Gaming.Controls
                     ForeColor = Color.Green,
                     FlatStyle = FlatStyle.Flat,
                     TextAlign = ContentAlignment.MiddleCenter,
+                    Cursor = hand_Cursor
                 };
 
-                previewBtn.Cursor = hand_Cursor;
                 ToolTip notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show profile content or user notes if available.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
 
                 offset += previewBtn.Width;
 
-                Label profileBtn = new Label()
+                Label profileBtn = new Label
                 {
                     Name = (i + 1).ToString(),
                     Anchor = AnchorStyles.Left | AnchorStyles.Right,
@@ -191,12 +191,12 @@ namespace Nucleus.Gaming.Controls
                     ForeColor = Color.White,
                     TextAlign = ContentAlignment.MiddleLeft,
                     Text = text,
-                    Height = (int)(20 * _scale)
+                    Height = (int)(20 * _scale),
+                    Cursor = hand_Cursor
                 };
 
-                profileBtn.Cursor = hand_Cursor;
                 ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                profileBtn.Click += new EventHandler(profileBtn_CheckedChanged);
+                profileBtn.Click += new EventHandler(ProfileBtn_CheckedChanged);
 
                 if (i != GameProfile.profilesPathList.Count)
                 {

@@ -393,8 +393,11 @@ namespace StartGame
                             //Thread.Sleep(1000);
 
                             string injectorPath = Path.Combine(currDir, $"Nucleus.IJ{(is64 ? "x64" : "x86")}.exe");
-                            ProcessStartInfo injstartInfo = new ProcessStartInfo();
-                            injstartInfo.FileName = injectorPath;
+                            ProcessStartInfo injstartInfo = new ProcessStartInfo
+                            {
+                                FileName = injectorPath
+                            };
+
                             object[] injargs = new object[]
                             {
                             0, // Tier 0 : start up hook
@@ -443,7 +446,7 @@ namespace StartGame
                             injstartInfo.RedirectStandardInput = true;
 
                             Process injectProc = Process.Start(injstartInfo);
-                            injectProc.OutputDataReceived += proc_OutputDataReceived;
+                            injectProc.OutputDataReceived += Proc_OutputDataReceived;
                             injectProc.BeginOutputReadLine();
                             injectProc.WaitForExit();
 
@@ -623,7 +626,7 @@ namespace StartGame
             }
         }
 
-        public static void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        public static void Proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (string.IsNullOrEmpty(e.Data))
             {

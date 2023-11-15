@@ -8,7 +8,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Security.Policy;
-using System.Windows;
+//using System.Windows;
 using System.Windows.Forms;
 using static Nucleus.Gaming.Coop.Generic.Hub;
 
@@ -127,10 +127,10 @@ namespace Nucleus.Coop
                     Name = "favorite",
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     BackColor = Color.Transparent,
-                    Cursor = hand_Cursor
+                    Cursor = hand_Cursor,
+                    Image = favorite ? favorite_Selected : favorite_Unselected
                 };
 
-                favoriteBox.Image = favorite ? favorite_Selected : favorite_Unselected;
                 favoriteBox.Click += new EventHandler(FavoriteBox_Click);
                 title.BackColor = Color.Transparent;
                 TitleText = title.Text;

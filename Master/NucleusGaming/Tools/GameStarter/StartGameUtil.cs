@@ -63,7 +63,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
                 startInfo.UseShellExecute = false;
 
                 Process proc = Process.Start(startInfo);
-                proc.OutputDataReceived += proc_OutputDataReceived;
+                proc.OutputDataReceived += Proc_OutputDataReceived;
                 proc.BeginOutputReadLine();
 
                 proc.WaitForExit();
@@ -97,7 +97,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
                 startInfo.CreateNoWindow = true;
 
                 Process proc = Process.Start(startInfo);
-                proc.OutputDataReceived += proc_OutputDataReceived;
+                proc.OutputDataReceived += Proc_OutputDataReceived;
                 proc.BeginOutputReadLine();
 
                 proc.WaitForExit();
@@ -138,7 +138,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
                 Process proc = Process.Start(startInfo);
 
-                proc.OutputDataReceived += proc_OutputDataReceived;
+                proc.OutputDataReceived += Proc_OutputDataReceived;
                 proc.BeginOutputReadLine();
 
                 proc.WaitForExit();
@@ -148,7 +148,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
             }
         }
 
-        public static void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        public static void Proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (string.IsNullOrEmpty(e.Data))
             {

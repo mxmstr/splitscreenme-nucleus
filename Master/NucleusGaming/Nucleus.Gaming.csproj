@@ -72,6 +72,7 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
@@ -97,11 +98,14 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\ImageCache.cs" />
@@ -190,12 +194,6 @@
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\NucleusMessageBox\NucleusMessageBox.cs" />
-    <Compile Include="Forms\OSD.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OSD.designer.cs">
-      <DependentUpon>OSD.cs</DependentUpon>
-    </Compile>
     <Compile Include="Coop\Generic\ProcessPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,17 +279,17 @@
       <DependentUpon>CustomPrompt.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\CustomPromptRuntime.cs" />
-    <Compile Include="Forms\SplitDivForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SplitDivForm.Designer.cs">
-      <DependentUpon>SplitDivForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Prompt.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Prompt.Designer.cs">
       <DependentUpon>Prompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WPf_DivForm.xaml.cs">
+      <DependentUpon>WPf_DivForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WPF_OSD.xaml.cs">
+      <DependentUpon>WPF_OSD.xaml</DependentUpon>
     </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="Controls\GameControl.cs">
@@ -443,9 +441,6 @@
     <EmbeddedResource Include="Forms\NucleusMessageBox\CustomMessageBox.resx">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OSD.resx">
-      <DependentUpon>OSD.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Coop\Generic\ProcessPicker.resx">
       <DependentUpon>ProcessPicker.cs</DependentUpon>
     </EmbeddedResource>
@@ -472,9 +467,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserInputControl.resx">
       <DependentUpon>UserInputControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SplitDivForm.resx">
-      <DependentUpon>SplitDivForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -526,6 +518,16 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Forms\WPf_DivForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\WPF_OSD.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

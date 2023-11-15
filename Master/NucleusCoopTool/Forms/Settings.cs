@@ -109,7 +109,7 @@ namespace Nucleus.Coop
             {
                 if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
                 {
-                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel" && c.Name != "btn_SteamExePath")
+                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
                         c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
@@ -188,11 +188,11 @@ namespace Nucleus.Coop
             audioRefresh.BackColor = Color.Transparent;
 
             def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
+
             ctrlr_shorcutsBtn.FlatAppearance.BorderSize = 1;
             btn_Gb_Update.FlatAppearance.BorderSize = 1;
+            btn_SteamExePath.FlatAppearance.BorderSize = 1;
 
-            btn_SteamExePath.ForeColor = ForeColor;
-            btn_SteamExePath.Cursor = hand_Cursor;
 
             settingsTab.Parent = this;
             settingsTab.Location = new Point(0, settingsTabBtn.Bottom);
@@ -1466,22 +1466,5 @@ namespace Nucleus.Coop
             }
         }
 
-        private void btn_SteamExePath_MouseEnter(object sender, EventArgs e)
-        {
-            Label lb = (Label)sender;
-            lb.BackColor = selectionColor;
-        }
-
-        private void btn_SteamExePath_MouseLeave(object sender, EventArgs e)
-        {
-            Label lb = (Label)sender;
-            lb.BackColor = Color.Transparent;
-        }
-
-        private void settingsTab_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            g.DrawRectangle(new Pen(ForeColor), new Rectangle(btn_SteamExePath.Location.X-1, btn_SteamExePath.Location.Y-1, btn_SteamExePath.Width+2, btn_SteamExePath.Height+2));
-        }
     }
 }
