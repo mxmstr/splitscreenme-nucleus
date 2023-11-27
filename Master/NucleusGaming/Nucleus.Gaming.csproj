@@ -192,12 +192,6 @@
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\NucleusMessageBox\NucleusMessageBox.cs" />
-    <Compile Include="Forms\OSD.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OSD.designer.cs">
-      <DependentUpon>OSD.cs</DependentUpon>
-    </Compile>
     <Compile Include="Coop\Generic\ProcessPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -283,12 +277,6 @@
       <DependentUpon>CustomPrompt.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\CustomPromptRuntime.cs" />
-    <Compile Include="Forms\SplitDivForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SplitDivForm.Designer.cs">
-      <DependentUpon>SplitDivForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Prompt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -447,9 +435,6 @@
     <EmbeddedResource Include="Forms\NucleusMessageBox\CustomMessageBox.resx">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OSD.resx">
-      <DependentUpon>OSD.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Coop\Generic\ProcessPicker.resx">
       <DependentUpon>ProcessPicker.cs</DependentUpon>
     </EmbeddedResource>
@@ -476,9 +461,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserInputControl.resx">
       <DependentUpon>UserInputControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SplitDivForm.resx">
-      <DependentUpon>SplitDivForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

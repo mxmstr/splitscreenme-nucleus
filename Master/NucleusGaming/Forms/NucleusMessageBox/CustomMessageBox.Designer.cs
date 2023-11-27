@@ -45,7 +45,7 @@
             this.closeBtn.Size = new System.Drawing.Size(20, 20);
             this.closeBtn.TabIndex = 0;
             this.closeBtn.UseVisualStyleBackColor = false;
-            this.closeBtn.Click += new System.EventHandler(this.CloseBtn_Click);
+            this.closeBtn.Click += new System.EventHandler(this.closeBtn_Click);
             // 
             // CustomMessageBox
             // 

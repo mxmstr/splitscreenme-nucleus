@@ -28,7 +28,7 @@ namespace Nucleus.Gaming.Tools.X360ce
                 {
                     if (i == 0)
                     {
-                        if (genericGameHandler.GameIs64)
+                        if (genericGameHandler.gameIs64)
                         {
                             x360exe = "x360ce_x64.exe";
                             x360dll = "xinput1_3_x64.dll";
@@ -42,7 +42,7 @@ namespace Nucleus.Gaming.Tools.X360ce
 
                         if (x360ceDllName.ToLower().StartsWith("dinput"))
                         {
-                            if (genericGameHandler.GameIs64)
+                            if (genericGameHandler.gameIs64)
                             {
                                 x360dll = "dinput8_x64.dll";
                             }

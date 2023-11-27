@@ -116,7 +116,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                
                 byte[] xdata;
 
-                if (gen.Hook.UseAlpha8CustomDll && !genericGameHandler.GameIs64)
+                if (gen.Hook.UseAlpha8CustomDll && !genericGameHandler.gameIs64)
                 {
                     xdata = Properties.Resources.xinput1_3;
                 }
@@ -127,7 +127,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                         genericGameHandler.Log("Using Alpha 10 custom dll as there is no Alpha 8 x64 custom dll");
                     }
 
-                    if (genericGameHandler.GameIs64)
+                    if (genericGameHandler.gameIs64)
                     {
                         xdata = Properties.Resources.xinput1_3_a10_x64;
                     }
