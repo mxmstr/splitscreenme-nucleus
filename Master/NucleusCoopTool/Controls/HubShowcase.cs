@@ -46,9 +46,11 @@ namespace Nucleus.Coop
             BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase-background.png");
             BackgroundImageLayout = ImageLayout.Stretch;
             labels = new List<Label>();
-            rainbowTimer = new System.Windows.Forms.Timer();
-            rainbowTimer.Interval = (25); //millisecond                   
-            rainbowTimer.Tick += new EventHandler(rainbowTimerTick);
+            rainbowTimer = new System.Windows.Forms.Timer
+            {
+                Interval = (25) //millisecond                   
+            };
+            rainbowTimer.Tick += new EventHandler(RainbowTimerTick);
             Main_Showcase(mainForm);
         }
 
@@ -140,7 +142,7 @@ namespace Nucleus.Coop
                         };
 
                         coverLayer.Name = $@"https://hub.splitscreen.me/handler/{hubLink[cover_index]}";
-                        coverLayer.Click += new EventHandler(this.coverBoxClick);
+                        coverLayer.Click += new EventHandler(this.CoverBoxClick);
 
                         downloadLabel = new Label()
                         {   
@@ -211,7 +213,7 @@ namespace Nucleus.Coop
         private int b = 0;
         private bool loop = false;
 
-        private void rainbowTimerTick(Object Object, EventArgs EventArgs)
+        private void RainbowTimerTick(Object Object, EventArgs EventArgs)
         {
             if (!loop)
             {
@@ -232,19 +234,18 @@ namespace Nucleus.Coop
             }
         }
 
-        private void coverBoxClick(object sender, EventArgs e)
+        private void CoverBoxClick(object sender, EventArgs e)
         {
             Panel _sender = (Panel)sender;
             string link = _sender.Name;
             Process.Start(link);
         }
 
-        private void showcaseBanner1_Paint(object sender, PaintEventArgs e)
+        private void ShowcaseBanner1_Paint(object sender, PaintEventArgs e)
         {
             if (showcaseBanner1.VerticalScroll.SmallChange > 0)
             {
-                int scrolling = 0;
-                scrolling = showcaseBanner1.HorizontalScroll.SmallChange;
+                int scrolling = showcaseBanner1.HorizontalScroll.SmallChange;
                 if (scrolling != 0)
                 {
                     showcaseBanner1.Update();

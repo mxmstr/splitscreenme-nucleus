@@ -1,7 +1,6 @@
 ﻿using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
@@ -17,9 +16,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -851,7 +848,7 @@ namespace Nucleus.Coop
                     Text = GameProfile.ModeText
                 };
 
-                setupScreen.gameProfilesList.profileBtn_CheckedChanged(selected, eventArgs);
+                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(selected, eventArgs);
             }
 
             ini.IniWriteValue("Misc", "ProfileSettingsLocation", Location.X + "X" + Location.Y);
@@ -1360,7 +1357,6 @@ namespace Nucleus.Coop
                 User32Interop.ReleaseCapture();
                 IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
-
             }
         }
 
@@ -1371,7 +1367,6 @@ namespace Nucleus.Coop
                 User32Interop.ReleaseCapture();
                 IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
-
             }
         }
     }

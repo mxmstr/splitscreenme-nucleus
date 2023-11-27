@@ -672,7 +672,7 @@ namespace Nucleus.Gaming.Tools.Steam
             }
 
             string sseLoader = string.Empty;
-            if (genericGameHandler.gameIs64)
+            if (genericGameHandler.GameIs64)
             {
                 sseLoader = "SmartSteamLoader_x64.exe";
             }
