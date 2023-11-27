@@ -58,7 +58,7 @@ namespace Nucleus.Gaming
             Globals.MainOSD.Show(timerMS, text);
         }
 
-        public List<Form> splitForms = new List<Form>();
+        public List<WPFDiv> splitForms = new List<WPFDiv>();
         private string keyboardInstance;
         private string logMsg;
         private string origExePath;
@@ -226,7 +226,16 @@ namespace Nucleus.Gaming
 
             error = null;
 
-            ThreadPool.QueueUserWorkItem(StartPlay, handler);
+           // ThreadPool.QueueUserWorkItem(StartPlay, handler);
+
+            Thread PlayThread = new Thread(delegate ()
+            {
+                StartPlay(handler);
+                System.Windows.Threading.Dispatcher.Run();
+            });
+
+            PlayThread.SetApartmentState(ApartmentState.STA); // needs to be STA or throws exception
+            PlayThread.Start();
 
             if (TimerInterval > 0)
             {
@@ -249,7 +258,6 @@ namespace Nucleus.Gaming
                 try
                 {
                     RegistryUtil.RestoreRegistry("Error Restore from GenericGameHandler");
-
                     // try to save the exception
                     LogManager.Instance.LogExceptionFile(ex);
                 }
@@ -440,13 +448,8 @@ namespace Nucleus.Gaming
                 {
                     if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.DevicesList.Count != 1) || gen.HideDesktop)
                     {
-                        Globals.MainOSD.Invoke((MethodInvoker)delegate ()
-                        {
-                            Form backgroundForm = new SplitForm(gen, dp);
-                            backgroundForm.Show();
-                            backgroundForm.BringToFront();
-                            splitForms.Add(backgroundForm);
-                        });
+
+                        WPFDivFormThread.StartBackgroundForm(gen,dp);
                     }
                 }
             }
@@ -1673,10 +1676,10 @@ namespace Nucleus.Gaming
                 {
                     return string.Empty;
                 }
-                //else
-                //{
-                //    TriggerOSD(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
-                //}
+                else
+                {
+                    TriggerOSD(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
+                }
 
                 if (context.NeedsSteamEmulation)
                 {
@@ -3728,14 +3731,13 @@ namespace Nucleus.Gaming
 
             if (splitForms.Count > 0)
             {
-                Globals.MainOSD.Invoke((MethodInvoker)delegate ()
+                foreach (WPFDiv backgroundForm in splitForms)
                 {
-                    foreach (Form backgroundForm in splitForms)
+                    backgroundForm.Dispatcher.Invoke(new Action(() =>
                     {
                         backgroundForm.Close();
-                        backgroundForm.Dispose();
-                    }
-                });
+                    }));
+                }
 
                 splitForms.Clear();
             }

@@ -12,14 +12,15 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 {
     public class DevicesFunctions
     {
-        public static void Initialize(SetupScreenControl parent, UserGameInfo _userGameInfo, GameProfile _profile)
+        public static void Initialize(SetupScreenControl _parent, UserGameInfo _userGameInfo, GameProfile _profile)
         {
-            Parent = parent;
+            parent = _parent;
             userGameInfo = _userGameInfo;
             profile = _profile;
+            useGamepadApiIndex = bool.Parse(Globals.ini.IniReadValue("Dev", "UseXinputIndex"));
         }
 
-        private static SetupScreenControl Parent;
+        private static SetupScreenControl parent;
         private static UserGameInfo userGameInfo;
         private static GameProfile profile;
 
@@ -43,6 +44,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             set
             {
                 useGamepadApiIndex = value;
+
                 if (profile != null)
                 {
                     profile.Reset();
@@ -96,28 +98,22 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         internal static void Vibration_Tick(object state)
         {
-            if (profile == null)
+            PlayerInfo player = (PlayerInfo)state;
+
+            if (profile == null || !player.IsXInput)
             {
                 return;
             }
 
-            foreach (PlayerInfo player in profile.DevicesList)
+            if (player.XInputJoystick.IsConnected)
             {
-                if (!player.IsXInput)
+                Vibration vibration = new Vibration
                 {
-                    continue;
-                }
+                    RightMotorSpeed = (ushort)0,
+                    LeftMotorSpeed = (ushort)0
+                };
 
-                if (player.XInputJoystick.IsConnected)
-                {
-                    Vibration vibration = new Vibration
-                    {
-                        RightMotorSpeed = (ushort)0,
-                        LeftMotorSpeed = (ushort)0
-                    };
-
-                    player.XInputJoystick.SetVibration(vibration);
-                }
+                player.XInputJoystick.SetVibration(vibration);
             }
 
             vibrationTimer.Dispose();
@@ -134,7 +130,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 };
 
                 player.XInputJoystick.SetVibration(vibration);
-                vibrationTimer = new System.Threading.Timer(Vibration_Tick, null, 90, 0);
+                vibrationTimer = new System.Threading.Timer(Vibration_Tick, player, 90, 0);
                 player.Vibrate = true;
             }
         }
@@ -213,6 +209,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                     if (player.DInputJoystick != null)
                     {
+                        player.IsInputUsed = true;
                         return true;
                     }
 
@@ -353,8 +350,12 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
                         player.HIDDeviceID = new string[] { fhid, "" };
                         player.DInputJoystick.Acquire();
-                        player.IsInputUsed = true;
 
+                        if(UseGamepadApiIndex)
+                        {
+                            player.IsInputUsed = true;
+                        }
+                       
                         data.Add(player);
                     }
                 }
@@ -458,7 +459,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                             player.IsController = true;
                             player.GamepadId = i;
 
-                            if (useGamepadApiIndex || Parent.profileDisabled)
+                            if (useGamepadApiIndex || parent.profileDisabled)
                             {
                                 player.GamepadGuid = new Guid($"00000000-0000-0000-0000-20000000000{player.GamepadId + 1}");
                                 player.IsInputUsed = true;
@@ -471,10 +472,10 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (changed)
                 {
-                    if (Parent.InvokeRequired)
+                    if (parent.InvokeRequired)
                     {
-                        Parent.Invoke(new MethodInvoker(UpdateDevices));
-                        Parent.Invoke(new MethodInvoker(Parent.Refresh));
+                        parent.Invoke(new MethodInvoker(UpdateDevices));
+                        parent.Invoke(new MethodInvoker(parent.Refresh));
                         insideGamepadTick = false;
                         return;
                     }
@@ -521,7 +522,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             {
             }
 
-            Parent.Invoke(new Action(() => Parent.Invalidate()));
+            parent.Invoke(new Action(() => parent.Invalidate()));
         }
 
         internal static void UpdateDevices()
@@ -536,11 +537,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             if (GameProfile.Loaded)
             {
-                Parent.canProceed = (GameProfile.TotalAssignedPlayers == GameProfile.TotalProfilePlayers);
+                parent.canProceed = (GameProfile.TotalAssignedPlayers == GameProfile.TotalProfilePlayers);
             }
             else
             {
-                Parent.canProceed = playerData.Count(c => c.ScreenIndex != -1) >= 1;
+                parent.canProceed = playerData.Count(c => c.ScreenIndex != -1) >= 1;
             }
 
             if (playerData.Count == 0)
@@ -607,15 +608,13 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             BoundsFunctions.UpdateScreens();
 
-            float playersWidth = Parent.Width * 0.65f;
+            float playersWidth = parent.Width * 0.65f;
 
             float playerCount = playerData.Count;
             float playerWidth = playersWidth * 0.9f;
-            float playerHeight = Parent.Height * 0.2f;
+            float playerHeight = parent.Height * 0.2f;
 
             playersArea = new RectangleF(10, 27, playersWidth, playerHeight);
-
-            //  playersArea = playersArea;
 
             float playersAreaScale = playersArea.Width * playersArea.Height;
             float maxArea = playersAreaScale / playerCount;
@@ -628,7 +627,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             if (total < playerCount)
             {
                 float newVertical = vertical + 1;
-                Draw.playerCustomFont = new Font("Franklin Gothic Medium", Parent.newplayerCustomFontSize * 0.8f, FontStyle.Regular, GraphicsUnit.Point, 0);
+                Draw.playerCustomFont = new Font("Franklin Gothic Medium", parent.newplayerCustomFontSize * 0.8f, FontStyle.Regular, GraphicsUnit.Point, 0);
                 playerSize = (int)Math.Round(((playerHeight / 1.2f) / newVertical));
             }
 
@@ -646,8 +645,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 }
             }
           
-            Parent.CanPlayUpdated(Parent.canProceed, false);
-            Parent.Invalidate();
+            parent.CanPlayUpdated(parent.canProceed, false);
+            parent.Invalidate();
         }
     }
 }

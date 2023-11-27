@@ -8,7 +8,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Security.Policy;
-using System.Windows;
 using System.Windows.Forms;
 using static Nucleus.Gaming.Coop.Generic.Hub;
 

@@ -214,3 +214,5 @@ ModelManifest.xml
 *.db
 /Master/NucleusCoop_small.VC.VC.opendb
 /Master/NucleusCoopTool/GoldbergUpdater.cs
+*.cs
+/Master/NucleusCoopTool/Forms/Settings/Pages

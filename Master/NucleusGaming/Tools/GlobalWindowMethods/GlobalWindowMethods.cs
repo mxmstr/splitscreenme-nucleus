@@ -13,6 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using WindowScrape.Constants;
 using WindowScrape.Types;
 
@@ -1571,16 +1572,12 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 {
                     try
                     {
-                        foreach (Form back in GenericGameHandler.Instance.splitForms)
+                        foreach (WPFDiv back in GenericGameHandler.Instance.splitForms)
                         {
-                            IntPtr splitHandle = FindWindow(null, back.Name);//Get the background Form(s)
-
-                            if (splitHandle != null && splitHandle != IntPtr.Zero)
+                            back.Dispatcher.Invoke(new Action(() =>
                             {
-                                User32Interop.SetWindowPos(splitHandle, new IntPtr(-2), 0, 0, 0, 0,
-                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                ShowWindow(splitHandle, ShowWindowEnum.Minimize);
-                            }
+                                back.WindowState = System.Windows.WindowState.Minimized;
+                            }));
                         }
 
                         Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(game.ExecutableName.ToLower()));
@@ -1606,16 +1603,12 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 }
                 else if (!TopMostToggle)
                 {
-                    foreach (Form back in GenericGameHandler.Instance.splitForms)
+                    foreach (WPFDiv back in GenericGameHandler.Instance.splitForms)
                     {
-                        IntPtr splitHandle = FindWindow(null, back.Name);//Get the background Form(s)
-
-                        if (splitHandle != null && splitHandle != IntPtr.Zero)
+                        back.Dispatcher.Invoke(new Action(() =>
                         {
-                            ShowWindow(splitHandle, ShowWindowEnum.Restore);
-                            User32Interop.SetWindowPos(splitHandle, new IntPtr(-1), 0, 0, 0, 0,
-                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                        }
+                            back.WindowState = System.Windows.WindowState.Maximized;
+                        }));
                     }
 
                     Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(game.ExecutableName.ToLower()));

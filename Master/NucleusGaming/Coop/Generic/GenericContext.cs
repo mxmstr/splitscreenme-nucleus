@@ -18,6 +18,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Threading;
 using System.Xml;
 
 namespace Nucleus.Gaming
@@ -393,13 +395,7 @@ namespace Nucleus.Gaming
 
             foreach (Display dp in parent.screensInUse)
             {
-                Globals.MainOSD.Invoke((MethodInvoker)delegate ()
-                {
-                    Form backgroundForm = new SplitForm(GameProfile.Game, dp);
-                    backgroundForm.Show();
-                    backgroundForm.BringToFront();
-                    parent.splitForms.Add(backgroundForm);
-                });
+                WPFDivFormThread.StartBackgroundForm(parent.currentGameInfo, dp);
             }
         }
 
@@ -417,13 +413,7 @@ namespace Nucleus.Gaming
 
             foreach (Display dp in parent.screensInUse)
             {
-                Globals.MainOSD.Invoke((MethodInvoker)delegate ()
-                {
-                    Form backgroundForm = new SplitForm(GameProfile.Game, dp);
-                    backgroundForm.Show();
-                    backgroundForm.BringToFront();
-                    parent.splitForms.Add(backgroundForm);
-                });
+                WPFDivFormThread.StartBackgroundForm(parent.currentGameInfo, dp);
             }
         }
 

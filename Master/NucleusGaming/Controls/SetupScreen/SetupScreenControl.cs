@@ -1,32 +1,24 @@
 ﻿using Nucleus.Gaming.Cache;
-using Nucleus.Gaming.Controls;
-using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Controls.SetupScreen
 {
     public class SetupScreenControl : UserInputControl, IDynamicSized
     {
-        private readonly IniFile themeIni = Globals.ThemeIni;
         private string theme = Globals.Theme;
         private static SetupScreenControl _setupScreen;
        
         internal bool profileDisabled;
-        internal bool useGamepadApiIndex;
         internal bool canProceed; 
         private bool scaled = false;
         public override bool CanProceed => canProceed;
         public override bool CanPlay => false;
-
-        private Point mousePos;
 
         internal float newplayerCustomFontSize;
 
@@ -60,8 +52,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         private void Initialize()
         {
             Name = "setupScreen";
-                 
-            useGamepadApiIndex = bool.Parse(Globals.ini.IniReadValue("Dev", "UseXinputIndex"));
 
             Draw.Initialize(this, null, null);
             DevicesFunctions.Initialize(this, null, null);
@@ -332,7 +322,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            mousePos = e.Location;
             BoundsFunctions.OnMouseMove(e);
         }
 
@@ -388,8 +377,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     {
                         Draw.PlayerTag(g, playerToUpdate);                               
                     }
-
-                    //g.DrawRectangles(new Pen (Color.Sienna), new RectangleF[] { player.EditBounds });
                 }
             }
 
@@ -401,7 +388,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
 
             DevicesFunctions.polling = false;
-            //Console.WriteLine(GameProfile.TotalAssignedPlayers);
         }
     }
 }

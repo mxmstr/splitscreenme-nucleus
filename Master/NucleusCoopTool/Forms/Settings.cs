@@ -109,7 +109,7 @@ namespace Nucleus.Coop
             {
                 if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
                 {
-                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel" && c.Name != "btn_SteamExePath")
+                    if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
                         c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
@@ -193,6 +193,7 @@ namespace Nucleus.Coop
 
             btn_SteamExePath.ForeColor = ForeColor;
             btn_SteamExePath.Cursor = hand_Cursor;
+            btn_SteamExePath.FlatAppearance.BorderSize = 1;
 
             settingsTab.Parent = this;
             settingsTab.Location = new Point(0, settingsTabBtn.Bottom);
@@ -1093,12 +1094,11 @@ namespace Nucleus.Coop
         {
             if (!mainForm.Xinput_S_Setup.Visible)
             {
-                if (mainForm.Xinput_S_Setup != null)
-                    mainForm.Xinput_S_Setup.Show();
+                mainForm.Xinput_S_Setup?.Show();
             }
             else
             {
-                mainForm.Xinput_S_Setup.Visible = false;
+                mainForm.Xinput_S_Setup?.BringToFront();
             }
         }
 
@@ -1464,24 +1464,6 @@ namespace Nucleus.Coop
                     Globals.ini.IniWriteValue("SearchPaths", "SteamClientExePath", open.FileName);
                 }
             }
-        }
-
-        private void btn_SteamExePath_MouseEnter(object sender, EventArgs e)
-        {
-            Label lb = (Label)sender;
-            lb.BackColor = selectionColor;
-        }
-
-        private void btn_SteamExePath_MouseLeave(object sender, EventArgs e)
-        {
-            Label lb = (Label)sender;
-            lb.BackColor = Color.Transparent;
-        }
-
-        private void settingsTab_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            g.DrawRectangle(new Pen(ForeColor), new Rectangle(btn_SteamExePath.Location.X-1, btn_SteamExePath.Location.Y-1, btn_SteamExePath.Width+2, btn_SteamExePath.Height+2));
         }
     }
 }

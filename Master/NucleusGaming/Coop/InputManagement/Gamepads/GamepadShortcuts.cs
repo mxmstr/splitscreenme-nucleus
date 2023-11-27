@@ -162,7 +162,6 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         {
                             //Todo Try by pausing focus loop instead so we can release the cursor from it's current window(but what for protoinput hooks?)
                             SendKeys.SendWait("%+{TAB}");
-                            //SendKeys.Send("%+{TAB}");
                             Thread.Sleep(500);
                         }
 

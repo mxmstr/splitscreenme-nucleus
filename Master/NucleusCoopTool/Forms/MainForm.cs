@@ -279,8 +279,8 @@ namespace Nucleus.Coop
 
             connected = Program.connected;
             Hub.Connected = connected;
+
             iconsIni = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
-            //Splash_On = bool.Parse(ini.IniReadValue("Dev", "SplashScreen_On"));
             DisableOfflineIcon = bool.Parse(ini.IniReadValue("Dev", "DisableOfflineIcon"));
             showFavoriteOnly = bool.Parse(ini.IniReadValue("Dev", "ShowFavoriteOnly"));
             mouseClick = bool.Parse(ini.IniReadValue("Dev", "MouseClick"));
@@ -1225,9 +1225,7 @@ namespace Nucleus.Coop
 
                 if (!currentGameInfo.KeepSymLink && !currentGameInfo.Game.KeepSymLinkOnExit)
                 {
-                    //Cursor.Current = Cursors.WaitCursor;
                     CleanGameContent.CleanContentFolder(currentGame);
-                    //Cursor.Current = default_Cursor;
                 }
 
                 button_UpdateAvailable.Visible = currentGameInfo.Game.UpdateAvailable;
@@ -1276,9 +1274,7 @@ namespace Nucleus.Coop
                 {
                     stepsList.Add(jsControl);
                 }
-
                
-
                 currentProfile.InitializeDefault(currentGame, setupScreen);
                 gameManager.UpdateCurrentGameProfile(currentProfile);
 
@@ -1325,8 +1321,7 @@ namespace Nucleus.Coop
                 }
 
                 content?.Dispose();
-
-              
+            
                 // content manager is shared within the same game
                 content = new ContentManager(currentGame);
 
@@ -1612,7 +1607,7 @@ namespace Nucleus.Coop
             }
             else
             {
-                searchDisksForm.Visible = false;
+                searchDisksForm.BringToFront();
             }
         }
 
@@ -2285,7 +2280,7 @@ namespace Nucleus.Coop
         {                     
             if (scriptDownloader.Visible)
             {
-                scriptDownloader.Visible = false;
+                scriptDownloader.BringToFront();
             }
             else
             {               
@@ -2565,9 +2560,9 @@ namespace Nucleus.Coop
                 settings.BringToFront();
                 settings.Visible = true;
             }
-            else
+            else 
             {
-                settings.Visible = false;
+                settings.BringToFront();
             }
         }
 
@@ -2610,6 +2605,10 @@ namespace Nucleus.Coop
                 profileSettings.Visible = true;
                 ProfilesList.profilesList.Locked = true;
                 ProfileSettings.UpdateProfileSettingsUiValues();
+            }
+            else 
+            {
+                profileSettings.BringToFront();            
             }
         }
 

@@ -22,8 +22,6 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
 
         public static Thread fakeFocus;
 
-        public static Thread FakeFocus => fakeFocus;
-
         private static GenericGameHandler genericGameHandler;
         private static GenericGameInfo gen;
         private static GameProfile profile;

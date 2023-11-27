@@ -60,15 +60,13 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         public static Font playerCustomFont;
         public static Font playerTextFont;
 
-        private static SetupScreenControl Parent;
+        private static SetupScreenControl parent;
         private static UserGameInfo userGameInfo;
-        private static GameProfile profile;
 
-        public static void Initialize(SetupScreenControl parent, UserGameInfo _userGameInfo, GameProfile _profile)
+        public static void Initialize(SetupScreenControl _parent, UserGameInfo _userGameInfo, GameProfile _profile)
         {
-            Parent = parent;
+            parent = _parent;
             userGameInfo = _userGameInfo;
-            profile = _profile;
 
             customFont = themeIni.IniReadValue("Font", "FontFamily");
 
@@ -233,10 +231,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 }
                 else
                 {
+                    if(player.IsInputUsed)
                     g.DrawImage(xinputPic, gamepadRect);
                 }
 
-                if (controllerIdentification)
+                if (controllerIdentification && player.IsInputUsed)
                     g.DrawString(str, playerCustomFont, playerColor, loc);
 
             }
@@ -363,7 +362,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             Brush brush = myBrush;
 
-            string msg = String.Empty;
+            string msg = string.Empty;
 
             if (GameProfile.Loaded)
             {
@@ -390,25 +389,12 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (userGameInfo.Game.SupportsMultipleKeyboardsAndMice)
                 {
-                    if (Parent.useGamepadApiIndex || Parent.profileDisabled)
-                    {
-                        msg = $"Drop Devices {screenText}.";
-                    }
-                    else
-                    {
-                        if ((userGameInfo.Game.Hook.XInputEnabled && !userGameInfo.Game.Hook.XInputReroute && !userGameInfo.Game.ProtoInput.DinputDeviceHook) || userGameInfo.Game.ProtoInput.XinputHook)
-                        {
-                            msg = $"Press A Button On Each Gamepad & Drop Devices {screenText}.";
-                        }
-                        else if (userGameInfo.Game.Hook.DInputEnabled || userGameInfo.Game.Hook.XInputReroute || userGameInfo.Game.ProtoInput.DinputDeviceHook)
-                        {
-                            msg = $"Drop Devices {screenText}.";
-                        }
-                    }
+                    msg = $"Press A Button\\Key On Each Device & Drop them {screenText}.";
+
                 }
                 else if (!userGameInfo.Game.SupportsMultipleKeyboardsAndMice && !userGameInfo.Game.SupportsKeyboard)
                 {
-                    if (Parent.useGamepadApiIndex || Parent.profileDisabled)
+                    if (DevicesFunctions.UseGamepadApiIndex || parent.profileDisabled)
                     {
                         msg = $"Drop Gamepads {screenText}.";
                     }
@@ -419,7 +405,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 }
                 else
                 {
-                    if (Parent.useGamepadApiIndex || Parent.profileDisabled)
+                    if (DevicesFunctions.UseGamepadApiIndex || parent.profileDisabled)
                     {
                         msg = $"Drop Gamepads Or Keyboard & Mouse {screenText}.";
                     }
@@ -442,7 +428,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public static void PlayerBoundsInfo(Graphics g)
         {
-            g.DrawString(BoundsFunctions.CalculAspectRatio(BoundsFunctions.selectedPlayer), playerTextFont, Brushes.White, Parent.Left + 10, Parent.Height - 40);
+            g.DrawString(BoundsFunctions.CalculAspectRatio(BoundsFunctions.selectedPlayer), playerTextFont, Brushes.White, parent.Left + 10, parent.Height - 40);
 
             //g.DrawRectangles(PositionScreenPen, new RectangleF[] { BoundsFunctions.sizerBtnLeft});
             //g.DrawRectangles(PositionScreenPen, new RectangleF[] { BoundsFunctions.sizerBtnRight });
