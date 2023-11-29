@@ -22,10 +22,11 @@ namespace Nucleus.Gaming
         public static Button PlayButton;
         public static RichTextBox NoteZoomTextBox;
         public static PictureBox NoteZoomButton;
+        public static Button Btn_debuglog;
 
-        public static WPF_OSD MainOSD => InitOSD();
         private static WPF_OSD mainOSD;
-
+        public static WPF_OSD MainOSD => InitOSD();
+        
         private static WPF_OSD InitOSD()
         {
             if (mainOSD == null)
@@ -37,6 +38,6 @@ namespace Nucleus.Gaming
             {
                 return mainOSD;
             }
-        }
+        }      
     }
 }

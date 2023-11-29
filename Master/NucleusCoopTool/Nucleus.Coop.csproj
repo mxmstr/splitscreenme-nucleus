@@ -305,6 +305,7 @@
     </Compile>
     <Compile Include="Tools\ExtractHandler.cs" />
     <Compile Include="Tools\GetGameDetails.cs" />
+    <Compile Include="Tools\OpenDebugLog.cs" />
     <Compile Include="Tools\OpenGameContentFolder.cs" />
     <Compile Include="Tools\OpenHandler.cs" />
     <Compile Include="Tools\RemoveGame.cs" />

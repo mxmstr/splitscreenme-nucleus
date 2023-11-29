@@ -71,7 +71,13 @@ namespace Nucleus.Gaming.Coop
             get => useSplitDiv;
             set => useSplitDiv = value;
         }
-
+        
+        private static bool hideDesktopOnly;
+        public static bool HideDesktopOnly
+        {
+            get => hideDesktopOnly;
+            set => hideDesktopOnly = value;
+        }
         private static int customLayout_Ver;
         public static int CustomLayout_Ver
         {
@@ -206,7 +212,7 @@ namespace Nucleus.Gaming.Coop
             set => updating = value;
         }    
 
-        public static List<Rectangle> AllScreens = new List<Rectangle>();
+        public static List<RectangleF> AllScreens = new List<RectangleF>();
         public static List<ProfilePlayer> ProfilePlayersList = new List<ProfilePlayer>();
         public static List<PlayerInfo> loadedProfilePlayers = new List<PlayerInfo>();
         public static List<PlayerInfo> devicesToMerge = new List<PlayerInfo>();
@@ -291,10 +297,9 @@ namespace Nucleus.Gaming.Coop
                 {
                     options.Add(opt.Key, opt.Value);
                 }
+            
+                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(new Label(), null);
 
-                Label unload = new Label();
-
-                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(unload, null);
                 loadedProfilePlayers.Clear();
                 devicesToMerge.Clear();
 
@@ -304,7 +309,10 @@ namespace Nucleus.Gaming.Coop
                 ListGameProfiles();
             }
 
-            screens = BoundsFunctions.screens.ToList();
+            if (BoundsFunctions.screens != null)
+            {
+                screens = BoundsFunctions.screens.ToList();
+            }
         }
 
         public void InitializeDefault(GenericGameInfo game, SetupScreenControl pc)
@@ -379,6 +387,12 @@ namespace Nucleus.Gaming.Coop
             }
 
             UseSplitDiv = (bool)Jprofile["UseSplitDiv"]["Enabled"];
+
+            if (Jprofile["UseSplitDiv"]["HideOnly"] != null)
+            {
+                HideDesktopOnly = (bool)Jprofile["UseSplitDiv"]["HideOnly"];
+            }
+
             SplitDivColor = (string)Jprofile["UseSplitDiv"]["Color"];
             AutoDesktopScaling = (bool)Jprofile["AutoDesktopScaling"]["Enabled"];
             UseNicknames = (bool)Jprofile["UseNicknames"]["Use"];
@@ -490,27 +504,20 @@ namespace Nucleus.Gaming.Coop
             JToken JAllscreens = Jprofile["AllScreens"] as JToken;
             for (int s = 0; s < JAllscreens.Count(); s++)
             {
-                AllScreens.Add(new Rectangle((int)JAllscreens[s]["X"], (int)JAllscreens[s]["Y"], (int)JAllscreens[s]["Width"], (int)JAllscreens[s]["Height"]));
+                AllScreens.Add(new RectangleF((float)JAllscreens[s]["X"], (float)JAllscreens[s]["Y"], (float)JAllscreens[s]["Width"], (float)JAllscreens[s]["Height"]));
             }
 
             totalProfilePlayers = JplayersInfos.Count();
 
             modeText = $"Profile n°{profileToSave}";
 
-            if (ProfilePlayersList.Any(x => x.IsXInput == true) && !useXinputIndex)
-            {
-                Globals.MainOSD.Show(2000, $"Press A Button On Each GamePad");
-            }
-            else
-            {
-                Globals.MainOSD.Show(2000, $"Game Profile N°{_profileToLoad} loaded");
-            }
-
             setupScreen.profileSettings_Tooltip.SetToolTip(setupScreen.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
 
             Ready = true;
 
             GetGhostBounds();
+
+            Globals.MainOSD.Show(1000, $"Game Profile N°{_profileToLoad} loaded");
 
             return true;
         }
@@ -543,6 +550,7 @@ namespace Nucleus.Gaming.Coop
             autoDesktopScaling = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
             useNicknames = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
             useSplitDiv = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
+            hideDesktopOnly = bool.Parse(ini.IniReadValue("CustomLayout", "HideOnly"));
             customLayout_Ver = int.Parse(ini.IniReadValue("CustomLayout", "VerticalLines"));
             customLayout_Hor = int.Parse(ini.IniReadValue("CustomLayout", "HorizontalLines"));
             customLayout_Max = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
@@ -635,7 +643,9 @@ namespace Nucleus.Gaming.Coop
             JObject JCustomLayout = new JObject(new JProperty("Ver", customLayout_Ver),
                                                 new JProperty("Hor", customLayout_Hor),
                                                 new JProperty("Max", CustomLayout_Max));
+
             JObject JUseSplitDiv = new JObject(new JProperty("Enabled", useSplitDiv),
+                                               new JProperty("HideOnly", hideDesktopOnly),
                                                new JProperty("Color", splitDivColor));
 
             JObject JAutoDesktopScaling = new JObject(new JProperty("Enabled", autoDesktopScaling));
@@ -862,7 +872,9 @@ namespace Nucleus.Gaming.Coop
             JObject JCustomLayout = new JObject(new JProperty("Ver", customLayout_Ver),
                                                 new JProperty("Hor", customLayout_Hor),
                                                 new JProperty("Max", CustomLayout_Max));
+
             JObject JUseSplitDiv = new JObject(new JProperty("Enabled", useSplitDiv),
+                                               new JProperty("HideOnly", hideDesktopOnly),
                                                new JProperty("Color", splitDivColor));
 
             JObject JAutoDesktopScaling = new JObject(new JProperty("Enabled", autoDesktopScaling));
@@ -917,10 +929,10 @@ namespace Nucleus.Gaming.Coop
 
 
                 JObject JMonitorBounds = new JObject(
-                                         new JProperty("X", useSplitDiv ? players[i].MonitorBounds.Location.X - 1 : players[i].MonitorBounds.Location.X),
-                                         new JProperty("Y", useSplitDiv ? players[i].MonitorBounds.Location.Y - 1 : players[i].MonitorBounds.Location.Y),
-                                         new JProperty("Width", useSplitDiv ? players[i].MonitorBounds.Width + 2 : players[i].MonitorBounds.Width),
-                                         new JProperty("Height", useSplitDiv ? players[i].MonitorBounds.Height + 2 : players[i].MonitorBounds.Height));
+                                         new JProperty("X", useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Location.X - 1 : players[i].MonitorBounds.Location.X),
+                                         new JProperty("Y", useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Location.Y - 1 : players[i].MonitorBounds.Location.Y),
+                                         new JProperty("Width", useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Width + 2 : players[i].MonitorBounds.Width),
+                                         new JProperty("Height", useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Height + 2 : players[i].MonitorBounds.Height));
 
                 JObject JEditBounds = new JObject(
                                       new JProperty("X", players[i].EditBounds.X),
@@ -1303,7 +1315,7 @@ namespace Nucleus.Gaming.Coop
 
             foreach (PlayerInfo player in nprof.deviceList)
             {
-                if (UseSplitDiv)
+                if (UseSplitDiv && !HideDesktopOnly)
                 {
                     player.MonitorBounds = new Rectangle(player.MonitorBounds.X + 1, player.MonitorBounds.Y + 1, player.MonitorBounds.Width - 2, player.MonitorBounds.Height - 2);
                 }

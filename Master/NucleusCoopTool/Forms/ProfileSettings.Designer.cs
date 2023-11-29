@@ -63,6 +63,7 @@ namespace Nucleus.Coop
             this.layoutBtnPicture = new System.Windows.Forms.PictureBox();
             this.layoutTabBtn = new System.Windows.Forms.Button();
             this.layoutTab = new BufferedClientAreaPanel();
+            this.hideDesktop = new System.Windows.Forms.CheckBox();
             this.label71 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cts_unfocus = new System.Windows.Forms.CheckBox();
@@ -71,7 +72,7 @@ namespace Nucleus.Coop
             this.SplitColors = new System.Windows.Forms.ComboBox();
             this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.SplitDiv = new System.Windows.Forms.CheckBox();
+            this.splitDiv = new System.Windows.Forms.CheckBox();
             this.label49 = new System.Windows.Forms.Label();
             this.layoutSizer = new System.Windows.Forms.Panel();
             this.label29 = new System.Windows.Forms.Label();
@@ -569,12 +570,13 @@ namespace Nucleus.Coop
             // layoutTab
             // 
             this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.layoutTab.Controls.Add(this.hideDesktop);
             this.layoutTab.Controls.Add(this.label71);
             this.layoutTab.Controls.Add(this.panel1);
             this.layoutTab.Controls.Add(this.SplitColors);
             this.layoutTab.Controls.Add(this.numMaxPlyrs);
             this.layoutTab.Controls.Add(this.numUpDownVer);
-            this.layoutTab.Controls.Add(this.SplitDiv);
+            this.layoutTab.Controls.Add(this.splitDiv);
             this.layoutTab.Controls.Add(this.label49);
             this.layoutTab.Controls.Add(this.layoutSizer);
             this.layoutTab.Controls.Add(this.label29);
@@ -586,11 +588,24 @@ namespace Nucleus.Coop
             this.layoutTab.Size = new System.Drawing.Size(671, 401);
             this.layoutTab.TabIndex = 304;
             // 
+            // hideDesktop
+            // 
+            this.hideDesktop.AutoSize = true;
+            this.hideDesktop.Cursor = System.Windows.Forms.Cursors.Default;
+            this.hideDesktop.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hideDesktop.Location = new System.Drawing.Point(15, 128);
+            this.hideDesktop.Margin = new System.Windows.Forms.Padding(0);
+            this.hideDesktop.Name = "hideDesktop";
+            this.hideDesktop.Size = new System.Drawing.Size(115, 17);
+            this.hideDesktop.TabIndex = 163;
+            this.hideDesktop.Text = "Hide Desktop Only";
+            this.hideDesktop.UseVisualStyleBackColor = true;
+            // 
             // label71
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(13, 193);
+            this.label71.Location = new System.Drawing.Point(12, 209);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(128, 13);
             this.label71.TabIndex = 155;
@@ -603,7 +618,7 @@ namespace Nucleus.Coop
             this.panel1.Controls.Add(this.cts_kar);
             this.panel1.Controls.Add(this.cts_Mute);
             this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(12, 212);
+            this.panel1.Location = new System.Drawing.Point(11, 228);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 82);
             this.panel1.TabIndex = 154;
@@ -643,7 +658,7 @@ namespace Nucleus.Coop
             // 
             this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(15, 155);
+            this.SplitColors.Location = new System.Drawing.Point(14, 171);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
@@ -674,25 +689,25 @@ namespace Nucleus.Coop
             this.numUpDownVer.TabIndex = 150;
             this.numUpDownVer.Value = 0;
             // 
-            // SplitDiv
+            // splitDiv
             // 
-            this.SplitDiv.AutoSize = true;
-            this.SplitDiv.Cursor = System.Windows.Forms.Cursors.Default;
-            this.SplitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitDiv.Location = new System.Drawing.Point(16, 107);
-            this.SplitDiv.Margin = new System.Windows.Forms.Padding(0);
-            this.SplitDiv.Name = "SplitDiv";
-            this.SplitDiv.Size = new System.Drawing.Size(118, 17);
-            this.SplitDiv.TabIndex = 149;
-            this.SplitDiv.Text = "Splitscreen Division";
-            this.SplitDiv.UseVisualStyleBackColor = true;
+            this.splitDiv.AutoSize = true;
+            this.splitDiv.Cursor = System.Windows.Forms.Cursors.Default;
+            this.splitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.splitDiv.Location = new System.Drawing.Point(15, 107);
+            this.splitDiv.Margin = new System.Windows.Forms.Padding(0);
+            this.splitDiv.Name = "splitDiv";
+            this.splitDiv.Size = new System.Drawing.Size(118, 17);
+            this.splitDiv.TabIndex = 149;
+            this.splitDiv.Text = "Splitscreen Division";
+            this.splitDiv.UseVisualStyleBackColor = true;
             // 
             // label49
             // 
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(13, 133);
+            this.label49.Location = new System.Drawing.Point(12, 149);
             this.label49.Margin = new System.Windows.Forms.Padding(0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(105, 15);
@@ -4771,8 +4786,6 @@ namespace Nucleus.Coop
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(674, 418);
-            this.Controls.Add(this.sharedTab);
-            this.Controls.Add(this.processorTab);
             this.Controls.Add(this.layoutBtnPicture);
             this.Controls.Add(this.layoutTabBtn);
             this.Controls.Add(this.profile_info_btn);
@@ -4789,6 +4802,8 @@ namespace Nucleus.Coop
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.sharedTab);
+            this.Controls.Add(this.processorTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -4958,7 +4973,7 @@ namespace Nucleus.Coop
         private ComboBox SplitColors;
         private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
         private Gaming.Controls.CustomNumericUpDown numUpDownVer;
-        private CheckBox SplitDiv;
+        private CheckBox splitDiv;
         private Label label49;
         public Panel layoutSizer;
         private Label label29;
@@ -5153,5 +5168,6 @@ namespace Nucleus.Coop
         private Label warningLabel;
         private Label titleLabel;
         private TextBox profileTitle;
+        private CheckBox hideDesktop;
     }
 }

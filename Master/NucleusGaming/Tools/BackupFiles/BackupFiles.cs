@@ -1,14 +1,7 @@
 ﻿using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management.Instrumentation;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Tools.BackupFiles
 {

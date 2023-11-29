@@ -9,14 +9,14 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 {
     internal static class BoundsFunctions
     {
-        public static void Initialize(SetupScreenControl parent, UserGameInfo _userGameInfo, GameProfile _profile)
+        public static void Initialize(SetupScreenControl _parent, UserGameInfo _userGameInfo, GameProfile _profile)
         {
-            Parent = parent;
+            parent = _parent;
             userGameInfo = _userGameInfo;
             profile = _profile;
         }
 
-        private static SetupScreenControl Parent;
+        private static SetupScreenControl parent;
         private static UserGameInfo userGameInfo;
         private static GameProfile profile;
         internal static PlayerInfo selectedPlayer;
@@ -130,11 +130,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             if (screens.Length > 1)
             {
-                screensArea = new RectangleF(5.0F, (float)Parent.Height / 2.3f, (float)Parent.Width - 20.0F, (float)Parent.Height / 2.1f);
+                screensArea = new RectangleF(5.0F, (float)parent.Height / 2.3f, (float)parent.Width - 20.0F, (float)parent.Height / 2.1f);
             }
             else
             {
-                screensArea = new RectangleF(10.0F, 50.0F + (float)Parent.Height * 0.2f + 10F, (float)Parent.Width - 20.0F, (float)Parent.Height * 0.5f);
+                screensArea = new RectangleF(10.0F, 50.0F + (float)parent.Height * 0.2f + 10F, (float)parent.Width - 20.0F, (float)parent.Height * 0.5f);
             }
 
             screensAreaScale = screensArea.Width / (float)totalBounds.Width;
@@ -180,8 +180,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             float instHeight = screensArea.Width / 1.77f;
 
-            Parent.instructionImg.Location = new Point((int)screensArea.X, (int)screensArea.Y / 4);
-            Parent.instructionImg.Size = new Size((int)screensArea.Width, (int)instHeight);
+            parent.instructionImg.Location = new Point((int)screensArea.X, (int)screensArea.Y / 4);
+            parent.instructionImg.Size = new Size((int)screensArea.Width, (int)instHeight);
         }
 
         internal static void GetScreenDivisionBounds(UserScreen screen)
@@ -354,7 +354,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (activeSizer != RectangleF.Empty)
                 {
-                    Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                    Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                     return;
                 }
                 else
@@ -397,7 +397,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         }
 
                         DevicesFunctions.UpdateDevices();
-                        Parent.Invalidate();
+                        parent.Invalidate();
                         return;
                     }
                 }
@@ -475,7 +475,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                             }
                         }
 
-                        Parent.Invalidate();
+                        parent.Invalidate();
                         return;
                     }
                 }
@@ -599,7 +599,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                                 playerInbounds.EditBounds = p.EditBounds;
                                             }
 
-                                            Parent.Invalidate();
+                                            parent.Invalidate();
                                             break;
                                         }
 
@@ -634,7 +634,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                             playerInbounds.EditBounds = p.EditBounds;
                                         }
 
-                                        Parent.Invalidate();
+                                        parent.Invalidate();
                                         break;
                                     }
                                 }
@@ -655,7 +655,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                         playerInbounds.EditBounds = p.EditBounds;
                                     }
 
-                                    Parent.Invalidate();
+                                    parent.Invalidate();
                                 }
                             }
                         }
@@ -746,7 +746,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             if (activeSizer == RectangleF.Empty)
             {
-                Parent.Cursor = Draw.default_Cursor;
+                parent.Cursor = Draw.default_Cursor;
             }
 
             if (e.Button == MouseButtons.Left)
@@ -779,7 +779,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     }
 
                     DevicesFunctions.UpdateDevices();
-                    Parent.Invalidate();
+                    parent.Invalidate();
                 }
 
                 activeSizer = RectangleF.Empty;
@@ -822,7 +822,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     else
                     {
                         player.EditBounds = destEditBounds;
-                        Parent.Invalidate();
+                        parent.Invalidate();
                         return;
                     }
                 }
@@ -835,7 +835,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 RectangleF p = new RectangleF(mousePos.X + draggingOffset.X, mousePos.Y + draggingOffset.Y, player.SourceEditBounds.Width, player.SourceEditBounds.Height);
                 player.EditBounds = p;
 
-                Parent.Invalidate();
+                parent.Invalidate();
             }
             else
             {
@@ -876,9 +876,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     sizer = RectangleF.Empty;
                 }
 
-                if (Parent.Cursor != Draw.default_Cursor)
+                if (parent.Cursor != Draw.default_Cursor)
                 {
-                    Parent.Cursor = Draw.default_Cursor;
+                    parent.Cursor = Draw.default_Cursor;
                 }
             }
         }
@@ -888,15 +888,15 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             if (sizerBtnLeft.Contains(cursorLoc) || sizerBtnRight.Contains(cursorLoc))
             {
-                Parent.Cursor = Cursors.SizeWE;
+                parent.Cursor = Cursors.SizeWE;
             }
             else if (sizerBtnTop.Contains(cursorLoc) || sizerBtnBottom.Contains(cursorLoc))
             {
-                Parent.Cursor = Cursors.SizeNS;
+                parent.Cursor = Cursors.SizeNS;
             }
             else
             {
-                Parent.Cursor = Draw.hand_Cursor;
+                parent.Cursor = Draw.hand_Cursor;
             }
         }
 
@@ -1040,7 +1040,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                     sizer = p.EditBounds;
                                     UpdatetSizersBounds();
                                     activeSizer = sizerBtnLeft;
-                                    Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                                    Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                                 }
                             }
 
@@ -1082,7 +1082,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                 sizer = p.EditBounds;
                                 sizerBtnLeft = new RectangleF(sizer.Left, sizer.Top + (sizer.Height / 3), sizer.Width / 3, sizer.Height / 3);
                                 activeSizer = sizerBtnLeft;
-                                Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                                Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                             }
                         }
                     }
@@ -1120,7 +1120,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                     sizer = p.EditBounds;
                                     UpdatetSizersBounds();
                                     activeSizer = sizerBtnRight;
-                                    Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                                    Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                                 }
                             }
                         }
@@ -1158,7 +1158,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                 sizer = p.EditBounds;
                                 UpdatetSizersBounds();
                                 activeSizer = sizerBtnRight;
-                                Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                                Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                             }
                         }
                     }
@@ -1200,7 +1200,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                 sizer = p.EditBounds;
                                 UpdatetSizersBounds();
                                 activeSizer = sizerBtnTop;
-                                Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                                Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                             }
                         }
                         else if (e.Location.Y >= (activeSizer.Top + (activeSizer.Height / 2)) + offset)
@@ -1240,7 +1240,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                 sizer = p.EditBounds;
                                 UpdatetSizersBounds();
                                 activeSizer = sizerBtnTop;
-                                Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                                Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                             }
                         }
                     }
@@ -1278,7 +1278,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                     sizer = p.EditBounds;
                                     UpdatetSizersBounds();
                                     activeSizer = sizerBtnBottom;
-                                    Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                                    Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                                 }
                             }
                         }
@@ -1316,12 +1316,12 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                 sizer = p.EditBounds;
                                 UpdatetSizersBounds();
                                 activeSizer = sizerBtnBottom;
-                                Cursor.Position = Parent.PointToScreen(new Point((int)(Parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(Parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
+                                Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                             }
                         }
                     }
 
-                    Parent.Invalidate();
+                    parent.Invalidate();
                 }
             }
         }

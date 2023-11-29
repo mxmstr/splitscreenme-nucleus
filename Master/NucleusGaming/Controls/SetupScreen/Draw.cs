@@ -109,7 +109,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             tagBrush = new SolidBrush(Color.FromArgb(200, 0, 0, 0));
             sizerBrush = new SolidBrush(Color.FromArgb(50, 15, 220, 15));
             ghostBoundsPen = new Pen(Color.Red);
-
             notEnoughPlyrsSBrush = new SolidBrush(Color.FromArgb(255, 245, 4, 68));
             destEditBoundsPen = new Pen(Color.FromArgb(255, 15, 220, 15));
 

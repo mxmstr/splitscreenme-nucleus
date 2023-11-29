@@ -25,6 +25,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Documents;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -252,7 +253,8 @@ namespace Nucleus.Coop
                 steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems); 
             }
 
-            SplitDiv.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
+            splitDiv.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
+            hideDesktop.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "HideOnly"));
             cts_Mute.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
             cts_kar.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_unfocus.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
@@ -610,7 +612,8 @@ namespace Nucleus.Coop
         private void SetToolTips()
         {
             CustomToolTips.SetToolTip(btn_credits, "Credits", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(SplitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(splitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(hideDesktop, "Will only show the background window without ajusting the game windows size or offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(disableGameProfiles, "Disable profile, Nucleus will always use globals settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(gamepadsAssignMethods, "If enabled profile will not save per player gamepad but use gamepads API indexes instead \n(switching modes could prevent some profiles to load properly).\nNote: Nucleus will return to the main screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
@@ -812,7 +815,8 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "UseXinputIndex", gamepadsAssignMethods.Checked.ToString());
 
-            ini.IniWriteValue("CustomLayout", "SplitDiv", SplitDiv.Checked.ToString());
+            ini.IniWriteValue("CustomLayout", "SplitDiv", splitDiv.Checked.ToString());
+            ini.IniWriteValue("CustomLayout", "HideOnly", hideDesktop.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "SplitDivColor", SplitColors.Text.ToString());
             ini.IniWriteValue("CustomLayout", "HorizontalLines", numUpDownHor.Value.ToString());
             ini.IniWriteValue("CustomLayout", "VerticalLines", numUpDownVer.Value.ToString());
@@ -825,6 +829,7 @@ namespace Nucleus.Coop
             mainForm.handleClickSound(clickSoundChkB.Checked);
 
             mainForm.lockKeyIniString = comboBox_lockKey.SelectedItem.ToString();
+            mainForm.DebugButtonState(debugLogCheck.Checked);
 
             ini.IniWriteValue("Dev", "ShowToolTips", showUIInfoMsg.Checked.ToString());
 
@@ -1431,6 +1436,9 @@ namespace Nucleus.Coop
                         }
                     }
                 }
+
+                //Update in case the logmanager prompt updated the value
+                debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));            
             }
         }
 

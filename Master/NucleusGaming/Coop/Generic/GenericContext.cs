@@ -399,6 +399,11 @@ namespace Nucleus.Gaming
             }
         }
 
+        public void CopyFolder(string source, string destination)
+        {
+            FileUtil.CopyDirectory(source, new DirectoryInfo(source), destination, out int exitCode, new string[0], new string[0], true);
+        }
+
         public void HideDesktop(bool hideTaskbar)
         {
             if (GameProfile.UseSplitDiv || PlayerID > 0)
@@ -564,11 +569,13 @@ namespace Nucleus.Gaming
                         continue;
                     }
                 }
+
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = fileName,
                     UseShellExecute = false
                 };
+
                 if (changeWorkingDir)
                 {
                     psi.WorkingDirectory = GameManager.Instance.GetAppContentPath() + "\\AdditionalFiles";

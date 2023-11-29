@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System;
+using System.Threading;
 
 public class WPF_OSD : System.Windows.Window
 {   

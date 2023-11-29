@@ -446,9 +446,8 @@ namespace Nucleus.Gaming
 
                 if (screensInUse.Contains(dp))
                 {
-                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true && profile.DevicesList.Count != 1) || gen.HideDesktop)
+                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true /*&& profile.DevicesList.Count != 1*/) || gen.HideDesktop)
                     {
-
                         WPFDivFormThread.StartBackgroundForm(gen,dp);
                     }
                 }
@@ -1015,6 +1014,7 @@ namespace Nucleus.Gaming
                                             {
                                                 extraChar = 0;
                                             }
+
                                             dirExclusions.Add(dir.Substring(rootFolder.Length + extraChar).ToLower());
                                         }
                                     }
@@ -1059,8 +1059,8 @@ namespace Nucleus.Gaming
                         {
                             Log(string.Format("Copying game folder {0} to {1} ", rootFolder, linkFolder));
                             // copy the directory
-                            int exitCode;
-                            FileUtil.CopyDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
+                            FileUtil.CopyDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out int exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
+                           
                             while (exitCode != 1)
                             {
                                 if (processingExit)

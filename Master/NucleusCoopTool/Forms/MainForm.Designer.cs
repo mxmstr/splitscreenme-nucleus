@@ -93,6 +93,7 @@ namespace Nucleus.Coop
             this.coverFrame = new BufferedClientAreaPanel();
             this.button_UpdateAvailable = new System.Windows.Forms.Button();
             this.mainButtonFrame = new BufferedClientAreaPanel();
+            this.btn_debuglog = new System.Windows.Forms.Button();
             this.linksPanel = new BufferedClientAreaPanel();
             this.closeBtn = new System.Windows.Forms.Button();
             this.maximizeBtn = new System.Windows.Forms.Button();
@@ -825,6 +826,7 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainButtonFrame.BackColor = System.Drawing.Color.Transparent;
             this.mainButtonFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.mainButtonFrame.Controls.Add(this.btn_debuglog);
             this.mainButtonFrame.Controls.Add(this.third_party_tools_container);
             this.mainButtonFrame.Controls.Add(this.linksPanel);
             this.mainButtonFrame.Controls.Add(this.closeBtn);
@@ -851,6 +853,20 @@ namespace Nucleus.Coop
             this.mainButtonFrame.Size = new System.Drawing.Size(1110, 72);
             this.mainButtonFrame.TabIndex = 0;
             this.mainButtonFrame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainButtonFrame_MouseDown);
+            // 
+            // btn_debuglog
+            // 
+            this.btn_debuglog.FlatAppearance.BorderSize = 0;
+            this.btn_debuglog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_debuglog.ForeColor = System.Drawing.SystemColors.Control;
+            this.btn_debuglog.Location = new System.Drawing.Point(147, 38);
+            this.btn_debuglog.Name = "btn_debuglog";
+            this.btn_debuglog.Size = new System.Drawing.Size(119, 25);
+            this.btn_debuglog.TabIndex = 101;
+            this.btn_debuglog.Text = "Open debug-log.txt";
+            this.btn_debuglog.UseVisualStyleBackColor = true;
+            this.btn_debuglog.Visible = false;
+            this.btn_debuglog.Click += new System.EventHandler(this.Btn_debuglog_Click);
             // 
             // linksPanel
             // 
@@ -1205,5 +1221,6 @@ namespace Nucleus.Coop
         public Button btn_downloadAssets;
         public RichTextBox scriptAuthorTxt;
         private Button btn_noHub;
+        public Button btn_debuglog;
     }
 }

@@ -1,14 +1,10 @@
-﻿using Jint.Parser.Ast;
-using Nucleus.Gaming.Forms;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
+﻿using Nucleus.Gaming.Forms.NucleusMessageBox;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using System.Windows;
-using System.Windows.Forms;
+
 
 namespace Nucleus.Gaming
 {
@@ -102,19 +98,6 @@ namespace Nucleus.Gaming
         public static void Log(string str)
         {
             Instance.PLog(str);
-
-            //if (ini.IniReadValue("Misc", "DebugLog") == "True")
-            //{
-            //    if (str.StartsWith("Found game info"))
-            //    {
-            //        return;
-            //    }
-            //    using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
-            //    {
-            //        writer.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]LOGMANAGER: {str}");
-            //        writer.Close();
-            //    }
-            //}
         }
 
         public void LogExceptionFile(Exception ex)
@@ -228,9 +211,33 @@ namespace Nucleus.Gaming
             Windows.User32Util.ShowTaskBar();
 
             Log("High-level error log generated at content/" + file);
-#if RELEASE
-            //Process.GetCurrentProcess().Kill();
-#endif
+
+            #if RELEASE
+            bool EnableBtn = false;
+            if (ini.IniReadValue("Misc", "DebugLog") == "" || ini.IniReadValue("Misc", "DebugLog") == "False" &&
+                ini.IniReadValue("Misc", "EnableLogAnswer") != "No")
+            {
+                DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Click \"Yes\" if you want to enable debug logging. Start the game a again to generate a debug log.\nClick \"No\" to disable this prompt.", "Enable debug log", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (dialogResult == DialogResult.Yes)
+                {
+                    ini.IniWriteValue("Misc", "DebugLog", "True");
+                    EnableBtn = true;
+                }
+                else
+                {
+                    ini.IniWriteValue("Misc", "EnableLogAnswer", "No");
+                }
+            }
+
+            if (EnableBtn)
+            {
+                Globals.Btn_debuglog.Parent.Invoke((MethodInvoker)delegate ()
+                {
+                    Globals.Btn_debuglog.Visible = true;
+                });
+            }
+            #endif
         }
 
         public static void Log(string str, object par1)

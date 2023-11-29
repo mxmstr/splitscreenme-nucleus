@@ -435,7 +435,8 @@ namespace Nucleus.Coop
                                                                   "Could break hooks or xinputplus for some games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "How many time to wait before starting the next game instance.\n" +
                                                                          "Could break positioning/resizing for some games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(SplitDiv, "May not work for all games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(splitDiv, "May not work for all games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(hideDesktop, "Will only show the background window without ajusting the game windows size or offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndIds()
@@ -596,7 +597,8 @@ namespace Nucleus.Coop
             autoPlay.Checked = GameProfile.AutoPlay;
             pauseBetweenInstanceLaunch_TxtBox.Text = GameProfile.PauseBetweenInstanceLaunch.ToString();
             WindowsSetupTiming_TextBox.Text = GameProfile.HWndInterval.ToString();
-            SplitDiv.Checked = GameProfile.UseSplitDiv;
+            splitDiv.Checked = GameProfile.UseSplitDiv;
+            hideDesktop.Checked = GameProfile.HideDesktopOnly;
             SplitColors.Text = GameProfile.SplitDivColor;
             scaleOptionCbx.Checked = GameProfile.AutoDesktopScaling;
             useNicksCheck.Checked = GameProfile.UseNicknames;
@@ -807,7 +809,8 @@ namespace Nucleus.Coop
             GameProfile.CustomLayout_Hor = (int)numUpDownHor.Value;
             GameProfile.CustomLayout_Max = (int)numMaxPlyrs.Value;
             GameProfile.UseNicknames = useNicksCheck.Checked;
-            GameProfile.UseSplitDiv = SplitDiv.Checked;
+            GameProfile.UseSplitDiv = splitDiv.Checked;
+            GameProfile.HideDesktopOnly = hideDesktop.Checked;
             GameProfile.SplitDivColor = SplitColors.Text;
             GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
             GameProfile.PauseBetweenInstanceLaunch = int.Parse(pauseBetweenInstanceLaunch_TxtBox.Text);
