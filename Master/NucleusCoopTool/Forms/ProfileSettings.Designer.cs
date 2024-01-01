@@ -65,7 +65,8 @@ namespace Nucleus.Coop
             this.layoutTab = new BufferedClientAreaPanel();
             this.hideDesktop = new System.Windows.Forms.CheckBox();
             this.label71 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.cts_Panel = new System.Windows.Forms.Panel();
+            this.cts_bringToFront = new System.Windows.Forms.CheckBox();
             this.cts_unfocus = new System.Windows.Forms.CheckBox();
             this.cts_kar = new System.Windows.Forms.CheckBox();
             this.cts_Mute = new System.Windows.Forms.CheckBox();
@@ -378,7 +379,7 @@ namespace Nucleus.Coop
             ((System.ComponentModel.ISupportInitialize)(this.profile_info_btn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
             this.layoutTab.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.cts_Panel.SuspendLayout();
             this.sharedTab.SuspendLayout();
             this.processorTab.SuspendLayout();
             this.processorPage1.SuspendLayout();
@@ -570,9 +571,10 @@ namespace Nucleus.Coop
             // layoutTab
             // 
             this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.layoutTab.Controls.Add(this.cts_bringToFront);
             this.layoutTab.Controls.Add(this.hideDesktop);
             this.layoutTab.Controls.Add(this.label71);
-            this.layoutTab.Controls.Add(this.panel1);
+            this.layoutTab.Controls.Add(this.cts_Panel);
             this.layoutTab.Controls.Add(this.SplitColors);
             this.layoutTab.Controls.Add(this.numMaxPlyrs);
             this.layoutTab.Controls.Add(this.numUpDownVer);
@@ -605,23 +607,38 @@ namespace Nucleus.Coop
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(12, 209);
+            this.label71.Location = new System.Drawing.Point(12, 207);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(128, 13);
             this.label71.TabIndex = 155;
             this.label71.Text = "Cutscenes Mode Settings";
             // 
-            // panel1
+            // cts_Panel
             // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.cts_unfocus);
-            this.panel1.Controls.Add(this.cts_kar);
-            this.panel1.Controls.Add(this.cts_Mute);
-            this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(11, 228);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 82);
-            this.panel1.TabIndex = 154;
+            this.cts_Panel.BackColor = System.Drawing.Color.Transparent;
+            this.cts_Panel.Controls.Add(this.cts_unfocus);
+            this.cts_Panel.Controls.Add(this.cts_kar);
+            this.cts_Panel.Controls.Add(this.cts_Mute);
+            this.cts_Panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cts_Panel.Location = new System.Drawing.Point(11, 226);
+            this.cts_Panel.Name = "cts_Panel";
+            this.cts_Panel.Size = new System.Drawing.Size(200, 74);
+            this.cts_Panel.TabIndex = 154;
+            // 
+            // cts_bringToFront
+            // 
+            this.cts_bringToFront.AutoSize = true;
+            this.cts_bringToFront.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cts_bringToFront.Enabled = false;
+            this.cts_bringToFront.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cts_bringToFront.Location = new System.Drawing.Point(15, 330);
+            this.cts_bringToFront.Margin = new System.Windows.Forms.Padding(0);
+            this.cts_bringToFront.Name = "cts_bringToFront";
+            this.cts_bringToFront.Size = new System.Drawing.Size(168, 17);
+            this.cts_bringToFront.TabIndex = 165;
+            this.cts_bringToFront.Text = "Bring Back Windows To Front";
+            this.cts_bringToFront.UseVisualStyleBackColor = true;
+            this.cts_bringToFront.Visible = false;
             // 
             // cts_unfocus
             // 
@@ -658,7 +675,7 @@ namespace Nucleus.Coop
             // 
             this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(14, 171);
+            this.SplitColors.Location = new System.Drawing.Point(14, 169);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
@@ -707,7 +724,7 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(12, 149);
+            this.label49.Location = new System.Drawing.Point(12, 147);
             this.label49.Margin = new System.Windows.Forms.Padding(0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(105, 15);
@@ -819,9 +836,9 @@ namespace Nucleus.Coop
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleLabel.Location = new System.Drawing.Point(318, 102);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(210, 13);
+            this.titleLabel.Size = new System.Drawing.Size(198, 13);
             this.titleLabel.TabIndex = 159;
-            this.titleLabel.Text = "Profile Title (facultative, 35 characters max)";
+            this.titleLabel.Text = "Profile Title (optional, 35 characters max)";
             // 
             // profileTitle
             // 
@@ -882,9 +899,9 @@ namespace Nucleus.Coop
             this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label72.Location = new System.Drawing.Point(319, 163);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(118, 13);
+            this.label72.Size = new System.Drawing.Size(106, 13);
             this.label72.TabIndex = 145;
-            this.label72.Text = "User Notes (facultative)";
+            this.label72.Text = "User Notes (optional)";
             // 
             // notes_text
             // 
@@ -4823,8 +4840,8 @@ namespace Nucleus.Coop
             ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).EndInit();
             this.layoutTab.ResumeLayout(false);
             this.layoutTab.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.cts_Panel.ResumeLayout(false);
+            this.cts_Panel.PerformLayout();
             this.sharedTab.ResumeLayout(false);
             this.sharedTab.PerformLayout();
             this.processorTab.ResumeLayout(false);
@@ -4966,7 +4983,7 @@ namespace Nucleus.Coop
         private Button layoutTabBtn;
         private BufferedClientAreaPanel layoutTab;
         private Label label71;
-        private Panel panel1;
+        private Panel cts_Panel;
         private CheckBox cts_unfocus;
         private CheckBox cts_kar;
         private CheckBox cts_Mute;
@@ -5169,5 +5186,6 @@ namespace Nucleus.Coop
         private Label titleLabel;
         private TextBox profileTitle;
         private CheckBox hideDesktop;
+        private CheckBox cts_bringToFront;
     }
 }

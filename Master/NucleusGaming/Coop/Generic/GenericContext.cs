@@ -1,6 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using Ionic.Zip;
+using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
 using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
 using Nucleus.Gaming.Tools.Network;
@@ -8,19 +8,17 @@ using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Media;
-using System.Windows.Threading;
 using System.Xml;
+
 
 namespace Nucleus.Gaming
 {
@@ -402,6 +400,69 @@ namespace Nucleus.Gaming
         public void CopyFolder(string source, string destination)
         {
             FileUtil.CopyDirectory(source, new DirectoryInfo(source), destination, out int exitCode, new string[0], new string[0], true);
+        }
+
+        public void EditZipFile(string sourceZip, string password, string savePath, string[] itemsToAdd, string[] entriesToRemove)//itemsToAdd can be file or directory(recursive). https://documentation.help/DotNetZip/7d020d58-d917-63a8-6b5c-c5519767063d.htm
+        {
+            bool isValidZip = ZipFile.CheckZip(sourceZip);
+
+            if (isValidZip)
+            {
+                ZipFile zip = new ZipFile(sourceZip);
+                zip.Password = password;
+
+                List<ZipEntry> remove = new List<ZipEntry>();
+
+                foreach (ZipEntry e in zip)
+                {
+                    string root = e.FileName.Split('/')[0];
+
+                    if (entriesToRemove.Contains(root + "\\") || entriesToRemove.Any(fn => fn.Replace('\\', '/') == e.FileName))//skip folder || skip file
+                    {
+                        remove.Add(e);
+                        continue;
+                    }
+                }
+
+                zip.RemoveEntries(remove);
+
+                for (int i = 0; i < itemsToAdd.Length; i++)
+                {
+                    zip.AddItem(itemsToAdd[i].Split('|')[1].Replace('\\', '/'), itemsToAdd[i].Split('|')[0]);
+                }
+
+                zip.Save(savePath);
+                zip.Dispose();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Zip file doesn't exist,is corrupted or in an unsupported format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void ExtractZip(string sourceZip, string contentDestination,string password)
+        {
+            bool isValidZip = ZipFile.CheckZip(sourceZip);
+
+            if (isValidZip)
+            {
+                ZipFile zip = new ZipFile(sourceZip);
+                
+                zip.Password = password;
+
+                if(!Directory.Exists(contentDestination))
+                {
+                    Directory.CreateDirectory(contentDestination);
+                }
+
+                zip.ExtractAll(contentDestination);
+                zip.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+                zip.Dispose();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Zip file doesn't exist,is corrupted or in an unsupported format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void HideDesktop(bool hideTaskbar)
@@ -1947,6 +2008,47 @@ namespace Nucleus.Gaming
             }
 
             key.DeleteSubKey(subKey);
+            key.Close();
+        }
+
+        public void DeleteRegKeyValues(string baseKey, string sKey, string[] values)
+        {
+            if (baseKey != "HKEY_LOCAL_MACHINE" && baseKey != "HKEY_CURRENT_USER" && baseKey != "HKEY_USERS")
+            {
+                return;
+            }
+
+            RegistryKey key = null;
+            switch (baseKey)
+            {
+                case "HKEY_LOCAL_MACHINE":
+                    key = Registry.LocalMachine.OpenSubKey(sKey, true);
+                    break;
+                case "HKEY_CURRENT_USER":
+                    key = Registry.CurrentUser.OpenSubKey(sKey, true);
+                    break;
+                case "HKEY_USERS":
+                    key = Registry.Users.OpenSubKey(sKey, true);
+                    break;
+            }
+
+            string fullKeyPath = baseKey + "\\" + sKey;
+            if (!regKeyPaths.Contains(fullKeyPath) && key != null)
+            {
+                string regPath = Directory.GetCurrentDirectory() + "\\utils\\backup\\" + sKey.Substring(sKey.LastIndexOf('\\') + 1) + ".reg";
+                if (!File.Exists(regPath))
+                {
+                    Log(string.Format("{0} not found in backups, exporting registry now", sKey.Substring(sKey.LastIndexOf('\\') + 1) + ".reg"));
+                    regKeyPaths.Add(fullKeyPath);
+                    ExportRegistry(baseKey + "\\" + sKey, regPath);
+                }
+            }
+
+            foreach (var value in values)
+            {
+                key.DeleteValue(value);
+            }
+
             key.Close();
         }
 

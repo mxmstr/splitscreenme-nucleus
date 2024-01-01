@@ -120,7 +120,7 @@ namespace Nucleus.Coop
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
-
+                    box.DropDownStyle = ComboBoxStyle.DropDownList;
                     cool.Controls.Add(box);
 
                     box.Tag = opt;
@@ -183,16 +183,18 @@ namespace Nucleus.Coop
                     }
 
                     box.SelectedIndex = box.Items.IndexOf(value);
-
+                    
                     box.Width = (int)(wid * _scale);
                     box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
+
                     cool.Controls.Add(box);
 
                     box.Tag = opt;
                     box.SelectedValueChanged += box_SelectedValueChanged;
+                    
                     ChangeOption(box.Tag, box.SelectedItem);
                 }
                 else if (opt.List.Count == 0)
@@ -215,6 +217,7 @@ namespace Nucleus.Coop
                     ///Check if some custom values were added 
                     ///before going back to "player setup screen" and add them back in their respective TextBox.
                     GameOption cast = box.Tag as GameOption;
+
                     if (vals.Any(v => (string)v.Key == (string)cast.Key))
                     {
                         if (vals[cast.Key].ToString() != "")

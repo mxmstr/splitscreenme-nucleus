@@ -7,6 +7,7 @@ namespace Nucleus.Gaming.Forms.NucleusMessageBox
         {
             CustomMessageBox messageBox = new CustomMessageBox(title, message, formating);
             messageBox.ShowDialog();
+            messageBox.BringToFront();
         }
     }
 }

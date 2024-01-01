@@ -1,9 +1,11 @@
-﻿using Nucleus.Gaming.Coop.Generic;
+﻿using Jint.Parser.Ast;
+using Nucleus.Gaming.Coop.Generic;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace Nucleus.Gaming
 {
@@ -23,21 +25,8 @@ namespace Nucleus.Gaming
         public static RichTextBox NoteZoomTextBox;
         public static PictureBox NoteZoomButton;
         public static Button Btn_debuglog;
-
-        private static WPF_OSD mainOSD;
-        public static WPF_OSD MainOSD => InitOSD();
-        
-        private static WPF_OSD InitOSD()
-        {
-            if (mainOSD == null)
-            {
-                mainOSD = new WPF_OSD();              
-                return mainOSD;
-            }
-            else
-            {
-                return mainOSD;
-            }
-        }      
+        public static readonly string GameProfilesFolder = Path.Combine(Application.StartupPath, $"game profiles");
+        public static WPF_OSD MainOSD;
+             
     }
 }

@@ -388,7 +388,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (userGameInfo.Game.SupportsMultipleKeyboardsAndMice)
                 {
-                    msg = $"Press A Button\\Key On Each Device & Drop them {screenText}.";
+                    msg = $"Press A Key\\Button On Each Device & Drop Them {screenText}.";
 
                 }
                 else if (!userGameInfo.Game.SupportsMultipleKeyboardsAndMice && !userGameInfo.Game.SupportsKeyboard)

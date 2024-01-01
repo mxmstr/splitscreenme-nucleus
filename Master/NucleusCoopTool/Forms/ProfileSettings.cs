@@ -321,7 +321,7 @@ namespace Nucleus.Coop
 
             RefreshAudioList();
 
-            string path = Path.Combine(Application.StartupPath, $@"games profiles\Nicknames.json");
+            string path = $"{Globals.GameProfilesFolder}\\Nicknames.json";
 
             if (File.Exists(path))
             {
@@ -335,7 +335,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            string idspath = Path.Combine(Application.StartupPath, $@"games profiles\SteamIds.json");
+            string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
 
             if (File.Exists(idspath))
             {
@@ -431,12 +431,12 @@ namespace Nucleus.Coop
         private void SetToolTips()
         {
             CustomToolTips.SetToolTip(autoPlay, "Automatically launch game instances on profile selection.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(WindowsSetupTiming_TextBox, "Speedup windows resizing and positionning (1000ms is fine in most cases).\n" +
+            CustomToolTips.SetToolTip(WindowsSetupTiming_TextBox, "Speedup windows resizing and positioning (1000ms is fine in most cases).\n" +
                                                                   "Could break hooks or xinputplus for some games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "How many time to wait before starting the next game instance.\n" +
+            CustomToolTips.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "How much time to wait before starting the next game instance.\n" +
                                                                          "Could break positioning/resizing for some games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(splitDiv, "May not work for all games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(hideDesktop, "Will only show the background window without ajusting the game windows size or offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(hideDesktop, "Will only show the splitscreen division window without adjusting the game windows size and offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndIds()
@@ -609,6 +609,7 @@ namespace Nucleus.Coop
             cts_Mute.Checked = GameProfile.Cts_MuteAudioOnly;
             cts_kar.Checked = GameProfile.Cts_KeepAspectRatio;
             cts_unfocus.Checked = GameProfile.Cts_Unfocus;
+            cts_bringToFront.Checked = GameProfile.Cts_BringToFront;
             notes_text.Text = GameProfile.Notes;
             profileTitle.Text = GameProfile.Title;
 
@@ -620,9 +621,9 @@ namespace Nucleus.Coop
 
         private void closeBtnPicture_Click(object sender, EventArgs e)///Set GameProfile values
         {
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles")))
+            if (!Directory.Exists(Globals.GameProfilesFolder))
             {
-                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles"));
+                Directory.CreateDirectory(Globals.GameProfilesFolder);
             }
 
             bool sidWrongValue = false;
@@ -649,7 +650,7 @@ namespace Nucleus.Coop
                     ///Set GameProfile Nicknames
                     player.Nickname = controllerNicks[i].Text;
 
-                    if (!NicknamesCache.Get.Any(n => n != controllerNicks[i].Text))
+                    if (NicknamesCache.Get.All(n => n != controllerNicks[i].Text))
                     {
                         NicknamesCache.Add(controllerNicks[i].Text);
                     }
@@ -666,7 +667,7 @@ namespace Nucleus.Coop
                     {
                         player.SteamID = long.Parse(steamIds[i].Text.ToString());
 
-                        if (!SteamIdsCache.Get.Any(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0" && steamIds[i].Text != "-1")
+                        if (SteamIdsCache.Get.All(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0" && steamIds[i].Text != "-1")
                         {
                             SteamIdsCache.Add(steamIds[i].Text.ToString());
                         }
@@ -771,7 +772,7 @@ namespace Nucleus.Coop
             }
 
             ///Save new added nicknames in Nicknames.json
-            string path = Path.Combine(Application.StartupPath, $"games profiles\\Nicknames.json");
+            string path = $"{Globals.GameProfilesFolder}\\Nicknames.json";
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -785,7 +786,7 @@ namespace Nucleus.Coop
             }
 
             ///Save new added Steam ids in SteamIds.json
-            string idspath = Path.Combine(Application.StartupPath, $"games profiles\\SteamIds.json");
+            string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
             using (FileStream stream = new FileStream(idspath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -819,7 +820,7 @@ namespace Nucleus.Coop
             GameProfile.Cts_MuteAudioOnly = cts_Mute.Checked;
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
             GameProfile.Cts_Unfocus = cts_unfocus.Checked;
-
+            GameProfile.Cts_BringToFront = cts_bringToFront.Checked;
             ///Set GameProfile AudioInstances (part of shared GameProfile options)
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
@@ -1091,11 +1092,11 @@ namespace Nucleus.Coop
         private void profile_info_btn_Click(object sender, EventArgs e)
         {
             NucleusMessageBox.Show(
-                "info", "Profile will be saved when all instances will be set and ready.\n" +
+                "Info", "Profiles will only save after all instances finish setting up correctly.\n" +
                 "To load a profile click the profile list icon in the setup screen and choose the profile to load by clicking on it in the list.\n" +
-                "Profile settings can be ajusted before pressing the play button.\n" +
-                "Some of the settings could break hooks functions or resizing functions so it's better to launch the game with the default profile settings once.\n" +
-                "For more informations or if you have any doubts keep the default settings or ask for help.", false);
+                "Profile settings can be modified before pressing the play button.\n" +
+                "Some of the profile settings could break hooks, resizing or positioning functions so it's better to launch the game with the default profile settings once.\n" /*+*/
+               /* "For more information or if you have any doubts keep the default settings or ask for help."*/, false);
         }
 
         private void cts_Mute_CheckedChanged(object sender, EventArgs e)
@@ -1107,11 +1108,14 @@ namespace Nucleus.Coop
                 cts_kar.Enabled = false;
                 cts_unfocus.Checked = false;
                 cts_unfocus.Enabled = false;
+                cts_bringToFront.Checked = false;
+                cts_bringToFront.Enabled = false;
             }
             else
             {
                 cts_kar.Enabled = true;
                 cts_unfocus.Enabled = true;
+                cts_bringToFront.Enabled = true;
             }
         }
 

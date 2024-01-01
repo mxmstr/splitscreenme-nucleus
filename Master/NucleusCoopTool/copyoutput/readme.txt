@@ -1,4 +1,4 @@
-Nucleus Co-op - version 2.1.2
+Nucleus Co-op - version 2.2.0
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy.
 
@@ -20,7 +20,6 @@ Game.GameName = "Game Name";                            //Title of the game that
 Game.LauncherTitle = "Launcher Window Title";           //The name of the launcher's window title. Some games need to go through a launcher to open. This is needed or else the application will lose the game's window.
 Game.MaxPlayersOneMonitor = 4;                          //This is just info. It will not limit the players number.
 Game.MaxPlayers = 16;                                   //This is just the max players info that shows under the handler name in Nucleus UI. Usually we write the max number of players the game supports. (PC, should support 16 max connected input devices).
-
 
 #################### Mutex ####################
 
@@ -73,6 +72,8 @@ Game.RenameAndOrMoveFiles = [ "1|before.dat|after.dat" ];//Specify files to eith
 Game.DeleteFiles = [ "1|delete.dis" ];			//Specify files to be deleted from instanced folder | can accept relative path from root | optional first parameter to specify a specific instance to apply to, omit to do them all.
 Game.RunLauncherAndExe = false;				//When using Game.LauncherExe, should ExecutableName also be launched?
 Game.ForceLauncherExeIgnoreFileCheck = false;           //Forces LauncherExeIgnoreFileCheck when game isn't symlinked.
+Game.BackupFiles = ["file1.txt", "file2.txt"];
+Game.BackupFolders = ["folder1", "folder2"];  
 
 #################### Nucleus Co-op Environment ####################
 
@@ -116,7 +117,6 @@ Game.EnableWindows = false;				//Enable each game window at the end (useful if b
 Game.ProcessChangesAtEnd = false;			//Do the resizing, repositioning and post-launch hooking of all game instances at the very end | will not work with every option ran normally.
 Game.PromptProcessChangesAtEnd = false;			//If ProcessChangesAtEnd = true, pause and show a prompt, before making changes to processes.
 Game.PromptBetweenInstancesEnd = false;			//If ProcessChangesAtEnd = true, show a prompt between each instance being changed.
-
 
 #################### Window manipulation ####################
 
@@ -177,6 +177,7 @@ Game.GoldbergIgnoreSteamAppId = false;			//When set to true, Goldberg will not c
 Game.PlayerSteamIDs = ["76561198134585131","76561198134585132"]; //A list of steam IDs to be used instead of the pre-defined ones Nucleuses uses | IDs will be used in order they are placed, i.e. instance 1 will be first non-empty string in array.
 Game.GoldbergExperimentalRename = false;		//Set to true to have Goldberg Experimental rename instanced steam_api(64).dll to cracksteam_api(64).dll.
 Game.GoldbergWriteSteamIDAndAccount = false;		//Force Goldberg to write account_name.txt and user_steam_id.txt | Requires Game.UseGoldberg;
+Game.GoldbergNoWarning = true;                          //Nucleus will not prompt if the Goldberg dlls are missing if the handler supports different platforms.
 
 #################### Smart Steam Emulator ###################
 
@@ -429,6 +430,31 @@ Context.MonitorHeight
 Context.Log()
 Context.ProcessID
 Context.HasKeyboardPlayer
+                     
+Context.StartProcess(string exePath);                                                           
+Context.EditTextFile(string filePath, string[] refLines, string[] newLines, string encoder);    //refLines are partial or full strings to look for. NewLines are new strings (full strings) that will replace refLines. Adding "Delete" as newLine will delete the corresponding reflLine from the file. Should work with any type of text files (xml, ini, txt). 
+Context.PlayerSteamID                                                                           //Can get players steam ids from Game.Play.
+Context.FindFilePartialName (string sourceFolder, string[] partialNames);                       //Find files in "sourceFolder" using partial file name. Useful if a full file name is not predictable but has some static patterns. 
+Context.GetFileName(string fullFilePath);                                                       //Get the name of a file from its full path;
+Context.BackupFiles = ["file1.txt", "file2.txt"];                                               //Back ups files on Nucleus close. They will be restored on subsequent runs.
+Context.BackupFolders = ["folder1", "folder2"];                                                 //Back ups folders on Nucleus close. They will be restored on subsequent runs.
+Context.ToUpperCase                                                                             //Convert string to uppercase. 
+Context.ToLowerCase                                                                             //Convert string to lowercase. 
+Context.CopyFolder(string sourcePath,string destinationPath)                                    //Copy a full folder, example => Context.CopyFolder(Context.GetFolder(Nucleus.Folder.InstancedGameFolder) +"\\Engine", Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\Citadel\\Engine");
+Context.DeleteRegKeyValues(string baseKey, string sKey, string[] values);                       //Where values is a string array of the value(s) you want to delete from a register key.
+Context.ExtractZip(string sourceZip, string contentDestination,string password);
+Context.EditZipFile(string sourceZip, string password, string savePath, string[] itemsToAdd, string[] entriesToRemove); //itemsToAdd => ["path where to copy in the zip|path of file/folder to add"];
+                                                                                                                        //Always add "\\" add the end off the path if the content to remove is a folder;
+Example :
+
+   var zipSourcePath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\MyZip.zip";
+   var zipDestinationPath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\MyNewZip.zip";
+   var zipPassword = "";
+   var addToZip = [ "New folder1\\Engine|" + Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\Engine", 
+                    "New folder2|" + Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\Manifest_NonUFSFiles_Win64.txt"];//can a be folder(recursive) or a single file
+   var deleteFromZip =  ["folder\\sub1.txt","folder\\sub2.txt","2.txt","folder\\"];
+
+   Context.EditZipFile(zipSourcePath ,zipPassword ,zipDestinationPath , addToZip, deleteFromZip);
 
 #################### Other useful lines ####################
 
@@ -462,6 +488,52 @@ Known Issues: ------------------------------------------------------------------
 - Status Window may cause Nucleus to crash every now and then.
 
 Changelog: -----------------------------------------------------------------------------------------
+
+v2.2.0 - December X, 2023
+
+ - Huge code clean up and refactoring.
+ - New per game profile system (20 max per game) and new settings. The new profile system allows specific configurations per game, can be disabled in Nucleus Co-op settings.
+ - New UI changes and QOL improvements (crash windows, credits, prompt windows, handler downloader and more).
+ - New shortcuts: switch player layout (2 players only), toggle cutscene mode, reset windows. If using 2 or more monitors in cutscene mode all screens will have one instance unmuted.
+ - Added basic gamepad UI navigation, can be enabled/disabled in settings. 
+ - Added gamepad support to all Nucleus shortcuts.
+ - Fixed UI highlighting the wrong controller in the UI when polling and controller sometimes being wrongly assigned in-game.
+ - Instances launch order changed from left to right/top to bottom to the order that input devices icons are dropped on each screen (same for single monitor). P1,P2,P3 etc. on the setup screen represent the launch order now.
+ - Removed the splashscreen.
+ - Better sorting of the game list.
+ - Better userprofile.json indentation.
+ - Added Goldberg emulator updater.
+ - Now Nucleus will try to unlock all the original game files (read only files) before symlinking, hard copying etc.
+ - Added new information messages that give feedback on Nucleus actions and shortcuts calls (keyboard and controller).
+ - Added Microsoft Visual C++ Redistributable version check and redirection to Microsoft website.
+ - Fixed "Download or update game covers" crash if no game handler has been selected/downloaded.
+ - Fixed game options menu at higher scaling factors.
+ - Fixed a long standing bug where it was possible to drop an input device in an expanded player area.
+ - Fixed a long standing bug (and not documented) where it was not possible to expand player bounds on negative monitors.
+ - Nucleus will now save its windows size and position.
+ - Fixed infinite loop when cleaning game content containing read only file(s) on session end or errors.
+ - Added debug log size check (max size 150kb) if max size is reached the log is deleted and logging is disabled.
+ - Fixed an issue with Steamless not applying when the game executable is inside a bin folder.
+ - Nucleus Co-op will not get stuck if the hub is down now (will still take ~ 4 seconds waiting for hub response).
+ - Added placeholder text for Game.Options:  Game.AddOption("Title", "Description", "Option Name" , [leave empty]); // var option = Context.Options["Option Name"];  to retrieve the typed text. It works like the regular one but with an empty string array.
+ - Added Context.StartProcess(Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\an-executable.exe");
+ - Added per-game KeepSymlink option in game menu.
+ - Added Context.EditTextFile(string filePath, string[] refLines, string[] newLines, string encoder); //refLines are partial or full strings to look for. newLines are new strings (full strings) that will replace refLines. Adding "Delete" as newLine will delete the corresponding reflLine from the file. Should work with any type of text files (xml, ini, txt). 
+ - Added Game.GoldbergNoWarning = true; so Nucleus will not prompt if the Goldberg dlls are missing if the handler supports different platforms.
+ - Added Context.PlayerSteamID so we can get players steam ids from Game.Play.
+ - Added Context.FindFilePartialName (string sourceFolder, string[] partialNames); 
+ - Added Context.GetFileName(string fullFilePath); //get the name of a file from its full path;
+ - Added hide taskbar parameter to Context.HideDesktop(); function, Context.HideDesktop(bool hideTaskbar) so no need to add the hide taskbar line.
+ - Added Game.BackupFiles = ["file1.txt", "file2.txt"]; and Context.BackupFiles = ["file1.txt", "file2.txt"]; both can be used in the same handler. 
+ - Added Game.BackupFolders = ["folder1", "folder2"];  and Context.BackupFolders = ["folder1", "folder2"];
+ - Added Context.ToUpperCase to convert string to uppercase. 
+ - Added Context.ToLowerCase to convert string to lowercase. 
+ - Added a prompt on error so user can enable logging from it.
+ - Added debug log button when enabled in settings (opens debug-log.txt and a Nucleus install folder explorer window).
+ - Added Context.CopyFolder(string sourcePath,string destinationPath) example => Context.CopyFolder(Context.GetFolder(Nucleus.Folder.InstancedGameFolder) +"\\Engine", Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\Citadel\\Engine");
+ - Added Context.DeleteRegKeyValues(string baseKey, string sKey, string[] values); //where values is a string array of the value(s) you want to delete;
+ - Added Context.ExtractZip(string sourceZip, string contentDestination,string password);
+ - Added Context.EditZipFile(string sourceZip, string password, string savePath, string[] itemsToAdd, string[] entriesToRemove); //itemsToAdd => ["path where to copy in the zip|path of file/folder to add"]; Always add "\\" at the end off the path if the content to remove is a folder;
 
 v2.1.2 - September 26, 2022
 
@@ -769,7 +841,6 @@ v0.9.9.1 - February 5, 2020
 - Made some changes/improvements to context/game options menu and logging
 - Game.HookInitDelay and Game.HookFocusInstances have been removed
 
-
 v0.9.9 - January 22, 2020
 - Added an option in game scripts to use Goldberg Lobby Connect (automatic)
 - Thanks to Ilyaki, added an option in game scripts to use a custom environment (located at C:\Users\<your username>\NucleusCoop)
@@ -977,7 +1048,6 @@ v0.9.4a - August 6, 2019
 
 v0.9a - August 1, 2019
 - Initial release
-
 
 Credits: -----------------------------------------------------------------------------------------
 Official Nucleus Co-op 2.0 and Up: Mikou27/nene27.

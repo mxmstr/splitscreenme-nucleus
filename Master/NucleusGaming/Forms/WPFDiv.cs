@@ -43,7 +43,7 @@ public class WPFDiv : System.Windows.Window
     {
         WindowStyle = WindowStyle.None;
         ResizeMode = ResizeMode.NoResize;
-
+        //ShowInTaskbar = false;
         Background = Brushes.Black;
         Topmost = false;
 

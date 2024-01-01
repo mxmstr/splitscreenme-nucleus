@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-
+using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
@@ -217,7 +217,7 @@ namespace Nucleus.Gaming
             if (ini.IniReadValue("Misc", "DebugLog") == "" || ini.IniReadValue("Misc", "DebugLog") == "False" &&
                 ini.IniReadValue("Misc", "EnableLogAnswer") != "No")
             {
-                DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Click \"Yes\" if you want to enable debug logging. Start the game a again to generate a debug log.\nClick \"No\" to disable this prompt.", "Enable debug log", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Click \"Yes\" if you want to enable debug logging. Start the game once again to generate a debug log.\nClick \"No\" to disable this prompt.", "Enable debug log", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 
                 if (dialogResult == DialogResult.Yes)
                 {

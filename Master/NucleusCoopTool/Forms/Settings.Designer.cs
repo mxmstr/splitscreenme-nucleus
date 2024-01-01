@@ -96,46 +96,6 @@ namespace Nucleus.Coop
             this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.cmb_Network = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
-            this.layoutTab = new BufferedClientAreaPanel();
-            this.hideDesktop = new System.Windows.Forms.CheckBox();
-            this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.label71 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.cts_unfocus = new System.Windows.Forms.CheckBox();
-            this.cts_kar = new System.Windows.Forms.CheckBox();
-            this.cts_Mute = new System.Windows.Forms.CheckBox();
-            this.SplitColors = new System.Windows.Forms.ComboBox();
-            this.splitDiv = new System.Windows.Forms.CheckBox();
-            this.label49 = new System.Windows.Forms.Label();
-            this.layoutSizer = new System.Windows.Forms.Panel();
-            this.audioTab = new BufferedClientAreaPanel();
-            this.audioWarningLabel = new System.Windows.Forms.Label();
-            this.audioDefaultDevice = new System.Windows.Forms.Label();
-            this.audioCustomSettingsBox = new System.Windows.Forms.GroupBox();
-            this.AudioInstance8 = new System.Windows.Forms.ComboBox();
-            this.label45 = new System.Windows.Forms.Label();
-            this.AudioInstance7 = new System.Windows.Forms.ComboBox();
-            this.label44 = new System.Windows.Forms.Label();
-            this.AudioInstance6 = new System.Windows.Forms.ComboBox();
-            this.label43 = new System.Windows.Forms.Label();
-            this.AudioInstance5 = new System.Windows.Forms.ComboBox();
-            this.label42 = new System.Windows.Forms.Label();
-            this.AudioInstance4 = new System.Windows.Forms.ComboBox();
-            this.label41 = new System.Windows.Forms.Label();
-            this.AudioInstance3 = new System.Windows.Forms.ComboBox();
-            this.label40 = new System.Windows.Forms.Label();
-            this.AudioInstance2 = new System.Windows.Forms.ComboBox();
-            this.AudioInstance1 = new System.Windows.Forms.ComboBox();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.audioCustomSettingsRadio = new System.Windows.Forms.RadioButton();
-            this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
-            this.audioRefresh = new System.Windows.Forms.Button();
             this.playersTab = new BufferedClientAreaPanel();
             this.gamepadsAssignMethods = new System.Windows.Forms.CheckBox();
             this.btnNext = new System.Windows.Forms.Button();
@@ -251,6 +211,47 @@ namespace Nucleus.Coop
             this.label35 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.player28N = new System.Windows.Forms.ComboBox();
+            this.audioTab = new BufferedClientAreaPanel();
+            this.audioWarningLabel = new System.Windows.Forms.Label();
+            this.audioDefaultDevice = new System.Windows.Forms.Label();
+            this.audioCustomSettingsBox = new System.Windows.Forms.GroupBox();
+            this.AudioInstance8 = new System.Windows.Forms.ComboBox();
+            this.label45 = new System.Windows.Forms.Label();
+            this.AudioInstance7 = new System.Windows.Forms.ComboBox();
+            this.label44 = new System.Windows.Forms.Label();
+            this.AudioInstance6 = new System.Windows.Forms.ComboBox();
+            this.label43 = new System.Windows.Forms.Label();
+            this.AudioInstance5 = new System.Windows.Forms.ComboBox();
+            this.label42 = new System.Windows.Forms.Label();
+            this.AudioInstance4 = new System.Windows.Forms.ComboBox();
+            this.label41 = new System.Windows.Forms.Label();
+            this.AudioInstance3 = new System.Windows.Forms.ComboBox();
+            this.label40 = new System.Windows.Forms.Label();
+            this.AudioInstance2 = new System.Windows.Forms.ComboBox();
+            this.AudioInstance1 = new System.Windows.Forms.ComboBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.audioCustomSettingsRadio = new System.Windows.Forms.RadioButton();
+            this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
+            this.audioRefresh = new System.Windows.Forms.Button();
+            this.layoutTab = new BufferedClientAreaPanel();
+            this.cts_bringToFront = new System.Windows.Forms.CheckBox();
+            this.hideDesktop = new System.Windows.Forms.CheckBox();
+            this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.label71 = new System.Windows.Forms.Label();
+            this.cts_Panel = new System.Windows.Forms.Panel();
+            this.cts_unfocus = new System.Windows.Forms.CheckBox();
+            this.cts_kar = new System.Windows.Forms.CheckBox();
+            this.cts_Mute = new System.Windows.Forms.CheckBox();
+            this.SplitColors = new System.Windows.Forms.ComboBox();
+            this.splitDiv = new System.Windows.Forms.CheckBox();
+            this.label49 = new System.Windows.Forms.Label();
+            this.layoutSizer = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBtnPicture)).BeginInit();
@@ -258,13 +259,13 @@ namespace Nucleus.Coop
             ((System.ComponentModel.ISupportInitialize)(this.audioBtnPicture)).BeginInit();
             this.settingsTab.SuspendLayout();
             this.hotkeyBox.SuspendLayout();
-            this.layoutTab.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.audioTab.SuspendLayout();
-            this.audioCustomSettingsBox.SuspendLayout();
             this.playersTab.SuspendLayout();
             this.page1.SuspendLayout();
             this.page2.SuspendLayout();
+            this.audioTab.SuspendLayout();
+            this.audioCustomSettingsBox.SuspendLayout();
+            this.layoutTab.SuspendLayout();
+            this.cts_Panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_credits
@@ -453,6 +454,7 @@ namespace Nucleus.Coop
             this.btn_SteamExePath.TabIndex = 171;
             this.btn_SteamExePath.Text = "Select Steam Client Executable Path";
             this.btn_SteamExePath.UseVisualStyleBackColor = false;
+            this.btn_SteamExePath.Visible = false;
             this.btn_SteamExePath.Click += new System.EventHandler(this.btn_SteamExePath_Click);
             // 
             // btn_Gb_Update
@@ -477,10 +479,10 @@ namespace Nucleus.Coop
             this.showUIInfoMsg.Location = new System.Drawing.Point(371, 4);
             this.showUIInfoMsg.Margin = new System.Windows.Forms.Padding(2);
             this.showUIInfoMsg.Name = "showUIInfoMsg";
-            this.showUIInfoMsg.Size = new System.Drawing.Size(256, 19);
+            this.showUIInfoMsg.Size = new System.Drawing.Size(259, 19);
             this.showUIInfoMsg.TabIndex = 168;
             this.showUIInfoMsg.Tag = "";
-            this.showUIInfoMsg.Text = "Show UI Info Messages(Restart Required)";
+            this.showUIInfoMsg.Text = "Show UI Info Messages (Restart Required)";
             this.showUIInfoMsg.UseVisualStyleBackColor = false;
             // 
             // disableGameProfiles
@@ -1288,540 +1290,6 @@ namespace Nucleus.Coop
             this.label32.TabIndex = 109;
             this.label32.Text = "Network";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // layoutTab
-            // 
-            this.layoutTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.layoutTab.Controls.Add(this.hideDesktop);
-            this.layoutTab.Controls.Add(this.numMaxPlyrs);
-            this.layoutTab.Controls.Add(this.numUpDownVer);
-            this.layoutTab.Controls.Add(this.label29);
-            this.layoutTab.Controls.Add(this.label27);
-            this.layoutTab.Controls.Add(this.label28);
-            this.layoutTab.Controls.Add(this.numUpDownHor);
-            this.layoutTab.Controls.Add(this.label71);
-            this.layoutTab.Controls.Add(this.panel1);
-            this.layoutTab.Controls.Add(this.SplitColors);
-            this.layoutTab.Controls.Add(this.splitDiv);
-            this.layoutTab.Controls.Add(this.label49);
-            this.layoutTab.Controls.Add(this.layoutSizer);
-            this.layoutTab.Location = new System.Drawing.Point(0, 42);
-            this.layoutTab.Name = "layoutTab";
-            this.layoutTab.Size = new System.Drawing.Size(674, 391);
-            this.layoutTab.TabIndex = 300;
-            // 
-            // hideDesktop
-            // 
-            this.hideDesktop.AutoSize = true;
-            this.hideDesktop.Cursor = System.Windows.Forms.Cursors.Default;
-            this.hideDesktop.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hideDesktop.Location = new System.Drawing.Point(16, 131);
-            this.hideDesktop.Margin = new System.Windows.Forms.Padding(0);
-            this.hideDesktop.Name = "hideDesktop";
-            this.hideDesktop.Size = new System.Drawing.Size(115, 17);
-            this.hideDesktop.TabIndex = 162;
-            this.hideDesktop.Text = "Hide Desktop Only";
-            this.hideDesktop.UseVisualStyleBackColor = true;
-            // 
-            // numMaxPlyrs
-            // 
-            this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
-            this.numMaxPlyrs.Enabled = false;
-            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(300, 249);
-            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
-            this.numMaxPlyrs.Name = "numMaxPlyrs";
-            this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
-            this.numMaxPlyrs.TabIndex = 161;
-            this.numMaxPlyrs.Value = 0;
-            // 
-            // numUpDownVer
-            // 
-            this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(298, 151);
-            this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownVer.Name = "numUpDownVer";
-            this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownVer.TabIndex = 159;
-            this.numUpDownVer.Value = 0;
-            // 
-            // label29
-            // 
-            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label29.AutoSize = true;
-            this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(290, 226);
-            this.label29.Margin = new System.Windows.Forms.Padding(0);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(64, 13);
-            this.label29.TabIndex = 158;
-            this.label29.Text = "Max Players";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label27
-            // 
-            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.Color.Transparent;
-            this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(290, 179);
-            this.label27.Margin = new System.Windows.Forms.Padding(0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(99, 13);
-            this.label27.TabIndex = 156;
-            this.label27.Text = "Horizontal Divisions";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label28
-            // 
-            this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label28.AutoSize = true;
-            this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(287, 132);
-            this.label28.Margin = new System.Windows.Forms.Padding(0);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(90, 13);
-            this.label28.TabIndex = 157;
-            this.label28.Text = " Vertical Divisions";
-            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // numUpDownHor
-            // 
-            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(299, 198);
-            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownHor.Name = "numUpDownHor";
-            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownHor.TabIndex = 160;
-            this.numUpDownHor.Value = 0;
-            // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(13, 213);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(128, 13);
-            this.label71.TabIndex = 155;
-            this.label71.Text = "Cutscenes Mode Settings";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.cts_unfocus);
-            this.panel1.Controls.Add(this.cts_kar);
-            this.panel1.Controls.Add(this.cts_Mute);
-            this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(12, 232);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 82);
-            this.panel1.TabIndex = 154;
-            // 
-            // cts_unfocus
-            // 
-            this.cts_unfocus.AutoSize = true;
-            this.cts_unfocus.Location = new System.Drawing.Point(6, 54);
-            this.cts_unfocus.Name = "cts_unfocus";
-            this.cts_unfocus.Size = new System.Drawing.Size(138, 17);
-            this.cts_unfocus.TabIndex = 142;
-            this.cts_unfocus.Text = "Auto Unfocus Windows";
-            this.cts_unfocus.UseVisualStyleBackColor = true;
-            // 
-            // cts_kar
-            // 
-            this.cts_kar.AutoSize = true;
-            this.cts_kar.Location = new System.Drawing.Point(6, 29);
-            this.cts_kar.Name = "cts_kar";
-            this.cts_kar.Size = new System.Drawing.Size(154, 17);
-            this.cts_kar.TabIndex = 141;
-            this.cts_kar.Text = "Keep Original Window Size";
-            this.cts_kar.UseVisualStyleBackColor = true;
-            // 
-            // cts_Mute
-            // 
-            this.cts_Mute.AutoSize = true;
-            this.cts_Mute.Location = new System.Drawing.Point(6, 4);
-            this.cts_Mute.Name = "cts_Mute";
-            this.cts_Mute.Size = new System.Drawing.Size(104, 17);
-            this.cts_Mute.TabIndex = 140;
-            this.cts_Mute.Text = "Mute Audio Only";
-            this.cts_Mute.UseVisualStyleBackColor = true;
-            this.cts_Mute.CheckedChanged += new System.EventHandler(this.cts_Mute_CheckedChanged);
-            // 
-            // SplitColors
-            // 
-            this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(15, 175);
-            this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
-            this.SplitColors.Name = "SplitColors";
-            this.SplitColors.Size = new System.Drawing.Size(119, 24);
-            this.SplitColors.TabIndex = 153;
-            // 
-            // splitDiv
-            // 
-            this.splitDiv.AutoSize = true;
-            this.splitDiv.Cursor = System.Windows.Forms.Cursors.Default;
-            this.splitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.splitDiv.Location = new System.Drawing.Point(16, 107);
-            this.splitDiv.Margin = new System.Windows.Forms.Padding(0);
-            this.splitDiv.Name = "splitDiv";
-            this.splitDiv.Size = new System.Drawing.Size(118, 17);
-            this.splitDiv.TabIndex = 149;
-            this.splitDiv.Text = "Splitscreen Division";
-            this.splitDiv.UseVisualStyleBackColor = true;
-            // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.BackColor = System.Drawing.Color.Transparent;
-            this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(13, 153);
-            this.label49.Margin = new System.Windows.Forms.Padding(0);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(105, 15);
-            this.label49.TabIndex = 148;
-            this.label49.Text = "Background Color";
-            this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // layoutSizer
-            // 
-            this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
-            this.layoutSizer.Location = new System.Drawing.Point(416, 113);
-            this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
-            this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
-            this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
-            this.layoutSizer.Name = "layoutSizer";
-            this.layoutSizer.Size = new System.Drawing.Size(245, 170);
-            this.layoutSizer.TabIndex = 147;
-            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
-            // 
-            // audioTab
-            // 
-            this.audioTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.audioTab.BackColor = System.Drawing.Color.RosyBrown;
-            this.audioTab.Controls.Add(this.audioWarningLabel);
-            this.audioTab.Controls.Add(this.audioDefaultDevice);
-            this.audioTab.Controls.Add(this.audioCustomSettingsBox);
-            this.audioTab.Controls.Add(this.audioCustomSettingsRadio);
-            this.audioTab.Controls.Add(this.audioDefaultSettingsRadio);
-            this.audioTab.Controls.Add(this.audioRefresh);
-            this.audioTab.Location = new System.Drawing.Point(1, 34);
-            this.audioTab.Name = "audioTab";
-            this.audioTab.Size = new System.Drawing.Size(674, 391);
-            this.audioTab.TabIndex = 292;
-            // 
-            // audioWarningLabel
-            // 
-            this.audioWarningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.audioWarningLabel.AutoSize = true;
-            this.audioWarningLabel.BackColor = System.Drawing.Color.Transparent;
-            this.audioWarningLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.audioWarningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioWarningLabel.ForeColor = System.Drawing.Color.Yellow;
-            this.audioWarningLabel.Location = new System.Drawing.Point(230, 22);
-            this.audioWarningLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.audioWarningLabel.Name = "audioWarningLabel";
-            this.audioWarningLabel.Size = new System.Drawing.Size(273, 15);
-            this.audioWarningLabel.TabIndex = 22;
-            this.audioWarningLabel.Text = "This Feature May Not Work For All Games";
-            this.audioWarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.audioWarningLabel.UseMnemonic = false;
-            // 
-            // audioDefaultDevice
-            // 
-            this.audioDefaultDevice.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.audioDefaultDevice.AutoSize = true;
-            this.audioDefaultDevice.BackColor = System.Drawing.Color.Transparent;
-            this.audioDefaultDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.audioDefaultDevice.ForeColor = System.Drawing.Color.White;
-            this.audioDefaultDevice.Location = new System.Drawing.Point(91, 136);
-            this.audioDefaultDevice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.audioDefaultDevice.Name = "audioDefaultDevice";
-            this.audioDefaultDevice.Size = new System.Drawing.Size(0, 15);
-            this.audioDefaultDevice.TabIndex = 21;
-            this.audioDefaultDevice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // audioCustomSettingsBox
-            // 
-            this.audioCustomSettingsBox.BackColor = System.Drawing.Color.Transparent;
-            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance8);
-            this.audioCustomSettingsBox.Controls.Add(this.label45);
-            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance7);
-            this.audioCustomSettingsBox.Controls.Add(this.label44);
-            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance6);
-            this.audioCustomSettingsBox.Controls.Add(this.label43);
-            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance5);
-            this.audioCustomSettingsBox.Controls.Add(this.label42);
-            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance4);
-            this.audioCustomSettingsBox.Controls.Add(this.label41);
-            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance3);
-            this.audioCustomSettingsBox.Controls.Add(this.label40);
-            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance2);
-            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance1);
-            this.audioCustomSettingsBox.Controls.Add(this.label37);
-            this.audioCustomSettingsBox.Controls.Add(this.label36);
-            this.audioCustomSettingsBox.Location = new System.Drawing.Point(88, 156);
-            this.audioCustomSettingsBox.Margin = new System.Windows.Forms.Padding(2);
-            this.audioCustomSettingsBox.Name = "audioCustomSettingsBox";
-            this.audioCustomSettingsBox.Padding = new System.Windows.Forms.Padding(2);
-            this.audioCustomSettingsBox.Size = new System.Drawing.Size(503, 121);
-            this.audioCustomSettingsBox.TabIndex = 20;
-            this.audioCustomSettingsBox.TabStop = false;
-            // 
-            // AudioInstance8
-            // 
-            this.AudioInstance8.BackColor = System.Drawing.Color.White;
-            this.AudioInstance8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioInstance8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AudioInstance8.FormattingEnabled = true;
-            this.AudioInstance8.Location = new System.Drawing.Point(321, 84);
-            this.AudioInstance8.Margin = new System.Windows.Forms.Padding(2);
-            this.AudioInstance8.Name = "AudioInstance8";
-            this.AudioInstance8.Size = new System.Drawing.Size(170, 23);
-            this.AudioInstance8.TabIndex = 29;
-            // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label45.Location = new System.Drawing.Point(257, 85);
-            this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(60, 13);
-            this.label45.TabIndex = 28;
-            this.label45.Text = "Instance 8:";
-            // 
-            // AudioInstance7
-            // 
-            this.AudioInstance7.BackColor = System.Drawing.Color.White;
-            this.AudioInstance7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioInstance7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AudioInstance7.FormattingEnabled = true;
-            this.AudioInstance7.Location = new System.Drawing.Point(321, 62);
-            this.AudioInstance7.Margin = new System.Windows.Forms.Padding(2);
-            this.AudioInstance7.Name = "AudioInstance7";
-            this.AudioInstance7.Size = new System.Drawing.Size(170, 23);
-            this.AudioInstance7.TabIndex = 27;
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label44.Location = new System.Drawing.Point(257, 64);
-            this.label44.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(60, 13);
-            this.label44.TabIndex = 26;
-            this.label44.Text = "Instance 7:";
-            // 
-            // AudioInstance6
-            // 
-            this.AudioInstance6.BackColor = System.Drawing.Color.White;
-            this.AudioInstance6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioInstance6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AudioInstance6.FormattingEnabled = true;
-            this.AudioInstance6.Location = new System.Drawing.Point(321, 40);
-            this.AudioInstance6.Margin = new System.Windows.Forms.Padding(2);
-            this.AudioInstance6.Name = "AudioInstance6";
-            this.AudioInstance6.Size = new System.Drawing.Size(170, 23);
-            this.AudioInstance6.TabIndex = 25;
-            // 
-            // label43
-            // 
-            this.label43.AutoSize = true;
-            this.label43.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label43.Location = new System.Drawing.Point(257, 42);
-            this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(60, 13);
-            this.label43.TabIndex = 24;
-            this.label43.Text = "Instance 6:";
-            // 
-            // AudioInstance5
-            // 
-            this.AudioInstance5.BackColor = System.Drawing.Color.White;
-            this.AudioInstance5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioInstance5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AudioInstance5.FormattingEnabled = true;
-            this.AudioInstance5.Location = new System.Drawing.Point(321, 18);
-            this.AudioInstance5.Margin = new System.Windows.Forms.Padding(2);
-            this.AudioInstance5.Name = "AudioInstance5";
-            this.AudioInstance5.Size = new System.Drawing.Size(170, 23);
-            this.AudioInstance5.TabIndex = 23;
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label42.Location = new System.Drawing.Point(257, 20);
-            this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(60, 13);
-            this.label42.TabIndex = 22;
-            this.label42.Text = "Instance 5:";
-            // 
-            // AudioInstance4
-            // 
-            this.AudioInstance4.BackColor = System.Drawing.Color.White;
-            this.AudioInstance4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioInstance4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AudioInstance4.FormattingEnabled = true;
-            this.AudioInstance4.Location = new System.Drawing.Point(70, 84);
-            this.AudioInstance4.Margin = new System.Windows.Forms.Padding(2);
-            this.AudioInstance4.Name = "AudioInstance4";
-            this.AudioInstance4.Size = new System.Drawing.Size(170, 23);
-            this.AudioInstance4.TabIndex = 21;
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label41.Location = new System.Drawing.Point(6, 86);
-            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(60, 13);
-            this.label41.TabIndex = 20;
-            this.label41.Text = "Instance 4:";
-            // 
-            // AudioInstance3
-            // 
-            this.AudioInstance3.BackColor = System.Drawing.Color.White;
-            this.AudioInstance3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioInstance3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AudioInstance3.FormattingEnabled = true;
-            this.AudioInstance3.Location = new System.Drawing.Point(70, 62);
-            this.AudioInstance3.Margin = new System.Windows.Forms.Padding(2);
-            this.AudioInstance3.Name = "AudioInstance3";
-            this.AudioInstance3.Size = new System.Drawing.Size(170, 23);
-            this.AudioInstance3.TabIndex = 19;
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label40.Location = new System.Drawing.Point(6, 65);
-            this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(60, 13);
-            this.label40.TabIndex = 18;
-            this.label40.Text = "Instance 3:";
-            // 
-            // AudioInstance2
-            // 
-            this.AudioInstance2.BackColor = System.Drawing.Color.White;
-            this.AudioInstance2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioInstance2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AudioInstance2.FormattingEnabled = true;
-            this.AudioInstance2.Location = new System.Drawing.Point(70, 40);
-            this.AudioInstance2.Margin = new System.Windows.Forms.Padding(2);
-            this.AudioInstance2.Name = "AudioInstance2";
-            this.AudioInstance2.Size = new System.Drawing.Size(170, 23);
-            this.AudioInstance2.TabIndex = 6;
-            // 
-            // AudioInstance1
-            // 
-            this.AudioInstance1.BackColor = System.Drawing.Color.White;
-            this.AudioInstance1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioInstance1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AudioInstance1.FormattingEnabled = true;
-            this.AudioInstance1.Items.AddRange(new object[] {
-            "Default"});
-            this.AudioInstance1.Location = new System.Drawing.Point(70, 18);
-            this.AudioInstance1.Margin = new System.Windows.Forms.Padding(2);
-            this.AudioInstance1.Name = "AudioInstance1";
-            this.AudioInstance1.Size = new System.Drawing.Size(170, 23);
-            this.AudioInstance1.TabIndex = 1;
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label37.Location = new System.Drawing.Point(6, 43);
-            this.label37.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(60, 13);
-            this.label37.TabIndex = 5;
-            this.label37.Text = "Instance 2:";
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label36.Location = new System.Drawing.Point(6, 21);
-            this.label36.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(60, 13);
-            this.label36.TabIndex = 0;
-            this.label36.Text = "Instance 1:";
-            // 
-            // audioCustomSettingsRadio
-            // 
-            this.audioCustomSettingsRadio.AutoSize = true;
-            this.audioCustomSettingsRadio.BackColor = System.Drawing.Color.Transparent;
-            this.audioCustomSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.audioCustomSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioCustomSettingsRadio.Location = new System.Drawing.Point(88, 109);
-            this.audioCustomSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
-            this.audioCustomSettingsRadio.Name = "audioCustomSettingsRadio";
-            this.audioCustomSettingsRadio.Size = new System.Drawing.Size(99, 17);
-            this.audioCustomSettingsRadio.TabIndex = 19;
-            this.audioCustomSettingsRadio.Text = "Custom settings";
-            this.audioCustomSettingsRadio.UseVisualStyleBackColor = false;
-            this.audioCustomSettingsRadio.CheckedChanged += new System.EventHandler(this.audioCustomSettingsRadio_CheckedChanged);
-            // 
-            // audioDefaultSettingsRadio
-            // 
-            this.audioDefaultSettingsRadio.AutoSize = true;
-            this.audioDefaultSettingsRadio.BackColor = System.Drawing.Color.Transparent;
-            this.audioDefaultSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.audioDefaultSettingsRadio.Checked = true;
-            this.audioDefaultSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.audioDefaultSettingsRadio.Location = new System.Drawing.Point(88, 89);
-            this.audioDefaultSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
-            this.audioDefaultSettingsRadio.Name = "audioDefaultSettingsRadio";
-            this.audioDefaultSettingsRadio.Size = new System.Drawing.Size(217, 17);
-            this.audioDefaultSettingsRadio.TabIndex = 18;
-            this.audioDefaultSettingsRadio.TabStop = true;
-            this.audioDefaultSettingsRadio.Text = "Use default audio playback device for all";
-            this.audioDefaultSettingsRadio.UseVisualStyleBackColor = false;
-            // 
-            // audioRefresh
-            // 
-            this.audioRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.audioRefresh.BackColor = System.Drawing.Color.Orange;
-            this.audioRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.audioRefresh.FlatAppearance.BorderSize = 0;
-            this.audioRefresh.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.audioRefresh.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.audioRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.audioRefresh.Location = new System.Drawing.Point(318, 349);
-            this.audioRefresh.Margin = new System.Windows.Forms.Padding(2);
-            this.audioRefresh.Name = "audioRefresh";
-            this.audioRefresh.Size = new System.Drawing.Size(26, 23);
-            this.audioRefresh.TabIndex = 23;
-            this.audioRefresh.UseVisualStyleBackColor = false;
-            this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
             // 
             // playersTab
             // 
@@ -3383,6 +2851,556 @@ namespace Nucleus.Coop
             this.player28N.Size = new System.Drawing.Size(69, 21);
             this.player28N.TabIndex = 324;
             // 
+            // audioTab
+            // 
+            this.audioTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.audioTab.BackColor = System.Drawing.Color.RosyBrown;
+            this.audioTab.Controls.Add(this.audioWarningLabel);
+            this.audioTab.Controls.Add(this.audioDefaultDevice);
+            this.audioTab.Controls.Add(this.audioCustomSettingsBox);
+            this.audioTab.Controls.Add(this.audioCustomSettingsRadio);
+            this.audioTab.Controls.Add(this.audioDefaultSettingsRadio);
+            this.audioTab.Controls.Add(this.audioRefresh);
+            this.audioTab.Location = new System.Drawing.Point(1, 34);
+            this.audioTab.Name = "audioTab";
+            this.audioTab.Size = new System.Drawing.Size(674, 391);
+            this.audioTab.TabIndex = 292;
+            // 
+            // audioWarningLabel
+            // 
+            this.audioWarningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.audioWarningLabel.AutoSize = true;
+            this.audioWarningLabel.BackColor = System.Drawing.Color.Transparent;
+            this.audioWarningLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.audioWarningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.audioWarningLabel.ForeColor = System.Drawing.Color.Yellow;
+            this.audioWarningLabel.Location = new System.Drawing.Point(230, 22);
+            this.audioWarningLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.audioWarningLabel.Name = "audioWarningLabel";
+            this.audioWarningLabel.Size = new System.Drawing.Size(273, 15);
+            this.audioWarningLabel.TabIndex = 22;
+            this.audioWarningLabel.Text = "This Feature May Not Work For All Games";
+            this.audioWarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.audioWarningLabel.UseMnemonic = false;
+            // 
+            // audioDefaultDevice
+            // 
+            this.audioDefaultDevice.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.audioDefaultDevice.AutoSize = true;
+            this.audioDefaultDevice.BackColor = System.Drawing.Color.Transparent;
+            this.audioDefaultDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.audioDefaultDevice.ForeColor = System.Drawing.Color.White;
+            this.audioDefaultDevice.Location = new System.Drawing.Point(91, 136);
+            this.audioDefaultDevice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.audioDefaultDevice.Name = "audioDefaultDevice";
+            this.audioDefaultDevice.Size = new System.Drawing.Size(0, 15);
+            this.audioDefaultDevice.TabIndex = 21;
+            this.audioDefaultDevice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // audioCustomSettingsBox
+            // 
+            this.audioCustomSettingsBox.BackColor = System.Drawing.Color.Transparent;
+            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance8);
+            this.audioCustomSettingsBox.Controls.Add(this.label45);
+            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance7);
+            this.audioCustomSettingsBox.Controls.Add(this.label44);
+            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance6);
+            this.audioCustomSettingsBox.Controls.Add(this.label43);
+            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance5);
+            this.audioCustomSettingsBox.Controls.Add(this.label42);
+            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance4);
+            this.audioCustomSettingsBox.Controls.Add(this.label41);
+            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance3);
+            this.audioCustomSettingsBox.Controls.Add(this.label40);
+            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance2);
+            this.audioCustomSettingsBox.Controls.Add(this.AudioInstance1);
+            this.audioCustomSettingsBox.Controls.Add(this.label37);
+            this.audioCustomSettingsBox.Controls.Add(this.label36);
+            this.audioCustomSettingsBox.Location = new System.Drawing.Point(88, 156);
+            this.audioCustomSettingsBox.Margin = new System.Windows.Forms.Padding(2);
+            this.audioCustomSettingsBox.Name = "audioCustomSettingsBox";
+            this.audioCustomSettingsBox.Padding = new System.Windows.Forms.Padding(2);
+            this.audioCustomSettingsBox.Size = new System.Drawing.Size(503, 121);
+            this.audioCustomSettingsBox.TabIndex = 20;
+            this.audioCustomSettingsBox.TabStop = false;
+            // 
+            // AudioInstance8
+            // 
+            this.AudioInstance8.BackColor = System.Drawing.Color.White;
+            this.AudioInstance8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInstance8.FormattingEnabled = true;
+            this.AudioInstance8.Location = new System.Drawing.Point(321, 84);
+            this.AudioInstance8.Margin = new System.Windows.Forms.Padding(2);
+            this.AudioInstance8.Name = "AudioInstance8";
+            this.AudioInstance8.Size = new System.Drawing.Size(170, 23);
+            this.AudioInstance8.TabIndex = 29;
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label45.Location = new System.Drawing.Point(257, 85);
+            this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(60, 13);
+            this.label45.TabIndex = 28;
+            this.label45.Text = "Instance 8:";
+            // 
+            // AudioInstance7
+            // 
+            this.AudioInstance7.BackColor = System.Drawing.Color.White;
+            this.AudioInstance7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInstance7.FormattingEnabled = true;
+            this.AudioInstance7.Location = new System.Drawing.Point(321, 62);
+            this.AudioInstance7.Margin = new System.Windows.Forms.Padding(2);
+            this.AudioInstance7.Name = "AudioInstance7";
+            this.AudioInstance7.Size = new System.Drawing.Size(170, 23);
+            this.AudioInstance7.TabIndex = 27;
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label44.Location = new System.Drawing.Point(257, 64);
+            this.label44.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(60, 13);
+            this.label44.TabIndex = 26;
+            this.label44.Text = "Instance 7:";
+            // 
+            // AudioInstance6
+            // 
+            this.AudioInstance6.BackColor = System.Drawing.Color.White;
+            this.AudioInstance6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInstance6.FormattingEnabled = true;
+            this.AudioInstance6.Location = new System.Drawing.Point(321, 40);
+            this.AudioInstance6.Margin = new System.Windows.Forms.Padding(2);
+            this.AudioInstance6.Name = "AudioInstance6";
+            this.AudioInstance6.Size = new System.Drawing.Size(170, 23);
+            this.AudioInstance6.TabIndex = 25;
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label43.Location = new System.Drawing.Point(257, 42);
+            this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(60, 13);
+            this.label43.TabIndex = 24;
+            this.label43.Text = "Instance 6:";
+            // 
+            // AudioInstance5
+            // 
+            this.AudioInstance5.BackColor = System.Drawing.Color.White;
+            this.AudioInstance5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInstance5.FormattingEnabled = true;
+            this.AudioInstance5.Location = new System.Drawing.Point(321, 18);
+            this.AudioInstance5.Margin = new System.Windows.Forms.Padding(2);
+            this.AudioInstance5.Name = "AudioInstance5";
+            this.AudioInstance5.Size = new System.Drawing.Size(170, 23);
+            this.AudioInstance5.TabIndex = 23;
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label42.Location = new System.Drawing.Point(257, 20);
+            this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(60, 13);
+            this.label42.TabIndex = 22;
+            this.label42.Text = "Instance 5:";
+            // 
+            // AudioInstance4
+            // 
+            this.AudioInstance4.BackColor = System.Drawing.Color.White;
+            this.AudioInstance4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInstance4.FormattingEnabled = true;
+            this.AudioInstance4.Location = new System.Drawing.Point(70, 84);
+            this.AudioInstance4.Margin = new System.Windows.Forms.Padding(2);
+            this.AudioInstance4.Name = "AudioInstance4";
+            this.AudioInstance4.Size = new System.Drawing.Size(170, 23);
+            this.AudioInstance4.TabIndex = 21;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label41.Location = new System.Drawing.Point(6, 86);
+            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(60, 13);
+            this.label41.TabIndex = 20;
+            this.label41.Text = "Instance 4:";
+            // 
+            // AudioInstance3
+            // 
+            this.AudioInstance3.BackColor = System.Drawing.Color.White;
+            this.AudioInstance3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInstance3.FormattingEnabled = true;
+            this.AudioInstance3.Location = new System.Drawing.Point(70, 62);
+            this.AudioInstance3.Margin = new System.Windows.Forms.Padding(2);
+            this.AudioInstance3.Name = "AudioInstance3";
+            this.AudioInstance3.Size = new System.Drawing.Size(170, 23);
+            this.AudioInstance3.TabIndex = 19;
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label40.Location = new System.Drawing.Point(6, 65);
+            this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(60, 13);
+            this.label40.TabIndex = 18;
+            this.label40.Text = "Instance 3:";
+            // 
+            // AudioInstance2
+            // 
+            this.AudioInstance2.BackColor = System.Drawing.Color.White;
+            this.AudioInstance2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInstance2.FormattingEnabled = true;
+            this.AudioInstance2.Location = new System.Drawing.Point(70, 40);
+            this.AudioInstance2.Margin = new System.Windows.Forms.Padding(2);
+            this.AudioInstance2.Name = "AudioInstance2";
+            this.AudioInstance2.Size = new System.Drawing.Size(170, 23);
+            this.AudioInstance2.TabIndex = 6;
+            // 
+            // AudioInstance1
+            // 
+            this.AudioInstance1.BackColor = System.Drawing.Color.White;
+            this.AudioInstance1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioInstance1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInstance1.FormattingEnabled = true;
+            this.AudioInstance1.Items.AddRange(new object[] {
+            "Default"});
+            this.AudioInstance1.Location = new System.Drawing.Point(70, 18);
+            this.AudioInstance1.Margin = new System.Windows.Forms.Padding(2);
+            this.AudioInstance1.Name = "AudioInstance1";
+            this.AudioInstance1.Size = new System.Drawing.Size(170, 23);
+            this.AudioInstance1.TabIndex = 1;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label37.Location = new System.Drawing.Point(6, 43);
+            this.label37.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(60, 13);
+            this.label37.TabIndex = 5;
+            this.label37.Text = "Instance 2:";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.Location = new System.Drawing.Point(6, 21);
+            this.label36.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(60, 13);
+            this.label36.TabIndex = 0;
+            this.label36.Text = "Instance 1:";
+            // 
+            // audioCustomSettingsRadio
+            // 
+            this.audioCustomSettingsRadio.AutoSize = true;
+            this.audioCustomSettingsRadio.BackColor = System.Drawing.Color.Transparent;
+            this.audioCustomSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.audioCustomSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.audioCustomSettingsRadio.Location = new System.Drawing.Point(88, 109);
+            this.audioCustomSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
+            this.audioCustomSettingsRadio.Name = "audioCustomSettingsRadio";
+            this.audioCustomSettingsRadio.Size = new System.Drawing.Size(99, 17);
+            this.audioCustomSettingsRadio.TabIndex = 19;
+            this.audioCustomSettingsRadio.Text = "Custom settings";
+            this.audioCustomSettingsRadio.UseVisualStyleBackColor = false;
+            this.audioCustomSettingsRadio.CheckedChanged += new System.EventHandler(this.audioCustomSettingsRadio_CheckedChanged);
+            // 
+            // audioDefaultSettingsRadio
+            // 
+            this.audioDefaultSettingsRadio.AutoSize = true;
+            this.audioDefaultSettingsRadio.BackColor = System.Drawing.Color.Transparent;
+            this.audioDefaultSettingsRadio.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.audioDefaultSettingsRadio.Checked = true;
+            this.audioDefaultSettingsRadio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.audioDefaultSettingsRadio.Location = new System.Drawing.Point(88, 89);
+            this.audioDefaultSettingsRadio.Margin = new System.Windows.Forms.Padding(2);
+            this.audioDefaultSettingsRadio.Name = "audioDefaultSettingsRadio";
+            this.audioDefaultSettingsRadio.Size = new System.Drawing.Size(217, 17);
+            this.audioDefaultSettingsRadio.TabIndex = 18;
+            this.audioDefaultSettingsRadio.TabStop = true;
+            this.audioDefaultSettingsRadio.Text = "Use default audio playback device for all";
+            this.audioDefaultSettingsRadio.UseVisualStyleBackColor = false;
+            // 
+            // audioRefresh
+            // 
+            this.audioRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.audioRefresh.BackColor = System.Drawing.Color.Orange;
+            this.audioRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.audioRefresh.FlatAppearance.BorderSize = 0;
+            this.audioRefresh.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.audioRefresh.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.audioRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.audioRefresh.Location = new System.Drawing.Point(318, 349);
+            this.audioRefresh.Margin = new System.Windows.Forms.Padding(2);
+            this.audioRefresh.Name = "audioRefresh";
+            this.audioRefresh.Size = new System.Drawing.Size(26, 23);
+            this.audioRefresh.TabIndex = 23;
+            this.audioRefresh.UseVisualStyleBackColor = false;
+            this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
+            // 
+            // layoutTab
+            // 
+            this.layoutTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.layoutTab.Controls.Add(this.cts_bringToFront);
+            this.layoutTab.Controls.Add(this.hideDesktop);
+            this.layoutTab.Controls.Add(this.numMaxPlyrs);
+            this.layoutTab.Controls.Add(this.numUpDownVer);
+            this.layoutTab.Controls.Add(this.label29);
+            this.layoutTab.Controls.Add(this.label27);
+            this.layoutTab.Controls.Add(this.label28);
+            this.layoutTab.Controls.Add(this.numUpDownHor);
+            this.layoutTab.Controls.Add(this.label71);
+            this.layoutTab.Controls.Add(this.cts_Panel);
+            this.layoutTab.Controls.Add(this.SplitColors);
+            this.layoutTab.Controls.Add(this.splitDiv);
+            this.layoutTab.Controls.Add(this.label49);
+            this.layoutTab.Controls.Add(this.layoutSizer);
+            this.layoutTab.Location = new System.Drawing.Point(0, 42);
+            this.layoutTab.Name = "layoutTab";
+            this.layoutTab.Size = new System.Drawing.Size(674, 391);
+            this.layoutTab.TabIndex = 300;
+            // 
+            // cts_bringToFront
+            // 
+            this.cts_bringToFront.AutoSize = true;
+            this.cts_bringToFront.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.cts_bringToFront.Enabled = false;
+            this.cts_bringToFront.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cts_bringToFront.Location = new System.Drawing.Point(18, 334);
+            this.cts_bringToFront.Margin = new System.Windows.Forms.Padding(0);
+            this.cts_bringToFront.Name = "cts_bringToFront";
+            this.cts_bringToFront.Size = new System.Drawing.Size(168, 17);
+            this.cts_bringToFront.TabIndex = 166;
+            this.cts_bringToFront.Text = "Bring Back Windows To Front";
+            this.cts_bringToFront.UseVisualStyleBackColor = true;
+            this.cts_bringToFront.Visible = false;
+            // 
+            // hideDesktop
+            // 
+            this.hideDesktop.AutoSize = true;
+            this.hideDesktop.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.hideDesktop.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hideDesktop.Location = new System.Drawing.Point(16, 131);
+            this.hideDesktop.Margin = new System.Windows.Forms.Padding(0);
+            this.hideDesktop.Name = "hideDesktop";
+            this.hideDesktop.Size = new System.Drawing.Size(115, 17);
+            this.hideDesktop.TabIndex = 162;
+            this.hideDesktop.Text = "Hide Desktop Only";
+            this.hideDesktop.UseVisualStyleBackColor = true;
+            // 
+            // numMaxPlyrs
+            // 
+            this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
+            this.numMaxPlyrs.Enabled = false;
+            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numMaxPlyrs.Location = new System.Drawing.Point(300, 249);
+            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
+            this.numMaxPlyrs.Name = "numMaxPlyrs";
+            this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
+            this.numMaxPlyrs.TabIndex = 161;
+            this.numMaxPlyrs.Value = 0;
+            // 
+            // numUpDownVer
+            // 
+            this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownVer.Location = new System.Drawing.Point(298, 151);
+            this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownVer.Name = "numUpDownVer";
+            this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownVer.TabIndex = 159;
+            this.numUpDownVer.Value = 0;
+            // 
+            // label29
+            // 
+            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label29.AutoSize = true;
+            this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label29.Location = new System.Drawing.Point(290, 226);
+            this.label29.Margin = new System.Windows.Forms.Padding(0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(64, 13);
+            this.label29.TabIndex = 158;
+            this.label29.Text = "Max Players";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label27
+            // 
+            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.Transparent;
+            this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label27.Location = new System.Drawing.Point(290, 179);
+            this.label27.Margin = new System.Windows.Forms.Padding(0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(99, 13);
+            this.label27.TabIndex = 156;
+            this.label27.Text = "Horizontal Divisions";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label28
+            // 
+            this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label28.AutoSize = true;
+            this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label28.Location = new System.Drawing.Point(287, 132);
+            this.label28.Margin = new System.Windows.Forms.Padding(0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(90, 13);
+            this.label28.TabIndex = 157;
+            this.label28.Text = " Vertical Divisions";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // numUpDownHor
+            // 
+            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownHor.Location = new System.Drawing.Point(299, 198);
+            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownHor.Name = "numUpDownHor";
+            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownHor.TabIndex = 160;
+            this.numUpDownHor.Value = 0;
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label71.Location = new System.Drawing.Point(13, 213);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(128, 13);
+            this.label71.TabIndex = 155;
+            this.label71.Text = "Cutscenes Mode Settings";
+            // 
+            // cts_Panel
+            // 
+            this.cts_Panel.BackColor = System.Drawing.Color.Transparent;
+            this.cts_Panel.Controls.Add(this.cts_unfocus);
+            this.cts_Panel.Controls.Add(this.cts_kar);
+            this.cts_Panel.Controls.Add(this.cts_Mute);
+            this.cts_Panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cts_Panel.Location = new System.Drawing.Point(12, 232);
+            this.cts_Panel.Name = "cts_Panel";
+            this.cts_Panel.Size = new System.Drawing.Size(200, 74);
+            this.cts_Panel.TabIndex = 154;
+            // 
+            // cts_unfocus
+            // 
+            this.cts_unfocus.AutoSize = true;
+            this.cts_unfocus.Location = new System.Drawing.Point(6, 54);
+            this.cts_unfocus.Name = "cts_unfocus";
+            this.cts_unfocus.Size = new System.Drawing.Size(138, 17);
+            this.cts_unfocus.TabIndex = 142;
+            this.cts_unfocus.Text = "Auto Unfocus Windows";
+            this.cts_unfocus.UseVisualStyleBackColor = true;
+            // 
+            // cts_kar
+            // 
+            this.cts_kar.AutoSize = true;
+            this.cts_kar.Location = new System.Drawing.Point(6, 29);
+            this.cts_kar.Name = "cts_kar";
+            this.cts_kar.Size = new System.Drawing.Size(154, 17);
+            this.cts_kar.TabIndex = 141;
+            this.cts_kar.Text = "Keep Original Window Size";
+            this.cts_kar.UseVisualStyleBackColor = true;
+            // 
+            // cts_Mute
+            // 
+            this.cts_Mute.AutoSize = true;
+            this.cts_Mute.Location = new System.Drawing.Point(6, 4);
+            this.cts_Mute.Name = "cts_Mute";
+            this.cts_Mute.Size = new System.Drawing.Size(104, 17);
+            this.cts_Mute.TabIndex = 140;
+            this.cts_Mute.Text = "Mute Audio Only";
+            this.cts_Mute.UseVisualStyleBackColor = true;
+            this.cts_Mute.CheckedChanged += new System.EventHandler(this.cts_Mute_CheckedChanged);
+            // 
+            // SplitColors
+            // 
+            this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SplitColors.Location = new System.Drawing.Point(15, 175);
+            this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
+            this.SplitColors.Name = "SplitColors";
+            this.SplitColors.Size = new System.Drawing.Size(119, 24);
+            this.SplitColors.TabIndex = 153;
+            // 
+            // splitDiv
+            // 
+            this.splitDiv.AutoSize = true;
+            this.splitDiv.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.splitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.splitDiv.Location = new System.Drawing.Point(16, 107);
+            this.splitDiv.Margin = new System.Windows.Forms.Padding(0);
+            this.splitDiv.Name = "splitDiv";
+            this.splitDiv.Size = new System.Drawing.Size(118, 17);
+            this.splitDiv.TabIndex = 149;
+            this.splitDiv.Text = "Splitscreen Division";
+            this.splitDiv.UseVisualStyleBackColor = true;
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.BackColor = System.Drawing.Color.Transparent;
+            this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label49.Location = new System.Drawing.Point(13, 153);
+            this.label49.Margin = new System.Windows.Forms.Padding(0);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(105, 15);
+            this.label49.TabIndex = 148;
+            this.label49.Text = "Background Color";
+            this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // layoutSizer
+            // 
+            this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
+            this.layoutSizer.Location = new System.Drawing.Point(416, 113);
+            this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
+            this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
+            this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
+            this.layoutSizer.Name = "layoutSizer";
+            this.layoutSizer.Size = new System.Drawing.Size(245, 170);
+            this.layoutSizer.TabIndex = 147;
+            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -3424,20 +3442,20 @@ namespace Nucleus.Coop
             this.settingsTab.PerformLayout();
             this.hotkeyBox.ResumeLayout(false);
             this.hotkeyBox.PerformLayout();
-            this.layoutTab.ResumeLayout(false);
-            this.layoutTab.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.audioTab.ResumeLayout(false);
-            this.audioTab.PerformLayout();
-            this.audioCustomSettingsBox.ResumeLayout(false);
-            this.audioCustomSettingsBox.PerformLayout();
             this.playersTab.ResumeLayout(false);
             this.playersTab.PerformLayout();
             this.page1.ResumeLayout(false);
             this.page1.PerformLayout();
             this.page2.ResumeLayout(false);
             this.page2.PerformLayout();
+            this.audioTab.ResumeLayout(false);
+            this.audioTab.PerformLayout();
+            this.audioCustomSettingsBox.ResumeLayout(false);
+            this.audioCustomSettingsBox.PerformLayout();
+            this.layoutTab.ResumeLayout(false);
+            this.layoutTab.PerformLayout();
+            this.cts_Panel.ResumeLayout(false);
+            this.cts_Panel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3485,7 +3503,7 @@ namespace Nucleus.Coop
         private CheckBox useNicksCheck;
         private CheckBox scaleOptionCbx;
         private Label label71;
-        private Panel panel1;
+        private Panel cts_Panel;
         private CheckBox cts_unfocus;
         private CheckBox cts_kar;
         private CheckBox cts_Mute;
@@ -3663,5 +3681,6 @@ namespace Nucleus.Coop
         private CheckBox gamepadsAssignMethods;
         private Button btn_SteamExePath;
         private CheckBox hideDesktop;
+        private CheckBox cts_bringToFront;
     }
 }

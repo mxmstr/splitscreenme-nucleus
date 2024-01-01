@@ -258,6 +258,13 @@ namespace Nucleus.Coop
             cts_Mute.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
             cts_kar.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_unfocus.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
+
+            if(ini.IniReadValue("CustomLayout", "Cts_BringToFront") != "")//such checks are there so testers/users can still use there existing profiles
+                                                                       //after new options implementation. Any new option must have that null check.
+            {
+                cts_bringToFront.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_BringToFront"));
+            }
+        
             disableGameProfiles.Checked = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
             mf.DisableGameProfiles = disableGameProfiles.Checked;
 
@@ -500,7 +507,7 @@ namespace Nucleus.Coop
             ///network setting
             RefreshCmbNetwork();
 
-            string path = Path.Combine(Application.StartupPath, $@"games profiles\Nicknames.json");
+            string path = $"{Globals.GameProfilesFolder}\\Nicknames.json";
 
             if (File.Exists(path))
             {
@@ -514,7 +521,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            string idspath = Path.Combine(Application.StartupPath, $@"games profiles\SteamIds.json");
+            string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
 
             if (File.Exists(idspath))
             {
@@ -613,7 +620,7 @@ namespace Nucleus.Coop
         {
             CustomToolTips.SetToolTip(btn_credits, "Credits", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(splitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(hideDesktop, "Will only show the background window without ajusting the game windows size or offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(hideDesktop, "Will only show the splitscreen division window without adjusting the game windows size and offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(disableGameProfiles, "Disable profile, Nucleus will always use globals settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(gamepadsAssignMethods, "If enabled profile will not save per player gamepad but use gamepads API indexes instead \n(switching modes could prevent some profiles to load properly).\nNote: Nucleus will return to the main screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
@@ -649,9 +656,9 @@ namespace Nucleus.Coop
 
         private void closeBtnPicture_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles")))
+            if (!Directory.Exists(Globals.GameProfilesFolder))
             {
-                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles"));
+                Directory.CreateDirectory(Globals.GameProfilesFolder);
             }
 
             bool sidWrongValue = false;
@@ -663,7 +670,7 @@ namespace Nucleus.Coop
                 {
                     ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
 
-                    if (!NicknamesCache.Get.Any(n => n == controllerNicks[i].Text))
+                    if (NicknamesCache.Get.All(n => n != controllerNicks[i].Text))
                     {
                         NicknamesCache.Add(controllerNicks[i].Text);
                     }
@@ -689,7 +696,7 @@ namespace Nucleus.Coop
 
                     if (steamIds[i].Text != "")
                     {
-                        if (!SteamIdsCache.Get.Any(n => n == steamIds[i].Text.ToString()))
+                        if (SteamIdsCache.Get.All(n => n != steamIds[i].Text.ToString()))
                         {
                             SteamIdsCache.Add(steamIds[i].Text.ToString());
                         }
@@ -716,7 +723,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            string path = Path.Combine(Application.StartupPath, $@"games profiles\Nicknames.json");
+            string path = $"{Globals.GameProfilesFolder}\\Nicknames.json";
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -729,7 +736,7 @@ namespace Nucleus.Coop
                 stream.Dispose();
             }
 
-            string idspath = Path.Combine(Application.StartupPath, $@"games profiles\SteamIds.json");
+            string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
             using (FileStream stream = new FileStream(idspath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -825,8 +832,9 @@ namespace Nucleus.Coop
             ini.IniWriteValue("CustomLayout", "Cts_MuteAudioOnly", cts_Mute.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "Cts_KeepAspectRatio", cts_kar.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "Cts_Unfocus", cts_unfocus.Checked.ToString());
+            ini.IniWriteValue("CustomLayout", "Cts_BringToFront", cts_bringToFront.Checked.ToString());
 
-            mainForm.handleClickSound(clickSoundChkB.Checked);
+            mainForm.HandleClickSound(clickSoundChkB.Checked);
 
             mainForm.lockKeyIniString = comboBox_lockKey.SelectedItem.ToString();
             mainForm.DebugButtonState(debugLogCheck.Checked);
@@ -1175,11 +1183,14 @@ namespace Nucleus.Coop
                 cts_kar.Enabled = false;
                 cts_unfocus.Checked = false;
                 cts_unfocus.Enabled = false;
+                cts_bringToFront.Checked = false;
+                cts_bringToFront.Enabled = false;
             }
             else
             {
                 cts_kar.Enabled = true;
                 cts_unfocus.Enabled = true;
+                cts_bringToFront.Enabled = true;
             }
         }
 

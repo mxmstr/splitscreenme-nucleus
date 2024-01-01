@@ -89,6 +89,7 @@
             this.radioButtonPs = new System.Windows.Forms.RadioButton();
             this.groupBoxType = new System.Windows.Forms.GroupBox();
             this.gamepadTopFront = new BufferedClientAreaPanel();
+            this.warning = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.slave7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slave6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slave5)).BeginInit();
@@ -838,12 +839,24 @@
             this.gamepadTopFront.Paint += new System.Windows.Forms.PaintEventHandler(this.gamepadTopFront_Paint);
             this.gamepadTopFront.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gamepadTopFront_MouseDown);
             // 
+            // warning
+            // 
+            this.warning.AutoSize = true;
+            this.warning.BackColor = System.Drawing.Color.Transparent;
+            this.warning.ForeColor = System.Drawing.Color.Red;
+            this.warning.Location = new System.Drawing.Point(482, 22);
+            this.warning.Name = "warning";
+            this.warning.Size = new System.Drawing.Size(176, 26);
+            this.warning.TabIndex = 98;
+            this.warning.Text = "Warning: Steam Input may interfere \r\nwith the controller shortcuts. ";
+            // 
             // XInputShortcutsSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(693, 381);
+            this.Controls.Add(this.warning);
             this.Controls.Add(this.groupBoxType);
             this.Controls.Add(this.Close);
             this.Controls.Add(this.gamepadTopFront);
@@ -955,5 +968,6 @@
         private System.Windows.Forms.RadioButton radioButtonXbox;
         private System.Windows.Forms.RadioButton radioButtonPs;
         private System.Windows.Forms.GroupBox groupBoxType;
+        private System.Windows.Forms.Label warning;
     }
 }

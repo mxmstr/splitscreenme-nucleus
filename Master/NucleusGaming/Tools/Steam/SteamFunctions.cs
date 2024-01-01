@@ -995,6 +995,9 @@ namespace Nucleus.Gaming.Tools.Steam
 
                     Console.WriteLine("Starting Steam client...");
                     Process.Start(sc);
+
+                    Thread.Sleep(15000);
+
                 }//MFTReader need admin rights :(
                 //else //steam client exe has be moved?
                 //{

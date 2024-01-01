@@ -82,6 +82,7 @@ namespace Nucleus.Coop
             this.game_listSizer = new BufferedClientAreaPanel();
             this.list_Games = new Nucleus.Gaming.ControlListBox();
             this.rightFrame = new BufferedClientAreaPanel();
+            this.btn_Steam = new System.Windows.Forms.Button();
             this.icons_Container = new BufferedFlowLayoutPanel();
             this.btn_gameOptions = new System.Windows.Forms.Button();
             this.scriptAuthorTxtSizer = new BufferedClientAreaPanel();
@@ -137,7 +138,7 @@ namespace Nucleus.Coop
             this.linkLabel4.TabStop = true;
             this.linkLabel4.Text = "ScpToolkit ";
             this.linkLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel4.Click += new System.EventHandler(this.linkLabel4_LinkClicked);
+            this.linkLabel4.Click += new System.EventHandler(this.LinkLabel4_LinkClicked);
             // 
             // linkLabel3
             // 
@@ -151,7 +152,7 @@ namespace Nucleus.Coop
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Text = "HidHide";
             this.linkLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel3.Click += new System.EventHandler(this.linkLabel3_LinkClicked);
+            this.linkLabel3.Click += new System.EventHandler(this.LinkLabel3_LinkClicked);
             // 
             // linkLabel2
             // 
@@ -165,7 +166,7 @@ namespace Nucleus.Coop
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "DS4Windows";
             this.linkLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel2.Click += new System.EventHandler(this.linkLabel2_LinkClicked);
+            this.linkLabel2.Click += new System.EventHandler(this.LinkLabel2_LinkClicked);
             // 
             // linkLabel1
             // 
@@ -179,7 +180,7 @@ namespace Nucleus.Coop
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "XOutput";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel1.Click += new System.EventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabel1.Click += new System.EventHandler(this.LinkLabel1_LinkClicked);
             // 
             // logo
             // 
@@ -192,7 +193,7 @@ namespace Nucleus.Coop
             this.logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logo.TabIndex = 24;
             this.logo.TabStop = false;
-            this.logo.DoubleClick += new System.EventHandler(this.logo_Click);
+            this.logo.DoubleClick += new System.EventHandler(this.Logo_Click);
             // 
             // btn_thirdPartytools
             // 
@@ -210,9 +211,9 @@ namespace Nucleus.Coop
             this.btn_thirdPartytools.TabIndex = 37;
             this.btn_thirdPartytools.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_thirdPartytools.UseVisualStyleBackColor = false;
-            this.btn_thirdPartytools.Click += new System.EventHandler(this.btn_thirdPartytools_Click);
-            this.btn_thirdPartytools.MouseEnter += new System.EventHandler(this.btn_thirdPartytools_MouseEnter);
-            this.btn_thirdPartytools.MouseLeave += new System.EventHandler(this.btn_thirdPartytools_MouseLeave);
+            this.btn_thirdPartytools.Click += new System.EventHandler(this.Btn_thirdPartytools_Click);
+            this.btn_thirdPartytools.MouseEnter += new System.EventHandler(this.Btn_thirdPartytools_MouseEnter);
+            this.btn_thirdPartytools.MouseLeave += new System.EventHandler(this.Btn_thirdPartytools_MouseLeave);
             // 
             // btn_dlFromHub
             // 
@@ -230,7 +231,7 @@ namespace Nucleus.Coop
             this.btn_dlFromHub.TabIndex = 42;
             this.btn_dlFromHub.Text = "Splitscreen.Me Hub ";
             this.btn_dlFromHub.UseVisualStyleBackColor = false;
-            this.btn_dlFromHub.Click += new System.EventHandler(this.button1_Click_2);
+            this.btn_dlFromHub.Click += new System.EventHandler(this.Button1_Click_2);
             // 
             // btn_settings
             // 
@@ -248,8 +249,8 @@ namespace Nucleus.Coop
             this.btn_settings.TabIndex = 16;
             this.btn_settings.UseVisualStyleBackColor = false;
             this.btn_settings.Click += new System.EventHandler(this.SettingsBtn_Click);
-            this.btn_settings.MouseEnter += new System.EventHandler(this.btn_settings_MouseEnter);
-            this.btn_settings.MouseLeave += new System.EventHandler(this.btn_settings_MouseLeave);
+            this.btn_settings.MouseEnter += new System.EventHandler(this.Btn_settings_MouseEnter);
+            this.btn_settings.MouseLeave += new System.EventHandler(this.Btn_settings_MouseLeave);
             // 
             // btn_SplitCalculator
             // 
@@ -267,9 +268,9 @@ namespace Nucleus.Coop
             this.btn_SplitCalculator.TabIndex = 38;
             this.btn_SplitCalculator.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_SplitCalculator.UseVisualStyleBackColor = false;
-            this.btn_SplitCalculator.Click += new System.EventHandler(this.btn_SplitCalculator_Click);
-            this.btn_SplitCalculator.MouseEnter += new System.EventHandler(this.btn_SplitCalculator_MouseEnter);
-            this.btn_SplitCalculator.MouseLeave += new System.EventHandler(this.btn_SplitCalculator_MouseLeave);
+            this.btn_SplitCalculator.Click += new System.EventHandler(this.Btn_SplitCalculator_Click);
+            this.btn_SplitCalculator.MouseEnter += new System.EventHandler(this.Btn_SplitCalculator_MouseEnter);
+            this.btn_SplitCalculator.MouseLeave += new System.EventHandler(this.Btn_SplitCalculator_MouseLeave);
             // 
             // btn_reddit
             // 
@@ -287,9 +288,9 @@ namespace Nucleus.Coop
             this.btn_reddit.TabIndex = 40;
             this.btn_reddit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_reddit.UseVisualStyleBackColor = false;
-            this.btn_reddit.Click += new System.EventHandler(this.button2_Click);
-            this.btn_reddit.MouseEnter += new System.EventHandler(this.btn_reddit_MouseEnter);
-            this.btn_reddit.MouseLeave += new System.EventHandler(this.btn_reddit_MouseLeave);
+            this.btn_reddit.Click += new System.EventHandler(this.Button2_Click);
+            this.btn_reddit.MouseEnter += new System.EventHandler(this.Btn_reddit_MouseEnter);
+            this.btn_reddit.MouseLeave += new System.EventHandler(this.Btn_reddit_MouseLeave);
             // 
             // btn_noHub
             // 
@@ -308,7 +309,7 @@ namespace Nucleus.Coop
             this.btn_noHub.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_noHub.UseVisualStyleBackColor = false;
             this.btn_noHub.Visible = false;
-            this.btn_noHub.Click += new System.EventHandler(this.btn_noHub_Click);
+            this.btn_noHub.Click += new System.EventHandler(this.Btn_noHub_Click);
             // 
             // btn_faq
             // 
@@ -326,9 +327,9 @@ namespace Nucleus.Coop
             this.btn_faq.TabIndex = 36;
             this.btn_faq.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_faq.UseVisualStyleBackColor = false;
-            this.btn_faq.Click += new System.EventHandler(this.link_faq_Click);
-            this.btn_faq.MouseEnter += new System.EventHandler(this.btn_faq_MouseEnter);
-            this.btn_faq.MouseLeave += new System.EventHandler(this.btn_faq_MouseLeave);
+            this.btn_faq.Click += new System.EventHandler(this.Link_faq_Click);
+            this.btn_faq.MouseEnter += new System.EventHandler(this.Btn_faq_MouseEnter);
+            this.btn_faq.MouseLeave += new System.EventHandler(this.Btn_faq_MouseLeave);
             // 
             // btn_downloadAssets
             // 
@@ -345,9 +346,9 @@ namespace Nucleus.Coop
             this.btn_downloadAssets.TabIndex = 23;
             this.btn_downloadAssets.Text = " ";
             this.btn_downloadAssets.UseVisualStyleBackColor = false;
-            this.btn_downloadAssets.Click += new System.EventHandler(this.btn_downloadAssets_Click);
-            this.btn_downloadAssets.MouseEnter += new System.EventHandler(this.btn_downloadAssets_MouseEnter);
-            this.btn_downloadAssets.MouseLeave += new System.EventHandler(this.btn_downloadAssets_MouseLeave);
+            this.btn_downloadAssets.Click += new System.EventHandler(this.Btn_downloadAssets_Click);
+            this.btn_downloadAssets.MouseEnter += new System.EventHandler(this.Btn_downloadAssets_MouseEnter);
+            this.btn_downloadAssets.MouseLeave += new System.EventHandler(this.Btn_downloadAssets_MouseLeave);
             // 
             // btn_Discord
             // 
@@ -365,9 +366,9 @@ namespace Nucleus.Coop
             this.btn_Discord.TabIndex = 39;
             this.btn_Discord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_Discord.UseVisualStyleBackColor = false;
-            this.btn_Discord.Click += new System.EventHandler(this.button1_Click);
-            this.btn_Discord.MouseEnter += new System.EventHandler(this.btn_Discord_MouseEnter);
-            this.btn_Discord.MouseLeave += new System.EventHandler(this.btn_Discord_MouseLeave);
+            this.btn_Discord.Click += new System.EventHandler(this.Button1_Click);
+            this.btn_Discord.MouseEnter += new System.EventHandler(this.Btn_Discord_MouseEnter);
+            this.btn_Discord.MouseLeave += new System.EventHandler(this.Btn_Discord_MouseLeave);
             // 
             // gameContextMenuStrip
             // 
@@ -401,7 +402,7 @@ namespace Nucleus.Coop
             this.gameContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.gameContextMenuStrip.Size = new System.Drawing.Size(236, 440);
             this.gameContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.GameContextMenuStrip_Opening);
-            this.gameContextMenuStrip.Opened += new System.EventHandler(this.gameContextMenuStrip_Opened);
+            this.gameContextMenuStrip.Opened += new System.EventHandler(this.GameContextMenuStrip_Opened);
             // 
             // nullToolStripMenuItem
             // 
@@ -529,7 +530,7 @@ namespace Nucleus.Coop
             this.deleteContentFolderToolStripMenuItem.Name = "deleteContentFolderToolStripMenuItem";
             this.deleteContentFolderToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.deleteContentFolderToolStripMenuItem.Text = "Delete Nucleus Content Folder";
-            this.deleteContentFolderToolStripMenuItem.Click += new System.EventHandler(this.deleteContentFolderToolStripMenuItem_Click);
+            this.deleteContentFolderToolStripMenuItem.Click += new System.EventHandler(this.DeleteContentFolderToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
@@ -543,7 +544,7 @@ namespace Nucleus.Coop
             this.keepInstancesFolderToolStripMenuItem.Name = "keepInstancesFolderToolStripMenuItem";
             this.keepInstancesFolderToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.keepInstancesFolderToolStripMenuItem.Text = "Keep instances content folder";
-            this.keepInstancesFolderToolStripMenuItem.Click += new System.EventHandler(this.keepInstancesFolderToolStripMenuItem_Click);
+            this.keepInstancesFolderToolStripMenuItem.Click += new System.EventHandler(this.KeepInstancesFolderToolStripMenuItem_Click);
             // 
             // updateHandlerToolStripMenuItem
             // 
@@ -552,7 +553,7 @@ namespace Nucleus.Coop
             this.updateHandlerToolStripMenuItem.Name = "updateHandlerToolStripMenuItem";
             this.updateHandlerToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.updateHandlerToolStripMenuItem.Text = "Update Handler";
-            this.updateHandlerToolStripMenuItem.Click += new System.EventHandler(this.updateHandlerToolStripMenuItem_Click);
+            this.updateHandlerToolStripMenuItem.Click += new System.EventHandler(this.UpdateHandlerToolStripMenuItem_Click);
             // 
             // btn_Links
             // 
@@ -569,7 +570,7 @@ namespace Nucleus.Coop
             this.btn_Links.Size = new System.Drawing.Size(20, 20);
             this.btn_Links.TabIndex = 42;
             this.btn_Links.UseVisualStyleBackColor = false;
-            this.btn_Links.Click += new System.EventHandler(this.btn_Links_Click);
+            this.btn_Links.Click += new System.EventHandler(this.Btn_Links_Click);
             // 
             // third_party_tools_container
             // 
@@ -660,6 +661,7 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rightFrame.BackColor = System.Drawing.Color.Transparent;
             this.rightFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.rightFrame.Controls.Add(this.btn_Steam);
             this.rightFrame.Controls.Add(this.icons_Container);
             this.rightFrame.Controls.Add(this.btn_gameOptions);
             this.rightFrame.Controls.Add(this.scriptAuthorTxtSizer);
@@ -670,6 +672,22 @@ namespace Nucleus.Coop
             this.rightFrame.Size = new System.Drawing.Size(194, 562);
             this.rightFrame.TabIndex = 34;
             this.rightFrame.Visible = false;
+            // 
+            // btn_Steam
+            // 
+            this.btn_Steam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Steam.FlatAppearance.BorderSize = 0;
+            this.btn_Steam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Steam.ForeColor = System.Drawing.SystemColors.Control;
+            this.btn_Steam.Location = new System.Drawing.Point(12, 522);
+            this.btn_Steam.Name = "btn_Steam";
+            this.btn_Steam.Size = new System.Drawing.Size(171, 25);
+            this.btn_Steam.TabIndex = 102;
+            this.btn_Steam.Text = "Start Steam Client";
+            this.btn_Steam.UseVisualStyleBackColor = true;
+            this.btn_Steam.Visible = false;
+            this.btn_Steam.Click += new System.EventHandler(this.Btn_Steam_Click);
             // 
             // icons_Container
             // 
@@ -724,7 +742,7 @@ namespace Nucleus.Coop
             this.btn_textSwitcher.TabIndex = 44;
             this.btn_textSwitcher.TabStop = false;
             this.btn_textSwitcher.Visible = false;
-            this.btn_textSwitcher.Click += new System.EventHandler(this.btn_textSwitcher_Click);
+            this.btn_textSwitcher.Click += new System.EventHandler(this.Btn_textSwitcher_Click);
             // 
             // scriptAuthorTxt
             // 
@@ -745,7 +763,7 @@ namespace Nucleus.Coop
             this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 191);
             this.scriptAuthorTxt.TabIndex = 13;
             this.scriptAuthorTxt.Text = "";
-            this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.scriptAuthorTxt_LinkClicked);
+            this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.ScriptAuthorTxt_LinkClicked);
             // 
             // btn_magnifier
             // 
@@ -757,7 +775,7 @@ namespace Nucleus.Coop
             this.btn_magnifier.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btn_magnifier.TabIndex = 43;
             this.btn_magnifier.TabStop = false;
-            this.btn_magnifier.Click += new System.EventHandler(this.btn_magnifier_Click);
+            this.btn_magnifier.Click += new System.EventHandler(this.Btn_magnifier_Click);
             // 
             // HandlerNoteTitle
             // 
@@ -818,7 +836,7 @@ namespace Nucleus.Coop
             this.button_UpdateAvailable.Text = "New Handler Available!";
             this.button_UpdateAvailable.UseVisualStyleBackColor = false;
             this.button_UpdateAvailable.Visible = false;
-            this.button_UpdateAvailable.Click += new System.EventHandler(this.button_UpdateAvailable_Click);
+            this.button_UpdateAvailable.Click += new System.EventHandler(this.Button_UpdateAvailable_Click);
             // 
             // mainButtonFrame
             // 
@@ -852,7 +870,7 @@ namespace Nucleus.Coop
             this.mainButtonFrame.Name = "mainButtonFrame";
             this.mainButtonFrame.Size = new System.Drawing.Size(1110, 72);
             this.mainButtonFrame.TabIndex = 0;
-            this.mainButtonFrame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainButtonFrame_MouseDown);
+            this.mainButtonFrame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainButtonFrame_MouseDown);
             // 
             // btn_debuglog
             // 
@@ -863,7 +881,7 @@ namespace Nucleus.Coop
             this.btn_debuglog.Name = "btn_debuglog";
             this.btn_debuglog.Size = new System.Drawing.Size(119, 25);
             this.btn_debuglog.TabIndex = 101;
-            this.btn_debuglog.Text = "Open debug-log.txt";
+            this.btn_debuglog.Text = "Open Debug Log";
             this.btn_debuglog.UseVisualStyleBackColor = true;
             this.btn_debuglog.Visible = false;
             this.btn_debuglog.Click += new System.EventHandler(this.Btn_debuglog_Click);
@@ -898,8 +916,8 @@ namespace Nucleus.Coop
             this.closeBtn.Size = new System.Drawing.Size(20, 20);
             this.closeBtn.TabIndex = 16;
             this.closeBtn.UseVisualStyleBackColor = false;
-            this.closeBtn.MouseEnter += new System.EventHandler(this.closeBtn_MouseEnter);
-            this.closeBtn.MouseLeave += new System.EventHandler(this.closeBtn_MouseLeave);
+            this.closeBtn.MouseEnter += new System.EventHandler(this.CloseBtn_MouseEnter);
+            this.closeBtn.MouseLeave += new System.EventHandler(this.CloseBtn_MouseLeave);
             // 
             // maximizeBtn
             // 
@@ -916,8 +934,8 @@ namespace Nucleus.Coop
             this.maximizeBtn.Size = new System.Drawing.Size(20, 20);
             this.maximizeBtn.TabIndex = 16;
             this.maximizeBtn.UseVisualStyleBackColor = false;
-            this.maximizeBtn.MouseEnter += new System.EventHandler(this.maximizeBtn_MouseEnter);
-            this.maximizeBtn.MouseLeave += new System.EventHandler(this.maximizeBtn_MouseLeave);
+            this.maximizeBtn.MouseEnter += new System.EventHandler(this.MaximizeBtn_MouseEnter);
+            this.maximizeBtn.MouseLeave += new System.EventHandler(this.MaximizeBtn_MouseLeave);
             // 
             // btn_AutoSearch
             // 
@@ -934,7 +952,7 @@ namespace Nucleus.Coop
             this.btn_AutoSearch.TabIndex = 10;
             this.btn_AutoSearch.Text = "Auto Search Game";
             this.btn_AutoSearch.UseVisualStyleBackColor = false;
-            this.btn_AutoSearch.Click += new System.EventHandler(this.btnAutoSearch_Click);
+            this.btn_AutoSearch.Click += new System.EventHandler(this.BtnAutoSearch_Click);
             // 
             // minimizeBtn
             // 
@@ -951,8 +969,8 @@ namespace Nucleus.Coop
             this.minimizeBtn.Size = new System.Drawing.Size(20, 20);
             this.minimizeBtn.TabIndex = 16;
             this.minimizeBtn.UseVisualStyleBackColor = false;
-            this.minimizeBtn.MouseEnter += new System.EventHandler(this.minimizeBtn_MouseEnter);
-            this.minimizeBtn.MouseLeave += new System.EventHandler(this.minimizeBtn_MouseLeave);
+            this.minimizeBtn.MouseEnter += new System.EventHandler(this.MinimizeBtn_MouseEnter);
+            this.minimizeBtn.MouseLeave += new System.EventHandler(this.MinimizeBtn_MouseLeave);
             // 
             // txt_version
             // 
@@ -985,7 +1003,7 @@ namespace Nucleus.Coop
             this.btn_Download.TabIndex = 22;
             this.btn_Download.Text = " Download Game Handler";
             this.btn_Download.UseVisualStyleBackColor = false;
-            this.btn_Download.Click += new System.EventHandler(this.btn_Download_Click);
+            this.btn_Download.Click += new System.EventHandler(this.Btn_Download_Click);
             // 
             // btn_Extract
             // 
@@ -1001,7 +1019,7 @@ namespace Nucleus.Coop
             this.btn_Extract.TabIndex = 100;
             this.btn_Extract.Text = "Extract Handler";
             this.btn_Extract.UseVisualStyleBackColor = false;
-            this.btn_Extract.Click += new System.EventHandler(this.btn_Extract_Click);
+            this.btn_Extract.Click += new System.EventHandler(this.Btn_Extract_Click);
             // 
             // label_StepTitle
             // 
@@ -1033,7 +1051,7 @@ namespace Nucleus.Coop
             this.btnSearch.TabIndex = 7;
             this.btnSearch.Text = "Search Game";
             this.btnSearch.UseVisualStyleBackColor = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // btn_Prev
             // 
@@ -1050,7 +1068,8 @@ namespace Nucleus.Coop
             this.btn_Prev.Size = new System.Drawing.Size(25, 25);
             this.btn_Prev.TabIndex = 9;
             this.btn_Prev.UseVisualStyleBackColor = false;
-            this.btn_Prev.Click += new System.EventHandler(this.btn_Prev_Click);
+            this.btn_Prev.Visible = false;
+            this.btn_Prev.Click += new System.EventHandler(this.Btn_Prev_Click);
             // 
             // btn_Play
             // 
@@ -1063,14 +1082,15 @@ namespace Nucleus.Coop
             this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Play.ForeColor = System.Drawing.Color.Lime;
-            this.btn_Play.Location = new System.Drawing.Point(978, 37);
+            this.btn_Play.Location = new System.Drawing.Point(978, 38);
             this.btn_Play.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Play.Name = "btn_Play";
             this.btn_Play.Size = new System.Drawing.Size(100, 25);
             this.btn_Play.TabIndex = 4;
             this.btn_Play.Text = "PLAY";
             this.btn_Play.UseVisualStyleBackColor = false;
-            this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
+            this.btn_Play.Visible = false;
+            this.btn_Play.Click += new System.EventHandler(this.Btn_Play_Click);
             // 
             // btn_Next
             // 
@@ -1081,14 +1101,15 @@ namespace Nucleus.Coop
             this.btn_Next.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_Next.FlatAppearance.BorderSize = 0;
             this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Next.Location = new System.Drawing.Point(1084, 38);
+            this.btn_Next.Location = new System.Drawing.Point(1082, 38);
             this.btn_Next.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Next.Name = "btn_Next";
             this.btn_Next.Size = new System.Drawing.Size(25, 25);
             this.btn_Next.TabIndex = 11;
             this.btn_Next.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.btn_Next.UseVisualStyleBackColor = false;
-            this.btn_Next.Click += new System.EventHandler(this.btnNext_Click);
+            this.btn_Next.Visible = false;
+            this.btn_Next.Click += new System.EventHandler(this.BtnNext_Click);
             // 
             // stepPanelPictureBox
             // 
@@ -1102,7 +1123,7 @@ namespace Nucleus.Coop
             this.stepPanelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.stepPanelPictureBox.TabIndex = 15;
             this.stepPanelPictureBox.TabStop = false;
-            this.stepPanelPictureBox.DoubleClick += new System.EventHandler(this.stepPanelPictureBox_DoubleClick);
+            this.stepPanelPictureBox.DoubleClick += new System.EventHandler(this.StepPanelPictureBox_DoubleClick);
             // 
             // MainForm
             // 
@@ -1222,5 +1243,6 @@ namespace Nucleus.Coop
         public RichTextBox scriptAuthorTxt;
         private Button btn_noHub;
         public Button btn_debuglog;
+        public Button btn_Steam;
     }
 }

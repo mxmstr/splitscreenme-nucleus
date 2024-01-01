@@ -349,10 +349,10 @@ namespace Nucleus.Gaming
                 MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-            if (gen.NeedSteamClient)
-            {
-                SteamFunctions.StartSteamClient();
-            }
+            //if (gen.NeedSteamClient)
+            //{
+            //    SteamFunctions.StartSteamClient();            
+            //}
 
             if (gen.HideTaskbar && !GameProfile.UseSplitDiv)
             {
@@ -446,7 +446,7 @@ namespace Nucleus.Gaming
 
                 if (screensInUse.Contains(dp))
                 {
-                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true /*&& profile.DevicesList.Count != 1*/) || gen.HideDesktop)
+                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true) || gen.HideDesktop)
                     {
                         WPFDivFormThread.StartBackgroundForm(gen,dp);
                     }

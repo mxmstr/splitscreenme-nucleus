@@ -16,9 +16,10 @@ public class WPF_OSD : System.Windows.Window
     {
         //window properties    
         AllowsTransparency = true;
-        Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));//Set window transparent background
+        Background = new SolidColorBrush(Color.FromArgb(180, 0, 0, 0));//Set window transparent background
         WindowStyle = WindowStyle.None;
         WindowState = WindowState.Normal;
+        ShowInTaskbar = false;
         Topmost = true;
         //Size  
         Width = SystemParameters.PrimaryScreenWidth;
@@ -52,7 +53,8 @@ public class WPF_OSD : System.Windows.Window
     }
 
     public void Show(int timing, string text)
-    {      
+    {
+       // Dispatcher.FromThread(Thread.CurrentThread).;
         this.Dispatcher.Invoke(new Action(() => {
 
             if (!initialized)

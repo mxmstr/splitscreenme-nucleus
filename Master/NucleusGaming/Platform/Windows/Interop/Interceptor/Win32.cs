@@ -16,7 +16,6 @@ namespace Win32
     public static class Functions
     {
         public delegate bool EnumProc(IntPtr hwnd, int lParam);
-        //public delegate IntPtr HookProc(IntPtr nCode, IntPtr wParam, IntPtr lParam);
 
         public delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 

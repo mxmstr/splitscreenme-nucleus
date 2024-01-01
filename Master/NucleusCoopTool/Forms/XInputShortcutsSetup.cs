@@ -186,7 +186,7 @@ namespace Nucleus.Coop.Forms
             }
 
             enabled_chk.Checked = bool.Parse(ini.IniReadValue("XUINav", "Enabled")); 
-            CustomToolTips.SetToolTip(enabled_chk, "Require admin rights for full support.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(enabled_chk, "Requires admin rights for full controller support.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             switch12.Tag = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
             switch13.Tag = int.Parse(ini.IniReadValue("XUINav", "RightClick"));

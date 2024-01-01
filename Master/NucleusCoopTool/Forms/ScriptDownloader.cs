@@ -225,7 +225,7 @@ namespace Nucleus.Coop.Forms
         private void SetToolTips()
         {
             CustomToolTips.SetToolTip(btn_ViewAll, "View all handlers.", new int[] { 190, 0, 0, 0 } , new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_Info, "Show some handler informations.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_Info, "Show more information about the handler.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_Search, "Start searching handler(s) for a specific game.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_Download, "Download the selected game handler.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }

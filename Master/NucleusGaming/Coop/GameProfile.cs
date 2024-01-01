@@ -190,6 +190,13 @@ namespace Nucleus.Gaming.Coop
             set => cts_Unfocus = value;
         }
 
+        private static bool cts_BringToFront;
+        public static bool Cts_BringToFront
+        {
+            get => cts_BringToFront;
+            set => cts_BringToFront = value;
+        }
+
         private static int gamepadCount;
         public static int GamepadCount => gamepadCount;
 
@@ -351,7 +358,7 @@ namespace Nucleus.Gaming.Coop
 
         public bool LoadGameProfile(int _profileToLoad)
         {
-            string path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{_profileToLoad}].json");
+            string path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{_profileToLoad}].json";
 
             string jsonString = File.ReadAllText(path);
 
@@ -399,6 +406,13 @@ namespace Nucleus.Gaming.Coop
             Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
             Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
             Cts_Unfocus = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"];
+
+            if (Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"] != null)//such checks are there so testers/users can still use there existing profiles
+                                                                                    //after new options implementation. Any new option must have that null check.
+            {
+                Cts_BringToFront = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"];
+            }
+
             Network = (string)Jprofile["Network"]["Type"];
             CustomLayout_Ver = (int)Jprofile["CustomLayout"]["Ver"];
             CustomLayout_Hor = (int)Jprofile["CustomLayout"]["Hor"];
@@ -524,7 +538,7 @@ namespace Nucleus.Gaming.Coop
 
         private static string GetGameProfilesPath()
         {
-            string path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}");
+            string path = $"{Globals.GameProfilesFolder}\\{GameGUID}";
             if (!Directory.Exists(path))
             {
                 return null;
@@ -563,7 +577,14 @@ namespace Nucleus.Gaming.Coop
             cts_MuteAudioOnly = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
             cts_KeepAspectRatio = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_Unfocus = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
-            useXinputIndex = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
+
+            if (ini.IniReadValue("CustomLayout", "Cts_BringToFront") != "")//such checks are there so testers/users can still use there existing profiles
+                                                                           //after new options implementation. Any new option must have that null check.
+            {
+                cts_BringToFront = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_BringToFront"));
+            }
+          
+           useXinputIndex = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
         }
 
         public static void UpdateGameProfile(GameProfile profile)
@@ -585,16 +606,16 @@ namespace Nucleus.Gaming.Coop
             if (!GameProfile.Loaded || profilesCount == 0)
             {
                 profilesCount++;//increase to set new profile name
-                path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profilesCount}].json");
+                path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{profilesCount}].json";
             }
             else
             {
-                path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profileToSave}].json");
+                path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{profileToSave}].json";
             }
 
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}")))
+            if (!Directory.Exists($"{Globals.GameProfilesFolder}\\{GameGUID}"))
             {
-                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}"));
+                Directory.CreateDirectory($"{Globals.GameProfilesFolder}\\{GameGUID}");
             }
 
             JObject options = new JObject();
@@ -654,7 +675,8 @@ namespace Nucleus.Gaming.Coop
             JObject JAutoPlay = new JObject(new JProperty("Enabled", autoPlay));
             JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
-                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus));
+                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus),
+                                                new JProperty("Cutscenes_BringToFront", cts_BringToFront)); 
 
             JObject JAudioInstances = new JObject();
 
@@ -813,17 +835,17 @@ namespace Nucleus.Gaming.Coop
             if (profile.deviceList.Count != TotalProfilePlayers || !Loaded || profilesCount == 0)
             {
                 profilesCount++;//increase to set new profile name
-                path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profilesCount}].json");
+                path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{profilesCount}].json";
 
             }
             else
             {
-                path = Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}\\Profile[{profileToSave}].json");
+                path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{profileToSave}].json";
             }
 
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}")))
+            if (!Directory.Exists(Path.Combine($"{Globals.GameProfilesFolder}\\{GameGUID}")))
             {
-                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"games profiles\\{GameGUID}"));
+                Directory.CreateDirectory($"{Globals.GameProfilesFolder}\\{GameGUID}");
             }
 
             JObject options = new JObject();
@@ -886,7 +908,8 @@ namespace Nucleus.Gaming.Coop
 
             JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
-                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus));
+                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus),
+                                                new JProperty("Cutscenes_BringToFront", cts_BringToFront)); 
 
             foreach (KeyValuePair<string, string> JaudioDevice in AudioInstances)
             {
