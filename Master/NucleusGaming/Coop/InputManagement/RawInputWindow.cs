@@ -46,7 +46,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 IntPtr.Zero,
                 IntPtr.Zero);
 
-            Logger.WriteLine(hWnd == IntPtr.Zero ? $"Error in CreateWindowEx = 0x{Marshal.GetLastWin32Error()}" : "Successfully create raw input window");
+            //Logger.WriteLine(hWnd == IntPtr.Zero ? $"Error in CreateWindowEx = 0x{Marshal.GetLastWin32Error()}" : "Successfully create raw input window");
 
             WinApi.ShowWindow(hWnd, 1);
             WinApi.UpdateWindow(hWnd);
@@ -66,7 +66,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             ushort regResult = WinApi.RegisterClassEx(ref wndClass);
 
-            Logger.WriteLine($"RegisterClass result = 0x{regResult:x}");
+            //Logger.WriteLine($"RegisterClass result = 0x{regResult:x}");
 
             return regResult;
         }
@@ -78,7 +78,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             //hWnd zero for all windows (the mouse pointers are in this loop!)
             while ((bRet = WinApi.GetMessage(out MSG msg, IntPtr.Zero, 0, 0)) != 0)
-            {
+            {               
                 if (bRet == -1)
                 {
                     if (sqErr++ > 10)
@@ -95,7 +95,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 else if (msg.message == 0x0400)
                 {
                     //End split screen message.
-                    Logger.WriteLine($"RawInputWindow received split screen end");
+                    //Logger.WriteLine($"RawInputWindow received split screen end");
                     foreach (Window window in RawInputManager.windows)
                     {
                         window.End();
@@ -104,7 +104,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 else if (msg.message == 0x0400 + 1)
                 {
                     //Create cursors
-                    Logger.WriteLine($"RawInputWindow received create cursors message");
+                    //Logger.WriteLine($"RawInputWindow received create cursors message");
 
                     bool internalInputUpdate = msg.wParam == (IntPtr)1;
                     bool drawCursorForControllers = msg.lParam == (IntPtr)1;

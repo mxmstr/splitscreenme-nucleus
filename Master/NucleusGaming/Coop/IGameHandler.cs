@@ -1,9 +1,6 @@
 ﻿using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
-//using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Coop
 {
@@ -18,13 +15,13 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         double TimerInterval { get; }
 
-        ///bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight);
+        int TotalPlayers { get; }
 
-        bool Initialize(UserGameInfo game, GameProfile profile);
-
+        bool Initialize(UserGameInfo game, GameProfile profile,IGameHandler handler);
 
         string Play();
-        void Update(double delayMS);
+
+        void Update(double delayMS, bool refresh);
 
         void End(bool fromStopButton);
 

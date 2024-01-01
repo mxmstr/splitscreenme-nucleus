@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Coop.Generic
-{ 
+{
     public partial class ProcessPicker : Form, IDynamicSized
     {
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -24,7 +23,7 @@ namespace Nucleus.Gaming.Coop.Generic
             InitializeComponent();
             MaximizeBox = false;
             MinimizeBox = false;
-            
+
             DPIManager.Register(this);
             DPIManager.AddForm(this);
             DPIManager.Update(this);
@@ -39,8 +38,8 @@ namespace Nucleus.Gaming.Coop.Generic
             }
 
             float ratio = ((float)Height / (float)Width);
-            Height = (int)((float)Height /(float)ratio);
-            pplistBox.Font = new Font("Franklin Gothic", pplistBox.Font.Size*scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            Height = (int)((float)Height / (float)ratio);
+            pplistBox.Font = new Font("Franklin Gothic", pplistBox.Font.Size * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
         }
     }

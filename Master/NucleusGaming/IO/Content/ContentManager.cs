@@ -30,10 +30,12 @@ namespace Nucleus.Gaming
             }
 
             isDisposed = true;
+
             foreach (Image image in loadedImages.Values)
             {
                 image.Dispose();
             }
+
             loadedImages = null;
         }
 
@@ -49,6 +51,7 @@ namespace Nucleus.Gaming
             string fullPath = Path.Combine(pkgFolder, url);
             img = Image.FromFile(fullPath);
             loadedImages.Add(url, img);
+
             return img;
         }
     }

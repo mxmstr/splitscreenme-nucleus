@@ -2,17 +2,17 @@
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Forms;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -20,11 +20,11 @@ namespace Nucleus.Coop
     public partial class HubShowcase : UserControl
     {
         private const string api = "https://hub.splitscreen.me/api/v1/";
-        private MainForm mainForm;
         private JArray handlers;
         private int cover_index = 0;
         private Label authorLabel;
         private Label downloadLabel;
+        private Label hotnessLabel;
         private System.Windows.Forms.Timer rainbowTimer;
         private List<Label> labels;
 
@@ -41,21 +41,23 @@ namespace Nucleus.Coop
         public HubShowcase(MainForm mainForm)
         {
             InitializeComponent();
-            this.mainForm = mainForm;
+ 
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase-background.png");
+            BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase-background.png");
             BackgroundImageLayout = ImageLayout.Stretch;
             labels = new List<Label>();
-            rainbowTimer = new System.Windows.Forms.Timer();
-            rainbowTimer.Interval = (25); //millisecond                   
-            rainbowTimer.Tick += new EventHandler(rainbowTimerTick);
-            Main_Showcase();
+            rainbowTimer = new System.Windows.Forms.Timer
+            {
+                Interval = (25) //millisecond                   
+            };
+            rainbowTimer.Tick += new EventHandler(RainbowTimerTick);
+            Main_Showcase(mainForm);
         }
 
-        public void Main_Showcase()
+        public void Main_Showcase(MainForm mainForm)
         {
 
-            ScriptDownloader scriptDownloader = new ScriptDownloader(mainForm);
+            showcase_Label.Location = new Point(Width / 2 - showcase_Label.Width / 2, showcase_Label.Location.Y);
             ImageList showcaseCovers = new ImageList
             {
                 ImageSize = new Size(170, 227)
@@ -66,9 +68,7 @@ namespace Nucleus.Coop
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.DefaultConnectionLimit = 9999;
 
-            string rawHandlers = null;
-
-            rawHandlers = scriptDownloader.Get(api + "allhandlers");
+            string rawHandlers = Get(api + "allhandlers");
 
             if (rawHandlers == null)
             {
@@ -79,7 +79,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            JObject jObject = JsonConvert.DeserializeObject(rawHandlers) as JObject;
+            JObject jObject = (JObject)JsonConvert.DeserializeObject(rawHandlers);
 
             JArray array = jObject["Handlers"] as JArray;
             handlers = new JArray(array.OrderByDescending(obj => (DateTime)obj["createdAt"]));
@@ -97,20 +97,19 @@ namespace Nucleus.Coop
                 hubLink.Add(handlers[i]["_id"].ToString());
                 hotness.Add(handlers[i]["stars"].ToString());
 
-                Bitmap bmp = new Bitmap(Properties.Resources.no_image);
+                Bitmap bmp = ImageCache.GetImage(Globals.Theme + "no_cover.png");
 
                 string _cover = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{GameCover}.jpg";
 
                 try
                 {
-
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_cover);
+                    request.UserAgent = "request";
                     WebResponse resp = request.GetResponse();
                     Stream respStream = resp.GetResponseStream();
                     bmp = new Bitmap(respStream);
                     respStream.Dispose();
                     showcaseCovers.Images.Add(bmp);
-
                 }
                 catch (Exception) { }
             }
@@ -121,6 +120,16 @@ namespace Nucleus.Coop
                 {
                     foreach (Control coverBox in childCon.Controls)
                     {
+                        coverBox.BackgroundImage = showcaseCovers.Images[cover_index];
+
+                        Panel labelContainer = new Panel()
+                        {
+                            BackgroundImageLayout = ImageLayout.Stretch,
+                            Dock = DockStyle.Bottom,
+                            BackColor = Color.FromArgb(190, 0, 0, 0),
+                            Cursor = mainForm.default_Cursor
+                        };
+
                         Panel coverLayer = new Panel()
                         {
                             Location = new Point(0, 0),
@@ -128,46 +137,67 @@ namespace Nucleus.Coop
                             BackgroundImageLayout = ImageLayout.Stretch,
                             Dock = DockStyle.Fill,
                             BackColor = Color.Transparent,
-                            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase_cover_layer.png"),
+                            BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase_cover_layer.png"),
                             Cursor = mainForm.hand_Cursor
                         };
 
-                        coverLayer.Click += new EventHandler(this.coverBoxClick);
+                        coverLayer.Name = $@"https://hub.splitscreen.me/handler/{hubLink[cover_index]}";
+                        coverLayer.Click += new EventHandler(this.CoverBoxClick);
+
+                        downloadLabel = new Label()
+                        {   
+                            AutoSize = true,
+                            Font = new Font("Franklin Gothic", 8, FontStyle.Regular, GraphicsUnit.Point, 0),
+                            BackColor = Color.Transparent,
+                            BackgroundImageLayout = ImageLayout.Stretch,
+                            TextAlign = ContentAlignment.TopLeft,
+                            Dock = DockStyle.Bottom,
+                            Text = $"Downloads: {downloadCount[cover_index]}"
+                        };
+
+                        labelContainer.Controls.Add(downloadLabel);
+
+                        hotnessLabel = new Label()
+                        {
+                            AutoSize = true,
+                            Font = new Font("Franklin Gothic", 8, FontStyle.Regular, GraphicsUnit.Point, 0),
+                            BackColor = Color.Transparent,
+                            BackgroundImageLayout = ImageLayout.Stretch,
+                            TextAlign = ContentAlignment.TopLeft,
+                            Text = $"Hotness: {hotness[cover_index]}"
+                        };
+
+                        labelContainer.Controls.Add(hotnessLabel);
 
                         authorLabel = new Label()
                         {
+                            AutoSize = true,
                             Font = new Font("Franklin Gothic", 8, FontStyle.Bold, GraphicsUnit.Point, 0),
                             BackColor = Color.Transparent,
-                            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase-labels.png"),
-                            BackgroundImageLayout = ImageLayout.Stretch,
+                            Text = "Handler by " + author[cover_index],
                             TextAlign = ContentAlignment.TopLeft,
-                            Dock = DockStyle.Bottom
+                            Dock = DockStyle.Bottom,
                         };
 
-                        downloadLabel = new Label()
-                        {
-                            Font = new Font("Franklin Gothic", 8, FontStyle.Regular, GraphicsUnit.Point, 0),
-                            BackColor = Color.Transparent,//Color.DimGray,
-                            BackgroundImage = new Bitmap(mainForm.themePath + "\\showcase-labels.png"),
-                            BackgroundImageLayout = ImageLayout.Stretch,
-                            TextAlign = ContentAlignment.TopLeft,
-                            Dock = DockStyle.Bottom
-                        };
+                       
+                        authorLabel.Location = new Point(downloadLabel.Location.X, downloadLabel.Top - authorLabel.Height);
+                        
+                        labels.Add(authorLabel);
+                        labelContainer.Controls.Add(authorLabel);
+                       
+                        authorLabel.BringToFront();
+                                            
+                        labelContainer.Size = new Size(coverBox.Width,authorLabel.Height + downloadLabel.Height);
+                        coverBox.Controls.Add(labelContainer);
+
+                        hotnessLabel.Location = new Point(labelContainer.Right - hotnessLabel.Width, downloadLabel.Location.Y);
+                        coverBox.Controls.Add(coverLayer);
 
                         if (hotness[cover_index] == "0")
                         {
                             hotness[cover_index] = ":(";
                         }
 
-                        coverLayer.Name = $@"https://hub.splitscreen.me/handler/{hubLink[cover_index]}";//lazy or stupid? Maybe both :).
-                        authorLabel.Text = "Handler by " + author[cover_index];
-                        downloadLabel.Text = "Downloads: " + downloadCount[cover_index] + "         " + " Hotness: " + hotness[cover_index];
-                        coverBox.BackgroundImage = showcaseCovers.Images[cover_index];
-                        labels.Add(authorLabel);
-                        coverBox.Controls.Add(authorLabel);
-                        coverBox.Controls.Add(downloadLabel);
-                        coverBox.Controls.Add(coverLayer);
-                        authorLabel.BringToFront();
                         cover_index++;
                     }
                 }
@@ -175,7 +205,7 @@ namespace Nucleus.Coop
 
             rainbowTimer.Start();
             handlers.Clear();
-
+            Visible = true;
         }
 
         private int r = 0;
@@ -183,19 +213,19 @@ namespace Nucleus.Coop
         private int b = 0;
         private bool loop = false;
 
-        private void rainbowTimerTick(Object Object, EventArgs EventArgs)
+        private void RainbowTimerTick(Object Object, EventArgs EventArgs)
         {
             if (!loop)
             {
                 if (r < 200 && g < 200 && b < 200) { r += 3; g += 3; b += 3; };
                 if (r >= 200 && g >= 200 && b >= 200)
-                loop = true;
+                    loop = true;
             }
             else
             {
                 if (r > 125 && g > 125 && b > 125) { r -= 3; g -= 3; b -= 3; }
                 if (r <= 125 && g <= 125 && b <= 125)
-                loop = false;
+                    loop = false;
             }
 
             foreach (Control label in labels)
@@ -204,19 +234,18 @@ namespace Nucleus.Coop
             }
         }
 
-        private void coverBoxClick(object sender, EventArgs e)
+        private void CoverBoxClick(object sender, EventArgs e)
         {
             Panel _sender = (Panel)sender;
             string link = _sender.Name;
             Process.Start(link);
         }
 
-        private void showcaseBanner1_Paint(object sender, PaintEventArgs e)
+        private void ShowcaseBanner1_Paint(object sender, PaintEventArgs e)
         {
             if (showcaseBanner1.VerticalScroll.SmallChange > 0)
             {
-                int scrolling = 0;
-                scrolling = showcaseBanner1.HorizontalScroll.SmallChange;
+                int scrolling = showcaseBanner1.HorizontalScroll.SmallChange;
                 if (scrolling != 0)
                 {
                     showcaseBanner1.Update();
@@ -224,5 +253,30 @@ namespace Nucleus.Coop
             }
         }
 
+        private string Get(string uri)
+        {
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.DefaultConnectionLimit = 9999;
+
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                request.Timeout = 1000;
+                request.Method = "Get";
+
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            catch (WebException)
+            {         
+                return null;
+            }
+        }
     }
 }

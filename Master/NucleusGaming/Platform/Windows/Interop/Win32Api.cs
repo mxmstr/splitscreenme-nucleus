@@ -465,9 +465,6 @@ namespace Nucleus.Gaming.Interop
         public static bool Is64Bits()
         {
             return Environment.Is64BitProcess;
-
-            int size = Marshal.SizeOf(typeof(IntPtr));
-            return size == 8 ? true : false;
         }
     }
 

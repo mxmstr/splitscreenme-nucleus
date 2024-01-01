@@ -1,6 +1,7 @@
-XInput Plus (ver4.15.2)
+XInput Plus (ver4.16)
 
-(c) 0dd14Lab 2011-2019
+(c) 0dd14Lab 2011-2023
+https://0dd14lab.net
 https://sites.google.com/site/0dd14lab/
 * Redistribution of this program without permission is prohibited.
 
@@ -15,7 +16,7 @@ And [DirectInput Output] Funtion.The function at the time of using it by DirectI
 *********************************************************************************
 ** Usage
 
-1. Run XInputPlus.exe. (need Admin permission) 
+1. Run XInputPlus.exe.
 
 2. Set up exe file of game wants to apply XInputPlus to "Target Program".
 
@@ -48,9 +49,42 @@ XInputPlusLoader is a launcher program which injects XInputPlus to a target prog
 
 4. Execute a Target program by Drag&Drop to the window of XInput Plus Loader. 
 
+XInput Plus Loader has several options for shortcuts and console execution.
+See the text file in the Loader folder for details.
+
+
+*********************************************************************************
+** Licenses, etc.
+
+There are no restrictions on the use of this program, but commercial use is prohibited.
+Redistribution of this program by uploading to other sites without permission is prohibited.
+
 
 *********************************************************************************
 ** Changes
+29-08-2023  Ver4.16.1  
+			Fix:
+			 XInput Plus Loader
+			 - Fixed a problem in which configuration ini file could not be read
+			   correctly when applied with XInput Plus Loader and DirectInput
+			   output function was used.
+28-08-2023  Ver4.16
+			.net framework4.x is required from this version.
+			Add:
+			 DirectInput output function
+			 - Added "Disable DInput Device" option. (DirectInput→Advanced tab)
+			 Vibration setting function
+			 - Added "Trigger Vibration" function. (Vibration tab)
+			  This function is experimental. Windows 10 or later environment and 
+			  XboxOne or later Xbox controllers are required for operation.
+			  If your controller has BlueTooth connection, it will not work because
+			  driver does not support trigger vibration.
+			 XInput Plus Loader
+			 - Added "Hook to runnnig process" option.
+			Fix:
+			 XInput Plus Loader
+		         - Fixed a bug that shortcut command line options were not recognized correctly.
+			etc.
 01-12-2019  Ver4.15.2
 			Fix:
 			 Change the recovery process after the controller connection is lost

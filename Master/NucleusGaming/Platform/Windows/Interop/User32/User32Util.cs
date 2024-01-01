@@ -161,7 +161,6 @@ namespace Nucleus.Gaming.Windows
                                 int.TryParse(
                                     monDisplayDevice.DeviceName.Substring(
                                         monDisplayDevice.DeviceName.IndexOf("Monitor") + 7), out monitorIndex);
-
                                 monitorNum++;
                                 break;
                             }

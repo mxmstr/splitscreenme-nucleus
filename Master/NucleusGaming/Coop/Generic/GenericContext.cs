@@ -1,11 +1,13 @@
-﻿using Microsoft.Win32;
+﻿using Ionic.Zip;
+using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.ProtoInput;
+using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
+using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
+using Nucleus.Gaming.Tools.Network;
 using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,8 +15,10 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows;
 using System.Windows.Forms;
 using System.Xml;
+
 
 namespace Nucleus.Gaming
 {
@@ -32,6 +36,7 @@ namespace Nucleus.Gaming
         public bool SupportsKeyboard;
         public string[] ExecutableContext;
         public string ExecutableName;
+        public string PlayerSteamID => pInfo.SteamID.ToString();
         public string SteamID;
         public string GUID;
         public string GameName;
@@ -76,11 +81,8 @@ namespace Nucleus.Gaming
         public bool ChangeExe;
         public bool UseX360ce;
         public string HookFocusInstances;
-        //public bool UseAlpha8CustomDll;
         public bool bHasKeyboardPlayer;
         public bool KeepAspectRatio;
-        //public bool HideDesktop;
-        //public int FakeFocusInterval;
         public bool ResetWindows;
         public bool UseGoldberg;
         public string OrigSteamDllPath;
@@ -113,6 +115,8 @@ namespace Nucleus.Gaming
         public int NumControllers = 0;
         public int NumKeyboards = 0;
         public bool KeepEditedRegKeys;
+        public string[] BackupFiles;
+        public string[] BackupFolders;
 
         private List<string> regKeyPaths = new List<string>();
 
@@ -234,7 +238,7 @@ namespace Nucleus.Gaming
 
         public string GetFolder(Folder folder)
         {
-            return parent.GetFolder(folder);
+            return FileUtil.GetFolder(parent, folder);
         }
 
         public string x360ceGamepadGuid => "IG_" + pInfo.GamepadGuid.ToString().Replace("-", string.Empty);
@@ -267,6 +271,11 @@ namespace Nucleus.Gaming
             }
         }
 
+        public void StartProcess(string path)
+        {
+            System.Diagnostics.Process.Start(path);
+        }
+
         public void ProceedSymlink()
         {
             string[] filesToSymlink = SymlinkFiles;
@@ -275,157 +284,21 @@ namespace Nucleus.Gaming
                 string s = filesToSymlink[f].ToLower();
                 // make sure it's lower case
                 CmdUtil.MkLinkFile(Path.Combine(OrigRootFolder, s), Path.Combine(RootFolder, s), out int exitCode);
-                Console.WriteLine(OrigRootFolder + s + " => Instance folder " + RootFolder + s);
+                //Console.WriteLine(OrigRootFolder + s + " => Instance folder " + RootFolder + s);
             }
         }
 
-        public bool _hideTaskBar;
-        public void HideTaskBar()
-        {
-            if (PlayerID > 0)
-            {
-                return;
-            }
+        public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
 
-            User32Util.HideTaskbar();
-            _hideTaskBar = true;
-        }
+        public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
 
-        private string epicLang;
-        public string EpicLang
-        {
-            get
-            {
-                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        public string UserName => Environment.UserName.Trim();
 
-                IDictionary<string, string> epiclangs = new Dictionary<string, string>
-                {
-                    { "Arabic", "ar" },
-                    { "Brazilian", "pt-BR" },
-                    { "Bulgarian", "bg" },
-                    { "Chinese", "zh" },
-                    { "Czech", "cs" },
-                    { "Danish", "da" },
-                    { "Dutch", "nl" },
-                    { "English", "en" },
-                    { "Finnish", "fi" },
-                    { "French", "fr" },
-                    { "German", "de" },
-                    { "Greek", "el" },
-                    { "Hungarian", "hu" },
-                    { "Italian", "it" },
-                    { "Japanese", "ja" },
-                    { "Koreana", "ko" },
-                    { "Norwegian", "no" },
-                    { "Polish", "pl" },
-                    { "Portuguese", "pt" },
-                    { "Romanian", "ro" },
-                    { "Russian", "ru" },
-                    { "Spanish", "es" },
-                    { "Swedish", "sv" },
-                    { "Thai", "th" },
-                    { "Turkish", "tr" },
-                    { "Ukrainian", "uk" }
-                };
-
-
-                foreach (KeyValuePair<string, string> lang in epiclangs)
-                {
-                    if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
-                    {
-                        epicLang = lang.Value;
-                    }
-                }
-                return epicLang;
-            }
-        }
-
-        public string UserName
-        {
-            get
-            {
-               Environment.UserName.Trim('\\').Last();
-               return Environment.UserName.Trim();
-            }
-        }
-
-        private string handlersFolder;
-        public string HandlersFolder
-        {
-            get
-            {
-                handlersFolder = Path.Combine(GameManager.Instance.GetJsScriptsPath());
-                return handlersFolder;
-            }
-        }
-
-        private string gogLang;
-        public string GogLang
-        {
-            get
-            {
-                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-
-                IDictionary<string, string> epiclangs = new Dictionary<string, string>
-                {
-                    { "Arabic", "ar" },
-                    { "Brazilian", "pt-BR" },
-                    { "Bulgarian", "bg" },
-                    { "Chinese", "zh" },
-                    { "Czech", "cs" },
-                    { "Danish", "da" },
-                    { "Dutch", "nl" },
-                    { "English", "en" },
-                    { "Finnish", "fi" },
-                    { "French", "fr" },
-                    { "German", "de" },
-                    { "Greek", "el" },
-                    { "Hungarian", "hu" },
-                    { "Italian", "it" },
-                    { "Japanese", "ja" },
-                    { "Koreana", "ko" },
-                    { "Norwegian", "no" },
-                    { "Polish", "pl" },
-                    { "Portuguese", "pt" },
-                    { "Romanian", "ro" },
-                    { "Russian", "ru" },
-                    { "Spanish", "es" },
-                    { "Swedish", "sv" },
-                    { "Thai", "th" },
-                    { "Turkish", "tr" },
-                    { "Ukrainian", "uk" }
-                };
-
-
-                foreach (KeyValuePair<string, string> lang in epiclangs)
-                {
-                    if (lang.Key == ini.IniReadValue("Misc", "EpicLang"))
-                    {
-                        gogLang = lang.Key.ToLower();
-                    }
-                }
-                return gogLang;
-            }
-        }
+        public string HandlersFolder => Path.Combine(GameManager.Instance.GetJsScriptsPath());
 
         public string Nickname => pInfo.Nickname;
 
-        public string LocalIP =>
-                //string localIP;
-                //using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
-                //{
-                //    socket.Connect("8.8.8.8", 65530);
-                //    IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-                //    localIP = endPoint.Address.ToString();
-                //}
-
-                //var dadada = GetBestInterface(BitConverter.ToUInt32(IPAddress.Parse("8.8.8.8").GetAddressBytes(), 0), out uint interfaceIndex);
-                //IPAddress xxxd = NetworkInterface.GetAllNetworkInterfaces()
-                //                .Where(netInterface => netInterface.GetIPProperties().GetIPv4Properties().Index == BitConverter.ToInt32(BitConverter.GetBytes(interfaceIndex), 0)).First().GetIPProperties().UnicastAddresses.Where(ipAdd => ipAdd.Address.AddressFamily == AddressFamily.InterNetwork).First().Address;
-
-                //return xxxd.ToString();
-
-                parent.GetLocalIP();
+        public string LocalIP => Network.GetLocalIP();
 
         public string NucleusUserRoot
         {
@@ -472,31 +345,17 @@ namespace Nucleus.Gaming
             }
         }
 
-        public string DocumentsPlayer =>
-                //Log($"TEMP: NucleusDocumentsRoot={NucleusDocumentsRoot}, Nuclues.Folder.Documents={Folder.Documents}, GetFolderPath={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}");
-                $@"{Path.GetDirectoryName(NucleusDocumentsRoot)}\NucleusCoop\{Nickname}\Documents\";
+        public string DocumentsPlayer => $@"{Path.GetDirectoryName(NucleusDocumentsRoot)}\NucleusCoop\{Nickname}\Documents\";
 
         public string DocumentsRoot => $@"{Path.GetDirectoryName(NucleusDocumentsRoot)}\NucleusCoop\";
 
         public string UserProfileConfigPath
         {
-            //get
-            //{
-            //    //return parent.UserProfileConfigPath;
-            //}
-            //set { }
-
             get; set;
         }
 
         public string UserProfileSavePath
         {
-            //get
-            //{
-            //    //return parent.UserProfileSavePath;
-            //}
-            //set { }
-
             get; set;
         }
 
@@ -527,56 +386,111 @@ namespace Nucleus.Gaming
 
         public void HideDesktop()
         {
+            if (GameProfile.UseSplitDiv || PlayerID > 0)
+            {
+                return;
+            }
+
+            foreach (Display dp in parent.screensInUse)
+            {
+                WPFDivFormThread.StartBackgroundForm(parent.currentGameInfo, dp);
+            }
+        }
+
+        public void CopyFolder(string source, string destination)
+        {
+            FileUtil.CopyDirectory(source, new DirectoryInfo(source), destination, out int exitCode, new string[0], new string[0], true);
+        }
+
+        public void EditZipFile(string sourceZip, string password, string savePath, string[] itemsToAdd, string[] entriesToRemove)//itemsToAdd can be file or directory(recursive). https://documentation.help/DotNetZip/7d020d58-d917-63a8-6b5c-c5519767063d.htm
+        {
+            bool isValidZip = ZipFile.CheckZip(sourceZip);
+
+            if (isValidZip)
+            {
+                ZipFile zip = new ZipFile(sourceZip);
+                zip.Password = password;
+
+                List<ZipEntry> remove = new List<ZipEntry>();
+
+                foreach (ZipEntry e in zip)
+                {
+                    string root = e.FileName.Split('/')[0];
+
+                    if (entriesToRemove.Contains(root + "\\") || entriesToRemove.Any(fn => fn.Replace('\\', '/') == e.FileName))//skip folder || skip file
+                    {
+                        remove.Add(e);
+                        continue;
+                    }
+                }
+
+                zip.RemoveEntries(remove);
+
+                for (int i = 0; i < itemsToAdd.Length; i++)
+                {
+                    zip.AddItem(itemsToAdd[i].Split('|')[1].Replace('\\', '/'), itemsToAdd[i].Split('|')[0]);
+                }
+
+                zip.Save(savePath);
+                zip.Dispose();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Zip file doesn't exist,is corrupted or in an unsupported format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void ExtractZip(string sourceZip, string contentDestination,string password)
+        {
+            bool isValidZip = ZipFile.CheckZip(sourceZip);
+
+            if (isValidZip)
+            {
+                ZipFile zip = new ZipFile(sourceZip);
+                
+                zip.Password = password;
+
+                if(!Directory.Exists(contentDestination))
+                {
+                    Directory.CreateDirectory(contentDestination);
+                }
+
+                zip.ExtractAll(contentDestination);
+                zip.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+                zip.Dispose();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Zip file doesn't exist,is corrupted or in an unsupported format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void HideDesktop(bool hideTaskbar)
+        {
+            if (GameProfile.UseSplitDiv || PlayerID > 0)
+            {
+                return;
+            }
+
+            if(hideTaskbar)
+            {
+                HideTaskBar();
+            }
+
+            foreach (Display dp in parent.screensInUse)
+            {
+                WPFDivFormThread.StartBackgroundForm(parent.currentGameInfo, dp);
+            }
+        }
+
+        public void HideTaskBar()
+        {
             if (PlayerID > 0)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Run(() =>
-            {
-                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-                string splitDivisionBackColor = ini.IniReadValue("CustomLayout", "SplitDivColor");
-                Color ChoosenColor = Color.Black;
-
-                IDictionary<string, Color> splitColors = new Dictionary<string, Color>();
-
-                splitColors.Add("Black", Color.Black);
-                splitColors.Add("Gray", Color.DimGray);
-                splitColors.Add("White", Color.White);
-                splitColors.Add("Dark Blue", Color.DarkBlue);
-                splitColors.Add("Blue", Color.Blue);
-                splitColors.Add("Purple", Color.Purple);
-                splitColors.Add("Pink", Color.Pink);
-                splitColors.Add("Red", Color.Red);
-                splitColors.Add("Orange", Color.Orange);
-                splitColors.Add("Yellow", Color.Yellow);
-                splitColors.Add("Green", Color.Green);
-
-                foreach (KeyValuePair<string, Color> color in splitColors)
-                {
-                    if (color.Key == splitDivisionBackColor)
-                    {
-                        ChoosenColor = color.Value;
-                    }
-                }
-
-                foreach (Screen screen in Screen.AllScreens)
-                {
-                    Form backgroundForm = new Form
-                    {
-                        Name = "SplitForm",
-                        Text = "SplitForm",
-                        BackColor = ChoosenColor,
-                        Location = new Point(0, 0),
-                        Width = screen.WorkingArea.Size.Width,
-                        Height = screen.WorkingArea.Size.Height + 50,
-                        FormBorderStyle = FormBorderStyle.None,
-                        StartPosition = FormStartPosition.Manual
-                    };
-
-                    backgroundForm.ShowDialog();//Show() make it crash
-                }
-            });
+            User32Util.HideTaskbar();
         }
 
         public void BackupFile(string filePath, bool overwrite)
@@ -666,11 +580,21 @@ namespace Nucleus.Gaming
             return str.ToString();
         }
 
+        public string ToUpperCase(object str)
+        {
+            return str.ToString().ToUpper();
+        }
+
+        public string ToLowerCase(object str)
+        {
+            return str.ToString().ToLower();
+        }
+
         public byte[] ConvertToBytes(float num)
         {
             return BitConverter.GetBytes(num);
         }
-       
+
         public byte[] ConvertToBytes(int num)
         {
             return BitConverter.GetBytes(num);
@@ -706,11 +630,13 @@ namespace Nucleus.Gaming
                         continue;
                     }
                 }
+
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = fileName,
                     UseShellExecute = false
                 };
+
                 if (changeWorkingDir)
                 {
                     psi.WorkingDirectory = GameManager.Instance.GetAppContentPath() + "\\AdditionalFiles";
@@ -729,7 +655,7 @@ namespace Nucleus.Gaming
             }
         }
 
-       
+
         public void RunAdditionalFiles(string[] filePaths, bool changeWorkingDir, int secondsToPauseInbetween, bool runAsAdmin, bool promptBetween)
         {
             for (int fileIndex = 0; fileIndex < filePaths.Length; fileIndex++)
@@ -996,7 +922,7 @@ namespace Nucleus.Gaming
                                 {
                                     psi.WorkingDirectory = Path.GetDirectoryName(fileName);
                                 }
-                                
+
                                 if (runAsAdmin)
                                 {
                                     psi.UseShellExecute = true;
@@ -1059,22 +985,57 @@ namespace Nucleus.Gaming
             return files;
         }
 
+
+        public string GetFileName(string fileFullPath)
+        {
+            //Log("File name = " + fileFullPath.Split('\\').Last());
+            return fileFullPath.Split('\\').Last();//Get file name by splitting the full file path
+        }
+
+        public string[] FindFilePartialName(string rootFolder, string[] partialFileNames/*, bool firstOnly*/)
+        {
+            Log("Looking for files by partial name in => " + rootFolder);
+
+            string[] files = Directory.GetFileSystemEntries(rootFolder, "*", SearchOption.AllDirectories);
+
+            List<string> filesFound = new List<string>();
+
+            foreach (string file in files)
+            {
+                foreach (string name in partialFileNames)
+                {
+                    if (file.Contains(name))
+                    {
+                        filesFound.Add(file);
+                        Log("File found by partial name  => " + file);
+                    }
+                }
+            }
+
+            return filesFound.ToArray();
+        }
+
         public void WriteTextFile(string path, string[] lines)
         {
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
+
             File.WriteAllLines(path, lines);
         }
 
         public int FindLineNumberInTextFile(string path, string searchValue, SearchType type)
         {
-            string[] lines = File.ReadAllLines(path);
-            if (!File.Exists(path))
-            {
-                return -1;
-            }
+            string[] lines;
+            //if (!File.Exists(path))
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return -1;
+            //}
+
+            lines = File.ReadAllLines(path);
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -1112,19 +1073,22 @@ namespace Nucleus.Gaming
 
         public void RemoveLineInTextFile(string path, int lineNum)
         {
-            string[] lines = File.ReadAllLines(path);
-            if (lineNum < 0 || lineNum > lines.Length)
-            {
-                return;
-            }
-            if (File.Exists(path))
-            {
+            string[] lines;
+            //if (File.Exists(path))
+            //{
+                lines = File.ReadAllLines(path);
+                if (lineNum < 0 || lineNum > lines.Length)
+                {
+                    return;
+                }
                 File.Delete(path);
-            }
-            else
-            {
-                return;
-            }
+            //}
+            //else
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             lines = lines.Where(w => w != lines[lineNum - 1]).ToArray();
 
@@ -1133,19 +1097,22 @@ namespace Nucleus.Gaming
 
         public void RemoveLineInTextFile(string path, int lineNum, string encoder)
         {
-            string[] lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
-            if (lineNum < 0 || lineNum > lines.Length)
-            {
-                return;
-            }
-            if (File.Exists(path))
-            {
+            string[] lines;
+            //if (File.Exists(path))
+            //{
+                lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
+                if (lineNum < 0 || lineNum > lines.Length)
+                {
+                    return;
+                }
                 File.Delete(path);
-            }
-            else
-            {
-                return;
-            }
+            //}
+            //else
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             lines = lines.Where(w => w != lines[lineNum - 1]).ToArray();
 
@@ -1154,15 +1121,18 @@ namespace Nucleus.Gaming
 
         public void RemoveLineInTextFile(string path, string searchValue, SearchType type)
         {
-            string[] lines = File.ReadAllLines(path);
-            if (File.Exists(path))
-            {
+            string[] lines;
+            //if (File.Exists(path))
+            //{
+                lines = File.ReadAllLines(path);
                 File.Delete(path);
-            }
-            else
-            {
-                return;
-            }
+            //}
+            //else
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -1203,15 +1173,19 @@ namespace Nucleus.Gaming
 
         public void RemoveLineInTextFile(string path, string searchValue, SearchType type, string encoder)
         {
-            string[] lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
-            if (File.Exists(path))
-            {
+            string[] lines;
+
+            //if (File.Exists(path))
+            //{
+                lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
                 File.Delete(path);
-            }
-            else
-            {
-                return;
-            }
+            //}
+            //else
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -1252,15 +1226,18 @@ namespace Nucleus.Gaming
 
         public void ReplaceLinesInTextFile(string path, string[] newLines)
         {
-            string[] lines = File.ReadAllLines(path);
-            if (File.Exists(path))
-            {
+            string[] lines;
+            //if (File.Exists(path))
+            //{
+                lines = File.ReadAllLines(path);
                 File.Delete(path);
-            }
-            else
-            {
-                return;
-            }
+            //}
+            //else
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             foreach (string line in newLines)
             {
@@ -1279,15 +1256,19 @@ namespace Nucleus.Gaming
 
         public void ReplaceLinesInTextFile(string path, string[] newLines, string encoder)
         {
-            string[] lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
-            if (File.Exists(path))
-            {
+            string[] lines;
+
+            //if (File.Exists(path))
+            //{
+                lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
                 File.Delete(path);
-            }
-            else
-            {
-                return;
-            }
+            //}
+            //else
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             foreach (string line in newLines)
             {
@@ -1305,15 +1286,18 @@ namespace Nucleus.Gaming
 
         public void ReplacePartialLinesInTextFile(string path, string[] newLines)
         {
-            string[] lines = File.ReadAllLines(path);
-            if (File.Exists(path))
-            {
+            string[] lines;
+            //if (File.Exists(path))
+            //{
+                lines = File.ReadAllLines(path);
                 File.Delete(path);
-            }
-            else
-            {
-                return;
-            }
+            //}
+            //else
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             foreach (string item in newLines)
             {
@@ -1333,15 +1317,18 @@ namespace Nucleus.Gaming
 
         public void ReplacePartialLinesInTextFile(string path, string[] newLines, string encoder)
         {
-            string[] lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
-            if (File.Exists(path))
-            {
+            string[] lines;
+            //if (File.Exists(path))
+            //{
+                lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
                 File.Delete(path);
-            }
-            else
-            {
-                return;
-            }
+            //}
+            //else
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             foreach (string item in newLines)
             {
@@ -1359,6 +1346,127 @@ namespace Nucleus.Gaming
             File.WriteAllLines(path, lines, Encoding.GetEncoding(encoder));
         }
 
+        public void EditTextFile(string path, string[] refLines, string[] newLines, string encoder)
+        {
+            //if (!File.Exists(path))
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
+            Log("Edit " + newLines.Length + " line(s) " + " in " + path);
+
+            string[] fileContent = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
+
+            List<string> refLinesList = refLines.ToList();
+            List<string> newLinesList = newLines.ToList();
+            List<string> newFileContent = new List<string>();
+
+            for (int index = 0; index < fileContent.Length; index++)
+            {
+                newFileContent.Add(fileContent[index]);
+
+                foreach (string refLine in refLinesList)
+                {
+                    if (fileContent[index].Contains(refLine))
+                    {
+                        if (newLinesList[refLinesList.IndexOf(refLine)] != "Delete")
+                        {
+                            newFileContent.Remove(fileContent[index]);
+                            newFileContent.Add(newLinesList[refLinesList.IndexOf(refLine)]);
+                        }
+                        else
+                        {
+                            newFileContent.Remove(fileContent[index]);
+                        }
+                    }
+                }
+            }
+
+            File.WriteAllLines(path, newFileContent, Encoding.GetEncoding(encoder));
+        }
+
+        //public void EditTextFile(string sourceFilePath, string destinationPath, string[] newLinesArray, string encoder)//require the file to be copied and not symlinked or to be added in the symslink exclusion list in some cases
+        //{
+        //    if (!File.Exists(sourceFilePath))
+        //    {
+        //        Log(sourceFilePath + " not Found!");
+        //        MessageBox.Show($"File not found at : \n{sourceFilePath}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //        return;
+        //    }
+
+        //    Log("Creating a copy of " + sourceFilePath + " to " + destinationPath + " with " + newLinesArray.Length + " new line(s)");
+
+        //    string[] fileContent = File.ReadAllLines(sourceFilePath, Encoding.GetEncoding(encoder));
+
+        //    List<string> newLinesList = newLinesArray.ToList();
+        //    List<string> newFileContent = new List<string>();
+
+        //    for (int index = 0; index < fileContent.Length; index++)
+        //    {
+        //        newFileContent.Add(fileContent[index]);
+        //        string replace = ".";
+        //        for (int i = 0; i < newLinesArray.Count(); i++)
+        //        {
+        //            if (newLinesList[i].Contains("insert below|") || newLinesList[i].Contains("insert above|"))
+        //            {
+        //                string[] splitted = newLinesList[i].Split('|');
+        //                int lineIndex = Convert.ToInt32(splitted[1]);
+
+        //                if (newLinesList[i].Contains("insert below|"))
+        //                {
+        //                    if (index + 1 == lineIndex)
+        //                    {
+        //                        newFileContent.Add(splitted[2]);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    if (index == 0)
+        //                    {
+        //                        if (index + 1 == lineIndex)
+        //                        {
+        //                            newFileContent.Clear();
+        //                            newFileContent.Add(splitted[2]);
+        //                            newFileContent.Add(fileContent[index]);
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        if (index + 1 == lineIndex)
+        //                        {
+        //                            newFileContent.Add(splitted[2]);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else if (newLinesList[i].Contains("replace|"))
+        //            {
+        //                string[] splitted = newLinesList[i].Split('|');
+        //                int lineIndex = Convert.ToInt32(splitted[1]);
+
+        //                if (index + 1 == lineIndex)
+        //                {
+        //                    replace = fileContent[index];
+        //                    newFileContent.Remove(fileContent[index]);
+        //                    newFileContent.Add(splitted[2]);
+        //                }
+        //            }
+
+        //            string[] deleteSplit = newLinesList[i].Split('|');
+        //            int deleteIndex = Convert.ToInt32(deleteSplit[1]);
+
+        //            if (newLinesList[i].Contains("delete|"))
+        //            {
+        //                newFileContent.Remove(fileContent[deleteIndex - 1]);
+        //            }
+        //        }
+        //    }
+
+        //    File.WriteAllLines(destinationPath, newFileContent, Encoding.GetEncoding(encoder));
+        //}
+
         public SaveInfo NewSaveInfo(string section, string key, string value)
         {
             return new SaveInfo(section, key, value);
@@ -1366,6 +1474,13 @@ namespace Nucleus.Gaming
 
         public void ModifySaveFile(string installSavePath, string saveFullPath, SaveType type, params SaveInfo[] info)
         {
+            //if (!File.Exists(installSavePath))
+            //{
+            //    Log(installSavePath + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{installSavePath}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
             // this needs to be dynamic someday
             switch (type)
             {
@@ -1409,6 +1524,13 @@ namespace Nucleus.Gaming
 
         public void HexEdit(string fileToEdit, string address, byte[] newBytes)
         {
+            //if (!File.Exists(fileToEdit))
+            //{
+            //    Log(fileToEdit + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{fileToEdit}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
             using (Stream stream = File.Open(fileToEdit, FileMode.Open, FileAccess.ReadWrite))
             {
                 stream.Position = long.Parse(address, NumberStyles.HexNumber);
@@ -1416,14 +1538,17 @@ namespace Nucleus.Gaming
             }
         }
 
-      
-
         public void PatchFileFindAll(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
         {
+            //if (!File.Exists(originalFile))
+            //{
+            //    Log(originalFile + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{originalFile}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
             // Read file bytes.
             byte[] fileContent = File.ReadAllBytes(originalFile);
 
-            //int patchCount = 0;
             // Detect and patch file.
             for (int p = 0; p < fileContent.Length; p++)
             {
@@ -1446,24 +1571,11 @@ namespace Nucleus.Gaming
                     continue;
                 }
 
-                //patchCount++;
-                //if (patchCount > 1)
-                //{
-                //    LogManager.Log("PatchFind pattern is not unique in " + originalFile);
-                //}
-                //else
-                //{
                 for (int w = 0; w < patchReplace.Length; w++)
                 {
                     fileContent[p + w] = patchReplace[w];
                 }
-                //}
             }
-
-            //if (patchCount == 0)
-            //{
-            //    LogManager.Log("PatchFind pattern was not found in " + originalFile);
-            //}
 
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);
@@ -1471,7 +1583,14 @@ namespace Nucleus.Gaming
 
         public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, string patchPattern, bool patchall) // 2.1.2
         {
-            Log("Patching file");
+            //if (!File.Exists(originalFile))
+            //{
+            //    Log(originalFile + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{originalFile}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
+            Log($"Patching {patchedFile}");
             //Format original hex pattern
             string formatedOrigPattern = origPattern.Replace(" ", "");
 
@@ -1491,7 +1610,7 @@ namespace Nucleus.Gaming
             {
                 patchBytePattern[i] = (byte)Int32.Parse(formatedPatchPattern.Substring(h, 2), System.Globalization.NumberStyles.HexNumber);
             }
-            
+
             string checkpatchBytePattern = BitConverter.ToString(patchBytePattern).Replace("-", " ");
 
             byte[] fileContent = File.ReadAllBytes(originalFile);
@@ -1539,9 +1658,16 @@ namespace Nucleus.Gaming
             Log("Patching finished");
         }
 
-       public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, int insert, int offset, bool patchall) // 2.1.2
+        public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, int insert, int offset, bool patchall) // 2.1.2
         {
-            Log("Patching file");
+            //if (!File.Exists(originalFile))
+            //{
+            //    Log(originalFile + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{originalFile}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+            Log($"Patching {patchedFile}");
+
             //Format original hex pattern
             string formatedOrigPattern = origPattern.Replace(" ", "");
 
@@ -1563,8 +1689,8 @@ namespace Nucleus.Gaming
             }
 
             byte[] insertdef = BitConverter.GetBytes(insert);
-            byte[] formatedInsert = new byte[] {insertdef[0], insertdef[1]};
-            
+            byte[] formatedInsert = new byte[] { insertdef[0], insertdef[1] };
+
             string insertStr = BitConverter.ToString(formatedInsert).Replace("-", " ");
 
             int _offset = offset - 1;
@@ -1576,7 +1702,7 @@ namespace Nucleus.Gaming
             }
 
             string checkpatchBytePattern = BitConverter.ToString(patchBytePattern).Replace("-", " ");
-           
+
             byte[] fileContent = File.ReadAllBytes(originalFile);
 
             for (int p = 0; p < fileContent.Length; p++)
@@ -1632,6 +1758,12 @@ namespace Nucleus.Gaming
 
         public void PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
         {
+            //if (!File.Exists(originalFile))
+            //{
+            //    Log(originalFile + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{originalFile}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
             // Read file bytes.
             byte[] fileContent = File.ReadAllBytes(originalFile);
 
@@ -1683,6 +1815,12 @@ namespace Nucleus.Gaming
 
         public void PatchFile(string originalFile, string patchedFile, string spatchFind, string spatchReplace)
         {
+            //if (!File.Exists(originalFile))
+            //{
+            //    Log(originalFile + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{originalFile}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
             // Read file bytes.
             byte[] fileContent = File.ReadAllBytes(originalFile);
 
@@ -1753,6 +1891,13 @@ namespace Nucleus.Gaming
 
         public void ChangeXmlNodeValue(string path, string xpath, string nodeValue)
         {
+            //if (!File.Exists(path))
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
             path = Environment.ExpandEnvironmentVariables(path);
 
             XmlDocument doc = new XmlDocument();
@@ -1767,6 +1912,12 @@ namespace Nucleus.Gaming
 
         public void ChangeXmlNodeInnerTextValue(string path, string xpath, string innerTextValue)
         {
+            //if (!File.Exists(path))
+            //{
+            //    Log(path + " not Found!");
+            //    //MessageBox.Show($"File not found at : \n{path}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
             path = Environment.ExpandEnvironmentVariables(path);
 
             XmlDocument doc = new XmlDocument();
@@ -1860,6 +2011,47 @@ namespace Nucleus.Gaming
             key.Close();
         }
 
+        public void DeleteRegKeyValues(string baseKey, string sKey, string[] values)
+        {
+            if (baseKey != "HKEY_LOCAL_MACHINE" && baseKey != "HKEY_CURRENT_USER" && baseKey != "HKEY_USERS")
+            {
+                return;
+            }
+
+            RegistryKey key = null;
+            switch (baseKey)
+            {
+                case "HKEY_LOCAL_MACHINE":
+                    key = Registry.LocalMachine.OpenSubKey(sKey, true);
+                    break;
+                case "HKEY_CURRENT_USER":
+                    key = Registry.CurrentUser.OpenSubKey(sKey, true);
+                    break;
+                case "HKEY_USERS":
+                    key = Registry.Users.OpenSubKey(sKey, true);
+                    break;
+            }
+
+            string fullKeyPath = baseKey + "\\" + sKey;
+            if (!regKeyPaths.Contains(fullKeyPath) && key != null)
+            {
+                string regPath = Directory.GetCurrentDirectory() + "\\utils\\backup\\" + sKey.Substring(sKey.LastIndexOf('\\') + 1) + ".reg";
+                if (!File.Exists(regPath))
+                {
+                    Log(string.Format("{0} not found in backups, exporting registry now", sKey.Substring(sKey.LastIndexOf('\\') + 1) + ".reg"));
+                    regKeyPaths.Add(fullKeyPath);
+                    ExportRegistry(baseKey + "\\" + sKey, regPath);
+                }
+            }
+
+            foreach (var value in values)
+            {
+                key.DeleteValue(value);
+            }
+
+            key.Close();
+        }
+
         public string ReadRegKey(string baseKey, string sKey, string subKey)
         {
             if (baseKey != "HKEY_LOCAL_MACHINE" && baseKey != "HKEY_CURRENT_USER" && baseKey != "HKEY_USERS")
@@ -1924,7 +2116,7 @@ namespace Nucleus.Gaming
                     break;
             }
 
-            
+
             string fullKeyPath = baseKey + "\\" + sKey;
 
             if (!regKeyPaths.Contains(fullKeyPath) && key != null)
@@ -1937,7 +2129,7 @@ namespace Nucleus.Gaming
                     ExportRegistry(baseKey + "\\" + sKey, regPath);
                 }
             }
-           
+
 
             if (key == null)
             {
@@ -1989,9 +2181,9 @@ namespace Nucleus.Gaming
                     key = Registry.Users.OpenSubKey(sKey, true);
                     break;
             }
-  
-            Log("Registry key : " + baseKey + "\\" + sKey + "\\" + subKey + " -Value= " + value + " -RegType= " + regType + " will not be deleted from registry  on Nucleus Co-op close");
-          
+
+            Log("Registry key : " + baseKey + "\\" + sKey + "\\" + subKey + " -Value= " + value + " -RegType= " + regType + " will not be deleted from registry on Nucleus Co-op close");
+
             if (key == null)
             {
                 switch (baseKey)
@@ -2031,7 +2223,7 @@ namespace Nucleus.Gaming
 
         public void Wait(int wait)
         {
-            Log(string.Format("Pausing for "+ (double)wait/(double)1000 +" seconds"));
+            Log(string.Format("Pausing for " + (double)wait / (double)1000 + " seconds"));
             Thread.Sleep(wait);
         }
 
@@ -2045,6 +2237,12 @@ namespace Nucleus.Gaming
 
         public void MoveFolder(string sourceDirName, string destDirName)
         {
+            //if (!Directory.Exists(sourceDirName))
+            //{
+            //    MessageBox.Show($"Directory not found at : \n{sourceDirName}\nStart the game out of Nucleus Co-op once in order to create the required file(s). ", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
             string source = Folder.InstancedGameFolder.ToString() + "\\" + sourceDirName;
             string dest = Folder.InstancedGameFolder.ToString() + "\\" + destDirName;
 

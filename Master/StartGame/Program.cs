@@ -1,18 +1,18 @@
-﻿using Nucleus;
+﻿using Microsoft.Win32;
+using Nucleus;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Windows;
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Runtime.InteropServices;
-using System.Collections;
-using System.Linq;
 using System.Windows.Forms;
-using System.Security.Principal;
-using Microsoft.Win32;
 
 namespace StartGame
 {
@@ -254,8 +254,6 @@ namespace StartGame
         static void StartGame(string path, string args = "", string workingDir = null)
         {
             System.IO.Stream str = new System.IO.MemoryStream();
-            //GenericGameInfo gen = new GenericGameInfo(null, null, str);
-            bool regMethod = false;
 
             if (!Path.IsPathRooted(path))
             {
@@ -395,8 +393,11 @@ namespace StartGame
                             //Thread.Sleep(1000);
 
                             string injectorPath = Path.Combine(currDir, $"Nucleus.IJ{(is64 ? "x64" : "x86")}.exe");
-                            ProcessStartInfo injstartInfo = new ProcessStartInfo();
-                            injstartInfo.FileName = injectorPath;
+                            ProcessStartInfo injstartInfo = new ProcessStartInfo
+                            {
+                                FileName = injectorPath
+                            };
+
                             object[] injargs = new object[]
                             {
                             0, // Tier 0 : start up hook
@@ -445,7 +446,7 @@ namespace StartGame
                             injstartInfo.RedirectStandardInput = true;
 
                             Process injectProc = Process.Start(injstartInfo);
-                            injectProc.OutputDataReceived += proc_OutputDataReceived;
+                            injectProc.OutputDataReceived += Proc_OutputDataReceived;
                             injectProc.BeginOutputReadLine();
                             injectProc.WaitForExit();
 
@@ -484,8 +485,6 @@ namespace StartGame
 
                     pOutPID = (uint)processInformation.dwProcessId;
                     proc = Process.GetProcessById((int)pOutPID);
-                    //pOutPID = proc.Id;
-                    regMethod = true;
                 }
 
                 Thread.Sleep(1000);
@@ -621,13 +620,13 @@ namespace StartGame
                     proc.WaitForExit();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // handle exception
             }
         }
 
-        public static void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        public static void Proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (string.IsNullOrEmpty(e.Data))
             {

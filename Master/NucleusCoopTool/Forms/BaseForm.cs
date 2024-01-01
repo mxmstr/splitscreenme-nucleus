@@ -1,8 +1,5 @@
-﻿using Microsoft.Win32;
-using Nucleus.Gaming;
-using System;
+﻿using Nucleus.Gaming;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 
@@ -14,9 +11,9 @@ namespace Nucleus.Coop
     /// </summary>
     public class BaseForm : Form, IDynamicSized
     {
-        public readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        public readonly IniFile ini = Globals.ini;
         public BaseForm()
-        {        
+        {
             Name = "BaseForm";
             Text = "BaseForm";
             // Default DPI = 96 = 100%
@@ -29,8 +26,8 @@ namespace Nucleus.Coop
         }
 
         ~BaseForm()
-        {       
-           DPIManager.Unregister(this);
+        {
+            DPIManager.Unregister(this);
         }
 
         public void UpdateSize(float scale)
@@ -62,6 +59,5 @@ namespace Nucleus.Coop
             Point desktop = this.DesktopLocation;
             f.SetDesktopLocation(desktop.X + 100, desktop.Y + 100);
         }
-
     }
 }

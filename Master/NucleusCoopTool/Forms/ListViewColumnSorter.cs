@@ -33,7 +33,7 @@ namespace ListViewSorter
         private CheckboxTextComparer FirstObjectCompare2;
 
         private SortModifiers mySortModifier = SortModifiers.SortByText;
-        public SortModifiers _SortModifier
+        public SortModifiers SortModifier
         {
             set => mySortModifier = value;
             get => mySortModifier;

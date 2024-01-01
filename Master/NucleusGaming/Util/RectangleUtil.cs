@@ -30,11 +30,69 @@ namespace Nucleus.Gaming
             return r;
         }
 
+        public static RectangleF ScaleAndCenter(SizeF srcSize, Rectangle parent)
+        {
+            float width = srcSize.Width;
+            float height = srcSize.Height;
+
+            float pwidth = (float)parent.Width;
+            float pheight = (float)parent.Height;
+
+            float pratio = pwidth / pheight;
+            float ratio = width / height;
+
+            if (pratio > ratio)
+            {
+                height = pheight;
+                width = pheight * ratio;
+            }
+            else
+            {
+                width = pwidth;
+                height = pwidth * ratio;
+            }
+
+            return new RectangleF(
+             ((float)parent.Width / 2.0f) - (width / 2.0f) + (float)parent.X,
+            ((float)parent.Height / 2.0f) - (height / 2.0f) + (float)parent.Y,
+              width,
+             height);
+        }
+
+        public static RectangleF ScaleAndCenter(SizeF srcSize, RectangleF parent)
+        {
+            float width = srcSize.Width;
+            float height = srcSize.Height;
+
+            float pwidth = (float)parent.Width;
+            float pheight = (float)parent.Height;
+
+            float pratio = pwidth / pheight;
+            float ratio = width / height;
+
+            if (pratio > ratio)
+            {
+                height = pheight;
+                width = pheight * ratio;
+            }
+            else
+            {
+                width = pwidth;
+                height = pwidth * ratio;
+            }
+
+            return new RectangleF(
+             ((float)parent.Width / 2.0f) - (width / 2.0f) + (float)parent.X,
+            ((float)parent.Height / 2.0f) - (height / 2.0f) + (float)parent.Y,
+              width,
+             height);
+        }
+
         public static Rectangle ScaleAndCenter(Size srcSize, Rectangle parent)
         {
             float width = srcSize.Width;
-            float height = srcSize.Height; 
-                                                                   
+            float height = srcSize.Height;
+
             float pwidth = parent.Width;
             float pheight = parent.Height;
 
@@ -74,6 +132,19 @@ namespace Nucleus.Gaming
                 rect.Height);
         }
 
+        public static PointF Center(SizeF rect, RectangleF parent)
+        {
+            float rectWidth = rect.Width / 2.0f;
+            float rectHeight = rect.Height / 2.0f;
+
+            float parentWidth = parent.Width / 2.0f;
+            float parentHeight = parent.Height / 2.0f;
+
+            return new PointF(
+                (parentWidth - rectWidth) + parent.X,
+                (parentHeight - rectHeight) + parent.Y);
+        }
+
         public static PointF Center(SizeF rect, Rectangle parent)
         {
             float rectWidth = rect.Width / 2.0f;
@@ -93,7 +164,7 @@ namespace Nucleus.Gaming
         /// <param name="first"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public static float PcInside(Rectangle first, Rectangle parent)
+        public static float PcInside(RectangleF first, RectangleF parent)
         {
             float pc = 0;
 
@@ -103,7 +174,7 @@ namespace Nucleus.Gaming
             }
             else if (parent.IntersectsWith(first))
             {
-                Rectangle intersection = Rectangle.Intersect(first, parent);
+                RectangleF intersection = RectangleF.Intersect(first, parent);
                 float peri = first.Width * first.Height;
                 float nperi = intersection.Width * intersection.Height;
 
@@ -126,6 +197,15 @@ namespace Nucleus.Gaming
                 (int)(rect.Y * value),
                 (int)(rect.Width * value),
                 (int)(rect.Height * value));
+        }
+
+        public static RectangleF Scale(RectangleF rect, float value)
+        {
+            return new RectangleF(
+                ((float)rect.X * value),
+                ((float)rect.Y * value),
+                ((float)rect.Width * value),
+                ((float)rect.Height * value));
         }
     }
 }

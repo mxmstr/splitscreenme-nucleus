@@ -63,15 +63,22 @@
     <Reference Include="EasyHook">
       <HintPath>..\ThirdParty\easyhook\EasyHook.dll</HintPath>
     </Reference>
+    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="Jint, Version=0.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\Jint.2.11.58\lib\net451\Jint.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct2D1.4.2.0\lib\net45\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DirectInput, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.DirectInput.4.2.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
@@ -87,6 +94,8 @@
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -94,8 +103,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\ImageCache.cs" />
+    <Compile Include="Cache\SteamIdsCache.cs" />
+    <Compile Include="Cache\NicknamesCache.cs" />
     <Compile Include="Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -114,7 +127,13 @@
     <Compile Include="Controls\CoolListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Font2.cs" />
+    <Compile Include="Controls\CustomComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomComboBox.Designer.cs">
+      <DependentUpon>CustomComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomToolTips.cs" />
     <Compile Include="Controls\HotkeyListener.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,15 +142,15 @@
     </Compile>
     <Compile Include="Controls\ICanProceed.cs" />
     <Compile Include="Controls\IHighlightControl.cs" />
-    <Compile Include="Controls\NButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\PictureButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\PictureButton.Designer.cs">
       <DependentUpon>PictureButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SetupScreen\BoundsFunctions.cs" />
+    <Compile Include="Controls\SetupScreen\DevicesFunctions.cs" />
+    <Compile Include="Controls\SetupScreen\Draw.cs" />
     <Compile Include="Controls\SizeableCheckbox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -141,11 +160,38 @@
     <Compile Include="Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ProfilesList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ProfilesList.Designer.cs">
+      <DependentUpon>ProfilesList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomNumericUpDown.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomNumericUpDown.Designer.cs">
+      <DependentUpon>CustomNumericUpDown.cs</DependentUpon>
+    </Compile>
     <Compile Include="Coop\BasicTypes\IntVector2.cs" />
     <Compile Include="Coop\BasicTypes\RECT.cs" />
     <Compile Include="Coop\BasicTypes\Ref.cs" />
     <Compile Include="Coop\Generic\async.cs" />
     <Compile Include="Coop\Generic\HttpClient.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\GamepadButtons.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\GamepadNavigation.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\GamepadState.cs" />
+    <Compile Include="Coop\InputManagement\Osk.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\GamepadShortcuts.cs" />
+    <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
+    <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
+    <Compile Include="Coop\ProfilePlayer.cs" />
+    <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NucleusMessageBox\NucleusMessageBox.cs" />
     <Compile Include="Coop\Generic\ProcessPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,7 +242,7 @@
     <Compile Include="Coop\ProtoInput\ProtoInputLauncher.cs" />
     <Compile Include="Coop\ProtoInput\ProtoInputOptions.cs" />
     <Compile Include="Coop\Window.cs" />
-    <Compile Include="DirectInput\DInputManager.cs" />
+    <Compile Include="DirectInputLib\DInputManager.cs" />
     <Compile Include="Coop\GameOption.cs" />
     <Compile Include="Coop\GameOptionValue.cs" />
     <Compile Include="Coop\GameProfile.cs" />
@@ -216,7 +262,7 @@
     <Compile Include="Coop\Generic\Step\CustomStepType.cs" />
     <Compile Include="Coop\Generic\UserInfo.cs" />
     <Compile Include="Coop\Generic\GameHookInfo.cs" />
-    <Compile Include="Coop\Generic\JSUserInputControl.cs">
+    <Compile Include="Controls\JSUserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Coop\Generic\DPIHandling.cs" />
@@ -230,18 +276,22 @@
     <Compile Include="Forms\CustomPrompt.Designer.cs">
       <DependentUpon>CustomPrompt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CustomPromptRuntime.cs" />
     <Compile Include="Forms\Prompt.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Prompt.Designer.cs">
       <DependentUpon>Prompt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\WPFDiv.cs" />
+    <Compile Include="Forms\WPF_OSD.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="New\GameControl.cs">
+    <Compile Include="Controls\GameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PositionsControlBase.cs" />
     <Compile Include="Platform\IO\WinDirectoryUtil.cs" />
+    <Compile Include="Platform\MachineSpecs\MachineSpecs.cs" />
+    <Compile Include="Platform\Windows\GetNetFrameworkVersion.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\Kernel32\Kernel32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\Kernel32\SymbolicLink.cs" />
@@ -279,23 +329,23 @@
     <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="IO\MFT\MFTReader.cs" />
     <Compile Include="Coop\GameManager.cs" />
-    <Compile Include="New\ImageButtonState.cs" />
-    <Compile Include="New\ImageButton.cs">
+    <Compile Include="Controls\ImageButtonState.cs" />
+    <Compile Include="Controls\ImageButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\UserInputControl.cs">
+    <Compile Include="Controls\UserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PlayerCountControl.cs">
+    <Compile Include="Controls\PlayerCountControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PlayerCountControl.Designer.cs">
+    <Compile Include="Controls\PlayerCountControl.Designer.cs">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\PlayerOptionsControl.cs">
+    <Compile Include="Controls\PlayerOptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PositionsControl.cs">
+    <Compile Include="Controls\SetupScreen\SetupScreenControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -303,7 +353,34 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Steamless\Steamless.cs" />
+    <Compile Include="Tools\AudioReroute\AudioReroute.cs" />
+    <Compile Include="Tools\BackupFiles\BackupFiles.cs" />
+    <Compile Include="Tools\DevReorder\DevReorder.cs" />
+    <Compile Include="Tools\DInputBlocker\DInputBlocker.cs" />
+    <Compile Include="Tools\DirectX9Wrapper\DirectX9Wrapper.cs" />
+    <Compile Include="Tools\DllsInjector\DllsInjector.cs" />
+    <Compile Include="Tools\EACBypass\EACBypass.cs" />
+    <Compile Include="Tools\CleanGameContent\CleanGameContent.cs" />
+    <Compile Include="Tools\NucleusUsers\NucleusUsers.cs" />
+    <Compile Include="Tools\Steam\GoldbergUpdaterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\Steam\GoldbergUpdaterForm.Designer.cs">
+      <DependentUpon>GoldbergUpdaterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\WindowFakeFocus\WindowFakeFocus.cs" />
+    <Compile Include="Tools\FlawlessWidescreen\FlawlessWidescreen.cs" />
+    <Compile Include="Tools\HexEdit\HexEdit.cs" />
+    <Compile Include="Tools\Network\Network.cs" />
+    <Compile Include="Tools\Steam\SteamFunctions.cs" />
+    <Compile Include="Tools\MonitorsDpiScaling\MonitorsDpiScaling.cs" />
+    <Compile Include="Tools\NemirtingasEpicEmu\NemirtingasEpicEmu.cs" />
+    <Compile Include="Tools\NemirtingasGalaxyEmu\NemirtingasGalaxyEmu.cs" />
+    <Compile Include="Tools\GlobalWindowMethods\GlobalWindowMethods.cs" />
+    <Compile Include="Tools\X360ce\X360ce.cs" />
+    <Compile Include="Tools\XInputPlusDll\XInputPlusDll.cs" />
+    <Compile Include="Util\ExecutableUtil.cs" />
+    <Compile Include="Util\FormGraphicsUtil.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />
@@ -320,10 +397,12 @@
     <Compile Include="Util\FormUtil.cs" />
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="Util\ProcessUtil.cs" />
+    <Compile Include="Util\RegistryUtil.cs" />
     <Compile Include="Util\ScreensUtil.cs" />
     <Compile Include="Tools\GameStarter\StartGameUtil.cs" />
     <Compile Include="Util\SteamUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
+    <Compile Include="Util\WindowsUsersUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\ControlListBox.resx">
@@ -335,11 +414,26 @@
     <EmbeddedResource Include="Controls\CoolListControl.resx">
       <DependentUpon>CoolListControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CustomComboBox.resx">
+      <DependentUpon>CustomComboBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CustomNumericUpDown.resx">
+      <DependentUpon>CustomNumericUpDown.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PictureButton.resx">
       <DependentUpon>PictureButton.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ProfilesList.resx">
+      <DependentUpon>ProfilesList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextMessageBox.resx">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\JSUserInputControl.resx">
+      <DependentUpon>JSUserInputControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NucleusMessageBox\CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Coop\Generic\ProcessPicker.resx">
       <DependentUpon>ProcessPicker.cs</DependentUpon>
@@ -350,22 +444,22 @@
     <EmbeddedResource Include="Forms\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\GameControl.resx">
+    <EmbeddedResource Include="Controls\GameControl.resx">
       <DependentUpon>GameControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\ImageButton.resx">
+    <EmbeddedResource Include="Controls\ImageButton.resx">
       <DependentUpon>ImageButton.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\PlayerCountControl.resx">
+    <EmbeddedResource Include="Controls\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\PlayerOptionsControl.resx">
+    <EmbeddedResource Include="Controls\PlayerOptionsControl.resx">
       <DependentUpon>PlayerOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\PositionsControl.resx">
-      <DependentUpon>PositionsControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\SetupScreen\SetupScreenControl.resx">
+      <DependentUpon>SetupScreenControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\UserInputControl.resx">
+    <EmbeddedResource Include="Controls\UserInputControl.resx">
       <DependentUpon>UserInputControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -373,27 +467,19 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Steam\GoldbergUpdaterForm.resx">
+      <DependentUpon>GoldbergUpdaterForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="GamingKey.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="New\Utils\" />
     <Folder Include="Util\Extensions\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\4players.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\fullscreen.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\horizontal.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ncoop.ini" />
-    <None Include="Resources\vertical.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
@@ -402,33 +488,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\gamepad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\generic.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\16players.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\_6players.bmp" />
-    <None Include="Resources\6players.png" />
-    <None Include="Resources\8players.png" />
-    <None Include="Resources\customLayout.png" />
-    <None Include="Resources\keyboard_computer_hardware-512.png" />
-    <None Include="Resources\keyboard.png" />
-    <None Include="Resources\players.png" />
-    <None Include="Resources\icon.png" />
+    <None Include="Resources\gbU_background3.jpg" />
     <Content Include="Resources\icon.ico" />
-    <None Include="Resources\icon.ico.back" />
-    <None Include="Resources\instruction.gif" />
-    <None Include="Resources\instruction.png" />
-    <None Include="Resources\instruction-close.png" />
     <None Include="Resources\instructions.gif" />
-    <Content Include="Resources\mouse.png" />
-    <None Include="Resources\rawkeyboard.png" />
+    <None Include="Resources\title_dropdown_opened.png" />
+    <None Include="Resources\title_dropdown_closed.png" />
+    <None Include="Resources\title_dropdown_closed1.png" />
+    <None Include="Resources\title_dropdown_opened1.png" />
     <Content Include="Resources\xinput1_3.dll" />
-    <None Include="Resources\xinput1_3_a10_log.dll" />
     <None Include="Resources\xinput1_3_a10_x64.dll" />
     <None Include="Resources\xinput1_3_a10.dll" />
   </ItemGroup>

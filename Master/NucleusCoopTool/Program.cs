@@ -2,35 +2,42 @@
 using Nucleus.Gaming.Windows;
 using System;
 using System.IO;
+using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
     static class Program
     {
-        private  static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        private static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
         public static bool connected;
         public static bool forcedBadPath;
 
         [STAThread]
         static void Main()
         {
-            if (!Convert.ToBoolean(ini.IniReadValue("Misc", "NucleusMultiInstances")))
+            if (!bool.Parse(ini.IniReadValue("Misc", "NucleusMultiInstances")))
             {
-                if (StartChecks.IsAlredyRunning())
+                if (StartChecks.IsAlreadyRunning())
                     return;
             }
-
+    
+            StartChecks.Check_VCRVersion();
+         
             if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
             {
                 if (!StartChecks.StartCheck(true))
                     forcedBadPath = true;
             }
 
-            connected = StartChecks.CheckNetCon();
+            connected = StartChecks.CheckHubResponse();
+
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
-            //StartChecks.CheckForUpdate(); //Uncomment to run Pizzo's Python nc updater on startup
+            StartChecks.CheckAppUpdate();//a decommenter
+            StartChecks.CheckDebugLogSize(ini);
+
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware
             DPIManager.PreInitialize();

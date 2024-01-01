@@ -21,7 +21,7 @@ namespace Nucleus.Gaming
         public bool KilledMutexes;
         public long RegLong;
         public int Status;
-
+        public float? AudioVolume;
         /// <summary>
         /// A reference to the game's process, if it's running
         /// </summary>

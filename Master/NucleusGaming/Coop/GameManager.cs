@@ -2,6 +2,7 @@
 //using Ionic.Zip;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
+using Nucleus.Gaming.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,7 +31,6 @@ namespace Nucleus.Gaming
         private List<BackupFile> backupFiles;
         private string error;
         private bool isSaving;
-
         private GameProfile currentProfile;
 
         private RawInputProcessor rawInputProcessor;
@@ -285,52 +285,6 @@ namespace Nucleus.Gaming
             return null;
         }
 
-        /// <summary>
-        /// Extracts the SmartSteamEmu and returns the folder its on
-        /// </summary>
-        /// <returns></returns>
-        //public string ExtractSteamEmu(string outputFolder = null)
-        //{
-        //    string steamEmu;
-
-        //    if (string.IsNullOrEmpty(outputFolder))
-        //    {
-        //        string app = GetAppDataPath();
-        //        steamEmu = Path.Combine(app, "SteamEmu");
-        //    }
-        //    else
-        //    {
-        //        steamEmu = outputFolder;
-        //    }
-
-        //    try
-        //    {
-        //        //if (!Directory.Exists(steamEmu))
-        //        //{
-        //        LogManager.Log("Extracting SmartSteamEmu");
-
-        //        Directory.CreateDirectory(steamEmu);
-        //        //using (MemoryStream stream = new MemoryStream(Resources.SmartSteamEmu))
-        //        //{
-        //        using (ZipFile zip1 = ZipFile.Read(Path.Combine(GetUtilsPath(), "SmartSteamEmu\\SmartSteamEmu.zip")))
-        //        {
-        //            foreach (ZipEntry e in zip1)
-        //            {
-        //                e.Extract(steamEmu, ExtractExistingFileAction.OverwriteSilently);
-        //            }
-        //        }
-        //        //}
-        //        //}
-        //    }
-        //    catch
-        //    {
-        //        LogManager.Log("Extraction of SmartSteamEmu failed");
-        //        return string.Empty;
-        //    }
-
-        //    return steamEmu;
-        //}
-
         public void WaitSave()
         {
             while (IsSaving)
@@ -366,15 +320,6 @@ namespace Nucleus.Gaming
         public string GetUserProfilePath()
         {
             return Path.Combine(GetAppContentPath(), "userprofile.json");
-        }
-
-        public int Compare(UserGameInfo x, UserGameInfo y)
-        {
-            if (x.Game == null || y.Game == null)
-            {
-                return 0;
-            }
-            return x.Game.GameName.CompareTo(y.Game.GameName);
         }
 
         public UserGameInfo AddGame(GenericGameInfo game, string exePath)
@@ -463,7 +408,7 @@ namespace Nucleus.Gaming
         {
             lock (user.Games)
             {
-                user.Games.Sort(Compare);
+                user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
             }
         }
 
@@ -471,7 +416,7 @@ namespace Nucleus.Gaming
         {
             lock (user.Games)
             {
-               user.Games.Sort(Compare);
+                user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
             }
 
             string userProfile = GetUserProfilePath();
@@ -491,6 +436,7 @@ namespace Nucleus.Gaming
                         using (StreamReader reader = new StreamReader(stream))
                         {
                             string json = reader.ReadToEnd();
+
                             user = JsonConvert.DeserializeObject<UserProfile>(json);
 
                             if (user.Games == null)
@@ -498,21 +444,25 @@ namespace Nucleus.Gaming
                                 // json doesn't save empty lists, and user didn't add any game
                                 user.InitializeDefault();
                             }
-                            //else
-                            //{
-                            //    // delete invalid games
-                            //    for (int i = 0; i < user.Games.Count; i++)
-                            //    {
-                            //        UserGameInfo gameInfo = user.Games[i];
-                            //        if (gameInfo.Game == null)
-                            //        {
-                            //            LogManager.Log("Deleting invalid game " + user.Games[i].Game);
-                            //            user.Games.RemoveAt(i);
-                            //            i--;
-                            //        }
-                            //    }
-                            //}
+                            else
+                            {
+                                // delete invalid games
+                                for (int i = 0; i < user.Games.Count; i++)
+                                {
+                                    bool exist = File.Exists(user.Games[i].ExePath);
+                                    if (!exist && user.Games[i] != null)
+                                    {
+                                        user.Games.RemoveAt(i);
+                                        i--;
+                                    }
+                                }
+                            }
+                            user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
+
                         }
+
+                        saveUser(userProfile);
+
                     }
                 }
                 catch
@@ -563,17 +513,22 @@ namespace Nucleus.Gaming
                     {
                         using (StreamWriter writer = new StreamWriter(stream))
                         {
-                            string json = JsonConvert.SerializeObject(user);
+                            string json = JsonConvert.SerializeObject(user, Formatting.Indented);
                             writer.Write(json);
                             stream.Flush();
                         }
                     }
                     //LogManager.Log("Saved user profile");
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
                 isSaving = false;
             }
         }
+
 
         private void Initialize()
         {
@@ -581,6 +536,7 @@ namespace Nucleus.Gaming
             string jsfolder = GetJsScriptsPath();
             DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
             FileInfo[] files = jsFolder.GetFiles("*.js");
+
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo f = files[i];
@@ -618,9 +574,7 @@ namespace Nucleus.Gaming
                 }
 
             }
-
         }
-
 
         public void AddScript(string handlerName)
         {
@@ -650,6 +604,8 @@ namespace Nucleus.Gaming
                     }
                     gameInfos.Add(info.GUID, info);
                 }
+
+                user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
             }
             catch (ArgumentNullException)
             {
@@ -660,78 +616,8 @@ namespace Nucleus.Gaming
                 MessageBox.Show(ex.InnerException + ": " + ex.Message, "Error with handler " + f.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //continue;
             }
-
-
         }
+
         #endregion
-
-        public void Play(IGameHandler handler)
-        {
-            // Start the Play method in another thread, so the
-            // handler can update while it's still loading
-            error = null;
-            ThreadPool.QueueUserWorkItem(play, handler);
-        }
-
-        private void play(object state)
-        {
-#if RELEASE || true
-            try
-            {
-                error = ((IGameHandler)state).Play();
-            }
-            catch (Exception ex)
-            {
-                error = ex.Message;
-                try
-                {
-                    string[] regFiles = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
-                    if (regFiles.Length > 0)
-                    {
-                        LogManager.Log("Restoring backed up registry files - method 1");
-                        foreach (string regFilePath in regFiles)
-                        {
-                            Process proc = new Process();
-
-                            try
-                            {
-                                proc.StartInfo.FileName = "reg.exe";
-                                proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                                proc.StartInfo.CreateNoWindow = true;
-                                proc.StartInfo.UseShellExecute = false;
-
-                                string command = "import \"" + regFilePath + "\"";
-                                proc.StartInfo.Arguments = command;
-                                proc.Start();
-
-                                proc.WaitForExit();
-                                LogManager.Log($"Imported {Path.GetFileName(regFilePath)}");
-                            }
-                            catch (Exception)
-                            {
-                                proc.Dispose();
-                            }
-
-                            if (!regFilePath.Contains("User Shell Folders"))
-                            {
-                                File.Delete(regFilePath);
-                            }
-                        }
-                    }
-
-                    // try to save the exception
-                    LogManager.Instance.LogExceptionFile(ex);
-                }
-                catch
-                {
-                    LogManager.Instance.LogExceptionFile(ex);
-                    error = "We failed so hard we failed while trying to record the reason we failed initially. Sorry.";
-                    return;
-                }
-            }
-#else
-            error = ((IGameHandler)state).Play();
-#endif
-        }
     }
 }

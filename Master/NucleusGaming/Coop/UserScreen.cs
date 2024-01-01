@@ -1,26 +1,35 @@
-﻿using System.Drawing;
-using System.IO;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Documents;
 
 namespace Nucleus.Gaming.Coop
 {
     public class UserScreen
     {
-        private Rectangle uiBounds;
-        private Rectangle swapTypeRect;
+        private RectangleF uiBounds;
+        private RectangleF swapTypeRect;
         private UserScreenType type;
 
         public Rectangle display;
         public bool vertical;
         public int priority;
-        private readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+        public int DisplayIndex;
+        private int playerOnScreen = 0;
+        public int Index;
 
-        public Rectangle SwapTypeBounds
+        public int PlayerOnScreen
+        {
+            get => playerOnScreen;
+            set => playerOnScreen = value;
+        }
+
+        public RectangleF SwapTypeBounds
         {
             get => swapTypeRect;
             set => swapTypeRect = value;
         }
 
-        public Rectangle UIBounds
+        public RectangleF UIBounds
         {
             get => uiBounds;
             set => uiBounds = value;
@@ -33,6 +42,8 @@ namespace Nucleus.Gaming.Coop
         }
 
         public Rectangle MonitorBounds => display;
+
+        public Dictionary<Rectangle, RectangleF> SubScreensBounds;
 
         public UserScreen(Rectangle display)
         {
@@ -57,7 +68,7 @@ namespace Nucleus.Gaming.Coop
                 case UserScreenType.SixteenPlayers:
                     return 16;
                 case UserScreenType.Custom:
-                    return int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
+                    return GameProfile.CustomLayout_Max;
                 default:
                     return -1;
             }

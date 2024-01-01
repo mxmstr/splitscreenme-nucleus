@@ -89,9 +89,9 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         private void Start()
         {
-            Logger.WriteLine($"Starting read pipe {pipeNameRead}");
+            //Logger.WriteLine($"Starting read pipe {pipeNameRead}");
             pipeServerRead = new NamedPipeServerStream(pipeNameRead, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.WriteThrough);
-            Logger.WriteLine($"Created read pipe {pipeNameRead}");
+            //Logger.WriteLine($"Created read pipe {pipeNameRead}");
 
             try
             {
@@ -105,7 +105,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
 
             clientConnected = true;
-            Logger.WriteLine($"Client connected to (read) pipe {pipeNameRead}");
+            //Logger.WriteLine($"Client connected to (read) pipe {pipeNameRead}");
 
 
 
@@ -150,9 +150,9 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         private void ReceiveMessages()
         {
-            Logger.WriteLine($"Starting write pipe {pipeNameWrite}");
+            //Logger.WriteLine($"Starting write pipe {pipeNameWrite}");
             pipeServerWrite = new NamedPipeServerStream(pipeNameWrite, PipeDirection.In, 1, PipeTransmissionMode.Byte, PipeOptions.WriteThrough);
-            Logger.WriteLine($"Created write pipe {pipeNameWrite}");
+            //Logger.WriteLine($"Created write pipe {pipeNameWrite}");
 
             try
             {
@@ -164,7 +164,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 return;
             }
 
-            Logger.WriteLine($"Client connected to (write) pipe {pipeNameWrite}");
+           // Logger.WriteLine($"Client connected to (write) pipe {pipeNameWrite}");
 
             while (clientConnected)
             {
@@ -186,7 +186,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     CountError();
                 }
             }
-            Console.WriteLine("ReceiveMessages END");
+
+            //Console.WriteLine("ReceiveMessages END");
         }
 
         private void StartSharedMemory()
@@ -198,7 +199,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 MemoryMappedFileOptions.None,
                 HandleInheritability.None);
 
-            Logger.WriteLine($"Created shared memory, name=\"{sharedMemName}\", size={sharedMemSize}");
+            //Logger.WriteLine($"Created shared memory, name=\"{sharedMemName}\", size={sharedMemSize}");
 
             sharedMemView = sharedMem.CreateViewAccessor();
         }
@@ -320,7 +321,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public void Close()
         {
-            Logger.WriteLine($"Closing read pipe {pipeNameRead} and write pipe {pipeNameWrite}");
+            //Logger.WriteLine($"Closing read pipe {pipeNameRead} and write pipe {pipeNameWrite}");
             WriteMessageNow(0x03, 0, 0);//Close pipe message.
 
             pipeServerRead?.Dispose();
