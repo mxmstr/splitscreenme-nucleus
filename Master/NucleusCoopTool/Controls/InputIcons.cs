@@ -28,7 +28,7 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(Globals.Theme + "xinput_icon.png")
                 };
 
-                CustomToolTips.SetToolTip(icon, "Supports xinput gamepads (e.g., X360).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(icon, "Supports xinput gamepads (e.g. X360).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(icon);
             }
 
@@ -43,7 +43,7 @@ namespace Nucleus.Coop
                 };
 
 
-                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g., Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g. Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(icon);
             }
             else if ((game.Hook.DInputEnabled || game.Hook.XInputReroute || game.ProtoInput.DinputDeviceHook) && (!game.Hook.XInputEnabled || !game.ProtoInput.XinputHook))
@@ -56,7 +56,7 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
                 };
 
-                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g., Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g. Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(icon);
             }
 

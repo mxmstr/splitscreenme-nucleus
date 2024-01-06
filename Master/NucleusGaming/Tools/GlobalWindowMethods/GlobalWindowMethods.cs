@@ -1623,8 +1623,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     }
                     else if (game.ProtoInput.AutoHideTaskbar)
                     {
-                        ProtoInput.protoInput.SetTaskbarAutohide(false);
-                        User32Util.ShowTaskBar();
+                        if (ProtoInput.protoInput.GetTaskbarAutohide())
+                        {
+                            ProtoInput.protoInput.SetTaskbarAutohide(false);
+                            User32Util.ShowTaskBar();
+                        }                           
                     }
 
                     TopMostToggle = false;
@@ -1657,7 +1660,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     }
                     else if(game.ProtoInput.AutoHideTaskbar)
                     {
-                        ProtoInput.protoInput.SetTaskbarAutohide(true);
+                        if (!ProtoInput.protoInput.GetTaskbarAutohide())
+                        {
+                            ProtoInput.protoInput.SetTaskbarAutohide(true); 
+                        }
                     }
 
                     Globals.MainOSD.Show(1600, $"Game Windows Restored");
