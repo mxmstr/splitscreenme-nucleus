@@ -1447,7 +1447,7 @@ namespace Nucleus.Gaming
                 {
                     context.UserProfileConvertedToDocuments = false;
                 }
-
+                
                 context.DocumentsConfigPath = gen.DocumentsConfigPath;
                 context.DocumentsSavePath = gen.DocumentsSavePath;
 

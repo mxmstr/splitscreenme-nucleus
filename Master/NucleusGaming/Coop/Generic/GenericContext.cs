@@ -321,10 +321,10 @@ namespace Nucleus.Gaming
             {
                 if (!UserProfileConvertedToDocuments)
                 {
-                    return $@"{NucleusEnvironmentRoot}\NucleusCoop\{Nickname}\";
+                    return $@"{NucleusEnvironmentRoot}\NucleusCoop\{Nickname}\";                  
                 }
                 else
-                {
+                {                  
                     return DocumentsPlayer;
                 }
             }

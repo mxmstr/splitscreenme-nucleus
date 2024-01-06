@@ -1,4 +1,4 @@
-Nucleus Co-op - version 2.2.0
+Nucleus Co-op - version 2.2.1
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy.
 
@@ -489,7 +489,14 @@ Known Issues: ------------------------------------------------------------------
 
 Changelog: -----------------------------------------------------------------------------------------
 
-v2.2.0 - December X, 2023
+v2.2.1 - January 06, 2024
+
+-Fixed a bug affecting handlers using Devreorder.
+-Fixed a bug deleting a player if its attached gamepad has been unplugged.
+-Fixed typos.
+-Fixed the updater.
+
+v2.2.0 - January 01, 2024
 
  - Huge code clean up and refactoring.
  - New per game profile system (20 max per game) and new settings. The new profile system allows specific configurations per game, can be disabled in Nucleus Co-op settings.

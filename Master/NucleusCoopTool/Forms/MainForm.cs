@@ -449,7 +449,7 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(btn_noHub, "Connection with the game handlers hub couldn't be established from the app,handlers, covers and screenshots downloader will be unavailable.\nClick this button to refresh, if the problem persist, click the FAQ button or ask for help on the official Nucleus Co-op Discord/SubReddit.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_reddit, "Official Nucleus Co-op Subreddit.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_SplitCalculator, "This program can estimate the system requirements needed to run a game in split-screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_settings, "Globals Nucleus Co-op settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_settings, "Global Nucleus Co-op settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_dlFromHub, "Download handlers (.nc) directly from the handlers hub, use the extract handler option to install them.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_thirdPartytools, "Third party tools useful to make non xinput controllers work with Nucleus Co-op.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(linkLabel1, "XOutput is a software that can convert DirectInput into XInput.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -1557,6 +1557,8 @@ namespace Nucleus.Coop
             }
 
             currentStep?.Ended();
+
+            DevicesFunctions.gamepadTimer.Dispose();
 
             btn_Play.Text = "S T O P";
 

@@ -874,15 +874,17 @@ namespace Nucleus.Coop
             // 
             // btn_debuglog
             // 
+            this.btn_debuglog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_debuglog.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_debuglog.FlatAppearance.BorderSize = 0;
             this.btn_debuglog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_debuglog.ForeColor = System.Drawing.SystemColors.Control;
-            this.btn_debuglog.Location = new System.Drawing.Point(147, 38);
+            this.btn_debuglog.Location = new System.Drawing.Point(147, 37);
             this.btn_debuglog.Name = "btn_debuglog";
             this.btn_debuglog.Size = new System.Drawing.Size(119, 25);
             this.btn_debuglog.TabIndex = 101;
             this.btn_debuglog.Text = "Open Debug Log";
-            this.btn_debuglog.UseVisualStyleBackColor = true;
+            this.btn_debuglog.UseVisualStyleBackColor = false;
             this.btn_debuglog.Visible = false;
             this.btn_debuglog.Click += new System.EventHandler(this.Btn_debuglog_Click);
             // 
