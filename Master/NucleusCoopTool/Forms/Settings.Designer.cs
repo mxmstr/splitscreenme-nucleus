@@ -697,6 +697,7 @@ namespace Nucleus.Coop
             "Italian",
             "Japanese",
             "Koreana",
+            "Latam",
             "Norwegian",
             "Polish",
             "Portuguese",
@@ -1311,13 +1312,11 @@ namespace Nucleus.Coop
             // gamepadsAssignMethods
             // 
             this.gamepadsAssignMethods.AutoSize = true;
-            this.gamepadsAssignMethods.Checked = true;
-            this.gamepadsAssignMethods.CheckState = System.Windows.Forms.CheckState.Checked;
             this.gamepadsAssignMethods.Location = new System.Drawing.Point(16, 34);
             this.gamepadsAssignMethods.Name = "gamepadsAssignMethods";
-            this.gamepadsAssignMethods.Size = new System.Drawing.Size(193, 19);
+            this.gamepadsAssignMethods.Size = new System.Drawing.Size(202, 19);
             this.gamepadsAssignMethods.TabIndex = 295;
-            this.gamepadsAssignMethods.Text = "Follow Gamepads API Indexes\r\n";
+            this.gamepadsAssignMethods.Text = "Follow XInput Controller Indexes";
             this.gamepadsAssignMethods.UseVisualStyleBackColor = true;
             // 
             // btnNext
@@ -3418,10 +3417,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.layoutTab);
-            this.Controls.Add(this.settingsTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.layoutTab);
+            this.Controls.Add(this.settingsTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

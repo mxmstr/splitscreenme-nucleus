@@ -490,7 +490,7 @@ namespace Nucleus.Gaming
             string result;
             if (Environment.Is64BitOperatingSystem)
             {
-                result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "Language", "english");
+                result = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam\steamglobal", "Language", "english");
             }
             else
             {

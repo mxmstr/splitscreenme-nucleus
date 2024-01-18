@@ -273,7 +273,15 @@ namespace Nucleus.Gaming
 
         public void StartProcess(string path)
         {
-            System.Diagnostics.Process.Start(path);
+            if (File.Exists(path))
+            {
+                ProcessStartInfo sc = new ProcessStartInfo(path);
+                sc.UseShellExecute = true;
+                sc.WorkingDirectory = Path.GetDirectoryName(path);
+                sc.ErrorDialog = true;
+                
+                Process.Start(sc);
+            }
         }
 
         public void ProceedSymlink()

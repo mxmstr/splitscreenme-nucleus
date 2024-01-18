@@ -15,9 +15,8 @@ namespace Nucleus.Coop.Tools
             
             string message;
             string gamePath = userGameInfo.ExePath;
-            bool imcompatibleGamePath = gamePath.StartsWith(@"C:\Program Files (x86)\") ||
-                                                   gamePath.StartsWith(@"C:\Users\") ||
-                                                   gamePath.StartsWith(@"C:\Windows\");
+            bool imcompatibleGamePath =  gamePath.StartsWith(@"C:\Users\") ||
+                                         gamePath.StartsWith(@"C:\Windows\");
             
             if ((userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.LaunchAsDifferentUsersAlt) && imcompatibleGamePath)
             {
@@ -41,7 +40,6 @@ namespace Nucleus.Coop.Tools
                     message = "This game handler does not support the current Nucleus Co-op installation path.\n\n" +
                           "Do NOT install in any of these folders:\n" +
                           "- A folder containing any game files\n" +
-                          "- C:\\Program Files or C:\\Program Files (x86)\n" +
                           "- C:\\Users (including Documents, Desktop, or Downloads)\n" +
                           "- Any folder with security settings like C:\\Windows\n" +
                           "\n" +

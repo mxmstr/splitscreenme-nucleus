@@ -1556,10 +1556,10 @@ namespace Nucleus.Coop
                 return;
             }
 
-            currentStep?.Ended();
-
             DevicesFunctions.gamepadTimer.Dispose();
 
+            currentStep?.Ended();
+           
             btn_Play.Text = "S T O P";
 
             btn_Prev.Enabled = false;
@@ -2536,7 +2536,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            if (profileSettings.Visible)
+            if (profileSettings.Visible || settings == null)
             {
                 return;
             }
@@ -2585,7 +2585,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (!profileSettings.Visible)
+            if (!profileSettings.Visible || profileSettings == null)
             {
                 profileSettings.BringToFront();
                 profileSettings.Visible = true;
