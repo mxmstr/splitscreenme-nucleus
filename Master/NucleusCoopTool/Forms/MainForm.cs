@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Windows.Forms;
@@ -326,7 +327,7 @@ namespace Nucleus.Coop
 
             if (ini.IniReadValue("Misc", "WindowSize") != "")
             {
-                string[] windowSize = ini.IniReadValue("Misc", "WindowSize").Split('X');
+                string[] windowSize = ini.IniReadValue("Misc", "WindowSize").Split('X');            
                 Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
             }
 
@@ -638,7 +639,15 @@ namespace Nucleus.Coop
             if (ini.IniReadValue("Misc", "WindowLocation") != "")
             {
                 string[] windowLocation = ini.IniReadValue("Misc", "WindowLocation").Split('X');
-                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+
+                if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
+                {
+                    CenterToScreen();
+                }
+                else 
+                {
+                    Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+                }               
             }
             else
             {
