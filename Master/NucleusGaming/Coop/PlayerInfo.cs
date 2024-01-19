@@ -135,6 +135,7 @@ namespace Nucleus.Gaming.Coop
 
         private Stopwatch flashStopwatch = new Stopwatch();
         private Task flashTask = null;
+
         public void FlashIcon()
         {
             if (ShouldFlash && flashStopwatch != null && flashStopwatch.IsRunning && flashStopwatch.ElapsedMilliseconds <= 250)

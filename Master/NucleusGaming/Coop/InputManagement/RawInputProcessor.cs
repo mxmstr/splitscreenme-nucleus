@@ -445,7 +445,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             HeaderDwType type = (HeaderDwType)rawBuffer.header.dwType;
             IntPtr hDevice = rawBuffer.header.hDevice;
-
+            
             if (type == HeaderDwType.RIM_TYPEHID)
             {
                 return;
@@ -457,6 +457,11 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 {
                     foreach (PlayerInfo toFlash in CurrentProfile?.DevicesList.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
                     {
+                        if(toFlash.HIDDeviceID[0] == "MouseHandleZero" && rawBuffer.data.mouse.ulExtraInformation == 161)//dwExtraInfo 0x00A1 == 161 so we can filter out the virtual mouse created by ui navigation
+                        {
+                            return;
+                        }
+
                         toFlash.FlashIcon();
                     }
                 }

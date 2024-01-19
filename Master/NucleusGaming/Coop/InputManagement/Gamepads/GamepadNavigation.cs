@@ -136,11 +136,11 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
                     if (canScrollUp)
                     {
-                        mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollUpSpeed, 0);///Mouse wheel Up
+                        mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollUpSpeed, 0x00A1);///Mouse wheel Up //dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                     }
                     else if (canScrollDown)
                     {
-                        mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollDownSpeed, 0);///Mouse wheel Down
+                        mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollDownSpeed, 0x00A1);///Mouse wheel Down//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                     }
 
                     if (canMouveRight)
@@ -171,29 +171,29 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
                     if ((pressed == LeftClick || rt == LeftClick || lt == LeftClick) && prevPressed != pressed)///Left click and release(single click) 
                     {
-                        mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0);///Left Mouse Button Down
+                        mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0x00A1);///Left Mouse Button Down //dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         Thread.Sleep(200);
-                        mouse_event(MOUSEEVENTF_LEFTUP, cursor.X, cursor.Y, 0, 0);///Right Mouse Button Up
+                        mouse_event(MOUSEEVENTF_LEFTUP, cursor.X, cursor.Y, 0, 0x00A1);///Right Mouse Button Up//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         dragging = false;
                     }
 
                     if ((pressed == RightClick || rt == RightClick || lt == RightClick) && prevPressed != pressed)///Right click and release(single click)
                     {
-                        mouse_event(MOUSEEVENTF_RIGHTDOWN, cursor.X, cursor.Y, 0, 0);///Right Mouse Button Down
+                        mouse_event(MOUSEEVENTF_RIGHTDOWN, cursor.X, cursor.Y, 0, 0x00A1);///Right Mouse Button Down//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         Thread.Sleep(200);
-                        mouse_event(MOUSEEVENTF_RIGHTUP, cursor.X, cursor.Y, 0, 0);///Right Mouse Button Up
+                        mouse_event(MOUSEEVENTF_RIGHTUP, cursor.X, cursor.Y, 0, 0x00A1);///Right Mouse Button Up//dwExtraInfo 0x00A1 == 161 so can filter filter out the mouse created here
                         dragging = false;
                     }
 
                     if ((pressed == Dragdrop || rt == Dragdrop || lt == Dragdrop) && pressed != prevPressed && !dragging)///Left click //catch/drag  
                     {
-                        mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0);
+                        mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0x00A1);//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         dragging = true;
                         Thread.Sleep(200);
                     }
                     else if ((pressed == Dragdrop || rt == Dragdrop || lt == Dragdrop) && pressed != prevPressed && dragging)///Left click //release 
                     {
-                        mouse_event(MOUSEEVENTF_LEFTUP, cursor.X, cursor.Y, 0, 0);
+                        mouse_event(MOUSEEVENTF_LEFTUP, cursor.X, cursor.Y, 0, 0x00A1);//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         dragging = false;
                         Thread.Sleep(200);
                     }
