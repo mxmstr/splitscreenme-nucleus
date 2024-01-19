@@ -95,9 +95,8 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
 
                         User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_ACTIVATEAPP, (IntPtr)1, IntPtr.Zero);
                         User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_NCACTIVATE, (IntPtr)0x00000001, IntPtr.Zero);
-                        User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_SETFOCUS, IntPtr.Zero, IntPtr.Zero);
+                        User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_SETFOCUS, IntPtr.Zero, IntPtr.Zero);                                            
                         User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_MOUSEACTIVATE, (IntPtr)hWnd, (IntPtr)1);
-                        //Console.WriteLine("Sending fake focus to window with handle " + hWnd);
 
                         //Deep Rock Galactic doesn't work with this message
                         if (gen.FakeFocusSendActivate)

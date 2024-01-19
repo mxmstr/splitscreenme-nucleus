@@ -187,6 +187,7 @@ namespace Nucleus.Gaming.Tools.Steam
                 {
                     lang = gen.GetSteamLanguage();
                 }
+
                 File.WriteAllText(Path.Combine(settingsFolder, "language.txt"), lang);
                 genericGameHandler.addedFiles.Add(Path.Combine(settingsFolder, "language.txt"));
             }
@@ -204,6 +205,7 @@ namespace Nucleus.Gaming.Tools.Steam
                     {
                         tempRootFolder = tempRootFolder.Substring(0, tempRootFolder.Length - 1);
                     }
+
                     steamDllFolder = steamDllrootFolder.Remove(0, (tempRootFolder.Length));
 
                     instanceSteamDllFolder = linkFolder.TrimEnd('\\') + "\\" + steamDllFolder.TrimStart('\\');
@@ -726,10 +728,12 @@ namespace Nucleus.Gaming.Tools.Steam
             }
 
             string lang = "english";
+
             if (genericGameHandler.ini.IniReadValue("Misc", "SteamLang") != "" && genericGameHandler.ini.IniReadValue("Misc", "SteamLang") != "Automatic")
             {
                 genericGameInfo.GoldbergLanguage = genericGameHandler.ini.IniReadValue("Misc", "SteamLang").ToLower();
             }
+
             if (genericGameInfo.GoldbergLanguage?.Length > 0)
             {
                 lang = genericGameInfo.GoldbergLanguage;
@@ -738,6 +742,7 @@ namespace Nucleus.Gaming.Tools.Steam
             {
                 lang = genericGameInfo.GetSteamLanguage();
             }
+
             emu.IniWriteValue("SmartSteamEmu", "Language", lang);
 
             if (genericGameHandler.ini.IniReadValue("Misc", "UseNicksInGame") == "True" && !string.IsNullOrEmpty(player.Nickname))

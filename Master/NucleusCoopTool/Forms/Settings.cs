@@ -90,8 +90,6 @@ namespace Nucleus.Coop
             setupScreen = pc;
             InitializeComponent();
          
-            SuspendLayout();
-
             FormBorderStyle = FormBorderStyle.None;
             default_Cursor = mf.default_Cursor;
             Cursor = default_Cursor;
@@ -111,7 +109,9 @@ namespace Nucleus.Coop
                 if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
                 {
                     if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
+                    {
                         c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
                 }
 
                 if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
@@ -500,7 +500,6 @@ namespace Nucleus.Coop
             }
 
             showUIInfoMsg.Checked = bool.Parse(ini.IniReadValue("Dev", "ShowToolTips"));
-            //disableQuickUpdate.Checked = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
 
             RefreshAudioList();
 
@@ -550,8 +549,6 @@ namespace Nucleus.Coop
             }
 
             SetToolTips();
-
-            ResumeLayout();
 
             DPIManager.Register(this);
             DPIManager.Update(this);
@@ -622,7 +619,10 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(splitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(hideDesktop, "Will only show the splitscreen division window without adjusting the game windows size and offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(disableGameProfiles, "Disables profiles, Nucleus will use the global settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(gamepadsAssignMethods, "If enabled profile will not save per player gamepad but use gamepads API indexes instead \n(switching modes could prevent some profiles to load properly).\nNote: Nucleus will return to the main screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(gamepadsAssignMethods, "Can break controller support in some handlers. If enabled profiles\n" +
+                                                             "will not save per player gamepad but use XInput indexes instead \n" +
+                                                             "(switching modes could prevent some profiles to load properly).\n" +
+                                                             "Note: Nucleus will return to the main screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndSteamIds()
@@ -1318,7 +1318,6 @@ namespace Nucleus.Coop
             g.DrawRectangles(bordersPen, tabBorders);
         }
 
-
         private void btn_Gb_Update_Click(object sender, EventArgs e)
         {
             GoldbergUpdaterForm gbUpdater = new GoldbergUpdaterForm();
@@ -1464,7 +1463,6 @@ namespace Nucleus.Coop
                 User32Interop.ReleaseCapture();
                 IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
-
             }
         }
 

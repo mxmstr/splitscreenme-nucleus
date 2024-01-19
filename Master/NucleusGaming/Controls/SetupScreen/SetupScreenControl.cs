@@ -192,7 +192,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                      
             profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
              
-            if(game.Game.UseDevReorder)
+            if(game.Game.UseDevReorder || game.Game.CreateSingleDeviceFile)
             {
                 DevicesFunctions.UseGamepadApiIndex = false;         
             }

@@ -1,4 +1,4 @@
-Nucleus Co-op - version 2.2.1
+Nucleus Co-op - version 2.2.2
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy.
 
@@ -161,7 +161,6 @@ Game.Hook.EnableMKBInput = false;			//Enable Mouse/Keyboard input for instances 
 Game.UseDInputBlocker = false;				//Setup wizark952's dinput blocker (block dinput for the game).
 Game.XInputPlusNoIni = false;				//Do not copy XInputPlus' ini when using Game.XInputPlusDll.
 Game.XInputPlusOldDll = false;				//When using Game.XInputPlusDll, you can specify to use the previous version instead of latest (needed for some games).
-
 
 #################### Goldberg Emulator ####################
 
@@ -489,12 +488,23 @@ Known Issues: ------------------------------------------------------------------
 
 Changelog: -----------------------------------------------------------------------------------------
 
+v2.2.2 - January xx, 2024
+
+ -Fixed an issue with the unsecured path check preventing handler startup if a game is installed in the default Steam installation path: Program Files (x86)\Steam\steamapps\common\.
+ -Disabled using xinput indexes by default for gamepad auto assignment (broke controller support in some handlers that rely on device id). Now the user will have to press a button on each gamepad for the controller icons to show in every handler, same as the multiple keyboards/mice icons work.
+ -Improved Context.StartProcess().
+ -Fixed automatic Steam language detection (deprecated code). Added Latam language option in Nucleus settings too.
+ -Added the updated macstyle theme by V.
+ -Fixed gamepad ui navigation virtual mouse appearing onto the setup screen.                           
+ -Fixed Nucleus window location beeing restored on non available screen area(disconnected screen).
+ -Fixed more typos.
+
 v2.2.1 - January 06, 2024
 
--Fixed a bug affecting handlers using Devreorder.
--Fixed a bug deleting a player if its attached gamepad has been unplugged.
--Fixed typos.
--Fixed the updater.
+ -Fixed a bug affecting handlers using Devreorder (e.g. Star Wars: Battlefront II Classic).
+ -Fixed a bug deleting a player if his attached controller has been unplugged. Fixes Nucleus Co-op crashing when disconnecting a controller during a handler launch.
+ -Fixed typos.
+ -Fixed the updater. 
 
 v2.2.0 - January 01, 2024
 
