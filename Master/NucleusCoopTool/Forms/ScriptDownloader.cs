@@ -671,16 +671,16 @@ namespace Nucleus.Coop.Forms
 
         public string GetCache(string uri)
         {         
-            string caheDir = Path.Combine(Application.StartupPath, $"cache");
+            string cacheDir = Path.Combine(Application.StartupPath, $"cache");
 
-            if (!Directory.Exists(caheDir))
+            if (!Directory.Exists(cacheDir))
             {
-                Directory.CreateDirectory(caheDir);
+                Directory.CreateDirectory(cacheDir);
             }
 
             try
             {
-                string path = Path.Combine(caheDir, $"cache");
+                string path = Path.Combine(cacheDir, $"cache");
 
                 if (File.Exists(path))
                 {
