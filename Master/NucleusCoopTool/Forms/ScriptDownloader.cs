@@ -16,7 +16,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Windows.Forms;
+
 
 namespace Nucleus.Coop.Forms
 {
@@ -94,7 +96,7 @@ namespace Nucleus.Coop.Forms
             mainForm = mf;
 
             InitializeComponent();
-                 
+
             if (ini.IniReadValue("Misc", "DownloaderWindowSize") != "")
             {
                 string[] windowSize = ini.IniReadValue("Misc", "DownloaderWindowSize").Split('X');
@@ -172,7 +174,7 @@ namespace Nucleus.Coop.Forms
                 else
                 {
                     control.Cursor = default_Cursor;
-                }             
+                }
             }
 
             if (mf.useButtonsBorder)
@@ -224,7 +226,7 @@ namespace Nucleus.Coop.Forms
 
         private void SetToolTips()
         {
-            CustomToolTips.SetToolTip(btn_ViewAll, "View all handlers.", new int[] { 190, 0, 0, 0 } , new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_ViewAll, "View all handlers.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_Info, "Show more information about the handler.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_Search, "Start searching handler(s) for a specific game.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_Download, "Download the selected game handler.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -400,10 +402,19 @@ namespace Nucleus.Coop.Forms
 
                 string searchParam = Uri.EscapeDataString(txt_Search.Text);
                 string rawHandlers = null;
+
                 if (grabAll)
                 {
-                    rawHandlers = Get(api + "allhandlers");
-                    grabAll = false;
+                    if (GetCache(api + "allhandlers") == "" || GetCache(api + "allhandlers") == null ||  GetCache(api + "allhandlers") == "{}")
+                    {
+                        rawHandlers = Get(api + "allhandlers");
+                        grabAll = false;
+                    }
+                    else
+                    {
+                        rawHandlers = GetCache(api + "allhandlers");
+                        grabAll = false;
+                    }
                 }
                 else
                 {
@@ -657,6 +668,59 @@ namespace Nucleus.Coop.Forms
             lbl_Status.Text = string.Format("Viewing results {0}-{1}. Total: {2}", (startIndex + 1), entriesToView + startIndex, tot);
         }
 
+
+        public string GetCache(string uri)
+        {         
+            string caheDir = Path.Combine(Application.StartupPath, $"cache");
+
+            if (!Directory.Exists(caheDir))
+            {
+                Directory.CreateDirectory(caheDir);
+            }
+
+            try
+            {
+                string path = Path.Combine(caheDir, $"cache");
+
+                if (File.Exists(path))
+                {
+                    return File.ReadAllText(path); 
+                }
+                else
+                {
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                    ServicePointManager.DefaultConnectionLimit = 9999;
+
+
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                    request.UserAgent = "request";
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    using (Stream stream = response.GetResponseStream())
+
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        using (FileStream cachestream = new FileStream(path, FileMode.Create))
+                        {
+                            using (StreamWriter writer = new StreamWriter(cachestream))
+                            {
+                                writer.Write(reader.ReadToEnd());
+                                cachestream.Flush();
+                                return reader.ReadToEnd();
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
         public string Get(string uri)
         {
             ServicePointManager.Expect100Continue = true;
@@ -676,7 +740,7 @@ namespace Nucleus.Coop.Forms
                 }
             }
             catch
-            {             
+            {
                 return null;
             }
         }
