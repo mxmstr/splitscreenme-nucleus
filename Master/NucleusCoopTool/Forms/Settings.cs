@@ -90,8 +90,6 @@ namespace Nucleus.Coop
             setupScreen = pc;
             InitializeComponent();
          
-            SuspendLayout();
-
             FormBorderStyle = FormBorderStyle.None;
             default_Cursor = mf.default_Cursor;
             Cursor = default_Cursor;
@@ -111,7 +109,9 @@ namespace Nucleus.Coop
                 if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
                 {
                     if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
+                    {
                         c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    }
                 }
 
                 if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
@@ -500,7 +500,6 @@ namespace Nucleus.Coop
             }
 
             showUIInfoMsg.Checked = bool.Parse(ini.IniReadValue("Dev", "ShowToolTips"));
-            //disableQuickUpdate.Checked = bool.Parse(ini.IniReadValue("Dev", "DisableFastHandlerUpdate"));
 
             RefreshAudioList();
 
@@ -550,8 +549,6 @@ namespace Nucleus.Coop
             }
 
             SetToolTips();
-
-            ResumeLayout();
 
             DPIManager.Register(this);
             DPIManager.Update(this);
@@ -1321,7 +1318,6 @@ namespace Nucleus.Coop
             g.DrawRectangles(bordersPen, tabBorders);
         }
 
-
         private void btn_Gb_Update_Click(object sender, EventArgs e)
         {
             GoldbergUpdaterForm gbUpdater = new GoldbergUpdaterForm();
@@ -1467,7 +1463,6 @@ namespace Nucleus.Coop
                 User32Interop.ReleaseCapture();
                 IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
-
             }
         }
 
