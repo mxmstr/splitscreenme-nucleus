@@ -271,10 +271,9 @@ namespace Nucleus.Coop
 
             if (!matchRequirements)
             {
-                MessageBox.Show("Please install Microsoft Visual C++ 2015 - 2019 Redistributable (both x86 and x64)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Please install Microsoft Visual C++ 2015 - 2022 Redistributable (both x86 and x64)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Process.Start("https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170");
-                Process nc = Process.GetCurrentProcess();
-                nc.Kill();
+                Process.GetCurrentProcess().Kill();
             }
         }
 
