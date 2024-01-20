@@ -405,16 +405,8 @@ namespace Nucleus.Coop.Forms
 
                 if (grabAll)
                 {
-                    if (GetCache(api + "allhandlers") == "" || GetCache(api + "allhandlers") == null ||  GetCache(api + "allhandlers") == "{}")
-                    {
-                        rawHandlers = Get(api + "allhandlers");
-                        grabAll = false;
-                    }
-                    else
-                    {
-                        rawHandlers = GetCache(api + "allhandlers");
-                        grabAll = false;
-                    }
+                   rawHandlers = Get(api + "allhandlers");
+                   grabAll = false;
                 }
                 else
                 {
@@ -705,9 +697,10 @@ namespace Nucleus.Coop.Forms
                         {
                             using (StreamWriter writer = new StreamWriter(cachestream))
                             {
-                                writer.Write(reader.ReadToEnd());
+                                var json = reader.ReadToEnd();
+                                writer.Write(json);
                                 cachestream.Flush();
-                                return reader.ReadToEnd();
+                                return json;
                             }
                         }
 

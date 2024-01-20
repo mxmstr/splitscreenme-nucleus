@@ -57,6 +57,8 @@ namespace Nucleus.Coop
 
         private Pen bordersPen;
 
+        private bool shouldSwapNick = true;
+
         protected override CreateParams CreateParams
         {
             get
@@ -211,6 +213,7 @@ namespace Nucleus.Coop
             for (int i = 0; i < 32; i++)
             {
                 controllerNicks[i].TextChanged += new EventHandler(SwapNickname);
+                controllerNicks[i].KeyPress += new KeyPressEventHandler(CheckTypingNick);
                 controllerNicks[i].MouseHover += new EventHandler(CacheNickname);
                 controllerNicks[i].LostFocus += new EventHandler(UpdateControllerNickItems);
 
@@ -1255,13 +1258,14 @@ namespace Nucleus.Coop
         {
             ComboBox cb = sender as ComboBox;
             currentNickname = cb.Text;
+            shouldSwapNick = true;
         }
-
+       
         private void SwapNickname(object sender, EventArgs e)
         {
             ComboBox cb = sender as ComboBox;
 
-            if (cb.Text == "")
+            if (cb.Text == "" || !shouldSwapNick)
             {
                 return;
             }
@@ -1273,6 +1277,11 @@ namespace Nucleus.Coop
                 ch.Text = currentNickname;
                 currentNickname = cb.Text;
             }
+        }
+
+        private void CheckTypingNick(object sender, KeyPressEventArgs e)
+        {
+            shouldSwapNick = false;
         }
 
         private void CacheSteamId(object sender, EventArgs e)
