@@ -495,8 +495,10 @@ v2.2.2 - January xx, 2024
  -Improved Context.StartProcess().
  -Fixed automatic Steam language detection (deprecated code). Added Latam language option in Nucleus settings too.
  -Added the updated macstyle theme by V.
- -Fixed gamepad ui navigation virtual mouse appearing onto the setup screen.                           
- -Fixed Nucleus window location beeing restored on non available screen area(disconnected screen).
+ -Fixed gamepad UI navigation virtual mouse icon appearing on the setup screen.
+ -Fixed Nucleus window location being restored on non available screen area (disconnected screen).
+ -Improved automatic nicknames swapping in settings and profiles settings.
+ -Changed Microsoft Visual C++ 2015 - 2022 Redistributable redirection link from "fr" version to "en".
  -Fixed more typos.
 
 v2.2.1 - January 06, 2024
