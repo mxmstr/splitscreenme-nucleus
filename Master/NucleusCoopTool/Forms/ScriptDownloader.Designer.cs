@@ -57,6 +57,7 @@
             this.description = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label4 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.mainContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +67,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainContainer.BackColor = System.Drawing.Color.Transparent;
+            this.mainContainer.Controls.Add(this.button1);
             this.mainContainer.Controls.Add(this.btn_Maximize);
             this.mainContainer.Controls.Add(this.btn_Download);
             this.mainContainer.Controls.Add(this.btn_Close);
@@ -185,7 +187,7 @@
             this.btn_Extract.Enabled = false;
             this.btn_Extract.FlatAppearance.BorderSize = 0;
             this.btn_Extract.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Extract.Location = new System.Drawing.Point(617, -1);
+            this.btn_Extract.Location = new System.Drawing.Point(515, 71);
             this.btn_Extract.Name = "btn_Extract";
             this.btn_Extract.Size = new System.Drawing.Size(20, 20);
             this.btn_Extract.TabIndex = 60;
@@ -226,13 +228,14 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(233, 64);
+            this.label1.Location = new System.Drawing.Point(627, 73);
             this.label1.Margin = new System.Windows.Forms.Padding(1);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 13);
             this.label1.TabIndex = 57;
             this.label1.Text = "Results Per Page:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Visible = false;
             // 
             // btn_Next
             // 
@@ -241,7 +244,7 @@
             this.btn_Next.Enabled = false;
             this.btn_Next.FlatAppearance.BorderSize = 0;
             this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Next.Location = new System.Drawing.Point(441, 59);
+            this.btn_Next.Location = new System.Drawing.Point(297, 59);
             this.btn_Next.Name = "btn_Next";
             this.btn_Next.Size = new System.Drawing.Size(20, 20);
             this.btn_Next.TabIndex = 55;
@@ -256,7 +259,7 @@
             this.btn_Prev.Enabled = false;
             this.btn_Prev.FlatAppearance.BorderSize = 0;
             this.btn_Prev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Prev.Location = new System.Drawing.Point(415, 59);
+            this.btn_Prev.Location = new System.Drawing.Point(271, 59);
             this.btn_Prev.Name = "btn_Prev";
             this.btn_Prev.Size = new System.Drawing.Size(20, 20);
             this.btn_Prev.TabIndex = 54;
@@ -270,16 +273,13 @@
             this.cmb_NumResults.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_NumResults.FormattingEnabled = true;
             this.cmb_NumResults.Items.AddRange(new object[] {
-            "25",
-            "50",
-            "100",
-            "250",
-            "All"});
-            this.cmb_NumResults.Location = new System.Drawing.Point(327, 59);
+            "40"});
+            this.cmb_NumResults.Location = new System.Drawing.Point(721, 68);
             this.cmb_NumResults.Margin = new System.Windows.Forms.Padding(1);
             this.cmb_NumResults.Name = "cmb_NumResults";
             this.cmb_NumResults.Size = new System.Drawing.Size(49, 21);
             this.cmb_NumResults.TabIndex = 56;
+            this.cmb_NumResults.Visible = false;
             this.cmb_NumResults.SelectedIndexChanged += new System.EventHandler(this.cmb_NumResults_SelectedIndexChanged);
             // 
             // btn_ViewAll
@@ -288,7 +288,7 @@
             this.btn_ViewAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_ViewAll.FlatAppearance.BorderSize = 0;
             this.btn_ViewAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ViewAll.Location = new System.Drawing.Point(382, 59);
+            this.btn_ViewAll.Location = new System.Drawing.Point(238, 59);
             this.btn_ViewAll.Name = "btn_ViewAll";
             this.btn_ViewAll.Size = new System.Drawing.Size(20, 20);
             this.btn_ViewAll.TabIndex = 53;
@@ -299,7 +299,7 @@
             // 
             this.lbl_Status.AutoSize = true;
             this.lbl_Status.BackColor = System.Drawing.Color.Transparent;
-            this.lbl_Status.Location = new System.Drawing.Point(467, 62);
+            this.lbl_Status.Location = new System.Drawing.Point(323, 62);
             this.lbl_Status.Name = "lbl_Status";
             this.lbl_Status.Size = new System.Drawing.Size(0, 13);
             this.lbl_Status.TabIndex = 52;
@@ -312,7 +312,7 @@
             this.chkBox_Verified.Checked = true;
             this.chkBox_Verified.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBox_Verified.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkBox_Verified.Location = new System.Drawing.Point(653, 19);
+            this.chkBox_Verified.Location = new System.Drawing.Point(541, 71);
             this.chkBox_Verified.Name = "chkBox_Verified";
             this.chkBox_Verified.Size = new System.Drawing.Size(82, 17);
             this.chkBox_Verified.TabIndex = 51;
@@ -411,6 +411,15 @@
             this.label4.Text = "Game:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(721, 41);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(109, 23);
+            this.button1.TabIndex = 62;
+            this.button1.Text = "Update Cache";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // ScriptDownloader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -469,5 +478,6 @@
         private System.Windows.Forms.ColumnHeader description;
         private System.Windows.Forms.ColumnHeader id;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button1;
     }
 }

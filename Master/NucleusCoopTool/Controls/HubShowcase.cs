@@ -46,42 +46,27 @@ namespace Nucleus.Coop
             BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase-background.png");
             BackgroundImageLayout = ImageLayout.Stretch;
             labels = new List<Label>();
+
             rainbowTimer = new System.Windows.Forms.Timer
             {
                 Interval = (25) //millisecond                   
             };
+
             rainbowTimer.Tick += new EventHandler(RainbowTimerTick);
+
             Main_Showcase(mainForm);
         }
 
         public void Main_Showcase(MainForm mainForm)
         {
-
             showcase_Label.Location = new Point(Width / 2 - showcase_Label.Width / 2, showcase_Label.Location.Y);
             ImageList showcaseCovers = new ImageList
             {
                 ImageSize = new Size(170, 227)
             };
 
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            ServicePointManager.DefaultConnectionLimit = 9999;
+            JArray array = HubCache.InitCache();
 
-            string rawHandlers = Get(api + "allhandlers");
-
-            if (rawHandlers == null)
-            {
-                return;
-            }
-            else if (rawHandlers == "{}")
-            {
-                return;
-            }
-
-            JObject jObject = (JObject)JsonConvert.DeserializeObject(rawHandlers);
-
-            JArray array = jObject["Handlers"] as JArray;
             handlers = new JArray(array.OrderByDescending(obj => (DateTime)obj["createdAt"]));
 
             List<string> author = new List<string>();
@@ -178,8 +163,7 @@ namespace Nucleus.Coop
                             TextAlign = ContentAlignment.TopLeft,
                             Dock = DockStyle.Bottom,
                         };
-
-                       
+                        
                         authorLabel.Location = new Point(downloadLabel.Location.X, downloadLabel.Top - authorLabel.Height);
                         
                         labels.Add(authorLabel);
@@ -251,32 +235,6 @@ namespace Nucleus.Coop
                     showcaseBanner1.Update();
                 }
             }
-        }
-
-        private string Get(string uri)
-        {
-            ServicePointManager.Expect100Continue = false;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            ServicePointManager.DefaultConnectionLimit = 9999;
-
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-                request.Timeout = 1000;
-                request.Method = "Get";
-
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
-            catch (WebException)
-            {         
-                return null;
-            }
-        }
+        }    
     }
 }

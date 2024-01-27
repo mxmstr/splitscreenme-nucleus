@@ -358,182 +358,193 @@ namespace Nucleus.Gaming.Coop
 
         public bool LoadGameProfile(int _profileToLoad)
         {
-            string path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{_profileToLoad}].json";
-
-            string jsonString = File.ReadAllText(path);
-
-            JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
-
-            Reset();
-
-            profileToSave = _profileToLoad;///to keep after reset()
-
-            if (Jprofile == null)
+            try
             {
-                Ready = false;
+                string path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{_profileToLoad}].json";
+
+                string jsonString = File.ReadAllText(path);
+
+                JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
+
+                Reset();
+
+                profileToSave = _profileToLoad;///to keep after reset()
+
+                if (Jprofile == null)
+                {
+                    Ready = false;
+                    return false;
+                }
+
+                JToken Joptions = Jprofile["Options"] as JToken;
+
+                options = new Dictionary<string, object>();
+
+                foreach (JProperty Jopt in Joptions)
+                {
+                    options.Add((string)Jopt.Name, Jopt.Value.ToString());
+                }
+
+                if (hWndInterval == 0)
+                {
+                    HWndInterval = (int)Jprofile["WindowsSetupTiming"]["Time"];
+                }
+
+                if (pauseBetweenInstanceLaunch == 0)
+                {
+                    PauseBetweenInstanceLaunch = (int)Jprofile["PauseBetweenInstanceLaunch"]["Time"];
+                }
+
+                UseSplitDiv = (bool)Jprofile["UseSplitDiv"]["Enabled"];
+
+                if (Jprofile["UseSplitDiv"]["HideOnly"] != null)
+                {
+                    HideDesktopOnly = (bool)Jprofile["UseSplitDiv"]["HideOnly"];
+                }
+
+                SplitDivColor = (string)Jprofile["UseSplitDiv"]["Color"];
+                AutoDesktopScaling = (bool)Jprofile["AutoDesktopScaling"]["Enabled"];
+                UseNicknames = (bool)Jprofile["UseNicknames"]["Use"];
+                Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
+                Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
+                Cts_Unfocus = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"];
+
+                if (Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"] != null)//such checks are there so testers/users can still use there existing profiles
+                                                                                        //after new options implementation. Any new option must have that null check.
+                {
+                    Cts_BringToFront = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"];
+                }
+
+                Network = (string)Jprofile["Network"]["Type"];
+                CustomLayout_Ver = (int)Jprofile["CustomLayout"]["Ver"];
+                CustomLayout_Hor = (int)Jprofile["CustomLayout"]["Hor"];
+                CustomLayout_Max = (int)Jprofile["CustomLayout"]["Max"];
+                AutoPlay = (bool)Jprofile["AutoPlay"]["Enabled"];
+                Notes = (string)Jprofile["Notes"];
+                Title = (string)Jprofile["Title"];
+
+                JToken JplayersInfos = Jprofile["Data"] as JToken;
+
+                for (int i = 0; i < JplayersInfos.Count(); i++)
+                {
+                    ProfilePlayer player = new ProfilePlayer();
+
+                    player.PlayerID = (int)JplayersInfos[i]["PlayerID"];
+                    player.Nickname = (string)JplayersInfos[i]["Nickname"];
+                    player.SteamID = (long)JplayersInfos[i]["SteamID"];
+                    player.GamepadGuid = (Guid)JplayersInfos[i]["GamepadGuid"];
+                    player.OwnerType = (int)JplayersInfos[i]["Owner"]["Type"];
+                    player.DisplayIndex = (int)JplayersInfos[i]["Owner"]["DisplayIndex"];
+
+                    player.OwnerDisplay = new Rectangle(
+                                                   (int)JplayersInfos[i]["Owner"]["Display"]["X"],
+                                                   (int)JplayersInfos[i]["Owner"]["Display"]["Y"],
+                                                   (int)JplayersInfos[i]["Owner"]["Display"]["Width"],
+                                                   (int)JplayersInfos[i]["Owner"]["Display"]["Height"]);
+
+                    player.OwnerUIBounds = new RectangleF(
+                                                   (float)JplayersInfos[i]["Owner"]["UiBounds"]["X"],
+                                                   (float)JplayersInfos[i]["Owner"]["UiBounds"]["Y"],
+                                                   (float)JplayersInfos[i]["Owner"]["UiBounds"]["Width"],
+                                                   (float)JplayersInfos[i]["Owner"]["UiBounds"]["Height"]);
+
+
+                    player.MonitorBounds = new Rectangle(
+                                                   (int)JplayersInfos[i]["MonitorBounds"]["X"],
+                                                   (int)JplayersInfos[i]["MonitorBounds"]["Y"],
+                                                   (int)JplayersInfos[i]["MonitorBounds"]["Width"],
+                                                   (int)JplayersInfos[i]["MonitorBounds"]["Height"]);
+
+                    player.EditBounds = new RectangleF(
+                                                  (float)JplayersInfos[i]["EditBounds"]["X"],
+                                                  (float)JplayersInfos[i]["EditBounds"]["Y"],
+                                                  (float)JplayersInfos[i]["EditBounds"]["Width"],
+                                                  (float)JplayersInfos[i]["EditBounds"]["Height"]);
+
+
+                    player.IsDInput = (bool)JplayersInfos[i]["IsDInput"];
+                    player.IsXInput = (bool)JplayersInfos[i]["IsXInput"];
+
+                    player.IsKeyboardPlayer = (bool)JplayersInfos[i]["IsKeyboardPlayer"];
+                    player.IsRawMouse = (bool)JplayersInfos[i]["IsRawMouse"];
+
+                    string[] hidIds = new string[] { "", "" };
+                    for (int h = 0; h < JplayersInfos[i]["HIDDeviceID"].Count(); h++)
+                    {
+                        hidIds.SetValue(JplayersInfos[i]["HIDDeviceID"][h].ToString(), h);
+                    }
+
+                    player.HIDDeviceIDs = hidIds;
+
+                    player.ScreenPriority = (int)JplayersInfos[i]["ScreenPriority"];
+                    player.ScreenIndex = (int)JplayersInfos[i]["ScreenIndex"];
+
+                    player.IdealProcessor = (string)JplayersInfos[i]["Processor"]["IdealProcessor"];
+                    player.Affinity = (string)JplayersInfos[i]["Processor"]["ProcessorAffinity"];
+                    player.PriorityClass = (string)JplayersInfos[i]["Processor"]["ProcessorPriorityClass"];
+
+                    if (player.IsXInput || player.IsDInput)
+                    {
+                        gamepadCount++;
+                    }
+                    else
+                    {
+                        keyboardCount++;
+                    }
+
+                    ProfilePlayersList.Add(player);
+                }
+
+                JToken JaudioSettings = Jprofile["AudioSettings"] as JToken;
+
+                foreach (JProperty JaudioSetting in JaudioSettings)
+                {
+                    if (JaudioSetting.Name.Contains("Custom"))
+                    {
+                        AudioCustomSettings = (bool)JaudioSetting.Value;
+                    }
+                    else
+                    {
+                        AudioDefaultSettings = (bool)JaudioSetting.Value;
+                    }
+                }
+
+                AudioInstances.Clear();
+
+                JToken JAudioInstances = Jprofile["AudioInstances"] as JToken;
+                foreach (JProperty JaudioDevice in JAudioInstances)
+                {
+                    AudioInstances.Add((string)JaudioDevice.Name, (string)JaudioDevice.Value);
+                }
+
+                JToken JAllscreens = Jprofile["AllScreens"] as JToken;
+                for (int s = 0; s < JAllscreens.Count(); s++)
+                {
+                    AllScreens.Add(new RectangleF((float)JAllscreens[s]["X"], (float)JAllscreens[s]["Y"], (float)JAllscreens[s]["Width"], (float)JAllscreens[s]["Height"]));
+                }
+
+                totalProfilePlayers = JplayersInfos.Count();
+
+                modeText = $"Profile n°{profileToSave}";
+
+                setupScreen.profileSettings_Tooltip.SetToolTip(setupScreen.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
+
+                Ready = true;
+
+                GetGhostBounds();
+
+                Globals.MainOSD.Show(1000, $"Game Profile N°{_profileToLoad} loaded");
+
+                return true;
+            }catch (Exception ex)
+            {
+                Reset();
+                NucleusMessageBox.Show("", "The profile can't be loaded.\n\n" +
+                    "If the error persist delete the profile and create a new one.\n\n" +
+                    "[Error]\n\n" + ex.Message, false);
+
                 return false;
             }
-
-            JToken Joptions = Jprofile["Options"] as JToken;
-
-            options = new Dictionary<string, object>();
-
-            foreach (JProperty Jopt in Joptions)
-            {
-                options.Add((string)Jopt.Name, Jopt.Value.ToString());
-            }
-
-            if (hWndInterval == 0)
-            {
-                HWndInterval = (int)Jprofile["WindowsSetupTiming"]["Time"];
-            }
-
-            if (pauseBetweenInstanceLaunch == 0)
-            {
-                PauseBetweenInstanceLaunch = (int)Jprofile["PauseBetweenInstanceLaunch"]["Time"];
-            }
-
-            UseSplitDiv = (bool)Jprofile["UseSplitDiv"]["Enabled"];
-
-            if (Jprofile["UseSplitDiv"]["HideOnly"] != null)
-            {
-                HideDesktopOnly = (bool)Jprofile["UseSplitDiv"]["HideOnly"];
-            }
-
-            SplitDivColor = (string)Jprofile["UseSplitDiv"]["Color"];
-            AutoDesktopScaling = (bool)Jprofile["AutoDesktopScaling"]["Enabled"];
-            UseNicknames = (bool)Jprofile["UseNicknames"]["Use"];
-            Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
-            Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
-            Cts_Unfocus = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"];
-
-            if (Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"] != null)//such checks are there so testers/users can still use there existing profiles
-                                                                                    //after new options implementation. Any new option must have that null check.
-            {
-                Cts_BringToFront = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"];
-            }
-
-            Network = (string)Jprofile["Network"]["Type"];
-            CustomLayout_Ver = (int)Jprofile["CustomLayout"]["Ver"];
-            CustomLayout_Hor = (int)Jprofile["CustomLayout"]["Hor"];
-            CustomLayout_Max = (int)Jprofile["CustomLayout"]["Max"];
-            AutoPlay = (bool)Jprofile["AutoPlay"]["Enabled"];
-            Notes = (string)Jprofile["Notes"];
-            Title = (string)Jprofile["Title"];
-
-            JToken JplayersInfos = Jprofile["Data"] as JToken;
-
-            for (int i = 0; i < JplayersInfos.Count(); i++)
-            {
-                ProfilePlayer player = new ProfilePlayer();
-
-                player.PlayerID = (int)JplayersInfos[i]["PlayerID"];
-                player.Nickname = (string)JplayersInfos[i]["Nickname"];
-                player.SteamID = (long)JplayersInfos[i]["SteamID"];
-                player.GamepadGuid = (Guid)JplayersInfos[i]["GamepadGuid"];
-                player.OwnerType = (int)JplayersInfos[i]["Owner"]["Type"];
-                player.DisplayIndex = (int)JplayersInfos[i]["Owner"]["DisplayIndex"];
-
-                player.OwnerDisplay = new Rectangle(
-                                               (int)JplayersInfos[i]["Owner"]["Display"]["X"],
-                                               (int)JplayersInfos[i]["Owner"]["Display"]["Y"],
-                                               (int)JplayersInfos[i]["Owner"]["Display"]["Width"],
-                                               (int)JplayersInfos[i]["Owner"]["Display"]["Height"]);
-
-                player.OwnerUIBounds = new RectangleF(
-                                               (float)JplayersInfos[i]["Owner"]["UiBounds"]["X"],
-                                               (float)JplayersInfos[i]["Owner"]["UiBounds"]["Y"],
-                                               (float)JplayersInfos[i]["Owner"]["UiBounds"]["Width"],
-                                               (float)JplayersInfos[i]["Owner"]["UiBounds"]["Height"]);
-
-
-                player.MonitorBounds = new Rectangle(
-                                               (int)JplayersInfos[i]["MonitorBounds"]["X"],
-                                               (int)JplayersInfos[i]["MonitorBounds"]["Y"],
-                                               (int)JplayersInfos[i]["MonitorBounds"]["Width"],
-                                               (int)JplayersInfos[i]["MonitorBounds"]["Height"]);
-
-                player.EditBounds = new RectangleF(
-                                              (float)JplayersInfos[i]["EditBounds"]["X"],
-                                              (float)JplayersInfos[i]["EditBounds"]["Y"],
-                                              (float)JplayersInfos[i]["EditBounds"]["Width"],
-                                              (float)JplayersInfos[i]["EditBounds"]["Height"]);
-
-
-                player.IsDInput = (bool)JplayersInfos[i]["IsDInput"];
-                player.IsXInput = (bool)JplayersInfos[i]["IsXInput"];
-
-                player.IsKeyboardPlayer = (bool)JplayersInfos[i]["IsKeyboardPlayer"];
-                player.IsRawMouse = (bool)JplayersInfos[i]["IsRawMouse"];
-
-                string[] hidIds = new string[] { "", "" };
-                for (int h = 0; h < JplayersInfos[i]["HIDDeviceID"].Count(); h++)
-                {
-                    hidIds.SetValue(JplayersInfos[i]["HIDDeviceID"][h].ToString(), h);
-                }
-
-                player.HIDDeviceIDs = hidIds;
-
-                player.ScreenPriority = (int)JplayersInfos[i]["ScreenPriority"];
-                player.ScreenIndex = (int)JplayersInfos[i]["ScreenIndex"];
-
-                player.IdealProcessor = (string)JplayersInfos[i]["Processor"]["IdealProcessor"];
-                player.Affinity = (string)JplayersInfos[i]["Processor"]["ProcessorAffinity"];
-                player.PriorityClass = (string)JplayersInfos[i]["Processor"]["ProcessorPriorityClass"];
-
-                if (player.IsXInput || player.IsDInput)
-                {
-                    gamepadCount++;
-                }
-                else
-                {
-                    keyboardCount++;
-                }
-
-                ProfilePlayersList.Add(player);
-            }
-
-            JToken JaudioSettings = Jprofile["AudioSettings"] as JToken;
-
-            foreach (JProperty JaudioSetting in JaudioSettings)
-            {
-                if (JaudioSetting.Name.Contains("Custom"))
-                {
-                    AudioCustomSettings = (bool)JaudioSetting.Value;
-                }
-                else
-                {
-                    AudioDefaultSettings = (bool)JaudioSetting.Value;
-                }
-            }
-
-            AudioInstances.Clear();
-
-            JToken JAudioInstances = Jprofile["AudioInstances"] as JToken;
-            foreach (JProperty JaudioDevice in JAudioInstances)
-            {
-                AudioInstances.Add((string)JaudioDevice.Name, (string)JaudioDevice.Value);
-            }
-
-            JToken JAllscreens = Jprofile["AllScreens"] as JToken;
-            for (int s = 0; s < JAllscreens.Count(); s++)
-            {
-                AllScreens.Add(new RectangleF((float)JAllscreens[s]["X"], (float)JAllscreens[s]["Y"], (float)JAllscreens[s]["Width"], (float)JAllscreens[s]["Height"]));
-            }
-
-            totalProfilePlayers = JplayersInfos.Count();
-
-            modeText = $"Profile n°{profileToSave}";
-
-            setupScreen.profileSettings_Tooltip.SetToolTip(setupScreen.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
-
-            Ready = true;
-
-            GetGhostBounds();
-
-            Globals.MainOSD.Show(1000, $"Game Profile N°{_profileToLoad} loaded");
-
-            return true;
         }
 
         private static string GetGameProfilesPath()

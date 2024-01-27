@@ -1,5 +1,6 @@
 ﻿using Jint;
 using Microsoft.Win32;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.ProtoInput;
@@ -80,8 +81,6 @@ namespace Nucleus.Gaming
         {
             Options.Add(new GameOption(name, desc, key, value));
         }
-
-        public string ScreenshotsUri => Hub.GetScreenshotsUri();
 
         public string HandlerId => Hub.Handler.Id;
 
@@ -284,6 +283,7 @@ namespace Nucleus.Gaming
         public string ForceGameArch;
         public string[] SSEAdditionalLines;
         public string[] DeleteOnClose;
+        public float[] DesktopScale;
         // -- From USS
         //Effectively a switch for all of USS features
         public bool SupportsMultipleKeyboardsAndMice;
@@ -329,7 +329,7 @@ namespace Nucleus.Gaming
 
         public Type HandlerType => typeof(GenericGameHandler);
 
-        public GenericGameInfo(string fileName, string folderPath, Stream str)
+        public GenericGameInfo(string fileName, string folderPath, Stream str, bool[] checkUpdate)//checkUpdate [0]=initial update check [1]=update was available before reloading the handler  
         {
             JsFileName = fileName;
             Folder = folderPath;
@@ -378,11 +378,19 @@ namespace Nucleus.Gaming
                 });
             }
 
-            // Run this in another thread to not block UI
-            System.Threading.Tasks.Task.Run(() =>
+            if (checkUpdate[0])//workaround else handler update is checked before startup too,
+                               //see MainForm.cs Btn_Play_Click(object sender, EventArgs e) => gameManager.AddScript.
             {
-                UpdateAvailable = Hub.IsUpdateAvailable(true);
-            });
+                // Run this in another thread to not block UI
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    UpdateAvailable = Hub.IsUpdateAvailable(true);
+                });
+            }
+            else
+            {
+                UpdateAvailable = checkUpdate[1];
+            }
 
             engine.SetValue("Game", (object)null);
         }

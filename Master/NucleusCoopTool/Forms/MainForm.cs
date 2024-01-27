@@ -1573,7 +1573,7 @@ namespace Nucleus.Coop
 
             btn_Prev.Enabled = false;
 
-            gameManager.AddScript(Path.GetFileNameWithoutExtension(currentGame.JsFileName));
+            gameManager.AddScript(Path.GetFileNameWithoutExtension(currentGame.JsFileName), new bool[] {false, currentGame.UpdateAvailable });//reload the hanlder here so it can be edited until play button click
 
             currentGame = gameManager.GetGame(currentGameInfo.ExePath);
             currentGameInfo.InitializeDefault(currentGame, currentGameInfo.ExePath);
@@ -2289,7 +2289,7 @@ namespace Nucleus.Coop
 
         private void Button_UpdateAvailable_Click(object sender, EventArgs e)
         {
-            handler = scriptDownloader.GetHandler(currentGameInfo.Game.HandlerId);
+            handler = HubCache.SearchById(currentGameInfo.Game.HandlerId);
 
             if (handler == null)
             {
@@ -2320,7 +2320,7 @@ namespace Nucleus.Coop
 
         private void UpdateHandlerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            handler = scriptDownloader.GetHandler(currentGameInfo.Game.HandlerId);
+            handler = HubCache.SearchById(currentGameInfo.Game.HandlerId);
 
             if (handler == null)
             {

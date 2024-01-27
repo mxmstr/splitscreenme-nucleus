@@ -226,8 +226,6 @@ namespace Nucleus.Gaming
 
             error = null;
 
-           // ThreadPool.QueueUserWorkItem(StartPlay, handler);
-
             Thread PlayThread = new Thread(delegate ()
             {
                 StartPlay(handler);

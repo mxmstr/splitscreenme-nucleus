@@ -1,4 +1,4 @@
-﻿namespace Nucleus.Coop.Forms
+﻿namespace Nucleus.Gaming
 {
     public class Handler
     {

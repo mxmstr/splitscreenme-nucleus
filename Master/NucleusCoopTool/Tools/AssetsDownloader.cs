@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Forms;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
@@ -8,12 +10,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop.Tools
 {
     /// <summary>
-    /// Download game covers, screenshots and descriptions from igdb through the hub api
+    /// Download game cover, screenshots and description from igdb through the hub api
     /// </summary>
     class AssetsDownloader
     {
@@ -59,7 +62,12 @@ namespace Nucleus.Coop.Tools
                         continue;
                     }
 
-                    Handler handler = scriptDownloader.GetHandler(id);
+                    if (id == "")
+                    {
+                        continue;
+                    }
+
+                    Handler handler = HubCache.SearchById(id);
 
                     if (handler == null)
                     {
@@ -73,14 +81,14 @@ namespace Nucleus.Coop.Tools
                     });
 
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
-                    string screenshotsUri = game.Game.ScreenshotsUri;
+                    string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
                     DownloadDescriptions(handler.GameDescription, game.GameGuid);
                     DownloadCovers(coverUri, game.GameGuid);
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }
 
-                main.Invoke((Action)delegate ()
+                main.Invoke((MethodInvoker)delegate ()
                 {
                     main.mainButtonFrame.Enabled = true;
                     main.btn_downloadAssets.Enabled = true;
@@ -144,23 +152,24 @@ namespace Nucleus.Coop.Tools
 
             try
             {
-                dynamic jsonData = JsonConvert.DeserializeObject<dynamic>(json);
+                JObject jsonData = JsonConvert.DeserializeObject(json) as JObject;
+                JArray array = jsonData["screenshots"] as JArray;
 
-                if (jsonData.screenshots.Count < 5)// <= if there is less than 5 screenshots available in the igdb's database
+                if (array.Count < 5)// <= if there is less than 5 screenshots available in the igdb's database
                 {
-                    maxScreenshotsToDownload = jsonData.screenshots.Count;
+                    maxScreenshotsToDownload = array.Count;
                 }
                 else
                 {
                     maxScreenshotsToDownload = 5;
                 }
 
-                for (int i = 0; i < maxScreenshotsToDownload; i++)//jsonData.screenshots.Count; i++) <= we don't want to download all screenshots available in the igdb's database
+                for (int i = 0; i < maxScreenshotsToDownload; i++)// <= we don't want to download all screenshots available in the igdb's database
                 {
-                    if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}\\{i}_{gameName}.jpeg")))
+                     if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}\\{i}_{gameName}.jpeg")))
                     {
-                        string url = $"https:{jsonData.screenshots[i].url}".Replace("t_thumb", "t_original");
-
+                        string url = $"https:{array[i]["url"]}".Replace("t_thumb", "t_original");
+                     
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                         ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };

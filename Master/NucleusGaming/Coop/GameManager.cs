@@ -547,7 +547,7 @@ namespace Nucleus.Gaming
                         string ext = Path.GetFileNameWithoutExtension(f.Name);
                         string pathBlock = Path.Combine(f.Directory.FullName, ext);
 
-                        GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str);
+                        GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str,new bool[] {true,false}) ;
 
                         //LogManager.Log("Found game info: " + info.GameName);
                         if (games.Any(c => c.Value.GUID == info.GUID))
@@ -576,7 +576,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void AddScript(string handlerName)
+        public void AddScript(string handlerName,bool[] checkUpdate)
         {
             string jsfolder = GetJsScriptsPath();
             DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
@@ -589,7 +589,7 @@ namespace Nucleus.Gaming
                     string ext = Path.GetFileNameWithoutExtension(f.Name);
                     string pathBlock = Path.Combine(f.Directory.FullName, ext);
 
-                    GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str);
+                    GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str, checkUpdate);
 
                     LogManager.Log("Found game info: " + info.GameName);
                     if (games.Any(c => c.Value.GUID == info.GUID))

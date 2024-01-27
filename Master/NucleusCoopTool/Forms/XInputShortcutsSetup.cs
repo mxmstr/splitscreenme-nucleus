@@ -232,17 +232,24 @@ namespace Nucleus.Coop.Forms
             }
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
-
             if (ini.IniReadValue("Misc", "GamepadSettingsLocation") != "")
             {
                 string[] windowLocation = ini.IniReadValue("Misc", "GamepadSettingsLocation").Split('X');
-                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+
+                if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
+                {
+                    CenterToScreen();
+                }
+                else
+                {
+                    Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+                }
             }
             else
             {
-                StartPosition = FormStartPosition.CenterScreen;
+                CenterToScreen();
             }
-
+           
             DPIManager.Register(this);
             DPIManager.Update(this);
         }

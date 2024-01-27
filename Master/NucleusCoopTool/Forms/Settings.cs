@@ -541,15 +541,22 @@ namespace Nucleus.Coop
             GetPlayersNickNameAndSteamIds();
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
-
             if (ini.IniReadValue("Misc", "SettingsLocation") != "")
             {
                 string[] windowLocation = ini.IniReadValue("Misc", "SettingsLocation").Split('X');
-                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+
+                if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
+                {
+                    CenterToScreen();
+                }
+                else
+                {
+                    Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+                }
             }
             else
             {
-                StartPosition = FormStartPosition.CenterScreen;
+                CenterToScreen();
             }
 
             SetToolTips();
@@ -1343,8 +1350,6 @@ namespace Nucleus.Coop
         private void SwapNickname(object sender, EventArgs e)
         {
             ComboBox cb = sender as ComboBox;
-
-            Console.WriteLine(e.GetType());
 
             if (cb.Text == "" || !shouldSwapNick)
             {

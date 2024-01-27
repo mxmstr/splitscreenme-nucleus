@@ -269,7 +269,6 @@
     <Compile Include="Forms\GameList.Designer.cs">
       <DependentUpon>GameList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Handler.cs" />
     <Compile Include="Forms\HandlerInfo.cs">
       <SubType>Form</SubType>
     </Compile>
