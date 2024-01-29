@@ -283,6 +283,7 @@ namespace Nucleus.Coop.Forms
             label1.Text = "Finished!";
 
             File.Delete(Path.Combine(scriptFolder, zipFile));
+
             if (!gameExeNoUpdate)
             {
                 DialogResult dialogResult = MessageBox.Show(

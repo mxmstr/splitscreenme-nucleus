@@ -40,6 +40,11 @@ namespace Nucleus.Gaming.Cache
 
         private static JArray CreateCache()
         {
+            if(!Directory.Exists(Path.Combine(Application.StartupPath, $"cache")))
+            {
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"cache"));
+            }
+
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };

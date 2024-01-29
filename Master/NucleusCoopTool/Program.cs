@@ -33,7 +33,7 @@ namespace Nucleus.Coop
 
             connected = StartChecks.CheckHubResponse();
 
-            StartChecks.CheckFilesIntegrity();
+            //StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
             StartChecks.CheckAppUpdate();//a decommenter
             StartChecks.CheckDebugLogSize(ini);

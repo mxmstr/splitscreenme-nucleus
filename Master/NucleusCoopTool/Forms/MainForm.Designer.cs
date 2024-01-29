@@ -224,13 +224,14 @@ namespace Nucleus.Coop
             this.btn_dlFromHub.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_dlFromHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_dlFromHub.ForeColor = System.Drawing.Color.Transparent;
-            this.btn_dlFromHub.Location = new System.Drawing.Point(434, 37);
+            this.btn_dlFromHub.Location = new System.Drawing.Point(441, 6);
             this.btn_dlFromHub.Margin = new System.Windows.Forms.Padding(2);
             this.btn_dlFromHub.Name = "btn_dlFromHub";
             this.btn_dlFromHub.Size = new System.Drawing.Size(131, 25);
             this.btn_dlFromHub.TabIndex = 42;
             this.btn_dlFromHub.Text = "Splitscreen.Me Hub ";
             this.btn_dlFromHub.UseVisualStyleBackColor = false;
+            this.btn_dlFromHub.Visible = false;
             this.btn_dlFromHub.Click += new System.EventHandler(this.Button1_Click_2);
             // 
             // btn_settings
@@ -879,7 +880,7 @@ namespace Nucleus.Coop
             this.btn_debuglog.FlatAppearance.BorderSize = 0;
             this.btn_debuglog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_debuglog.ForeColor = System.Drawing.SystemColors.Control;
-            this.btn_debuglog.Location = new System.Drawing.Point(147, 37);
+            this.btn_debuglog.Location = new System.Drawing.Point(327, 37);
             this.btn_debuglog.Name = "btn_debuglog";
             this.btn_debuglog.Size = new System.Drawing.Size(119, 25);
             this.btn_debuglog.TabIndex = 101;
@@ -998,12 +999,12 @@ namespace Nucleus.Coop
             this.btn_Download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Download.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Download.ForeColor = System.Drawing.Color.White;
-            this.btn_Download.Location = new System.Drawing.Point(271, 37);
+            this.btn_Download.Location = new System.Drawing.Point(451, 37);
             this.btn_Download.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Download.Name = "btn_Download";
-            this.btn_Download.Size = new System.Drawing.Size(159, 25);
+            this.btn_Download.Size = new System.Drawing.Size(114, 25);
             this.btn_Download.TabIndex = 22;
-            this.btn_Download.Text = " Download Game Handler";
+            this.btn_Download.Text = "Explore Handlers";
             this.btn_Download.UseVisualStyleBackColor = false;
             this.btn_Download.Click += new System.EventHandler(this.Btn_Download_Click);
             // 

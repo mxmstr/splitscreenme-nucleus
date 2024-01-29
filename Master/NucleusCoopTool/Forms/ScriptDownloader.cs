@@ -98,12 +98,6 @@ namespace Nucleus.Coop.Forms
 
             InitializeComponent();
 
-            if (ini.IniReadValue("Misc", "DownloaderWindowSize") != "")
-            {
-                string[] windowSize = ini.IniReadValue("Misc", "DownloaderWindowSize").Split('X');
-                Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
-            }
-
             default_Cursor = mf.default_Cursor;
             Cursor.Current = default_Cursor;
             hand_Cursor = mf.hand_Cursor;

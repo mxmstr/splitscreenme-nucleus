@@ -1,5 +1,4 @@
-﻿using NAudio.Gui;
-using Nucleus.Coop.Forms;
+﻿using Nucleus.Coop.Forms;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
@@ -80,6 +79,7 @@ namespace Nucleus.Coop
         private JSUserInputControl jsControl;
         private Handler handler = null;
         private ScriptDownloader scriptDownloader;
+        private HubWebView hubView;
         private DownloadPrompt downloadPrompt;
         private SoundPlayer splayer;
         private AssetsDownloader assetsDownloader;
@@ -600,8 +600,8 @@ namespace Nucleus.Coop
             optionsControl.OnCanPlayUpdated += StepCanPlay;
             jsControl.OnCanPlayUpdated += StepCanPlay;
 
-            scriptDownloader = new ScriptDownloader(this);
-
+            //scriptDownloader = new ScriptDownloader(this);
+            hubView = new HubWebView(this);
             downloadPrompt = new DownloadPrompt(handler, this, null, true);
             Xinput_S_Setup = new XInputShortcutsSetup();
 
@@ -2277,13 +2277,13 @@ namespace Nucleus.Coop
 
         private void Btn_Download_Click(object sender, EventArgs e)
         {
-            if (scriptDownloader.Visible)
+            if (hubView.Visible)
             {
-                scriptDownloader.BringToFront();
+                hubView.BringToFront();
             }
             else
             {
-                scriptDownloader.Visible = true;
+                hubView.Visible = true;
             }
         }
 
