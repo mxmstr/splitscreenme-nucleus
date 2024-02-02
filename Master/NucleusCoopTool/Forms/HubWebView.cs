@@ -8,30 +8,45 @@ using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
+
 
 namespace Nucleus.Coop.Forms
 {
     public partial class HubWebView : BaseForm
     {
-        private string downloadPath = Path.Combine(Application.StartupPath, "handlers\\hubHandler.nc");
+        
+        private readonly string darkReaderFolder = Path.Combine(Application.StartupPath, $"webview\\darkreader");
+        private readonly string cacheFolder = Path.Combine(Application.StartupPath, $"webview\\cache");
+        private string downloadPath = Path.Combine(Application.StartupPath, "handlers\\handler.nc");
         private string scriptFolder = GameManager.Instance.GetJsScriptsPath();
         private const string hubUri = "https://hub.splitscreen.me/";
-        private readonly string theme = Globals.Theme;
-   
+        private readonly string theme = Globals.ThemeFolder;
+        private string prevValidUri;
+       
         private CoreWebView2DownloadOperation downloadOperation;
+        private CoreWebView2Settings webViewSettings;
         private MainForm mainForm;
-      
+
         private bool zipExtractFinished;
+        private bool downloadCompleted;
+        private bool hasFreshCahe;
 
-        private int numEntries;
         private int entriesDone = 0;
-
-        private EventHandler yesEvent;
-        private EventHandler noEvent;
+        private int numEntries;
+        
+        private EventHandler Yes_Button_Event;
+        private EventHandler No_Button_Event;     
 
         public HubWebView(MainForm mainForm)
         {
@@ -41,8 +56,8 @@ namespace Nucleus.Coop.Forms
 
             StartPosition = FormStartPosition.Manual;
 
-            Rectangle area = Screen.PrimaryScreen.Bounds;  
-            
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+
             if (ini.IniReadValue("Misc", "DownloaderWindowLocation") != "")
             {
                 string[] windowLocation = ini.IniReadValue("Misc", "DownloaderWindowLocation").Split('X');
@@ -61,85 +76,167 @@ namespace Nucleus.Coop.Forms
                 CenterToScreen();
             }
 
-            webView.DefaultBackgroundColor = mainForm.BackColor;
-
             if (mainForm.roundedcorners)
             {
                 Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
-
-            webView.Focus();
-
-            webView.ZoomFactor = 0.8;
-            webView.Source = new Uri(hubUri);
 
             closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
             maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize.png");
             minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
             modal.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
 
-            text.BackColor = Color.FromArgb(50,0,0,0);
-            yes.BackColor = Color.FromArgb(50, 0, 0, 0);
-            no.BackColor = Color.FromArgb(50, 0, 0, 0);
+            modal_text.BackColor = Color.FromArgb(80, 0, 0, 0);
+            modal_yes.BackColor = Color.FromArgb(80, 0, 0, 0);
+            modal_no.BackColor = Color.FromArgb(80, 0, 0, 0);
 
-            yes.FlatAppearance.MouseOverBackColor = Color.FromArgb(50, 58, 129, 210);
-            no.FlatAppearance.MouseOverBackColor = Color.FromArgb(50, 58, 129, 210);
-           
+            modal_yes.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            modal_no.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+
             home.Text = "";
             home.BackgroundImage = ImageCache.GetImage(theme + "home.png");
-            home.FlatAppearance.MouseOverBackColor = Color.FromArgb(50, 58, 129, 210);
+            home.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
             back.Text = "";
             back.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
-            back.FlatAppearance.MouseOverBackColor = Color.FromArgb(50, 58, 129, 210);
+            back.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
             next.Text = "";
             next.BackgroundImage = ImageCache.GetImage(theme + "arrow_right.png");
-            next.FlatAppearance.MouseOverBackColor = Color.FromArgb(50, 58, 129, 210);
+            next.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+
+            webView.DefaultBackgroundColor = mainForm.BackColor;
+
+            Load += OnLoad;
         }
 
-        private void WebView_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
+        private async void OnLoad(object sender, EventArgs e)
         {
-            webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);
-            webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += CloseDownloadDialog;
-            webView.CoreWebView2.DOMContentLoaded += new EventHandler<CoreWebView2DOMContentLoadedEventArgs>(ContentLoaded);
-
+            webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
+            await InitializeAsync();
         }
 
-        private void ContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
+        public async Task InitializeAsync()
         {
-            
-            webView.ExecuteScriptAsync("document.getElementsByClassName('header ant-layout-header')[0].style.display = 'none'; ");
-            webView.ExecuteScriptAsync("document.getElementsByClassName('content ant-layout-content')[0].style.backgroundColor = '#606060'; ");
-            webView.ExecuteScriptAsync("document.getElementsByClassName('inner-content')[0].style.backgroundColor = '#C0C0C0'; ");
+            if (!Directory.Exists(cacheFolder))
+            {
+                Directory.CreateDirectory(cacheFolder);
+            }
 
-            //webView.ExecuteScriptAsync("document.getElementsByClassName('ant-typography')[0].style.backgroundColor  = '#000'; "); 
+            //environment.CreateWebResourceResponse() a voir avec r-mach
+            //environment.CreateWebResourceRequest
+            CoreWebView2Environment environment = null;
+            CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions();
+            environmentOptions.AreBrowserExtensionsEnabled = true;
 
-            webView.ExecuteScriptAsync("const ListeA = document.querySelectorAll('ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-12 ant-col-lg-8 ant-col-xl-6 ant-col-xxl-4');\r\nListeA.forEach(function (element) {\r\n    element.style.backgroundColor = 'black';\r\n});");
-            //webView.ExecuteScriptAsync("const ListeP = document.querySelectorAll(\"ant-typography\");\r\nListeP.forEach(function (element) {\r\n    element.style.color = \"white\";\r\n});");
+            webView.CreationProperties = new Microsoft.Web.WebView2.WinForms.CoreWebView2CreationProperties();
+            webView.CreationProperties.UserDataFolder = cacheFolder + "\\WebViewCache";
+
+
+            if (Directory.Exists(webView.CreationProperties.UserDataFolder))
+            {           
+                environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
+                await webView.EnsureCoreWebView2Async(environment);
+
+                webView.Source = new Uri(hubUri);
+                hasFreshCahe = false;
+                return;
+            }
+
+            hasFreshCahe = true;
+
+            environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
+            await webView.EnsureCoreWebView2Async(environment);
         }
 
-        private void CloseDownloadDialog(object sender, object e)
+        private async void WebView_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
+        {
+            webViewSettings = webView.CoreWebView2.Settings;
+            webViewSettings.IsWebMessageEnabled = true;
+            webViewSettings.IsGeneralAutofillEnabled = true;
+            webViewSettings.AreDefaultContextMenusEnabled = false;
+
+            if (hasFreshCahe)
+            {
+               await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderFolder);
+            }
+
+            if (webView.Source.AbsolutePath == "blank")
+            {
+                webView.Source = new Uri(hubUri);
+            }
+
+            webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += IsDefaultDownloadDialogOpenChanged;
+            webView.CoreWebView2.DOMContentLoaded += new EventHandler<CoreWebView2DOMContentLoadedEventArgs>(DOMContentLoaded);
+            webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);                
+            webView.CoreWebView2.SourceChanged += new EventHandler<CoreWebView2SourceChangedEventArgs>(SourceChanged);
+            webView.CoreWebView2.ContentLoading += new EventHandler<CoreWebView2ContentLoadingEventArgs>(ContentLoading);
+        }
+
+        private void ContentLoading(object sender, CoreWebView2ContentLoadingEventArgs e) => BlockRedirection();
+
+        private void SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e) => BlockRedirection();
+
+        private void BlockRedirection()
+        {
+            string source = webView.CoreWebView2.Source;
+
+            if (source.StartsWith("https://hub.splitscreen.me/"))
+            {
+                prevValidUri = webView.CoreWebView2.Source;
+                JSInjectect();
+                return;
+            }
+
+            webView.CoreWebView2.Stop();
+            webView.CoreWebView2.Navigate(prevValidUri);
+            JSInjectect();
+        }
+
+        private void JSInjectect()
+        {
+            //Main Page
+            webView.ExecuteScriptAsync("document.getElementsByClassName('header ant-layout-header')[0].style.backgroundColor = '#000'; ");
+            webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu ant-menu-dark ant-menu-root ant-menu-horizontal')[0].style.backgroundColor = '#000'; ");
+            webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[0].style.display = 'none'; ");//splitscreen.me redirection link
+            webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[3].style.display = 'none'; ");//Documentation link
+            webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[5].style.display = 'none'; ");//Contributors search page
+        }
+
+        private void DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
+        {
+            webView.ZoomFactor = 0.8;
+            JSInjectect();                     
+            Show();
+        }
+
+        private void IsDefaultDownloadDialogOpenChanged(object sender, object e)
         {
             if (webView.CoreWebView2.IsDefaultDownloadDialogOpen) webView.CoreWebView2.CloseDefaultDownloadDialog();
         }
 
         private void DownloadStarting(object sender, CoreWebView2DownloadStartingEventArgs e)
         {
+            if (!webView.CoreWebView2.Source.StartsWith("https://hub.splitscreen.me/"))
+            {
+                downloadOperation.Cancel();
+                return;
+            }
+
             e.ResultFilePath = downloadPath;
             downloadOperation = e.DownloadOperation;
             downloadOperation.StateChanged += CheckDownloadState;
             label.Visible = true;
         }
-
+      
         private void CheckDownloadState(object sender, object e)
         {
-            if (downloadOperation.State == CoreWebView2DownloadState.Completed)
+            if (downloadOperation.State == CoreWebView2DownloadState.Completed && !downloadCompleted)
             {
                 label.Visible = false;
                 zipExtractFinished = false;
                 entriesDone = 0;
                 numEntries = 0;
+                downloadCompleted = true;
                 ExtractHandler();
-                return;
             }
         }
 
@@ -215,54 +312,40 @@ namespace Nucleus.Coop.Forms
 
             if (File.Exists(Path.Combine(scriptFolder, frmHandleTitle + ".js")))
             {
-                text.Text = "An existing handler with the name " + frmHandleTitle + ".js already exists.\nDo you wish to overwrite it?";
+                modal_text.Text = "An existing handler with the name " + frmHandleTitle + ".js already exists.\nDo you wish to overwrite it?";
 
-                yesEvent = (sender, e) => ModalAddHandler(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
-                yes.Click += yesEvent;
+                Yes_Button_Event = (sender, e) => ModalAddHandler(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
+                modal_yes.Click += Yes_Button_Event;
 
-                noEvent = (sender, e) => Abort(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
-                no.Click += noEvent;
+                No_Button_Event = (sender, e) => Abort(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
+                modal_no.Click += No_Button_Event;
                 modal.Visible = true;
+                modal.BringToFront();
                 return;
             }
 
-            ModalAddHandler(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);   
+            ModalAddHandler(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
         }
 
         private void Abort(ZipFile zip, string scriptTempFolder, string frmHandleTitle, List<string> handlerFolders, string exeName)
-        {                               
+        {
             zip.Dispose();
             Directory.Delete(scriptTempFolder, true);
             File.Delete(downloadPath);
-
-            yes.Click -= yesEvent;
-            no.Click -= noEvent;
-
-            modal.Visible = false;
-        }
-
-        private void HideModal()
-        {
-            yes.Click -= yesEvent;
-            no.Click -= noEvent;      
-            modal.Visible = false;
+            HideModal();
         }
 
         private void AddGameToList(string frmHandleTitle, string exeName)
         {
             GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
             SearchGame.Search(mainForm, exeName);
-
-            yes.Click -= yesEvent;
-            no.Click -= noEvent;
-
-            modal.Visible = false;
+            HideModal();
         }
 
-        private void ModalAddHandler(ZipFile zip, string scriptTempFolder,string frmHandleTitle, List<string> handlerFolders,string exeName)
+        private void ModalAddHandler(ZipFile zip, string scriptTempFolder, string frmHandleTitle, List<string> handlerFolders, string exeName)
         {
-            yes.Click -= yesEvent;
-            no.Click -= noEvent;
+            modal_yes.Click -= Yes_Button_Event;
+            modal_no.Click -= No_Button_Event;
 
             if (Directory.Exists(Path.Combine(scriptFolder, frmHandleTitle)))
             {
@@ -274,7 +357,7 @@ namespace Nucleus.Coop.Forms
                 File.Delete(Path.Combine(scriptFolder, frmHandleTitle + ".js"));
             }
 
-           File.Move(Path.Combine(scriptTempFolder, "handler.js"), Path.Combine(scriptFolder, frmHandleTitle + ".js"));
+            File.Move(Path.Combine(scriptTempFolder, "handler.js"), Path.Combine(scriptFolder, frmHandleTitle + ".js"));
 
             if (handlerFolders.Count > 0)
             {
@@ -293,7 +376,7 @@ namespace Nucleus.Coop.Forms
 
                     foreach (string file_name in Directory.GetFiles(newFolder, "*", SearchOption.AllDirectories))
                     {
-                       File.Move(file_name, Path.Combine(gameFolder, file_name.Substring(newFolder.Length + 1)));
+                        File.Move(file_name, Path.Combine(gameFolder, file_name.Substring(newFolder.Length + 1)));
                     }
 
                     Directory.Delete(newFolder, true);
@@ -306,24 +389,25 @@ namespace Nucleus.Coop.Forms
             {
                 Application.DoEvents();
             }
-         
+
             zip.Dispose();
 
             File.Delete(downloadPath);
 
-            yesEvent = (sender, e) => AddGameToList(frmHandleTitle, exeName);
-            yes.Click += yesEvent;
-            noEvent = (sender, e) => HideModal();
-            no.Click += noEvent;
+            Yes_Button_Event = (sender, e) => AddGameToList(frmHandleTitle, exeName);
+            modal_yes.Click += Yes_Button_Event;
+            No_Button_Event = (sender, e) => HideModal();
+            modal_no.Click += No_Button_Event;
 
-            text.Text =
+            modal_text.Text =
             "Downloading and extraction of " + frmHandleTitle +
-            " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it." +
-            "Download finished! Add to Nucleus?";
+            " handler is complete. Would you like to add this game to Nucleus now? " +
+            "You will need to select the game executable to add it.";
 
             if (!modal.Visible)
             {
                 modal.Visible = true;
+                modal.BringToFront();
             }
         }
 
@@ -339,6 +423,81 @@ namespace Nucleus.Coop.Forms
                 zipExtractFinished = true;
             }
         }
+
+        private void HideModal()
+        {
+            modal_yes.Click -= Yes_Button_Event;
+            modal_no.Click -= No_Button_Event;
+            modal.Visible = false;
+            downloadCompleted = false;
+            modal.SendToBack();
+        }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            webView.CoreWebView2.GoBack();
+        }
+
+        private void Next_Click(object sender, EventArgs e)
+        {
+            webView.CoreWebView2.GoForward();
+        }
+
+        private void Home_Click(object sender, EventArgs e)
+        {
+            webView.CoreWebView2.Navigate(hubUri);
+        }
+
+        private void CloseBtn_Click(object sender, EventArgs e)
+        {
+            if (Location.X == -32000 || Width == 0)
+            {
+                return;
+            }
+
+            ini.IniWriteValue("Misc", "DownloaderWindowSize", Width + "X" + Height);
+            ini.IniWriteValue("Misc", "DownloaderWindowLocation", Location.X + "X" + Location.Y);
+
+            Visible = false;
+        }
+
+        private void MaximizeBtn_Click(object sender, EventArgs e) => WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized;
+
+        private void MinimizeBtn_Click(object sender, EventArgs e) => WindowState = FormWindowState.Minimized;
+
+        private void HubWebView_ClientSizeChanged(object sender, EventArgs e)
+        {
+            if (mainForm == null)
+            {
+                return;
+            }
+
+            if (mainForm.roundedcorners)
+            {
+                if (WindowState == FormWindowState.Maximized)
+                {
+                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+                }
+                else
+                {
+                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                }
+            }
+
+            Invalidate();
+        }
+
+        private void CloseBtn_MouseEnter(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close_mousehover.png");
+
+        private void CloseBtn_MouseLeave(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
+
+        private void MaximizeBtn_MouseEnter(object sender, EventArgs e) => maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize_mousehover.png");
+
+        private void MaximizeBtn_MouseLeave(object sender, EventArgs e) => maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize.png");
+
+        private void MinimizeBtn_MouseLeave(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
+
+        private void MinimizeBtn_MouseEnter(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize_mousehover.png");
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
@@ -404,70 +563,5 @@ namespace Nucleus.Coop.Forms
             base.WndProc(ref m);
         }
 
-        private void CloseBtn_Click(object sender, EventArgs e)
-        {           
-            if (Location.X == -32000 || Width == 0)
-            {
-                return;
-            }
-
-            ini.IniWriteValue("Misc", "DownloaderWindowSize", Width + "X" + Height);
-            ini.IniWriteValue("Misc", "DownloaderWindowLocation", Location.X + "X" + Location.Y);
-
-           Visible = false;
-        }
-
-        private void MaximizeBtn_Click(object sender, EventArgs e) => WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized;
-
-        private void MinimizeBtn_Click(object sender, EventArgs e) => WindowState = FormWindowState.Minimized;
-
-        private void HubWebView_ClientSizeChanged(object sender, EventArgs e)
-        {
-            if (mainForm == null)
-            {
-                return;
-            }
-
-            if (mainForm.roundedcorners)
-            {
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
-                }
-                else
-                {
-                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-                }
-            }
-
-            Invalidate();
-        }
-
-        private void CloseBtn_MouseEnter(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close_mousehover.png");
-
-        private void CloseBtn_MouseLeave(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
-
-        private void MaximizeBtn_MouseEnter(object sender, EventArgs e) => maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize_mousehover.png");
-
-        private void MaximizeBtn_MouseLeave(object sender, EventArgs e) => maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize.png");
-
-        private void MinimizeBtn_MouseLeave(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
-
-        private void MinimizeBtn_MouseEnter(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize_mousehover.png");
-
-        private void Back_Click(object sender, EventArgs e)
-        {
-            webView.CoreWebView2.GoBack();
-        }
-
-        private void Next_Click(object sender, EventArgs e)
-        {
-            webView.CoreWebView2.GoForward();
-        }
-
-        private void Home_Click(object sender, EventArgs e)
-        {
-            webView.CoreWebView2.Navigate(hubUri);
-        }
     }
 }

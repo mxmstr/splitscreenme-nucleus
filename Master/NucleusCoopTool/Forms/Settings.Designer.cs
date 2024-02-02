@@ -44,7 +44,6 @@ namespace Nucleus.Coop
             this.settingsTab = new BufferedClientAreaPanel();
             this.btn_SteamExePath = new System.Windows.Forms.Button();
             this.btn_Gb_Update = new System.Windows.Forms.Button();
-            this.showUIInfoMsg = new System.Windows.Forms.CheckBox();
             this.disableGameProfiles = new System.Windows.Forms.CheckBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
             this.ctrlr_shorcutsBtn = new System.Windows.Forms.Button();
@@ -417,7 +416,6 @@ namespace Nucleus.Coop
             this.settingsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.settingsTab.Controls.Add(this.btn_SteamExePath);
             this.settingsTab.Controls.Add(this.btn_Gb_Update);
-            this.settingsTab.Controls.Add(this.showUIInfoMsg);
             this.settingsTab.Controls.Add(this.disableGameProfiles);
             this.settingsTab.Controls.Add(this.keepAccountsCheck);
             this.settingsTab.Controls.Add(this.ctrlr_shorcutsBtn);
@@ -468,22 +466,6 @@ namespace Nucleus.Coop
             this.btn_Gb_Update.Text = "Goldberg Steam Emulator Updater";
             this.btn_Gb_Update.UseVisualStyleBackColor = false;
             this.btn_Gb_Update.Click += new System.EventHandler(this.btn_Gb_Update_Click);
-            // 
-            // showUIInfoMsg
-            // 
-            this.showUIInfoMsg.AutoSize = true;
-            this.showUIInfoMsg.BackColor = System.Drawing.Color.Transparent;
-            this.showUIInfoMsg.Checked = true;
-            this.showUIInfoMsg.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showUIInfoMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showUIInfoMsg.Location = new System.Drawing.Point(371, 4);
-            this.showUIInfoMsg.Margin = new System.Windows.Forms.Padding(2);
-            this.showUIInfoMsg.Name = "showUIInfoMsg";
-            this.showUIInfoMsg.Size = new System.Drawing.Size(259, 19);
-            this.showUIInfoMsg.TabIndex = 168;
-            this.showUIInfoMsg.Tag = "";
-            this.showUIInfoMsg.Text = "Show UI Info Messages (Restart Required)";
-            this.showUIInfoMsg.UseVisualStyleBackColor = false;
             // 
             // disableGameProfiles
             // 
@@ -3417,10 +3399,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
+            this.Controls.Add(this.settingsTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.layoutTab);
-            this.Controls.Add(this.settingsTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -3669,7 +3651,6 @@ namespace Nucleus.Coop
         private Label label35;
         private Label label38;
         private ComboBox player28N;
-        private CheckBox showUIInfoMsg;
         private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
         private Gaming.Controls.CustomNumericUpDown numUpDownVer;
         private Label label29;

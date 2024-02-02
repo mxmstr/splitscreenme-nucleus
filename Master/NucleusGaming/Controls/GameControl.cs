@@ -49,9 +49,9 @@ namespace Nucleus.Coop
             try
             {
                 this.favorite = favorite;
-                IniFile theme = Globals.ThemeIni;
+                IniFile theme = Globals.ThemeConfigFile;
 
-                string themePath = Globals.Theme;
+                string themePath = Globals.ThemeFolder;
                 string[] rgb_SelectionColor = theme.IniReadValue("Colors", "Selection").Split(',');
                 string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
                 string customFont = theme.IniReadValue("Font", "FontFamily");

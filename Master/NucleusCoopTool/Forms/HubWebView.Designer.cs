@@ -34,9 +34,9 @@
             this.maximizeBtn = new System.Windows.Forms.Button();
             this.minimizeBtn = new System.Windows.Forms.Button();
             this.modal = new BufferedClientAreaPanel();
-            this.text = new System.Windows.Forms.Label();
-            this.no = new System.Windows.Forms.Button();
-            this.yes = new System.Windows.Forms.Button();
+            this.modal_text = new System.Windows.Forms.Label();
+            this.modal_no = new System.Windows.Forms.Button();
+            this.modal_yes = new System.Windows.Forms.Button();
             this.label = new System.Windows.Forms.Label();
             this.back = new System.Windows.Forms.Button();
             this.next = new System.Windows.Forms.Button();
@@ -53,10 +53,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.webView.CreationProperties = null;
             this.webView.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webView.Location = new System.Drawing.Point(4, 31);
+            this.webView.Location = new System.Drawing.Point(4, 28);
             this.webView.MinimumSize = new System.Drawing.Size(250, 250);
             this.webView.Name = "webView";
-            this.webView.Size = new System.Drawing.Size(1111, 603);
+            this.webView.Size = new System.Drawing.Size(1111, 608);
             this.webView.TabIndex = 0;
             this.webView.ZoomFactor = 1D;
             this.webView.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.WebView_CoreWebView2InitializationCompleted);
@@ -121,10 +121,9 @@
             // modal
             // 
             this.modal.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.modal.Controls.Add(this.text);
-            this.modal.Controls.Add(this.no);
-            this.modal.Controls.Add(this.yes);
-            this.modal.Controls.Add(this.label);
+            this.modal.Controls.Add(this.modal_text);
+            this.modal.Controls.Add(this.modal_no);
+            this.modal.Controls.Add(this.modal_yes);
             this.modal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.modal.Location = new System.Drawing.Point(0, 0);
             this.modal.Name = "modal";
@@ -132,54 +131,51 @@
             this.modal.TabIndex = 21;
             this.modal.Visible = false;
             // 
-            // text
+            // modal_text
             // 
-            this.text.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.modal_text.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.text.AutoEllipsis = true;
-            this.text.BackColor = System.Drawing.Color.Transparent;
-            this.text.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.text.ForeColor = System.Drawing.Color.White;
-            this.text.Location = new System.Drawing.Point(292, 29);
-            this.text.Name = "text";
-            this.text.Size = new System.Drawing.Size(492, 337);
-            this.text.TabIndex = 2;
-            this.text.Text = "label1";
-            this.text.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.modal_text.AutoEllipsis = true;
+            this.modal_text.BackColor = System.Drawing.Color.Transparent;
+            this.modal_text.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.modal_text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.modal_text.ForeColor = System.Drawing.Color.White;
+            this.modal_text.Location = new System.Drawing.Point(263, 87);
+            this.modal_text.Name = "modal_text";
+            this.modal_text.Size = new System.Drawing.Size(597, 296);
+            this.modal_text.TabIndex = 2;
+            this.modal_text.Text = "label1";
+            this.modal_text.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // no
+            // modal_no
             // 
-            this.no.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.no.BackColor = System.Drawing.Color.Transparent;
-            this.no.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
-            this.no.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.no.ForeColor = System.Drawing.Color.White;
-            this.no.Location = new System.Drawing.Point(552, 387);
-            this.no.Name = "no";
-            this.no.Size = new System.Drawing.Size(235, 142);
-            this.no.TabIndex = 1;
-            this.no.Text = "No";
-            this.no.UseVisualStyleBackColor = false;
+            this.modal_no.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.modal_no.BackColor = System.Drawing.Color.Transparent;
+            this.modal_no.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
+            this.modal_no.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.modal_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.modal_no.ForeColor = System.Drawing.Color.White;
+            this.modal_no.Location = new System.Drawing.Point(573, 416);
+            this.modal_no.Name = "modal_no";
+            this.modal_no.Size = new System.Drawing.Size(287, 97);
+            this.modal_no.TabIndex = 1;
+            this.modal_no.Text = "No";
+            this.modal_no.UseVisualStyleBackColor = false;
             // 
-            // yes
+            // modal_yes
             // 
-            this.yes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.yes.BackColor = System.Drawing.Color.Transparent;
-            this.yes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
-            this.yes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.yes.ForeColor = System.Drawing.Color.White;
-            this.yes.Location = new System.Drawing.Point(295, 387);
-            this.yes.Name = "yes";
-            this.yes.Size = new System.Drawing.Size(235, 142);
-            this.yes.TabIndex = 0;
-            this.yes.Text = "Yes";
-            this.yes.UseVisualStyleBackColor = false;
+            this.modal_yes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.modal_yes.BackColor = System.Drawing.Color.Transparent;
+            this.modal_yes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
+            this.modal_yes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.modal_yes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.modal_yes.ForeColor = System.Drawing.Color.White;
+            this.modal_yes.Location = new System.Drawing.Point(263, 416);
+            this.modal_yes.Name = "modal_yes";
+            this.modal_yes.Size = new System.Drawing.Size(287, 97);
+            this.modal_yes.TabIndex = 0;
+            this.modal_yes.Text = "Yes";
+            this.modal_yes.UseVisualStyleBackColor = false;
             // 
             // label
             // 
@@ -190,7 +186,7 @@
             this.label.BackColor = System.Drawing.Color.Transparent;
             this.label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label.ForeColor = System.Drawing.Color.White;
-            this.label.Location = new System.Drawing.Point(473, 7);
+            this.label.Location = new System.Drawing.Point(475, 3);
             this.label.Name = "label";
             this.label.Size = new System.Drawing.Size(161, 18);
             this.label.TabIndex = 20;
@@ -204,8 +200,9 @@
             this.back.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back.FlatAppearance.BorderSize = 0;
             this.back.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.back.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.back.ForeColor = System.Drawing.Color.White;
-            this.back.Location = new System.Drawing.Point(30, 5);
+            this.back.Location = new System.Drawing.Point(30, 3);
             this.back.Name = "back";
             this.back.Size = new System.Drawing.Size(20, 20);
             this.back.TabIndex = 22;
@@ -219,8 +216,9 @@
             this.next.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.next.FlatAppearance.BorderSize = 0;
             this.next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.next.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.next.ForeColor = System.Drawing.Color.White;
-            this.next.Location = new System.Drawing.Point(56, 5);
+            this.next.Location = new System.Drawing.Point(56, 3);
             this.next.Name = "next";
             this.next.Size = new System.Drawing.Size(20, 20);
             this.next.TabIndex = 23;
@@ -234,8 +232,9 @@
             this.home.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.home.FlatAppearance.BorderSize = 0;
             this.home.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.home.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.home.ForeColor = System.Drawing.Color.White;
-            this.home.Location = new System.Drawing.Point(4, 5);
+            this.home.Location = new System.Drawing.Point(4, 3);
             this.home.Name = "home";
             this.home.Size = new System.Drawing.Size(20, 20);
             this.home.TabIndex = 24;
@@ -249,10 +248,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1120, 640);
+            this.Controls.Add(this.modal);
             this.Controls.Add(this.home);
             this.Controls.Add(this.next);
+            this.Controls.Add(this.label);
             this.Controls.Add(this.back);
-            this.Controls.Add(this.modal);
             this.Controls.Add(this.webView);
             this.Controls.Add(this.closeBtn);
             this.Controls.Add(this.maximizeBtn);
@@ -265,8 +265,8 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HubWebView_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.webView)).EndInit();
             this.modal.ResumeLayout(false);
-            this.modal.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -277,9 +277,9 @@
         private System.Windows.Forms.Button maximizeBtn;
         private System.Windows.Forms.Button minimizeBtn;
         private BufferedClientAreaPanel modal;
-        private System.Windows.Forms.Label text;
-        private System.Windows.Forms.Button no;
-        private System.Windows.Forms.Button yes;
+        private System.Windows.Forms.Label modal_text;
+        private System.Windows.Forms.Button modal_no;
+        private System.Windows.Forms.Button modal_yes;
         private System.Windows.Forms.Label label;
         private System.Windows.Forms.Button back;
         private System.Windows.Forms.Button next;

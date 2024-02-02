@@ -19,7 +19,7 @@ namespace Nucleus.Gaming.Controls
 {
     public partial class ProfilesList : ControlListBox
     {
-        private IniFile themeIni = Globals.ThemeIni;
+        private IniFile themeIni = Globals.ThemeConfigFile;
 
         private float _scale;
         public static ProfilesList profilesList;
@@ -57,8 +57,8 @@ namespace Nucleus.Gaming.Controls
                                                int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[1]),
                                                int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])),2.0f);
 
-            default_Cursor = new Cursor(Globals.Theme + "cursor.ico");
-            hand_Cursor = new Cursor(Globals.Theme + "cursor_hand.ico");
+            default_Cursor = new Cursor(Globals.ThemeFolder + "cursor.ico");
+            hand_Cursor = new Cursor(Globals.ThemeFolder + "cursor_hand.ico");
         }
 
         public void ProfileBtn_CheckedChanged(object sender, EventArgs e)
@@ -167,7 +167,7 @@ namespace Nucleus.Gaming.Controls
                     Size = new Size((int)(13 * _scale), (int)(20 * _scale)),
                     Font = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0),
                     BackgroundImageLayout = ImageLayout.Zoom,
-                    BackgroundImage = ImageCache.GetImage(Globals.Theme + "magnifier.png"),
+                    BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "magnifier.png"),
                     BackColor = Color.Transparent,
                     ForeColor = Color.Green,
                     FlatStyle = FlatStyle.Flat,
@@ -352,7 +352,7 @@ namespace Nucleus.Gaming.Controls
 
                 if (Controls.Count == 0)
                 {
-                    parentControl.gameProfilesList_btn.Image = ImageCache.GetImage(Globals.Theme + "profiles_list.png");
+                    parentControl.gameProfilesList_btn.Image = ImageCache.GetImage(Globals.ThemeFolder + "profiles_list.png");
                 }
 
                 Globals.MainOSD.Show(500, "Game Profile Deleted");

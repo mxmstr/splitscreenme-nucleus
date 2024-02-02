@@ -44,7 +44,7 @@ namespace Nucleus.Coop.Tools
             }
             else
             {
-                mainForm.cover.BackgroundImage = ImageCache.GetImage(Globals.Theme + "no_cover.png");
+                mainForm.cover.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "no_cover.png");
                 mainForm.cover.Visible = true;
                 mainForm.coverFrame.Visible = true;
             }

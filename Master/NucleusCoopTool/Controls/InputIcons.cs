@@ -25,7 +25,7 @@ namespace Nucleus.Coop
                     Name = "icon1",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "xinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "xinput_icon.png")
                 };
 
                 CustomToolTips.SetToolTip(icon, "Supports xinput gamepads (e.g. X360).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -39,7 +39,7 @@ namespace Nucleus.Coop
                     Name = "icon2",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "dinput_icon.png")
                 };
 
 
@@ -53,7 +53,7 @@ namespace Nucleus.Coop
                     Name = "icon3",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "dinput_icon.png")
                 };
 
                 CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g. Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -67,7 +67,7 @@ namespace Nucleus.Coop
                     Name = "icon4",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "keyboard_icon.png")
                 };
 
                 CustomToolTips.SetToolTip(icon, @"Supports 1 keyboard\mouse.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -81,7 +81,7 @@ namespace Nucleus.Coop
                     Name = "icon5",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")               
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "keyboard_icon.png")               
                 };
 
                 PictureBox iconKB2 = new PictureBox
@@ -89,7 +89,7 @@ namespace Nucleus.Coop
                     Name = "icon6",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "keyboard_icon.png")
                 };
 
 

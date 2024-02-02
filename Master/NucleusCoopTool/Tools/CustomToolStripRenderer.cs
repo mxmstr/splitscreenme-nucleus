@@ -19,8 +19,8 @@ namespace Nucleus.Coop.Tools
 
         private class MyColors : ProfessionalColorTable
         {
-            string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "Selection").Split(',');
-            string[] rgb_MenuStripBackColor = Globals.ThemeIni.IniReadValue("Colors", "MenuStripBack").Split(',');
+            string[] rgb_MouseOverColor = Globals.ThemeConfigFile.IniReadValue("Colors", "Selection").Split(',');
+            string[] rgb_MenuStripBackColor = Globals.ThemeConfigFile.IniReadValue("Colors", "MenuStripBack").Split(',');
 
             public override Color MenuItemSelected => Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
 

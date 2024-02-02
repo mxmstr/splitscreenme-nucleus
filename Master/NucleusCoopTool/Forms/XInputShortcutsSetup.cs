@@ -33,11 +33,11 @@ namespace Nucleus.Coop.Forms
         public XInputShortcutsSetup()
         {
             InitializeComponent();
-            bool roundedcorners = bool.Parse(Globals.ThemeIni.IniReadValue("Misc", "UseRoundedCorners"));
+            bool roundedcorners = bool.Parse(Globals.ThemeConfigFile.IniReadValue("Misc", "UseRoundedCorners"));
             gamepadType = ini.IniReadValue("XUINav", "Type");
 
-            default_Cursor = new Cursor(Globals.Theme + "cursor.ico");
-            hand_Cursor = new Cursor(Globals.Theme + "cursor_hand.ico");
+            default_Cursor = new Cursor(Globals.ThemeFolder + "cursor.ico");
+            hand_Cursor = new Cursor(Globals.ThemeFolder + "cursor_hand.ico");
             Cursor.Current = default_Cursor;
             Cursor = default_Cursor;
             shortContainer.Cursor = default_Cursor;
@@ -47,12 +47,12 @@ namespace Nucleus.Coop.Forms
             refreshTimer.Interval = 500;
             refreshTimer.Start();
 
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "xinput_background.jpg");
+            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "xinput_background.jpg");
             BackgroundImageLayout = ImageLayout.Stretch;
 
             controllerTop = Nucleus.Coop.Properties.Resources.xboxControllerTop;
             controllerFront = Nucleus.Coop.Properties.Resources.xboxControllerFront;
-            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
+            Close.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
 
             CustomToolTips.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
@@ -616,12 +616,12 @@ namespace Nucleus.Coop.Forms
 
         private void Close_MouseEnter(object sender, EventArgs e)
         {
-            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close_mousehover.png");
+            Close.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close_mousehover.png");
         }
 
         private void Close_MouseLeave(object sender, EventArgs e)
         {
-            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
+            Close.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;

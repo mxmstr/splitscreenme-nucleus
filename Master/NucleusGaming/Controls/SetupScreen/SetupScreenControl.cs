@@ -11,7 +11,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 {
     public class SetupScreenControl : UserInputControl, IDynamicSized
     {
-        private string theme = Globals.Theme;
+        private string theme = Globals.ThemeFolder;
         private static SetupScreenControl _setupScreen;
        
         internal bool profileDisabled;

@@ -11,7 +11,7 @@ namespace Nucleus.Gaming.Forms
 
         public CustomPrompt(string message, string prevAnswer, int i)
         {
-            string theme = Globals.Theme;
+            string theme = Globals.ThemeFolder;
             BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
             InitializeComponent();
             lbl_Desc.Text = message;

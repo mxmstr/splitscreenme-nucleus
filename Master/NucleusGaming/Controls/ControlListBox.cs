@@ -12,7 +12,7 @@ namespace Nucleus.Gaming
         public event Action<object, Control> SelectedChanged;
         public Size Offset { get; set; }
         public Control SelectedControl { get; protected set; }
-        private readonly IniFile themeIni = Globals.ThemeIni;
+        private readonly IniFile themeIni = Globals.ThemeConfigFile;
         private string[] rgb_SelectionColor;
 
         public int Border

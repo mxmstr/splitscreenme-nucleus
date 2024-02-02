@@ -16,10 +16,10 @@ namespace Nucleus.Gaming
         public static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         //return theme path(current theme folder)
-        public static string Theme => Path.Combine(Application.StartupPath, $@"gui\theme\{ini.IniReadValue("Theme", "Theme")}\");
+        public static string ThemeFolder => Path.Combine(Application.StartupPath, $@"gui\theme\{ini.IniReadValue("Theme", "Theme")}\");
 
         //return theme.ini file(current theme)
-        public static IniFile ThemeIni => new IniFile(Path.Combine(Theme, "theme.ini"));
+        public static IniFile ThemeConfigFile => new IniFile(Path.Combine(ThemeFolder, "theme.ini"));
 
         public static Button PlayButton;
         public static RichTextBox NoteZoomTextBox;

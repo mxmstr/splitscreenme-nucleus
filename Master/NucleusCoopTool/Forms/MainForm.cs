@@ -34,8 +34,8 @@ namespace Nucleus.Coop
     {
         public readonly string version = "v" + Globals.Version;
         public readonly IniFile iconsIni;
-        public readonly IniFile themeIni = Globals.ThemeIni;
-        public readonly string theme = Globals.Theme;
+        public readonly IniFile themeIni = Globals.ThemeConfigFile;
+        public readonly string theme = Globals.ThemeFolder;
 
         protected string faq_link = "https://www.splitscreen.me/docs/faq";
         protected string api = "https://hub.splitscreen.me/api/v1/";
@@ -78,7 +78,6 @@ namespace Nucleus.Coop
         private PlayerOptionsControl optionsControl;
         private JSUserInputControl jsControl;
         private Handler handler = null;
-        private ScriptDownloader scriptDownloader;
         private HubWebView hubView;
         private DownloadPrompt downloadPrompt;
         private SoundPlayer splayer;
@@ -189,7 +188,6 @@ namespace Nucleus.Coop
 
         public FileInfo fontPath;
 
-        private Label handlerUpdateLabel;
         private Label favoriteOnlyLabel;
 
         private PictureBox favoriteOnly;
@@ -600,7 +598,6 @@ namespace Nucleus.Coop
             optionsControl.OnCanPlayUpdated += StepCanPlay;
             jsControl.OnCanPlayUpdated += StepCanPlay;
 
-            //scriptDownloader = new ScriptDownloader(this);
             hubView = new HubWebView(this);
             downloadPrompt = new DownloadPrompt(handler, this, null, true);
             Xinput_S_Setup = new XInputShortcutsSetup();
@@ -1183,7 +1180,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            assetsDownloader.DownloadGameAssets(this, gameManager, scriptDownloader, currentControl);
+            assetsDownloader.DownloadGameAssets(this, gameManager, currentControl);
         }
 
         private int r = 0;
@@ -1534,6 +1531,11 @@ namespace Nucleus.Coop
             I_GameHandlerEndFunc("OnFormClosed", false);
 
             User32Util.ShowTaskBar();
+
+            if(hubView != null)
+            {
+                hubView.Dispose();
+            }
 
             if (!restartRequired)
             {

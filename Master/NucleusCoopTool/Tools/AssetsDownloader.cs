@@ -22,7 +22,7 @@ namespace Nucleus.Coop.Tools
     {
         private int maxScreenshotsToDownload;
 
-        public void DownloadGameAssets(MainForm main, GameManager gameManager, ScriptDownloader scriptDownloader, GameControl currentControl)
+        public void DownloadGameAssets(MainForm main, GameManager gameManager, GameControl currentControl)
         {
             List<UserGameInfo> games = gameManager.User.Games;
 

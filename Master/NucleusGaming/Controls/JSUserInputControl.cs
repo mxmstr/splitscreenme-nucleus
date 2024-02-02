@@ -36,7 +36,7 @@ namespace Nucleus.Gaming
         {
             base.Initialize(game, profile);
 
-            string[] rgb_CoollistInitialColor = Globals.ThemeIni.IniReadValue("Colors", "Selection").Split(',');
+            string[] rgb_CoollistInitialColor = Globals.ThemeConfigFile.IniReadValue("Colors", "Selection").Split(',');
             _BackColor = Color.FromArgb(int.Parse(rgb_CoollistInitialColor[0]), int.Parse(rgb_CoollistInitialColor[1]), int.Parse(rgb_CoollistInitialColor[2]), int.Parse(rgb_CoollistInitialColor[3]));
             toSelect = null;
             Controls.Clear();

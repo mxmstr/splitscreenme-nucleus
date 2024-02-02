@@ -42,7 +42,7 @@ namespace SplitTool.Controls
         {
             EnableHighlighting = enableHightlighting;
 
-            string customFont = Globals.ThemeIni.IniReadValue("Font", "FontFamily");
+            string customFont = Globals.ThemeConfigFile.IniReadValue("Font", "FontFamily");
 
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.Transparent;

@@ -16,18 +16,12 @@ using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Controls
 {
-    public class CustomToolTips
+    public static class CustomToolTips
     {
         private static ConcurrentDictionary <Control, ToolTip> tooltipList = new ConcurrentDictionary<Control,ToolTip>();
-        private static bool showToolTips = bool.Parse(Globals.ini.IniReadValue("Dev","ShowToolTips"));
 
         public static ToolTip SetToolTip(Control control, string text, int[] rgbBackColor, int[] rgbForeColor, int delay = 100)
         {
-            if (!showToolTips)
-            {
-                return null;
-            }
-
             //Avoid Tooltips duplication
             ToolTip tooltipToRemove;
             tooltipList.TryRemove(control, out tooltipToRemove);

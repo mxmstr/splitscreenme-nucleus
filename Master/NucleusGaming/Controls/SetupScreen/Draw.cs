@@ -11,8 +11,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 {
     internal class Draw
     {
-        private static readonly IniFile themeIni = Globals.ThemeIni;
-        private static string theme = Globals.Theme;
+        private static readonly IniFile themeIni = Globals.ThemeConfigFile;
+        private static string theme = Globals.ThemeFolder;
         public static string customFont;
 
         private static Bitmap xinputPic;

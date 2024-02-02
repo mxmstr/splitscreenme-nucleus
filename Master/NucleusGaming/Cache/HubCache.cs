@@ -13,7 +13,7 @@ namespace Nucleus.Gaming.Cache
 {
     public static class HubCache
     {
-        private static string cacheFile = Path.Combine(Application.StartupPath, $"cache\\cache");
+        private static string cacheFile = Path.Combine(Application.StartupPath, $"webview\\cache\\hubcache");
         private static string thumbnailFolder = Path.Combine(Application.StartupPath, $"cache\\thumbnails\\");
         private const string api = "https://hub.splitscreen.me/api/v1/";
 
@@ -40,10 +40,10 @@ namespace Nucleus.Gaming.Cache
 
         private static JArray CreateCache()
         {
-            if(!Directory.Exists(Path.Combine(Application.StartupPath, $"cache")))
-            {
-                Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"cache"));
-            }
+            //if(!Directory.Exists(Path.Combine(Application.StartupPath, $"cache")))
+            //{
+            //    Directory.CreateDirectory(Path.Combine(Application.StartupPath, $"cache"));
+            //}
 
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -87,7 +87,7 @@ namespace Nucleus.Gaming.Cache
 
             if (now.Month == lastWritten.Month)
             {
-                if (now.Day >= lastWritten.Day + 2)//chech every 2 days or more
+                if (now.Day >= lastWritten.Day + 7)//chech every 7 days or more
                 {
                     return true;
                 }
@@ -100,7 +100,7 @@ namespace Nucleus.Gaming.Cache
 
             if (now.Month < lastWritten.Month)//new year since last update
             {
-                if ((now.Day >= 2 && now.Month == 1) || now.Month > 1)
+                if ((now.Day >= 7 && now.Month == 1) || now.Month > 1)
                 {
                     return true;
                 }
@@ -334,7 +334,7 @@ namespace Nucleus.Gaming.Cache
             }
             catch (Exception)
             {
-                return ImageCache.GetImage(Globals.Theme + "no_cover.png");
+                return ImageCache.GetImage(Globals.ThemeFolder + "no_cover.png");
             }
         }
 

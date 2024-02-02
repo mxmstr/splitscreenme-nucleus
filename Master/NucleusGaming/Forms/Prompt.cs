@@ -15,7 +15,7 @@ namespace Nucleus.Gaming.Forms
         {
             onpaint = false;
             InitializeComponent();
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
+            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
             lbl_Msg.Text = message;
 
             hasOpenFileDialog = false;
@@ -30,7 +30,7 @@ namespace Nucleus.Gaming.Forms
         public Prompt(string message, bool onpaint)
         {
             InitializeComponent();
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
+            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
             lbl_Msg.Text = message;
 
             hasOpenFileDialog = false;
@@ -46,7 +46,7 @@ namespace Nucleus.Gaming.Forms
         {
             onpaint = false;
             InitializeComponent();
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
+            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
             lbl_Msg.Text = message;
 
             hasOpenFileDialog = isOFD;

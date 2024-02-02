@@ -89,7 +89,7 @@ namespace Nucleus.Coop
             selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
            
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
+            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
 
             controlscollect();
 
@@ -1140,7 +1140,7 @@ namespace Nucleus.Coop
             if (page1.Visible)
             {
                 SuspendLayout();
-                btnNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page2.png");
+                btnNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page2.png");
                 page1.Visible = false;
                 page2.BringToFront();
                 page2.Visible = true;                           
@@ -1149,7 +1149,7 @@ namespace Nucleus.Coop
             else
             {
                 SuspendLayout();
-                btnNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page1.png");
+                btnNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page1.png");
                 page2.Visible = false;
                 page1.BringToFront();                
                 page1.Visible = true;            
@@ -1162,7 +1162,7 @@ namespace Nucleus.Coop
             if (processorPage1.Visible)
             {
                 SuspendLayout();
-                btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page2.png");
+                btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page2.png");
                 processorPage1.Visible = false;
                 processorPage2.BringToFront();
                 processorPage2.Visible = true;               
@@ -1171,7 +1171,7 @@ namespace Nucleus.Coop
             else
             {
                 SuspendLayout();
-                btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.Theme + "page1.png");
+                btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page1.png");
                 processorPage2.Visible = false;
                 processorPage1.BringToFront();
                 processorPage1.Visible = true;

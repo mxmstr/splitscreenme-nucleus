@@ -49,24 +49,23 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         {
             while (true)
             {
-                for (int i = 0; i < GamepadState.Controllers.Length; i++)
+                while (GenericGameHandler.Instance == null)
                 {
-                   
+                    Thread.Sleep(5000);
+                }
+
+                while (GenericGameHandler.Instance.hasEnded)
+                {
+                    Thread.Sleep(5000);
+                }
+
+                for (int i = 0; i < GamepadState.Controllers.Length; i++)
+                {                  
                     if (!GamepadState.Controllers[i].IsConnected)
                     {
                         continue;
                     }
-
-                    while (GenericGameHandler.Instance == null)
-                    {
-                        Thread.Sleep(1000);
-                    }
-
-                    while (GenericGameHandler.Instance.hasEnded)
-                    {
-                        Thread.Sleep(1000);
-                    }
-
+                  
                     State currentState = (State)GamepadState.GetControllerState(i);
 
                     if (previousState.PacketNumber != currentState.PacketNumber)
@@ -164,8 +163,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             SendKeys.SendWait("%+{TAB}");
                             Thread.Sleep(500);
                         }
-
-                        Thread.Sleep(135);
+                   
                         previousState = currentState;
                         Pressed = button;
                     }
@@ -173,6 +171,15 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                     RightTriggerValue = GamepadState.GetRightTriggerValue(i);
                     LeftTriggerValue = GamepadState.GetLeftTriggerValue(i);
                 }
+
+                if(Pressed > 0)
+                {
+                    Thread.Sleep(500);
+                }
+                else 
+                {
+                    Thread.Sleep(135);
+                }              
             }
         }
 

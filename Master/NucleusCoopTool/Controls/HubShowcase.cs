@@ -82,7 +82,7 @@ namespace Nucleus.Coop
                 hubLink.Add(handlers[i]["_id"].ToString());
                 hotness.Add(handlers[i]["stars"].ToString());
 
-                Bitmap bmp = ImageCache.GetImage(Globals.Theme + "no_cover.png");
+                Bitmap bmp = ImageCache.GetImage(Globals.ThemeFolder + "no_cover.png");
 
                 string _cover = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{GameCover}.jpg";
 
