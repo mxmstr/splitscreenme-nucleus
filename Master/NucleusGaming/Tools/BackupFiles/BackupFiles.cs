@@ -54,38 +54,6 @@ namespace Nucleus.Gaming.Tools.BackupFiles
                                 string fileDest = filePath.Remove(filePath.IndexOf(fileName), fileName.Length);//Create a copy of the file path without the file name
                                 string fileCopy = $"{destPath}\\{fileDest}\\{fileName}";//Build file copy/backup destination path
 
-                                #region Testing
-
-
-                                //if (filePath.Contains($"Instance{i}"))///For Context FindFilePartialName because it return the full file path
-                                //{
-
-                                //    string _fileName = filePath.Split('\\').Last();
-                                //    string fileDestWithName = filePath.Substring(filePath.IndexOf($"Instance{i}") + $"Instance{i}".Length + 1);//+1 remove \
-
-                                //    fileCopy = $"{destPath}\\{fileDestWithName}";
-                                //    fileDest = fileCopy.Remove(fileCopy.IndexOf(_fileName));
-
-                                //    if (!Directory.Exists(fileDest))
-                                //    {
-                                //        Directory.CreateDirectory(fileDest);//Create file copy/backup destination folder 
-                                //    }
-
-                                //    if (File.Exists(fileCopy))
-                                //    {
-                                //        File.Delete(fileCopy);//Delete previous backup
-                                //    }
-
-                                //    Console.WriteLine($"Source = {instances[i]}\\{fileDestWithName}");
-                                //    Console.WriteLine($"Copy to = {fileCopy}");
-
-                                //    File.Copy($"{instances[i]}\\{fileDestWithName}", fileCopy);//Create file copy/backup _filePath = filePath si testing region supprimé.
-
-                                //    continue;
-                                //}
-
-                                #endregion
-
                                 if (!Directory.Exists(fileDest))
                                 {
                                     Directory.CreateDirectory($"{destPath}\\{fileDest}");//Create file copy/backup destination folder 

@@ -45,8 +45,8 @@ namespace Nucleus.Coop.Forms
         private int entriesDone = 0;
         private int numEntries;
         
-        private EventHandler Yes_Button_Event;
-        private EventHandler No_Button_Event;     
+        private EventHandler Modal_Yes_Button_Event;
+        private EventHandler Modal_No_Button_Event;     
 
         public HubWebView(MainForm mainForm)
         {
@@ -314,11 +314,11 @@ namespace Nucleus.Coop.Forms
             {
                 modal_text.Text = "An existing handler with the name " + frmHandleTitle + ".js already exists.\nDo you wish to overwrite it?";
 
-                Yes_Button_Event = (sender, e) => ModalAddHandler(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
-                modal_yes.Click += Yes_Button_Event;
+                Modal_Yes_Button_Event = (sender, e) => ModalAddHandler(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
+                modal_yes.Click += Modal_Yes_Button_Event;
 
-                No_Button_Event = (sender, e) => Abort(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
-                modal_no.Click += No_Button_Event;
+                Modal_No_Button_Event = (sender, e) => Abort(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
+                modal_no.Click += Modal_No_Button_Event;
                 modal.Visible = true;
                 modal.BringToFront();
                 return;
@@ -344,8 +344,8 @@ namespace Nucleus.Coop.Forms
 
         private void ModalAddHandler(ZipFile zip, string scriptTempFolder, string frmHandleTitle, List<string> handlerFolders, string exeName)
         {
-            modal_yes.Click -= Yes_Button_Event;
-            modal_no.Click -= No_Button_Event;
+            modal_yes.Click -= Modal_Yes_Button_Event;
+            modal_no.Click -= Modal_No_Button_Event;
 
             if (Directory.Exists(Path.Combine(scriptFolder, frmHandleTitle)))
             {
@@ -394,10 +394,10 @@ namespace Nucleus.Coop.Forms
 
             File.Delete(downloadPath);
 
-            Yes_Button_Event = (sender, e) => AddGameToList(frmHandleTitle, exeName);
-            modal_yes.Click += Yes_Button_Event;
-            No_Button_Event = (sender, e) => HideModal();
-            modal_no.Click += No_Button_Event;
+            Modal_Yes_Button_Event = (sender, e) => AddGameToList(frmHandleTitle, exeName);
+            modal_yes.Click += Modal_Yes_Button_Event;
+            Modal_No_Button_Event = (sender, e) => HideModal();
+            modal_no.Click += Modal_No_Button_Event;
 
             modal_text.Text =
             "Downloading and extraction of " + frmHandleTitle +
@@ -426,8 +426,8 @@ namespace Nucleus.Coop.Forms
 
         private void HideModal()
         {
-            modal_yes.Click -= Yes_Button_Event;
-            modal_no.Click -= No_Button_Event;
+            modal_yes.Click -= Modal_Yes_Button_Event;
+            modal_no.Click -= Modal_No_Button_Event;
             modal.Visible = false;
             downloadCompleted = false;
             modal.SendToBack();
@@ -450,6 +450,9 @@ namespace Nucleus.Coop.Forms
 
         private void CloseBtn_Click(object sender, EventArgs e)
         {
+            mainForm.hubView = null;
+            Close();
+
             if (Location.X == -32000 || Width == 0)
             {
                 return;

@@ -48,7 +48,7 @@ public class WPFDiv : System.Windows.Window
         Topmost = false;
 
         Name = $"SplitForm{screen.DisplayIndex}";
-
+        Title = Name;
         WindowStartupLocation = WindowStartupLocation.Manual;
      
         Left = screen.Bounds.Left;

@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Jint.Runtime.Debugger;
+using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Windows;
@@ -1679,10 +1680,30 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
         public static void ChangeForegroundWindow()
         {
-            IntPtr nucHwnd = User32Interop.FindWindow(null, "Nucleus Co-op");
+            IntPtr windowToFocus = IntPtr.Zero;
 
-            if (nucHwnd != IntPtr.Zero)
-                User32Interop.SetForegroundWindow(nucHwnd);
+            foreach (WPFDiv back in GenericGameHandler.Instance.splitForms)
+            {
+                back.Dispatcher.Invoke(new Action(() =>
+                {
+                    windowToFocus = User32Interop.FindWindow(null, back.Title);
+                }));
+
+                if (windowToFocus != IntPtr.Zero)
+                {
+                    break;
+                }
+            }
+
+            if(windowToFocus == IntPtr.Zero)
+            {
+                windowToFocus = User32Interop.FindWindow(null, "Nucleus Co-op");
+            }
+
+            if (windowToFocus != IntPtr.Zero)
+            {
+                User32Interop.SetForegroundWindow(windowToFocus);
+            }
         }
     }
 }

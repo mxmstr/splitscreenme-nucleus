@@ -78,7 +78,7 @@ namespace Nucleus.Coop
         private PlayerOptionsControl optionsControl;
         private JSUserInputControl jsControl;
         private Handler handler = null;
-        private HubWebView hubView;
+        public HubWebView hubView;
         private DownloadPrompt downloadPrompt;
         private SoundPlayer splayer;
         private AssetsDownloader assetsDownloader;
@@ -598,7 +598,6 @@ namespace Nucleus.Coop
             optionsControl.OnCanPlayUpdated += StepCanPlay;
             jsControl.OnCanPlayUpdated += StepCanPlay;
 
-            hubView = new HubWebView(this);
             downloadPrompt = new DownloadPrompt(handler, this, null, true);
             Xinput_S_Setup = new XInputShortcutsSetup();
 
@@ -2279,14 +2278,13 @@ namespace Nucleus.Coop
 
         private void Btn_Download_Click(object sender, EventArgs e)
         {
-            if (hubView.Visible)
+            if (hubView != null)
             {
-                hubView.BringToFront();
+                return;
             }
-            else
-            {
-                hubView.Visible = true;
-            }
+
+            hubView = new HubWebView(this);
+            hubView.Show();
         }
 
         private void Button_UpdateAvailable_Click(object sender, EventArgs e)
