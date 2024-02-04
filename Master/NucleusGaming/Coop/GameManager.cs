@@ -216,6 +216,7 @@ namespace Nucleus.Gaming
 
             LogManager.Log("Found game: {0}, full path: {1}", game.GameName, exePath);
             UserGameInfo uinfo = new UserGameInfo();
+            uinfo.FirstLaunch = true;
             uinfo.InitializeDefault(game, exePath);
             GameManager.Instance.User.Games.Add(uinfo);
             GameManager.Instance.SaveUserProfile();

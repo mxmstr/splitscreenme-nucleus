@@ -13,6 +13,7 @@ namespace Nucleus.Gaming.Coop
         private string gameGuid = "";
         private bool favorite = false;
         private bool keepSymLink;
+        private bool firstLaunch;
 
         [JsonIgnore]
         public GenericGameInfo Game
@@ -63,6 +64,12 @@ namespace Nucleus.Gaming.Coop
         {
             get => keepSymLink;
             set => keepSymLink = value;
+        }
+
+        public bool FirstLaunch
+        {
+            get => firstLaunch;
+            set => firstLaunch = value;
         }
 
         public UserGameInfo()

@@ -1264,6 +1264,7 @@ namespace Nucleus.Coop
                     CleanGameContent.CleanContentFolder(currentGame);
                 }
 
+                
                 btn_Steam.Visible = currentGame.NeedSteamClient;
 
                 button_UpdateAvailable.Visible = currentGameInfo.Game.UpdateAvailable;
@@ -1288,7 +1289,7 @@ namespace Nucleus.Coop
                 rightFrame.Visible = true;
 
                 StepPanel.Visible = true;
-                setupScreen.textZoomContainer.Visible = false;
+                
                 stepPanelPictureBox.Visible = false;
 
                 SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
@@ -1334,6 +1335,19 @@ namespace Nucleus.Coop
                     setupScreen.profileSettings_btn.Visible = false;
                     setupScreen.gameProfilesList.Visible = false;
                     setupScreen.gameProfilesList_btn.Visible = false;
+                }
+
+                if (currentGameInfo.FirstLaunch && currentGame.Description != null)
+                {
+                    setupScreen.gameProfilesList.Visible = false;
+                    setupScreen.gameProfilesList_btn.Image = ImageCache.GetImage(theme + "profiles_list.png");
+                    Btn_magnifier_Click(null, null);
+                    currentGameInfo.FirstLaunch = false;
+                    gameManager.SaveUserProfile();
+                }
+                else
+                {
+                    setupScreen.textZoomContainer.Visible = false;
                 }
 
                 btn_textSwitcher.Visible = File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{currentGame.GUID}.txt"));

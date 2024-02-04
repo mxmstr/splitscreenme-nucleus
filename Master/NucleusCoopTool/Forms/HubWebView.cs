@@ -24,15 +24,13 @@ using System.Windows.Forms;
 namespace Nucleus.Coop.Forms
 {
     public partial class HubWebView : BaseForm
-    {
-        
+    {       
         private readonly string darkReaderFolder = Path.Combine(Application.StartupPath, $"webview\\darkreader");
         private readonly string cacheFolder = Path.Combine(Application.StartupPath, $"webview\\cache");
         private string downloadPath = Path.Combine(Application.StartupPath, "handlers\\handler.nc");
         private string scriptFolder = GameManager.Instance.GetJsScriptsPath();
         private const string hubUri = "https://hub.splitscreen.me/";
         private readonly string theme = Globals.ThemeFolder;
-        private string prevValidUri;
        
         private CoreWebView2DownloadOperation downloadOperation;
         private CoreWebView2Settings webViewSettings;
@@ -179,7 +177,7 @@ namespace Nucleus.Coop.Forms
 
         private void JSInjectect()
         {
-            //Main Page
+            //Main hub Page
             webView.ExecuteScriptAsync("document.getElementsByClassName('header ant-layout-header')[0].style.backgroundColor = '#000'; ");
             webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu ant-menu-dark ant-menu-root ant-menu-horizontal')[0].style.backgroundColor = '#000'; ");
             webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[0].style.display = 'none'; ");//splitscreen.me redirection link
@@ -388,6 +386,7 @@ namespace Nucleus.Coop.Forms
 
                 mainForm.controls.Where(c => c.Value.TitleText == gameName).FirstOrDefault().Value.GameInfo.UpdateAvailable = false;
                 mainForm.RefreshGames();
+
                 HideModal();
 
                 return;
