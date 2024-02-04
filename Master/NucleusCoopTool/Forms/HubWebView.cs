@@ -396,8 +396,7 @@ namespace Nucleus.Coop.Forms
             modal_yes.Click += Modal_Yes_Button_Event;
             Modal_No_Button_Event = (sender, e) => HideModal();
             modal_no.Click += Modal_No_Button_Event;
-
-           
+      
             modal_text.Text =
             "Downloading and extraction of " + frmHandleTitle +
             " handler is complete. Would you like to add this game to Nucleus now? " +
