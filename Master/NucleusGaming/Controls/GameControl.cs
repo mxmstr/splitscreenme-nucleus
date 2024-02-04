@@ -16,7 +16,7 @@ namespace Nucleus.Coop
     public class GameControl : UserControl, IDynamicSized, IRadioControl
     {
         private readonly IniFile ini = Globals.ini;
-        public GenericGameInfo GameInfo { get; private set; }
+        public GenericGameInfo GameInfo { get; set; }
         public UserGameInfo UserGameInfo { get; private set; }
         private PictureBox picture;
         private PictureBox playerIcon;
@@ -222,6 +222,7 @@ namespace Nucleus.Coop
             {
                 if (topLevel.IsHandleCreated && GameInfo != null)
                 {
+                    
                     if (GameInfo.UpdateAvailable)
                     {
                         title.ForeColor = Color.PaleGreen;
@@ -231,6 +232,11 @@ namespace Nucleus.Coop
                             CustomToolTips.SetToolTip(this, "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                         });
                     }
+                    //else 
+                    //{
+                    //    title.ForeColor = Color.White;
+                    //    Console.WriteLine(GameInfo.GameName);
+                    //}
                 }
             }
         }

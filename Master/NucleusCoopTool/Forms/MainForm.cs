@@ -65,9 +65,10 @@ namespace Nucleus.Coop
         private ContentManager content;
         private IGameHandler I_GameHandler;
         public GameManager gameManager;
-        private Dictionary<UserGameInfo, GameControl> controls;
+        public Dictionary<UserGameInfo, GameControl> controls;
 
         private GameControl currentControl;
+
         private UserGameInfo currentGameInfo;
         private GenericGameInfo currentGame;
         public HubShowcase hubShowcase;

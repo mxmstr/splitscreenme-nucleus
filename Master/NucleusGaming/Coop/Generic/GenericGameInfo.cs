@@ -378,7 +378,7 @@ namespace Nucleus.Gaming
                 });
             }
 
-            if (checkUpdate[0])//workaround else handler update is checked before startup too,
+            if (checkUpdate[0])//workaround else handler update is checked before instances setup too,
                                //see MainForm.cs Btn_Play_Click(object sender, EventArgs e) => gameManager.AddScript.
             {
                 // Run this in another thread to not block UI

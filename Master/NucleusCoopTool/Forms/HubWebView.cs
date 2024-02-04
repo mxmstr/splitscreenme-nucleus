@@ -115,12 +115,7 @@ namespace Nucleus.Coop.Forms
         }
 
         public async Task InitializeAsync()
-        {
-            if (!Directory.Exists(cacheFolder))
-            {
-                Directory.CreateDirectory(cacheFolder);
-            }
-
+        {          
             //environment.CreateWebResourceResponse() a voir avec r-mach
             //environment.CreateWebResourceRequest
             CoreWebView2Environment environment = null;
@@ -128,8 +123,7 @@ namespace Nucleus.Coop.Forms
             environmentOptions.AreBrowserExtensionsEnabled = true;
 
             webView.CreationProperties = new Microsoft.Web.WebView2.WinForms.CoreWebView2CreationProperties();
-            webView.CreationProperties.UserDataFolder = cacheFolder + "\\WebViewCache";
-
+            webView.CreationProperties.UserDataFolder = cacheFolder;
 
             if (Directory.Exists(webView.CreationProperties.UserDataFolder))
             {           
@@ -154,14 +148,14 @@ namespace Nucleus.Coop.Forms
             webViewSettings.IsGeneralAutofillEnabled = true;
             webViewSettings.AreDefaultContextMenusEnabled = false;
 
-            if (hasFreshCahe)
-            {
-               await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderFolder);
-            }
-
             if (webView.Source.AbsolutePath == "blank")
             {
                 webView.Source = new Uri(hubUri);
+            }
+
+            if (hasFreshCahe)
+            {
+               await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderFolder);
             }
 
             webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += IsDefaultDownloadDialogOpenChanged;
@@ -169,27 +163,19 @@ namespace Nucleus.Coop.Forms
             webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);                
             webView.CoreWebView2.SourceChanged += new EventHandler<CoreWebView2SourceChangedEventArgs>(SourceChanged);
             webView.CoreWebView2.ContentLoading += new EventHandler<CoreWebView2ContentLoadingEventArgs>(ContentLoading);
+            webView.CoreWebView2.NewWindowRequested += new EventHandler<CoreWebView2NewWindowRequestedEventArgs>(NewWindowRequested);
         }
 
-        private void ContentLoading(object sender, CoreWebView2ContentLoadingEventArgs e) => BlockRedirection();
-
-        private void SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e) => BlockRedirection();
-
-        private void BlockRedirection()
+        private void NewWindowRequested(object sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
-            string source = webView.CoreWebView2.Source;
-
-            if (source.StartsWith("https://hub.splitscreen.me/"))
-            {
-                prevValidUri = webView.CoreWebView2.Source;
-                JSInjectect();
-                return;
-            }
-
-            webView.CoreWebView2.Stop();
-            webView.CoreWebView2.Navigate(prevValidUri);
-            JSInjectect();
+            CoreWebView2 currentWindow = (CoreWebView2)sender;
+            e.Handled = true;
+            currentWindow.Navigate(e.Uri);
         }
+
+        private void ContentLoading(object sender, CoreWebView2ContentLoadingEventArgs e) => JSInjectect();
+
+        private void SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e) => JSInjectect();
 
         private void JSInjectect()
         {
@@ -394,11 +380,25 @@ namespace Nucleus.Coop.Forms
 
             File.Delete(downloadPath);
 
+            if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))
+            {
+                GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
+                string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName).FirstOrDefault().GameGuid;
+                string gameName = GameManager.Instance.Games.Where(c => c.Value.GUID == gameGuid).FirstOrDefault().Value.GameName;
+
+                mainForm.controls.Where(c => c.Value.TitleText == gameName).FirstOrDefault().Value.GameInfo.UpdateAvailable = false;
+                mainForm.RefreshGames();
+                HideModal();
+
+                return;
+            }
+
             Modal_Yes_Button_Event = (sender, e) => AddGameToList(frmHandleTitle, exeName);
             modal_yes.Click += Modal_Yes_Button_Event;
             Modal_No_Button_Event = (sender, e) => HideModal();
             modal_no.Click += Modal_No_Button_Event;
 
+           
             modal_text.Text =
             "Downloading and extraction of " + frmHandleTitle +
             " handler is complete. Would you like to add this game to Nucleus now? " +
@@ -451,17 +451,17 @@ namespace Nucleus.Coop.Forms
         private void CloseBtn_Click(object sender, EventArgs e)
         {
             mainForm.hubView = null;
-            Close();
 
             if (Location.X == -32000 || Width == 0)
             {
+                Close();
                 return;
             }
 
             ini.IniWriteValue("Misc", "DownloaderWindowSize", Width + "X" + Height);
             ini.IniWriteValue("Misc", "DownloaderWindowLocation", Location.X + "X" + Location.Y);
 
-            Visible = false;
+            Close();
         }
 
         private void MaximizeBtn_Click(object sender, EventArgs e) => WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized;

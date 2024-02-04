@@ -292,6 +292,24 @@ namespace Nucleus.Gaming
             }
         }
 
+        /// <summary>
+        /// Check if a game is already prensent in user profile with the provided IGameInfo
+        /// </summary>
+        /// <param name="exePath"></param>
+        /// <returns></returns>
+        public bool IsGameAlreadyInUserProfile(string exeName)
+        {
+            string lower = exeName.ToLower();
+
+            // search for the same exe on the user profile
+            if(GameManager.Instance.User.Games.Any(c => c.ExePath.Split('\\').Last().ToLower() == lower))
+            {
+               return true;
+            }
+
+            return false;
+        }
+
         #region Initialize
 
         public string GetAppContentPath()
@@ -596,12 +614,14 @@ namespace Nucleus.Gaming
                     {
                         games.Remove(info.GUID);
                     }
+
                     games.Add(info.GUID, info);
 
                     if (gameInfos.Any(c => c.Value.GUID == info.GUID))
                     {
                         gameInfos.Remove(info.GUID);
                     }
+
                     gameInfos.Add(info.GUID, info);
                 }
 
