@@ -1,5 +1,6 @@
 ﻿using Ionic.Zip;
 using Microsoft.Web.WebView2.Core;
+using Newtonsoft.Json;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
@@ -8,16 +9,10 @@ using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Forms;
 
 
@@ -29,7 +24,7 @@ namespace Nucleus.Coop.Forms
         private readonly string cacheFolder = Path.Combine(Application.StartupPath, $"webview\\cache");
         private string downloadPath = Path.Combine(Application.StartupPath, "handlers\\handler.nc");
         private string scriptFolder = GameManager.Instance.GetJsScriptsPath();
-        private const string hubUri = "https://hub.splitscreen.me/";
+        private string hubUri = "https://hub.splitscreen.me/?fromWebview=true";
         private readonly string theme = Globals.ThemeFolder;
        
         private CoreWebView2DownloadOperation downloadOperation;
@@ -44,7 +39,9 @@ namespace Nucleus.Coop.Forms
         private int numEntries;
         
         private EventHandler Modal_Yes_Button_Event;
-        private EventHandler Modal_No_Button_Event;     
+        private EventHandler Modal_No_Button_Event;
+
+        private List<string> installedHandlers = new List<string>();
 
         public HubWebView(MainForm mainForm)
         {
@@ -91,17 +88,34 @@ namespace Nucleus.Coop.Forms
             modal_yes.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
             modal_no.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
 
-            home.Text = "";
+           // home.Text = "";
             home.BackgroundImage = ImageCache.GetImage(theme + "home.png");
             home.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
-            back.Text = "";
+            //back.Text = "";
             back.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
             back.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
-            next.Text = "";
+            //next.Text = "";
             next.BackgroundImage = ImageCache.GetImage(theme + "arrow_right.png");
             next.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
 
             webView.DefaultBackgroundColor = mainForm.BackColor;
+
+            string debugUri = Path.Combine(Application.StartupPath, $"webview\\debugUri.txt");
+
+            if (File.Exists(debugUri))
+            {
+                StreamReader desc = new StreamReader(debugUri);
+
+                string expectedUri = "http://localhost:3000/";
+                string descResult = desc.ReadToEnd();
+
+                if(expectedUri == descResult)
+                {
+                    hubUri = expectedUri;
+                }
+               
+                desc.Dispose();
+            }
 
             Load += OnLoad;
         }
@@ -113,15 +127,16 @@ namespace Nucleus.Coop.Forms
         }
 
         public async Task InitializeAsync()
-        {          
-            //environment.CreateWebResourceResponse() a voir avec r-mach
-            //environment.CreateWebResourceRequest
+        {
+            GameManager.Instance.GameInfos.AsParallel().ForAll(g => AddHandlerToList(g.Value.HandlerId));
+
             CoreWebView2Environment environment = null;
             CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions();
             environmentOptions.AreBrowserExtensionsEnabled = true;
 
             webView.CreationProperties = new Microsoft.Web.WebView2.WinForms.CoreWebView2CreationProperties();
             webView.CreationProperties.UserDataFolder = cacheFolder;
+           
 
             if (Directory.Exists(webView.CreationProperties.UserDataFolder))
             {           
@@ -144,7 +159,10 @@ namespace Nucleus.Coop.Forms
             webViewSettings = webView.CoreWebView2.Settings;
             webViewSettings.IsWebMessageEnabled = true;
             webViewSettings.IsGeneralAutofillEnabled = true;
+ #if RELEASE
             webViewSettings.AreDefaultContextMenusEnabled = false;
+#endif
+            webViewSettings.IsScriptEnabled = true;
 
             if (webView.Source.AbsolutePath == "blank")
             {
@@ -159,7 +177,7 @@ namespace Nucleus.Coop.Forms
             webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += IsDefaultDownloadDialogOpenChanged;
             webView.CoreWebView2.DOMContentLoaded += new EventHandler<CoreWebView2DOMContentLoadedEventArgs>(DOMContentLoaded);
             webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);                
-            webView.CoreWebView2.SourceChanged += new EventHandler<CoreWebView2SourceChangedEventArgs>(SourceChanged);
+            //webView.CoreWebView2.SourceChanged += new EventHandler<CoreWebView2SourceChangedEventArgs>(SourceChanged);
             webView.CoreWebView2.ContentLoading += new EventHandler<CoreWebView2ContentLoadingEventArgs>(ContentLoading);
             webView.CoreWebView2.NewWindowRequested += new EventHandler<CoreWebView2NewWindowRequestedEventArgs>(NewWindowRequested);
         }
@@ -173,16 +191,34 @@ namespace Nucleus.Coop.Forms
 
         private void ContentLoading(object sender, CoreWebView2ContentLoadingEventArgs e) => JSInjectect();
 
-        private void SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e) => JSInjectect();
-
-        private void JSInjectect()
+        //private void SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e)
+        //{
+        //    if(/*webView.CoreWebView2.Source.Equals("https://hub.splitscreen.me/?fromWebview=true") ||*/ webView.CoreWebView2.Source.StartsWith("https://hub.splitscreen.me/"))
+        //    {
+        //        webView.CoreWebView2.Reload();
+        //        JSInjectect();
+        //    }
+        //}
+       
+        private async void JSInjectect()
         {
-            //Main hub Page
-            webView.ExecuteScriptAsync("document.getElementsByClassName('header ant-layout-header')[0].style.backgroundColor = '#000'; ");
-            webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu ant-menu-dark ant-menu-root ant-menu-horizontal')[0].style.backgroundColor = '#000'; ");
-            webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[0].style.display = 'none'; ");//splitscreen.me redirection link
-            webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[3].style.display = 'none'; ");//Documentation link
-            webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[5].style.display = 'none'; ");//Contributors search page
+            await webView.ExecuteScriptAsync("document.getElementsByClassName('header ant-layout-header')[0].style.backgroundColor = '#000'; ");
+            await webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu ant-menu-dark ant-menu-root ant-menu-horizontal')[0].style.backgroundColor = '#000'; ");
+            
+            //await webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[0].style.display = 'none'; ");//splitscreen.me redirection link
+            //await webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[3].style.display = 'none'; ");//Documentation link
+            //await webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[5].style.display = 'none'; ");//Contributors search page
+            
+            string json = JsonConvert.SerializeObject(installedHandlers, Formatting.Indented);
+            await webView.ExecuteScriptAsync($"NucleusWebview.setLocalHandlerLibraryIds({json})");       
+        }
+
+        private void AddHandlerToList(string id)
+        {
+            if(id != null && id != "")
+            {
+                installedHandlers.Add(id);
+            }
         }
 
         private void DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
@@ -322,8 +358,8 @@ namespace Nucleus.Coop.Forms
         private void AddGameToList(string frmHandleTitle, string exeName)
         {
             GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-            SearchGame.Search(mainForm, exeName);
-            HideModal();
+            SearchGame.Search(mainForm, exeName);          
+            HideModal();         
         }
 
         private void ModalAddHandler(ZipFile zip, string scriptTempFolder, string frmHandleTitle, List<string> handlerFolders, string exeName)
@@ -381,16 +417,22 @@ namespace Nucleus.Coop.Forms
             if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))
             {
                 GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-                string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName).FirstOrDefault().GameGuid;
+                string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName.ToLower()).FirstOrDefault().GameGuid;
                 string gameName = GameManager.Instance.Games.Where(c => c.Value.GUID == gameGuid).FirstOrDefault().Value.GameName;
 
                 mainForm.controls.Where(c => c.Value.TitleText == gameName).FirstOrDefault().Value.GameInfo.UpdateAvailable = false;
+                mainForm.button_UpdateAvailable.Visible = false;
                 mainForm.RefreshGames();
-
+               
                 HideModal();
 
                 return;
             }
+
+            installedHandlers.Clear();
+            GameManager.Instance.Initialize();
+            GameManager.Instance.GameInfos.AsParallel().ForAll(g => AddHandlerToList(g.Value.HandlerId));
+            JSInjectect();
 
             Modal_Yes_Button_Event = (sender, e) => AddGameToList(frmHandleTitle, exeName);
             modal_yes.Click += Modal_Yes_Button_Event;
@@ -401,6 +443,7 @@ namespace Nucleus.Coop.Forms
             "Downloading and extraction of " + frmHandleTitle +
             " handler is complete. Would you like to add this game to Nucleus now? " +
             "You will need to select the game executable to add it.";
+
 
             if (!modal.Visible)
             {
@@ -434,11 +477,13 @@ namespace Nucleus.Coop.Forms
         private void Back_Click(object sender, EventArgs e)
         {
             webView.CoreWebView2.GoBack();
+            JSInjectect();
         }
 
         private void Next_Click(object sender, EventArgs e)
         {
             webView.CoreWebView2.GoForward();
+            JSInjectect();
         }
 
         private void Home_Click(object sender, EventArgs e)
@@ -521,7 +566,6 @@ namespace Nucleus.Coop.Forms
             {
                 switch (m.Msg)
                 {
-
                     case 0x0084/*NCHITTEST*/ :
                         base.WndProc(ref m);
 
@@ -564,5 +608,24 @@ namespace Nucleus.Coop.Forms
             base.WndProc(ref m);
         }
 
+        private void HubWebView_ResizeBegin(object sender, EventArgs e)
+        {
+            home.Visible = false;
+            back.Visible = false;
+            next.Visible = false;
+            minimizeBtn.Visible = false;
+            maximizeBtn.Visible = false;
+            closeBtn.Visible = false;
+        }
+
+        private void HubWebView_ResizeEnd(object sender, EventArgs e)
+        {
+            home.Visible = true;
+            back.Visible = true;
+            next.Visible = true;
+            minimizeBtn.Visible = true;
+            maximizeBtn.Visible = true;
+            closeBtn.Visible = true;
+        }
     }
 }

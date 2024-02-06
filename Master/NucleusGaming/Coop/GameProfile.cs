@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using IWshRuntimeLibrary;
+using Jint.Runtime;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop;
 using Nucleus.Gaming.Controls;
@@ -209,8 +211,11 @@ namespace Nucleus.Gaming.Coop
         public static bool Ready;
 
         private static bool useXinputIndex;
-        public static bool UseXinputIndex => useXinputIndex;
-
+        public static bool UseXinputIndex
+        {
+            get => useXinputIndex;
+            set => useXinputIndex = value;
+        }
         //Avoid "Autoplay" to be applied right after setting the option in profile settings
         private static bool updating;
         public static bool Updating
@@ -362,7 +367,7 @@ namespace Nucleus.Gaming.Coop
             {
                 string path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{_profileToLoad}].json";
 
-                string jsonString = File.ReadAllText(path);
+                string jsonString = System.IO.File.ReadAllText(path);
 
                 JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
@@ -415,6 +420,7 @@ namespace Nucleus.Gaming.Coop
                     Cts_BringToFront = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"];
                 }
 
+                UseXinputIndex = (bool)Jprofile["Use XInput Index"];
                 Network = (string)Jprofile["Network"]["Type"];
                 CustomLayout_Ver = (int)Jprofile["CustomLayout"]["Ver"];
                 CustomLayout_Hor = (int)Jprofile["CustomLayout"]["Hor"];
@@ -536,15 +542,32 @@ namespace Nucleus.Gaming.Coop
                 Globals.MainOSD.Show(1000, $"Game Profile N°{_profileToLoad} loaded");
 
                 return true;
-            }catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 Reset();
                 NucleusMessageBox.Show("", "The profile can't be loaded.\n\n" +
                     "If the error persist delete the profile and create a new one.\n\n" +
                     "[Error]\n\n" + ex.Message, false);
-
+                
                 return false;
             }
+        }
+
+        public static void CreateShortcut()
+        {
+            object shDesktop = (object)"Desktop";
+            WshShell shell = new WshShell();
+            string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + $@"\Profile_{CurrentProfileId}_{Game.GUID}.lnk";
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+            shortcut.Description = Notes != null ? Notes : $"{Game.GUID} Nucleus shortcut.";
+            shortcut.TargetPath = Application.ExecutablePath;
+            shortcut.WorkingDirectory = Application.StartupPath;
+            shortcut.Arguments = $"\"{Game.GUID}\" \"{CurrentProfileId}\"";
+            UserGameInfo currentGameInfo = GameManager.Instance.User.Games.Where(c => c.GameGuid == Game.GUID).FirstOrDefault();
+            shortcut.IconLocation = currentGameInfo.ExePath;
+            shortcut.Save();
         }
 
         private static string GetGameProfilesPath()

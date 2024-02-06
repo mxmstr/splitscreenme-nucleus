@@ -54,7 +54,6 @@ public class WPF_OSD : System.Windows.Window
 
     public void Show(int timing, string text)
     {
-       // Dispatcher.FromThread(Thread.CurrentThread).;
         this.Dispatcher.Invoke(new Action(() => {
 
             if (!initialized)

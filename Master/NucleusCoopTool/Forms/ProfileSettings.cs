@@ -854,7 +854,7 @@ namespace Nucleus.Coop
                 setupScreen.gameProfilesList.Update_ProfilesList();
 
                 ///Send control selection event to the Profiles List (update the list and reload the profile)
-                EventArgs eventArgs = new EventArgs();
+               // MouseEventArgs eventArgs = new MouseEventArgs();
 
                 Label selected = new Label
                 {
@@ -862,7 +862,7 @@ namespace Nucleus.Coop
                     Text = GameProfile.ModeText
                 };
 
-                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(selected, eventArgs);
+                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(selected, null);
             }
 
             ini.IniWriteValue("Misc", "ProfileSettingsLocation", Location.X + "X" + Location.Y);

@@ -3145,8 +3145,7 @@ namespace Nucleus.Gaming
             if (!processingExit)
             {
                 GamepadNavigation.EnabledRuntime = false;
-
-                GameProfile.SaveGameProfile(profile);
+                GameProfile.SaveGameProfile(profile);              
             }
 
             gen.OnFinishedSetup?.Invoke();
@@ -3799,10 +3798,13 @@ namespace Nucleus.Gaming
 
             if (userBackedFiles?.Count > 0)
             {
-                foreach (string filePath in userBackedFiles)
+                for (int i = 0; i < userBackedFiles.Count;i++)
                 {
-                    string origFileName = filePath.Replace("_NUCLEUS_BACKUP" + Path.GetExtension(filePath), Path.GetExtension(filePath));
+                    string filePath = userBackedFiles[i];
+                    
+                    string origFileName = filePath.Replace($"_NUCLEUS_BACKUP" + Path.GetExtension(filePath), Path.GetExtension(filePath));
                     Log($"Restoring {origFileName}");
+
                     if (File.Exists(origFileName) && File.Exists(filePath))
                     {
                         File.Delete(origFileName);

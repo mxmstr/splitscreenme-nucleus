@@ -61,7 +61,7 @@ namespace Nucleus.Gaming.Controls
             hand_Cursor = new Cursor(Globals.ThemeFolder + "cursor_hand.ico");
         }
 
-        public void ProfileBtn_CheckedChanged(object sender, EventArgs e)
+        public void ProfileBtn_CheckedChanged(object sender, MouseEventArgs e)
         {
             if (Locked)
             {
@@ -107,6 +107,16 @@ namespace Nucleus.Gaming.Controls
                 unloadBtn.ForeColor = Color.Orange;
                 loadedTitle = selected.Text;
             }
+
+            //if(e.Button == MouseButtons.Right)
+            //{
+            //    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Do you want to create a desktop shortcut for this profile?", "Create profile shortcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            //    if (dialogResult == DialogResult.Yes)
+            //    {
+            //        GameProfile.CreateShortcut();
+            //    }               
+            //}
         }
 
         public void Update_ProfilesList()
@@ -196,7 +206,7 @@ namespace Nucleus.Gaming.Controls
                 };
 
                 ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                profileBtn.Click += new EventHandler(ProfileBtn_CheckedChanged);
+                profileBtn.MouseClick += new MouseEventHandler(ProfileBtn_CheckedChanged);
 
                 if (i != GameProfile.profilesPathList.Count)
                 {

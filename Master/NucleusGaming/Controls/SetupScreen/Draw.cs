@@ -424,7 +424,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             g.DrawRectangles(destEditBoundsPen, new RectangleF[] { BoundsFunctions.destEditBounds });
         }
 
-
         public static void PlayerBoundsInfo(Graphics g)
         {
             g.DrawString(BoundsFunctions.CalculAspectRatio(BoundsFunctions.selectedPlayer), playerTextFont, Brushes.White, parent.Left + 10, parent.Height - 40);

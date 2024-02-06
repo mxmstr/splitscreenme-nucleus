@@ -33,7 +33,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         internal static float playerSize;
         internal static RectangleF playersArea;
 
-        internal static bool polling = false;
+        public static bool polling = false;
         internal static bool insideGamepadTick = false;
         public static bool isDisconnected;
 
@@ -66,9 +66,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             JoyStickList.Clear();
         }
 
-        internal static bool PollDInputGamepad(PlayerInfo player)
+        public static bool PollDInputGamepad(PlayerInfo player)
         {
-            if (player.DInputJoystick == null)
+            if (player.DInputJoystick == null || !player.IsDInput)
             {
                 return false;
             }
@@ -135,9 +135,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
         }
 
-        internal static bool PollXInputGamepad(PlayerInfo player)
+        public static bool PollXInputGamepad(PlayerInfo player)
         {
-            if (polling || player.IsFake)
+            if (polling || player.IsFake || !player.IsXInput)
             {
                 return false;
             }
@@ -523,7 +523,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             {
             }
 
-            parent.Invoke(new Action(() => parent.Invalidate()));
+        if(parent.IsHandleCreated) 
+            parent?.Invoke(new Action(() => parent?.Invalidate()));
         }
 
         internal static void UpdateDevices()

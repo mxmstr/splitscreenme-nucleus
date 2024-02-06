@@ -501,16 +501,17 @@ namespace Nucleus.Gaming
             User32Util.HideTaskbar();
         }
 
-        public void BackupFile(string filePath, bool overwrite)
+        public void BackupFile(string[] filePaths, bool overwrite)
         {
-            if (pInfo.PlayerID == 0)
+            for (int i = 0; i < filePaths.Length; i++)
             {
+                string filePath = filePaths[i];
+
                 if (File.Exists(filePath))
                 {
                     Log($"Backing up {filePath}");
-                    string backupFileName = Path.GetDirectoryName(filePath) + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_NUCLEUS_BACKUP" + Path.GetExtension(filePath);
+                    string backupFileName = Path.GetDirectoryName(filePath) + "\\" + Path.GetFileNameWithoutExtension(filePath) + $"_NUCLEUS_BACKUP" + Path.GetExtension(filePath);
                     File.Copy(filePath, backupFileName, overwrite);
-                    //BackupAndRestoreFiles.Add(backupFileName);
                     parent.userBackedFiles.Add(backupFileName);
                 }
                 else

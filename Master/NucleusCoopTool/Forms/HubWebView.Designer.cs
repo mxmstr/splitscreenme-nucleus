@@ -89,6 +89,7 @@
             this.maximizeBtn.FlatAppearance.BorderSize = 0;
             this.maximizeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.maximizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.maximizeBtn.ForeColor = System.Drawing.Color.Black;
             this.maximizeBtn.Location = new System.Drawing.Point(1071, 3);
             this.maximizeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.maximizeBtn.Name = "maximizeBtn";
@@ -201,12 +202,11 @@
             this.back.FlatAppearance.BorderSize = 0;
             this.back.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.back.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.back.ForeColor = System.Drawing.Color.White;
+            this.back.ForeColor = System.Drawing.Color.Black;
             this.back.Location = new System.Drawing.Point(30, 3);
             this.back.Name = "back";
             this.back.Size = new System.Drawing.Size(20, 20);
             this.back.TabIndex = 22;
-            this.back.Text = "B";
             this.back.UseVisualStyleBackColor = false;
             this.back.Click += new System.EventHandler(this.Back_Click);
             // 
@@ -217,12 +217,11 @@
             this.next.FlatAppearance.BorderSize = 0;
             this.next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.next.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.next.ForeColor = System.Drawing.Color.White;
+            this.next.ForeColor = System.Drawing.Color.Black;
             this.next.Location = new System.Drawing.Point(56, 3);
             this.next.Name = "next";
             this.next.Size = new System.Drawing.Size(20, 20);
             this.next.TabIndex = 23;
-            this.next.Text = "N";
             this.next.UseVisualStyleBackColor = false;
             this.next.Click += new System.EventHandler(this.Next_Click);
             // 
@@ -233,12 +232,11 @@
             this.home.FlatAppearance.BorderSize = 0;
             this.home.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.home.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.home.ForeColor = System.Drawing.Color.White;
+            this.home.ForeColor = System.Drawing.Color.Black;
             this.home.Location = new System.Drawing.Point(4, 3);
             this.home.Name = "home";
             this.home.Size = new System.Drawing.Size(20, 20);
             this.home.TabIndex = 24;
-            this.home.Text = "H";
             this.home.UseVisualStyleBackColor = false;
             this.home.Click += new System.EventHandler(this.Home_Click);
             // 
@@ -249,18 +247,22 @@
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1120, 640);
             this.Controls.Add(this.modal);
-            this.Controls.Add(this.home);
-            this.Controls.Add(this.next);
             this.Controls.Add(this.label);
-            this.Controls.Add(this.back);
             this.Controls.Add(this.webView);
             this.Controls.Add(this.closeBtn);
-            this.Controls.Add(this.maximizeBtn);
             this.Controls.Add(this.minimizeBtn);
+            this.Controls.Add(this.maximizeBtn);
+            this.Controls.Add(this.next);
+            this.Controls.Add(this.back);
+            this.Controls.Add(this.home);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(600, 450);
             this.Name = "HubWebView";
             this.Text = "hub.splitscreen.me";
+            this.ResizeBegin += new System.EventHandler(this.HubWebView_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.HubWebView_ResizeEnd);
             this.ClientSizeChanged += new System.EventHandler(this.HubWebView_ClientSizeChanged);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HubWebView_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.webView)).EndInit();

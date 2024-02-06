@@ -591,7 +591,7 @@ namespace Nucleus.Coop
             settings.RegHotkeys(this);
 
             controls = new Dictionary<UserGameInfo, GameControl>();
-            gameManager = new GameManager(this);
+            gameManager = new GameManager();
             assetsDownloader = new AssetsDownloader();
             optionsControl = new PlayerOptionsControl();
             jsControl = new JSUserInputControl();
@@ -1324,8 +1324,13 @@ namespace Nucleus.Coop
                     ProfilesList.profilesList.Update_ProfilesList();
 
                     bool showList = GameProfile.profilesPathList.Count > 0;
-                    setupScreen.gameProfilesList.Visible = showList;
-                    setupScreen.gameProfilesList_btn.Image = ImageCache.GetImage(theme + "profiles_list_opened.png");
+
+                    if (!currentGameInfo.FirstLaunch)
+                    {
+                        setupScreen.gameProfilesList.Visible = showList;
+                        setupScreen.gameProfilesList_btn.Image = ImageCache.GetImage(theme + "profiles_list_opened.png");
+                    }
+                    
                     setupScreen.gameProfilesList_btn.Visible = showList;
 
                     ProfilesList.profilesList.Locked = false;
@@ -1336,20 +1341,7 @@ namespace Nucleus.Coop
                     setupScreen.gameProfilesList.Visible = false;
                     setupScreen.gameProfilesList_btn.Visible = false;
                 }
-
-                if (currentGameInfo.FirstLaunch && currentGame.Description != null)
-                {
-                    setupScreen.gameProfilesList.Visible = false;
-                    setupScreen.gameProfilesList_btn.Image = ImageCache.GetImage(theme + "profiles_list.png");
-                    Btn_magnifier_Click(null, null);
-                    currentGameInfo.FirstLaunch = false;
-                    gameManager.SaveUserProfile();
-                }
-                else
-                {
-                    setupScreen.textZoomContainer.Visible = false;
-                }
-
+              
                 btn_textSwitcher.Visible = File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{currentGame.GUID}.txt"));
 
                 if (currentGame.Description?.Length > 0)
@@ -1370,6 +1362,17 @@ namespace Nucleus.Coop
                 {
                     scriptAuthorTxtSizer.Visible = false;
                     scriptAuthorTxt.Text = "";
+                }
+
+                if (currentGameInfo.FirstLaunch && currentGame.Description != null)
+                {
+                    Btn_magnifier_Click(null, null);
+                    currentGameInfo.FirstLaunch = false;
+                    //gameManager.SaveUserProfile();
+                }
+                else
+                {
+                    setupScreen.textZoomContainer.Visible = false;
                 }
 
                 content?.Dispose();
@@ -2498,12 +2501,13 @@ namespace Nucleus.Coop
         {
             if (!setupScreen.textZoomContainer.Visible)
             {
-                setupScreen.textZoomContainer.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, setupScreen.textZoomContainer.Width, setupScreen.textZoomContainer.Height, 15, 15));
+               
                 setupScreen.handlerNoteZoom.Text = scriptAuthorTxt.Text;
                 setupScreen.handlerNoteZoom.Visible = true;
                 setupScreen.textZoomContainer.Visible = true;
                 setupScreen.textZoomContainer.BringToFront();
                 btn_magnifier.Image = ImageCache.GetImage(theme + "magnifier_close.png");
+                //setupScreen.textZoomContainer.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, setupScreen.textZoomContainer.Width, setupScreen.textZoomContainer.Height, 15, 15));
             }
             else
             {
