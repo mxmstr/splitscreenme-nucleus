@@ -108,15 +108,15 @@ namespace Nucleus.Gaming.Controls
                 loadedTitle = selected.Text;
             }
 
-            //if(e.Button == MouseButtons.Right)
-            //{
-            //    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Do you want to create a desktop shortcut for this profile?", "Create profile shortcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if(e.Button == MouseButtons.Right)
+            {
+                DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Do you want to create a desktop shortcut for this profile?", "Create profile shortcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            //    if (dialogResult == DialogResult.Yes)
-            //    {
-            //        GameProfile.CreateShortcut();
-            //    }               
-            //}
+                if (dialogResult == DialogResult.Yes)
+                {
+                    GameProfile.CreateShortcut();
+                }               
+            }
         }
 
         public void Update_ProfilesList()
@@ -146,7 +146,7 @@ namespace Nucleus.Gaming.Controls
                     }
                     else
                     {
-                        text = $"Profile n°{i + 1}";
+                        text = $"Load profile: {i + 1}";
                     }
                 }
                 else
@@ -205,7 +205,7 @@ namespace Nucleus.Gaming.Controls
                     Cursor = hand_Cursor
                 };
 
-                ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile. Right click to export a shortcut to desktop.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 profileBtn.MouseClick += new MouseEventHandler(ProfileBtn_CheckedChanged);
 
                 if (i != GameProfile.profilesPathList.Count)

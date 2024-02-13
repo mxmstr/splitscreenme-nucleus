@@ -235,10 +235,16 @@
     <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\HubWebView.cs">
+    <Compile Include="Forms\ShortcutForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\HubWebView.Designer.cs">
+    <Compile Include="Forms\ShortcutForm.Designer.cs">
+      <DependentUpon>ShortcutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HubWebView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HubWebView.Designer.cs">
       <DependentUpon>HubWebView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings.cs">
@@ -309,6 +315,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AddGamesButton.cs" />
     <Compile Include="Tools\ExtractHandler.cs" />
     <Compile Include="Tools\GetGameDetails.cs" />
     <Compile Include="Tools\OpenDebugLog.cs" />
@@ -319,6 +326,7 @@
     <Compile Include="Tools\SetBackroundAndCover.cs" />
     <Compile Include="Tools\StartChecks.cs" />
     <Compile Include="Tools\CustomToolStripRenderer.cs" />
+    <Compile Include="Tools\StartFromShortcut.cs" />
     <Compile Include="Tools\StartSteamClient.cs" />
     <EmbeddedResource Include="Controls\HubShowcase.resx">
       <DependentUpon>HubShowcase.cs</DependentUpon>
@@ -330,7 +338,10 @@
     <EmbeddedResource Include="Forms\DownloadPrompt.resx">
       <DependentUpon>DownloadPrompt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\HubWebView.resx">
+    <EmbeddedResource Include="Forms\ShortcutForm.resx">
+      <DependentUpon>ShortcutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HubWebView.resx">
       <DependentUpon>HubWebView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings.resx">
@@ -390,6 +401,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="gui\theme\classic\theme.ini" />
+    <None Include="gui\theme\default\Release - Raccourci.lnk" />
     <None Include="gui\theme\default\theme.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -446,6 +458,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\log1.png" />
+    <None Include="Resources\log.png" />
+    <None Include="Resources\magnifier.png" />
+    <None Include="Resources\search_game.png" />
     <None Include="Resources\xinput.ico" />
     <None Include="Resources\XInput.png" />
     <None Include="Resources\xboxControllerFront.png" />
@@ -604,13 +620,21 @@
     <Content Include="gui\theme\classic\4players.png" />
     <Content Include="gui\theme\classic\6players.png" />
     <Content Include="gui\theme\classic\8players.png" />
+    <Content Include="gui\theme\classic\add_game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\classic\arrow_left.png" />
     <Content Include="gui\theme\classic\arrow_left_mousehover.png" />
     <Content Include="gui\theme\classic\arrow_right.png" />
     <Content Include="gui\theme\classic\arrow_right_mousehover.png" />
     <Content Include="gui\theme\classic\audio.png" />
+    <Content Include="gui\theme\classic\autoSearch.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\classic\autoSearch_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\classic\background.jpg" />
-    <Content Include="gui\theme\classic\button_click.wav" />
     <Content Include="gui\theme\classic\cover_layer.png" />
     <Content Include="gui\theme\classic\credits.png" />
     <Content Include="gui\theme\classic\credits_mousehover.png" />
@@ -621,6 +645,12 @@
     <Content Include="gui\theme\classic\dinput_icon.png" />
     <Content Include="gui\theme\classic\discord.png" />
     <Content Include="gui\theme\classic\discord_mousehover.png" />
+    <Content Include="gui\theme\classic\extract_nc.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\classic\extract_nc_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\classic\faq.png" />
     <Content Include="gui\theme\classic\faq_mousehover.png" />
     <Content Include="gui\theme\classic\favorite_selected.png" />
@@ -703,7 +733,13 @@
     <Content Include="gui\theme\classic\keyboard_icon.png" />
     <Content Include="gui\theme\classic\layout.png" />
     <Content Include="gui\theme\classic\locked.png" />
+    <Content Include="gui\theme\classic\log.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\classic\logo.png" />
+    <Content Include="gui\theme\classic\log_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\classic\magnifier.png" />
     <Content Include="gui\theme\classic\magnifier_close.png" />
     <Content Include="gui\theme\classic\manualLayout.png" />
@@ -724,6 +760,12 @@
     <Content Include="gui\theme\classic\reddit_mousehover.png" />
     <Content Include="gui\theme\classic\refresh.png" />
     <Content Include="gui\theme\classic\screen.png" />
+    <Content Include="gui\theme\classic\search_game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\classic\search_game_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\classic\shared.png" />
     <Content Include="gui\theme\classic\showcase-background.png" />
     <Content Include="gui\theme\classic\showcase_cover_layer.png" />
@@ -746,6 +788,12 @@
     <Content Include="gui\theme\classic\title_no_hub.png" />
     <Content Include="gui\theme\classic\title_settings.png" />
     <Content Include="gui\theme\classic\title_settings_mousehover.png" />
+    <Content Include="gui\theme\classic\title_windowed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\classic\title_windowed_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\classic\unlocked.png" />
     <Content Include="gui\theme\classic\virtual_keyboard.png" />
     <Content Include="gui\theme\classic\virtual_mouse.png" />
@@ -770,6 +818,9 @@
     <Content Include="gui\theme\default\8players.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\add_game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\arrow_left.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -785,6 +836,12 @@
     <Content Include="gui\theme\default\audio.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\autoSearch.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\autoSearch_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\credits.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -797,6 +854,12 @@
     <Content Include="gui\theme\default\cursor_hand.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\extract_nc.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\extract_nc_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\favorite_selected.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -804,9 +867,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\background.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\button_click.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\cover_layer.png">
@@ -1046,6 +1106,12 @@
     <Content Include="gui\theme\default\locked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\log.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\log_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\magnifier.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1107,6 +1173,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\other_backgrounds.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\search_game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\search_game_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\shared.png">
@@ -1175,6 +1247,12 @@
     <Content Include="gui\theme\default\title_settings_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\title_windowed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_windowed_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\unlocked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1199,13 +1277,21 @@
     <Content Include="gui\theme\macstyle\4players.png" />
     <Content Include="gui\theme\macstyle\6players.png" />
     <Content Include="gui\theme\macstyle\8players.png" />
+    <Content Include="gui\theme\macstyle\add_game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\macstyle\arrow_left.png" />
     <Content Include="gui\theme\macstyle\arrow_left_mousehover.png" />
     <Content Include="gui\theme\macstyle\arrow_right.png" />
     <Content Include="gui\theme\macstyle\arrow_right_mousehover.png" />
     <Content Include="gui\theme\macstyle\audio.png" />
+    <Content Include="gui\theme\macstyle\autoSearch.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\macstyle\autoSearch_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\macstyle\background.jpg" />
-    <Content Include="gui\theme\macstyle\button_click.wav" />
     <Content Include="gui\theme\macstyle\cover_layer.png" />
     <Content Include="gui\theme\macstyle\credits.png" />
     <Content Include="gui\theme\macstyle\credits_mousehover.png" />
@@ -1216,6 +1302,12 @@
     <Content Include="gui\theme\macstyle\dinput_icon.png" />
     <Content Include="gui\theme\macstyle\discord.png" />
     <Content Include="gui\theme\macstyle\discord_mousehover.png" />
+    <Content Include="gui\theme\macstyle\extract_nc.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\macstyle\extract_nc_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\macstyle\faq.png" />
     <Content Include="gui\theme\macstyle\faq_mousehover.png" />
     <Content Include="gui\theme\macstyle\favorite_selected.png" />
@@ -1292,7 +1384,13 @@
     <Content Include="gui\theme\macstyle\keyboard_icon.png" />
     <Content Include="gui\theme\macstyle\layout.png" />
     <Content Include="gui\theme\macstyle\locked.png" />
+    <Content Include="gui\theme\macstyle\log.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\macstyle\logo.png" />
+    <Content Include="gui\theme\macstyle\log_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\macstyle\magnifier.png" />
     <Content Include="gui\theme\macstyle\magnifier_close.png" />
     <Content Include="gui\theme\macstyle\manualLayout.png" />
@@ -1313,6 +1411,12 @@
     <Content Include="gui\theme\macstyle\reddit_mousehover.png" />
     <Content Include="gui\theme\macstyle\refresh.png" />
     <Content Include="gui\theme\macstyle\screen.png" />
+    <Content Include="gui\theme\macstyle\search_game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\macstyle\search_game_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\macstyle\shared.png" />
     <Content Include="gui\theme\macstyle\showcase-background.png" />
     <Content Include="gui\theme\macstyle\showcase_cover_layer.png" />
@@ -1335,6 +1439,12 @@
     <Content Include="gui\theme\macstyle\title_no_hub.png" />
     <Content Include="gui\theme\macstyle\title_settings.png" />
     <Content Include="gui\theme\macstyle\title_settings_mousehover.png" />
+    <Content Include="gui\theme\macstyle\title_windowed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\macstyle\title_windowed_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\macstyle\unlocked.png" />
     <Content Include="gui\theme\macstyle\virtual_keyboard.png" />
     <Content Include="gui\theme\macstyle\virtual_mouse.png" />
@@ -1351,6 +1461,7 @@
     <None Include="Resources\hform.gif" />
     <EmbeddedResource Include="Resources\cursor.png" />
     <Content Include="Resources\cursor.ico" />
+    <None Include="Resources\extract_nc.png" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>

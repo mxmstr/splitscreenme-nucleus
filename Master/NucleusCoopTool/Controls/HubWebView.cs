@@ -1,6 +1,10 @@
-﻿using Ionic.Zip;
+﻿using Games;
+using Ionic.Zip;
 using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.WinForms;
+using NAudio.SoundFont;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
@@ -11,22 +15,24 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
 namespace Nucleus.Coop.Forms
 {
-    public partial class HubWebView : BaseForm
-    {       
+    public partial class HubWebView : UserControl, IDynamicSized
+    {
         private readonly string darkReaderFolder = Path.Combine(Application.StartupPath, $"webview\\darkreader");
         private readonly string cacheFolder = Path.Combine(Application.StartupPath, $"webview\\cache");
         private string downloadPath = Path.Combine(Application.StartupPath, "handlers\\handler.nc");
         private string scriptFolder = GameManager.Instance.GetJsScriptsPath();
-        private string hubUri = "https://hub.splitscreen.me/?fromWebview=true";
+        private readonly string hubUri = "https://hub.splitscreen.me/?fromWebview=true";
         private readonly string theme = Globals.ThemeFolder;
-       
+
         private CoreWebView2DownloadOperation downloadOperation;
         private CoreWebView2Settings webViewSettings;
         private MainForm mainForm;
@@ -37,88 +43,103 @@ namespace Nucleus.Coop.Forms
 
         private int entriesDone = 0;
         private int numEntries;
-        
+        private float scale;
         private EventHandler Modal_Yes_Button_Event;
         private EventHandler Modal_No_Button_Event;
 
-        private List<string> installedHandlers = new List<string>();
+        private List<JObject> installedHandlers = new List<JObject>();
 
         public HubWebView(MainForm mainForm)
         {
             this.mainForm = mainForm;
-
+            scale = mainForm.scale;
+            
             InitializeComponent();
 
-            StartPosition = FormStartPosition.Manual;
+            Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            BackColor = Color.FromArgb(0, 0, 0, 0);
 
-            Rectangle area = Screen.PrimaryScreen.Bounds;
-
-            if (ini.IniReadValue("Misc", "DownloaderWindowLocation") != "")
-            {
-                string[] windowLocation = ini.IniReadValue("Misc", "DownloaderWindowLocation").Split('X');
-
-                if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
-                {
-                    CenterToScreen();
-                }
-                else
-                {
-                    Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
-                }
-            }
-            else
-            {
-                CenterToScreen();
-            }
-
-            if (mainForm.roundedcorners)
-            {
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-            }
-
-            closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
-            maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize.png");
-            minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
-            modal.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
-
-            modal_text.BackColor = Color.FromArgb(80, 0, 0, 0);
-            modal_yes.BackColor = Color.FromArgb(80, 0, 0, 0);
-            modal_no.BackColor = Color.FromArgb(80, 0, 0, 0);
+            modal.BackColor = Color.FromArgb(int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[0]),
+                                               int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[1]),
+                                               int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[2]),
+                                               int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[3]));
 
             modal_yes.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            modal_yes.Cursor = mainForm.hand_Cursor;
             modal_no.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            modal_no.Cursor = mainForm.hand_Cursor;
 
-           // home.Text = "";
             home.BackgroundImage = ImageCache.GetImage(theme + "home.png");
             home.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
-            //back.Text = "";
+            home.BackColor = BackColor;
+            home.Cursor = mainForm.hand_Cursor;
+
             back.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
             back.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
-            //next.Text = "";
+            back.BackColor = BackColor;
+            back.Cursor = mainForm.hand_Cursor;
+
             next.BackgroundImage = ImageCache.GetImage(theme + "arrow_right.png");
             next.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            next.BackColor = BackColor;
+            next.Cursor = mainForm.hand_Cursor;
+
+            closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
+            closeBtn.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            closeBtn.BackColor = BackColor;
+            closeBtn.Cursor = mainForm.hand_Cursor;
 
             webView.DefaultBackgroundColor = mainForm.BackColor;
+         
+            button_Panel.BackColor = mainForm.BackColor;
 
             string debugUri = Path.Combine(Application.StartupPath, $"webview\\debugUri.txt");
 
             if (File.Exists(debugUri))
             {
-                StreamReader desc = new StreamReader(debugUri);
+                StreamReader local = new StreamReader(debugUri);
 
                 string expectedUri = "http://localhost:3000/";
-                string descResult = desc.ReadToEnd();
+                string descResult = local.ReadToEnd();
 
                 if(expectedUri == descResult)
                 {
                     hubUri = expectedUri;
                 }
                
-                desc.Dispose();
+                local.Dispose();
             }
-
+            
             Load += OnLoad;
+            closeBtn.Click += new EventHandler(mainForm.EnableGameList);
+            Disposed += new EventHandler(mainForm.btn_AddGames_Set_BackColor);
+
+            BuildHandlersDatas();
+           
+
+            DPIManager.Register(this);
+            DPIManager.Update(this);
         }
+
+        private void BuildHandlersDatas()
+        {
+            foreach(KeyValuePair<string,GenericGameInfo> game in GameManager.Instance.GameInfos)
+            {
+                if(GameManager.Instance.User.Games.All(g => g.GameGuid != game.Value.GUID ))
+                {
+                    continue;
+                }
+
+                string id = game.Value.HandlerId;
+                int version = game.Value.Hub.Handler.Version;
+
+                if (id != "" && version != -1 )
+                {
+                    installedHandlers.Add(new JObject { new JProperty("id", id), new JProperty("version", version) });
+                }
+            }
+        }
+
 
         private async void OnLoad(object sender, EventArgs e)
         {
@@ -126,18 +147,15 @@ namespace Nucleus.Coop.Forms
             await InitializeAsync();
         }
 
-        public async Task InitializeAsync()
-        {
-            GameManager.Instance.GameInfos.AsParallel().ForAll(g => AddHandlerToList(g.Value.HandlerId));
-
-            CoreWebView2Environment environment = null;
+        private async Task InitializeAsync()
+        {        
+            CoreWebView2Environment environment;
             CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions();
             environmentOptions.AreBrowserExtensionsEnabled = true;
 
-            webView.CreationProperties = new Microsoft.Web.WebView2.WinForms.CoreWebView2CreationProperties();
+            webView.CreationProperties = new CoreWebView2CreationProperties();
             webView.CreationProperties.UserDataFolder = cacheFolder;
            
-
             if (Directory.Exists(webView.CreationProperties.UserDataFolder))
             {           
                 environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
@@ -151,7 +169,7 @@ namespace Nucleus.Coop.Forms
             hasFreshCahe = true;
 
             environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
-            await webView.EnsureCoreWebView2Async(environment);
+            await webView.EnsureCoreWebView2Async(environment);           
         }
 
         private async void WebView_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
@@ -159,7 +177,7 @@ namespace Nucleus.Coop.Forms
             webViewSettings = webView.CoreWebView2.Settings;
             webViewSettings.IsWebMessageEnabled = true;
             webViewSettings.IsGeneralAutofillEnabled = true;
- #if RELEASE
+ #if RELEASE 
             webViewSettings.AreDefaultContextMenusEnabled = false;
 #endif
             webViewSettings.IsScriptEnabled = true;
@@ -171,15 +189,21 @@ namespace Nucleus.Coop.Forms
 
             if (hasFreshCahe)
             {
-               await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderFolder);
+               await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderFolder);          
             }
 
             webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += IsDefaultDownloadDialogOpenChanged;
             webView.CoreWebView2.DOMContentLoaded += new EventHandler<CoreWebView2DOMContentLoadedEventArgs>(DOMContentLoaded);
-            webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);                
-            //webView.CoreWebView2.SourceChanged += new EventHandler<CoreWebView2SourceChangedEventArgs>(SourceChanged);
-            webView.CoreWebView2.ContentLoading += new EventHandler<CoreWebView2ContentLoadingEventArgs>(ContentLoading);
+            webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);                 
             webView.CoreWebView2.NewWindowRequested += new EventHandler<CoreWebView2NewWindowRequestedEventArgs>(NewWindowRequested);
+            webView.CoreWebView2.WebMessageReceived += new EventHandler<CoreWebView2WebMessageReceivedEventArgs>(WebMessageReceived);
+
+            BringToFront();
+        }
+
+        private void WebMessageReceived(object sender , CoreWebView2WebMessageReceivedEventArgs e)
+        {
+            Console.WriteLine(e.WebMessageAsJson);
         }
 
         private void NewWindowRequested(object sender, CoreWebView2NewWindowRequestedEventArgs e)
@@ -189,43 +213,24 @@ namespace Nucleus.Coop.Forms
             currentWindow.Navigate(e.Uri);
         }
 
-        private void ContentLoading(object sender, CoreWebView2ContentLoadingEventArgs e) => JSInjectect();
-
-        //private void SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e)
-        //{
-        //    if(/*webView.CoreWebView2.Source.Equals("https://hub.splitscreen.me/?fromWebview=true") ||*/ webView.CoreWebView2.Source.StartsWith("https://hub.splitscreen.me/"))
-        //    {
-        //        webView.CoreWebView2.Reload();
-        //        JSInjectect();
-        //    }
-        //}
-       
-        private async void JSInjectect()
-        {
-            await webView.ExecuteScriptAsync("document.getElementsByClassName('header ant-layout-header')[0].style.backgroundColor = '#000'; ");
-            await webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu ant-menu-dark ant-menu-root ant-menu-horizontal')[0].style.backgroundColor = '#000'; ");
-            
-            //await webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[0].style.display = 'none'; ");//splitscreen.me redirection link
-            //await webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[3].style.display = 'none'; ");//Documentation link
-            //await webView.ExecuteScriptAsync("document.getElementsByClassName('ant-menu-item')[5].style.display = 'none'; ");//Contributors search page
-            
-            string json = JsonConvert.SerializeObject(installedHandlers, Formatting.Indented);
-            await webView.ExecuteScriptAsync($"NucleusWebview.setLocalHandlerLibraryIds({json})");       
-        }
-
-        private void AddHandlerToList(string id)
-        {
-            if(id != null && id != "")
-            {
-                installedHandlers.Add(id);
-            }
+        private async void SendDatas()
+        { 
+            string json = JsonConvert.SerializeObject(installedHandlers, Formatting.Indented);         
+            await webView.ExecuteScriptAsync($"NucleusWebview.setLocalHandlerLibraryArray({json})");
+            // string test = JsonConvert.SerializeObject(new string[] { "test message" }, Formatting.Indented);
+            // await webView.ExecuteScriptAsync($"window.chrome.webview.postMessage({test});");
         }
 
         private void DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
+            if(hasFreshCahe)
+            {
+                webView.CoreWebView2.Reload();
+                hasFreshCahe = false;
+            }
+
             webView.ZoomFactor = 0.8;
-            JSInjectect();                     
-            Show();
+            SendDatas();                     
         }
 
         private void IsDefaultDownloadDialogOpenChanged(object sender, object e)
@@ -234,14 +239,14 @@ namespace Nucleus.Coop.Forms
         }
 
         private void DownloadStarting(object sender, CoreWebView2DownloadStartingEventArgs e)
-        {
+        {         
             if (!webView.CoreWebView2.Source.StartsWith("https://hub.splitscreen.me/"))
             {
-                downloadOperation.Cancel();
+               e.DownloadOperation.Cancel();
                 return;
             }
 
-            e.ResultFilePath = downloadPath;
+            e.ResultFilePath = downloadPath;   
             downloadOperation = e.DownloadOperation;
             downloadOperation.StateChanged += CheckDownloadState;
             label.Visible = true;
@@ -359,7 +364,8 @@ namespace Nucleus.Coop.Forms
         {
             GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
             SearchGame.Search(mainForm, exeName);          
-            HideModal();         
+            HideModal();  
+            closeBtn.PerformClick();
         }
 
         private void ModalAddHandler(ZipFile zip, string scriptTempFolder, string frmHandleTitle, List<string> handlerFolders, string exeName)
@@ -431,8 +437,8 @@ namespace Nucleus.Coop.Forms
 
             installedHandlers.Clear();
             GameManager.Instance.Initialize();
-            GameManager.Instance.GameInfos.AsParallel().ForAll(g => AddHandlerToList(g.Value.HandlerId));
-            JSInjectect();
+            BuildHandlersDatas();
+            SendDatas();
 
             Modal_Yes_Button_Event = (sender, e) => AddGameToList(frmHandleTitle, exeName);
             modal_yes.Click += Modal_Yes_Button_Event;
@@ -443,7 +449,6 @@ namespace Nucleus.Coop.Forms
             "Downloading and extraction of " + frmHandleTitle +
             " handler is complete. Would you like to add this game to Nucleus now? " +
             "You will need to select the game executable to add it.";
-
 
             if (!modal.Visible)
             {
@@ -477,13 +482,11 @@ namespace Nucleus.Coop.Forms
         private void Back_Click(object sender, EventArgs e)
         {
             webView.CoreWebView2.GoBack();
-            JSInjectect();
         }
 
         private void Next_Click(object sender, EventArgs e)
         {
             webView.CoreWebView2.GoForward();
-            JSInjectect();
         }
 
         private void Home_Click(object sender, EventArgs e)
@@ -493,139 +496,40 @@ namespace Nucleus.Coop.Forms
 
         private void CloseBtn_Click(object sender, EventArgs e)
         {
-            mainForm.hubView = null;
+            webView.Dispose();    
+            downloadCompleted = false;          
+            Dispose();
+        }
 
-            if (Location.X == -32000 || Width == 0)
+        public void UpdateSize(float scale)
+        {
+
+            if (IsDisposed)
             {
-                Close();
+                DPIManager.Unregister(this);
                 return;
             }
 
-            ini.IniWriteValue("Misc", "DownloaderWindowSize", Width + "X" + Height);
-            ini.IniWriteValue("Misc", "DownloaderWindowLocation", Location.X + "X" + Location.Y);
-
-            Close();
-        }
-
-        private void MaximizeBtn_Click(object sender, EventArgs e) => WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized;
-
-        private void MinimizeBtn_Click(object sender, EventArgs e) => WindowState = FormWindowState.Minimized;
-
-        private void HubWebView_ClientSizeChanged(object sender, EventArgs e)
-        {
-            if (mainForm == null)
+            button_Panel.Left = (int)(button_Panel.Left * scale);
+            button_Panel.Top = (int)(button_Panel.Top * scale);
+            button_Panel.Width = (int)(button_Panel.Width * scale);
+            button_Panel.Height = (int)(button_Panel.Height* scale);
+            
+            foreach (Control c in button_Panel.Controls)
             {
-                return;
+                c.Width = (int)(c.Width * scale);
+                c.Height = (int)(c.Height * scale);
+                c.Left = (int)(c.Location.X * scale);
+                c.Top = (int)(c.Location.Y * scale);
             }
+        
+            //Width = (int)(Width * scale);
+            //Height = (int)(Height * scale);
 
-            if (mainForm.roundedcorners)
-            {
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
-                }
-                else
-                {
-                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-                }
-            }
-
-            Invalidate();
+            //Top = (int)(Top * scale);
+            //Left = (int)(Left * scale);
+            button_Panel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, button_Panel.Width, button_Panel.Height, 20, 20));        
         }
 
-        private void CloseBtn_MouseEnter(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close_mousehover.png");
-
-        private void CloseBtn_MouseLeave(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
-
-        private void MaximizeBtn_MouseEnter(object sender, EventArgs e) => maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize_mousehover.png");
-
-        private void MaximizeBtn_MouseLeave(object sender, EventArgs e) => maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize.png");
-
-        private void MinimizeBtn_MouseLeave(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
-
-        private void MinimizeBtn_MouseEnter(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize_mousehover.png");
-
-        private const int WM_NCLBUTTONDOWN = 0xA1;
-        private const int HT_CAPTION = 0x2;
-
-        private void HubWebView_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                User32Interop.ReleaseCapture();
-                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
-                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
-            }
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            const int RESIZE_HANDLE_SIZE = 10;
-
-            if (this.WindowState == FormWindowState.Normal)
-            {
-                switch (m.Msg)
-                {
-                    case 0x0084/*NCHITTEST*/ :
-                        base.WndProc(ref m);
-
-                        if ((int)m.Result == 0x01/*HTCLIENT*/)
-                        {
-                            Point screenPoint = new Point(m.LParam.ToInt32());
-                            Point clientPoint = this.PointToClient(screenPoint);
-                            if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
-                            {
-                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                    m.Result = (IntPtr)13/*HTTOPLEFT*/ ;
-                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                    m.Result = (IntPtr)12/*HTTOP*/ ;
-                                else
-                                    m.Result = (IntPtr)14/*HTTOPRIGHT*/ ;
-                            }
-                            else if (clientPoint.Y <= (Size.Height - RESIZE_HANDLE_SIZE))
-                            {
-                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                    m.Result = (IntPtr)10/*HTLEFT*/ ;
-                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                    m.Result = (IntPtr)2/*HTCAPTION*/ ;
-                                else
-                                    m.Result = (IntPtr)11/*HTRIGHT*/ ;
-                            }
-                            else
-                            {
-                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                    m.Result = (IntPtr)16/*HTBOTTOMLEFT*/ ;
-                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                    m.Result = (IntPtr)15/*HTBOTTOM*/ ;
-                                else
-                                    m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
-                            }
-                        }
-                        return;
-                }
-            }
-
-            base.WndProc(ref m);
-        }
-
-        private void HubWebView_ResizeBegin(object sender, EventArgs e)
-        {
-            home.Visible = false;
-            back.Visible = false;
-            next.Visible = false;
-            minimizeBtn.Visible = false;
-            maximizeBtn.Visible = false;
-            closeBtn.Visible = false;
-        }
-
-        private void HubWebView_ResizeEnd(object sender, EventArgs e)
-        {
-            home.Visible = true;
-            back.Visible = true;
-            next.Visible = true;
-            minimizeBtn.Visible = true;
-            maximizeBtn.Visible = true;
-            closeBtn.Visible = true;
-        }
     }
 }

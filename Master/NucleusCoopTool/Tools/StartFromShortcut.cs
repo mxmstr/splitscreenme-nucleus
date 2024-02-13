@@ -21,6 +21,7 @@ namespace Nucleus.Coop.Tools
         private static bool abort;
         private static int waitBeforeAbort = 30000;
 
+
         public static void StartFromShortcutInit(string[] args, ShortcutForm shortcutForm, GameManager gameManager,UserGameInfo currentGameInfo,GenericGameInfo genericGameInfo, GameProfile gameProfile) //arg[0]=game name arg[1] = game profile(profile name?path?) 
         {
             form = shortcutForm;

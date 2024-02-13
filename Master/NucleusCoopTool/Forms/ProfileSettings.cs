@@ -134,11 +134,6 @@ namespace Nucleus.Coop
                 if (c is Button)
                 {
                     Button isButton = c as Button;
-                    if (mf.mouseClick)
-                    {
-                        isButton.Click += new System.EventHandler(this.button_Click);
-                    }
-
                     isButton.FlatAppearance.BorderSize = 0;
                     isButton.FlatAppearance.MouseOverBackColor = selectionColor;
                 }
@@ -1127,12 +1122,6 @@ namespace Nucleus.Coop
                 cts_unfocus.Enabled = true;
                 cts_bringToFront.Enabled = true;
             }
-        }
-
-        public void button_Click(object sender, EventArgs e)
-        {
-            if (mainForm.mouseClick)
-                mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
         }
 
         private void btnNext_Click(object sender, EventArgs e)

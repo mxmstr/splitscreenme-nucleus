@@ -104,9 +104,10 @@ namespace Nucleus.Coop
 
                 if (game == null)
                 {
-                    title.Text = "No games";
-                    players.Text = string.Empty;
-                    title.Font = new Font(customFont, 9, FontStyle.Bold, GraphicsUnit.Point, 0);
+                    //title.Text = "No games";
+                    //players.Text = string.Empty;
+                    //title.Font = new Font(customFont, 9, FontStyle.Bold, GraphicsUnit.Point, 0);
+                    Visible = false;
                 }
                 else
                 {
@@ -150,6 +151,7 @@ namespace Nucleus.Coop
                     Controls.Add(favoriteBox);
                 }
 
+               
                 DPIManager.Register(this);
             }
             catch (Exception ex)
@@ -232,11 +234,6 @@ namespace Nucleus.Coop
                             CustomToolTips.SetToolTip(this, "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                         });
                     }
-                    //else 
-                    //{
-                    //    title.ForeColor = Color.White;
-                    //    Console.WriteLine(GameInfo.GameName);
-                    //}
                 }
             }
         }

@@ -244,7 +244,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 instruction_btn.Width = (int)instructionW;
                 instruction_btn.Height = (int)instructionH;
-                instruction_btn.Location = new Point((Width - instruction_btn.Width), 5);
+                instruction_btn.Location = new Point((Width - instruction_btn.Width) - 5, 5);
 
                 textZoomContainer.Size = new Size(Width - (int)(60 * scale), Height - (int)(50 * scale));
                 textZoomContainer.Location = new Point(Width / 2 - textZoomContainer.Width / 2, instruction_btn.Height + (int)(10 * scale));

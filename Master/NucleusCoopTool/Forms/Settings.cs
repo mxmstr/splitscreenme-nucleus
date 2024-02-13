@@ -79,12 +79,6 @@ namespace Nucleus.Coop
             }
         }
 
-        public void button_Click(object sender, EventArgs e)
-        {
-            if (mainForm.mouseClick)
-                mainForm.SoundPlayer(mainForm.theme + "button_click.wav");
-        }
-
         public Settings(MainForm mf, SetupScreenControl pc)
         {
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
@@ -154,12 +148,6 @@ namespace Nucleus.Coop
                 if (c is Button)
                 {
                     Button isButton = c as Button;
-
-                    if (mf.mouseClick)
-                    {
-                        isButton.Click += new System.EventHandler(this.button_Click);
-                    }
-
                     isButton.FlatAppearance.BorderSize = 0;
                     isButton.FlatAppearance.MouseOverBackColor = selectionColor;
                 }
@@ -342,9 +330,6 @@ namespace Nucleus.Coop
 
             ///epiclangs setting
             cmb_EpicLang.SelectedItem = ini.IniReadValue("Misc", "EpicLang");
-
-            ///mouse click sound setting          
-            clickSoundChkB.Checked = bool.Parse(ini.IniReadValue("Dev", "MouseClick"));
 
             useNicksCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
 
@@ -827,8 +812,6 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Misc", "NucleusAccountPassword", nucUserPassTxt.Text);
             ini.IniWriteValue("Misc", "AutoDesktopScaling", scaleOptionCbx.Checked.ToString());
 
-            ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
-            ini.IniWriteValue("Dev", "MouseClick", clickSoundChkB.Checked.ToString());
             ini.IniWriteValue("Dev", "UseXinputIndex", gamepadsAssignMethods.Checked.ToString());
 
             ini.IniWriteValue("CustomLayout", "SplitDiv", splitDiv.Checked.ToString());
@@ -842,8 +825,6 @@ namespace Nucleus.Coop
             ini.IniWriteValue("CustomLayout", "Cts_KeepAspectRatio", cts_kar.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "Cts_Unfocus", cts_unfocus.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "Cts_BringToFront", cts_bringToFront.Checked.ToString());
-
-            mainForm.HandleClickSound(clickSoundChkB.Checked);
 
             mainForm.lockKeyIniString = comboBox_lockKey.SelectedItem.ToString();
             mainForm.DebugButtonState(debugLogCheck.Checked);

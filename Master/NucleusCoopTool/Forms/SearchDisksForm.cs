@@ -61,12 +61,6 @@ namespace Nucleus.Coop
             }
         }
 
-        public void button_Click(object sender, EventArgs e)
-        {
-            if (main.mouseClick)
-                main.SoundPlayer(main.theme + "button_click.wav");
-        }
-
         private void closeButton(object sender, EventArgs e)
         {
             txt_Stage.Visible = false;
@@ -121,14 +115,6 @@ namespace Nucleus.Coop
                 else
                 {
                     control.Cursor = default_Cursor;
-                }
-
-                if (main.mouseClick)
-                {
-                    if (control is Button)
-                    {
-                        control.Click += new System.EventHandler(this.button_Click);
-                    }
                 }              
             }
 

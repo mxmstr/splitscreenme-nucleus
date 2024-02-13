@@ -27,6 +27,7 @@ namespace Nucleus.Gaming
         public static Button Btn_debuglog;
         public static readonly string GameProfilesFolder = Path.Combine(Application.StartupPath, $"game profiles");
         public static WPF_OSD MainOSD;
+        public static string[] Args;
              
     }
 }

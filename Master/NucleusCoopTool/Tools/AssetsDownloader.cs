@@ -18,11 +18,11 @@ namespace Nucleus.Coop.Tools
     /// <summary>
     /// Download game cover, screenshots and description from igdb through the hub api
     /// </summary>
-    class AssetsDownloader
+    static class  AssetsDownloader
     {
-        private int maxScreenshotsToDownload;
+        private static int maxScreenshotsToDownload;
 
-        public void DownloadGameAssets(MainForm main, GameManager gameManager, GameControl currentControl)
+        public static void DownloadAllGamesAssets(MainForm main, GameManager gameManager, GameControl currentControl)
         {
             List<UserGameInfo> games = gameManager.User.Games;
 
@@ -77,7 +77,7 @@ namespace Nucleus.Coop.Tools
                     main.Invoke((MethodInvoker)delegate ()
                     {
                         dllabel.Text = $"Downloading Assets For {game.GameGuid}";
-                        dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, 12);
+                        dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.btn_downloadAssets.Bottom + 15);
                     });
 
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
@@ -112,7 +112,91 @@ namespace Nucleus.Coop.Tools
             });
         }
 
-        public void DownloadCovers(string urls, string gameGuid)
+        public static void DownloadGameAssets(MainForm main, UserGameInfo game, GameControl currentControl)
+        {
+            Label dllabel = new Label
+            {
+                BackColor = Color.Transparent,
+                ForeColor = main.ForeColor,
+                AutoSize = true,
+            };
+
+            main.mainButtonFrame.Enabled = false;
+            main.StepPanel.Enabled = false;
+            main.button_UpdateAvailable.Enabled = false;
+            main.btn_gameOptions.Enabled = false;
+            main.btn_settings.Enabled = false;
+            main.btn_downloadAssets.Enabled = false;
+            main.game_listSizer.Enabled = false;
+            main.mainButtonFrame.Controls.Add(dllabel);
+            dllabel.BringToFront();
+            main.Refresh();
+
+            System.Threading.Tasks.Task.Run(() =>
+            {
+
+                if (game.Game == null)
+                {
+                    return;
+                }
+
+                var id = game.Game.HandlerId;
+
+                if (id == null)
+                {
+                    return;
+                }
+
+                if (id == "")
+                {
+                    return;
+                }
+
+                Handler handler = HubCache.SearchById(id);
+
+                if (handler == null)
+                {
+                    return;
+                }
+
+                main.Invoke((MethodInvoker)delegate ()
+                {
+                    dllabel.Text = $"Downloading Assets For {game.GameGuid}";
+                    dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.btn_downloadAssets.Bottom + 15);
+                });
+
+                string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
+                string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
+
+                DownloadDescriptions(handler.GameDescription, game.GameGuid);
+                DownloadCovers(coverUri, game.GameGuid);
+                DownloadScreenshots(screenshotsUri, game.GameGuid);
+
+                main.Invoke((MethodInvoker)delegate ()
+                {
+                    main.mainButtonFrame.Enabled = true;
+                    main.btn_downloadAssets.Enabled = true;
+                    main.game_listSizer.Enabled = true;
+                    main.button_UpdateAvailable.Enabled = true;
+                    main.btn_gameOptions.Enabled = true;
+                    main.StepPanel.Enabled = true;
+                    main.btn_settings.Enabled = true;
+                    dllabel.Visible = false;
+                    main.Controls.Remove(dllabel);
+                    main.TriggerOSD(2000, "Download Completed!");
+
+                    if (currentControl != null && main.StepPanel.Visible)
+                    {
+                        SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
+                    }
+
+                    main.Refresh();
+                });
+
+            });
+        }
+
+        public static void DownloadCovers(string urls, string gameGuid)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\covers")))
             {
@@ -143,7 +227,7 @@ namespace Nucleus.Coop.Tools
             { }
         }
 
-        public void DownloadScreenshots(string json, string gameName)
+        public static void DownloadScreenshots(string json, string gameName)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots")))
             {
@@ -196,7 +280,7 @@ namespace Nucleus.Coop.Tools
             { }
         }
 
-        public void DownloadDescriptions(string desc, string gameGuid)
+        public static void DownloadDescriptions(string desc, string gameGuid)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions")))
             {

@@ -1,4 +1,6 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.Coop.Forms;
+using Nucleus.Coop.Tools;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Windows;
 using System;
 using System.IO;
@@ -15,16 +17,16 @@ namespace Nucleus.Coop
         public static bool forcedBadPath;
 
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             if (!bool.Parse(ini.IniReadValue("Misc", "NucleusMultiInstances")))
             {
                 if (StartChecks.IsAlreadyRunning())
                     return;
             }
-    
+
             StartChecks.Check_VCRVersion();
-         
+
             if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
             {
                 if (!StartChecks.StartCheck(true))
@@ -46,10 +48,20 @@ namespace Nucleus.Coop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            if (args.Length == 2)
+            {
+                // args = new string []{ "7 Days to Die", "1" }; 
+                ShortcutForm shortcutForm = new ShortcutForm(args);
+
+                Application.Run(shortcutForm);
+                return;
+            }
+
             MainForm form = new MainForm();
             DPIManager.AddForm(form);
             DPIManager.ForceUpdate();
             Application.Run(form);
+
         }
     }
 }

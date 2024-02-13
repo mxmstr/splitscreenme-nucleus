@@ -559,7 +559,9 @@ namespace Nucleus.Gaming.Coop
         {
             object shDesktop = (object)"Desktop";
             WshShell shell = new WshShell();
-            string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + $@"\Profile_{CurrentProfileId}_{Game.GUID}.lnk";
+
+            string shortcutTitle = Title != "" ? $@"\{Title}_{Game.GUID}.lnk" : $@"\Profile_{CurrentProfileId}_{Game.GUID}.lnk";
+            string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + shortcutTitle;
             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
             shortcut.Description = Notes != null ? Notes : $"{Game.GUID} Nucleus shortcut.";
             shortcut.TargetPath = Application.ExecutablePath;

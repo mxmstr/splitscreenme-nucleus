@@ -521,6 +521,24 @@ namespace Nucleus.Gaming
             }
         }
 
+        public void BackupFile(string filePath, bool overwrite)//backward compatibility
+        {
+            if (pInfo.PlayerID == 0)
+            {
+                if (File.Exists(filePath))
+                {
+                    Log($"Backing up {filePath}");
+                    string backupFileName = Path.GetDirectoryName(filePath) + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_NUCLEUS_BACKUP" + Path.GetExtension(filePath);
+                    File.Copy(filePath, backupFileName, overwrite);
+                    parent.userBackedFiles.Add(backupFileName);
+                }
+                else
+                {
+                    Log($"Unable to backup {filePath}, file does not exist");
+                }
+            }
+        }
+
         public void CopyScriptFolder(string DestinationPath)
         {
             string SourcePath = ScriptFolder;
