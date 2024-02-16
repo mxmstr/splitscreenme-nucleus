@@ -63,26 +63,6 @@ namespace Nucleus.Gaming.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dropdown_closed {
-            get {
-                object obj = ResourceManager.GetObject("dropdown_closed", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap dropdown_opened {
-            get {
-                object obj = ResourceManager.GetObject("dropdown_opened", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap gbU_background3 {
             get {
                 object obj = ResourceManager.GetObject("gbU_background3", resourceCulture);
@@ -107,6 +87,26 @@ namespace Nucleus.Gaming.Properties {
             get {
                 object obj = ResourceManager.GetObject("ncoop", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap title_dropdown_closed {
+            get {
+                object obj = ResourceManager.GetObject("title_dropdown_closed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap title_dropdown_opened {
+            get {
+                object obj = ResourceManager.GetObject("title_dropdown_opened", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

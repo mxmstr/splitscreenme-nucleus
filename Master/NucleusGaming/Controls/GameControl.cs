@@ -2,14 +2,9 @@
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.Generic;
-using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Security.Policy;
 using System.Windows.Forms;
-using static Nucleus.Gaming.Coop.Generic.Hub;
 
 namespace Nucleus.Coop
 {
@@ -150,8 +145,7 @@ namespace Nucleus.Coop
                     Controls.Add(playerIcon);
                     Controls.Add(favoriteBox);
                 }
-
-               
+             
                 DPIManager.Register(this);
             }
             catch (Exception ex)
@@ -212,7 +206,7 @@ namespace Nucleus.Coop
             float favoriteX = (209 * scale) - (playerIcon.Width + 5);
             float favoriteY = Height - (favoriteBox.Height + 5);
             favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
-
+            CustomToolTips.SetToolTip(favoriteBox, "Add or remove this game from your favorites.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             ResumeLayout();
         }
 
@@ -227,7 +221,7 @@ namespace Nucleus.Coop
                     
                     if (GameInfo.UpdateAvailable)
                     {
-                        title.ForeColor = Color.PaleGreen;
+                        title.ForeColor = Color.FromArgb(255,196, 145, 18);
 
                         topLevel?.Invoke((MethodInvoker)delegate ()
                         {

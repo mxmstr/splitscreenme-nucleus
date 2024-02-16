@@ -77,7 +77,7 @@ namespace Nucleus.Coop.Tools
                     main.Invoke((MethodInvoker)delegate ()
                     {
                         dllabel.Text = $"Downloading Assets For {game.GameGuid}";
-                        dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.btn_downloadAssets.Bottom + 15);
+                        dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.btn_downloadAssets.Bottom + 5);
                     });
 
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
@@ -162,7 +162,7 @@ namespace Nucleus.Coop.Tools
                 main.Invoke((MethodInvoker)delegate ()
                 {
                     dllabel.Text = $"Downloading Assets For {game.GameGuid}";
-                    dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.btn_downloadAssets.Bottom + 15);
+                    dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.btn_downloadAssets.Bottom + 5);
                 });
 
                 string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";

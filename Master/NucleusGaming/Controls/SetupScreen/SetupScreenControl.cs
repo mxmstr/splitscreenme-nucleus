@@ -57,8 +57,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             DevicesFunctions.Initialize(this, null, null);
             BoundsFunctions.Initialize(this, null, null);
 
-            SuspendLayout();
-
             default_Cursor = new Cursor(theme + "cursor.ico");        
             hand_Cursor = new Cursor(theme + "cursor_hand.ico");
 
@@ -152,8 +150,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             gameProfilesList_btn.Visible = false;
 
             gameProfilesList = new ProfilesList(this);
-
-            ResumeLayout();
 
             Controls.Add(textZoomContainer);
             Controls.Add(instruction_btn);

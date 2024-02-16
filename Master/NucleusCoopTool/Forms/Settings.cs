@@ -31,10 +31,12 @@ using System.Windows.Forms;
 namespace Nucleus.Coop
 {
 
-    public partial class Settings : BaseForm, IDynamicSized
+    public partial class Settings : Form, IDynamicSized
     {
         private MainForm mainForm = null;
         private SetupScreenControl setupScreen;
+        private IniFile ini = Globals.ini;
+
         public int KillProcess_HotkeyID = 1;
         public int TopMost_HotkeyID = 2;
         public int StopSession_HotkeyID = 3;
@@ -68,7 +70,6 @@ namespace Nucleus.Coop
         private Pen bordersPen;
         private bool shouldSwapNick = true;
 
-
         protected override CreateParams CreateParams
         {
             get
@@ -84,6 +85,7 @@ namespace Nucleus.Coop
             fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
             mainForm = mf;
             setupScreen = pc;
+
             InitializeComponent();
          
             FormBorderStyle = FormBorderStyle.None;

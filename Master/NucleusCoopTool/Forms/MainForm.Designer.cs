@@ -47,7 +47,6 @@ namespace Nucleus.Coop
             this.btn_settings = new System.Windows.Forms.Button();
             this.btn_SplitCalculator = new System.Windows.Forms.Button();
             this.btn_reddit = new System.Windows.Forms.Button();
-            this.btn_noHub = new System.Windows.Forms.Button();
             this.btn_faq = new System.Windows.Forms.Button();
             this.btn_downloadAssets = new System.Windows.Forms.Button();
             this.btn_Discord = new System.Windows.Forms.Button();
@@ -129,7 +128,7 @@ namespace Nucleus.Coop
             this.linkLabel4.Cursor = System.Windows.Forms.Cursors.Default;
             this.linkLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel4.ForeColor = System.Drawing.Color.Aqua;
-            this.linkLabel4.Location = new System.Drawing.Point(86, 21);
+            this.linkLabel4.Location = new System.Drawing.Point(218, 4);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(67, 15);
             this.linkLabel4.TabIndex = 3;
@@ -143,9 +142,9 @@ namespace Nucleus.Coop
             this.linkLabel3.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel3.ForeColor = System.Drawing.Color.Aqua;
-            this.linkLabel3.Location = new System.Drawing.Point(86, 0);
+            this.linkLabel3.Location = new System.Drawing.Point(154, 4);
             this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(67, 15);
+            this.linkLabel3.Size = new System.Drawing.Size(59, 15);
             this.linkLabel3.TabIndex = 2;
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Text = "HidHide";
@@ -157,9 +156,9 @@ namespace Nucleus.Coop
             this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel2.ForeColor = System.Drawing.Color.Aqua;
-            this.linkLabel2.Location = new System.Drawing.Point(0, 20);
+            this.linkLabel2.Location = new System.Drawing.Point(67, 4);
             this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(90, 15);
+            this.linkLabel2.Size = new System.Drawing.Size(81, 15);
             this.linkLabel2.TabIndex = 1;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "DS4Windows";
@@ -171,9 +170,9 @@ namespace Nucleus.Coop
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.ForeColor = System.Drawing.Color.Aqua;
-            this.linkLabel1.Location = new System.Drawing.Point(0, 0);
+            this.linkLabel1.Location = new System.Drawing.Point(3, 4);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(90, 15);
+            this.linkLabel1.Size = new System.Drawing.Size(59, 15);
             this.linkLabel1.TabIndex = 0;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "XOutput";
@@ -184,7 +183,7 @@ namespace Nucleus.Coop
             // 
             this.logo.BackColor = System.Drawing.Color.Transparent;
             this.logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.logo.Location = new System.Drawing.Point(5, 5);
+            this.logo.Location = new System.Drawing.Point(4, 14);
             this.logo.Margin = new System.Windows.Forms.Padding(0);
             this.logo.Name = "logo";
             this.logo.Size = new System.Drawing.Size(150, 26);
@@ -203,7 +202,7 @@ namespace Nucleus.Coop
             this.btn_thirdPartytools.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_thirdPartytools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_thirdPartytools.ForeColor = System.Drawing.Color.White;
-            this.btn_thirdPartytools.Location = new System.Drawing.Point(124, 6);
+            this.btn_thirdPartytools.Location = new System.Drawing.Point(124, 4);
             this.btn_thirdPartytools.Name = "btn_thirdPartytools";
             this.btn_thirdPartytools.Size = new System.Drawing.Size(20, 20);
             this.btn_thirdPartytools.TabIndex = 37;
@@ -222,7 +221,7 @@ namespace Nucleus.Coop
             this.btn_settings.FlatAppearance.BorderSize = 0;
             this.btn_settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_settings.Location = new System.Drawing.Point(621, 6);
+            this.btn_settings.Location = new System.Drawing.Point(621, 8);
             this.btn_settings.Margin = new System.Windows.Forms.Padding(2);
             this.btn_settings.Name = "btn_settings";
             this.btn_settings.Size = new System.Drawing.Size(30, 30);
@@ -272,25 +271,6 @@ namespace Nucleus.Coop
             this.btn_reddit.MouseEnter += new System.EventHandler(this.Btn_reddit_MouseEnter);
             this.btn_reddit.MouseLeave += new System.EventHandler(this.Btn_reddit_MouseLeave);
             // 
-            // btn_noHub
-            // 
-            this.btn_noHub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_noHub.BackColor = System.Drawing.Color.Transparent;
-            this.btn_noHub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_noHub.BackgroundImage")));
-            this.btn_noHub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_noHub.FlatAppearance.BorderSize = 0;
-            this.btn_noHub.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_noHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_noHub.ForeColor = System.Drawing.Color.Transparent;
-            this.btn_noHub.Location = new System.Drawing.Point(981, 5);
-            this.btn_noHub.Name = "btn_noHub";
-            this.btn_noHub.Size = new System.Drawing.Size(26, 25);
-            this.btn_noHub.TabIndex = 41;
-            this.btn_noHub.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_noHub.UseVisualStyleBackColor = false;
-            this.btn_noHub.Visible = false;
-            this.btn_noHub.Click += new System.EventHandler(this.Btn_noHub_Click);
-            // 
             // btn_faq
             // 
             this.btn_faq.BackColor = System.Drawing.Color.Transparent;
@@ -320,7 +300,7 @@ namespace Nucleus.Coop
             this.btn_downloadAssets.FlatAppearance.BorderSize = 0;
             this.btn_downloadAssets.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_downloadAssets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_downloadAssets.Location = new System.Drawing.Point(586, 6);
+            this.btn_downloadAssets.Location = new System.Drawing.Point(586, 8);
             this.btn_downloadAssets.Margin = new System.Windows.Forms.Padding(2);
             this.btn_downloadAssets.Name = "btn_downloadAssets";
             this.btn_downloadAssets.Size = new System.Drawing.Size(30, 30);
@@ -563,9 +543,9 @@ namespace Nucleus.Coop
             this.third_party_tools_container.Controls.Add(this.linkLabel3);
             this.third_party_tools_container.Controls.Add(this.linkLabel2);
             this.third_party_tools_container.Controls.Add(this.linkLabel1);
-            this.third_party_tools_container.Location = new System.Drawing.Point(859, 33);
+            this.third_party_tools_container.Location = new System.Drawing.Point(824, 33);
             this.third_party_tools_container.Name = "third_party_tools_container";
-            this.third_party_tools_container.Size = new System.Drawing.Size(149, 36);
+            this.third_party_tools_container.Size = new System.Drawing.Size(286, 19);
             this.third_party_tools_container.TabIndex = 0;
             this.third_party_tools_container.Visible = false;
             // 
@@ -597,10 +577,10 @@ namespace Nucleus.Coop
             this.StepPanel.BackColor = System.Drawing.Color.Transparent;
             this.StepPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.StepPanel.Cursor = System.Windows.Forms.Cursors.Default;
-            this.StepPanel.Location = new System.Drawing.Point(209, 72);
+            this.StepPanel.Location = new System.Drawing.Point(209, 59);
             this.StepPanel.Margin = new System.Windows.Forms.Padding(0);
             this.StepPanel.Name = "StepPanel";
-            this.StepPanel.Size = new System.Drawing.Size(715, 559);
+            this.StepPanel.Size = new System.Drawing.Size(715, 572);
             this.StepPanel.TabIndex = 0;
             this.StepPanel.Visible = false;
             // 
@@ -611,10 +591,10 @@ namespace Nucleus.Coop
             this.game_listSizer.BackColor = System.Drawing.Color.Transparent;
             this.game_listSizer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.game_listSizer.Controls.Add(this.list_Games);
-            this.game_listSizer.Location = new System.Drawing.Point(0, 72);
+            this.game_listSizer.Location = new System.Drawing.Point(0, 59);
             this.game_listSizer.Margin = new System.Windows.Forms.Padding(0);
             this.game_listSizer.Name = "game_listSizer";
-            this.game_listSizer.Size = new System.Drawing.Size(209, 559);
+            this.game_listSizer.Size = new System.Drawing.Size(209, 572);
             this.game_listSizer.TabIndex = 35;
             // 
             // list_Games
@@ -633,7 +613,7 @@ namespace Nucleus.Coop
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 0);
             this.list_Games.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.list_Games.Size = new System.Drawing.Size(230, 559);
+            this.list_Games.Size = new System.Drawing.Size(230, 572);
             this.list_Games.TabIndex = 2;
             this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.List_Games_SelectedChanged);
             // 
@@ -651,10 +631,10 @@ namespace Nucleus.Coop
             this.rightFrame.Controls.Add(this.btn_Play);
             this.rightFrame.Controls.Add(this.btn_Next);
             this.rightFrame.Controls.Add(this.btn_Prev);
-            this.rightFrame.Location = new System.Drawing.Point(924, 72);
+            this.rightFrame.Location = new System.Drawing.Point(924, 59);
             this.rightFrame.Margin = new System.Windows.Forms.Padding(0);
             this.rightFrame.Name = "rightFrame";
-            this.rightFrame.Size = new System.Drawing.Size(186, 562);
+            this.rightFrame.Size = new System.Drawing.Size(186, 575);
             this.rightFrame.TabIndex = 34;
             this.rightFrame.Visible = false;
             // 
@@ -853,7 +833,7 @@ namespace Nucleus.Coop
             this.btn_Next.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_Next.FlatAppearance.BorderSize = 0;
             this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Next.Location = new System.Drawing.Point(153, 2);
+            this.btn_Next.Location = new System.Drawing.Point(154, 2);
             this.btn_Next.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Next.Name = "btn_Next";
             this.btn_Next.Size = new System.Drawing.Size(25, 25);
@@ -872,7 +852,7 @@ namespace Nucleus.Coop
             this.btn_Prev.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btn_Prev.FlatAppearance.BorderSize = 0;
             this.btn_Prev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Prev.Location = new System.Drawing.Point(7, 2);
+            this.btn_Prev.Location = new System.Drawing.Point(8, 2);
             this.btn_Prev.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Prev.Name = "btn_Prev";
             this.btn_Prev.Size = new System.Drawing.Size(25, 25);
@@ -898,7 +878,6 @@ namespace Nucleus.Coop
             this.mainButtonFrame.Controls.Add(this.closeBtn);
             this.mainButtonFrame.Controls.Add(this.btn_Links);
             this.mainButtonFrame.Controls.Add(this.maximizeBtn);
-            this.mainButtonFrame.Controls.Add(this.btn_noHub);
             this.mainButtonFrame.Controls.Add(this.minimizeBtn);
             this.mainButtonFrame.Controls.Add(this.txt_version);
             this.mainButtonFrame.Controls.Add(this.label_StepTitle);
@@ -906,7 +885,7 @@ namespace Nucleus.Coop
             this.mainButtonFrame.Location = new System.Drawing.Point(0, 0);
             this.mainButtonFrame.Margin = new System.Windows.Forms.Padding(0);
             this.mainButtonFrame.Name = "mainButtonFrame";
-            this.mainButtonFrame.Size = new System.Drawing.Size(1110, 72);
+            this.mainButtonFrame.Size = new System.Drawing.Size(1110, 59);
             this.mainButtonFrame.TabIndex = 0;
             this.mainButtonFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.MainButtonFrame_Paint);
             this.mainButtonFrame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainButtonFrame_MouseDown);
@@ -919,7 +898,7 @@ namespace Nucleus.Coop
             this.btn_debuglog.FlatAppearance.BorderSize = 0;
             this.btn_debuglog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_debuglog.ForeColor = System.Drawing.SystemColors.Control;
-            this.btn_debuglog.Location = new System.Drawing.Point(446, 6);
+            this.btn_debuglog.Location = new System.Drawing.Point(446, 8);
             this.btn_debuglog.Margin = new System.Windows.Forms.Padding(2);
             this.btn_debuglog.Name = "btn_debuglog";
             this.btn_debuglog.Size = new System.Drawing.Size(30, 30);
@@ -940,7 +919,7 @@ namespace Nucleus.Coop
             this.btn_AutoSearch.FlatAppearance.BorderSize = 0;
             this.btn_AutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_AutoSearch.ForeColor = System.Drawing.Color.White;
-            this.btn_AutoSearch.Location = new System.Drawing.Point(551, 6);
+            this.btn_AutoSearch.Location = new System.Drawing.Point(551, 8);
             this.btn_AutoSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btn_AutoSearch.Name = "btn_AutoSearch";
             this.btn_AutoSearch.Size = new System.Drawing.Size(30, 30);
@@ -959,7 +938,7 @@ namespace Nucleus.Coop
             this.btn_Extract.FlatAppearance.BorderSize = 0;
             this.btn_Extract.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Extract.ForeColor = System.Drawing.Color.White;
-            this.btn_Extract.Location = new System.Drawing.Point(481, 6);
+            this.btn_Extract.Location = new System.Drawing.Point(481, 8);
             this.btn_Extract.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Extract.Name = "btn_Extract";
             this.btn_Extract.Size = new System.Drawing.Size(30, 30);
@@ -978,7 +957,7 @@ namespace Nucleus.Coop
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(516, 6);
+            this.btnSearch.Location = new System.Drawing.Point(516, 8);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(30, 30);
@@ -1064,7 +1043,7 @@ namespace Nucleus.Coop
             this.txt_version.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.txt_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_version.ForeColor = System.Drawing.Color.White;
-            this.txt_version.Location = new System.Drawing.Point(153, 12);
+            this.txt_version.Location = new System.Drawing.Point(152, 21);
             this.txt_version.Margin = new System.Windows.Forms.Padding(0);
             this.txt_version.Name = "txt_version";
             this.txt_version.Size = new System.Drawing.Size(28, 13);
@@ -1099,7 +1078,6 @@ namespace Nucleus.Coop
             this.stepPanelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.stepPanelPictureBox.TabIndex = 15;
             this.stepPanelPictureBox.TabStop = false;
-            this.stepPanelPictureBox.DoubleClick += new System.EventHandler(this.StepPanelPictureBox_DoubleClick);
             // 
             // MainForm
             // 
@@ -1215,7 +1193,6 @@ namespace Nucleus.Coop
         public BufferedClientAreaPanel mainButtonFrame;
         public Button btn_downloadAssets;
         public RichTextBox scriptAuthorTxt;
-        private Button btn_noHub;
         public Button btn_debuglog;
         public Button btn_Steam;
     }

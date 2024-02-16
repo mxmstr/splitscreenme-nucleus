@@ -33,9 +33,9 @@ namespace Nucleus.Coop.Tools
             }
 
             if ((userGameInfo.Game.RequiresAdmin || userGameInfo.Game.LaunchAsDifferentUsersAlt || userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.ChangeIPPerInstanceAlt) && !principal.IsInRole(WindowsBuiltInRole.Administrator) ||
-               ((userGameInfo.Game.LaunchAsDifferentUsersAlt || userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.ChangeIPPerInstanceAlt) && (Program.forcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))))
+               ((userGameInfo.Game.LaunchAsDifferentUsersAlt || userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.ChangeIPPerInstanceAlt) && (Program.ForcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))))
             {  
-                if(Program.forcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))
+                if(Program.ForcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
                     message = "This game handler does not support the current Nucleus Co-op installation path.\n\n" +
                           "Do NOT install in any of these folders:\n" +

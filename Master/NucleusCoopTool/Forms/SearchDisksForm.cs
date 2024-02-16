@@ -76,8 +76,6 @@ namespace Nucleus.Coop
 
             InitializeComponent();
 
-            SuspendLayout();
-
             default_Cursor = main.default_Cursor;
             Cursor.Current = default_Cursor;
             hand_Cursor = main.hand_Cursor;
@@ -134,8 +132,6 @@ namespace Nucleus.Coop
                 btn_deselectAll.FlatAppearance.BorderSize = 1;
                 btn_deselectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
             }
-
-            ResumeLayout();
 
             closeBtn.Cursor = hand_Cursor;
 

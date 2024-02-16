@@ -102,20 +102,25 @@ namespace Nucleus.Gaming.Controls
 
             if (GameProfile._GameProfile.LoadGameProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
             {
-                Controls[int.Parse(selected.Name)-1].ForeColor = Color.LightGreen;
+                Controls[int.Parse(selected.Name) - 1].ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
                 unloadBtn.ForeColor = Color.Orange;
                 loadedTitle = selected.Text;
             }
 
-            if(e.Button == MouseButtons.Right)
-            {
-                DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Do you want to create a desktop shortcut for this profile?", "Create profile shortcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            bool disabled = true;  
 
-                if (dialogResult == DialogResult.Yes)
+            if(!disabled)
+            {
+                if (e.Button == MouseButtons.Right)
                 {
-                    GameProfile.CreateShortcut();
-                }               
+                    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Do you want to create a desktop shortcut for this profile?", "Create profile shortcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        GameProfile.CreateShortcut();
+                    }
+                }
             }
         }
 
@@ -211,6 +216,7 @@ namespace Nucleus.Gaming.Controls
                 if (i != GameProfile.profilesPathList.Count)
                 {
                     deleteBtn.Location = new Point(profileBtn.Right - deleteBtn.Width, profileBtn.Location.Y);
+                    previewBtn.Location = new Point(deleteBtn.Left - previewBtn.Width, deleteBtn.Location.Y);
                     previewBtn.Location = new Point(deleteBtn.Left - previewBtn.Width, deleteBtn.Location.Y);
                     profileBtn.Controls.Add(deleteBtn);
                     profileBtn.Controls.Add(previewBtn);

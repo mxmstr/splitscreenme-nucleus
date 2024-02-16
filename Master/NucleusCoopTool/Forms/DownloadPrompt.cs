@@ -245,6 +245,7 @@ namespace Nucleus.Coop.Forms
             {
                 File.Delete(Path.Combine(scriptFolder, frmHandleTitle + ".js"));
             }
+
             File.Move(Path.Combine(scriptTempFolder, "handler.js"), Path.Combine(scriptFolder, frmHandleTitle + ".js"));
 
             if (handlerFolders.Count > 0)

@@ -78,8 +78,6 @@ namespace Nucleus.Coop
 
             InitializeComponent();
 
-            SuspendLayout();
-
             default_Cursor = mf.default_Cursor;
             Cursor = default_Cursor;
             hand_Cursor = mf.hand_Cursor;
@@ -369,8 +367,6 @@ namespace Nucleus.Coop
             }
             
             SetToolTips();
-
-            ResumeLayout();
 
             DPIManager.Register(this);
             DPIManager.Update(this);

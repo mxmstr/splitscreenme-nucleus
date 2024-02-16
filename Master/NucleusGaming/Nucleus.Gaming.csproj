@@ -100,6 +100,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BufferedClientAreaPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Coop\Generic\Handler.cs" />
     <Compile Include="Cache\HubCache.cs" />
     <Compile Include="Cache\ImageCache.cs" />
@@ -490,8 +493,6 @@
     <None Include="Resources\instructions.gif" />
     <None Include="Resources\title_dropdown_opened.png" />
     <None Include="Resources\title_dropdown_closed.png" />
-    <None Include="Resources\title_dropdown_closed1.png" />
-    <None Include="Resources\title_dropdown_opened1.png" />
     <Content Include="Resources\xinput1_3.dll" />
     <None Include="Resources\xinput1_3_a10_x64.dll" />
     <None Include="Resources\xinput1_3_a10.dll" />

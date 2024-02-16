@@ -55,7 +55,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.down.BackColor = System.Drawing.Color.Chartreuse;
-            this.down.BackgroundImage = global::Nucleus.Gaming.Properties.Resources.dropdown_closed;
+            this.down.BackgroundImage = global::Nucleus.Gaming.Properties.Resources.title_dropdown_closed;
             this.down.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.down.FlatAppearance.BorderSize = 0;
             this.down.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -75,7 +75,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.up.BackColor = System.Drawing.Color.Chartreuse;
-            this.up.BackgroundImage = global::Nucleus.Gaming.Properties.Resources.dropdown_opened;
+            this.up.BackgroundImage = global::Nucleus.Gaming.Properties.Resources.title_dropdown_opened;
             this.up.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.up.FlatAppearance.BorderSize = 0;
             this.up.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;

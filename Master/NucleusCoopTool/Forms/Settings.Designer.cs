@@ -3383,10 +3383,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.settingsTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.layoutTab);
+            this.Controls.Add(this.settingsTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

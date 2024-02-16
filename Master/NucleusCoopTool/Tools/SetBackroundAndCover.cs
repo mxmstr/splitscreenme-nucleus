@@ -69,6 +69,7 @@ namespace Nucleus.Coop.Tools
             }
 
             mainForm.btn_textSwitcher.Visible = !mainForm.setupScreen.textZoomContainer.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
+        
         }
 
     }

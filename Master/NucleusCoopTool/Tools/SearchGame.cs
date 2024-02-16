@@ -49,14 +49,14 @@ namespace Nucleus.Coop.Tools
                                     MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
                                     
                                    
-                                    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do want to download game assets?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                                     if (dialogResult == DialogResult.Yes)
                                     {
                                         AssetsDownloader.DownloadGameAssets(main,  game, null);
                                     }
 
-                                    main.RefreshGames();
+                                    main.RefreshUI(true);
                                 }
                             }
                         }
@@ -67,14 +67,14 @@ namespace Nucleus.Coop.Tools
                                 MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
 
 
-                            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do want to download game assets?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                             if (dialogResult == DialogResult.Yes)
                             {
                                 AssetsDownloader.DownloadGameAssets(main, game, null);
                             }
 
-                            main.RefreshGames();
+                            main.RefreshUI(true);
                            
                         }
                         else

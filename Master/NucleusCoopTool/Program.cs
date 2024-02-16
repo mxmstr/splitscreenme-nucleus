@@ -13,8 +13,8 @@ namespace Nucleus.Coop
     static class Program
     {
         private static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-        public static bool connected;
-        public static bool forcedBadPath;
+        public static bool Connected;
+        public static bool ForcedBadPath;
 
         [STAThread]
         static void Main(string[] args)
@@ -30,10 +30,10 @@ namespace Nucleus.Coop
             if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
             {
                 if (!StartChecks.StartCheck(true))
-                    forcedBadPath = true;
+                    ForcedBadPath = true;
             }
 
-            connected = StartChecks.CheckHubResponse();
+            Connected = StartChecks.CheckHubResponse();
 
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
@@ -47,15 +47,6 @@ namespace Nucleus.Coop
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            if (args.Length == 2)
-            {
-                // args = new string []{ "7 Days to Die", "1" }; 
-                ShortcutForm shortcutForm = new ShortcutForm(args);
-
-                Application.Run(shortcutForm);
-                return;
-            }
 
             MainForm form = new MainForm();
             DPIManager.AddForm(form);

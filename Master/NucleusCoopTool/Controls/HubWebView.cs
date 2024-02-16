@@ -24,7 +24,7 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
 {
-    public partial class HubWebView : UserControl, IDynamicSized
+    public partial class HubWebView : UserControl
     {
         private readonly string darkReaderFolder = Path.Combine(Application.StartupPath, $"webview\\darkreader");
         private readonly string cacheFolder = Path.Combine(Application.StartupPath, $"webview\\cache");
@@ -36,14 +36,15 @@ namespace Nucleus.Coop.Forms
         private CoreWebView2DownloadOperation downloadOperation;
         private CoreWebView2Settings webViewSettings;
         private MainForm mainForm;
+        private ZipFile zip;
 
         private bool zipExtractFinished;
         private bool downloadCompleted;
         private bool hasFreshCahe;
 
         private int entriesDone = 0;
-        private int numEntries;
-        private float scale;
+        private int numEntries = 0;
+
         private EventHandler Modal_Yes_Button_Event;
         private EventHandler Modal_No_Button_Event;
 
@@ -52,46 +53,45 @@ namespace Nucleus.Coop.Forms
         public HubWebView(MainForm mainForm)
         {
             this.mainForm = mainForm;
-            scale = mainForm.scale;
             
             InitializeComponent();
 
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            BackColor = Color.FromArgb(0, 0, 0, 0);
+            BackColor = Color.FromArgb(255,31, 34, 35);
 
-            modal.BackColor = Color.FromArgb(int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[0]),
-                                               int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[1]),
-                                               int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[2]),
-                                               int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[3]));
+            modal.BackColor = BackColor; 
 
-            modal_yes.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            modalControlsContainer.BackColor = Color.FromArgb(255, 24, 26, 27); 
+            modal_yes.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             modal_yes.Cursor = mainForm.hand_Cursor;
-            modal_no.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            modal_no.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             modal_no.Cursor = mainForm.hand_Cursor;
 
+            modal_text.BackColor = Color.FromArgb(255, 24, 26, 27);
+
             home.BackgroundImage = ImageCache.GetImage(theme + "home.png");
-            home.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            home.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             home.BackColor = BackColor;
             home.Cursor = mainForm.hand_Cursor;
 
             back.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
-            back.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            back.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             back.BackColor = BackColor;
             back.Cursor = mainForm.hand_Cursor;
 
             next.BackgroundImage = ImageCache.GetImage(theme + "arrow_right.png");
-            next.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            next.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             next.BackColor = BackColor;
             next.Cursor = mainForm.hand_Cursor;
 
             closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
-            closeBtn.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            closeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             closeBtn.BackColor = BackColor;
             closeBtn.Cursor = mainForm.hand_Cursor;
 
-            webView.DefaultBackgroundColor = mainForm.BackColor;
+            webView.DefaultBackgroundColor = BackColor;
          
-            button_Panel.BackColor = mainForm.BackColor;
+            button_Panel.BackColor = BackColor;
 
             string debugUri = Path.Combine(Application.StartupPath, $"webview\\debugUri.txt");
 
@@ -111,14 +111,7 @@ namespace Nucleus.Coop.Forms
             }
             
             Load += OnLoad;
-            closeBtn.Click += new EventHandler(mainForm.EnableGameList);
-            Disposed += new EventHandler(mainForm.btn_AddGames_Set_BackColor);
-
-            BuildHandlersDatas();
-           
-
-            DPIManager.Register(this);
-            DPIManager.Update(this);
+            Disposed += DisposeContent;
         }
 
         private void BuildHandlersDatas()
@@ -140,7 +133,6 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-
         private async void OnLoad(object sender, EventArgs e)
         {
             webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
@@ -148,7 +140,9 @@ namespace Nucleus.Coop.Forms
         }
 
         private async Task InitializeAsync()
-        {        
+        {
+            BuildHandlersDatas();
+
             CoreWebView2Environment environment;
             CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions();
             environmentOptions.AreBrowserExtensionsEnabled = true;
@@ -246,10 +240,13 @@ namespace Nucleus.Coop.Forms
                 return;
             }
 
-            e.ResultFilePath = downloadPath;   
-            downloadOperation = e.DownloadOperation;
-            downloadOperation.StateChanged += CheckDownloadState;
-            label.Visible = true;
+            if (downloadOperation == null)
+            {
+                e.ResultFilePath = downloadPath;
+                downloadOperation = e.DownloadOperation;
+                downloadOperation.StateChanged += CheckDownloadState;
+                label.Visible = true;
+            }
         }
       
         private void CheckDownloadState(object sender, object e)
@@ -261,13 +258,14 @@ namespace Nucleus.Coop.Forms
                 entriesDone = 0;
                 numEntries = 0;
                 downloadCompleted = true;
+                downloadOperation = null;
                 ExtractHandler();
             }
         }
 
         private void ExtractHandler()
         {
-            ZipFile zip = new ZipFile(downloadPath);
+             zip = new ZipFile(downloadPath);
 
             zip.ExtractProgress += ExtractProgress;
             numEntries = zip.Entries.Count;
@@ -494,42 +492,23 @@ namespace Nucleus.Coop.Forms
             webView.CoreWebView2.Navigate(hubUri);
         }
 
-        private void CloseBtn_Click(object sender, EventArgs e)
+        public void CloseBtn_Click(object sender, EventArgs e)
         {
-            webView.Dispose();    
-            downloadCompleted = false;          
+            webView.Dispose();             
             Dispose();
-        }
+        }       
 
-        public void UpdateSize(float scale)
+        private void DisposeContent(object sender, EventArgs e)
         {
-
-            if (IsDisposed)
+            if(zip != null)
             {
-                DPIManager.Unregister(this);
-                return;
+                zip.Dispose();
             }
 
-            button_Panel.Left = (int)(button_Panel.Left * scale);
-            button_Panel.Top = (int)(button_Panel.Top * scale);
-            button_Panel.Width = (int)(button_Panel.Width * scale);
-            button_Panel.Height = (int)(button_Panel.Height* scale);
-            
-            foreach (Control c in button_Panel.Controls)
+            if (File.Exists(downloadPath))
             {
-                c.Width = (int)(c.Width * scale);
-                c.Height = (int)(c.Height * scale);
-                c.Left = (int)(c.Location.X * scale);
-                c.Top = (int)(c.Location.Y * scale);
-            }
-        
-            //Width = (int)(Width * scale);
-            //Height = (int)(Height * scale);
-
-            //Top = (int)(Top * scale);
-            //Left = (int)(Left * scale);
-            button_Panel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, button_Panel.Width, button_Panel.Height, 20, 20));        
+                File.Delete(downloadPath);
+            }     
         }
-
     }
 }

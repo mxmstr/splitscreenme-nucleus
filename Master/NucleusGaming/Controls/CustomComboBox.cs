@@ -84,7 +84,7 @@ namespace Nucleus.Gaming.Controls
                 Dock = DockStyle.Right,
                 FlatStyle = FlatStyle.Flat,
                 BackgroundImageLayout = ImageLayout.Zoom,
-                BackgroundImage = new Bitmap(Properties.Resources.dropdown_closed),
+                BackgroundImage = new Bitmap(Properties.Resources.title_dropdown_closed),
                 BorderStyle = BorderStyle.FixedSingle,// BorderStyle.FixedSingle,
                 Font = font,
                 BackColor = Color.FromArgb(50, 0, 180, 12),
