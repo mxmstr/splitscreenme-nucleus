@@ -1062,11 +1062,8 @@ namespace Nucleus.Coop
                 }
             }
 
-            if (currentControl != null)
-            {
-                RefreshGames();
-            }
-
+            RefreshGames();
+            
             mainButtonFrame.Focus();
         }
 

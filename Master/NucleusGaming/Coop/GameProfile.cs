@@ -564,7 +564,7 @@ namespace Nucleus.Gaming.Coop
             string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + shortcutTitle;
             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
             shortcut.Description = Notes != null ? Notes : $"{Game.GUID} Nucleus shortcut.";
-            shortcut.TargetPath = Application.ExecutablePath;
+            shortcut.TargetPath = Application.StartupPath + "\\Profiles Launcher.exe";
             shortcut.WorkingDirectory = Application.StartupPath;
             shortcut.Arguments = $"\"{Game.GUID}\" \"{CurrentProfileId}\"";
             UserGameInfo currentGameInfo = GameManager.Instance.User.Games.Where(c => c.GameGuid == Game.GUID).FirstOrDefault();

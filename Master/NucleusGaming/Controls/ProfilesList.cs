@@ -108,9 +108,7 @@ namespace Nucleus.Gaming.Controls
                 loadedTitle = selected.Text;
             }
 
-            bool disabled = true;  
-
-            if(!disabled)
+            if(File.Exists(Application.StartupPath + "\\Profiles Launcher.exe"))
             {
                 if (e.Button == MouseButtons.Right)
                 {
