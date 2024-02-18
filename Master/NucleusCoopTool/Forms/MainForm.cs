@@ -105,7 +105,6 @@ namespace Nucleus.Coop
         private bool noGamesPresent;
         public bool roundedCorners;
         public bool useButtonsBorder;
-        private bool DisableOfflineIcon;
         private bool canResize = false;
         public bool disableFastHandlerUpdate = false;
         private bool hotkeysLocked = false;
@@ -269,7 +268,6 @@ namespace Nucleus.Coop
             Globals.MainOSD = new WPF_OSD();
 
             iconsIni = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
-            DisableOfflineIcon = bool.Parse(ini.IniReadValue("Dev", "DisableOfflineIcon"));
             roundedCorners = bool.Parse(themeIni.IniReadValue("Misc", "UseroundedCorners"));
             useButtonsBorder = bool.Parse(themeIni.IniReadValue("Misc", "UseButtonsBorder"));
             customFont = themeIni.IniReadValue("Font", "FontFamily");
@@ -1214,9 +1212,12 @@ namespace Nucleus.Coop
                 StepPanel.Refresh();
                 rightFrame.Refresh();
 
-                if (!currentGameInfo.KeepSymLink && !currentGameInfo.Game.KeepSymLinkOnExit)
+                if (!currentGameInfo.Game.KeepSymLinkOnExit)
                 {
-                    CleanGameContent.CleanContentFolder(currentGame);
+                    if (!currentGameInfo.KeepSymLink)
+                    {
+                        CleanGameContent.CleanContentFolder(currentGame);
+                    }
                 }
                 
                 btn_Steam.Visible = currentGame.NeedSteamClient;
@@ -1962,14 +1963,21 @@ namespace Nucleus.Coop
 
                         if (i == 20)
                         {
-                            if (currentGameInfo.KeepSymLink)
+                            if (!currentGameInfo.Game.KeepSymLinkOnExit)
                             {
-                                gameContextMenuStrip.Items[20].Image = ImageCache.GetImage(theme + "locked.png");
+                                if (currentGameInfo.KeepSymLink)
+                                {
+                                    gameContextMenuStrip.Items[20].Image = ImageCache.GetImage(theme + "locked.png");
+                                }
+                                else
+                                {
+                                    gameContextMenuStrip.Items[20].Image = ImageCache.GetImage(theme + "unlocked.png");
+                                }
                             }
-                            else
+                            else 
                             {
-                                gameContextMenuStrip.Items[20].Image = ImageCache.GetImage(theme + "unlocked.png");
-                            }
+                                gameContextMenuStrip.Items[i].Visible = false;
+                            }                       
                         }
 
                         if (i == 21)
