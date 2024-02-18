@@ -107,7 +107,7 @@ namespace Nucleus.Coop
         public bool useButtonsBorder;
         private bool canResize = false;
         public bool disableFastHandlerUpdate = false;
-        private bool hotkeysLocked = false;
+        private bool hotkeysCooldown = false;
         private bool rainbowTimerRunning = false;
 
         private bool disableGameProfiles;
@@ -161,7 +161,7 @@ namespace Nucleus.Coop
 
         private System.Windows.Forms.Timer WebStatusTimer;//dispose splash screen timer
         private System.Windows.Forms.Timer rainbowTimer;
-        private System.Windows.Forms.Timer hotkeysLockedTimer;//Avoid hotkeys spamming
+        private System.Windows.Forms.Timer hotkeysCooldownTimer;//Avoid hotkeys spamming
 
         public Color buttonsBackColor;
         public Color BorderGradient;
@@ -559,8 +559,8 @@ namespace Nucleus.Coop
             downloadPrompt = new DownloadPrompt(handler, this, null, true);
             Xinput_S_Setup = new XInputShortcutsSetup();
 
-            hotkeysLockedTimer = new System.Windows.Forms.Timer();
-            hotkeysLockedTimer.Tick += new EventHandler(HotkeysLockedTimerTick);
+            hotkeysCooldownTimer = new System.Windows.Forms.Timer();
+            hotkeysCooldownTimer.Tick += new EventHandler(HotkeysLockedTimerTick);
 
             gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
             gameContextMenuStrip.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
@@ -806,7 +806,7 @@ namespace Nucleus.Coop
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
-                    if (hotkeysLocked)
+                    if (hotkeysCooldown)
                     {
                         return;
                     }
@@ -821,7 +821,7 @@ namespace Nucleus.Coop
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == TopMost_HotkeyID)
             {
-                if (hotkeysLocked || I_GameHandler == null)
+                if (hotkeysCooldown || I_GameHandler == null)
                 {
                     return;
                 }
@@ -832,7 +832,7 @@ namespace Nucleus.Coop
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
-                    if (hotkeysLocked || I_GameHandler == null)
+                    if (hotkeysCooldown || I_GameHandler == null)
                     {
                         return;
                     }
@@ -853,7 +853,7 @@ namespace Nucleus.Coop
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
-                    if (hotkeysLocked || I_GameHandler == null)
+                    if (hotkeysCooldown || I_GameHandler == null)
                     {
                         return;
                     }
@@ -871,7 +871,7 @@ namespace Nucleus.Coop
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
-                    if (hotkeysLocked || I_GameHandler == null)
+                    if (hotkeysCooldown || I_GameHandler == null)
                     {
                         return;
                     }
@@ -885,7 +885,7 @@ namespace Nucleus.Coop
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Cutscenes_HotkeyID)
             {
-                if (hotkeysLocked || I_GameHandler == null)
+                if (hotkeysCooldown || I_GameHandler == null)
                 {
                     return;
                 }
@@ -905,7 +905,7 @@ namespace Nucleus.Coop
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
-                    if (hotkeysLocked || I_GameHandler == null)
+                    if (hotkeysCooldown || I_GameHandler == null)
                     {
                         return;
                     }
@@ -923,12 +923,12 @@ namespace Nucleus.Coop
 
         public void TriggerOSD(int timerMS, string text)
         {
-            if (!hotkeysLocked)
+            if (!hotkeysCooldown)
             {
-                hotkeysLockedTimer.Stop();
-                hotkeysLocked = true;
-                hotkeysLockedTimer.Interval = (timerMS); //millisecond
-                hotkeysLockedTimer.Start();
+                hotkeysCooldownTimer.Stop();
+                hotkeysCooldown = true;
+                hotkeysCooldownTimer.Interval = (timerMS); //millisecond
+                hotkeysCooldownTimer.Start();
 
                 Globals.MainOSD.Show(timerMS, text);
             }
@@ -936,8 +936,8 @@ namespace Nucleus.Coop
 
         private void HotkeysLockedTimerTick(object Object, EventArgs EventArgs)
         {
-            hotkeysLocked = false;
-            hotkeysLockedTimer.Stop();
+            hotkeysCooldown = false;
+            hotkeysCooldownTimer.Stop();
         }
 
         public void RefreshGames()
