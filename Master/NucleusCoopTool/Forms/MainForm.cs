@@ -214,7 +214,7 @@ namespace Nucleus.Coop
             FadeInTimer.Start();
         }
 
-        private void FadeInTick(Object Object, EventArgs EventArgs)
+        private void FadeInTick(object Object, EventArgs EventArgs)
         {
             if (Opacity < 1.0F)
             {
@@ -239,7 +239,7 @@ namespace Nucleus.Coop
             FadeOutTimer.Start();
         }
 
-        private void FadeOutTick(Object Object, EventArgs EventArgs)
+        private void FadeOutTick(object Object, EventArgs EventArgs)
         {
             if (Opacity > 0.0F)
             {
@@ -560,7 +560,7 @@ namespace Nucleus.Coop
             Xinput_S_Setup = new XInputShortcutsSetup();
 
             hotkeysCooldownTimer = new System.Windows.Forms.Timer();
-            hotkeysCooldownTimer.Tick += new EventHandler(HotkeysLockedTimerTick);
+            hotkeysCooldownTimer.Tick += new EventHandler(hotkeysCooldownTimerTick);
 
             gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
             gameContextMenuStrip.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
@@ -934,7 +934,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void HotkeysLockedTimerTick(object Object, EventArgs EventArgs)
+        private void hotkeysCooldownTimerTick(object Object, EventArgs EventArgs)
         {
             hotkeysCooldown = false;
             hotkeysCooldownTimer.Stop();
@@ -1242,9 +1242,7 @@ namespace Nucleus.Coop
                 rightFrame.Visible = true;
 
                 StepPanel.Visible = true;
-
-               
-
+              
                 currentProfile = new GameProfile();
 
                 GameProfile.GameGUID = currentGame.GUID;

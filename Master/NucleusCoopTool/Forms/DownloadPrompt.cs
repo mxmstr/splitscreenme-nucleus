@@ -224,7 +224,7 @@ namespace Nucleus.Coop.Forms
 
             if (File.Exists(Path.Combine(scriptFolder, frmHandleTitle + ".js")))
             {
-                DialogResult ovdialogResult = overwriteWithoutAsking ? DialogResult.Yes : MessageBox.Show("An existing handler with the name " + (frmHandleTitle + ".js") + " already exists. Do you wish to overwrite it?", "Handler already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult ovdialogResult = overwriteWithoutAsking ? DialogResult.Yes : MessageBox.Show("A handler with the name " + (frmHandleTitle + ".js") + " already exists. Do you wish to overwrite it?", "Handler already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (ovdialogResult != DialogResult.Yes)
                 {
                     zip.Dispose();

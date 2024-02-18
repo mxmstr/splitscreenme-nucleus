@@ -335,7 +335,7 @@ namespace Nucleus.Coop.Forms
 
             if (File.Exists(Path.Combine(scriptFolder, frmHandleTitle + ".js")))
             {
-                modal_text.Text = "An existing handler with the name " + frmHandleTitle + ".js already exists.\nDo you wish to overwrite it?";
+                modal_text.Text = "A handler with the name " + frmHandleTitle + ".js already exists.\nDo you wish to overwrite it?";
 
                 Modal_Yes_Button_Event = (sender, e) => ModalAddHandler(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
                 modal_yes.Click += Modal_Yes_Button_Event;
