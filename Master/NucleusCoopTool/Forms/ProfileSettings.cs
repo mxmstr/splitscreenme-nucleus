@@ -614,7 +614,7 @@ namespace Nucleus.Coop
             notes_text.Text = GameProfile.Notes;
             profileTitle.Text = GameProfile.Title;
 
-            if (GameProfile._GameProfile != null)
+            if (GameProfile.Instance!= null)
             {
                 modeLabel.Text = GameProfile.ModeText;
             }
@@ -841,7 +841,7 @@ namespace Nucleus.Coop
             ///Update profile[#].json file
             if (GameProfile.ModeText != "New Profile")
             {              
-                GameProfile.UpdateGameProfile(GameProfile._GameProfile);
+                GameProfile.UpdateGameProfile(GameProfile.Instance);
                 setupScreen.gameProfilesList.Update_ProfilesList();
 
                 ///Send control selection event to the Profiles List (update the list and reload the profile)

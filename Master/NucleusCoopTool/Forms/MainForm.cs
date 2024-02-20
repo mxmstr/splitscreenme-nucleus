@@ -1,4 +1,5 @@
-﻿using Nucleus.Coop.Forms;
+﻿using Games;
+using Nucleus.Coop.Forms;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
@@ -380,7 +381,6 @@ namespace Nucleus.Coop
             btn_textSwitcher.Image = ImageCache.GetImage(theme + "text_switcher.png");
             button_UpdateAvailable.BackColor = Color.FromArgb(150, 0, 0, 0);
 
-
             btn_gameOptions.BackColor = buttonsBackColor;
             btn_Play.BackColor = buttonsBackColor;
             btn_Steam.BackColor = buttonsBackColor;
@@ -545,9 +545,7 @@ namespace Nucleus.Coop
             searchDisksForm = new SearchDisksForm(this);
 
             setupScreen.Paint += SetupScreen_Paint;
-
-            settings.RegHotkeys(this);
-
+           
             controls = new Dictionary<UserGameInfo, GameControl>();
             gameManager = new GameManager();
             optionsControl = new PlayerOptionsControl();
@@ -560,7 +558,7 @@ namespace Nucleus.Coop
             Xinput_S_Setup = new XInputShortcutsSetup();
 
             hotkeysCooldownTimer = new System.Windows.Forms.Timer();
-            hotkeysCooldownTimer.Tick += new EventHandler(hotkeysCooldownTimerTick);
+            hotkeysCooldownTimer.Tick += new EventHandler(HotkeysCooldownTimerTick);
 
             gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
             gameContextMenuStrip.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
@@ -798,27 +796,12 @@ namespace Nucleus.Coop
                 }
             }
 
+
             if (m.Msg == 0x00FF)//WM_INPUT
             {
                 RawInputAction(m.LParam);
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == KillProcess_HotkeyID)
-            {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
-                {
-                    if (hotkeysCooldown)
-                    {
-                        return;
-                    }
 
-                    User32Util.ShowTaskBar();
-                    Close();
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} key)");
-                }
-            }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == TopMost_HotkeyID)
             {
                 if (hotkeysCooldown || I_GameHandler == null)
@@ -839,10 +822,9 @@ namespace Nucleus.Coop
 
                     if (btn_Play.Text == "S T O P")
                     {
-                        btn_Play.PerformClick();
+                        Btn_Play_Click(this, null);
+                        TriggerOSD(2000, "Session Ended");
                     }
-
-                    TriggerOSD(2000, "Session Ended");
                 }
                 else
                 {
@@ -917,6 +899,23 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} key)");
                 }
             }
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == KillProcess_HotkeyID)
+            {
+                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                {
+                    if (hotkeysCooldown)
+                    {
+                        return;
+                    }
+
+                    User32Util.ShowTaskBar();
+                    Close();
+                }
+                else
+                {
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} key)");
+                }
+            }
 
             base.WndProc(ref m);
         }
@@ -934,7 +933,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void hotkeysCooldownTimerTick(object Object, EventArgs EventArgs)
+        private void HotkeysCooldownTimerTick(object Object, EventArgs EventArgs)
         {
             hotkeysCooldown = false;
             hotkeysCooldownTimer.Stop();
@@ -1045,19 +1044,12 @@ namespace Nucleus.Coop
             if (refreshAll)
             {
                 rightFrame.Visible = false;
-                StepPanel.Visible = false;
-                clientAreaPanel.BackgroundImage = defBackground;
+                StepPanel.Visible = false;               
                 stepPanelPictureBox.Visible = webView == null ? true : false;                
                 rainbowTimer?.Dispose();
                 rainbowTimerRunning = false;
-                btn_Next.Visible = false;
                 btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
-                btn_Prev.Visible = false;
-
-                if (I_GameHandler == null)
-                {
-                    btn_Play.Visible = false;
-                }
+                clientAreaPanel.BackgroundImage = defBackground;
             }
 
             RefreshGames();
@@ -1191,9 +1183,6 @@ namespace Nucleus.Coop
             setupScreen.textZoomContainer.Visible = false;
             btn_magnifier.Image = ImageCache.GetImage(theme + "magnifier.png");
             btn_textSwitcher.Visible = false;
-            btn_Play.Visible = true;
-            btn_Next.Visible = true;
-            btn_Prev.Visible = true;
 
             screenshotImg?.Dispose();
 
@@ -1203,14 +1192,9 @@ namespace Nucleus.Coop
             }
             else
             {
+                clientAreaPanel.SuspendLayout();
+
                 currentGame = currentGameInfo.Game;
-
-                SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
-
-                game_listSizer.Refresh();
-                mainButtonFrame.Refresh();
-                StepPanel.Refresh();
-                rightFrame.Refresh();
 
                 if (!currentGameInfo.Game.KeepSymLinkOnExit)
                 {
@@ -1325,6 +1309,10 @@ namespace Nucleus.Coop
                 content = new ContentManager(currentGame);
 
                 GoToStep(0);
+
+                SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
+
+                clientAreaPanel.ResumeLayout();
             }
         }
 
@@ -1522,9 +1510,8 @@ namespace Nucleus.Coop
             if (btn_Play.Text == "S T O P")
             {
                 I_GameHandlerEndFunc("Stop button clicked", true);
-                GameProfile._GameProfile.Reset();
-                DevicesFunctions.gamepadTimer = new System.Threading.Timer(DevicesFunctions.GamepadTimer_Tick, null, 0, 500);
-                btn_Play.Visible = false;
+                GameProfile.Instance.Reset();
+                DevicesFunctions.gamepadTimer = new System.Threading.Timer(DevicesFunctions.GamepadTimer_Tick, null, 0, 500);               
                 return;
             }
 
@@ -1557,6 +1544,7 @@ namespace Nucleus.Coop
                 WindowState = FormWindowState.Minimized;
             }
 
+            settings.RegHotkeys(this);
             RefreshUI(true);
         }
 
@@ -1578,7 +1566,7 @@ namespace Nucleus.Coop
                     mainButtonFrame.Focus();
                     btn_Play.Text = "PLAY";
                     btn_Play.Enabled = false;
-
+                    settings.UnRegHotkeys(this);
                     BringToFront();
                 });
             }
@@ -2303,15 +2291,7 @@ namespace Nucleus.Coop
                     }
                 }
 
-                if (StepPanel.Visible)
-                {
-                    rightFrame.Visible = false;
-                    StepPanel.Visible = false;
-                    clientAreaPanel.BackgroundImage = defBackground;
-                    stepPanelPictureBox.Visible = true;
-                }
-
-                RefreshGames();
+                RefreshUI(true);
             }
         }
 
@@ -2585,7 +2565,8 @@ namespace Nucleus.Coop
                 setupScreen.textZoomContainer.Visible = false;
                 btn_magnifier.Image = ImageCache.GetImage(theme + "magnifier.png");
 
-                GameProfile._GameProfile?.Reset();
+                GameProfile.Instance?.Reset();
+
                 if (stepsList != null)
                 {
                     GoToStep(0);

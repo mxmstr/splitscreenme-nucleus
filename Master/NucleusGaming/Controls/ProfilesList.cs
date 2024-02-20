@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
+
 namespace Nucleus.Gaming.Controls
 {
     public partial class ProfilesList : ControlListBox
@@ -70,6 +71,29 @@ namespace Nucleus.Gaming.Controls
 
             Label selected = (Label)sender;
 
+            if (e != null)
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    if (File.Exists(Application.StartupPath + "\\Profiles Launcher.exe"))
+                    {
+                        DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Do you want to export a desktop shortcut for this profile?", "Export profile shortcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(selected.Name) - 1]);
+                            JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
+                            string userNotes = ((string)Jprofile["Notes"] != null && (string)Jprofile["Notes"] != "") ? (string)Jprofile["Notes"] : "";
+
+                            string shortcutTitle = selected.Text.StartsWith("Load profile:") ? selected.Text.Split(':')[1] : selected.Text;
+                            GameProfile.CreateShortcut(parentControl.UserGameInfo.GameGuid, shortcutTitle, selected.Name, userNotes);
+                        }
+                    }
+
+                    return;
+                }
+            }
+
             selected.BackColor = Color.Transparent;
             foreach (Control c in Controls)
             {
@@ -95,31 +119,18 @@ namespace Nucleus.Gaming.Controls
             if (selected.Text == "Unload")
             {
                 selected.ForeColor = Color.Gray;
-                GameProfile._GameProfile.Reset();
+                GameProfile.Instance.Reset();
                 Globals.MainOSD.Show(500, "Game Profile Unloaded");
                 return;
             }
 
-            if (GameProfile._GameProfile.LoadGameProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
+            if (GameProfile.Instance.LoadGameProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
             {
                 Controls[int.Parse(selected.Name) - 1].ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
                 unloadBtn.ForeColor = Color.Orange;
                 loadedTitle = selected.Text;
-            }
-
-            if(File.Exists(Application.StartupPath + "\\Profiles Launcher.exe"))
-            {
-                if (e.Button == MouseButtons.Right)
-                {
-                    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Do you want to create a desktop shortcut for this profile?", "Create profile shortcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        GameProfile.CreateShortcut();
-                    }
-                }
-            }
+            }        
         }
 
         public void Update_ProfilesList()
@@ -208,7 +219,10 @@ namespace Nucleus.Gaming.Controls
                     Cursor = hand_Cursor
                 };
 
-                ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile. Right click to export a shortcut to desktop.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                string profileBtnToolTipText = File.Exists(Application.StartupPath + "\\Profiles Launcher.exe") ? "Load this game profile. Right click to export a shortcut to desktop." : "Load this game profile.";
+
+                ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, profileBtnToolTipText, new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                
                 profileBtn.MouseClick += new MouseEventHandler(ProfileBtn_CheckedChanged);
 
                 if (i != GameProfile.profilesPathList.Count)
@@ -260,7 +274,7 @@ namespace Nucleus.Gaming.Controls
 
             Label selected = (Label)sender;
 
-            Control preview = selected.Parent as Control;
+            Control preview = (Control)selected.Parent;
 
             if (preview.Text == "Unload")
             {
@@ -299,6 +313,7 @@ namespace Nucleus.Gaming.Controls
                 return;
             }
 
+                      
             Label deleteBtn = (Label)sender;
 
             DialogResult dialogResult = MessageBox.Show($"Are you sure you want to delete Profile n°{deleteBtn.Parent.Name} ?", "Are you sure?!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -360,7 +375,7 @@ namespace Nucleus.Gaming.Controls
 
                 #endregion
 
-                GameProfile._GameProfile.Reset();
+                GameProfile.Instance.Reset();
 
                 Update_ProfilesList();
 

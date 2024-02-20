@@ -461,7 +461,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         {
                             return;
                         }
-
+                        
                         toFlash.FlashIcon();
                     }
                 }

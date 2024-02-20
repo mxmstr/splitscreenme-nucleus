@@ -31,7 +31,7 @@ namespace Nucleus.Gaming.Coop
         public List<PlayerInfo> DevicesList => GetDevicesList();
         private static readonly IniFile ini = Globals.ini;
 
-        public static GameProfile _GameProfile;
+        public static GameProfile Instance;
 
         public static GenericGameInfo Game;
         private static SetupScreenControl setupScreen = null;
@@ -329,7 +329,7 @@ namespace Nucleus.Gaming.Coop
 
         public void InitializeDefault(GenericGameInfo game, SetupScreenControl pc)
         {
-            _GameProfile = this;
+            Instance = this;
             Game = game;
             setupScreen = pc;
 
@@ -555,19 +555,19 @@ namespace Nucleus.Gaming.Coop
             }
         }
 
-        public static void CreateShortcut()
+        public static void CreateShortcut(string gameGUID, string shortcutId,string profileId,string description)
         {
             object shDesktop = (object)"Desktop";
             WshShell shell = new WshShell();
 
-            string shortcutTitle = Title != "" ? $@"\{Title}_{Game.GUID}.lnk" : $@"\Profile_{CurrentProfileId}_{Game.GUID}.lnk";
+            string shortcutTitle = $@"\Profile_{shortcutId}_{gameGUID}.lnk";
             string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + shortcutTitle;
             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
-            shortcut.Description = Notes != null ? Notes : $"{Game.GUID} Nucleus shortcut.";
+            shortcut.Description = description != "" ? description : $"{gameGUID} Nucleus shortcut.";
             shortcut.TargetPath = Application.StartupPath + "\\Profiles Launcher.exe";
             shortcut.WorkingDirectory = Application.StartupPath;
-            shortcut.Arguments = $"\"{Game.GUID}\" \"{CurrentProfileId}\"";
-            UserGameInfo currentGameInfo = GameManager.Instance.User.Games.Where(c => c.GameGuid == Game.GUID).FirstOrDefault();
+            shortcut.Arguments = $"\"{gameGUID}\" \"{profileId}\"";
+            UserGameInfo currentGameInfo = GameManager.Instance.User.Games.Where(c => c.GameGuid == gameGUID).FirstOrDefault();
             shortcut.IconLocation = currentGameInfo.ExePath;
             shortcut.Save();
         }
@@ -1096,7 +1096,7 @@ namespace Nucleus.Gaming.Coop
 
             if (showError)
             {
-                _GameProfile.Reset();
+                Instance.Reset();
                 return;
             }
 
@@ -1128,13 +1128,13 @@ namespace Nucleus.Gaming.Coop
                 //if the profile requires more screens than availables
                 if (ProfilePlayersList.Any(pp => pp.ScreenIndex != profilePlayer.ScreenIndex) && scr.Item2 != profilePlayer.ScreenIndex)
                 {
-                    _GameProfile.Reset();
+                    Instance.Reset();
                     Globals.MainOSD.Show(2000, $"Not Enough Active Screens");
                     scr.Item1.Type = UserScreenType.FullScreen;
                     return;
                 }
 
-                if (_GameProfile.DevicesList.All(lpp => lpp.MonitorBounds != TranslateBounds(profilePlayer, scr.Item1).Item1) && 
+                if (Instance.DevicesList.All(lpp => lpp.MonitorBounds != TranslateBounds(profilePlayer, scr.Item1).Item1) && 
                     ProfilePlayersList.FindIndex(pp => pp == profilePlayer) == loadedProfilePlayers.Count)//avoid to add player in the same bounds                                                                                                                           // ProfilePlayersList.FindIndex(pp => pp == profilePlayer) == loadedProfilePlayers.Count)//make sure to insert player like saved in the game profile
                 {
                     SetProfilePlayerDatas(player, profilePlayer, scr.Item1, scr.Item2);                  
@@ -1202,7 +1202,7 @@ namespace Nucleus.Gaming.Coop
         {
             ProfilePlayer profilePlayer = null;
 
-            var screens = _GameProfile.screens;
+            var screens = Instance.screens;
 
             bool skipGuid = false;
 
@@ -1262,9 +1262,9 @@ namespace Nucleus.Gaming.Coop
 
                 ProfilePlayer kbPlayer = ProfilePlayersList[i];
 
-                for (int pl = 0; pl < _GameProfile.DevicesList.Count; pl++)
+                for (int pl = 0; pl < Instance.DevicesList.Count; pl++)
                 {
-                    PlayerInfo p = _GameProfile.DevicesList[pl];
+                    PlayerInfo p = Instance.DevicesList[pl];
 
                     if (p.IsRawKeyboard || p.IsRawMouse)
                     {
@@ -1287,7 +1287,7 @@ namespace Nucleus.Gaming.Coop
 
                         firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0] };
 
-                        _GameProfile.DevicesList.Remove(secondInGroup);
+                        Instance.DevicesList.Remove(secondInGroup);
                         p = firstInGroup;
                         p.IsInputUsed = true;///needed else device is invisible and can't be moved
 

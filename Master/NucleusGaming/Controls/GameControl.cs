@@ -99,9 +99,8 @@ namespace Nucleus.Coop
 
                 if (game == null)
                 {
-                    //title.Text = "No games";
-                    //players.Text = string.Empty;
-                    //title.Font = new Font(customFont, 9, FontStyle.Bold, GraphicsUnit.Point, 0);
+                    title.Text = "No games";
+                    title.Font = new Font(customFont, 9, FontStyle.Bold, GraphicsUnit.Point, 0);
                     Visible = false;
                 }
                 else

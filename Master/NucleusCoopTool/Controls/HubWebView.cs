@@ -149,21 +149,30 @@ namespace Nucleus.Coop.Forms
 
             webView.CreationProperties = new CoreWebView2CreationProperties();
             webView.CreationProperties.UserDataFolder = cacheFolder;
-           
-            if (Directory.Exists(webView.CreationProperties.UserDataFolder))
-            {           
+
+            //peux cracher si mauvaise connection add try => failed dispose.
+            try
+            {
+                if (Directory.Exists(webView.CreationProperties.UserDataFolder))
+                {
+                    environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
+                    await webView.EnsureCoreWebView2Async(environment);
+
+                    webView.Source = new Uri(hubUri);
+                    hasFreshCahe = false;
+                    return;
+                }
+
+                hasFreshCahe = true;
+
                 environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
                 await webView.EnsureCoreWebView2Async(environment);
-
-                webView.Source = new Uri(hubUri);
-                hasFreshCahe = false;
-                return;
             }
-
-            hasFreshCahe = true;
-
-            environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
-            await webView.EnsureCoreWebView2Async(environment);           
+            catch(Exception e)
+            {
+                Dispose();
+                MessageBox.Show("The web viewer can't be initialized, check your connection status/speed. ", "Can't initialize.");
+            }
         }
 
         private async void WebView_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)

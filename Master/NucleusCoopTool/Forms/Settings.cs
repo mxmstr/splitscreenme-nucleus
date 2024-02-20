@@ -859,9 +859,9 @@ namespace Nucleus.Coop
 
             if (GameProfile.ModeText == "New Profile" || disableGameProfileschanged)
             {
-                if (GameProfile._GameProfile != null)
+                if (GameProfile.Instance != null)
                 {
-                    GameProfile._GameProfile.Reset();
+                    GameProfile.Instance.Reset();
                     ProfileSettings.ProfileRefreshAudioList();
                 }
             }
@@ -926,6 +926,26 @@ namespace Nucleus.Coop
             catch (Exception ex)
             {
                 MessageBox.Show("Error registering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void UnRegHotkeys(MainForm form)
+        {
+            mainForm = form;
+
+            try
+            {
+                User32Interop.UnregisterHotKey(form.Handle, KillProcess_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, TopMost_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, StopSession_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, SetFocus_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, ResetWindows_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, Cutscenes_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, Switch_HotkeyID);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error unregistering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

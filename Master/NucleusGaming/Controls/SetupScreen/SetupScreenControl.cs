@@ -43,6 +43,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public override string Title => "Position Players";
 
+        private UserGameInfo userGameInfo;
+        public UserGameInfo UserGameInfo => userGameInfo;
+
         public SetupScreenControl()
         {
             _setupScreen = this;
@@ -177,8 +180,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public override void Initialize(UserGameInfo game, GameProfile profile)
         {
-            base.Initialize(game, profile);                
-                       
+            base.Initialize(game, profile);
+
+            userGameInfo = game;
             DevicesFunctions.Initialize(this, game, profile);
             DevicesFunctions.ClearDInputDevicesList();
             DevicesFunctions.gamepadTimer = new System.Threading.Timer(DevicesFunctions.GamepadTimer_Tick, null, 0, 500);

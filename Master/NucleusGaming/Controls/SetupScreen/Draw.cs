@@ -326,7 +326,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 Rectangle ghostMBounds = ghostBounds.Item1;
                 RectangleF ghostEBounds = ghostBounds.Item2;
 
-                if (GameProfile._GameProfile.DevicesList.All(p => p.MonitorBounds != ghostMBounds))
+                if (GameProfile.Instance.DevicesList.All(p => p.MonitorBounds != ghostMBounds))
                 {
                     string ghostTag = $"P{b + 1}: {GameProfile.ProfilePlayersList[b].Nickname}";
 

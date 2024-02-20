@@ -781,7 +781,6 @@ namespace Nucleus.Coop
             this.coverFrame.Name = "coverFrame";
             this.coverFrame.Size = new System.Drawing.Size(170, 227);
             this.coverFrame.TabIndex = 26;
-            this.coverFrame.Visible = false;
             // 
             // button_UpdateAvailable
             // 
@@ -821,7 +820,6 @@ namespace Nucleus.Coop
             this.btn_Play.TabIndex = 4;
             this.btn_Play.Text = "PLAY";
             this.btn_Play.UseVisualStyleBackColor = false;
-            this.btn_Play.Visible = false;
             this.btn_Play.Click += new System.EventHandler(this.Btn_Play_Click);
             // 
             // btn_Next
@@ -840,7 +838,6 @@ namespace Nucleus.Coop
             this.btn_Next.TabIndex = 11;
             this.btn_Next.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.btn_Next.UseVisualStyleBackColor = false;
-            this.btn_Next.Visible = false;
             this.btn_Next.Click += new System.EventHandler(this.BtnNext_Click);
             // 
             // btn_Prev
@@ -858,7 +855,6 @@ namespace Nucleus.Coop
             this.btn_Prev.Size = new System.Drawing.Size(25, 25);
             this.btn_Prev.TabIndex = 9;
             this.btn_Prev.UseVisualStyleBackColor = false;
-            this.btn_Prev.Visible = false;
             this.btn_Prev.Click += new System.EventHandler(this.Btn_Prev_Click);
             // 
             // mainButtonFrame
