@@ -107,7 +107,6 @@ namespace Nucleus.Coop
         public bool roundedCorners;
         public bool useButtonsBorder;
         private bool canResize = false;
-        public bool disableFastHandlerUpdate = false;
         private bool hotkeysCooldown = false;
         private bool rainbowTimerRunning = false;
 
@@ -1101,10 +1100,7 @@ namespace Nucleus.Coop
                 if (controls.ContainsKey(game))
                 {
                     GameControl control = controls[game];
-                    control.Invoke((Action)delegate ()
-                    {
-                        control.Image = game.Icon;
-                    });
+                    control.Image = game.Icon;
                 }
             }
         }

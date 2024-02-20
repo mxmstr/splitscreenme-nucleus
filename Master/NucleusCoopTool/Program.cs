@@ -17,7 +17,7 @@ namespace Nucleus.Coop
         public static bool ForcedBadPath;
 
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
             if (!bool.Parse(ini.IniReadValue("Misc", "NucleusMultiInstances")))
             {
