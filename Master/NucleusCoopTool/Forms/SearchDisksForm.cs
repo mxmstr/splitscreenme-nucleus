@@ -615,15 +615,17 @@ namespace Nucleus.Coop
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the paths that are currently checked?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialogResult == DialogResult.Yes)
             {
-                foreach (string item in disksBox.CheckedItems.OfType<string>().ToList())
+                foreach (string item in disksBox.Items.OfType<string>().ToList())
                 {
-                    disksBox.Items.Remove(item);
-                    for (int x = 1; x <= 100; x++)
+                    if (!disksBox.CheckedItems.Contains(item))
                     {
-                        if (main.ini.IniReadValue("SearchPaths", x.ToString()) == item)
+                        disksBox.Items.Remove(item);
+                        for (int x = 1; x <= 100; x++)
                         {
-                            main.ini.IniWriteValue("SearchPaths", x.ToString(), "");
-                            break;
+                            if (main.ini.IniReadValue("SearchPaths", x.ToString()) == item)
+                            {
+                                main.ini.IniWriteValue("SearchPaths", x.ToString(), "");
+                            }
                         }
                     }
                 }

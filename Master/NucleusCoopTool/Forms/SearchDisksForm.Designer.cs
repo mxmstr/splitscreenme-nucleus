@@ -263,7 +263,7 @@ namespace Nucleus.Coop
             this.btn_delPath.Name = "btn_delPath";
             this.btn_delPath.Size = new System.Drawing.Size(220, 30);
             this.btn_delPath.TabIndex = 12;
-            this.btn_delPath.Text = "Delete Selected";
+            this.btn_delPath.Text = "Delete Unselected";
             this.btn_delPath.UseVisualStyleBackColor = false;
             this.btn_delPath.Click += new System.EventHandler(this.Btn_delPath_Click);
             // 
