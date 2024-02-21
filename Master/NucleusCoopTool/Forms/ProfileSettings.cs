@@ -614,7 +614,7 @@ namespace Nucleus.Coop
             notes_text.Text = GameProfile.Notes;
             profileTitle.Text = GameProfile.Title;
 
-            if (GameProfile.Instance!= null)
+            if (GameProfile.Instance != null)
             {
                 modeLabel.Text = GameProfile.ModeText;
             }
@@ -836,24 +836,23 @@ namespace Nucleus.Coop
             }
 
             ///Unlock profiles list on close          
-            ProfilesList.profilesList.Locked = false;
+            ProfilesList.Instance.Locked = false;
 
             ///Update profile[#].json file
             if (GameProfile.ModeText != "New Profile")
-            {              
+            {
                 GameProfile.UpdateGameProfile(GameProfile.Instance);
                 setupScreen.gameProfilesList.Update_ProfilesList();
 
                 ///Send control selection event to the Profiles List (update the list and reload the profile)
-               // MouseEventArgs eventArgs = new MouseEventArgs();
+                MouseEventArgs eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0,0,0);
 
-                Label selected = new Label
-                {
-                    Name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString(),
-                    Text = GameProfile.ModeText
-                };
+                Label selected = new Label();
+                selected.Name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString();
+                selected.Text = $"{ProfilesList.PartialTitle} {selected.Name}";
 
-                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(selected, null);
+
+                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(selected, eventArgs);
             }
 
             ini.IniWriteValue("Misc", "ProfileSettingsLocation", Location.X + "X" + Location.Y);

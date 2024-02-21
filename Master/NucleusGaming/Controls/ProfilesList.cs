@@ -23,14 +23,15 @@ namespace Nucleus.Gaming.Controls
         private IniFile themeIni = Globals.ThemeConfigFile;
 
         private float _scale;
-        public static ProfilesList profilesList;
+        public static ProfilesList Instance;
         public bool Locked = false;
 
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
 
         private Color buttonsBackColor;
-        public string loadedTitle;
+        public static readonly string PartialTitle = "Load profile:";
+
         private Pen borderPen;
         private SetupScreenControl parentControl;
 
@@ -40,7 +41,7 @@ namespace Nucleus.Gaming.Controls
 
             InitializeComponent();
             Parent = parent;
-            profilesList = this;
+            
             Name = "ProfilePanel";
             Size = new Size(300, 3);
             Location = new Point(0, 0);
@@ -60,6 +61,8 @@ namespace Nucleus.Gaming.Controls
 
             default_Cursor = new Cursor(Globals.ThemeFolder + "cursor.ico");
             hand_Cursor = new Cursor(Globals.ThemeFolder + "cursor_hand.ico");
+
+            Instance = this;
         }
 
         public void ProfileBtn_CheckedChanged(object sender, MouseEventArgs e)
@@ -129,7 +132,6 @@ namespace Nucleus.Gaming.Controls
                 Controls[int.Parse(selected.Name) - 1].ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
                 unloadBtn.ForeColor = Color.Orange;
-                loadedTitle = selected.Text;
             }        
         }
 
@@ -160,7 +162,7 @@ namespace Nucleus.Gaming.Controls
                     }
                     else
                     {
-                        text = $"Load profile: {i + 1}";
+                        text = $"{PartialTitle} {i + 1}";
                     }
                 }
                 else
@@ -264,7 +266,7 @@ namespace Nucleus.Gaming.Controls
         }
 
 
-        //Show profile config or user notesin handler note "zoomed" textbox
+        //Show profile config or user notes in handler note "zoomed" textbox
         private void Profile_Preview(object sender, EventArgs e)
         {
             if (Locked)

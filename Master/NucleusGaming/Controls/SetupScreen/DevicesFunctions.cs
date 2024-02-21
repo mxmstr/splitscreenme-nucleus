@@ -351,11 +351,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         player.HIDDeviceID = new string[] { fhid, "" };
                         player.DInputJoystick.Acquire();
 
-                       // if(UseGamepadApiIndex)
+                        // if(UseGamepadApiIndex)
                         {
                             player.IsInputUsed = true;
                         }
-                       
+
                         data.Add(player);
                     }
                 }
@@ -523,8 +523,10 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             {
             }
 
-        if(parent.IsHandleCreated) 
-            parent?.Invoke(new Action(() => parent?.Invalidate()));
+            if (parent.IsHandleCreated)
+            {
+                parent?.Invoke(new Action(() => parent?.Invalidate()));
+            }               
         }
 
         internal static void UpdateDevices()

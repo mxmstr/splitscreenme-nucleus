@@ -3,9 +3,6 @@ using Nucleus.Gaming.Coop;
 using Nucleus.Gaming;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
@@ -43,39 +40,42 @@ namespace Nucleus.Coop.Tools
                             if (list.ShowDialog() == DialogResult.OK)
                             {
                                 UserGameInfo game = GameManager.Instance.TryAddGame(path, list.Selected);
-
-                                if (game != null)
+                                if (game != null && list.Selected != null)
                                 {
-                                    MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
-                                    
-                                   
-                                    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                                    if (dialogResult == DialogResult.Yes)
+                                    if (list.Selected.HandlerId != null && list.Selected.HandlerId != "")
                                     {
-                                        AssetsDownloader.DownloadGameAssets(main,  game, null);
-                                    }
+                                        MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
+                                        DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                                    main.RefreshUI(true);
+                                        if (dialogResult == DialogResult.Yes)
+                                        {
+                                            AssetsDownloader.DownloadGameAssets(main, game, null);
+                                        }
+                                    }
                                 }
                             }
+
+                            main.RefreshUI(true);
                         }
                         else if (info.Count == 1)
                         {
                             UserGameInfo game = GameManager.Instance.TryAddGame(path, info[0]);
-                            if (main.gameContextMenuStrip != null)
-                                MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
 
-
-                            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                            if (dialogResult == DialogResult.Yes)
+                            if (info[0].HandlerId != null && info[0].HandlerId != "")
                             {
-                                AssetsDownloader.DownloadGameAssets(main, game, null);
+                                if (main.gameContextMenuStrip != null)
+                                {
+                                    MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
+                                    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                    if (dialogResult == DialogResult.Yes)
+                                    {
+                                        AssetsDownloader.DownloadGameAssets(main, game, null);
+                                    }
+                                }
                             }
 
                             main.RefreshUI(true);
-                           
                         }
                         else
                         {

@@ -1245,7 +1245,7 @@ namespace Nucleus.Coop
                 {
                     setupScreen.profileSettings_btn.Visible = true;
 
-                    ProfilesList.profilesList.Update_ProfilesList();
+                    ProfilesList.Instance.Update_ProfilesList();
 
                     bool showList = GameProfile.profilesPathList.Count > 0;
 
@@ -1257,7 +1257,7 @@ namespace Nucleus.Coop
 
                     setupScreen.gameProfilesList_btn.Visible = showList;
 
-                    ProfilesList.profilesList.Locked = false;
+                    ProfilesList.Instance.Locked = false;
                 }
                 else
                 {
@@ -2514,7 +2514,7 @@ namespace Nucleus.Coop
             {
                 profileSettings.BringToFront();
                 profileSettings.Visible = true;
-                ProfilesList.profilesList.Locked = true;
+                ProfilesList.Instance.Locked = true;
                 ProfileSettings.UpdateProfileSettingsUiValues();
             }
             else
@@ -2568,9 +2568,9 @@ namespace Nucleus.Coop
                     GoToStep(0);
                 }
 
-                if (ProfilesList.profilesList != null)
+                if (ProfilesList.Instance != null)
                 {
-                    ProfilesList.profilesList.Locked = false;
+                    ProfilesList.Instance.Locked = false;
                 }
             }
         }

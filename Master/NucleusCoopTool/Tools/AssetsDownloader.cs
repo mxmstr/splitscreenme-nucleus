@@ -134,43 +134,47 @@ namespace Nucleus.Coop.Tools
 
             System.Threading.Tasks.Task.Run(() =>
             {
+                bool error = false;
 
                 if (game.Game == null)
                 {
-                    return;
+                    error = true;
                 }
 
                 var id = game.Game.HandlerId;
 
                 if (id == null)
                 {
-                    return;
+                    error = true;
                 }
 
                 if (id == "")
                 {
-                    return;
+                    error = true;
                 }
 
                 Handler handler = HubCache.SearchById(id);
 
                 if (handler == null)
                 {
-                    return;
+                    error = true;
                 }
 
-                main.Invoke((MethodInvoker)delegate ()
+                if (!error)
                 {
-                    dllabel.Text = $"Downloading Assets For {game.GameGuid}";
-                    dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.btn_downloadAssets.Bottom + 5);
-                });
+                    main.Invoke((MethodInvoker)delegate ()
+                    {
+                        dllabel.Text = $"Downloading Assets For {game.GameGuid}";
+                        dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.btn_downloadAssets.Bottom + 5);
+                    });
 
-                string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
-                string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
+                    string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
+                    string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
-                DownloadDescriptions(handler.GameDescription, game.GameGuid);
-                DownloadCovers(coverUri, game.GameGuid);
-                DownloadScreenshots(screenshotsUri, game.GameGuid);
+                    DownloadDescriptions(handler.GameDescription, game.GameGuid);
+                    DownloadCovers(coverUri, game.GameGuid);
+                    DownloadScreenshots(screenshotsUri, game.GameGuid);
+                }
 
                 main.Invoke((MethodInvoker)delegate ()
                 {
@@ -183,7 +187,11 @@ namespace Nucleus.Coop.Tools
                     main.btn_settings.Enabled = true;
                     dllabel.Visible = false;
                     main.Controls.Remove(dllabel);
-                    main.TriggerOSD(2000, "Download Completed!");
+
+                    if (!error)
+                    {
+                        main.TriggerOSD(2000, "Download Completed!");
+                    }
 
                     if (currentControl != null && main.StepPanel.Visible)
                     {

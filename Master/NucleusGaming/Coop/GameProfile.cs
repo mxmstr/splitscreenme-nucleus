@@ -255,6 +255,8 @@ namespace Nucleus.Gaming.Coop
         {
             bool profileDisabled = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
 
+            setupScreen.CanPlayUpdated(false, false);
+
             ProfilePlayersList.Clear();
             AllScreens.Clear();
             GhostBounds.Clear();
