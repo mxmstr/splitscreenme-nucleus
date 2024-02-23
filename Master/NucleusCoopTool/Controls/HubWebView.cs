@@ -318,6 +318,7 @@ namespace Nucleus.Coop.Forms
             string frmHandleTitle = pattern.Replace(downloadPath, "");
             string exeName = null;
             int found = 0;
+            string steamAppID;
 
             foreach (string line in System.IO.File.ReadAllLines(Path.Combine(scriptTempFolder, "handler.js")))
             {
@@ -369,8 +370,8 @@ namespace Nucleus.Coop.Forms
 
         private void AddGameToList(string frmHandleTitle, string exeName)
         {
-            GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-            SearchGame.Search(mainForm, exeName);          
+            GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
+            SearchGame.Search(mainForm, exeName, genericGameInfo);          
             HideModal();  
             closeBtn.PerformClick();
         }
@@ -427,7 +428,7 @@ namespace Nucleus.Coop.Forms
 
             File.Delete(downloadPath);
 
-            if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))
+            if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))//maybe need to check for executable context.
             {
                 GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
                 string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName.ToLower()).FirstOrDefault().GameGuid;

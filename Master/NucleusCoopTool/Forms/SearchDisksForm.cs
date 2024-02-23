@@ -1,6 +1,7 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,8 @@ namespace Nucleus.Coop
 
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
-
+        private List<string> paths = new List<string>()
+;
         private void controlscollect()
         {
             foreach (Control control in Controls)
@@ -63,6 +65,11 @@ namespace Nucleus.Coop
 
         private void closeButton(object sender, EventArgs e)
         {
+            //for (int x = 0; x < disksBox.Items.Count; x++)
+            //{
+            //    main.ini.IniWriteValue("SearchPaths", (x + 1).ToString(), disksBox.Items[x].ToString());
+            //}
+
             txt_Stage.Visible = false;
             progressBar1.Visible = false;
             txt_Path.Visible = false;
@@ -139,11 +146,12 @@ namespace Nucleus.Coop
             {
                 if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
                 {
-                    break;
+                    continue;
                 }
                 else
                 {
-                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
+                    paths.Add(main.ini.IniReadValue("SearchPaths", x.ToString()));
+                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);                    
                 }
             }
 
@@ -318,7 +326,10 @@ namespace Nucleus.Coop
                 }
 
                 path = queue.Dequeue();
-                txt_Path.Text = path;
+                Invoke(new Action(delegate
+                {
+                    txt_Path.Text = path;
+                }));
 
                 try
                 {
@@ -329,6 +340,18 @@ namespace Nucleus.Coop
                             break;
                         }
                         queue.Enqueue(subDir);
+
+                        //foreach (string sub in Directory.GetDirectories(subDir))
+                        //{
+                            //{ continue; }
+                            //if(Directory.GetFiles(path, "*.exe").Length == 0)
+                            //{ 
+                            //    continue;
+                            //}
+
+                            //queue.Enqueue(sub);
+                           // Console.WriteLine(sub);
+                       // }
                     }
                 }
                 catch (Exception ex)
@@ -344,6 +367,7 @@ namespace Nucleus.Coop
                     {
                         break;
                     }
+
                     files = Directory.GetFiles(path, "*.exe");
                 }
                 catch (Exception ex)
@@ -403,7 +427,11 @@ namespace Nucleus.Coop
             {
                 for (int i = 0; i < pathsToSearch.Count; i++)
                 {
-                    txt_Stage.Text = i + 1 + " of " + pathsToSearch.Count;
+                    Invoke(new Action(delegate
+                    {
+                        txt_Stage.Text = i + 1 + " of " + pathsToSearch.Count;
+                    }));
+
                     string currentPath = pathsToSearch[i];
 
                     float totalDiskPc = 1 / (float)pathsToSearch.Count;
@@ -429,7 +457,7 @@ namespace Nucleus.Coop
                         //UpdateProgress(increment);
                         if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == exeFilePath.ToLower()))
                         {
-                            continue;
+                            //continue;
                         }
 
                         if (GameManager.Instance.AnyGame(Path.GetFileName(exeFilePath).ToLower()))
@@ -479,7 +507,10 @@ namespace Nucleus.Coop
                 }
 
                 searching = false;
-                btnSearch.Text = "Search";
+                Invoke(new Action(delegate
+                {
+                    btnSearch.Text = "Search";
+                }));
 
                 watch.Stop();
 
@@ -487,28 +518,35 @@ namespace Nucleus.Coop
 
                 if (checkboxFoundGames.Items.Count == 0)
                 {
-                    btn_customPath.Enabled = true;
-                    btn_delPath.Enabled = true;
-                    disksBox.Enabled = true;
+                    Invoke(new Action(delegate
+                    {
+                        btn_customPath.Enabled = true;
+                        btn_delPath.Enabled = true;
+                        disksBox.Enabled = true;
 
-                    MessageBox.Show("Operation completed in " + elapsedMs + "s. No new games found.");
-                    progressBar1.Value = 0;
+                        MessageBox.Show("Operation completed in " + elapsedMs + "s. No new games found.");
+                        progressBar1.Value = 0;
+                    }));
                     return;
                 }
 
                 progress = 1;
                 UpdateProgress(0);
-                btn_addSelection.Enabled = true;
-                btn_selectAll.Enabled = true;
-                btn_deselectAll.Enabled = true;
-                checkboxFoundGames.Enabled = true;
-                btnSearch.Enabled = false;
-                label2.Enabled = true;
-                label1.Enabled = false;
-                txt_Stage.Text = "Done";
-                txt_Path.Text = "";
-                Refresh();
-                Invalidate();
+                Invoke(new Action(delegate
+                {
+                    btn_addSelection.Enabled = true;
+                    btn_selectAll.Enabled = true;
+                    btn_deselectAll.Enabled = true;
+                    checkboxFoundGames.Enabled = true;
+                    btnSearch.Enabled = false;
+                    label2.Enabled = true;
+                    label1.Enabled = false;
+                    txt_Stage.Text = "Done";
+                    txt_Path.Text = "";
+                    Refresh();
+                    Invalidate();
+                }));
+
                 MessageBox.Show("Search has completed, operation took " + elapsedMs + "s. Select the games you wish to add from the right-hand side.", "Search finished");
             }
             catch (Exception ex)
@@ -521,6 +559,7 @@ namespace Nucleus.Coop
         private bool closing;
         private void SearchDisksForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+
             Refresh();
             closing = true;
         }
@@ -530,22 +569,29 @@ namespace Nucleus.Coop
             using (FolderBrowserDialog fbd = new FolderBrowserDialog())
             {
                 DialogResult result = fbd.ShowDialog();
-
+               
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    disksBox.Items.Add(fbd.SelectedPath, true);
+                    List<bool> wasSelected = new List<bool>();
 
-                    int freeIndex = 1;
-                    for (int x = 1; x <= 100; x++)
+                    if (paths.Any(p => p == fbd.SelectedPath))
                     {
-                        if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
-                        {
-                            freeIndex = x;
-                            break;
-                        }
+                        return;
                     }
 
-                    main.ini.IniWriteValue("SearchPaths", freeIndex.ToString(), fbd.SelectedPath);
+                    paths.Add(fbd.SelectedPath);
+                }
+
+                for(int i = 0; i < paths.Count;i++)
+                {
+                    main.ini.IniWriteValue("SearchPaths", (i+1).ToString(), paths[i]);
+                    if(disksBox.Items.Contains(paths[i]))
+                    {
+                        continue;
+                    }
+
+                    disksBox.Items.Add(paths[i]);
+                    disksBox.SetItemCheckState(i, CheckState.Checked);
                 }
             }
         }
@@ -575,12 +621,21 @@ namespace Nucleus.Coop
 
                 foreach (string gameToAdd in gamesToAdd)
                 {
+                    string exeName = gameToAdd.Split('\\').Last();
+
+                    if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))
+                    {
+                        MessageBox.Show($"Executable {exeName} is already in your game list and will be skipped.", "Already in your list", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        continue;
+                    }
+
                     UserGameInfo uinfo = GameManager.Instance.TryAddGame(gameToAdd);
                     if (uinfo != null)
                     {
                         main.NewUserGame(uinfo);
                         numAdded++;
                     }
+
                 }
 
                 MessageBox.Show(string.Format("{0}/{1} selected games added!", numAdded, checkboxFoundGames.CheckedItems.Count), "Games added");
@@ -609,26 +664,36 @@ namespace Nucleus.Coop
         {
             if (disksBox.CheckedItems.Count == 0)
             {
-                return;
+               return;
             }
 
-            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the paths that are currently checked?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the paths that are currently unchecked?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialogResult == DialogResult.Yes)
             {
-                foreach (string item in disksBox.Items.OfType<string>().ToList())
-                {
-                    if (!disksBox.CheckedItems.Contains(item))
+               // foreach (string item in disksBox.Items.OfType<string>().ToList())
+               List<string> pathsToRemove = new List<string>();
+               for(int i = 0; i < paths.Count;i++)
+               {
+                    if (i < disksBox.Items.Count)
                     {
-                        disksBox.Items.Remove(item);
-                        for (int x = 1; x <= 100; x++)
+                        if (disksBox.CheckedItems.Contains(disksBox.Items[i]))
                         {
-                            if (main.ini.IniReadValue("SearchPaths", x.ToString()) == item)
-                            {
-                                main.ini.IniWriteValue("SearchPaths", x.ToString(), "");
-                            }
+                            main.ini.IniWriteValue("SearchPaths", (i+1).ToString(), disksBox.Items[i].ToString());
+                        }
+                        else 
+                        {
+                            pathsToRemove.Add(disksBox.Items[i].ToString());
+                            main.ini.IniWriteValue("SearchPaths", (i+1).ToString(), "");
                         }
                     }
                 }
+
+               foreach(string pathToRemove in pathsToRemove)
+               {
+                    disksBox.Items.Remove(pathToRemove);
+                    paths.Remove(pathToRemove);
+               }
+                
             }
         }
 
@@ -670,6 +735,16 @@ namespace Nucleus.Coop
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
 
             }
+        }
+
+        private void DisksBox_ControlAdded(object sender, ControlEventArgs e)
+        {
+
+        }
+
+        private void DisksBox_ControlRemoved(object sender, ControlEventArgs e)
+        {
+
         }
     }
 }

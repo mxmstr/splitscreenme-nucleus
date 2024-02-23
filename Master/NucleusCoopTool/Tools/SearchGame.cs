@@ -10,12 +10,24 @@ namespace Nucleus.Coop.Tools
 {
     internal class SearchGame
     {
-        public static void Search(MainForm main, string exeName)
+        public static void Search(MainForm main, string exeName, GenericGameInfo genericGameInfo)
         {
             try
             {
+                string result = null;
+
+                if (genericGameInfo != null)
+                { 
+                    if (genericGameInfo.SteamID != null && genericGameInfo.SteamID != "")
+                    {
+                        result = GameManager.Instance.AutoSearchGameInstallPath(genericGameInfo);
+                    }
+                 }
+
                 using (System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog())
                 {
+                    open.InitialDirectory = result;
+
                     if (string.IsNullOrEmpty(exeName))
                     {
                         open.Title = "Select a game executable to add to Nucleus";

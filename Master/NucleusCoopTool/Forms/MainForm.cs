@@ -165,6 +165,8 @@ namespace Nucleus.Coop
 
         public Color buttonsBackColor;
         public Color BorderGradient;
+        public Color GameBorderGradientTop;
+        public Color GameBorderGradientBottom;
         public Color MouseOverBackColor;
         public Color MenuStripBackColor;
         public Color MenuStripFontColor;
@@ -406,15 +408,13 @@ namespace Nucleus.Coop
             btn_Extract.BackgroundImage = ImageCache.GetImage(theme + "extract_nc.png");
             btnSearch.BackgroundImage = ImageCache.GetImage(theme + "search_game.png");
             btn_debuglog.BackgroundImage = ImageCache.GetImage(theme + "log.png");
-            btn_AutoSearch.BackgroundImage = ImageCache.GetImage(theme + "autoSearch.png");
-
+          
             if (ini.IniReadValue("Misc", "DebugLog") == "True")
             {
                 btn_debuglog.Visible = true;
             }
 
             CustomToolTips.SetToolTip(btn_Extract, "Extract a handler from a \".nc\" archive.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_AutoSearch, "Useful tool to automatically search games on your pc.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btnSearch, "Search and add a game to the game list (its handler must be installed).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_Discord, "Join the official Nucleus Co-op discord server.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_downloadAssets, "Download or update games covers and screenshots.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -430,7 +430,6 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(btn_debuglog, "Open Nucleus debug-log.txt file if available, debug log can be disabled in Nucleus settings in the \"Settings\" tab.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             btn_Extract.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            btn_AutoSearch.FlatAppearance.MouseOverBackColor = Color.Transparent;
             button_UpdateAvailable.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
             btnSearch.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btn_gameOptions.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -445,8 +444,6 @@ namespace Nucleus.Coop
 
             if (useButtonsBorder)
             {
-                btn_AutoSearch.FlatAppearance.BorderSize = 1;
-                btn_AutoSearch.FlatAppearance.BorderColor = ButtonsBorderColor;
                 btnSearch.FlatAppearance.BorderSize = 1;
                 btnSearch.FlatAppearance.BorderColor = ButtonsBorderColor;
                 btn_gameOptions.FlatAppearance.BorderSize = 1;
@@ -578,6 +575,11 @@ namespace Nucleus.Coop
                 {
                     Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
                 }
+
+                if(Size == area.Size)
+                {
+                    WindowState = FormWindowState.Maximized;
+                }
             }
             else
             {
@@ -662,6 +664,7 @@ namespace Nucleus.Coop
             webView.Location = new Point(StepPanel.Location.X, StepPanel.Location.Y);
 
             btn_AddGame.ForeColor = Color.FromArgb(255,51, 153, 255);
+            Invalidate();
         }
 
         public void WebviewDisposed(object sender, EventArgs e)
@@ -676,11 +679,13 @@ namespace Nucleus.Coop
             webView = null;
 
             btn_AddGame.ForeColor = ForeColor;
-
+            
             if (sender.GetType() == typeof(HubWebView)) 
             {
                 stepPanelPictureBox.Visible = true;
             }
+
+            Invalidate();
         }
 
         protected override void OnShown(EventArgs e)
@@ -795,12 +800,10 @@ namespace Nucleus.Coop
                 }
             }
 
-
             if (m.Msg == 0x00FF)//WM_INPUT
             {
                 RawInputAction(m.LParam);
             }
-
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == TopMost_HotkeyID)
             {
                 if (hotkeysCooldown || I_GameHandler == null)
@@ -976,21 +979,37 @@ namespace Nucleus.Coop
                     for (int i = 0; i < games.Count; i++)
                     {
                         UserGameInfo game = games[i];
+
+                        if (game.Game == null && games.Count == 1)
+                        {
+                            noGamesPresent = true;
+                            GameControl con = new GameControl(null, null, false)
+                            {
+                                Width = game_listSizer.Width,
+                                Text = "No games",
+                                Font = this.Font,
+                            };
+
+                            list_Games.Controls.Add(con);
+
+                            break;
+                        }
+
                         NewUserGame(game);
                     }
 
                     list_Games.Visible = true;
                 }
-            }
 
-            if (btn_AddGame == null)
-            {
-                btn_AddGame = AddGamesButton.CreateAddGamesButton(this, game_listSizer.Width, list_Games.Controls[0].Height);
-                game_listSizer.Controls.Add(btn_AddGame);
-                list_Games.Height -= btn_AddGame.Height;
-                list_Games.Top = btn_AddGame.Bottom;
+                if (btn_AddGame == null)
+                {
+                    btn_AddGame = AddGamesButton.CreateAddGamesButton(this, game_listSizer.Width, list_Games.Controls[0].Height);
+                    game_listSizer.Controls.Add(btn_AddGame);
+                    list_Games.Height -= btn_AddGame.Height;
+                    list_Games.Top = btn_AddGame.Bottom;
+                }
             }
-
+          
             GameManager.Instance.SaveUserProfile();
         }
 
@@ -1170,6 +1189,7 @@ namespace Nucleus.Coop
                 if (!CheckGameRequirements.MatchRequirements(currentGameInfo))
                 {
                     RefreshUI(true);
+                    Invalidate();
                     return;
                 }
             }
@@ -1188,8 +1208,6 @@ namespace Nucleus.Coop
             }
             else
             {
-                clientAreaPanel.SuspendLayout();
-
                 currentGame = currentGameInfo.Game;
 
                 if (!currentGameInfo.Game.KeepSymLinkOnExit)
@@ -1308,7 +1326,7 @@ namespace Nucleus.Coop
 
                 SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
 
-                clientAreaPanel.ResumeLayout();
+                Invalidate();
             }
         }
 
@@ -1582,7 +1600,7 @@ namespace Nucleus.Coop
             GoToStep(currentStepIndex);
         }
 
-        private void BtnSearch_Click(object sender, EventArgs e) => SearchGame.Search(this, null);
+        private void BtnSearch_Click(object sender, EventArgs e) => SearchGame.Search(this, null,null);
 
         private void BtnAutoSearch_Click(object sender, EventArgs e)
         {
@@ -2597,6 +2615,8 @@ namespace Nucleus.Coop
             clientAreaPanel.Visible = true;
 
             Opacity = 1.0D;
+
+            Refresh();
         }
 
         private void CloseButtonClick(object sender, EventArgs e)
@@ -2650,23 +2670,50 @@ namespace Nucleus.Coop
             Rectangle topGradient = new Rectangle(0, 0, Width, edgingHeight);
             Rectangle bottomGradient = new Rectangle(0, Height - edgingHeight, Width, edgingHeight);
 
-            Color edgingColor = mainButtonFrame.Enabled ? BorderGradient : Color.Red;
+            Color edgingColorTop;
+            Color edgingColorBottom;
+            
+            if (!mainButtonFrame.Enabled)
+            {
+                edgingColorTop = Color.Red;
+                edgingColorBottom = Color.Red;
+            }
+            else if(webView != null)
+            {
+                edgingColorTop = Color.FromArgb(255, 0, 98, 190);
+                edgingColorBottom = Color.FromArgb(255, 0, 98, 190);
+            }
+            else if (StepPanel.Visible)
+            {
+                edgingColorTop = GameBorderGradientTop;
+                edgingColorBottom = GameBorderGradientBottom;
+            }
+            else 
+            {
+                edgingColorTop = BorderGradient;
+                edgingColorBottom =  BorderGradient;
+            }
+           
+            LinearGradientBrush topLinearGradientBrush = new LinearGradientBrush(topGradient, Color.Transparent, edgingColorTop, 0F);
+            LinearGradientBrush bottomLinearGradientBrush = new LinearGradientBrush(bottomGradient, Color.Transparent, edgingColorBottom, 0F);
+            
+            ColorBlend topcblend = new ColorBlend(3);
+            topcblend.Colors = new Color[3] { Color.Transparent, edgingColorTop, Color.Transparent };
+            topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
 
-            LinearGradientBrush linearGradientBrush =
-            new LinearGradientBrush(topGradient, Color.Transparent, edgingColor, 0F);
+            topLinearGradientBrush.InterpolationColors = topcblend;
 
-            ColorBlend cblend = new ColorBlend(3);
+            ColorBlend bottomcblend = new ColorBlend(3);
+            bottomcblend.Colors = new Color[3] { Color.Transparent, edgingColorBottom, Color.Transparent };
+            bottomcblend.Positions = new float[3] { 0f, 0.5f, 1f };
 
-            cblend.Colors = new Color[3] { Color.Transparent, edgingColor, Color.Transparent };
-            cblend.Positions = new float[3] { 0f, 0.5f, 1f };
-
-            linearGradientBrush.InterpolationColors = cblend;
+            bottomLinearGradientBrush.InterpolationColors = bottomcblend;
 
             Rectangle fill = new Rectangle(0, 0, Width, Height);
 
             e.Graphics.FillRectangle(borderBrush, fill);
-            e.Graphics.FillRectangle(linearGradientBrush, topGradient);
-            e.Graphics.FillRectangle(linearGradientBrush, bottomGradient);
+            e.Graphics.FillRectangle(topLinearGradientBrush, topGradient);
+            e.Graphics.FillRectangle(bottomLinearGradientBrush, bottomGradient);
         }
 
         public void DebugButtonState(bool enable)
@@ -2706,10 +2753,6 @@ namespace Nucleus.Coop
 
         private void Btn_debuglog_MouseLeave(object sender, EventArgs e) => btn_debuglog.BackgroundImage = ImageCache.GetImage(theme + "log.png");
 
-        private void Btn_AutoSearch_MouseEnter(object sender, EventArgs e) => btn_AutoSearch.BackgroundImage = ImageCache.GetImage(theme + "autoSearch_mousehover.png");
-
-        private void Btn_AutoSearch_MouseLeave(object sender, EventArgs e) => btn_AutoSearch.BackgroundImage = ImageCache.GetImage(theme + "autoSearch.png");
-
         private void MainButtonFrame_Paint(object sender, PaintEventArgs e)
         {           
             Button firstButton = btn_debuglog.Visible ? btn_debuglog : btn_Extract;
@@ -2743,21 +2786,16 @@ namespace Nucleus.Coop
                 return;
             }
 
-            //btn_debuglog.Visible = false;
             btn_Extract.Visible = false;
-            btn_AutoSearch.Visible = false;
             btn_downloadAssets.Visible = false;
             btn_settings.Visible = false;
             btnSearch.Visible = false;
 
             if (btn_debuglog.Visible)
-            {
-               
-
+            {              
                 int offset = btn_debuglog.Width;
                 btn_debuglog.Left += offset;
                 btn_Extract.Left += offset;
-                btn_AutoSearch.Left += offset;
                 btn_downloadAssets.Left += offset;
                 btn_settings.Left += offset;
                 btnSearch.Left += offset;
@@ -2767,14 +2805,12 @@ namespace Nucleus.Coop
                 int offset = btn_debuglog.Width;
                 btn_debuglog.Left -= offset;
                 btn_Extract.Left -= offset;
-                btn_AutoSearch.Left -= offset;
                 btn_downloadAssets.Left -= offset;
                 btn_settings.Left -= offset;
                 btnSearch.Left -= offset;
             }
 
             btn_Extract.Visible = true;
-            btn_AutoSearch.Visible = true;
             btn_downloadAssets.Visible = true;
             btn_settings.Visible = true;
             btnSearch.Visible = true;

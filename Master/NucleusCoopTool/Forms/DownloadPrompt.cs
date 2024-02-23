@@ -294,8 +294,8 @@ namespace Nucleus.Coop.Forms
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-                    SearchGame.Search(mainForm ,exeName);
+                    GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
+                    SearchGame.Search(mainForm ,exeName, genericGameInfo);
                 }
             }
             else

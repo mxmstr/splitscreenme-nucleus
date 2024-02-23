@@ -178,6 +178,8 @@ namespace Nucleus.Coop
             this.disksBox.Name = "disksBox";
             this.disksBox.Size = new System.Drawing.Size(220, 236);
             this.disksBox.TabIndex = 0;
+            this.disksBox.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.DisksBox_ControlAdded);
+            this.disksBox.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.DisksBox_ControlRemoved);
             // 
             // txt_Path
             // 

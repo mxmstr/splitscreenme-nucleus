@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 //using Ionic.Zip;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Util;
+using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -297,7 +299,7 @@ namespace Nucleus.Gaming
             string lower = exeName.ToLower();
 
             // search for the same exe on the user profile
-            if(GameManager.Instance.User.Games.Any(c => c.ExePath.Split('\\').Last().ToLower() == lower))
+            if(User.Games.Any(c => c.ExePath.Split('\\').Last().ToLower() == lower))
             {
                return true;
             }
@@ -542,7 +544,6 @@ namespace Nucleus.Gaming
             }
         }
 
-
         public void Initialize()
         {
             // Search for Javascript games-infos
@@ -589,7 +590,23 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void AddScript(string handlerName,bool[] checkUpdate)
+        public string AutoSearchGameInstallPath(GenericGameInfo genericGameInfo)
+        {
+            string value64 = string.Empty;
+            RegistryKey localKey =  RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine,  RegistryView.Registry64);
+
+            localKey = localKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App " + genericGameInfo.SteamID);
+            
+            if (localKey != null)
+            {
+                value64 = localKey.GetValue("InstallLocation").ToString();
+                localKey.Close();
+            }
+
+            return (genericGameInfo.BinariesFolder != ""  && genericGameInfo.BinariesFolder != null) ?  value64 + $@"\{genericGameInfo.BinariesFolder}" : value64;      
+        }
+
+        public GenericGameInfo AddScript(string handlerName,bool[] checkUpdate)
         {
             string jsfolder = GetJsScriptsPath();
             DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
@@ -597,6 +614,7 @@ namespace Nucleus.Gaming
             FileInfo f = new FileInfo(Path.Combine(jsFolder.FullName, handlerName + ".js"));
             try
             {
+                GenericGameInfo game = null;
                 using (Stream str = f.OpenRead())
                 {
                     string ext = Path.GetFileNameWithoutExtension(f.Name);
@@ -618,18 +636,22 @@ namespace Nucleus.Gaming
                     }
 
                     gameInfos.Add(info.GUID, info);
+                    game = info;
                 }
 
                 user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
+                return game;
             }
             catch (ArgumentNullException)
             {
+                return null;
                 //continue; // Issue with content of script, ignore this as error prompt is already displayed
             }
             catch (ArgumentException ex)
             {
                 MessageBox.Show(ex.InnerException + ": " + ex.Message, "Error with handler " + f.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //continue;
+                return null;
             }
         }
 

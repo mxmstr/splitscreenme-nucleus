@@ -1302,6 +1302,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                         {
                                             ChangeForegroundWindow();
                                         }
+
                                         genericGameHandler.TriggerOSD(2000, "Game Windows Resetted");
                                         resetingWindows = false;
                                     }
@@ -1702,6 +1703,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
             if (windowToFocus != IntPtr.Zero)
             {
+                ShowWindow(windowToFocus, 6);
+                ShowWindow(windowToFocus, 9);
                 User32Interop.SetForegroundWindow(windowToFocus);
             }
         }

@@ -350,12 +350,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
                         player.HIDDeviceID = new string[] { fhid, "" };
                         player.DInputJoystick.Acquire();
-
-                        // if(UseGamepadApiIndex)
-                        {
-                            player.IsInputUsed = true;
-                        }
-
+                        player.IsInputUsed = true;
+                        
                         data.Add(player);
                     }
                 }

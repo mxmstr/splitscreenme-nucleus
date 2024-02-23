@@ -12,6 +12,8 @@ namespace Nucleus.Coop.Tools
     {
         private static MainForm main;
         private static int blurValue;
+        private static Color colorTop;
+        private static Color colorBottom;
 
         private static Bitmap ApplyBlur(Bitmap screenshot)
         {
@@ -23,6 +25,8 @@ namespace Nucleus.Coop.Tools
             var blur = new GaussianBlur(screenshot);
 
             Bitmap result = blur.Process(blurValue);
+            colorTop = blur.topColor;
+            colorBottom = blur.bottomColor;
 
             return result;
         }
@@ -53,20 +57,18 @@ namespace Nucleus.Coop.Tools
                 int RandomIndex = rNum.Next(0, imgsPath.Count());
 
                 mainForm.screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));
-                mainForm.clientAreaPanel.SuspendLayout();
                 mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.screenshotImg); //name(1) => directory name ; name(2) = partial image path 
-                mainForm.clientAreaPanel.ResumeLayout();
+                mainForm.GameBorderGradientTop = colorTop;
+                mainForm.GameBorderGradientBottom = colorBottom;
             }
             else
             {
-                mainForm.clientAreaPanel.SuspendLayout();
                 mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.defBackground);
-                mainForm.clientAreaPanel.ResumeLayout();
+                mainForm.GameBorderGradientTop = colorTop;
+                mainForm.GameBorderGradientBottom = colorBottom;
             }
 
-            mainForm.btn_textSwitcher.Visible = !mainForm.setupScreen.textZoomContainer.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
-        
+            mainForm.btn_textSwitcher.Visible = !mainForm.setupScreen.textZoomContainer.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));       
         }
-
     }
 }

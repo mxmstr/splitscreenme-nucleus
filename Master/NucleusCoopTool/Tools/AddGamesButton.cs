@@ -2,18 +2,13 @@
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Media.Media3D;
+using System.Windows.Forms;          
 
 namespace Nucleus.Coop.Tools
 {
-    public static class AddGamesButton
+    public static class AddGamesButton 
     {
         private static MainForm mainForm;
         private static Panel btn_AddGame;
@@ -121,6 +116,7 @@ namespace Nucleus.Coop.Tools
             btn_AddGameLabel.Location = new Point(btn_AddGamePb.Right + 7, (btn_AddGamePb.Location.Y + btn_AddGamePb.Height / 2) - (btn_AddGameLabel.Height / 2));
             favoriteContainer.Location = new Point((btn_AddGame.Width - favoriteContainer.Height) - 2, 0);
             favoriteOnly.Location = new Point((favoriteContainer.Width - favoriteOnly.Width) - 2, (favoriteContainer.Height / 2) - (favoriteOnly.Height / 2));
+
         }
 
         private static string OfflineToolTipText()

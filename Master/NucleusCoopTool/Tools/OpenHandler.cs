@@ -20,11 +20,11 @@ namespace Nucleus.Coop.Tools
             {
                 if (Globals.ini.IniReadValue("Dev", "TextEditorPath") != "Default")
                 {
-                    Process.Start($"{Globals.ini.IniReadValue("Dev", "TextEditorPath")}", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
+                    Process.Start(Globals.ini.IniReadValue("Dev", "TextEditorPath"),  Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName));
                 }
                 else
                 {
-                    Process.Start("notepad++.exe", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
+                    Process.Start("notepad++.exe", Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName));
                 }
 
             }

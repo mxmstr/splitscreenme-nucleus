@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -20,6 +21,8 @@ namespace Nucleus.Coop
         private readonly int _height;
 
         private readonly ParallelOptions _pOptions = new ParallelOptions { MaxDegreeOfParallelism = 16 };
+        public Color topColor;
+        public Color bottomColor;
 
         public GaussianBlur(Bitmap image)
         {
@@ -37,13 +40,71 @@ namespace Nucleus.Coop
             _green = new int[_width * _height];
             _blue = new int[_width * _height];
 
+            int topRedTotal = 0;
+            int topRedCount = 0;
+            int topGreenTotal = 0;
+            int topGreenCount = 0;
+            int topBlueTotal = 0;
+            int topBlueCount = 0;
+
+            int bottomRedTotal = 0;
+            int bottomRedCount = 0;
+            int bottomGreenTotal = 0;
+            int bottomGreenCount = 0;
+            int bottomBlueTotal = 0;
+            int bottomBlueCount = 0;
+
             Parallel.For(0, source.Length, _pOptions, i =>
             {
                 _alpha[i] = (int)((source[i] & 0xff000000) >> 24);
-                _red[i] = (source[i] & 0xff0000) >> 16;
-                _green[i] = (source[i] & 0x00ff00) >> 8;
-                _blue[i] = (source[i] & 0x0000ff);
+
+                if (i <= (_width * _height) / 2)
+                {
+                    _red[i] = (source[i] & 0xff0000) >> 16;
+                    if (_red[i] >= 0) { topRedTotal += _red[i]; topRedCount++; }
+                    _green[i] = (source[i] & 0x00ff00) >> 8;
+                    if (_green[i] >= 0) { topGreenTotal += _green[i]; topGreenCount++; }
+                    _blue[i] = (source[i] & 0x0000ff);
+                    if (_blue[i] >= 0) { topBlueTotal += _blue[i]; topBlueCount++; }
+                }
+                else 
+                {
+                    _red[i] = (source[i] & 0xff0000) >> 16;
+                    if (_red[i] >= 0) { bottomRedTotal += _red[i]; bottomRedCount++; }
+                    _green[i] = (source[i] & 0x00ff00) >> 8;
+                    if (_green[i] >= 0) { bottomGreenTotal += _green[i]; bottomGreenCount++; }
+                    _blue[i] = (source[i] & 0x0000ff);
+                    if (_blue[i] >= 0) { bottomBlueTotal += _blue[i]; bottomBlueCount++; }
+                }
             });
+
+
+            int topRedAverage = topRedTotal/topRedCount;
+            int topGreenAverage = topGreenTotal / topGreenCount;
+            int topBlueAverage = topBlueTotal / topBlueCount;
+
+            if (topRedAverage > 255) topRedAverage = 255;
+            if (topGreenAverage > 255) topGreenAverage = 255;
+            if (topBlueAverage > 255) topBlueAverage = 255;
+
+            if (topRedAverage < 0) topRedAverage = 0;
+            if (topGreenAverage < 0) topGreenAverage = 0;
+            if (topBlueAverage < 0) topBlueAverage = 0;
+
+            int bottomRedAverage = bottomRedTotal / bottomRedCount;
+            int bottomGreenAverage = bottomGreenTotal / bottomGreenCount;
+            int bottomBlueAverage = bottomBlueTotal / bottomBlueCount;
+
+            if (bottomRedAverage > 255) bottomRedAverage = 255;
+            if (bottomGreenAverage > 255) bottomGreenAverage = 255;
+            if (bottomBlueAverage > 255) bottomBlueAverage = 255;
+
+            if (bottomRedAverage < 0) bottomRedAverage = 0;
+            if (bottomGreenAverage < 0) bottomGreenAverage = 0;
+            if (bottomBlueAverage < 0) bottomBlueAverage = 0;
+
+            topColor = Color.FromArgb(topRedAverage, topGreenAverage, topBlueAverage);
+            bottomColor = Color.FromArgb(bottomRedAverage, bottomGreenAverage, bottomBlueAverage);
         }
 
         public Bitmap Process(int radial)
@@ -80,8 +141,8 @@ namespace Nucleus.Coop
             var bits2 = image.LockBits(rct, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
             Marshal.Copy(dest, 0, bits2.Scan0, dest.Length);
             image.UnlockBits(bits2);
-            return image;
 
+            return image;
         }
 
         private void gaussBlur_4(int[] source, int[] dest, int r)

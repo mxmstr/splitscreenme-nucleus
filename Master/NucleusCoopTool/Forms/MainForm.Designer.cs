@@ -96,7 +96,6 @@ namespace Nucleus.Coop
             this.btn_Prev = new System.Windows.Forms.Button();
             this.mainButtonFrame = new BufferedClientAreaPanel();
             this.btn_debuglog = new System.Windows.Forms.Button();
-            this.btn_AutoSearch = new System.Windows.Forms.Button();
             this.btn_Extract = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.linksPanel = new BufferedClientAreaPanel();
@@ -221,7 +220,7 @@ namespace Nucleus.Coop
             this.btn_settings.FlatAppearance.BorderSize = 0;
             this.btn_settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_settings.Location = new System.Drawing.Point(621, 8);
+            this.btn_settings.Location = new System.Drawing.Point(588, 6);
             this.btn_settings.Margin = new System.Windows.Forms.Padding(2);
             this.btn_settings.Name = "btn_settings";
             this.btn_settings.Size = new System.Drawing.Size(30, 30);
@@ -300,7 +299,7 @@ namespace Nucleus.Coop
             this.btn_downloadAssets.FlatAppearance.BorderSize = 0;
             this.btn_downloadAssets.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_downloadAssets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_downloadAssets.Location = new System.Drawing.Point(586, 8);
+            this.btn_downloadAssets.Location = new System.Drawing.Point(554, 6);
             this.btn_downloadAssets.Margin = new System.Windows.Forms.Padding(2);
             this.btn_downloadAssets.Name = "btn_downloadAssets";
             this.btn_downloadAssets.Size = new System.Drawing.Size(30, 30);
@@ -864,7 +863,6 @@ namespace Nucleus.Coop
             this.mainButtonFrame.BackColor = System.Drawing.Color.Transparent;
             this.mainButtonFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.mainButtonFrame.Controls.Add(this.btn_debuglog);
-            this.mainButtonFrame.Controls.Add(this.btn_AutoSearch);
             this.mainButtonFrame.Controls.Add(this.btn_settings);
             this.mainButtonFrame.Controls.Add(this.btn_Extract);
             this.mainButtonFrame.Controls.Add(this.btn_downloadAssets);
@@ -894,7 +892,7 @@ namespace Nucleus.Coop
             this.btn_debuglog.FlatAppearance.BorderSize = 0;
             this.btn_debuglog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_debuglog.ForeColor = System.Drawing.SystemColors.Control;
-            this.btn_debuglog.Location = new System.Drawing.Point(446, 8);
+            this.btn_debuglog.Location = new System.Drawing.Point(450, 8);
             this.btn_debuglog.Margin = new System.Windows.Forms.Padding(2);
             this.btn_debuglog.Name = "btn_debuglog";
             this.btn_debuglog.Size = new System.Drawing.Size(30, 30);
@@ -906,25 +904,6 @@ namespace Nucleus.Coop
             this.btn_debuglog.MouseEnter += new System.EventHandler(this.Btn_debuglog_MouseEnter);
             this.btn_debuglog.MouseLeave += new System.EventHandler(this.Btn_debuglog_MouseLeave);
             // 
-            // btn_AutoSearch
-            // 
-            this.btn_AutoSearch.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btn_AutoSearch.BackColor = System.Drawing.Color.Transparent;
-            this.btn_AutoSearch.BackgroundImage = global::Nucleus.Coop.Properties.Resources.magnifier;
-            this.btn_AutoSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_AutoSearch.FlatAppearance.BorderSize = 0;
-            this.btn_AutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_AutoSearch.ForeColor = System.Drawing.Color.White;
-            this.btn_AutoSearch.Location = new System.Drawing.Point(551, 8);
-            this.btn_AutoSearch.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_AutoSearch.Name = "btn_AutoSearch";
-            this.btn_AutoSearch.Size = new System.Drawing.Size(30, 30);
-            this.btn_AutoSearch.TabIndex = 10;
-            this.btn_AutoSearch.UseVisualStyleBackColor = false;
-            this.btn_AutoSearch.Click += new System.EventHandler(this.BtnAutoSearch_Click);
-            this.btn_AutoSearch.MouseEnter += new System.EventHandler(this.Btn_AutoSearch_MouseEnter);
-            this.btn_AutoSearch.MouseLeave += new System.EventHandler(this.Btn_AutoSearch_MouseLeave);
-            // 
             // btn_Extract
             // 
             this.btn_Extract.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -934,7 +913,7 @@ namespace Nucleus.Coop
             this.btn_Extract.FlatAppearance.BorderSize = 0;
             this.btn_Extract.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Extract.ForeColor = System.Drawing.Color.White;
-            this.btn_Extract.Location = new System.Drawing.Point(481, 8);
+            this.btn_Extract.Location = new System.Drawing.Point(485, 8);
             this.btn_Extract.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Extract.Name = "btn_Extract";
             this.btn_Extract.Size = new System.Drawing.Size(30, 30);
@@ -953,7 +932,7 @@ namespace Nucleus.Coop
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(516, 8);
+            this.btnSearch.Location = new System.Drawing.Point(520, 8);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(30, 30);
@@ -1127,7 +1106,6 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Button btn_Play;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btn_Prev;
-        private System.Windows.Forms.Button btn_AutoSearch;
         private System.Windows.Forms.Button btn_Next;
         private System.Windows.Forms.ToolTip toolTip1;
         public System.Windows.Forms.ContextMenuStrip gameContextMenuStrip;

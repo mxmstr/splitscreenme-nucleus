@@ -3070,6 +3070,7 @@ namespace Nucleus.Gaming
 
                     if (gen.SetForegroundWindowElsewhere)
                     {
+                        Log("Setting the foreground window to Nucleus");
                         GlobalWindowMethods.ChangeForegroundWindow();
                     }
 
@@ -3079,7 +3080,6 @@ namespace Nucleus.Gaming
                         WindowFakeFocus.SendFakeFocusMsg();
                     }
                 }
-                Console.WriteLine(player.SteamID);
             }
 
             if (gen.LockInputAtStart)
