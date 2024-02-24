@@ -623,7 +623,7 @@ namespace Nucleus.Coop
                 {
                     string exeName = gameToAdd.Split('\\').Last();
 
-                    if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))
+                    //if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))
                     {
                         MessageBox.Show($"Executable {exeName} is already in your game list and will be skipped.", "Already in your list", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         continue;

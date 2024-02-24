@@ -20,14 +20,10 @@ namespace Nucleus.Coop.Tools
         private static Bitmap favorite_Unselected;
         private static Bitmap favorite_Selected;
 
-        public static bool ShowFavoriteOnly => showFavoriteOnly;
-        private static bool showFavoriteOnly;
-
         public static Panel CreateAddGamesButton(MainForm mainform, int width,int height)
         {
             mainForm = mainform;
 
-            bool showFavoriteOnly = bool.Parse(Globals.ini.IniReadValue("Dev", "ShowFavoriteOnly"));
             favorite_Unselected = ImageCache.GetImage(Globals.ThemeFolder + "favorite_unselected.png");
             favorite_Selected = ImageCache.GetImage(Globals.ThemeFolder + "favorite_selected.png");
 
@@ -70,7 +66,7 @@ namespace Nucleus.Coop.Tools
                 Size = new Size(baseSize/2, baseSize/2),
             };
 
-            favoriteOnly.Image = showFavoriteOnly ? favorite_Selected : favorite_Unselected;
+            favoriteOnly.Image = mainForm.ShowFavoriteOnly ? favorite_Selected : favorite_Unselected;
             favoriteOnly.Click += new EventHandler(FavoriteOnly_Click);
             CustomToolTips.SetToolTip(favoriteOnly, "Show favorite game(s) only.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
@@ -133,22 +129,22 @@ namespace Nucleus.Coop.Tools
 
         private static void FavoriteOnly_Click(object sender, EventArgs e)
         {          
-            if (GameManager.Instance.User.Games.All(g => g.Favorite == false) && !showFavoriteOnly) { return; }
+            if (GameManager.Instance.User.Games.All(g => g.Favorite == false) && !mainForm.ShowFavoriteOnly) { return; }
 
             bool selected = favoriteOnly.Image.Equals(favorite_Selected);
 
             if (selected)
             {
                 favoriteOnly.Image = favorite_Unselected;
-                showFavoriteOnly = false;
+                mainForm.ShowFavoriteOnly = false;
             }
             else
             {
                 favoriteOnly.Image = favorite_Selected;
-                showFavoriteOnly = true;
+                mainForm.ShowFavoriteOnly = true;
             }
 
-            Globals.ini.IniWriteValue("Dev", "ShowFavoriteOnly", showFavoriteOnly.ToString());
+            Globals.ini.IniWriteValue("Dev", "ShowFavoriteOnly", mainForm.ShowFavoriteOnly.ToString());
             mainForm.RefreshGames();
         }
     }

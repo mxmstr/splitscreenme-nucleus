@@ -1,10 +1,7 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
-//using Ionic.Zip;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
-using Nucleus.Gaming.Util;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -294,14 +291,37 @@ namespace Nucleus.Gaming
         /// </summary>
         /// <param name="exePath"></param>
         /// <returns></returns>
-        public bool IsGameAlreadyInUserProfile(string exeName)
+        public bool IsGameAlreadyInUserProfile(string exeName,string handlerTitle)
         {
             string lower = exeName.ToLower();
 
-            // search for the same exe on the user profile
             if(User.Games.Any(c => c.ExePath.Split('\\').Last().ToLower() == lower))
             {
-               return true;
+                #region check if it's effectively the same game.
+                DirectoryInfo jsFolder = new DirectoryInfo(GetJsScriptsPath());
+                FileInfo f = new FileInfo(Path.Combine(jsFolder.FullName, handlerTitle + ".js"));
+
+                using (Stream str = f.OpenRead())
+                {
+                    string ext = Path.GetFileNameWithoutExtension(f.Name);
+                    string pathBlock = Path.Combine(f.Directory.FullName, ext);
+
+                    GenericGameInfo newHandler = new GenericGameInfo(f.Name, pathBlock, str, new bool[] { false, false });
+
+                    bool foundGame = games.Where(g => g.Value.GameName == newHandler.GameName).Count() > 0;
+
+                    if (foundGame)
+                    {                     
+                        return true;
+                    }
+                    else
+                    {
+                        //found games sharing the same exe name but not game name, not the same => game can be added.
+                        return false;
+                    }
+
+                }       
+                #endregion
             }
 
             return false;
@@ -612,6 +632,7 @@ namespace Nucleus.Gaming
             DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
 
             FileInfo f = new FileInfo(Path.Combine(jsFolder.FullName, handlerName + ".js"));
+
             try
             {
                 GenericGameInfo game = null;

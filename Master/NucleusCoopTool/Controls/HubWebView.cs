@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows.Interop;
 using System;
@@ -16,6 +17,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -171,7 +173,7 @@ namespace Nucleus.Coop.Forms
             catch(Exception e)
             {
                 Dispose();
-                MessageBox.Show("The web viewer can't be initialized, check your connection status/speed. ", "Can't initialize.");
+                MessageBox.Show("The web viewer can't be initialized, check your connection status/speed. \n\n" + e.Message.ToString(), "Can't initialize.");
             }
         }
 
@@ -274,7 +276,7 @@ namespace Nucleus.Coop.Forms
 
         private void ExtractHandler()
         {
-             zip = new ZipFile(downloadPath);
+            zip = new ZipFile(downloadPath);
 
             zip.ExtractProgress += ExtractProgress;
             numEntries = zip.Entries.Count;
@@ -318,7 +320,6 @@ namespace Nucleus.Coop.Forms
             string frmHandleTitle = pattern.Replace(downloadPath, "");
             string exeName = null;
             int found = 0;
-            string steamAppID;
 
             foreach (string line in System.IO.File.ReadAllLines(Path.Combine(scriptTempFolder, "handler.js")))
             {
@@ -428,8 +429,8 @@ namespace Nucleus.Coop.Forms
 
             File.Delete(downloadPath);
 
-            if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))//maybe need to check for executable context.
-            {
+            if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName, frmHandleTitle))
+            {                
                 GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
                 string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName.ToLower()).FirstOrDefault().GameGuid;
                 string gameName = GameManager.Instance.Games.Where(c => c.Value.GUID == gameGuid).FirstOrDefault().Value.GameName;
@@ -437,7 +438,7 @@ namespace Nucleus.Coop.Forms
                 mainForm.controls.Where(c => c.Value.TitleText == gameName).FirstOrDefault().Value.GameInfo.UpdateAvailable = false;
                 mainForm.button_UpdateAvailable.Visible = false;
                 mainForm.RefreshGames();
-               
+
                 HideModal();
 
                 return;

@@ -110,6 +110,8 @@ namespace Nucleus.Coop
         private bool hotkeysCooldown = false;
         private bool rainbowTimerRunning = false;
 
+        public bool ShowFavoriteOnly { get; set;}
+
         private bool disableGameProfiles;
         public bool DisableGameProfiles
         {
@@ -270,6 +272,7 @@ namespace Nucleus.Coop
             Globals.MainOSD = new WPF_OSD();
 
             iconsIni = new IniFile(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
+            ShowFavoriteOnly = bool.Parse(Globals.ini.IniReadValue("Dev", "ShowFavoriteOnly"));
             roundedCorners = bool.Parse(themeIni.IniReadValue("Misc", "UseroundedCorners"));
             useButtonsBorder = bool.Parse(themeIni.IniReadValue("Misc", "UseButtonsBorder"));
             customFont = themeIni.IniReadValue("Font", "FontFamily");
@@ -1038,7 +1041,7 @@ namespace Nucleus.Coop
 
             con.Click += new EventHandler(WebviewDisposed);
 
-            if (AddGamesButton.ShowFavoriteOnly)
+            if (ShowFavoriteOnly)
             {
                 if (favorite)
                 {

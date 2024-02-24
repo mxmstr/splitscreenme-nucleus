@@ -1,4 +1,5 @@
-﻿using NAudio.CoreAudioApi;
+﻿using Microsoft.Win32;
+using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Forms;
@@ -787,22 +788,6 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Hotkeys", "Cutscenes", csm_comboBox.SelectedItem.ToString() + "+" + csm_textBox.Text);
             ini.IniWriteValue("Hotkeys", "Switch", swl_comboBox.SelectedItem.ToString() + "+" + swl_textBox.Text);
 
-            User32Interop.UnregisterHotKey(mainForm.Handle, KillProcess_HotkeyID);
-            User32Interop.UnregisterHotKey(mainForm.Handle, TopMost_HotkeyID);
-            User32Interop.UnregisterHotKey(mainForm.Handle, StopSession_HotkeyID);
-            User32Interop.UnregisterHotKey(mainForm.Handle, SetFocus_HotkeyID);
-            User32Interop.UnregisterHotKey(mainForm.Handle, ResetWindows_HotkeyID);
-            User32Interop.UnregisterHotKey(mainForm.Handle, Cutscenes_HotkeyID);
-            User32Interop.UnregisterHotKey(mainForm.Handle, Switch_HotkeyID);
-
-            User32Interop.RegisterHotKey(mainForm.Handle, KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
-            User32Interop.RegisterHotKey(mainForm.Handle, TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
-            User32Interop.RegisterHotKey(mainForm.Handle, StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
-            User32Interop.RegisterHotKey(mainForm.Handle, SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
-            User32Interop.RegisterHotKey(mainForm.Handle, ResetWindows_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[1].ToString()));
-            User32Interop.RegisterHotKey(mainForm.Handle, Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
-            User32Interop.RegisterHotKey(mainForm.Handle, Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
-
             ini.IniWriteValue("Misc", "UseNicksInGame", useNicksCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "KeepAccounts", keepAccountsCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "Network", cmb_Network.Text.ToString());
@@ -947,11 +932,6 @@ namespace Nucleus.Coop
             {
                 MessageBox.Show("Error unregistering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        public void RegHotkeys(int id, int mod, int key)
-        {
-            User32Interop.RegisterHotKey(mainForm.Handle, id, mod, key);
         }
 
         private void Steamid_Click(object sender, EventArgs e)
@@ -1485,8 +1465,7 @@ namespace Nucleus.Coop
         private void btn_SteamExePath_Click(object sender, EventArgs e)
         {
             using (System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog())
-            {
-
+            {              
                 open.Title = "Select the steam client executable(steam.exe)";
                 open.Filter = "Steam Client Exe|*steam.exe";
 
