@@ -80,7 +80,6 @@ namespace Nucleus.Coop
             this.game_listSizer = new BufferedClientAreaPanel();
             this.list_Games = new Nucleus.Gaming.ControlListBox();
             this.rightFrame = new BufferedClientAreaPanel();
-            this.btn_Steam = new System.Windows.Forms.Button();
             this.icons_Container = new BufferedFlowLayoutPanel();
             this.btn_gameOptions = new System.Windows.Forms.Button();
             this.scriptAuthorTxtSizer = new BufferedClientAreaPanel();
@@ -622,7 +621,6 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rightFrame.BackColor = System.Drawing.Color.Transparent;
             this.rightFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.rightFrame.Controls.Add(this.btn_Steam);
             this.rightFrame.Controls.Add(this.icons_Container);
             this.rightFrame.Controls.Add(this.btn_gameOptions);
             this.rightFrame.Controls.Add(this.scriptAuthorTxtSizer);
@@ -636,22 +634,6 @@ namespace Nucleus.Coop
             this.rightFrame.Size = new System.Drawing.Size(186, 575);
             this.rightFrame.TabIndex = 34;
             this.rightFrame.Visible = false;
-            // 
-            // btn_Steam
-            // 
-            this.btn_Steam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Steam.FlatAppearance.BorderSize = 0;
-            this.btn_Steam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Steam.ForeColor = System.Drawing.SystemColors.Control;
-            this.btn_Steam.Location = new System.Drawing.Point(8, 527);
-            this.btn_Steam.Name = "btn_Steam";
-            this.btn_Steam.Size = new System.Drawing.Size(170, 25);
-            this.btn_Steam.TabIndex = 102;
-            this.btn_Steam.Text = "Start Steam Client";
-            this.btn_Steam.UseVisualStyleBackColor = true;
-            this.btn_Steam.Visible = false;
-            this.btn_Steam.Click += new System.EventHandler(this.Btn_Steam_Click);
             // 
             // icons_Container
             // 
@@ -687,11 +669,11 @@ namespace Nucleus.Coop
             this.scriptAuthorTxtSizer.Controls.Add(this.scriptAuthorTxt);
             this.scriptAuthorTxtSizer.Controls.Add(this.btn_magnifier);
             this.scriptAuthorTxtSizer.Controls.Add(this.HandlerNoteTitle);
-            this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(8, 305);
+            this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(8, 322);
             this.scriptAuthorTxtSizer.Margin = new System.Windows.Forms.Padding(5);
             this.scriptAuthorTxtSizer.MaximumSize = new System.Drawing.Size(172, 232);
             this.scriptAuthorTxtSizer.Name = "scriptAuthorTxtSizer";
-            this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(171, 218);
+            this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(171, 232);
             this.scriptAuthorTxtSizer.TabIndex = 31;
             // 
             // btn_textSwitcher
@@ -724,7 +706,7 @@ namespace Nucleus.Coop
             this.scriptAuthorTxt.Name = "scriptAuthorTxt";
             this.scriptAuthorTxt.ReadOnly = true;
             this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 175);
+            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 187);
             this.scriptAuthorTxt.TabIndex = 13;
             this.scriptAuthorTxt.Text = "";
             this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.ScriptAuthorTxt_LinkClicked);
@@ -1074,7 +1056,7 @@ namespace Nucleus.Coop
             this.Name = "MainForm";
             this.Opacity = 0D;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Nucleus Co-op";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
@@ -1168,6 +1150,5 @@ namespace Nucleus.Coop
         public Button btn_downloadAssets;
         public RichTextBox scriptAuthorTxt;
         public Button btn_debuglog;
-        public Button btn_Steam;
     }
 }

@@ -40,9 +40,7 @@ namespace Nucleus.Coop.Tools
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
             {   
                 mainForm.coverImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                mainForm.cover.SuspendLayout();
                 mainForm.cover.BackgroundImage = mainForm.coverImg;
-                mainForm.cover.ResumeLayout();
             }
             else
             {

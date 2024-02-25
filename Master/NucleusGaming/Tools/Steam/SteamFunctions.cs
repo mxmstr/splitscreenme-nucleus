@@ -987,43 +987,31 @@ namespace Nucleus.Gaming.Tools.Steam
 
         public static void StartSteamClient()
         {
-            string steamClientPath = Globals.ini.IniReadValue("SearchPaths", "SteamClientExePath");
-
             if (Process.GetProcessesByName("steam").Length == 0)
             {
-                if (File.Exists(steamClientPath))
+                Console.WriteLine("Steam Client Not Initialized");
+
+                string steamExePath = string.Empty;
+                RegistryKey localKey = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.CurrentUser, RegistryView.Registry32);
+
+                localKey = localKey.OpenSubKey(@"Software\Valve\Steam");
+
+                if (localKey != null)
                 {
-                    ProcessStartInfo sc = new ProcessStartInfo(steamClientPath);
-                    sc.UseShellExecute = true;
-                    sc.Arguments = "-silent";
+                    steamExePath = localKey.GetValue("SteamExe").ToString();
+                    localKey.Close();
+                }
 
-                    Console.WriteLine("Starting Steam client...");
-                    Process.Start(sc);
+                ProcessStartInfo sc = new ProcessStartInfo(steamExePath);
+                sc.UseShellExecute = true;
+                sc.Arguments = "-silent";
 
-                    Thread.Sleep(15000);
-
-                }//MFTReader need admin rights :(
-                //else //steam client exe has be moved?
-                //{
-                //    Console.WriteLine("Searching Steam client executable path...");
-
-                //    steamClientPath = MFTReader.SeachFileOnallDrives("steam.exe");
-
-                //    if (steamClientPath != null)
-                //    {
-                //        Console.WriteLine($@"Found Steam client executable at {steamClientPath}.");
-
-                //        Globals.ini.IniWriteValue("SearchPaths", "SteamClientExePath", steamClientPath);
-
-                //        ProcessStartInfo sc = new ProcessStartInfo(steamClientPath);
-                //        sc.UseShellExecute = true;
-                //        sc.Arguments = "-silent";
-
-                //        Console.WriteLine("Starting Steam client...");
-                //        Process.Start(sc);
-                //    }
-                //}
+                Process.Start(sc);  
             }
+
+            while (Process.GetProcessesByName("steamwebhelper").Length < 6){}
+
+            Console.WriteLine("Steam Client Initialized");
         }
     }
 }

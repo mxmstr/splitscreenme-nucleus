@@ -22,6 +22,8 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -99,7 +101,7 @@ namespace Nucleus.Coop
         public Bitmap defBackground;
         public Bitmap coverImg;
         public Bitmap screenshotImg;
-        
+
         public bool restartRequired = false;
         private bool ToggleCutscenes = false;
         private bool formClosing;
@@ -110,7 +112,7 @@ namespace Nucleus.Coop
         private bool hotkeysCooldown = false;
         private bool rainbowTimerRunning = false;
 
-        public bool ShowFavoriteOnly { get; set;}
+        public bool ShowFavoriteOnly { get; set; }
 
         private bool disableGameProfiles;
         public bool DisableGameProfiles
@@ -153,7 +155,7 @@ namespace Nucleus.Coop
                         button_UpdateAvailable.Visible = currentControl.GameInfo.UpdateAvailable;
                     }
 
-                    if(btn_AddGame != null)
+                    if (btn_AddGame != null)
                     {
                         AddGamesButton.Update(value);
                     }
@@ -179,7 +181,7 @@ namespace Nucleus.Coop
         private Color StripMenuUpdateItemBack;
         private Color StripMenuUpdateItemFont;
         private Color SelectionBackColor;
-       
+
 
         public SolidBrush borderBrush;
 
@@ -193,6 +195,7 @@ namespace Nucleus.Coop
             foreach (Control control in Controls)
             {
                 ctrls.Add(control);
+               
                 foreach (Control container1 in control.Controls)
                 {
                     ctrls.Add(container1);
@@ -305,7 +308,7 @@ namespace Nucleus.Coop
             lockKeyIniString = ini.IniReadValue("Hotkeys", "LockKey");
 
             InitializeComponent();
-           
+
             if (ini.IniReadValue("Misc", "WindowSize") != "")
             {
                 string[] windowSize = ini.IniReadValue("Misc", "WindowSize").Split('X');
@@ -387,7 +390,6 @@ namespace Nucleus.Coop
 
             btn_gameOptions.BackColor = buttonsBackColor;
             btn_Play.BackColor = buttonsBackColor;
-            btn_Steam.BackColor = buttonsBackColor;
 
             btn_gameOptions.BackgroundImage = ImageCache.GetImage(theme + "game_options.png");
             btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
@@ -411,7 +413,7 @@ namespace Nucleus.Coop
             btn_Extract.BackgroundImage = ImageCache.GetImage(theme + "extract_nc.png");
             btnSearch.BackgroundImage = ImageCache.GetImage(theme + "search_game.png");
             btn_debuglog.BackgroundImage = ImageCache.GetImage(theme + "log.png");
-          
+
             if (ini.IniReadValue("Misc", "DebugLog") == "True")
             {
                 btn_debuglog.Visible = true;
@@ -421,7 +423,7 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(btnSearch, "Search and add a game to the game list (its handler must be installed).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_Discord, "Join the official Nucleus Co-op discord server.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_downloadAssets, "Download or update games covers and screenshots.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_faq, "Nucleus Co-op FAQ.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });           
+            CustomToolTips.SetToolTip(btn_faq, "Nucleus Co-op FAQ.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_reddit, "Official Nucleus Co-op Subreddit.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_SplitCalculator, "This program can estimate the system requirements needed to run a game in split-screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_settings, "Global Nucleus Co-op settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -441,32 +443,20 @@ namespace Nucleus.Coop
             btn_Next.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btn_debuglog.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btn_debuglog.BackColor = Color.Transparent;
-            btn_Steam.FlatAppearance.MouseOverBackColor = MouseOverBackColor;
             gameContextMenuStrip.BackColor = MenuStripBackColor;
             gameContextMenuStrip.ForeColor = MenuStripFontColor;
 
             if (useButtonsBorder)
             {
-                btnSearch.FlatAppearance.BorderSize = 1;
-                btnSearch.FlatAppearance.BorderColor = ButtonsBorderColor;
                 btn_gameOptions.FlatAppearance.BorderSize = 1;
                 btn_gameOptions.FlatAppearance.BorderColor = ButtonsBorderColor;
                 btn_Play.FlatAppearance.BorderSize = 1;
                 btn_Play.FlatAppearance.BorderColor = ButtonsBorderColor;
-                btn_Extract.FlatAppearance.BorderSize = 1;
-                btn_Extract.FlatAppearance.BorderColor = ButtonsBorderColor;
                 btn_Prev.FlatAppearance.BorderSize = 1;
                 btn_Prev.FlatAppearance.BorderColor = ButtonsBorderColor;
                 btn_Next.FlatAppearance.BorderSize = 1;
                 btn_Next.FlatAppearance.BorderColor = ButtonsBorderColor;
-                btn_debuglog.FlatAppearance.BorderSize = 1;
-                btn_debuglog.FlatAppearance.BorderColor = ButtonsBorderColor;
-                btn_Steam.FlatAppearance.BorderSize = 1;
-                btn_Steam.FlatAppearance.BorderColor = ButtonsBorderColor;
             }
-
-            btn_Steam.FlatAppearance.BorderSize = 1;
-            btn_Steam.FlatAppearance.BorderColor = ButtonsBorderColor;
 
             linksPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, linksPanel.Width, linksPanel.Height, 15, 15));
             third_party_tools_container.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, third_party_tools_container.Width, third_party_tools_container.Height, 10, 10));
@@ -544,7 +534,7 @@ namespace Nucleus.Coop
             searchDisksForm = new SearchDisksForm(this);
 
             setupScreen.Paint += SetupScreen_Paint;
-           
+
             controls = new Dictionary<UserGameInfo, GameControl>();
             gameManager = new GameManager();
             optionsControl = new PlayerOptionsControl();
@@ -564,7 +554,10 @@ namespace Nucleus.Coop
 
             RefreshGames();
 
+            StartPosition = FormStartPosition.Manual;
+
             Rectangle area = Screen.PrimaryScreen.Bounds;
+
 
             if (ini.IniReadValue("Misc", "WindowLocation") != "")
             {
@@ -579,7 +572,7 @@ namespace Nucleus.Coop
                     Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
                 }
 
-                if(Size == area.Size)
+                if (Size == area.Size)
                 {
                     WindowState = FormWindowState.Maximized;
                 }
@@ -657,8 +650,8 @@ namespace Nucleus.Coop
             if (webView != null)
             {
                 return;
-            }      
-      
+            }
+
             webView = new HubWebView(this);
             webView.Disposed += WebviewDisposed;
             clientAreaPanel.Controls.Add(webView);
@@ -666,24 +659,24 @@ namespace Nucleus.Coop
             webView.Size = new Size(StepPanel.Width + rightFrame.Width, StepPanel.Height);
             webView.Location = new Point(StepPanel.Location.X, StepPanel.Location.Y);
 
-            btn_AddGame.ForeColor = Color.FromArgb(255,51, 153, 255);
+            btn_AddGame.ForeColor = Color.FromArgb(255, 51, 153, 255);
             Invalidate();
         }
 
         public void WebviewDisposed(object sender, EventArgs e)
         {
-            if(webView == null)
+            if (webView == null)
             {
                 return;
             }
 
-            clientAreaPanel.Controls.Remove(webView);      
+            clientAreaPanel.Controls.Remove(webView);
             webView.Dispose();
             webView = null;
 
             btn_AddGame.ForeColor = ForeColor;
-            
-            if (sender.GetType() == typeof(HubWebView)) 
+
+            if (sender.GetType() == typeof(HubWebView))
             {
                 stepPanelPictureBox.Visible = true;
             }
@@ -1012,7 +1005,7 @@ namespace Nucleus.Coop
                     list_Games.Top = btn_AddGame.Bottom;
                 }
             }
-          
+
             GameManager.Instance.SaveUserProfile();
         }
 
@@ -1065,8 +1058,8 @@ namespace Nucleus.Coop
             if (refreshAll)
             {
                 rightFrame.Visible = false;
-                StepPanel.Visible = false;               
-                stepPanelPictureBox.Visible = webView == null ? true : false;                
+                StepPanel.Visible = false;
+                stepPanelPictureBox.Visible = webView == null ? true : false;
                 rainbowTimer?.Dispose();
                 rainbowTimerRunning = false;
                 btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
@@ -1074,7 +1067,7 @@ namespace Nucleus.Coop
             }
 
             RefreshGames();
-            
+
             mainButtonFrame.Focus();
         }
 
@@ -1175,7 +1168,7 @@ namespace Nucleus.Coop
         }
 
         private void List_Games_SelectedChanged(object arg1, Control arg2)
-        {
+        { 
             if (GenericGameHandler.Instance != null)
             {
                 if (!GenericGameHandler.Instance.HasEnded)
@@ -1210,8 +1203,10 @@ namespace Nucleus.Coop
                 return;
             }
             else
-            {
+            {             
                 currentGame = currentGameInfo.Game;
+
+                SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
 
                 if (!currentGameInfo.Game.KeepSymLinkOnExit)
                 {
@@ -1221,8 +1216,6 @@ namespace Nucleus.Coop
                     }
                 }
                 
-                btn_Steam.Visible = currentGame.NeedSteamClient;
-
                 button_UpdateAvailable.Visible = currentGameInfo.Game.UpdateAvailable;
 
                 HandlerNoteTitle.Text = "Handler Notes";
@@ -1322,14 +1315,12 @@ namespace Nucleus.Coop
 
                 content?.Dispose();
 
-                // content manager is shared within the same game
+                // content manager is shared within the same vgame
                 content = new ContentManager(currentGame);
 
                 GoToStep(0);
 
-                SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
-
-                Invalidate();
+                Invalidate();   
             }
         }
 
@@ -2741,8 +2732,6 @@ namespace Nucleus.Coop
 
             TriggerOSD(2000, "No Log Available");
         }
-
-        private void Btn_Steam_Click(object sender, EventArgs e) => StartSteamClient.Start();
 
         private void Btn_Extract_MouseEnter(object sender, EventArgs e) => btn_Extract.BackgroundImage = ImageCache.GetImage(theme + "extract_nc_mousehover.png");
 
