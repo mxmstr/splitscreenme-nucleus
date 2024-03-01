@@ -51,19 +51,29 @@ namespace Nucleus.Coop.Tools
             if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")))
             {
                 string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")));
-                Random rNum = new Random();
-                int RandomIndex = rNum.Next(0, imgsPath.Count());
+               
+                if (imgsPath.Length > 0)
+                {
+                    Random rNum = new Random();
+                    int RandomIndex = rNum.Next(0, imgsPath.Length);
 
-                mainForm.screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));
-                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.screenshotImg); //name(1) => directory name ; name(2) = partial image path 
-                mainForm.GameBorderGradientTop = colorTop;
-                mainForm.GameBorderGradientBottom = colorBottom;
+                    mainForm.screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));
+                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.screenshotImg); //name(1) => directory name ; name(2) = partial image path 
+                    mainForm.GameBorderGradientTop = colorTop;
+                    mainForm.GameBorderGradientBottom = colorBottom;
+                }
+                else
+                {
+                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.defBackground);
+                    mainForm.GameBorderGradientTop = mainForm.BorderGradient;
+                    mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
+                }
             }
             else
             {
                 mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.defBackground);
-                mainForm.GameBorderGradientTop = colorTop;
-                mainForm.GameBorderGradientBottom = colorBottom;
+                mainForm.GameBorderGradientTop = mainForm.BorderGradient;
+                mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
             }
 
             mainForm.btn_textSwitcher.Visible = !mainForm.setupScreen.textZoomContainer.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));       

@@ -278,8 +278,11 @@ namespace Nucleus.Coop
             ShowFavoriteOnly = bool.Parse(Globals.ini.IniReadValue("Dev", "ShowFavoriteOnly"));
             roundedCorners = bool.Parse(themeIni.IniReadValue("Misc", "UseroundedCorners"));
             useButtonsBorder = bool.Parse(themeIni.IniReadValue("Misc", "UseButtonsBorder"));
+            disableGameProfiles = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
+
             customFont = themeIni.IniReadValue("Font", "FontFamily");
             rgb_font = themeIni.IniReadValue("Colors", "Font").Split(',');
+
             rgb_MouseOverColor = themeIni.IniReadValue("Colors", "MouseOver").Split(',');
             rgb_MenuStripBackColor = themeIni.IniReadValue("Colors", "MenuStripBack").Split(',');
             rgb_MenuStripFontColor = themeIni.IniReadValue("Colors", "MenuStripFont").Split(',');
@@ -558,7 +561,6 @@ namespace Nucleus.Coop
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
 
-
             if (ini.IniReadValue("Misc", "WindowLocation") != "")
             {
                 string[] windowLocation = ini.IniReadValue("Misc", "WindowLocation").Split('X');
@@ -600,7 +602,7 @@ namespace Nucleus.Coop
             {
                 Settings._ctrlr_shorcuts.Text = "Windows 8™ and up only";
                 Settings._ctrlr_shorcuts.Enabled = false;
-            }
+            }         
 
             DPIManager.Register(this);
             DPIManager.AddForm(this);
@@ -660,7 +662,7 @@ namespace Nucleus.Coop
             webView.Location = new Point(StepPanel.Location.X, StepPanel.Location.Y);
 
             btn_AddGame.ForeColor = Color.FromArgb(255, 51, 153, 255);
-            Invalidate();
+            Invalidate(false);
         }
 
         public void WebviewDisposed(object sender, EventArgs e)
@@ -681,7 +683,7 @@ namespace Nucleus.Coop
                 stepPanelPictureBox.Visible = true;
             }
 
-            Invalidate();
+            Invalidate(false);
         }
 
         protected override void OnShown(EventArgs e)
@@ -1168,7 +1170,7 @@ namespace Nucleus.Coop
         }
 
         private void List_Games_SelectedChanged(object arg1, Control arg2)
-        { 
+        {
             if (GenericGameHandler.Instance != null)
             {
                 if (!GenericGameHandler.Instance.HasEnded)
@@ -1185,7 +1187,7 @@ namespace Nucleus.Coop
                 if (!CheckGameRequirements.MatchRequirements(currentGameInfo))
                 {
                     RefreshUI(true);
-                    Invalidate();
+                    Invalidate(false);
                     return;
                 }
             }
@@ -1203,7 +1205,7 @@ namespace Nucleus.Coop
                 return;
             }
             else
-            {             
+            {
                 currentGame = currentGameInfo.Game;
 
                 SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
@@ -1318,9 +1320,7 @@ namespace Nucleus.Coop
                 // content manager is shared within the same vgame
                 content = new ContentManager(currentGame);
 
-                GoToStep(0);
-
-                Invalidate();   
+                GoToStep(0);    
             }
         }
 
@@ -1397,10 +1397,7 @@ namespace Nucleus.Coop
         {
             foreach (Control c in StepPanel.Controls)
             {
-                if (!c.Name.Equals("scriptAuthorTxtSizer"))
-                {
-                    StepPanel.Controls.Remove(c);
-                }
+                StepPanel.Controls.Remove(c);
             }
         }
 
@@ -1477,6 +1474,13 @@ namespace Nucleus.Coop
             label_StepTitle.Text = currentStep.Title;
 
             btn_Next.Enabled = currentStep.CanProceed && step != stepsList.Count - 1;
+           
+            game_listSizer.Refresh();
+            StepPanel.Refresh();
+            mainButtonFrame.Refresh();            
+            rightFrame.Refresh();
+
+            Invalidate(false);
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -2418,7 +2422,6 @@ namespace Nucleus.Coop
         {
             if (!setupScreen.textZoomContainer.Visible)
             {
-
                 setupScreen.handlerNoteZoom.Text = scriptAuthorTxt.Text;
                 setupScreen.handlerNoteZoom.Visible = true;
                 setupScreen.textZoomContainer.Visible = true;
@@ -2546,7 +2549,7 @@ namespace Nucleus.Coop
 
         private void MainForm_ClientSizeChanged(object sender, EventArgs e)
         {
-            Invalidate();
+            Invalidate(false);
 
             if (roundedCorners)
             {

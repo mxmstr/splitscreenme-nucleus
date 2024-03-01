@@ -106,15 +106,22 @@ public class WPFDiv : System.Windows.Window
             {
                 string[] imgsPath = Directory.GetFiles((System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, $@"gui\screenshots\{gameGUID}")));
 
-                backBrush.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, $@"gui\screenshots\{gameGUID}\{imgIndex}_{gameGUID}.jpeg"), UriKind.Absolute));
-                Background = backBrush;
-                imgIndex++;
-            }
+                if (imgsPath.Length > 0)
+                {
+                    backBrush.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, $@"gui\screenshots\{gameGUID}\{imgIndex}_{gameGUID}.jpeg"), UriKind.Absolute));
+                    Background = backBrush;
 
-            fading = new System.Windows.Forms.Timer();
-            fading.Tick += new EventHandler(FadingTick);
-            fading.Interval = 50;
-            fading.Start();
+                    if (imgsPath.Length >= 2)
+                    {
+                        imgIndex++;
+
+                        fading = new System.Windows.Forms.Timer();
+                        fading.Tick += new EventHandler(FadingTick);
+                        fading.Interval = 50;
+                        fading.Start();
+                    }
+                }
+            }     
         }
     }
 
@@ -141,7 +148,7 @@ public class WPFDiv : System.Windows.Window
 
                 imgIndex++;
 
-                if (imgIndex == imgsPath.Length)
+                if (imgIndex >= imgsPath.Length)
                 {
                     imgIndex = 0;
                 }
@@ -160,7 +167,11 @@ public class WPFDiv : System.Windows.Window
 
     private void SetupFinished()
     {
-        fading.Dispose();
+        if (fading != null)
+        {
+            fading.Dispose();
+        }
+
         this.Dispatcher.Invoke(new Action(() => { Background = userColor; }));
     }
 }

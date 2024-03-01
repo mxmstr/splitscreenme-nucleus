@@ -258,7 +258,7 @@ namespace Nucleus.Coop.Tools
 
                 for (int i = 0; i < maxScreenshotsToDownload; i++)// <= we don't want to download all screenshots available in the igdb's database
                 {
-                     if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}\\{i}_{gameName}.jpeg")))
+                    if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}\\{i}_{gameName}.jpeg")))
                     {
                         string url = $"https:{array[i]["url"]}".Replace("t_thumb", "t_original");
                      
@@ -278,7 +278,7 @@ namespace Nucleus.Coop.Tools
                             {
                                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}")));
                             }
-
+     
                             newImage.Save(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}\\{i}_{gameName}.jpeg"), ImageFormat.Jpeg);
                         }
                     }

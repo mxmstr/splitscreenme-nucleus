@@ -42,7 +42,6 @@ namespace Nucleus.Coop
             this.playersTabBtn = new System.Windows.Forms.Button();
             this.settingsTabBtn = new System.Windows.Forms.Button();
             this.settingsTab = new BufferedClientAreaPanel();
-            this.btn_SteamExePath = new System.Windows.Forms.Button();
             this.btn_Gb_Update = new System.Windows.Forms.Button();
             this.disableGameProfiles = new System.Windows.Forms.CheckBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
@@ -413,7 +412,6 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.settingsTab.Controls.Add(this.btn_SteamExePath);
             this.settingsTab.Controls.Add(this.btn_Gb_Update);
             this.settingsTab.Controls.Add(this.disableGameProfiles);
             this.settingsTab.Controls.Add(this.keepAccountsCheck);
@@ -438,20 +436,6 @@ namespace Nucleus.Coop
             this.settingsTab.Name = "settingsTab";
             this.settingsTab.Size = new System.Drawing.Size(674, 391);
             this.settingsTab.TabIndex = 42;
-            // 
-            // btn_SteamExePath
-            // 
-            this.btn_SteamExePath.BackColor = System.Drawing.Color.Transparent;
-            this.btn_SteamExePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SteamExePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.btn_SteamExePath.Location = new System.Drawing.Point(402, 345);
-            this.btn_SteamExePath.Name = "btn_SteamExePath";
-            this.btn_SteamExePath.Size = new System.Drawing.Size(257, 27);
-            this.btn_SteamExePath.TabIndex = 171;
-            this.btn_SteamExePath.Text = "Select Steam Client Executable Path";
-            this.btn_SteamExePath.UseVisualStyleBackColor = false;
-            this.btn_SteamExePath.Visible = false;
-            this.btn_SteamExePath.Click += new System.EventHandler(this.btn_SteamExePath_Click);
             // 
             // btn_Gb_Update
             // 
@@ -3173,7 +3157,7 @@ namespace Nucleus.Coop
             this.hideDesktop.AutoSize = true;
             this.hideDesktop.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.hideDesktop.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hideDesktop.Location = new System.Drawing.Point(16, 131);
+            this.hideDesktop.Location = new System.Drawing.Point(17, 132);
             this.hideDesktop.Margin = new System.Windows.Forms.Padding(0);
             this.hideDesktop.Name = "hideDesktop";
             this.hideDesktop.Size = new System.Drawing.Size(115, 17);
@@ -3268,7 +3252,7 @@ namespace Nucleus.Coop
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(13, 213);
+            this.label71.Location = new System.Drawing.Point(12, 216);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(128, 13);
             this.label71.TabIndex = 155;
@@ -3281,7 +3265,7 @@ namespace Nucleus.Coop
             this.cts_Panel.Controls.Add(this.cts_kar);
             this.cts_Panel.Controls.Add(this.cts_Mute);
             this.cts_Panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cts_Panel.Location = new System.Drawing.Point(12, 232);
+            this.cts_Panel.Location = new System.Drawing.Point(11, 232);
             this.cts_Panel.Name = "cts_Panel";
             this.cts_Panel.Size = new System.Drawing.Size(200, 74);
             this.cts_Panel.TabIndex = 154;
@@ -3289,7 +3273,7 @@ namespace Nucleus.Coop
             // cts_unfocus
             // 
             this.cts_unfocus.AutoSize = true;
-            this.cts_unfocus.Location = new System.Drawing.Point(6, 54);
+            this.cts_unfocus.Location = new System.Drawing.Point(4, 54);
             this.cts_unfocus.Name = "cts_unfocus";
             this.cts_unfocus.Size = new System.Drawing.Size(138, 17);
             this.cts_unfocus.TabIndex = 142;
@@ -3299,7 +3283,7 @@ namespace Nucleus.Coop
             // cts_kar
             // 
             this.cts_kar.AutoSize = true;
-            this.cts_kar.Location = new System.Drawing.Point(6, 29);
+            this.cts_kar.Location = new System.Drawing.Point(4, 28);
             this.cts_kar.Name = "cts_kar";
             this.cts_kar.Size = new System.Drawing.Size(154, 17);
             this.cts_kar.TabIndex = 141;
@@ -3309,7 +3293,7 @@ namespace Nucleus.Coop
             // cts_Mute
             // 
             this.cts_Mute.AutoSize = true;
-            this.cts_Mute.Location = new System.Drawing.Point(6, 4);
+            this.cts_Mute.Location = new System.Drawing.Point(4, 5);
             this.cts_Mute.Name = "cts_Mute";
             this.cts_Mute.Size = new System.Drawing.Size(104, 17);
             this.cts_Mute.TabIndex = 140;
@@ -3321,7 +3305,7 @@ namespace Nucleus.Coop
             // 
             this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(15, 175);
+            this.SplitColors.Location = new System.Drawing.Point(15, 182);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
@@ -3332,7 +3316,7 @@ namespace Nucleus.Coop
             this.splitDiv.AutoSize = true;
             this.splitDiv.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.splitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.splitDiv.Location = new System.Drawing.Point(16, 107);
+            this.splitDiv.Location = new System.Drawing.Point(17, 107);
             this.splitDiv.Margin = new System.Windows.Forms.Padding(0);
             this.splitDiv.Name = "splitDiv";
             this.splitDiv.Size = new System.Drawing.Size(118, 17);
@@ -3345,7 +3329,7 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(13, 153);
+            this.label49.Location = new System.Drawing.Point(13, 163);
             this.label49.Margin = new System.Windows.Forms.Padding(0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(105, 15);
@@ -3383,10 +3367,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.playersTab);
-            this.Controls.Add(this.audioTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.settingsTab);
+            this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.audioTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -3642,7 +3626,6 @@ namespace Nucleus.Coop
         private Gaming.Controls.CustomNumericUpDown numUpDownHor;
         private Button btn_Gb_Update;
         private CheckBox gamepadsAssignMethods;
-        private Button btn_SteamExePath;
         private CheckBox hideDesktop;
         private CheckBox cts_bringToFront;
     }

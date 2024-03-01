@@ -43,7 +43,7 @@ namespace Nucleus.Coop.Forms
         private bool zipExtractFinished;
         private bool downloadCompleted;
         private bool hasFreshCahe;
-
+        private bool isSuccess;
         private int entriesDone = 0;
         private int numEntries = 0;
 
@@ -114,11 +114,16 @@ namespace Nucleus.Coop.Forms
             
             Load += OnLoad;
             Disposed += DisposeContent;
+            webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
+
+            BuildHandlersDatas();
         }
 
         private void BuildHandlersDatas()
         {
-            foreach(KeyValuePair<string,GenericGameInfo> game in GameManager.Instance.GameInfos)
+            installedHandlers.Clear();
+
+            foreach (KeyValuePair<string,GenericGameInfo> game in GameManager.Instance.GameInfos)
             {
                 if(GameManager.Instance.User.Games.All(g => g.GameGuid != game.Value.GUID ))
                 {
@@ -136,25 +141,21 @@ namespace Nucleus.Coop.Forms
         }
 
         private async void OnLoad(object sender, EventArgs e)
-        {
-            webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
+        {           
             await InitializeAsync();
         }
 
         private async Task InitializeAsync()
         {
-            BuildHandlersDatas();
-
-            CoreWebView2Environment environment;
-            CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions();
-            environmentOptions.AreBrowserExtensionsEnabled = true;
-
-            webView.CreationProperties = new CoreWebView2CreationProperties();
-            webView.CreationProperties.UserDataFolder = cacheFolder;
-
-            //peux cracher si mauvaise connection add try => failed dispose.
             try
             {
+                CoreWebView2Environment environment;
+                CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions();
+                environmentOptions.AreBrowserExtensionsEnabled = true;
+
+                webView.CreationProperties = new CoreWebView2CreationProperties();
+                webView.CreationProperties.UserDataFolder = cacheFolder;
+
                 if (Directory.Exists(webView.CreationProperties.UserDataFolder))
                 {
                     environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
@@ -170,40 +171,43 @@ namespace Nucleus.Coop.Forms
                 environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
                 await webView.EnsureCoreWebView2Async(environment);
             }
-            catch(Exception e)
-            {
-                Dispose();
-                MessageBox.Show("The web viewer can't be initialized, check your connection status/speed. \n\n" + e.Message.ToString(), "Can't initialize.");
-            }
+            catch {}
         }
 
         private async void WebView_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
         {
-            webViewSettings = webView.CoreWebView2.Settings;
-            webViewSettings.IsWebMessageEnabled = true;
-            webViewSettings.IsGeneralAutofillEnabled = true;
- #if RELEASE 
+            try
+            {
+                if (e.IsSuccess)
+                {
+                    webViewSettings = webView.CoreWebView2.Settings;
+                    webViewSettings.IsWebMessageEnabled = true;
+                    webViewSettings.IsGeneralAutofillEnabled = true;
+#if RELEASE
             webViewSettings.AreDefaultContextMenusEnabled = false;
 #endif
-            webViewSettings.IsScriptEnabled = true;
+                    webViewSettings.IsScriptEnabled = true;
 
-            if (webView.Source.AbsolutePath == "blank")
-            {
-                webView.Source = new Uri(hubUri);
+                    if (webView.Source.AbsolutePath == "blank")
+                    {
+                        webView.Source = new Uri(hubUri);
+                    }
+
+                    if (hasFreshCahe)
+                    {
+                        await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderFolder);
+                    }
+
+                    webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += IsDefaultDownloadDialogOpenChanged;
+                    webView.CoreWebView2.DOMContentLoaded += new EventHandler<CoreWebView2DOMContentLoadedEventArgs>(DOMContentLoaded);
+                    webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);
+                    webView.CoreWebView2.NewWindowRequested += new EventHandler<CoreWebView2NewWindowRequestedEventArgs>(NewWindowRequested);
+                    webView.CoreWebView2.WebMessageReceived += new EventHandler<CoreWebView2WebMessageReceivedEventArgs>(WebMessageReceived);
+
+                    BringToFront();
+                }
             }
-
-            if (hasFreshCahe)
-            {
-               await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderFolder);          
-            }
-
-            webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += IsDefaultDownloadDialogOpenChanged;
-            webView.CoreWebView2.DOMContentLoaded += new EventHandler<CoreWebView2DOMContentLoadedEventArgs>(DOMContentLoaded);
-            webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);                 
-            webView.CoreWebView2.NewWindowRequested += new EventHandler<CoreWebView2NewWindowRequestedEventArgs>(NewWindowRequested);
-            webView.CoreWebView2.WebMessageReceived += new EventHandler<CoreWebView2WebMessageReceivedEventArgs>(WebMessageReceived);
-
-            BringToFront();
+            catch {}
         }
 
         private void WebMessageReceived(object sender , CoreWebView2WebMessageReceivedEventArgs e)
@@ -444,7 +448,6 @@ namespace Nucleus.Coop.Forms
                 return;
             }
 
-            installedHandlers.Clear();
             GameManager.Instance.Initialize();
             BuildHandlersDatas();
             SendDatas();

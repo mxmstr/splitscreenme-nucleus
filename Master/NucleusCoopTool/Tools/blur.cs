@@ -57,23 +57,20 @@ namespace Nucleus.Coop
             Parallel.For(0, source.Length, _pOptions, i =>
             {
                 _alpha[i] = (int)((source[i] & 0xff000000) >> 24);
+                _red[i] = (source[i] & 0xff0000) >> 16;
+                _green[i] = (source[i] & 0x00ff00) >> 8;
+                _blue[i] = (source[i] & 0x0000ff);
 
-                if (i <= (_width * _height) / 2)
+                if (i <= (_width * 10))
                 {
-                    _red[i] = (source[i] & 0xff0000) >> 16;
                     if (_red[i] >= 0) { topRedTotal += _red[i]; topRedCount++; }
-                    _green[i] = (source[i] & 0x00ff00) >> 8;
                     if (_green[i] >= 0) { topGreenTotal += _green[i]; topGreenCount++; }
-                    _blue[i] = (source[i] & 0x0000ff);
                     if (_blue[i] >= 0) { topBlueTotal += _blue[i]; topBlueCount++; }
-                }
-                else 
+                }               
+                else if (i >= (source.Length - _width * 10))
                 {
-                    _red[i] = (source[i] & 0xff0000) >> 16;
                     if (_red[i] >= 0) { bottomRedTotal += _red[i]; bottomRedCount++; }
-                    _green[i] = (source[i] & 0x00ff00) >> 8;
                     if (_green[i] >= 0) { bottomGreenTotal += _green[i]; bottomGreenCount++; }
-                    _blue[i] = (source[i] & 0x0000ff);
                     if (_blue[i] >= 0) { bottomBlueTotal += _blue[i]; bottomBlueCount++; }
                 }
             });

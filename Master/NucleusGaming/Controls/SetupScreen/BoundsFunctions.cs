@@ -397,7 +397,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         }
 
                         DevicesFunctions.UpdateDevices();
-                        parent.Invalidate();
+                        parent.Invalidate(false);
                         return;
                     }
                 }
@@ -475,7 +475,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                             }
                         }
 
-                        parent.Invalidate();
+                        parent.Invalidate(false);
                         return;
                     }
                 }
@@ -557,12 +557,17 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                     bool hasLeftRightSpace = true;
                                     bool hasTopBottomSpace = true;
 
-                                    if (players.Where(pl => (pl != p && pl.ScreenIndex != -1) && (pl.EditBounds.Left == r.Right || (pl.EditBounds.Right == r.Left && r.Right == screen.UIBounds.Right)) && (pl.EditBounds.Y == r.Y)).Count() > 0)
+                                    if (players.Where(pl => (pl != p && pl.ScreenIndex != -1 && pl.ScreenIndex == p.ScreenIndex) && (pl.EditBounds.Left == r.Right || (pl.EditBounds.Right == r.Left && r.Right == screen.UIBounds.Right)) && (pl.EditBounds.Y == r.Y)).Count() > 0)
                                     {
                                         hasLeftRightSpace = false;
                                     }
 
-                                    if (players.Where(pl => (pl != p && pl.ScreenIndex != -1) && (pl.EditBounds.Top == r.Bottom || (pl.EditBounds.Top == r.Bottom && r.Bottom == screen.UIBounds.Bottom)) && pl.EditBounds.X == r.X).Count() > 0)
+                                    if (players.Where(pl => (pl != p && pl.ScreenIndex != -1 && pl.ScreenIndex == p.ScreenIndex) && 
+                                         (
+                                          (pl.EditBounds.Top == r.Bottom || (pl.EditBounds.Top == r.Bottom && r.Bottom == screen.UIBounds.Bottom))//has a player bellow or is already at max bottom
+                                          ||
+                                          (pl.EditBounds.Bottom == r.Top || (pl.EditBounds.Bottom == r.Top && pl.EditBounds.Top == screen.UIBounds.Top))//has a player above or is already at max top
+                                         ) && pl.EditBounds.X == r.X || pl.MonitorBounds.Width == screens[p.ScreenIndex].MonitorBounds.Width).Count() > 0)
                                     {
                                         hasTopBottomSpace = false;
                                     }
@@ -599,7 +604,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                                 playerInbounds.EditBounds = p.EditBounds;
                                             }
 
-                                            parent.Invalidate();
+                                            parent.Invalidate(false);
                                             break;
                                         }
 
@@ -621,6 +626,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                         while (players.Where(pl => (pl != p) && (pl.ScreenIndex != -1) && bounds.IntersectsWith(pl.MonitorBounds) && pl.EditBounds != r).Count() > 0 ||
                                             edit.Bottom > screen.UIBounds.Bottom)
                                         {
+
                                             bounds.Height -= p.MonitorBounds.Height;
                                             edit.Height -= r.Height;
                                         }
@@ -634,7 +640,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                             playerInbounds.EditBounds = p.EditBounds;
                                         }
 
-                                        parent.Invalidate();
+                                        parent.Invalidate(false);
                                         break;
                                     }
                                 }
@@ -655,7 +661,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                         playerInbounds.EditBounds = p.EditBounds;
                                     }
 
-                                    parent.Invalidate();
+                                    parent.Invalidate(false);
                                 }
                             }
                         }
@@ -779,7 +785,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     }
 
                     DevicesFunctions.UpdateDevices();
-                    parent.Invalidate();
+                    parent.Invalidate(false);
                 }
 
                 activeSizer = RectangleF.Empty;
@@ -822,7 +828,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     else
                     {
                         player.EditBounds = destEditBounds;
-                        parent.Invalidate();
+                        parent.Invalidate(false);
                         return;
                     }
                 }
@@ -835,7 +841,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 RectangleF p = new RectangleF(mousePos.X + draggingOffset.X, mousePos.Y + draggingOffset.Y, player.SourceEditBounds.Width, player.SourceEditBounds.Height);
                 player.EditBounds = p;
 
-                parent.Invalidate();
+                parent.Invalidate(false);
             }
             else
             {
@@ -1321,7 +1327,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         }
                     }
 
-                    parent.Invalidate();
+                    parent.Invalidate(false);
                 }
             }
         }

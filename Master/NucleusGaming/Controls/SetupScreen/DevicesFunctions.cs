@@ -521,7 +521,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             if (parent.IsHandleCreated)
             {
-                parent?.Invoke(new Action(() => parent?.Invalidate()));
+                parent?.Invoke(new Action(() => parent?.Invalidate(false)));
             }               
         }
 
@@ -646,7 +646,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
           
             parent.CanPlayUpdated(parent.canProceed, false);
-            parent.Invalidate();
+            parent.Invalidate(false);
         }
     }
 }

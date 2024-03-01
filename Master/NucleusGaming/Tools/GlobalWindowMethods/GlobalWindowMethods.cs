@@ -1692,7 +1692,8 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                 if (windowToFocus != IntPtr.Zero)
                 {
-                    break;
+                    User32Interop.SetForegroundWindow(windowToFocus);
+                    return;
                 }
             }
 

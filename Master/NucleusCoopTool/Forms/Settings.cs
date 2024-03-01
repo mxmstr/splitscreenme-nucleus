@@ -185,10 +185,6 @@ namespace Nucleus.Coop
             ctrlr_shorcutsBtn.FlatAppearance.BorderSize = 1;
             btn_Gb_Update.FlatAppearance.BorderSize = 1;
 
-            btn_SteamExePath.ForeColor = ForeColor;
-            btn_SteamExePath.Cursor = hand_Cursor;
-            btn_SteamExePath.FlatAppearance.BorderSize = 1;
-
             settingsTab.Parent = this;
             settingsTab.Location = new Point(0, settingsTabBtn.Bottom);
             settingsTab.BringToFront();
@@ -261,7 +257,7 @@ namespace Nucleus.Coop
             }
         
             disableGameProfiles.Checked = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
-            mf.DisableGameProfiles = disableGameProfiles.Checked;
+            
 
             if (ini.IniReadValue("CustomLayout", "HorizontalLines") != "")
             {
@@ -830,7 +826,6 @@ namespace Nucleus.Coop
             if (disableGameProfileschanged)
             {
                 ini.IniWriteValue("Misc", "DisableGameProfiles", disableGameProfiles.Checked.ToString());
-                mainForm.DisableGameProfiles = disableGameProfiles.Checked;
             }
 
             bool needToRestart = false;
@@ -1446,6 +1441,8 @@ namespace Nucleus.Coop
                 //Update in case the logmanager prompt updated the value
                 debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));            
             }
+
+            mainForm.DisableGameProfiles = disableGameProfiles.Checked;
         }
 
 
@@ -1459,22 +1456,6 @@ namespace Nucleus.Coop
                 User32Interop.ReleaseCapture();
                 IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
-            }
-        }
-
-        private void btn_SteamExePath_Click(object sender, EventArgs e)
-        {
-            using (System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog())
-            {              
-                open.Title = "Select the steam client executable(steam.exe)";
-                open.Filter = "Steam Client Exe|*steam.exe";
-
-                if (open.ShowDialog() == DialogResult.OK)
-                {
-                    string path = open.FileName;
-
-                    Globals.ini.IniWriteValue("SearchPaths", "SteamClientExePath", open.FileName);
-                }
             }
         }
     }
