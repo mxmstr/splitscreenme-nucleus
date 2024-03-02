@@ -102,7 +102,6 @@ namespace Nucleus.Coop
             this.maximizeBtn = new System.Windows.Forms.Button();
             this.minimizeBtn = new System.Windows.Forms.Button();
             this.txt_version = new System.Windows.Forms.Label();
-            this.label_StepTitle = new System.Windows.Forms.Label();
             this.stepPanelPictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.gameContextMenuStrip.SuspendLayout();
@@ -669,11 +668,11 @@ namespace Nucleus.Coop
             this.scriptAuthorTxtSizer.Controls.Add(this.scriptAuthorTxt);
             this.scriptAuthorTxtSizer.Controls.Add(this.btn_magnifier);
             this.scriptAuthorTxtSizer.Controls.Add(this.HandlerNoteTitle);
-            this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(8, 322);
+            this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(8, 306);
             this.scriptAuthorTxtSizer.Margin = new System.Windows.Forms.Padding(5);
-            this.scriptAuthorTxtSizer.MaximumSize = new System.Drawing.Size(172, 232);
+            this.scriptAuthorTxtSizer.MaximumSize = new System.Drawing.Size(171, 261);
             this.scriptAuthorTxtSizer.Name = "scriptAuthorTxtSizer";
-            this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(171, 232);
+            this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(171, 261);
             this.scriptAuthorTxtSizer.TabIndex = 31;
             // 
             // btn_textSwitcher
@@ -700,13 +699,13 @@ namespace Nucleus.Coop
             this.scriptAuthorTxt.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.scriptAuthorTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.scriptAuthorTxt.ForeColor = System.Drawing.Color.White;
-            this.scriptAuthorTxt.Location = new System.Drawing.Point(0, 23);
+            this.scriptAuthorTxt.Location = new System.Drawing.Point(0, 22);
             this.scriptAuthorTxt.Margin = new System.Windows.Forms.Padding(0);
-            this.scriptAuthorTxt.MaximumSize = new System.Drawing.Size(189, 191);
+            this.scriptAuthorTxt.MaximumSize = new System.Drawing.Size(188, 218);
             this.scriptAuthorTxt.Name = "scriptAuthorTxt";
             this.scriptAuthorTxt.ReadOnly = true;
             this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 187);
+            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 218);
             this.scriptAuthorTxt.TabIndex = 13;
             this.scriptAuthorTxt.Text = "";
             this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.ScriptAuthorTxt_LinkClicked);
@@ -856,7 +855,6 @@ namespace Nucleus.Coop
             this.mainButtonFrame.Controls.Add(this.maximizeBtn);
             this.mainButtonFrame.Controls.Add(this.minimizeBtn);
             this.mainButtonFrame.Controls.Add(this.txt_version);
-            this.mainButtonFrame.Controls.Add(this.label_StepTitle);
             this.mainButtonFrame.Controls.Add(this.logo);
             this.mainButtonFrame.Location = new System.Drawing.Point(0, 0);
             this.mainButtonFrame.Margin = new System.Windows.Forms.Padding(0);
@@ -1008,21 +1006,6 @@ namespace Nucleus.Coop
             this.txt_version.Text = "vxxx";
             this.txt_version.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label_StepTitle
-            // 
-            this.label_StepTitle.AutoSize = true;
-            this.label_StepTitle.BackColor = System.Drawing.Color.Transparent;
-            this.label_StepTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.label_StepTitle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label_StepTitle.Location = new System.Drawing.Point(11, 37);
-            this.label_StepTitle.Margin = new System.Windows.Forms.Padding(0);
-            this.label_StepTitle.Name = "label_StepTitle";
-            this.label_StepTitle.Size = new System.Drawing.Size(86, 15);
-            this.label_StepTitle.TabIndex = 3;
-            this.label_StepTitle.Text = "Select a game";
-            this.label_StepTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label_StepTitle.Visible = false;
-            // 
             // stepPanelPictureBox
             // 
             this.stepPanelPictureBox.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -1084,7 +1067,6 @@ namespace Nucleus.Coop
 
         #endregion
         private Gaming.ControlListBox list_Games;
-        private System.Windows.Forms.Label label_StepTitle;
         private System.Windows.Forms.Button btn_Play;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btn_Prev;

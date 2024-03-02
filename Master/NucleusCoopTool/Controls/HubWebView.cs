@@ -43,7 +43,7 @@ namespace Nucleus.Coop.Forms
         private bool zipExtractFinished;
         private bool downloadCompleted;
         private bool hasFreshCahe;
-        private bool isSuccess;
+
         private int entriesDone = 0;
         private int numEntries = 0;
 

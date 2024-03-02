@@ -1451,7 +1451,6 @@ namespace Nucleus.Coop
                     currentStep.Initialize(currentGameInfo, currentProfile);
 
                     StepPanel.Controls.Add(currentStep);
-                    label_StepTitle.Text = currentStep.Title;
 
                     btn_Next.Enabled = currentStep.CanProceed && step != stepsList.Count - 1;
 
@@ -1471,7 +1470,6 @@ namespace Nucleus.Coop
             currentStep.Initialize(currentGameInfo, currentProfile);
 
             StepPanel.Controls.Add(currentStep);
-            label_StepTitle.Text = currentStep.Title;
 
             btn_Next.Enabled = currentStep.CanProceed && step != stepsList.Count - 1;
            

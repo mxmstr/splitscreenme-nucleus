@@ -235,9 +235,14 @@ namespace Nucleus.Coop
         {
             base.OnControlAdded(e);
             Control c = e.Control;
-            c.Click += C_Click;
-            c.MouseEnter += C_MouseEnter;
-            c.MouseLeave += C_MouseLeave;
+
+            if (c.Name != "favorite")
+            {
+                c.Click += C_Click;
+                c.MouseEnter += C_MouseEnter;
+                c.MouseLeave += C_MouseLeave;
+            }
+
             DPIManager.Update(this);
         }
 
