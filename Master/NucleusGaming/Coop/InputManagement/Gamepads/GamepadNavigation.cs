@@ -58,6 +58,20 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         public static bool Enabled => _Enabled;
         public static bool EnabledRuntime;///Can on/off UI navigation later on runtime
         private static bool oskVisible;
+        private static int DefaultSpeed => 2200;
+        private static int SlowDownSpeed = 2200;
+
+        public static void SetCursorSpeed()
+        {
+            if (SlowDownSpeed != DefaultSpeed * 3)
+            {
+                SlowDownSpeed *= 3;
+            }
+            else
+            {
+                SlowDownSpeed = DefaultSpeed;
+            }
+        }
 
         public static void GamepadNavigationUpdate()
         {
@@ -86,14 +100,21 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                     y = cursor.Y;
 
                     int pressed = GamepadState.GetPressedButtons(i);/// Current pressed Xinput button
+
+                    if (pressed == 128 && prevPressed != pressed)//R3/R right thumb stick click.
+                    {
+                        SetCursorSpeed();
+                        Thread.Sleep(150);
+                    }
+
                     int rt = GamepadState.GetRightTriggerValue(i) > 0 ? pressed + RT : RT;//return RT + button or RT
                     int lt = GamepadState.GetLeftTriggerValue(i) > 0 ? pressed + LT : LT;//return LT + button or LT
 
                     ///Adjust the cursor speed to the joystick value
-                    int MouveLeftSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item1) / 2000));
-                    int MouveRightSpeed = ((GamepadState.GetLeftStickValue(i).Item1) / 2000);
-                    int MouveUpSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item2) / 2000));
-                    int MouveDownSpeed = ((GamepadState.GetLeftStickValue(i).Item2) / 2000);
+                    int MouveLeftSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item1) / SlowDownSpeed));
+                    int MouveRightSpeed = ((GamepadState.GetLeftStickValue(i).Item1) / SlowDownSpeed);
+                    int MouveUpSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item2) / SlowDownSpeed));
+                    int MouveDownSpeed = ((GamepadState.GetLeftStickValue(i).Item2) / SlowDownSpeed);
 
                     ///Check if the right joystick values are out of the deadzone and allow to move the cursor or not
                     bool canMouveLeft = GamepadState.GetLeftStickValue(i).Item1 <= -Deadzone;
@@ -133,7 +154,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
                     if (canScrollUp)
                     {
-                        mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollUpSpeed, 0x00A1);///Mouse wheel Up //dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
+                        mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollUpSpeed, 0x00A1);///Mouse wheel Up //dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here                      
                     }
                     else if (canScrollDown)
                     {

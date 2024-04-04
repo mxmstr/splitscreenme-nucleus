@@ -1,24 +1,14 @@
-﻿using Jint.Parser.Ast;
-using Nucleus.Coop;
-using Nucleus.Gaming.Coop;
-using SharpDX.DirectInput;
-using System;
+﻿using Nucleus.Coop;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Controls
 {
     public static class CustomToolTips
     {
-        private static ConcurrentDictionary <Control, ToolTip> tooltipList = new ConcurrentDictionary<Control,ToolTip>();
+        private static ConcurrentDictionary<Control, ToolTip> tooltipList = new ConcurrentDictionary<Control, ToolTip>();
 
         public static ToolTip SetToolTip(Control control, string text, int[] rgbBackColor, int[] rgbForeColor, int delay = 100)
         {
@@ -27,7 +17,7 @@ namespace Nucleus.Gaming.Controls
             tooltipList.TryRemove(control, out tooltipToRemove);
 
             tooltipToRemove?.Dispose();
-            
+
             ToolTip tooltip = new ToolTip
             {
                 InitialDelay = delay,
@@ -42,23 +32,23 @@ namespace Nucleus.Gaming.Controls
 
             tooltip.Draw += new DrawToolTipEventHandler(Tooltip_Draw);
             tooltip.SetToolTip(control, text);
-            tooltipList.TryAdd(control,tooltip);
+            tooltipList.TryAdd(control, tooltip);
 
             return tooltip;
         }
 
         private static void Tooltip_Draw(object sender, DrawToolTipEventArgs e)
-        {   
+        {
             ToolTip tooltip = sender as ToolTip;
 
             e.DrawBackground();
             e.DrawBorder();
             SolidBrush brush = new SolidBrush(tooltip.ForeColor);
-            e.Graphics.DrawString(e.ToolTipText,e.Font,brush,2,2);
-            
+            e.Graphics.DrawString(e.ToolTipText, e.Font, brush, 2, 2);
+
             if (e.AssociatedControl.GetType() == typeof(GameControl))
             {
-                foreach (KeyValuePair<Control,ToolTip> t in tooltipList)
+                foreach (KeyValuePair<Control, ToolTip> t in tooltipList)
                 {
                     if (t.Key.GetType() == typeof(GameControl))
                     {
@@ -66,9 +56,9 @@ namespace Nucleus.Gaming.Controls
                     }
                 }
             }
-            else 
+            else
             {
-                tooltip.InitialDelay += 100; 
+                tooltip.InitialDelay += 100;
             }
 
             brush.Dispose();

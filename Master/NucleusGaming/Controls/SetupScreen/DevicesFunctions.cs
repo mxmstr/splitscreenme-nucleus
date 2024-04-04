@@ -351,7 +351,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         player.HIDDeviceID = new string[] { fhid, "" };
                         player.DInputJoystick.Acquire();
                         player.IsInputUsed = true;
-                        
+
                         data.Add(player);
                     }
                 }
@@ -522,7 +522,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             if (parent.IsHandleCreated)
             {
                 parent?.Invoke(new Action(() => parent?.Invalidate(false)));
-            }               
+            }
         }
 
         internal static void UpdateDevices()
@@ -644,7 +644,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     info.DisplayIndex = -1;
                 }
             }
-          
+
             parent.CanPlayUpdated(parent.canProceed, false);
             parent.Invalidate(false);
         }

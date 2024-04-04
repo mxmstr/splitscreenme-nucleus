@@ -1,5 +1,4 @@
-﻿using Nucleus.Gaming.Coop.InputManagement.Structs;
-using Nucleus.Interop.User32;
+﻿using Nucleus.Interop.User32;
 using System;
 using System.Runtime.InteropServices;
 
@@ -203,5 +202,7 @@ namespace Nucleus.Gaming.Windows.Interop
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
+        [DllImportAttribute("user32.dll")]
+        public static extern bool BringWindowToTop(IntPtr hWnd);
     }
 }

@@ -1,32 +1,26 @@
-﻿using Microsoft.Win32;
-using NAudio.CoreAudioApi;
+﻿using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Nucleus.Coop.Forms;
-using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Forms;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Tools.Steam;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Documents;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -45,6 +39,7 @@ namespace Nucleus.Coop
         public int ResetWindows_HotkeyID = 5;
         public int Cutscenes_HotkeyID = 6;
         public int Switch_HotkeyID = 7;
+        public int Reminder_HotkeyID = 8;
 
         private List<string> nicksList = new List<string>();
         private List<string> steamIdsList = new List<string>();
@@ -88,14 +83,15 @@ namespace Nucleus.Coop
             setupScreen = pc;
 
             InitializeComponent();
-         
+
             FormBorderStyle = FormBorderStyle.None;
-            default_Cursor = mf.default_Cursor;
+
+            default_Cursor = Theme_Settings.Default_Cursor;
+            hand_Cursor = Theme_Settings.Hand_Cursor;
             Cursor = default_Cursor;
-            hand_Cursor = mf.hand_Cursor;
-            var rgb_selectionColor = mf.themeIni.IniReadValue("Colors", "Selection").Split(',');
+
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
-            selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
+            selectionColor = Theme_Settings.SelectedBackColor;
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
             BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
 
@@ -105,7 +101,14 @@ namespace Nucleus.Coop
 
             foreach (Control c in ctrls)
             {
-                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton))
+
+                if ((string)c.Tag == "HotKeyTextBox")
+                {
+                    c.KeyPress += HKTxt_KeyPress;
+                    c.TextChanged += HKTxt_TextChanged;
+                }
+
+                if (c is CheckBox || c is Label || c is RadioButton)
                 {
                     if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
                     {
@@ -113,19 +116,19 @@ namespace Nucleus.Coop
                     }
                 }
 
-                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
+                if (c is ComboBox || c is TextBox || c is GroupBox)
                 {
                     c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
-                if (c.GetType() == typeof(CustomNumericUpDown))
+                if (c is CustomNumericUpDown)
                 {
                     c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c.Name != "settingsTab" && c.Name != "playersTab" && c.Name != "audioTab" &&
                     c.Name != "layoutTab" && c.Name != "layoutSizer"
-                    && c.GetType() != typeof(Label) && c.GetType() != typeof(TextBox))
+                    && !(c is Label) && !(c is TextBox))
                 {
                     c.Cursor = hand_Cursor;
                 }
@@ -142,7 +145,7 @@ namespace Nucleus.Coop
                     tabsButtons.Add(c);
                 }
 
-                if (c.Name.Contains("steamid") && c.GetType() == typeof(ComboBox))
+                if (c.Name.Contains("steamid") && c is ComboBox)
                 {
                     c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
                     c.Click += new System.EventHandler(Steamid_Click);
@@ -154,6 +157,11 @@ namespace Nucleus.Coop
                     isButton.FlatAppearance.BorderSize = 0;
                     isButton.FlatAppearance.MouseOverBackColor = selectionColor;
                 }
+
+                if (c.Parent.Name == "hotkeyBox")
+                {
+                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Bold, GraphicsUnit.Pixel, 0);
+                }
             }
 
             ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
@@ -163,11 +171,9 @@ namespace Nucleus.Coop
             settingsBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "shared.png");
             layoutBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "layout.png");
             closeBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "title_close.png");
-            btn_credits.BackgroundImage = ImageCache.GetImage(mf.theme + "credits.png");
             audioRefresh.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
             btnNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
 
-            btn_credits.FlatAppearance.MouseOverBackColor = Color.Transparent;
 
             plus1.ForeColor = ForeColor;
             plus2.ForeColor = ForeColor;
@@ -176,6 +182,7 @@ namespace Nucleus.Coop
             plus5.ForeColor = ForeColor;
             plus6.ForeColor = ForeColor;
             plus7.ForeColor = ForeColor;
+            plus8.ForeColor = ForeColor;
 
             audioBtnPicture.Click += new EventHandler(audioBtnPicture_Click);
 
@@ -223,7 +230,7 @@ namespace Nucleus.Coop
                 player1N, player2N, player3N, player4N, player5N, player6N, player7N, player8N,
                 player9N, player10N, player11N, player12N, player13N, player14N, player15N, player16N,
                 player17N, player18N, player19N, player20N, player21N, player22N, player23N, player24N,
-                player25N, player26N, player27N, player28N, player29N, player30N, player31N, player32N};         
+                player25N, player26N, player27N, player28N, player29N, player30N, player31N, player32N};
 
             steamIds = new ComboBox[] {
                 steamid1, steamid2, steamid3, steamid4, steamid5, steamid6, steamid7, steamid8,
@@ -241,7 +248,7 @@ namespace Nucleus.Coop
 
                 steamIds[i].TextChanged += new EventHandler(SwapSteamId);
                 steamIds[i].MouseHover += new EventHandler(CacheSteamId);
-                steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems); 
+                steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems);
             }
 
             splitDiv.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
@@ -250,14 +257,14 @@ namespace Nucleus.Coop
             cts_kar.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_unfocus.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
 
-            if(ini.IniReadValue("CustomLayout", "Cts_BringToFront") != "")//such checks are there so testers/users can still use there existing profiles
-                                                                       //after new options implementation. Any new option must have that null check.
+            if (ini.IniReadValue("CustomLayout", "Cts_BringToFront") != "")//such checks are there so testers/users can still use there existing profiles
+                                                                           //after new options implementation. Any new option must have that null check.
             {
                 cts_bringToFront.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_BringToFront"));
             }
-        
+
             disableGameProfiles.Checked = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
-            
+
 
             if (ini.IniReadValue("CustomLayout", "HorizontalLines") != "")
             {
@@ -338,7 +345,7 @@ namespace Nucleus.Coop
             scaleOptionCbx.Checked = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
 
             ///Custom HotKey setting
-            comboBox_lockKey.Text = ini.IniReadValue("Hotkeys", "LockKey");
+            lockKey_Cmb.Text = ini.IniReadValue("Hotkeys", "LockKey");
 
             if (ini.IniReadValue("Misc", "SteamLang") != "")
             {
@@ -354,8 +361,8 @@ namespace Nucleus.Coop
                 string[] closeHk = ini.IniReadValue("Hotkeys", "Close").Split('+');
                 if ((closeHk[0] == "Ctrl" || closeHk[0] == "Alt" || closeHk[0] == "Shift") && closeHk[1].Length == 1 && Regex.IsMatch(closeHk[1], @"^[a-zA-Z0-9]+$"))
                 {
-                    settingsCloseCmb.SelectedItem = closeHk[0];
-                    settingsCloseHKTxt.Text = closeHk[1];
+                    cn_Cmb.SelectedItem = closeHk[0];
+                    cn_HKTxt.Text = closeHk[1];
                 }
             }
             else
@@ -368,8 +375,8 @@ namespace Nucleus.Coop
                 string[] stopHk = ini.IniReadValue("Hotkeys", "Stop").Split('+');
                 if ((stopHk[0] == "Ctrl" || stopHk[0] == "Alt" || stopHk[0] == "Shift") && stopHk[1].Length == 1 && Regex.IsMatch(stopHk[1], @"^[a-zA-Z0-9]+$"))
                 {
-                    settingsStopCmb.SelectedItem = stopHk[0];
-                    settingsStopTxt.Text = stopHk[1];
+                    ss_Cmb.SelectedItem = stopHk[0];
+                    ss_HKTxt.Text = stopHk[1];
                 }
             }
             else
@@ -382,8 +389,8 @@ namespace Nucleus.Coop
                 string[] topHk = ini.IniReadValue("Hotkeys", "TopMost").Split('+');
                 if ((topHk[0] == "Ctrl" || topHk[0] == "Alt" || topHk[0] == "Shift") && topHk[1].Length == 1 && Regex.IsMatch(topHk[1], @"^[a-zA-Z0-9]+$"))
                 {
-                    settingsTopCmb.SelectedItem = topHk[0];
-                    settingsTopTxt.Text = topHk[1];
+                    ttm_Cmb.SelectedItem = topHk[0];
+                    ttm_HKTxt.Text = topHk[1];
                 }
             }
 
@@ -392,8 +399,8 @@ namespace Nucleus.Coop
                 string[] stopHk = ini.IniReadValue("Hotkeys", "Stop").Split('+');
                 if ((stopHk[0] == "Ctrl" || stopHk[0] == "Alt" || stopHk[0] == "Shift") && stopHk[1].Length == 1 && Regex.IsMatch(stopHk[1], @"^[a-zA-Z0-9]+$"))
                 {
-                    settingsStopCmb.SelectedItem = stopHk[0];
-                    settingsStopTxt.Text = stopHk[1];
+                    ss_Cmb.SelectedItem = stopHk[0];
+                    ss_HKTxt.Text = stopHk[1];
                 }
             }
             else
@@ -406,8 +413,8 @@ namespace Nucleus.Coop
                 string[] foreground = ini.IniReadValue("Hotkeys", "SetFocus").Split('+');
                 if ((foreground[0] == "Ctrl" || foreground[0] == "Alt" || foreground[0] == "Shift") && foreground[1].Length == 1 && Regex.IsMatch(foreground[1], @"^[a-zA-Z0-9]+$"))
                 {
-                    settingsFocusCmb.SelectedItem = foreground[0];
-                    settingsFocusHKTxt.Text = foreground[1];
+                    tu_Cmb.SelectedItem = foreground[0];
+                    tu_HKTxt.Text = foreground[1];
                 }
             }
             else
@@ -420,8 +427,8 @@ namespace Nucleus.Coop
                 string[] resetWindows = ini.IniReadValue("Hotkeys", "ResetWindows").Split('+');
                 if ((resetWindows[0] == "Ctrl" || resetWindows[0] == "Alt" || resetWindows[0] == "Shift") && resetWindows[1].Length == 1 && Regex.IsMatch(resetWindows[1], @"^[a-zA-Z0-9]+$"))
                 {
-                    r1.SelectedItem = resetWindows[0];
-                    r2.Text = resetWindows[1];
+                    rw_Cmb.SelectedItem = resetWindows[0];
+                    rw_HKTxt.Text = resetWindows[1];
                 }
             }
             else
@@ -434,8 +441,8 @@ namespace Nucleus.Coop
                 string[] cutscenes = ini.IniReadValue("Hotkeys", "Cutscenes").Split('+');
                 if ((cutscenes[0] == "Ctrl" || cutscenes[0] == "Alt" || cutscenes[0] == "Shift") && cutscenes[1].Length == 1 && Regex.IsMatch(cutscenes[1], @"^[a-zA-Z0-9]+$"))
                 {
-                    csm_comboBox.SelectedItem = cutscenes[0];
-                    csm_textBox.Text = cutscenes[1];
+                    csm_Cmb.SelectedItem = cutscenes[0];
+                    csm_HKTxt.Text = cutscenes[1];
                 }
             }
             else
@@ -448,13 +455,27 @@ namespace Nucleus.Coop
                 string[] swl = ini.IniReadValue("Hotkeys", "Switch").Split('+');
                 if ((swl[0] == "Ctrl" || swl[0] == "Alt" || swl[0] == "Shift") && swl[1].Length == 1 && Regex.IsMatch(swl[1], @"^[a-zA-Z0-9]+$"))
                 {
-                    swl_comboBox.SelectedItem = swl[0];
-                    swl_textBox.Text = swl[1];
+                    swl_Cmb.SelectedItem = swl[0];
+                    swl_HKTxt.Text = swl[1];
                 }
             }
             else
             {
                 ini.IniWriteValue("Hotkeys", "Switch", "");
+            }
+
+            if (ini.IniReadValue("Hotkeys", "ShortcutsReminder").Contains('+'))
+            {
+                string[] rml = ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+');
+                if ((rml[0] == "Ctrl" || rml[0] == "Alt" || rml[0] == "Shift") && rml[1].Length == 1 && Regex.IsMatch(rml[1], @"^[a-zA-Z0-9]+$"))
+                {
+                    rm_Cmb.SelectedItem = rml[0];
+                    rm_HKTxt.Text = rml[1];
+                }
+            }
+            else
+            {
+                ini.IniWriteValue("Hotkeys", "ShortcutsReminder", "");
             }
 
             if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "")
@@ -568,17 +589,20 @@ namespace Nucleus.Coop
             {
                 if (scale > 1.0F)
                 {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
+                    if (c is ComboBox || c is TextBox || c is GroupBox)
                     {
-                        c.Font = new Font(c.Font.FontFamily, c.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        if (c.Parent.Name != "hotkeyBox")
+                        {
+                            c.Font = new Font(c.Font.FontFamily, c is TextBox ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        }
                     }
                 }
 
-                if (c.GetType() == typeof(Label) && c.GetType() != typeof(CustomNumericUpDown))
+                if (c is Label && !(c is CustomNumericUpDown))
                 {
                     if (c.Name.Contains("hkLabel"))
                     {
-                        c.Location = new Point(settingsFocusCmb.Left - c.Width, c.Location.Y);
+                        c.Location = new Point(tu_Cmb.Left - c.Width, c.Location.Y);
                     }
                 }
             }
@@ -608,7 +632,6 @@ namespace Nucleus.Coop
 
         private void SetToolTips()
         {
-            CustomToolTips.SetToolTip(btn_credits, "Credits", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(splitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(hideDesktop, "Will only show the splitscreen division window without adjusting the game windows size and offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(disableGameProfiles, "Disables profiles, Nucleus will use the global settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -634,9 +657,9 @@ namespace Nucleus.Coop
 
                 controllerNicks[i].Items.AddRange(NicknamesCache.Get.ToArray());
 
-                foreach(string nick in nicksList)
+                foreach (string nick in nicksList)
                 {
-                    if(!controllerNicks[i].Items.Contains(nick))
+                    if (!controllerNicks[i].Items.Contains(nick))
                     {
                         controllerNicks[i].Items.Add(nick);
                     }
@@ -678,7 +701,7 @@ namespace Nucleus.Coop
                         controllerNicks[n].Items.Add(controllerNicks[i].Text);
                     }
                 }
-                else 
+                else
                 {
                     hasEmptyNickname = true;
                 }
@@ -765,7 +788,7 @@ namespace Nucleus.Coop
 
             foreach (Control ht in hotkeyBox.Controls)
             {
-                if (ht.GetType() == typeof(TextBox))
+                if (ht is TextBox)
                 {
                     if (ht.Text == "")
                     {
@@ -775,14 +798,15 @@ namespace Nucleus.Coop
                 }
             }
 
-            ini.IniWriteValue("Hotkeys", "Close", settingsCloseCmb.SelectedItem.ToString() + "+" + settingsCloseHKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "Stop", settingsStopCmb.SelectedItem.ToString() + "+" + settingsStopTxt.Text);
-            ini.IniWriteValue("Hotkeys", "TopMost", settingsTopCmb.SelectedItem.ToString() + "+" + settingsTopTxt.Text);
-            ini.IniWriteValue("Hotkeys", "SetFocus", settingsFocusCmb.SelectedItem.ToString() + "+" + settingsFocusHKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "ResetWindows", r1.SelectedItem.ToString() + "+" + r2.Text);
-            ini.IniWriteValue("Hotkeys", "LockKey", comboBox_lockKey.SelectedItem.ToString());
-            ini.IniWriteValue("Hotkeys", "Cutscenes", csm_comboBox.SelectedItem.ToString() + "+" + csm_textBox.Text);
-            ini.IniWriteValue("Hotkeys", "Switch", swl_comboBox.SelectedItem.ToString() + "+" + swl_textBox.Text);
+            ini.IniWriteValue("Hotkeys", "Close", cn_Cmb.SelectedItem.ToString() + "+" + cn_HKTxt.Text);
+            ini.IniWriteValue("Hotkeys", "Stop", ss_Cmb.SelectedItem.ToString() + "+" + ss_HKTxt.Text);
+            ini.IniWriteValue("Hotkeys", "TopMost", ttm_Cmb.SelectedItem.ToString() + "+" + ttm_HKTxt.Text);
+            ini.IniWriteValue("Hotkeys", "SetFocus", tu_Cmb.SelectedItem.ToString() + "+" + tu_HKTxt.Text);
+            ini.IniWriteValue("Hotkeys", "ResetWindows", rw_Cmb.SelectedItem.ToString() + "+" + rw_HKTxt.Text);
+            ini.IniWriteValue("Hotkeys", "LockKey", lockKey_Cmb.SelectedItem.ToString());
+            ini.IniWriteValue("Hotkeys", "Cutscenes", csm_Cmb.SelectedItem.ToString() + "+" + csm_HKTxt.Text);
+            ini.IniWriteValue("Hotkeys", "Switch", swl_Cmb.SelectedItem.ToString() + "+" + swl_HKTxt.Text);
+            ini.IniWriteValue("Hotkeys", "ShortcutsReminder", rm_Cmb.SelectedItem.ToString() + "+" + rm_HKTxt.Text);
 
             ini.IniWriteValue("Misc", "UseNicksInGame", useNicksCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "KeepAccounts", keepAccountsCheck.Checked.ToString());
@@ -809,7 +833,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("CustomLayout", "Cts_Unfocus", cts_unfocus.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "Cts_BringToFront", cts_bringToFront.Checked.ToString());
 
-            mainForm.lockKeyIniString = comboBox_lockKey.SelectedItem.ToString();
+            mainForm.lockKeyIniString = lockKey_Cmb.SelectedItem.ToString();
             mainForm.DebugButtonState(debugLogCheck.Checked);
 
             if (setupScreen != null)
@@ -851,21 +875,53 @@ namespace Nucleus.Coop
                 mainForm.Xinput_S_Setup.Visible = false;
             }
 
+            #region take a picture of the hotkeys
+
+            Color defColor = hotkeyBox.BackColor;
+
+            try
+            {
+                hotkeyBox.BackColor = Color.Black;
+
+                Graphics g = hotkeyBox.CreateGraphics();
+                Bitmap bmp = new Bitmap(hotkeyBox.Width, hotkeyBox.Height);
+                hotkeyBox.DrawToBitmap(bmp, new Rectangle(0, 0, hotkeyBox.Width, hotkeyBox.Height));
+
+                string savePath = Path.Combine(Application.StartupPath, $@"gui\shortcuts");
+
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+
+                bmp.Save(Path.Combine(savePath, "KbShortcutsReminder.jpeg"), ImageFormat.Jpeg);
+                bmp.Dispose();
+                g.Dispose();
+
+                hotkeyBox.BackColor = defColor;
+            }
+            catch
+            {
+                hotkeyBox.BackColor = defColor;
+            }
+
+            #endregion
+
+            if (needToRestart)
+            {
+                Thread.Sleep(300);
+                Application.Restart();
+                Process.GetCurrentProcess().Kill();
+                return;
+            }
+
             Visible = false;
+
+            Globals.MainOSD.Show(500, "Settings Saved");
 
             if (Location.X == -32000 || Width == 0)
             {
                 return;
-            }       
-
-            Globals.MainOSD.Show(500, "Settings saved");
-
-            if (needToRestart)
-            {
-                ini.IniWriteValue("Misc", "SettingsLocation", Location.X + "X" + Location.Y);
-                Thread.Sleep(300);
-                Application.Restart();
-                Process.GetCurrentProcess().Kill();
             }
 
             ini.IniWriteValue("Misc", "SettingsLocation", Location.X + "X" + Location.Y);
@@ -902,6 +958,7 @@ namespace Nucleus.Coop
                 User32Interop.RegisterHotKey(form.Handle, ResetWindows_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(form.Handle, Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(form.Handle, Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, Reminder_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[1].ToString()));
             }
             catch (Exception ex)
             {
@@ -922,6 +979,7 @@ namespace Nucleus.Coop
                 User32Interop.UnregisterHotKey(form.Handle, ResetWindows_HotkeyID);
                 User32Interop.UnregisterHotKey(form.Handle, Cutscenes_HotkeyID);
                 User32Interop.UnregisterHotKey(form.Handle, Switch_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, Reminder_HotkeyID);
             }
             catch (Exception ex)
             {
@@ -1045,7 +1103,7 @@ namespace Nucleus.Coop
                     }
                 }
 
-                if (tabsButtons[i].GetType() != typeof(Button))
+                if (!(tabsButtons[i] is Button))
                 {
                     continue;
                 }
@@ -1076,16 +1134,6 @@ namespace Nucleus.Coop
         private void closeBtnPicture_MouseLeave(object sender, EventArgs e)
         {
             closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
-        }
-
-        private void btn_credits_MouseEnter(object sender, EventArgs e)
-        {
-            btn_credits.BackgroundImage = ImageCache.GetImage(mainForm.theme + "credits_mousehover.png");
-        }
-
-        private void btn_credits_MouseLeave(object sender, EventArgs e)
-        {
-            btn_credits.BackgroundImage = ImageCache.GetImage(mainForm.theme + "credits.png");
         }
 
         private void ctrlr_shorcuts_Click(object sender, EventArgs e)
@@ -1125,35 +1173,16 @@ namespace Nucleus.Coop
             e.Handled = true;
         }
 
-        private void settingsCloseHKTxt_TextChanged(object sender, EventArgs e)
+        private void HKTxt_TextChanged(object sender, EventArgs e)
         {
-            settingsCloseHKTxt.Text = string.Concat(settingsCloseHKTxt.Text.Where(char.IsLetterOrDigit));
+            TextBox textBox = (TextBox)sender;
+            textBox.Text = string.Concat(textBox.Text.Where(char.IsLetterOrDigit));
         }
 
-        private void settingsCloseHKTxt_KeyPress(object sender, KeyPressEventArgs e)
+        private void HKTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            settingsCloseHKTxt.Text = "";
-            e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
-             && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
-        }
-
-        private void settingsStopTxt_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            settingsStopTxt.Text = "";
-            e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
-             && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
-        }
-
-        private void settingsTopTxt_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            settingsTopTxt.Text = "";
-            e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
-             && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
-        }
-
-        private void settingsFocusHKTxt_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            settingsTopTxt.Text = "";
+            TextBox textBox = (TextBox)sender;
+            textBox.Text = "";
             e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar)
              && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
@@ -1225,27 +1254,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private void btn_credits_Click(object sender, EventArgs e)
-        {
-           string text = 
-           "Nucleus Co-op - " + mainForm.version +
-           "\n " +
-           "\nOriginal Nucleus Co-op Project: Lucas Assis(lucasassislar)" +
-           "\nNew Nucleus Co-op fork: ZeroFox" +
-           "\nMultiple keyboards / mice & hooks: Ilyaki" +
-           "\nWebsite & handler API: r - mach" +
-           "\nNew UI design, bug fixes, per game profiles and gamepad UI control/shortcuts support : Mikou27(nene27)" +
-           "\nHandlers development & testing: Talos91, PoundlandBacon, Pizzo, dr.oldboi and many more." +
-           "\nThis new & improved Nucleus Co-op brings a ton of enhancements, such as:" +
-           "\n-Massive increase to the amount of compatible games, 400 + as of now." +
-           "\n-Beautiful new overhauled user interface with support for themes, game covers & screenshots." +
-           "\n-Support for per-game profiles." +
-           "\n-Many quality of life improvements & bug fixes." +
-           "\n-And so much more!\n" +
-           "\nSpecial thanks to: Talos91, dr.oldboi, PoundlandBacon, Pizzo and the rest of the Splitscreen Dreams discord community.";
-            NucleusMessageBox.Show("Credits", text,false);
-        }
-      
         private void layoutSizer_Paint(object sender, PaintEventArgs e)
         {
             Graphics gs = e.Graphics;
@@ -1372,20 +1380,20 @@ namespace Nucleus.Coop
         private void UpdateControllerNickItems(object sender, EventArgs e)
         {
             ComboBox cb = sender as ComboBox;
-            
-            if(cb.Text == "")
+
+            if (cb.Text == "")
             {
                 return;
             }
 
-            if(!NicknamesCache.Get.Any(n => n == cb.Text))
+            if (!NicknamesCache.Get.Any(n => n == cb.Text))
             {
                 NicknamesCache.Add(cb.Text);
             }
 
             for (int i = 0; i < 32; i++)
             {
-                if(!controllerNicks[i].Items.Contains(cb.Text))
+                if (!controllerNicks[i].Items.Contains(cb.Text))
                 {
                     controllerNicks[i].Items.Add(cb.Text);
                 }
@@ -1439,7 +1447,7 @@ namespace Nucleus.Coop
                 }
 
                 //Update in case the logmanager prompt updated the value
-                debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));            
+                debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));
             }
 
             mainForm.DisableGameProfiles = disableGameProfiles.Checked;
@@ -1458,5 +1466,6 @@ namespace Nucleus.Coop
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
         }
+
     }
 }

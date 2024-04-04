@@ -1,6 +1,6 @@
 ﻿namespace WindowScrape.Types
 {
-    internal struct RECT
+    public struct RECT
     {
         public int Left;
         public int Top;

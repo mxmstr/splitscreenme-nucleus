@@ -23,7 +23,7 @@ namespace Nucleus.Coop
         private Dictionary<string, object> vals;
 
         public PlayerOptionsControl()
-        {        
+        {
             BackColor = Color.Transparent;
             DPIManager.Register(this);
             DPIManager.Update(this);
@@ -183,7 +183,7 @@ namespace Nucleus.Coop
                     }
 
                     box.SelectedIndex = box.Items.IndexOf(value);
-                    
+
                     box.Width = (int)(wid * _scale);
                     box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;
@@ -194,7 +194,7 @@ namespace Nucleus.Coop
 
                     box.Tag = opt;
                     box.SelectedValueChanged += box_SelectedValueChanged;
-                    
+
                     ChangeOption(box.Tag, box.SelectedItem);
                 }
                 else if (opt.List.Count == 0)

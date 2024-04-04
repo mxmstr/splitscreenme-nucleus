@@ -25,7 +25,6 @@ namespace Nucleus.Gaming
         private Dictionary<string, GenericGameInfo> gameInfos;
         private UserProfile user;
         private List<BackupFile> backupFiles;
-        private string error;
         private bool isSaving;
         private GameProfile currentProfile;
 
@@ -34,8 +33,6 @@ namespace Nucleus.Gaming
 
         /// object instance so we can thread-safe save the user profile
         private object saving = new object();
-
-        public string Error => error;
 
         public bool IsSaving => isSaving;
 
@@ -291,13 +288,12 @@ namespace Nucleus.Gaming
         /// </summary>
         /// <param name="exePath"></param>
         /// <returns></returns>
-        public bool IsGameAlreadyInUserProfile(string exeName,string handlerTitle)
+        public bool IsGameAlreadyInUserProfile(string exeName, string handlerTitle)
         {
             string lower = exeName.ToLower();
 
-            if(User.Games.Any(c => c.ExePath.Split('\\').Last().ToLower() == lower))
+            if (User.Games.Any(c => c.ExePath.Split('\\').Last().ToLower() == lower))
             {
-                #region check if it's effectively the same game.
                 DirectoryInfo jsFolder = new DirectoryInfo(GetJsScriptsPath());
                 FileInfo f = new FileInfo(Path.Combine(jsFolder.FullName, handlerTitle + ".js"));
 
@@ -311,7 +307,7 @@ namespace Nucleus.Gaming
                     bool foundGame = games.Where(g => g.Value.GameName == newHandler.GameName).Count() > 0;
 
                     if (foundGame)
-                    {                     
+                    {
                         return true;
                     }
                     else
@@ -319,9 +315,7 @@ namespace Nucleus.Gaming
                         //found games sharing the same exe name but not game name, not the same => game can be added.
                         return false;
                     }
-
-                }       
-                #endregion
+                }
             }
 
             return false;
@@ -581,7 +575,7 @@ namespace Nucleus.Gaming
                         string ext = Path.GetFileNameWithoutExtension(f.Name);
                         string pathBlock = Path.Combine(f.Directory.FullName, ext);
 
-                        GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str,new bool[] {true,false}) ;
+                        GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str, new bool[] { true, false });
 
                         //LogManager.Log("Found game info: " + info.GameName);
                         if (games.Any(c => c.Value.GUID == info.GUID))
@@ -613,20 +607,20 @@ namespace Nucleus.Gaming
         public string AutoSearchGameInstallPath(GenericGameInfo genericGameInfo)
         {
             string value64 = string.Empty;
-            RegistryKey localKey =  RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine,  RegistryView.Registry64);
+            RegistryKey localKey = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry64);
 
             localKey = localKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App " + genericGameInfo.SteamID);
-            
+
             if (localKey != null)
             {
                 value64 = localKey.GetValue("InstallLocation").ToString();
                 localKey.Close();
             }
 
-            return (genericGameInfo.BinariesFolder != ""  && genericGameInfo.BinariesFolder != null) ?  value64 + $@"\{genericGameInfo.BinariesFolder}" : value64;      
+            return (genericGameInfo.BinariesFolder != "" && genericGameInfo.BinariesFolder != null) ? value64 + $@"\{genericGameInfo.BinariesFolder}" : value64;
         }
 
-        public GenericGameInfo AddScript(string handlerName,bool[] checkUpdate)
+        public GenericGameInfo AddScript(string handlerName, bool[] checkUpdate)
         {
             string jsfolder = GetJsScriptsPath();
             DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);

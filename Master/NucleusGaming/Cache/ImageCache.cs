@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 
@@ -18,7 +17,7 @@ namespace Nucleus.Gaming.Cache
         {
             if (!initialized)
             {
-                FreeMemoryTimer = new System.Threading.Timer(FreeMemory_Tick, null, 0,180000);
+                FreeMemoryTimer = new System.Threading.Timer(FreeMemory_Tick, null, 0, 180000);
                 initialized = true;
             }
 
@@ -56,7 +55,7 @@ namespace Nucleus.Gaming.Cache
 
         private static void RemoveFromCache(string path)
         {
-            if(!initialized)
+            if (!initialized)
             {
                 return;
             }
@@ -75,7 +74,7 @@ namespace Nucleus.Gaming.Cache
             double convertToMo = Math.Round(currentProcess.WorkingSet64 / 1e+6);
             ///Force gc for instant result, calling it every 3 minutes and only if "needed" 
             ///should be fine. It will not be called at all most of the time anyway.
-            if (convertToMo > 200)
+            if (convertToMo > 400)
             {
                 cachedImages.Clear();
                 System.GC.Collect();

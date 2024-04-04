@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Documents;
 
 namespace Nucleus.Gaming.Coop
 {

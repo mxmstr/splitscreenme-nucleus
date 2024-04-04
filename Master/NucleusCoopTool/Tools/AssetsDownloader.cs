@@ -1,16 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Nucleus.Coop.Forms;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop.Tools
@@ -18,7 +15,7 @@ namespace Nucleus.Coop.Tools
     /// <summary>
     /// Download game cover, screenshots and description from igdb through the hub api
     /// </summary>
-    static class  AssetsDownloader
+    static class AssetsDownloader
     {
         private static int maxScreenshotsToDownload;
 
@@ -41,7 +38,7 @@ namespace Nucleus.Coop.Tools
             main.btn_downloadAssets.Enabled = false;
             main.game_listSizer.Enabled = false;
             main.mainButtonFrame.Controls.Add(dllabel);
-            dllabel.BringToFront(); 
+            dllabel.BringToFront();
             main.Refresh();
 
             System.Threading.Tasks.Task.Run(() =>
@@ -83,7 +80,7 @@ namespace Nucleus.Coop.Tools
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
                     string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
-                    DownloadDescriptions(handler.GameDescription, game.GameGuid);
+                    SaveDescriptions(handler.GameDescription, game.GameGuid);
                     DownloadCovers(coverUri, game.GameGuid);
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }
@@ -100,7 +97,7 @@ namespace Nucleus.Coop.Tools
                     dllabel.Visible = false;
                     main.Controls.Remove(dllabel);
                     main.TriggerOSD(2000, "Download Completed!");
-                   
+
                     if (currentControl != null && main.StepPanel.Visible)
                     {
                         SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
@@ -171,7 +168,7 @@ namespace Nucleus.Coop.Tools
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
                     string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
-                    DownloadDescriptions(handler.GameDescription, game.GameGuid);
+                    SaveDescriptions(handler.GameDescription, game.GameGuid);
                     DownloadCovers(coverUri, game.GameGuid);
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }
@@ -221,8 +218,8 @@ namespace Nucleus.Coop.Tools
                     ServicePointManager.DefaultConnectionLimit = 9999;
 
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urls);
-                    request.UserAgent = "request";        
-               
+                    request.UserAgent = "request";
+
                     using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     using (Stream stream = response.GetResponseStream())
                     using (Image newImage = Image.FromStream(stream))
@@ -261,7 +258,7 @@ namespace Nucleus.Coop.Tools
                     if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}\\{i}_{gameName}.jpeg")))
                     {
                         string url = $"https:{array[i]["url"]}".Replace("t_thumb", "t_original");
-                     
+
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                         ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
@@ -278,7 +275,7 @@ namespace Nucleus.Coop.Tools
                             {
                                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}")));
                             }
-     
+
                             newImage.Save(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}\\{i}_{gameName}.jpeg"), ImageFormat.Jpeg);
                         }
                     }
@@ -288,7 +285,7 @@ namespace Nucleus.Coop.Tools
             { }
         }
 
-        public static void DownloadDescriptions(string desc, string gameGuid)
+        public static void SaveDescriptions(string desc, string gameGuid)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions")))
             {

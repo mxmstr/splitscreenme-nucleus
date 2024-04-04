@@ -92,6 +92,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -102,6 +103,21 @@
   <ItemGroup>
     <Compile Include="Controls\BufferedClientAreaPanel.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HandlerNotesZoom.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HandlerNotesZoom.Designer.cs">
+      <DependentUpon>HandlerNotesZoom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TransparentRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TransparentRichTextBox.Designer.cs">
+      <DependentUpon>TransparentRichTextBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Coop\Generic\Handler.cs" />
     <Compile Include="Cache\HubCache.cs" />
@@ -182,8 +198,10 @@
     <Compile Include="Coop\InputManagement\Osk.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadShortcuts.cs" />
     <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
+    <Compile Include="Coop\InputManagement\ShortcutsReminderThread.cs" />
     <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
     <Compile Include="Coop\ProfilePlayer.cs" />
+    <Compile Include="Forms\ShortcutsReminder\ReminderFormThread.cs" />
     <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -282,6 +300,12 @@
     <Compile Include="Forms\Prompt.Designer.cs">
       <DependentUpon>Prompt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ShortcutsReminder\ShortcutsReminder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShortcutsReminder\ShortcutsReminder.Designer.cs">
+      <DependentUpon>ShortcutsReminder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\WPFDiv.cs" />
     <Compile Include="Forms\WPF_OSD.cs" />
     <Compile Include="Globals.cs" />
@@ -361,6 +385,7 @@
     <Compile Include="Tools\EACBypass\EACBypass.cs" />
     <Compile Include="Tools\CleanGameContent\CleanGameContent.cs" />
     <Compile Include="Tools\NucleusUsers\NucleusUsers.cs" />
+    <Compile Include="Tools\GameplayTimer\GameplayTimer.cs" />
     <Compile Include="Tools\Steam\GoldbergUpdaterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -420,6 +445,9 @@
     <EmbeddedResource Include="Controls\CustomNumericUpDown.resx">
       <DependentUpon>CustomNumericUpDown.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HandlerNotesZoom.resx">
+      <DependentUpon>HandlerNotesZoom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PictureButton.resx">
       <DependentUpon>PictureButton.cs</DependentUpon>
     </EmbeddedResource>
@@ -461,6 +489,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserInputControl.resx">
       <DependentUpon>UserInputControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShortcutsReminder\ShortcutsReminder.resx">
+      <DependentUpon>ShortcutsReminder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

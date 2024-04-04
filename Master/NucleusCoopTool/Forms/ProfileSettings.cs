@@ -7,6 +7,7 @@ using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace Nucleus.Coop
         private TextBox[] Affinitys;
         private ComboBox[] PriorityClasses;
         private List<Control> ctrls = new List<Control>();
-       
+
         private float fontSize;
 
         private IDictionary<string, string> audioDevices;
@@ -78,41 +79,41 @@ namespace Nucleus.Coop
 
             InitializeComponent();
 
-            default_Cursor = mf.default_Cursor;
+            default_Cursor = Theme_Settings.Default_Cursor;
+            hand_Cursor = Theme_Settings.Hand_Cursor;
             Cursor = default_Cursor;
-            hand_Cursor = mf.hand_Cursor;
 
-            var rgb_selectionColor = mf.themeIni.IniReadValue("Colors", "Selection").Split(',');
+            
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
-            selectionColor = Color.FromArgb(int.Parse(rgb_selectionColor[0]), int.Parse(rgb_selectionColor[1]), int.Parse(rgb_selectionColor[2]), int.Parse(rgb_selectionColor[3]));
+            selectionColor = Theme_Settings.SelectedBackColor;
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
-           
+
             BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
 
             controlscollect();
 
             foreach (Control c in ctrls)
             {
-                if (c.GetType() == typeof(CheckBox) || c.GetType() == typeof(Label) || c.GetType() == typeof(RadioButton) )
+                if (c is CheckBox || c is Label || c is RadioButton)
                 {
                     if (c.Name != "audioWarningLabel" && c.Name != "warningLabel" && c.Name != "modeLabel")
                         c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
-                if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
-                { 
-                    if(c.Name != "notes_text" && c.Name != "profileTitle")
-                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                if (c is ComboBox || c is TextBox || c is GroupBox)
+                {
+                    if (c.Name != "notes_text" && c.Name != "profileTitle")
+                        c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
-                if (c.GetType() == typeof(CustomNumericUpDown))
+                if (c is CustomNumericUpDown)
                 {
                     c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c.Name != "sharedTab" && c.Name != "playersTab" && c.Name != "audioTab" &&
                     c.Name != "processorTab" && c.Name != "layoutTab" && c.Name != "layoutSizer" && c.Name != "notes_text"
-                    && c.GetType() != typeof(Label) && c.GetType() != typeof(TextBox))
+                    && !(c is Label) && !(c is TextBox))
                 {
                     c.Cursor = hand_Cursor;
                 }
@@ -140,8 +141,8 @@ namespace Nucleus.Coop
                 {
                     c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
                 }
-           
-                if (c.Name.Contains("steamid") && c.GetType() == typeof(ComboBox))
+
+                if (c.Name.Contains("steamid") && c is ComboBox)
                 {
                     c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
                     c.Click += new System.EventHandler(Steamid_Click);
@@ -212,7 +213,7 @@ namespace Nucleus.Coop
 
                 steamIds[i].TextChanged += new EventHandler(SwapSteamId);
                 steamIds[i].MouseHover += new EventHandler(CacheSteamId);
-                steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems);              
+                steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems);
             }
 
             for (int p = 0; p < Environment.ProcessorCount; p++)
@@ -237,7 +238,7 @@ namespace Nucleus.Coop
             }
 
             coreCountLabel.Text = $"Cores/Threads {Environment.ProcessorCount} (Max Value)";
-            coreCountLabel.ForeColor = Color.Yellow;   
+            coreCountLabel.ForeColor = Color.Yellow;
 
             SplitColors.Items.Add("Black");
             SplitColors.Items.Add("Gray");
@@ -296,7 +297,7 @@ namespace Nucleus.Coop
             btnProcessorNext.Parent = processorTab;
             btnProcessorNext.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btnProcessorNext.Location = new Point(processorPage1.Right - btnProcessorNext.Width, (processorPage1.Top - btnProcessorNext.Height) - 5);
-            
+
             sharedTab.BringToFront();
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
 
@@ -306,7 +307,7 @@ namespace Nucleus.Coop
             modeLabel.Location = new Point((int)modeLabelX, sharedTabBtn.Location.Y + sharedTabBtn.Height / 2 - modeLabel.Height / 2);
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
             warningLabel.ForeColor = Color.Yellow;
-           
+
             def_sid_comboBox.SelectedIndex = 0;
 
             numUpDownVer.MaxValue = 5;
@@ -365,7 +366,7 @@ namespace Nucleus.Coop
             {
                 CenterToScreen();
             }
-            
+
             SetToolTips();
 
             DPIManager.Register(this);
@@ -377,7 +378,7 @@ namespace Nucleus.Coop
             DPIManager.Unregister(this);
         }
 
-        public void UpdateSize(float scale)
+        public new void UpdateSize(float scale)
         {
             if (IsDisposed)
             {
@@ -393,9 +394,9 @@ namespace Nucleus.Coop
 
                 foreach (Control c in ctrls)
                 {
-                    if (c.GetType() == typeof(ComboBox) || c.GetType() == typeof(TextBox) || c.GetType() == typeof(GroupBox))
+                    if (c is ComboBox || c is TextBox || c is GroupBox)
                     {
-                        c.Font = new Font(c.Font.FontFamily, c.GetType() == typeof(TextBox) ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        c.Font = new Font(c.Font.FontFamily, c is TextBox ? newFontSize + 3 : newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
                 }
 
@@ -455,14 +456,14 @@ namespace Nucleus.Coop
             }
 
             steamIdsList.AddRange(SteamIdsCache.Get.ToArray());
-           
+
             nicksList.Clear();
             nicksList.AddRange(NicknamesCache.Get);
-           
+
             for (int i = 0; i < 32; i++)
             {
                 ProfilePlayer player = null;
-           
+
                 if (i < playersList.Count)
                 {
                     player = playersList[i];
@@ -473,7 +474,7 @@ namespace Nucleus.Coop
                     steamIds[i].SelectedItem = player.SteamID.ToString();
                     steamIds[i].Text = player.SteamID.ToString();
                     steamIds[i].Enabled = true;
-                    
+
                     controllerNicks[i].Items.Clear();
                     controllerNicks[i].Items.AddRange(nicksList.ToArray());
 
@@ -489,8 +490,8 @@ namespace Nucleus.Coop
                     steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
                     steamIds[i].SelectedItem = steamIds[i].Text;
                     steamIds[i].Enabled = false;
-                    
-                    controllerNicks[i].Items.Clear(); 
+
+                    controllerNicks[i].Items.Clear();
                     controllerNicks[i].Items.AddRange(nicksList.ToArray());
 
                     controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
@@ -517,15 +518,15 @@ namespace Nucleus.Coop
             profileSettings?.UpdateUiValues();
         }
 
-        private void UpdateUiValues() 
+        private void UpdateUiValues()
         {
             GetPlayersNickNameAndIds();
 
             for (int i = 0; i < 32; i++)
             {
                 ProfilePlayer player = null;
-                
-                if(i < GameProfile.ProfilePlayersList.Count)
+
+                if (i < GameProfile.ProfilePlayersList.Count)
                 {
                     player = GameProfile.ProfilePlayersList[i];
                 }
@@ -564,7 +565,7 @@ namespace Nucleus.Coop
                     Affinitys[i].Enabled = true;
                     PriorityClasses[i].Enabled = true;
                 }
-                else 
+                else
                 {
                     IdealProcessors[i].Text = "*";
                     IdealProcessors[i].Enabled = false;
@@ -575,7 +576,7 @@ namespace Nucleus.Coop
                     PriorityClasses[i].Text = "Normal";
                     PriorityClasses[i].Enabled = false;
 
-                    if(GameProfile.ModeText == "New Profile")
+                    if (GameProfile.ModeText == "New Profile")
                     {
                         IdealProcessors[i].Enabled = true;
                         Affinitys[i].Enabled = true;
@@ -635,10 +636,10 @@ namespace Nucleus.Coop
             if (GameProfile.ProfilePlayersList.Count == 0)
             {
                 ///Create profile players for new game profile
-                for(int i = 0; i < 32; i++)
+                for (int i = 0; i < 32; i++)
                 {
-                     ProfilePlayer player = new ProfilePlayer();    
-                     GameProfile.ProfilePlayersList.Add(player);
+                    ProfilePlayer player = new ProfilePlayer();
+                    GameProfile.ProfilePlayersList.Add(player);
                 }
             }
 
@@ -703,9 +704,9 @@ namespace Nucleus.Coop
                         break;
                     }
                 }
-             
+
                 player.IdealProcessor = IdealProcessors[i].Text;
-                
+
                 ///Set GameProfile Processors Affinity
                 if (Affinitys[i].Text == null)
                 {
@@ -730,14 +731,14 @@ namespace Nucleus.Coop
                 }
 
                 player.Affinity = Affinitys[i].Text;
-                
+
                 ///Set GameProfile Priority Classes
                 if (PriorityClasses[i].Text == "" || PriorityClasses[i].Text == null)
                 {
                     PriorityClasses[i].Text = "Normal";
                 }
 
-                player.PriorityClass = PriorityClasses[i].Text;             
+                player.PriorityClass = PriorityClasses[i].Text;
             }
 
             ///Warn user for empty nickame fields
@@ -845,12 +846,11 @@ namespace Nucleus.Coop
                 setupScreen.gameProfilesList.Update_ProfilesList();
 
                 ///Send control selection event to the Profiles List (update the list and reload the profile)
-                MouseEventArgs eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0,0,0);
+                MouseEventArgs eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
 
                 Label selected = new Label();
                 selected.Name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString();
                 selected.Text = $"{ProfilesList.PartialTitle} {selected.Name}";
-
 
                 setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(selected, eventArgs);
             }
@@ -865,7 +865,7 @@ namespace Nucleus.Coop
             ComboBox id = (ComboBox)sender;
             id.BackColor = Color.White;
         }
-        
+
         private void cmb_Network_DropDown(object sender, EventArgs e)
         {
             RefreshCmbNetwork();
@@ -945,7 +945,7 @@ namespace Nucleus.Coop
                     cmb.Items.AddRange(audioDevices.Keys.ToArray());
 
                     if (GameProfile.ModeText == "New Profile")
-                    {                     
+                    {
                         if (audioDevices.Values.Contains(ini.IniReadValue("Audio", cmb.Name)))
                         {
                             cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == ini.IniReadValue("Audio", cmb.Name)).Key;
@@ -990,7 +990,7 @@ namespace Nucleus.Coop
         {
             Control c = sender as Control;
 
-            for(int i = 0; i < tabsButtons.Count;i++)
+            for (int i = 0; i < tabsButtons.Count; i++)
             {
                 if (i < tabs.Count)
                 {
@@ -1005,7 +1005,7 @@ namespace Nucleus.Coop
                     }
                 }
 
-                if(tabsButtons[i].GetType() != typeof(Button))
+                if (!(tabsButtons[i] is Button))
                 {
                     continue;
                 }
@@ -1095,8 +1095,7 @@ namespace Nucleus.Coop
                 "Info", "Profiles will only save after all instances finish setting up correctly.\n" +
                 "To load a profile click the profile list icon in the setup screen and choose the profile to load by clicking on it in the list.\n" +
                 "Profile settings can be modified before pressing the play button.\n" +
-                "Some of the profile settings could break hooks, resizing or positioning functions so it's better to launch the game with the default profile settings once.\n" /*+*/
-               /* "For more information or if you have any doubts keep the default settings or ask for help."*/, false);
+                "Some of the profile settings could break hooks, resizing or positioning functions so it's better to launch the game with the default profile settings once.", false);
         }
 
         private void cts_Mute_CheckedChanged(object sender, EventArgs e)
@@ -1127,7 +1126,7 @@ namespace Nucleus.Coop
                 btnNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page2.png");
                 page1.Visible = false;
                 page2.BringToFront();
-                page2.Visible = true;                           
+                page2.Visible = true;
                 ResumeLayout();
             }
             else
@@ -1135,8 +1134,8 @@ namespace Nucleus.Coop
                 SuspendLayout();
                 btnNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page1.png");
                 page2.Visible = false;
-                page1.BringToFront();                
-                page1.Visible = true;            
+                page1.BringToFront();
+                page1.Visible = true;
                 ResumeLayout();
             }
         }
@@ -1149,7 +1148,7 @@ namespace Nucleus.Coop
                 btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page2.png");
                 processorPage1.Visible = false;
                 processorPage2.BringToFront();
-                processorPage2.Visible = true;               
+                processorPage2.Visible = true;
                 ResumeLayout();
             }
             else
@@ -1251,7 +1250,7 @@ namespace Nucleus.Coop
             currentNickname = cb.Text;
             shouldSwapNick = true;
         }
-       
+
         private void SwapNickname(object sender, EventArgs e)
         {
             ComboBox cb = sender as ComboBox;
@@ -1318,7 +1317,7 @@ namespace Nucleus.Coop
             }
 
             if (!NicknamesCache.Get.Any(n => n == cb.Text))
-            {               
+            {
                 NicknamesCache.Add(cb.Text);
             }
 

@@ -1,15 +1,10 @@
-﻿using Jint.Parser;
-using Nucleus.Gaming.Cache;
+﻿using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.DPI;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Forms
@@ -24,6 +19,8 @@ namespace Nucleus.Gaming.Forms
             string[] rgb_MouseOverColor = Globals.ThemeConfigFile.IniReadValue("Colors", "MouseOver").Split(',');
             InitializeComponent();
             
+            Cursor  = Theme_Settings.Default_Cursor;
+
             Text = title;
             this.message = format ? FormatText(message) : message;
             closeBtn.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
@@ -31,12 +28,11 @@ namespace Nucleus.Gaming.Forms
             closeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
             BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
             Opacity = 0;//invisible until resized
-            
         }
 
         private string FormatText(string message)
         {
-            string removedNewLineJump = message.Replace('\n',' ');
+            string removedNewLineJump = message;
             string[] words = removedNewLineJump.Split(' ');
             string formated = string.Empty;
 
@@ -57,30 +53,33 @@ namespace Nucleus.Gaming.Forms
                         formated += words[i] + '\n';
                         start += wordsBeforeNewLine;
                     }
-                    else 
+                    else
                     {
                         formated += words[i] + ' ';
-                    }                 
-                }        
+                    }
+                }
             }
 
             return formated;
         }
 
         private void CustomMessaBox_Paint(object sender, PaintEventArgs e)
-        {     
-            e.Graphics.DrawString(message, Font, Brushes.White, 10, 10);
+        {
+            float scale = DPIManager.Scale;
+            Font font = new Font(Font.FontFamily, Font.Size * scale);
+            SizeF newSize = e.Graphics.MeasureString(message, font);
 
             if (!sized)
             {
-                SizeF newSize = e.Graphics.MeasureString(message, Font);
-                Size = new Size((int)newSize.Width + 30, (int)newSize.Height + 30);
-                MaximumSize = Size;
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width , Height , 20, 20));
+                Size = new Size((int)newSize.Width + 30, (int)newSize.Height + 30 + closeBtn.Bottom + 5);
+                MaximumSize = Size;             
+                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
                 CenterToScreen();
                 Opacity = 1.0F;
                 sized = true;
             }
+
+            e.Graphics.DrawString(message, font, Brushes.White, 10, closeBtn.Bottom + 5);
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
@@ -100,5 +99,6 @@ namespace Nucleus.Gaming.Forms
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
         }
+
     }
 }

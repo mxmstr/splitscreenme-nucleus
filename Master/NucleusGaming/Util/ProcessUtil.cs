@@ -499,24 +499,25 @@ namespace Nucleus
             }
         }
 
-        public static void KillRemainingProcess(GenericGameHandler genericGameHandler, GenericGameInfo gen)
+        public static void KillRemainingProcess()
         {
             // search for game instances left behind
             try
             {
+                var handlerInstance = GenericGameHandler.Instance;
                 Process[] procs = Process.GetProcesses();
 
                 List<string> addtlProcsToKill = new List<string>();
-                if (gen.KillProcessesOnClose?.Length > 0)
+                if (handlerInstance.currentGameInfo.KillProcessesOnClose?.Length > 0)
                 {
-                    addtlProcsToKill = gen.KillProcessesOnClose.ToList();
+                    addtlProcsToKill = handlerInstance.currentGameInfo.KillProcessesOnClose.ToList();
                 }
 
                 foreach (Process proc in procs)
                 {
                     try
                     {
-                        if ((gen.LauncherExe != null && !gen.LauncherExe.Contains("NucleusDefined") && proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(gen.LauncherExe.ToLower())) || addtlProcsToKill.Contains(proc.ProcessName, StringComparer.OrdinalIgnoreCase) || proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()) || (proc.Id != 0 && genericGameHandler.attachedIds.Contains(proc.Id)) || (gen.Hook.ForceFocusWindowName != "" && proc.MainWindowTitle == gen.Hook.ForceFocusWindowName))
+                        if ((handlerInstance.currentGameInfo.LauncherExe != null && !handlerInstance.currentGameInfo.LauncherExe.Contains("NucleusDefined") && proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(handlerInstance.currentGameInfo.LauncherExe.ToLower())) || addtlProcsToKill.Contains(proc.ProcessName, StringComparer.OrdinalIgnoreCase) || proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(handlerInstance.currentGameInfo.ExecutableName.ToLower()) || (proc.Id != 0 && handlerInstance.attachedIds.Contains(proc.Id)) || (handlerInstance.currentGameInfo.Hook.ForceFocusWindowName != "" && proc.MainWindowTitle == handlerInstance.currentGameInfo.Hook.ForceFocusWindowName))
                         {
                             Log(string.Format("Killing process {0} (pid {1})", proc.ProcessName, proc.Id));
                             proc.Kill();

@@ -1,25 +1,17 @@
-﻿using Games;
-using Ionic.Zip;
+﻿using Ionic.Zip;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
-using NAudio.SoundFont;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
-using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Tools.GlobalWindowMethods;
-using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -55,15 +47,15 @@ namespace Nucleus.Coop.Forms
         public HubWebView(MainForm mainForm)
         {
             this.mainForm = mainForm;
-            
+
             InitializeComponent();
 
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            BackColor = Color.FromArgb(255,31, 34, 35);
+            BackColor = Color.FromArgb(255, 31, 34, 35);
 
-            modal.BackColor = BackColor; 
+            modal.BackColor = BackColor;
 
-            modalControlsContainer.BackColor = Color.FromArgb(255, 24, 26, 27); 
+            modalControlsContainer.BackColor = Color.FromArgb(255, 24, 26, 27);
             modal_yes.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             modal_yes.Cursor = mainForm.hand_Cursor;
             modal_no.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
@@ -92,7 +84,7 @@ namespace Nucleus.Coop.Forms
             closeBtn.Cursor = mainForm.hand_Cursor;
 
             webView.DefaultBackgroundColor = BackColor;
-         
+
             button_Panel.BackColor = BackColor;
 
             string debugUri = Path.Combine(Application.StartupPath, $"webview\\debugUri.txt");
@@ -104,17 +96,29 @@ namespace Nucleus.Coop.Forms
                 string expectedUri = "http://localhost:3000/";
                 string descResult = local.ReadToEnd();
 
-                if(expectedUri == descResult)
+                if (expectedUri == descResult)
                 {
                     hubUri = expectedUri;
                 }
-               
+
                 local.Dispose();
             }
-            
+
             Load += OnLoad;
             Disposed += DisposeContent;
             webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
+
+            foreach (Control c in Controls)
+            {
+                c.Click += mainForm.ClickAnyControl;
+                if (c.HasChildren)
+                {
+                    foreach (Control child in c.Controls)
+                    {
+                        child.Click += mainForm.ClickAnyControl;
+                    }
+                }
+            }
 
             BuildHandlersDatas();
         }
@@ -123,9 +127,9 @@ namespace Nucleus.Coop.Forms
         {
             installedHandlers.Clear();
 
-            foreach (KeyValuePair<string,GenericGameInfo> game in GameManager.Instance.GameInfos)
+            foreach (KeyValuePair<string, GenericGameInfo> game in GameManager.Instance.GameInfos)
             {
-                if(GameManager.Instance.User.Games.All(g => g.GameGuid != game.Value.GUID ))
+                if (GameManager.Instance.User.Games.All(g => g.GameGuid != game.Value.GUID))
                 {
                     continue;
                 }
@@ -133,7 +137,7 @@ namespace Nucleus.Coop.Forms
                 string id = game.Value.HandlerId;
                 int version = game.Value.Hub.Handler.Version;
 
-                if (id != "" && version != -1 )
+                if (id != "" && version != -1)
                 {
                     installedHandlers.Add(new JObject { new JProperty("id", id), new JProperty("version", version) });
                 }
@@ -141,7 +145,7 @@ namespace Nucleus.Coop.Forms
         }
 
         private async void OnLoad(object sender, EventArgs e)
-        {           
+        {
             await InitializeAsync();
         }
 
@@ -171,7 +175,7 @@ namespace Nucleus.Coop.Forms
                 environment = await CoreWebView2Environment.CreateAsync(null, webView.CreationProperties.UserDataFolder, environmentOptions);
                 await webView.EnsureCoreWebView2Async(environment);
             }
-            catch {}
+            catch { Console.WriteLine("Webview init failed!"); }
         }
 
         private async void WebView_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
@@ -207,10 +211,10 @@ namespace Nucleus.Coop.Forms
                     BringToFront();
                 }
             }
-            catch {}
+            catch { Console.WriteLine("Webview init failed!"); }
         }
 
-        private void WebMessageReceived(object sender , CoreWebView2WebMessageReceivedEventArgs e)
+        private void WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
             Console.WriteLine(e.WebMessageAsJson);
         }
@@ -223,8 +227,8 @@ namespace Nucleus.Coop.Forms
         }
 
         private async void SendDatas()
-        { 
-            string json = JsonConvert.SerializeObject(installedHandlers, Formatting.Indented);         
+        {
+            string json = JsonConvert.SerializeObject(installedHandlers, Formatting.Indented);
             await webView.ExecuteScriptAsync($"NucleusWebview.setLocalHandlerLibraryArray({json})");
             // string test = JsonConvert.SerializeObject(new string[] { "test message" }, Formatting.Indented);
             // await webView.ExecuteScriptAsync($"window.chrome.webview.postMessage({test});");
@@ -232,14 +236,14 @@ namespace Nucleus.Coop.Forms
 
         private void DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
-            if(hasFreshCahe)
+            if (hasFreshCahe)
             {
                 webView.CoreWebView2.Reload();
                 hasFreshCahe = false;
             }
 
             webView.ZoomFactor = 0.8;
-            SendDatas();                     
+            SendDatas();
         }
 
         private void IsDefaultDownloadDialogOpenChanged(object sender, object e)
@@ -248,10 +252,10 @@ namespace Nucleus.Coop.Forms
         }
 
         private void DownloadStarting(object sender, CoreWebView2DownloadStartingEventArgs e)
-        {         
+        {
             if (!webView.CoreWebView2.Source.StartsWith("https://hub.splitscreen.me/"))
             {
-               e.DownloadOperation.Cancel();
+                e.DownloadOperation.Cancel();
                 return;
             }
 
@@ -263,7 +267,7 @@ namespace Nucleus.Coop.Forms
                 label.Visible = true;
             }
         }
-      
+
         private void CheckDownloadState(object sender, object e)
         {
             if (downloadOperation.State == CoreWebView2DownloadState.Completed && !downloadCompleted)
@@ -376,8 +380,8 @@ namespace Nucleus.Coop.Forms
         private void AddGameToList(string frmHandleTitle, string exeName)
         {
             GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-            SearchGame.Search(mainForm, exeName, genericGameInfo);          
-            HideModal();  
+            SearchGame.Search(mainForm, exeName, genericGameInfo);
+            HideModal();
             closeBtn.PerformClick();
         }
 
@@ -434,7 +438,7 @@ namespace Nucleus.Coop.Forms
             File.Delete(downloadPath);
 
             if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName, frmHandleTitle))
-            {                
+            {
                 GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
                 string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName.ToLower()).FirstOrDefault().GameGuid;
                 string gameName = GameManager.Instance.Games.Where(c => c.Value.GUID == gameGuid).FirstOrDefault().Value.GameName;
@@ -456,7 +460,7 @@ namespace Nucleus.Coop.Forms
             modal_yes.Click += Modal_Yes_Button_Event;
             Modal_No_Button_Event = (sender, e) => HideModal();
             modal_no.Click += Modal_No_Button_Event;
-      
+
             modal_text.Text =
             "Downloading and extraction of " + frmHandleTitle +
             " handler is complete. Would you like to add this game to Nucleus now? " +
@@ -508,13 +512,13 @@ namespace Nucleus.Coop.Forms
 
         public void CloseBtn_Click(object sender, EventArgs e)
         {
-            webView.Dispose();             
+            webView.Dispose();
             Dispose();
-        }       
+        }
 
         private void DisposeContent(object sender, EventArgs e)
         {
-            if(zip != null)
+            if (zip != null)
             {
                 zip.Dispose();
             }
@@ -522,7 +526,8 @@ namespace Nucleus.Coop.Forms
             if (File.Exists(downloadPath))
             {
                 File.Delete(downloadPath);
-            }     
+            }
         }
+
     }
 }

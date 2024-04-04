@@ -105,47 +105,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
 
             clientConnected = true;
-            //Logger.WriteLine($"Client connected to (read) pipe {pipeNameRead}");
-
-
-
-            // If legacy input is enabled, Hooks needs to know 
-            // - Delta changes in mouse position (since last input). There is no bounding on this as it is used for first person camera movement.
-            // - Absolute mouse position (this is bound from 0,0 to width,height). This is used in the menus.
-            //If legacy input is disabled, Delta changes aren't used for first person camera movement (e.g. it uses raw input) so it doesn't need to be sent.
-
-            /*bool sendDelta = gameInfo.HookUseLegacyInput;
-
-			if (sendDelta || gameInfo.HookGetCursorPos)
-			{
-				//With this system, input messages are only sent as fast as one thread can manage.
-				while (clientConnected)
-				{
-					//SpinWait.SpinUntil(() => haveMousePosToSend);
-					if (!haveMousePosToSend)
-					{
-						loopThreadWaitingForMousePosToSend = true;
-						xyResetEvent.Wait(); //Wait for an mouse input message to have altered toSendDeltaX/Y
-					}
-
-					if (sendDelta)
-					{
-						WriteMessageNow(0x01, toSendDeltaX, toSendDeltaY);
-						toSendDeltaX = 0;
-						toSendDeltaY = 0;
-					}
-					WriteMessageNow(0x04, toSendAbsX, toSendAbsY);
-					//TODO: can error when closed
-
-					haveMousePosToSend = false;
-
-					if (loopThreadWaitingForMousePosToSend)
-					{
-						loopThreadWaitingForMousePosToSend = false;
-						xyResetEvent.Reset(); //Reset the event (or WaitOne passes immediately)
-					}
-				}
-			}*/
         }
 
         private void ReceiveMessages()
@@ -164,7 +123,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 return;
             }
 
-           // Logger.WriteLine($"Client connected to (write) pipe {pipeNameWrite}");
+            // Logger.WriteLine($"Client connected to (write) pipe {pipeNameWrite}");
 
             while (clientConnected)
             {
@@ -214,16 +173,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
         /// <param name="absoluteY"></param>
         public void SendMousePosition(int deltaX, int deltaY, int absoluteX, int absoluteY)
         {
-            /*toSendDeltaX += deltaX;
-			toSendDeltaY += deltaY;
-			toSendAbsX = absoluteX;
-			toSendAbsY = absoluteY;
-
-			haveMousePosToSend = true;
-
-			if (loopThreadWaitingForMousePosToSend)
-				xyResetEvent.Set();*/
-
             //Data packed as absX; absY; deltaX; deltaY
             //CPP side will set deltas to zero when read
 

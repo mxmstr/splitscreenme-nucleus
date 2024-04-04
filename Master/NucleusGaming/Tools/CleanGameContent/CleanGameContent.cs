@@ -1,7 +1,5 @@
 ﻿using Nucleus.Gaming.Forms.NucleusMessageBox;
 using System.IO;
-using System.Management.Instrumentation;
-using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
@@ -12,7 +10,7 @@ namespace Nucleus.Gaming
             string path = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);
 
             if (Directory.Exists(path))
-            {               
+            {
                 string[] instances = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
 
                 try
@@ -61,7 +59,7 @@ namespace Nucleus.Gaming
 
                         System.Threading.Tasks.Task.Run(() =>
                         {
-                            NucleusMessageBox.Show("Risk of crash!", 
+                            NucleusMessageBox.Show("Risk of crash!",
                                 $"One or more files from {path} are locked\n" +
                                 $"by the system or used by an other program \n" +
                                 $"and Nucleus failed to unlock them.You can try\n" +

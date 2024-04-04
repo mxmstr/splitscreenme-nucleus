@@ -1,20 +1,15 @@
-﻿using Nucleus.Gaming.Cache;
-using Nucleus.Gaming;
-using System;
-using System.Collections.Generic;
+﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Coop;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Coop.Tools
 {
     internal class ChangeGameIcon
     {
-        public static void ChangeIcon(MainForm main,UserGameInfo userGameInfo,IniFile iconsIni) 
+        public static void ChangeIcon(MainForm main, UserGameInfo userGameInfo, IniFile iconsIni)
         {
             using (System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog())
             {

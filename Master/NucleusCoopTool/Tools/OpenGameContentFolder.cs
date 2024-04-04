@@ -1,11 +1,6 @@
-﻿using Nucleus.Gaming.Coop;
-using Nucleus.Gaming;
-using System;
-using System.Collections.Generic;
+﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 

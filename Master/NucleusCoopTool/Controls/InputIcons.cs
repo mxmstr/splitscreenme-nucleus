@@ -1,10 +1,8 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -81,7 +79,7 @@ namespace Nucleus.Coop
                     Name = "icon5",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.ThemeFolder + "keyboard_icon.png")               
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "keyboard_icon.png")
                 };
 
                 PictureBox iconKB2 = new PictureBox

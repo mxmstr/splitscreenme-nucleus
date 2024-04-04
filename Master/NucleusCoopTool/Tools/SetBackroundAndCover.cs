@@ -3,7 +3,6 @@ using Nucleus.Gaming.Cache;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop.Tools
@@ -38,7 +37,7 @@ namespace Nucleus.Coop.Tools
 
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
-            {   
+            {
                 mainForm.coverImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
                 mainForm.cover.BackgroundImage = mainForm.coverImg;
             }
@@ -51,7 +50,7 @@ namespace Nucleus.Coop.Tools
             if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")))
             {
                 string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")));
-               
+
                 if (imgsPath.Length > 0)
                 {
                     Random rNum = new Random();
@@ -76,7 +75,7 @@ namespace Nucleus.Coop.Tools
                 mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
             }
 
-            mainForm.btn_textSwitcher.Visible = !mainForm.setupScreen.textZoomContainer.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));       
+            mainForm.btn_textSwitcher.Visible = !mainForm.handlerNotesZoom.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
         }
     }
 }

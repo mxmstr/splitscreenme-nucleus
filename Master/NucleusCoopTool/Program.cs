@@ -1,11 +1,7 @@
-﻿using Nucleus.Coop.Forms;
-using Nucleus.Coop.Tools;
-using Nucleus.Gaming;
+﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Windows;
 using System;
 using System.IO;
-using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop

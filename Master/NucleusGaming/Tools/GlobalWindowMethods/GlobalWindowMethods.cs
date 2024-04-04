@@ -1,5 +1,4 @@
-﻿using Jint.Runtime.Debugger;
-using Nucleus.Gaming.Coop;
+﻿using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Windows;
@@ -9,15 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Threading;
 using WindowScrape.Constants;
-using WindowScrape.Static;
 using WindowScrape.Types;
 
 namespace Nucleus.Gaming.Tools.GlobalWindowMethods
@@ -76,26 +71,28 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
         private static bool resetingWindows = false;
 
-        public static void ResetWindows(GenericGameHandler genericGameHandler, GenericGameInfo genericGameInfo, ProcessData processData, int x, int y, int w, int h, int i)
+        public static void ResetWindows(ProcessData processData, int x, int y, int w, int h, int i)
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             if (processData.HWnd == null)
             {
-                profile.DevicesList[i - 1].ProcessData.HWnd = new HwndObject(profile.DevicesList[i - 1].ProcessData.Process.NucleusGetMainWindowHandle());
-                processData.HWnd = profile.DevicesList[i - 1].ProcessData.HWnd;
+                handlerInstance.profile.DevicesList[i - 1].ProcessData.HWnd = new HwndObject(handlerInstance.profile.DevicesList[i - 1].ProcessData.Process.NucleusGetMainWindowHandle());
+                processData.HWnd = handlerInstance.profile.DevicesList[i - 1].ProcessData.HWnd;
                 Thread.Sleep(1000);
             }
 
-            genericGameHandler.Log("Attempting to reposition, resize and strip borders for instance " + (i - 1) + $" - {processData.Process.ProcessName} (pid {processData.Process.Id})");
+            handlerInstance.Log("Attempting to reposition, resize and strip borders for instance " + (i - 1) + $" - {processData.Process.ProcessName} (pid {processData.Process.Id})");
 
             try
             {
-                if (!genericGameInfo.DontRemoveBorders)
+                if (!handlerInstance.currentGameInfo.DontRemoveBorders)
                 {
                     uint lStyle = User32Interop.GetWindowLong(processData.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                    if (genericGameInfo.WindowStyleValues?.Length > 0)
+                    if (handlerInstance.currentGameInfo.WindowStyleValues?.Length > 0)
                     {
-                        genericGameHandler.Log("Using user custom window style");
-                        foreach (string val in genericGameInfo.WindowStyleValues)
+                        handlerInstance.Log("Using user custom window style");
+                        foreach (string val in handlerInstance.currentGameInfo.WindowStyleValues)
                         {
                             if (val.StartsWith("~"))
                             {
@@ -122,10 +119,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                     lStyle = User32Interop.GetWindowLong(processData.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
 
-                    if (genericGameInfo.ExtWindowStyleValues?.Length > 0)
+                    if (handlerInstance.currentGameInfo.ExtWindowStyleValues?.Length > 0)
                     {
-                        genericGameHandler.Log("Using user custom extended window style");
-                        foreach (string val in genericGameInfo.ExtWindowStyleValues)
+                        handlerInstance.Log("Using user custom extended window style");
+                        foreach (string val in handlerInstance.currentGameInfo.ExtWindowStyleValues)
                         {
                             if (val.StartsWith("~"))
                             {
@@ -150,50 +147,53 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                 }
 
-                if (!genericGameInfo.DontReposition)
+                if (!handlerInstance.currentGameInfo.DontReposition)
                 {
                     processData.HWnd.Location = new Point(x, y);
                 }
 
-                if (!genericGameInfo.DontResize)
+                if (!handlerInstance.currentGameInfo.DontResize)
                 {
                     processData.HWnd.Size = new Size(w, h);
                 }
             }
             catch (Exception ex)
             {
-                genericGameHandler.Log("ERROR - Exception in ResetWindows for instance " + (i - 1) + ". " + ex.Message);
+                handlerInstance.Log("ERROR - Exception in ResetWindows for instance " + (i - 1) + ". " + ex.Message);
             }
 
             try
             {
-                if ((processData.HWnd.Location != new Point(x, y) && !genericGameInfo.DontReposition) || (processData.HWnd.Size != new Size(w, h) && !genericGameInfo.DontResize))
+                if ((processData.HWnd.Location != new Point(x, y) && !handlerInstance.currentGameInfo.DontReposition) || (processData.HWnd.Size != new Size(w, h) && !handlerInstance.currentGameInfo.DontResize))
                 {
-                    genericGameHandler.Log("ERROR - ResetWindows was unsuccessful for instance " + (i - 1));
+                    handlerInstance.Log("ERROR - ResetWindows was unsuccessful for instance " + (i - 1));
                 }
             }
             catch (Exception e)
             {
-                genericGameHandler.Log("ERROR - Exception in ResetWindows for instance " + (i - 1) + ", error = " + e);
+                handlerInstance.Log("ERROR - Exception in ResetWindows for instance " + (i - 1) + ", error = " + e);
             }
         }
 
-        public static void ChangeGameWindow(GenericGameHandler genericGameHandler, GenericGameInfo gen, Process proc, List<PlayerInfo> players, int playerIndex)
+        public static void ChangeGameWindow(Process proc, List<PlayerInfo> players, int playerIndex)
         {
-            var hwnd = WaitForProcWindowHandleNotZero(genericGameHandler, proc);
+            var handlerInstance = GenericGameHandler.Instance;
+
+            var hwnd = WaitForProcWindowHandleNotZero(proc);
 
             Point loc = new Point(players[playerIndex].MonitorBounds.X, players[playerIndex].MonitorBounds.Y);
             Size size = new Size(players[playerIndex].MonitorBounds.Width, players[playerIndex].MonitorBounds.Height);
 
-            if (!gen.DontRemoveBorders)
+            if (!handlerInstance.currentGameInfo.DontRemoveBorders)
             {
-                genericGameHandler.Log($"Removing game window border for process {proc.ProcessName} (pid {proc.Id})");
+                handlerInstance.Log($"Removing game window border for process {proc.ProcessName} (pid {proc.Id})");
 
                 uint lStyle = User32Interop.GetWindowLong(hwnd, User32_WS.GWL_STYLE);
-                if (gen.WindowStyleValues?.Length > 0)
+                if (handlerInstance.currentGameInfo.WindowStyleValues?.Length > 0)
                 {
-                    genericGameHandler.Log("Using user custom window style");
-                    foreach (string val in gen.WindowStyleValues)
+                    handlerInstance.Log("Using user custom window style");
+
+                    foreach (string val in handlerInstance.currentGameInfo.WindowStyleValues)
                     {
                         if (val.StartsWith("~"))
                         {
@@ -219,10 +219,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 int resultCode = User32Interop.SetWindowLong(hwnd, User32_WS.GWL_STYLE, lStyle);
 
                 lStyle = User32Interop.GetWindowLong(hwnd, User32_WS.GWL_EXSTYLE);
-                if (gen.ExtWindowStyleValues?.Length > 0)
+                if (handlerInstance.currentGameInfo.ExtWindowStyleValues?.Length > 0)
                 {
-                    genericGameHandler.Log("Using user custom extended window style");
-                    foreach (string val in gen.ExtWindowStyleValues)
+                    handlerInstance.Log("Using user custom extended window style");
+
+                    foreach (string val in handlerInstance.currentGameInfo.ExtWindowStyleValues)
                     {
                         if (val.StartsWith("~"))
                         {
@@ -245,97 +246,99 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 User32Interop.SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
             }
 
-            if (gen.KeepAspectRatio || gen.KeepMonitorAspectRatio)
+            if (handlerInstance.currentGameInfo.KeepAspectRatio || handlerInstance.currentGameInfo.KeepMonitorAspectRatio)
             {
-                if (gen.KeepMonitorAspectRatio)
+                if (handlerInstance.currentGameInfo.KeepMonitorAspectRatio)
                 {
-                    genericGameHandler.origWidth = genericGameHandler.owner.MonitorBounds.Width;
-                    genericGameHandler.origHeight = genericGameHandler.owner.MonitorBounds.Height;
+                    handlerInstance.origWidth = handlerInstance.owner.MonitorBounds.Width;
+                    handlerInstance.origHeight = handlerInstance.owner.MonitorBounds.Height;
                 }
                 else
                 {
                     if (GetWindowRect(hwnd, out RECT Rect))
                     {
-                        genericGameHandler.origWidth = Rect.Right - Rect.Left;
-                        genericGameHandler.origHeight = Rect.Bottom - Rect.Top;
+                        handlerInstance.origWidth = Rect.Right - Rect.Left;
+                        handlerInstance.origHeight = Rect.Bottom - Rect.Top;
                     }
                 }
 
-                double newWidth = genericGameHandler.playerBoundsWidth;
-                double newHeight = genericGameHandler.playerBoundsHeight;
+                double newWidth = handlerInstance.playerBoundsWidth;
+                double newHeight = handlerInstance.playerBoundsHeight;
 
-                if (newWidth < genericGameHandler.origWidth)
+                if (newWidth < handlerInstance.origWidth)
                 {
-                    if (genericGameHandler.origHeight > 0 && genericGameHandler.origWidth > 0)
+                    if (handlerInstance.origHeight > 0 && handlerInstance.origWidth > 0)
                     {
-                        genericGameHandler.origRatio = (double)genericGameHandler.origWidth / genericGameHandler.origHeight;
+                        handlerInstance.origRatio = (double)handlerInstance.origWidth / handlerInstance.origHeight;
 
-                        newHeight = (newWidth / genericGameHandler.origRatio);
+                        newHeight = (newWidth / handlerInstance.origRatio);
 
-                        if (newHeight > genericGameHandler.playerBoundsWidth)
+                        if (newHeight > handlerInstance.playerBoundsWidth)
                         {
-                            newHeight = genericGameHandler.playerBoundsWidth;
+                            newHeight = handlerInstance.playerBoundsWidth;
                         }
                     }
                 }
                 else
                 {
-                    if (genericGameHandler.origHeight > 0 && genericGameHandler.origWidth > 0)
+                    if (handlerInstance.origHeight > 0 && handlerInstance.origWidth > 0)
                     {
-                        genericGameHandler.origRatio = (double)genericGameHandler.origWidth / genericGameHandler.origHeight;
+                        handlerInstance.origRatio = (double)handlerInstance.origWidth / handlerInstance.origHeight;
 
-                        newWidth = (newHeight * genericGameHandler.origRatio);
+                        newWidth = (newHeight * handlerInstance.origRatio);
 
-                        if (newWidth > genericGameHandler.playerBoundsHeight)
+                        if (newWidth > handlerInstance.playerBoundsHeight)
                         {
-                            newWidth = genericGameHandler.playerBoundsHeight;
+                            newWidth = handlerInstance.playerBoundsHeight;
                         }
                     }
                 }
                 size.Width = (int)newWidth;
                 size.Height = (int)newHeight;
 
-                if (newWidth < genericGameHandler.origWidth)
+                if (newWidth < handlerInstance.origWidth)
                 {
-                    int yOffset = Convert.ToInt32(loc.Y + ((genericGameHandler.playerBoundsHeight - newHeight) / 2));
+                    int yOffset = Convert.ToInt32(loc.Y + ((handlerInstance.playerBoundsHeight - newHeight) / 2));
                     loc.Y = yOffset;
                 }
-                if (newHeight < genericGameHandler.origHeight)
+                if (newHeight < handlerInstance.origHeight)
                 {
-                    int xOffset = Convert.ToInt32(loc.X + ((genericGameHandler.playerBoundsWidth - newWidth) / 2));
+                    int xOffset = Convert.ToInt32(loc.X + ((handlerInstance.playerBoundsWidth - newWidth) / 2));
                     loc.X = xOffset;
                 }
             }
 
-            if (!gen.DontResize)
+            if (!handlerInstance.currentGameInfo.DontResize)
             {
-                genericGameHandler.Log(string.Format("Resizing this game window and keeping aspect ratio. Values: width:{0}, height:{1}, aspectratio:{2}, origwidth:{3}, origheight:{4}, plyrboundwidth:{5}, plyrboundheight:{6}", size.Width, size.Height, genericGameHandler.origRatio, genericGameHandler.origWidth, genericGameHandler.origHeight, genericGameHandler.playerBoundsWidth, genericGameHandler.playerBoundsHeight));
+                handlerInstance.Log(string.Format("Resizing this game window and keeping aspect ratio. Values: width:{0}, height:{1}, aspectratio:{2}, origwidth:{3}, origheight:{4}, plyrboundwidth:{5}, plyrboundheight:{6}", size.Width, size.Height, handlerInstance.origRatio, handlerInstance.origWidth, handlerInstance.origHeight, handlerInstance.playerBoundsWidth, handlerInstance.playerBoundsHeight));
                 WindowScrape.Static.HwndInterface.SetHwndSize(hwnd, size.Width, size.Height);
             }
 
-            if (!gen.DontReposition)
+            if (!handlerInstance.currentGameInfo.DontReposition)
             {
-                genericGameHandler.Log(string.Format("Repositioning this game window to coords x:{0},y:{1}", loc.X, loc.Y));
+                handlerInstance.Log(string.Format("Repositioning this game window to coords x:{0},y:{1}", loc.X, loc.Y));
                 WindowScrape.Static.HwndInterface.SetHwndPos(hwnd, loc.X, loc.Y);
             }
 
-            if (!gen.NotTopMost)
+            if (!handlerInstance.currentGameInfo.NotTopMost)
             {
-                genericGameHandler.Log("Setting this game window to top most");
+                handlerInstance.Log("Setting this game window to top most");
                 WindowScrape.Static.HwndInterface.MakeTopMost(hwnd);
             }
         }
 
-        public static void WindowStyleChanges(GenericGameHandler genericGameHandler, GenericGameInfo gen, ProcessData processData, int i)
+        public static void WindowStyleChanges(ProcessData processData)
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             try
             {
-                genericGameHandler.Log("WindowStyleChanges called");
-                if (gen.WindowStyleEndChanges?.Length > 0)
+                handlerInstance.Log("WindowStyleChanges called");
+                if (handlerInstance.currentGameInfo.WindowStyleEndChanges?.Length > 0)
                 {
                     uint lStyle = User32Interop.GetWindowLong(processData.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                    genericGameHandler.Log("Using user custom window style");
-                    foreach (string val in gen.WindowStyleEndChanges)
+                    handlerInstance.Log("Using user custom window style");
+                    foreach (string val in handlerInstance.currentGameInfo.WindowStyleEndChanges)
                     {
                         if (val.StartsWith("~"))
                         {
@@ -349,11 +352,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     User32Interop.SetWindowLong(processData.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
                 }
 
-                if (gen.ExtWindowStyleEndChanges?.Length > 0)
+                if (handlerInstance.currentGameInfo.ExtWindowStyleEndChanges?.Length > 0)
                 {
                     uint lStyle = User32Interop.GetWindowLong(processData.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
-                    genericGameHandler.Log("Using user custom extended window style");
-                    foreach (string val in gen.ExtWindowStyleEndChanges)
+                    handlerInstance.Log("Using user custom extended window style");
+                    foreach (string val in handlerInstance.currentGameInfo.ExtWindowStyleEndChanges)
                     {
                         if (val.StartsWith("~"))
                         {
@@ -371,34 +374,36 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
             catch (Exception ex)
             {
-                genericGameHandler.Log("ERROR - Exception in WindowStyleChanges for instance " + i + ". " + ex.Message);
+                handlerInstance.Log("ERROR - Exception in WindowStyleChanges for process with id" + processData.Process.Id + ". " + ex.Message);
             }
         }
 
-        public static Window CreateRawInputWindow(GenericGameHandler genericGameHandler, GenericGameInfo gen, Process proc, PlayerInfo player)//probably not the best class where to place this :/
+        public static Window CreateRawInputWindow(Process proc, PlayerInfo player)//probably not the best class where to place this :/
         {
-            genericGameHandler.Log("Creating raw input window");
+            var handlerInstance = GenericGameHandler.Instance;
+            handlerInstance.Log("Creating raw input window");
 
-            var hWnd = WaitForProcWindowHandleNotZero(genericGameHandler, proc);
+            var hWnd = WaitForProcWindowHandleNotZero(proc);
 
             var mouseHdev = player.IsRawKeyboard ? player.RawMouseDeviceHandle : (IntPtr)(-1);
             var keyboardHdev = player.IsRawMouse ? player.RawKeyboardDeviceHandle : (IntPtr)(-1);
 
             var window = new Window(hWnd)
             {
-                CursorVisibility = player.IsRawMouse && !gen.HideCursor && gen.DrawFakeMouseCursor,
+                CursorVisibility = player.IsRawMouse && handlerInstance.currentGameInfo.HideCursor && handlerInstance.currentGameInfo.DrawFakeMouseCursor,
                 KeyboardAttached = keyboardHdev,
                 MouseAttached = mouseHdev
             };
 
-            window.CreateHookPipe(gen);
+            window.CreateHookPipe(handlerInstance.currentGameInfo);
 
             RawInputManager.windows.Add(window);
             return window;
         }
 
-        public static IntPtr WaitForProcWindowHandleNotZero(GenericGameHandler genericGameHandler, Process proc)
+        public static IntPtr WaitForProcWindowHandleNotZero(Process proc)
         {
+            var handlerInstance = GenericGameHandler.Instance;
             try
             {
                 if ((int)proc.NucleusGetMainWindowHandle() == 0)
@@ -414,7 +419,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                         if (times == 199 && (int)proc.NucleusGetMainWindowHandle() == 0)
                         {
                             if (!proc.HasExited)
-                                genericGameHandler.Log(string.Format("ERROR - WaitForProcWindowHandleNotZero could not find main window handle for {0} (pid {1})", proc.ProcessName, proc.Id));
+                                handlerInstance.Log(string.Format("ERROR - WaitForProcWindowHandleNotZero could not find main window handle for {0} (pid {1})", proc.ProcessName, proc.Id));
                         }
                     }
                 }
@@ -423,7 +428,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
             catch
             {
-                genericGameHandler.Log("ERROR - WaitForProcWindowHandleNotZero encountered an exception");
+                handlerInstance.Log("ERROR - WaitForProcWindowHandleNotZero encountered an exception");
                 return (IntPtr)(-1);
             }
         }
@@ -652,14 +657,15 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
         public static bool finish = false;
-        public static GameProfile profile;
         private static bool canSwitchLayout = true;
 
         public static void SwitchLayout()
         {
+            var profile = GenericGameHandler.Instance.profile;
+
             if (profile == null || !GameProfile.Saved || !canSwitchLayout)
             {
-                Globals.MainOSD.Show(1600, $"Can't Be Used For Now");
+                Globals.MainOSD.Show(1600, $"Can't Be Used Now");
                 return;
             }
 
@@ -982,30 +988,36 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             //Globals.MainOSD.Settings(1600, $"Switching Layouts");
         }
 
+        #region Cutscene mode function
+        private static bool cutsceneOn = false;
 
-        public static void ToggleCutScenesMode(bool on)
+        public static void ToggleCutScenesMode()
         {
-            if (profile == null || !GameProfile.Saved)
+            var handlerInstance = GenericGameHandler.Instance;
+
+            if (handlerInstance.profile == null || !GameProfile.Saved)
             {
-                Globals.MainOSD.Show(1600, $"Can't Be Used For Now");
+                Globals.MainOSD.Show(1600, $"Can't Be Used Now");
                 return;
             }
 
-            List<PlayerInfo> players = profile.DevicesList;
+            List<PlayerInfo> players = handlerInstance.profile.DevicesList;
 
-            List<UserScreen> screens = profile.Screens;
+            List<UserScreen> screens = handlerInstance.profile.Screens;
 
             foreach (UserScreen screen in screens)
             {
-                PlayerInfo p = profile.DevicesList.Where(pl => pl.MonitorBounds.IntersectsWith(screen.SubScreensBounds.ElementAt(0).Key)).First();
+                PlayerInfo p = handlerInstance.profile.DevicesList.Where(pl => pl.MonitorBounds.IntersectsWith(screen.SubScreensBounds.ElementAt(0).Key)).First();
                 ProcessData data = p.ProcessData;//datas of first player (of each screen) 
 
                 if (data == null)
                 {
-                    continue;
+                    //continue;
+                    Globals.MainOSD.Show(1600, $"Can't Be Used Now");
+                    return;
                 }
 
-                if (on)
+                if (!cutsceneOn)
                 {
                     //First player on this screen
                     if (!GameProfile.Cts_KeepAspectRatio && !GameProfile.Cts_MuteAudioOnly)//will set player 0 window fullscreened.
@@ -1047,14 +1059,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                         data.HWnd.Location = resizeReposition.Location;
                         data.HWnd.Size = resizeReposition.Size;
-
-                        if (GameProfile.Cts_BringToFront)
-                        {
-                            //HwndInterface.MakeTop(data.HWnd.NativePtr);
-                            ShowWindow(data.HWnd.NativePtr, ShowWindowEnum.Restore);
-                            User32Interop.SetWindowPos(data.HWnd.NativePtr, new IntPtr(-1), 0, 0, 0, 0,
-                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                        }
                     }
 
                     //All other players on this screen
@@ -1068,46 +1072,51 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                             player.ProcessData.HWnd.Size = reposition.Size;
                         }
 
-                        if (GameProfile.Cts_BringToFront)
-                        {
-                            //HwndInterface.MakeTop(player.ProcessData.HWnd.NativePtr);
-                            ShowWindow(player.ProcessData.HWnd.NativePtr, ShowWindowEnum.Restore);
-                            User32Interop.SetWindowPos(player.ProcessData.HWnd.NativePtr, new IntPtr(-1), 0, 0, 0, 0,
-                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                        }
-
-                        VolumeMixer.SetApplicationVolume(player.ProcessData.Process.Id,(float) player.ProcessData.AudioVolume);
+                        VolumeMixer.SetApplicationVolume(player.ProcessData.Process.Id, (float)player.ProcessData.AudioVolume);
                     }
 
                     canSwitchLayout = true;
-                    
-                    if (GameProfile.Cts_Unfocus)
+
+                    Globals.MainOSD.Show(1600, "Cutscenes Mode Off");
+
+                    if (handlerInstance.currentGameInfo.SetForegroundWindowElsewhere || GameProfile.Cts_Unfocus)
                     {
                         ChangeForegroundWindow();
                     }
-
-                    Globals.MainOSD.Show(1600, "Cutscenes Mode Off");
                 }
+
+            }
+
+            if (!cutsceneOn)
+            {
+                cutsceneOn = true;
+            }
+            else
+            {
+                cutsceneOn = false;
             }
         }
+        #endregion
 
-        public static void UpdateAndRefreshGameWindows(GenericGameHandler genericGameHandler, GenericGameInfo gen, GameProfile profile, double delayMS, bool refresh)
+        public static void UpdateAndRefreshGameWindows(double delayMS, bool refresh)
         {
-            if (profile == null)
+            var handlerInstance = GenericGameHandler.Instance;
+
+            if (handlerInstance.profile == null)
             {
                 return;
             }
 
-            genericGameHandler.exited = 0;
-            List<PlayerInfo> players = profile.DevicesList;
-            genericGameHandler.timer += delayMS;
+            handlerInstance.exited = 0;
+            List<PlayerInfo> players = handlerInstance.profile.DevicesList;
+            handlerInstance.timer += delayMS;
 
             bool updatedHwnd = false;
 
-            if (genericGameHandler.timer > genericGameHandler.HWndInterval)
+            if (handlerInstance.timer > handlerInstance.HWndInterval)
             {
                 updatedHwnd = true;
-                genericGameHandler.timer = 0;
+                handlerInstance.timer = 0;
             }
 
             Application.DoEvents();
@@ -1124,7 +1133,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                 if (refresh)
                 {
-                    genericGameHandler.TriggerOSD(100000, "Resetting game windows. Please wait...");
+                    handlerInstance.TriggerOSD(100000, "Resetting game windows. Please wait...");
                     data.HWNDRetry = false;
                     // data.HWnd = null;
                     //updatedHwnd = false;
@@ -1138,7 +1147,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 {
                     if (data.Process.HasExited)
                     {
-                        genericGameHandler.exited++;
+                        handlerInstance.exited++;
                     }
 
                     continue;
@@ -1180,17 +1189,17 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                         {
                             if (data.Process.HasExited)
                             {
-                                genericGameHandler.exited++;
+                                handlerInstance.exited++;
                                 continue;
                             }
 
-                            if (!gen.PromptBetweenInstances)
+                            if (!handlerInstance.currentGameInfo.PromptBetweenInstances)
                             {
-                                if (!gen.NotTopMost)
+                                if (!handlerInstance.currentGameInfo.NotTopMost)
                                 {
-                                    if (!gen.SetTopMostAtEnd)
+                                    if (!handlerInstance.currentGameInfo.SetTopMostAtEnd)
                                     {
-                                        genericGameHandler.Log("(Update) Setting game window to top most");
+                                        handlerInstance.Log("(Update) Setting game window to top most");
                                         data.HWnd.TopMost = true;
                                     }
                                 }
@@ -1198,14 +1207,16 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                             if (data.Status == 2)
                             {
-                                if (!gen.DontRemoveBorders)
+                                if (!handlerInstance.currentGameInfo.DontRemoveBorders)
                                 {
-                                    genericGameHandler.Log("(Update) Removing game window border for pid " + data.Process.Id);
+                                    handlerInstance.Log("(Update) Removing game window border for pid " + data.Process.Id);
+
                                     uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                                    if (gen.WindowStyleValues?.Length > 0)
+
+                                    if (handlerInstance.currentGameInfo.WindowStyleValues?.Length > 0)
                                     {
-                                        genericGameHandler.Log("(Update) Using user custom window style");
-                                        foreach (string val in gen.WindowStyleValues)
+                                        handlerInstance.Log("(Update) Using user custom window style");
+                                        foreach (string val in handlerInstance.currentGameInfo.WindowStyleValues)
                                         {
                                             if (val.StartsWith("~"))
                                             {
@@ -1233,10 +1244,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                                     lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
 
-                                    if (gen.ExtWindowStyleValues?.Length > 0)
+                                    if (handlerInstance.currentGameInfo.ExtWindowStyleValues?.Length > 0)
                                     {
-                                        genericGameHandler.Log("(Update) Using user custom extended window style");
-                                        foreach (string val in gen.ExtWindowStyleValues)
+                                        handlerInstance.Log("(Update) Using user custom extended window style");
+
+                                        foreach (string val in handlerInstance.currentGameInfo.ExtWindowStyleValues)
                                         {
                                             if (val.StartsWith("~"))
                                             {
@@ -1260,207 +1272,206 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                     User32Interop.SetWindowPos(data.HWnd.NativePtr, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
                                 }
 
-                                if (gen.EnableWindows)
+                                if (handlerInstance.currentGameInfo.EnableWindows)
                                 {
                                     EnableWindow(data.HWnd.NativePtr, true);
                                 }
 
                                 //Minimise and un-minimise the window. Fixes black borders in Minecraft, but causing stretching issues in games like Minecraft.
-                                if (gen.RefreshWindowAfterStart)
+                                if (handlerInstance.currentGameInfo.RefreshWindowAfterStart)
                                 {
-                                    genericGameHandler.Log("Refreshing game window");
-                                    ShowWindow(data.HWnd.NativePtr, 6);
-                                    ShowWindow(data.HWnd.NativePtr, 9);
+                                    handlerInstance.Log("Refreshing game window");
+                                    //ShowWindow(data.HWnd.NativePtr, 6);
+                                    //ShowWindow(data.HWnd.NativePtr, 9);
 
-                                    if (gen.SetForegroundWindowElsewhere)
+                                    if (handlerInstance.currentGameInfo.SetForegroundWindowElsewhere)
                                     {
                                         ChangeForegroundWindow();
                                     }
                                 }
 
-                                if (gen.WindowStyleEndChanges?.Length > 0 || gen.ExtWindowStyleEndChanges?.Length > 0)
+                                if (handlerInstance.currentGameInfo.WindowStyleEndChanges?.Length > 0 || handlerInstance.currentGameInfo.ExtWindowStyleEndChanges?.Length > 0)
                                 {
                                     Thread.Sleep(1000);
-                                    WindowStyleChanges(genericGameHandler, gen, data, i);
+                                    WindowStyleChanges(data);
                                 }
 
                                 data.Finished = true;
 
                                 Debug.WriteLine("State 2");
-                                genericGameHandler.Log("Update State 2");
+                                handlerInstance.Log("Update State 2");
 
                                 if (i == (players.Count - 1))
                                 {
-                                    if (gen.LockMouse)
+                                    if (handlerInstance.currentGameInfo.LockMouse)
                                     {
-                                        genericGameHandler._cursorModule.SetActiveWindow();
+                                        handlerInstance._cursorModule.SetActiveWindow();
                                     }
 
                                     if (resetingWindows)
                                     {
-                                        if (gen.SetForegroundWindowElsewhere)
+                                        if (handlerInstance.currentGameInfo.SetForegroundWindowElsewhere)
                                         {
                                             ChangeForegroundWindow();
                                         }
 
-                                        genericGameHandler.TriggerOSD(2000, "Game Windows Resetted");
+                                        handlerInstance.TriggerOSD(2000, "Game Windows Resetted");
                                         resetingWindows = false;
                                     }
                                 }
                             }
                             else if (data.Status == 1)
                             {
-                                if (!gen.KeepAspectRatio && !gen.KeepMonitorAspectRatio && !genericGameHandler.dllRepos && !gen.DontResize)
+                                if (!handlerInstance.currentGameInfo.KeepAspectRatio && !handlerInstance.currentGameInfo.KeepMonitorAspectRatio && !handlerInstance.dllRepos && !handlerInstance.currentGameInfo.DontResize)
                                 {
                                     if (data.Position.X != p.MonitorBounds.X || data.Position.Y != p.MonitorBounds.Y)
                                     {
-                                        genericGameHandler.Log("(Update) Data position X or Y does not match player bounds for pid " + data.Process.Id + ", using player bound variables");
-                                        genericGameHandler.Log(string.Format("(Update) Repostioning game window for pid {0} to coords x:{1},y:{2}", data.Process.Id, p.MonitorBounds.X, p.MonitorBounds.Y));
+                                        handlerInstance.Log("(Update) Data position X or Y does not match player bounds for pid " + data.Process.Id + ", using player bound variables");
+                                        handlerInstance.Log(string.Format("(Update) Repostioning game window for pid {0} to coords x:{1},y:{2}", data.Process.Id, p.MonitorBounds.X, p.MonitorBounds.Y));
                                         //data.HWnd.Location = data.Position;
                                         data.HWnd.Location = new Point(p.MonitorBounds.X, p.MonitorBounds.Y);
                                     }
                                     else
                                     {
-                                        genericGameHandler.Log(string.Format("(Update) Repostioning game window for pid {0} to coords x:{1},y:{2}", data.Process.Id, data.Position.X, data.Position.Y));
+                                        handlerInstance.Log(string.Format("(Update) Repostioning game window for pid {0} to coords x:{1},y:{2}", data.Process.Id, data.Position.X, data.Position.Y));
                                         data.HWnd.Location = data.Position;
                                     }
                                 }
 
                                 data.Status++;
-                                genericGameHandler.Log("Update State 1");
+                                handlerInstance.Log("Update State 1");
 
-                                if (gen.LockMouse)
+                                if (handlerInstance.currentGameInfo.LockMouse)
                                 {
                                     if (p.IsKeyboardPlayer && !p.IsRawKeyboard)
                                     {
-                                        genericGameHandler._cursorModule.Setup(data.Process, p.MonitorBounds);
+                                        handlerInstance._cursorModule.Setup(data.Process, p.MonitorBounds);
                                     }
                                     else
                                     {
-                                        genericGameHandler._cursorModule.AddOtherGameHandle(data.Process.NucleusGetMainWindowHandle());
+                                        handlerInstance._cursorModule.AddOtherGameHandle(data.Process.NucleusGetMainWindowHandle());
                                     }
                                 }
 
-                                if (i == (players.Count - 1) && !gen.ProcessChangesAtEnd)
+                                if (i == (players.Count - 1) && !handlerInstance.currentGameInfo.ProcessChangesAtEnd)
                                 {
                                     if (resetingWindows)
                                     {
-                                        if (gen.SetForegroundWindowElsewhere)
+                                        if (handlerInstance.currentGameInfo.SetForegroundWindowElsewhere)
                                         {
                                             ChangeForegroundWindow();
                                         }
 
-                                        genericGameHandler.TriggerOSD(2000, "Game Windows Resetted");
+                                        handlerInstance.TriggerOSD(2000, "Game Windows Resetted");
                                         resetingWindows = false;
                                     }
 
-                                    genericGameHandler.Log("(Update) All done!");
-                                    //try
-                                    //{
-                                    //    if (statusWinThread != null && statusWinThread.IsAlive)
-                                    //    {
-                                    //        Thread.Sleep(5000);
-                                    //        if (statusWinThread != null && statusWinThread.IsAlive)
-                                    //        {
-                                    //            statusWinThread.Abort();
-                                    //        }
-                                    //    }
-                                    //}
-                                    //catch { }
+                                    handlerInstance.Log("(Update) All done!");
+
                                 }
                             }
                             else if (data.Status == 0)
                             {
-                                if (!genericGameHandler.dllResize && !gen.DontResize)
+                                if (resetingWindows)
                                 {
-                                    if (gen.KeepAspectRatio || gen.KeepMonitorAspectRatio)
+                                    //not tested
+                                    if (!handlerInstance.currentGameInfo.IgnoreWindowBorderCheck)
                                     {
-                                        if (gen.KeepMonitorAspectRatio)
+                                        RemoveBorder();
+                                    }
+                                }
+
+                                if (!handlerInstance.dllResize && !handlerInstance.currentGameInfo.DontResize)
+                                {
+                                    if (handlerInstance.currentGameInfo.KeepAspectRatio || handlerInstance.currentGameInfo.KeepMonitorAspectRatio)
+                                    {
+                                        if (handlerInstance.currentGameInfo.KeepMonitorAspectRatio)
                                         {
-                                            genericGameHandler.origWidth = genericGameHandler.owner.MonitorBounds.Width;
-                                            genericGameHandler.origHeight = genericGameHandler.owner.MonitorBounds.Height;
+                                            handlerInstance.origWidth = handlerInstance.owner.MonitorBounds.Width;
+                                            handlerInstance.origHeight = handlerInstance.owner.MonitorBounds.Height;
                                         }
                                         else
                                         {
                                             if (GetWindowRect(data.Process.NucleusGetMainWindowHandle(), out RECT Rect))
                                             {
-                                                genericGameHandler.origWidth = Rect.Right - Rect.Left;
-                                                genericGameHandler.origHeight = Rect.Bottom - Rect.Top;
+                                                handlerInstance.origWidth = Rect.Right - Rect.Left;
+                                                handlerInstance.origHeight = Rect.Bottom - Rect.Top;
                                             }
                                         }
 
-                                        double newWidth = genericGameHandler.playerBoundsWidth;
-                                        double newHeight = genericGameHandler.playerBoundsHeight;
+                                        double newWidth = handlerInstance.playerBoundsWidth;
+                                        double newHeight = handlerInstance.playerBoundsHeight;
 
-                                        if (newWidth < genericGameHandler.origWidth)
+                                        if (newWidth < handlerInstance.origWidth)
                                         {
-                                            if (genericGameHandler.origHeight > 0 && genericGameHandler.origWidth > 0)
+                                            if (handlerInstance.origHeight > 0 && handlerInstance.origWidth > 0)
                                             {
-                                                genericGameHandler.origRatio = (double)genericGameHandler.origWidth / genericGameHandler.origHeight;
+                                                handlerInstance.origRatio = (double)handlerInstance.origWidth / handlerInstance.origHeight;
 
-                                                newHeight = (newWidth / genericGameHandler.origRatio);
+                                                newHeight = (newWidth / handlerInstance.origRatio);
 
-                                                if (newHeight > genericGameHandler.playerBoundsHeight)
+                                                if (newHeight > handlerInstance.playerBoundsHeight)
                                                 {
-                                                    newHeight = genericGameHandler.playerBoundsHeight;
+                                                    newHeight = handlerInstance.playerBoundsHeight;
                                                 }
                                             }
                                         }
                                         else
                                         {
-                                            if (genericGameHandler.origHeight > 0 && genericGameHandler.origWidth > 0)
+                                            if (handlerInstance.origHeight > 0 && handlerInstance.origWidth > 0)
                                             {
-                                                genericGameHandler.origRatio = (double)genericGameHandler.origWidth / genericGameHandler.origHeight;
+                                                handlerInstance.origRatio = (double)handlerInstance.origWidth / handlerInstance.origHeight;
 
-                                                newWidth = (newHeight * genericGameHandler.origRatio);
+                                                newWidth = (newHeight * handlerInstance.origRatio);
 
-                                                if (newWidth > genericGameHandler.playerBoundsWidth)
+                                                if (newWidth > handlerInstance.playerBoundsWidth)
                                                 {
-                                                    newWidth = genericGameHandler.playerBoundsWidth;
+                                                    newWidth = handlerInstance.playerBoundsWidth;
                                                 }
                                             }
                                         }
 
-                                        genericGameHandler.Log(string.Format("(Update) Resizing game window for pid {0} and keeping aspect ratio. Values: width:{1}, height:{2}, aspectratio:{3}, origwidth:{4}, origheight:{5}, plyrboundwidth:{6}, plyrboundheight:{7}", data.Process.Id, (int)newWidth, (int)newHeight, (Math.Truncate(genericGameHandler.origRatio * 100) / 100), genericGameHandler.origWidth, genericGameHandler.origHeight, genericGameHandler.playerBoundsWidth, genericGameHandler.playerBoundsHeight));
+                                        handlerInstance.Log(string.Format("(Update) Resizing game window for pid {0} and keeping aspect ratio. Values: width:{1}, height:{2}, aspectratio:{3}, origwidth:{4}, origheight:{5}, plyrboundwidth:{6}, plyrboundheight:{7}", data.Process.Id, (int)newWidth, (int)newHeight, (Math.Truncate(handlerInstance.origRatio * 100) / 100), handlerInstance.origWidth, handlerInstance.origHeight, handlerInstance.playerBoundsWidth, handlerInstance.playerBoundsHeight));
                                         data.HWnd.Size = new Size(Convert.ToInt32(newWidth), Convert.ToInt32(newHeight));
 
                                         //x horizontal , y vertical
-                                        if (newWidth < genericGameHandler.origWidth)
+                                        if (newWidth < handlerInstance.origWidth)
                                         {
-                                            int yOffset = Convert.ToInt32(data.Position.Y + ((genericGameHandler.playerBoundsHeight - newHeight) / 2));
+                                            int yOffset = Convert.ToInt32(data.Position.Y + ((handlerInstance.playerBoundsHeight - newHeight) / 2));
                                             data.Position.Y = yOffset;
                                         }
-                                        if (newHeight < genericGameHandler.origHeight)
+                                        if (newHeight < handlerInstance.origHeight)
                                         {
-                                            int xOffset = Convert.ToInt32(data.Position.X + ((genericGameHandler.playerBoundsWidth - newWidth) / 2));
+                                            int xOffset = Convert.ToInt32(data.Position.X + ((handlerInstance.playerBoundsWidth - newWidth) / 2));
                                             data.Position.X = xOffset;
                                         }
 
-                                        genericGameHandler.Log(string.Format("(Update) Resizing game window (for horizontal centering), coords x:{1},y:{2}", data.Process.Id, data.Position.X, data.Position.Y));
+                                        handlerInstance.Log(string.Format("(Update) Resizing game window (for horizontal centering), coords x:{1},y:{2}", data.Process.Id, data.Position.X, data.Position.Y));
                                         data.HWnd.Location = data.Position;
                                     }
                                     else
                                     {
                                         if (data.Size.Width == 0 || data.Size.Height == 0)
                                         {
-                                            genericGameHandler.Log("(Update) Data size width or height is showing as 0 for pid " + data.Process.Id + ", using player bound variables");
-                                            data.Size.Width = genericGameHandler.playerBoundsWidth;
-                                            data.Size.Height = genericGameHandler.playerBoundsHeight;
+                                            handlerInstance.Log("(Update) Data size width or height is showing as 0 for pid " + data.Process.Id + ", using player bound variables");
+                                            data.Size.Width = handlerInstance.playerBoundsWidth;
+                                            data.Size.Height = handlerInstance.playerBoundsHeight;
 
-                                            if (genericGameHandler.playerBoundsWidth == 0 || genericGameHandler.playerBoundsHeight == 0)
+                                            if (handlerInstance.playerBoundsWidth == 0 || handlerInstance.playerBoundsHeight == 0)
                                             {
-                                                genericGameHandler.Log("(Update) Play bounds width or height is showing as 0 for pid " + data.Process.Id + ", using monitor bound variables");
+                                                handlerInstance.Log("(Update) Play bounds width or height is showing as 0 for pid " + data.Process.Id + ", using monitor bound variables");
                                                 data.Size.Width = p.MonitorBounds.Width;
                                                 data.Size.Height = p.MonitorBounds.Height;
                                             }
                                         }
-                                        genericGameHandler.Log(string.Format("(Update) Resizing game window for pid {0} to the following width:{1}, height:{2}", data.Process.Id, data.Size.Width, data.Size.Height));
+                                        handlerInstance.Log(string.Format("(Update) Resizing game window for pid {0} to the following width:{1}, height:{2}", data.Process.Id, data.Size.Width, data.Size.Height));
                                         data.HWnd.Size = data.Size;
                                     }
                                 }
 
+
                                 data.Status++;
-                                genericGameHandler.Log("Update State 0");
+                                handlerInstance.Log("Update State 0");
                             }
                         }
                         else
@@ -1473,7 +1484,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 {
                                     if (p.GotGame)
                                     {
-                                        genericGameHandler.exited++;
+                                        handlerInstance.exited++;
                                     }
                                     else
                                     {
@@ -1485,10 +1496,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                                 int id = children[j];
                                                 Process pro = Process.GetProcessById(id);
 
-                                                if (!genericGameHandler.attached.Contains(pro))
+                                                if (!handlerInstance.attached.Contains(pro))
                                                 {
-                                                    genericGameHandler.attached.Add(pro);
-                                                    genericGameHandler.attachedIds.Add(pro.Id);
+                                                    handlerInstance.attached.Add(pro);
+                                                    handlerInstance.attachedIds.Add(pro.Id);
                                                     p.ProcessID = pro.Id;
                                                     data.HWnd = null;
                                                     p.GotGame = true;
@@ -1501,7 +1512,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 else
                                 {
                                     // Steam showing a launcher, need to find our game process
-                                    string launcher = gen.LauncherExe;
+                                    string launcher = handlerInstance.currentGameInfo.LauncherExe;
                                     if (!string.IsNullOrEmpty(launcher))
                                     {
                                         if (launcher.ToLower().EndsWith(".exe"))
@@ -1514,10 +1525,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                         {
                                             Process pro = procs[j];
 
-                                            if (!genericGameHandler.attachedIds.Contains(pro.Id))
+                                            if (!handlerInstance.attachedIds.Contains(pro.Id))
                                             {
-                                                genericGameHandler.attached.Add(pro);
-                                                genericGameHandler.attachedIds.Add(pro.Id);
+                                                handlerInstance.attached.Add(pro);
+                                                handlerInstance.attachedIds.Add(pro.Id);
                                                 p.ProcessID = pro.Id;
                                                 data.AssignProcess(pro);
                                                 p.GotLauncher = true;
@@ -1530,20 +1541,20 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                             {
                                 if (data.HWNDRetry || data.HWnd == null || data.HWnd.NativePtr != data.Process.NucleusGetMainWindowHandle())
                                 {
-                                    genericGameHandler.Log("Update data process has not exited");
+                                    handlerInstance.Log("Update data process has not exited");
                                     data.HWnd = new HwndObject(data.Process.NucleusGetMainWindowHandle());
                                     Point pos = data.HWnd.Location;
 
                                     if (string.IsNullOrEmpty(data.HWnd.Title) ||
                                         pos.X == -32000 ||
-                                        data.HWnd.Title.ToLower() == gen.LauncherTitle?.ToLower())
+                                        data.HWnd.Title.ToLower() == handlerInstance.currentGameInfo.LauncherTitle?.ToLower())
                                     {
                                         data.HWNDRetry = true;
                                     }
-                                    else if (!string.IsNullOrEmpty(gen.Hook.ForceFocusWindowName) &&
+                                    else if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.Hook.ForceFocusWindowName) &&
                                         // TODO: this Levenshtein distance is being used to help us around Call of Duty Black Ops, as it uses a ® icon in the title bar
                                         //       there must be a better way
-                                        StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, gen.Hook.ForceFocusWindowName) > 2 && !gen.HasDynamicWindowTitle)
+                                        StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, handlerInstance.currentGameInfo.Hook.ForceFocusWindowName) > 2 && !handlerInstance.currentGameInfo.HasDynamicWindowTitle)
                                     {
                                         data.HWNDRetry = true;
                                     }
@@ -1555,7 +1566,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 }
                                 else
                                 {
-                                    genericGameHandler.Log("Assigning window handle");
+                                    handlerInstance.Log("Assigning window handle");
                                     data.HWnd = new HwndObject(data.Process.NucleusGetMainWindowHandle());
                                     Point pos = data.HWnd.Location;
 
@@ -1568,13 +1579,13 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 }
             }
 
-            if (genericGameHandler.exited == players.Count)
+            if (handlerInstance.exited == players.Count)
             {
-                if (!genericGameHandler.hasEnded)
+                if (!handlerInstance.hasEnded)
                 {
-                    genericGameHandler.hasEnded = true;
-                    genericGameHandler.Log("Update method calling Handler End function");
-                    genericGameHandler.End(false);
+                    handlerInstance.hasEnded = true;
+                    handlerInstance.Log("Update method calling Handler End function");
+                    handlerInstance.End(false);
                 }
             }
         }
@@ -1588,8 +1599,18 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
         public static void ShowHideWindows(GenericGameInfo game)
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
             {
+                if (handlerInstance.profile.DevicesList.All(pl => pl.ProcessData == null))
+                {
+                    Globals.MainOSD.Show(1600, $"Can't Be Used Now");
+                    return;//return until a player processdata are set 
+                }
+
+                int windowsFound = 0;
+
                 if (TopMostToggle)
                 {
                     try
@@ -1602,37 +1623,47 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                             }));
                         }
 
-                        Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(game.ExecutableName.ToLower()));
-                        if (procs.Length > 0)
+                        for (int i = 0; i < handlerInstance.profile.DevicesList.Count; i++)
                         {
-                            for (int i = 0; i < procs.Length; i++)
+                            if (handlerInstance.profile.DevicesList[i].ProcessData != null)
                             {
-                                IntPtr hWnd = procs[i].NucleusGetMainWindowHandle();
-                                User32Interop.SetWindowPos(hWnd, new IntPtr(-2), 0, 0, 0, 0,
-                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
-                                ShowWindow(hWnd, ShowWindowEnum.Minimize);
+                                if (handlerInstance.profile.DevicesList[i].ProcessData.HWnd != null)
+                                {
+                                    IntPtr hWnd = handlerInstance.profile.DevicesList[i].ProcessData.HWnd.NativePtr;
+                                    if (hWnd != IntPtr.Zero)
+                                    {
+                                        User32Interop.SetWindowPos(hWnd, new IntPtr(-2), 0, 0, 0, 0,
+                                        (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
+                                        ShowWindow(hWnd, ShowWindowEnum.Minimize);
+                                        windowsFound++;
+                                    }
+                                }
                             }
                         }
                     }
                     catch
                     { }
 
-                    Globals.MainOSD.Show(1600, $"Game Windows Minimized");
+                    if (windowsFound > 0)
+                    {
+                        Globals.MainOSD.Show(1600, $"Game Windows Minimized");
 
-                    if (game.HideTaskbar)
-                    {
-                        User32Util.ShowTaskBar();
-                    }
-                    else if (game.ProtoInput.AutoHideTaskbar)
-                    {
-                        if (ProtoInput.protoInput.GetTaskbarAutohide())
+                        if (game.HideTaskbar)
                         {
-                            ProtoInput.protoInput.SetTaskbarAutohide(false);
                             User32Util.ShowTaskBar();
-                        }                           
-                    }
+                        }
+                        else if (game.ProtoInput.AutoHideTaskbar)
+                        {
+                            if (ProtoInput.protoInput.GetTaskbarAutohide())
+                            {
+                                ProtoInput.protoInput.SetTaskbarAutohide(false);
+                                User32Util.ShowTaskBar();
+                            }
+                        }
 
-                    TopMostToggle = false;
+                        TopMostToggle = false;
+
+                    }
                 }
                 else if (!TopMostToggle)
                 {
@@ -1644,38 +1675,87 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                         }));
                     }
 
-                    Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(game.ExecutableName.ToLower()));
-                    if (procs.Length > 0)
+                    for (int i = 0; i < handlerInstance.profile.DevicesList.Count; i++)
                     {
-                        for (int i = 0; i < procs.Length; i++)
+                        if (handlerInstance.profile.DevicesList[i].ProcessData != null)
                         {
-                            IntPtr hWnd = procs[i].NucleusGetMainWindowHandle();
-                            ShowWindow(hWnd, ShowWindowEnum.Restore);
-                            User32Interop.SetWindowPos(hWnd, new IntPtr(-1), 0, 0, 0, 0,
-                                (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
+                            if (handlerInstance.profile.DevicesList[i].ProcessData.HWnd != null)
+                            {
+                                IntPtr hWnd = handlerInstance.profile.DevicesList[i].ProcessData.HWnd.NativePtr;
+                                if (hWnd != IntPtr.Zero)
+                                {
+                                    ShowWindow(hWnd, ShowWindowEnum.Restore);
+                                    User32Interop.SetWindowPos(hWnd, new IntPtr(-1), 0, 0, 0, 0,
+                                        (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
+                                    windowsFound++;
+                                }
+                            }
                         }
                     }
 
-                    if (game.HideTaskbar)
+                    if (windowsFound > 0)
                     {
-                        User32Util.HideTaskbar();
-                    }
-                    else if(game.ProtoInput.AutoHideTaskbar)
-                    {
-                        if (!ProtoInput.protoInput.GetTaskbarAutohide())
+                        Globals.MainOSD.Show(1600, $"Game Windows Restored");
+
+                        if (game.HideTaskbar)
                         {
-                            ProtoInput.protoInput.SetTaskbarAutohide(true); 
+                            User32Util.HideTaskbar();
                         }
+                        else if (game.ProtoInput.AutoHideTaskbar)
+                        {
+                            if (!ProtoInput.protoInput.GetTaskbarAutohide())
+                            {
+                                ProtoInput.protoInput.SetTaskbarAutohide(true);
+                            }
+                        }
+
+                        TopMostToggle = true;
                     }
-
-                    Globals.MainOSD.Show(1600, $"Game Windows Restored");
-
-                    TopMostToggle = true;
                 }
             }
             else
             {
                 Globals.MainOSD.Show(1600, $"Unlock Inputs First (Press {Globals.ini.IniReadValue("Hotkeys", "LockKey")} key)");
+            }
+        }
+
+        public static void RemoveBorder()
+        {
+            var handlerInstance = GenericGameHandler.Instance;
+
+            foreach (PlayerInfo plyr in handlerInstance.profile.DevicesList)
+            {
+                Thread.Sleep(1000);
+                
+                if (plyr.ProcessData == null)
+                {
+                    continue;
+                }
+
+                Process plyrProc = plyr.ProcessData.Process;
+
+                if (!handlerInstance.currentGameInfo.DontRemoveBorders)
+                {
+                    const int flip = 0x00C00000 | 0x00080000 | 0x00040000; //WS_BORDER | WS_SYSMENU
+
+                    var x = (int)User32Interop.GetWindowLong(plyrProc.NucleusGetMainWindowHandle(), User32_WS.GWL_STYLE);
+                    if ((x & flip) > 0)//has a border
+                    {
+                        x &= (~flip);
+                        ResetWindows(plyr.ProcessData, plyr.ProcessData.Position.X, plyr.ProcessData.Position.Y, plyr.ProcessData.Size.Width, plyr.ProcessData.Size.Height, plyr.PlayerID + 1);
+                    }
+                }
+
+                if (handlerInstance.currentGameInfo.WindowStyleEndChanges?.Length > 0 || handlerInstance.currentGameInfo.ExtWindowStyleEndChanges?.Length > 0)
+                {
+                    Thread.Sleep(1000);
+                    WindowStyleChanges(plyr.ProcessData);
+                }
+
+                if (handlerInstance.currentGameInfo.EnableWindows)
+                {
+                    EnableWindow(plyr.ProcessData.HWnd.NativePtr, true);
+                }
             }
         }
 
@@ -1697,15 +1777,15 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 }
             }
 
-            if(windowToFocus == IntPtr.Zero)
+            if (windowToFocus == IntPtr.Zero)
             {
                 windowToFocus = User32Interop.FindWindow(null, "Nucleus Co-op");
             }
 
             if (windowToFocus != IntPtr.Zero)
             {
-                ShowWindow(windowToFocus, 6);
-                ShowWindow(windowToFocus, 9);
+                //ShowWindow(windowToFocus, 6);
+                //ShowWindow(windowToFocus, 9);
                 User32Interop.SetForegroundWindow(windowToFocus);
             }
         }

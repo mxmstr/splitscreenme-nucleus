@@ -36,8 +36,8 @@
             this.home = new System.Windows.Forms.Button();
             this.button_Panel = new System.Windows.Forms.Panel();
             this.modal = new BufferedClientAreaPanel();
-            this.modal_text = new System.Windows.Forms.Label();
             this.modalControlsContainer = new BufferedClientAreaPanel();
+            this.modal_text = new System.Windows.Forms.Label();
             this.modal_yes = new System.Windows.Forms.Button();
             this.modal_no = new System.Windows.Forms.Button();
             this.label = new System.Windows.Forms.Label();
@@ -146,6 +146,19 @@
             this.modal.TabIndex = 21;
             this.modal.Visible = false;
             // 
+            // modalControlsContainer
+            // 
+            this.modalControlsContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.modalControlsContainer.Controls.Add(this.modal_text);
+            this.modalControlsContainer.Controls.Add(this.modal_yes);
+            this.modalControlsContainer.Controls.Add(this.modal_no);
+            this.modalControlsContainer.Location = new System.Drawing.Point(35, 44);
+            this.modalControlsContainer.Name = "modalControlsContainer";
+            this.modalControlsContainer.Size = new System.Drawing.Size(1050, 550);
+            this.modalControlsContainer.TabIndex = 24;
+            // 
             // modal_text
             // 
             this.modal_text.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -161,19 +174,6 @@
             this.modal_text.TabIndex = 23;
             this.modal_text.Text = "label1";
             this.modal_text.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // modalControlsContainer
-            // 
-            this.modalControlsContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.modalControlsContainer.Controls.Add(this.modal_text);
-            this.modalControlsContainer.Controls.Add(this.modal_yes);
-            this.modalControlsContainer.Controls.Add(this.modal_no);
-            this.modalControlsContainer.Location = new System.Drawing.Point(35, 44);
-            this.modalControlsContainer.Name = "modalControlsContainer";
-            this.modalControlsContainer.Size = new System.Drawing.Size(1050, 550);
-            this.modalControlsContainer.TabIndex = 24;
             // 
             // modal_yes
             // 

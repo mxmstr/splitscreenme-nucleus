@@ -5,8 +5,10 @@ namespace Nucleus.Gaming.Util
 {
     public static class ExecutableUtil
     {
-        public static void ChangeExeName(GenericGameHandler genericGameHandler, GenericGameInfo gen, UserGameInfo userGame, string instanceExeFolder, int i)
+        public static void ChangeExeName(UserGameInfo userGame, string instanceExeFolder, int i)
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             string newExe = Path.GetFileNameWithoutExtension(userGame.Game.ExecutableName) + " - Player " + (i + 1) + ".exe";
 
             if (File.Exists(Path.Combine(instanceExeFolder, userGame.Game.ExecutableName)))
@@ -17,18 +19,18 @@ namespace Nucleus.Gaming.Util
                 }
 
                 File.Copy(Path.Combine(instanceExeFolder, userGame.Game.ExecutableName), Path.Combine(instanceExeFolder, newExe));
-                genericGameHandler.Log("Changed game executable from " + gen.ExecutableName + " to " + newExe);
+                handlerInstance.Log("Changed game executable from " + handlerInstance.currentGameInfo.ExecutableName + " to " + newExe);
             }
 
             if (File.Exists(Path.Combine(instanceExeFolder, newExe)))
             {
-                genericGameHandler.exePath = Path.Combine(instanceExeFolder, newExe);
-                genericGameHandler.Log("Using " + newExe + " as the game executable");
+                handlerInstance.exePath = Path.Combine(instanceExeFolder, newExe);
+                handlerInstance.Log("Using " + newExe + " as the game executable");
 
-                if (!gen.SymlinkGame && !gen.HardlinkGame && !gen.HardcopyGame)
+                if (!handlerInstance.currentGameInfo.SymlinkGame && !handlerInstance.currentGameInfo.HardlinkGame && !handlerInstance.currentGameInfo.HardcopyGame)
                 {
-                    genericGameHandler.Log($"{newExe} will be deleted upon ending session");
-                    genericGameHandler.addedFiles.Add(Path.Combine(instanceExeFolder, newExe));
+                    handlerInstance.Log($"{newExe} will be deleted upon ending session");
+                    handlerInstance.addedFiles.Add(Path.Combine(instanceExeFolder, newExe));
                 }
                 else
                 {

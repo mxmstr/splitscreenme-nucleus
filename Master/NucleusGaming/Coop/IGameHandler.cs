@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 
 namespace Nucleus.Gaming.Coop
@@ -17,7 +16,7 @@ namespace Nucleus.Gaming.Coop
 
         int TotalPlayers { get; }
 
-        bool Initialize(UserGameInfo game, GameProfile profile,IGameHandler handler);
+        bool Initialize(UserGameInfo game, GameProfile profile, IGameHandler handler);
 
         string Play();
 

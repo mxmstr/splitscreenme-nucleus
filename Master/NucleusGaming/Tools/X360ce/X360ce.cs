@@ -9,17 +9,20 @@ namespace Nucleus.Gaming.Tools.X360ce
 {
     public static class X360ce
     {
-        public static void UseX360ce(GenericGameHandler genericGameHandler, GenericGameInfo gen, int i, List<PlayerInfo> players, PlayerInfo player, GenericContext context, bool setupDll)
+        public static void UseX360ce(int i, PlayerInfo player, bool setupDll)
         {
-            genericGameHandler.Log("Setting up x360ce");
+            var handlerInstance = GenericGameHandler.Instance;
+            var players = GameProfile.Instance.DevicesList;
+
+            handlerInstance.Log("Setting up x360ce");
             string x360exe = "";
             string x360dll = "";
             string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\x360ce");
 
             string[] x360cedlls = { "xinput1_3.dll" };
-            if (gen.X360ceDll?.Length > 0)
+            if (handlerInstance.currentGameInfo.X360ceDll?.Length > 0)
             {
-                x360cedlls = gen.X360ceDll;
+                x360cedlls = handlerInstance.currentGameInfo.X360ceDll;
             }
 
             if (setupDll)
@@ -28,7 +31,7 @@ namespace Nucleus.Gaming.Tools.X360ce
                 {
                     if (i == 0)
                     {
-                        if (genericGameHandler.gameIs64)
+                        if (handlerInstance.gameIs64)
                         {
                             x360exe = "x360ce_x64.exe";
                             x360dll = "xinput1_3_x64.dll";
@@ -42,7 +45,7 @@ namespace Nucleus.Gaming.Tools.X360ce
 
                         if (x360ceDllName.ToLower().StartsWith("dinput"))
                         {
-                            if (genericGameHandler.gameIs64)
+                            if (handlerInstance.gameIs64)
                             {
                                 x360dll = "dinput8_x64.dll";
                             }
@@ -52,30 +55,31 @@ namespace Nucleus.Gaming.Tools.X360ce
                             }
                         }
 
-                        string ogFile = Path.Combine(genericGameHandler.instanceExeFolder, x360exe);
-                        FileUtil.FileCheck(genericGameHandler, gen, ogFile);
+                        string ogFile = Path.Combine(handlerInstance.instanceExeFolder, x360exe);
+                        FileUtil.FileCheck(ogFile);
 
-                        genericGameHandler.Log("Copying over " + x360exe);
+                        handlerInstance.Log("Copying over " + x360exe);
+
                         try
                         {
-                            File.Copy(Path.Combine(utilFolder, x360exe), Path.Combine(genericGameHandler.instanceExeFolder, x360exe), true);
+                            File.Copy(Path.Combine(utilFolder, x360exe), Path.Combine(handlerInstance.instanceExeFolder, x360exe), true);
                         }
                         catch
                         {
-                            genericGameHandler.Log("Using alternative copy method");
-                            CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, x360exe) + "\" \"" + Path.Combine(genericGameHandler.instanceExeFolder, x360exe) + "\"");
+                            handlerInstance.Log("Using alternative copy method");
+                            CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, x360exe) + "\" \"" + Path.Combine(handlerInstance.instanceExeFolder, x360exe) + "\"");
                         }
 
-                        ogFile = Path.Combine(genericGameHandler.instanceExeFolder, x360ceDllName);
-                        FileUtil.FileCheck(genericGameHandler, gen, ogFile);
+                        ogFile = Path.Combine(handlerInstance.instanceExeFolder, x360ceDllName);
+                        FileUtil.FileCheck(ogFile);
 
                         if (x360dll != x360ceDllName)
                         {
-                            genericGameHandler.Log("Copying over " + x360dll + " and renaming it to " + x360ceDllName);
+                            handlerInstance.Log("Copying over " + x360dll + " and renaming it to " + x360ceDllName);
                         }
                         else
                         {
-                            genericGameHandler.Log("Copying over " + x360dll);
+                            handlerInstance.Log("Copying over " + x360dll);
                         }
                         try
                         {
@@ -83,93 +87,94 @@ namespace Nucleus.Gaming.Tools.X360ce
                         }
                         catch
                         {
-                            genericGameHandler.Log("Using alternative copy method");
+                            handlerInstance.Log("Using alternative copy method");
                             CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, x360dll) + "\" \"" + ogFile + "\"");
                         }
 
                     }
                     else
                     {
-                        if (gen.SymlinkGame || gen.HardlinkGame || gen.HardcopyGame)
+                        if (handlerInstance.currentGameInfo.SymlinkGame || handlerInstance.currentGameInfo.HardlinkGame || handlerInstance.currentGameInfo.HardcopyGame)
                         {
-                            genericGameHandler.Log("Carrying over " + x360ceDllName + " from Instance0");
-                            FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(genericGameHandler.instanceExeFolder, x360ceDllName));
-                            File.Copy(Path.Combine(genericGameHandler.instanceExeFolder.Substring(0, genericGameHandler.instanceExeFolder.LastIndexOf('\\') + 1) + "Instance0", x360ceDllName), Path.Combine(genericGameHandler.instanceExeFolder, x360ceDllName), true);
+                            handlerInstance.Log("Carrying over " + x360ceDllName + " from Instance0");
+                            FileUtil.FileCheck(Path.Combine(handlerInstance.instanceExeFolder, x360ceDllName));
+                            File.Copy(Path.Combine(handlerInstance.instanceExeFolder.Substring(0, handlerInstance.instanceExeFolder.LastIndexOf('\\') + 1) + "Instance0", x360ceDllName), Path.Combine(handlerInstance.instanceExeFolder, x360ceDllName), true);
                         }
                     }
                 }
             }
 
-            if (i > 0 && (gen.SymlinkGame || gen.HardlinkGame || gen.HardcopyGame))
+            if (i > 0 && (handlerInstance.currentGameInfo.SymlinkGame || handlerInstance.currentGameInfo.HardlinkGame || handlerInstance.currentGameInfo.HardcopyGame))
             {
-                genericGameHandler.Log("Carrying over x360ce.ini from Instance0");
+                handlerInstance.Log("Carrying over x360ce.ini from Instance0");
 
-                FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"));
-                File.Copy(Path.Combine(genericGameHandler.instanceExeFolder.Substring(0, genericGameHandler.instanceExeFolder.LastIndexOf('\\') + 1) + "Instance0", "x360ce.ini"), Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), true);
+                FileUtil.FileCheck(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"));
+                File.Copy(Path.Combine(handlerInstance.instanceExeFolder.Substring(0, handlerInstance.instanceExeFolder.LastIndexOf('\\') + 1) + "Instance0", "x360ce.ini"), Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), true);
             }
             else
             {
-                genericGameHandler.Log("Starting x360ce process");
+                handlerInstance.Log("Starting x360ce process");
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.UseShellExecute = true;
-                startInfo.WorkingDirectory = genericGameHandler.instanceExeFolder;
-                startInfo.FileName = Path.Combine(genericGameHandler.instanceExeFolder, x360exe);
+                startInfo.WorkingDirectory = handlerInstance.instanceExeFolder;
+                startInfo.FileName = Path.Combine(handlerInstance.instanceExeFolder, x360exe);
                 Process util = Process.Start(startInfo);
-                genericGameHandler.Log("Waiting until x360ce process is exited");
+                handlerInstance.Log("Waiting until x360ce process is exited");
                 util.WaitForExit();
             }
 
-            if (!File.Exists(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini")))
+            if (!File.Exists(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini")))
             {
-                genericGameHandler.Log("x360ce.ini has not been generated. Copying default x360ce.ini from utils");
+                handlerInstance.Log("x360ce.ini has not been generated. Copying default x360ce.ini from utils");
                 try
                 {
-                    File.Copy(Path.Combine(utilFolder, "x360ce.ini"), Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), true);
+                    File.Copy(Path.Combine(utilFolder, "x360ce.ini"), Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), true);
                 }
                 catch
                 {
-                    genericGameHandler.Log("Using alternative copy method");
-                    CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, "x360ce.ini") + "\" \"" + Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini") + "\"");
+                    handlerInstance.Log("Using alternative copy method");
+                    CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, "x360ce.ini") + "\" \"" + Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini") + "\"");
                 }
             }
 
-            genericGameHandler.Log("Making changes to x360ce.ini; PAD mapping to player");
+            handlerInstance.Log("Making changes to x360ce.ini; PAD mapping to player");
 
             List<string> textChanges = new List<string>();
 
             if (!player.IsKeyboardPlayer)
             {
                 Thread.Sleep(1000);
-                if (gen.PlayersPerInstance > 1)
+                if (handlerInstance.currentGameInfo.PlayersPerInstance > 1)
                 {
-                    for (int x = 1; x <= gen.PlayersPerInstance; x++)
+                    for (int x = 1; x <= handlerInstance.currentGameInfo.PlayersPerInstance; x++)
                     {
-                        textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), "PAD" + x + "=", SearchType.StartsWith) + "|PAD" + x + "=IG_" + players[x].GamepadGuid.ToString().Replace("-", string.Empty));
+                        textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "PAD" + x + "=", SearchType.StartsWith) + "|PAD" + x + "=IG_" + players[x].GamepadGuid.ToString().Replace("-", string.Empty));
                     }
-                    for (int x = gen.PlayersPerInstance + 1; x <= 4; x++)
+                    for (int x = handlerInstance.currentGameInfo.PlayersPerInstance + 1; x <= 4; x++)
                     {
-                        textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), "PAD" + x + "=", SearchType.StartsWith) + "|PAD" + x + "=IG_" + players[x].GamepadGuid.ToString().Replace("-", string.Empty));
+                        textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "PAD" + x + "=", SearchType.StartsWith) + "|PAD" + x + "=IG_" + players[x].GamepadGuid.ToString().Replace("-", string.Empty));
                     }
-                    genericGameHandler.plyrIndex += gen.PlayersPerInstance;
+
+                    handlerInstance.plyrIndex += handlerInstance.currentGameInfo.PlayersPerInstance;
                 }
                 else
                 {
-                    textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), "PAD1=", SearchType.StartsWith) + "|PAD1=" + context.x360ceGamepadGuid);
-                    textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), "PAD2=", SearchType.StartsWith) + "|PAD2=");
-                    textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), "PAD3=", SearchType.StartsWith) + "|PAD3=");
-                    textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), "PAD4=", SearchType.StartsWith) + "|PAD4=");
+                    textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "PAD1=", SearchType.StartsWith) + "|PAD1=" + handlerInstance.context.x360ceGamepadGuid);
+                    textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "PAD2=", SearchType.StartsWith) + "|PAD2=");
+                    textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "PAD3=", SearchType.StartsWith) + "|PAD3=");
+                    textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "PAD4=", SearchType.StartsWith) + "|PAD4=");
                 }
 
-                context.ReplaceLinesInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), textChanges.ToArray());
+                handlerInstance.context.ReplaceLinesInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), textChanges.ToArray());
             }
 
-            if (gen.XboxOneControllerFix)
+            if (handlerInstance.currentGameInfo.XboxOneControllerFix)
             {
                 Thread.Sleep(1000);
-                genericGameHandler.Log("Implementing Xbox One controller fix");
+                handlerInstance.Log("Implementing Xbox One controller fix");
 
                 textChanges.Clear();
-                textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), "HookMode=1", SearchType.Full) + "|" +
+                textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "HookMode=1", SearchType.Full) + "|" +
                     "HookLL=0\n" +
                     "HookCOM=1\n" +
                     "HookSA=0\n" +
@@ -180,15 +185,16 @@ namespace Nucleus.Gaming.Tools.X360ce
                     "HookMode=0\n"
                 );
 
-                context.ReplaceLinesInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"), textChanges.ToArray());
+                handlerInstance.context.ReplaceLinesInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), textChanges.ToArray());
             }
 
-            if (File.Exists(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini")) && !gen.SymlinkGame && !gen.HardlinkGame && !gen.HardcopyGame)
+            if (File.Exists(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini")) && !handlerInstance.currentGameInfo.SymlinkGame && !handlerInstance.currentGameInfo.HardlinkGame && !handlerInstance.currentGameInfo.HardcopyGame)
             {
-                genericGameHandler.Log("x360ce.ini will be deleted upon ending session");
-                genericGameHandler.addedFiles.Add(Path.Combine(genericGameHandler.instanceExeFolder, "x360ce.ini"));
+                handlerInstance.Log("x360ce.ini will be deleted upon ending session");
+                handlerInstance.addedFiles.Add(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"));
             }
-            genericGameHandler.Log("x360ce setup complete");
+
+            handlerInstance.Log("x360ce setup complete");
         }
 
     }

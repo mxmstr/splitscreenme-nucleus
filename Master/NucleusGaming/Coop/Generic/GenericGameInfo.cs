@@ -1,17 +1,14 @@
 ﻿using Jint;
 using Microsoft.Win32;
-using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.ProtoInput;
-using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
 using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -36,6 +33,7 @@ namespace Nucleus.Gaming
         public string[] FileSymlinkCopyInstead;
         public string[] DirSymlinkCopyInstead;
         public string[] DirExclusions;
+        public bool BackupIgnoreProfiles;
         public string[] BackupFiles;
         public string[] BackupFolders;
 
@@ -71,7 +69,7 @@ namespace Nucleus.Gaming
         public bool SplitDivCompatibility = true;
         public bool SetTopMostAtEnd;
         public bool Favorite;
-
+       
         public void AddOption(string name, string desc, string key, object value, object defaultValue)
         {
             Options.Add(new GameOption(name, desc, key, value, defaultValue));
@@ -319,9 +317,8 @@ namespace Nucleus.Gaming
         public bool ForceEnvironmentUse;
         public bool ForceLauncherExeIgnoreFileCheck;
 
-        public bool UseSteamless = false;
-        public string SteamlessArgs;
-        public int SteamlessTiming = 2500;
+        public string[] SteamlessPatch;//bool apply to launcher,string Steamless Args,int wait for exe pacthing finished.
+
         // Proto Input
         public ProtoInputOptions ProtoInput = new ProtoInputOptions();
         public bool LockInputSuspendsExplorer = false;
@@ -373,7 +370,7 @@ namespace Nucleus.Gaming
                     $"- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format\n(for example: methods using Context must be within the Game.Play function)" +
                     $"\n\n{1} {2} \nError at line {numLine / 2}";
 
-                    NucleusMessageBox.Show("Error in handler", error,false);
+                    NucleusMessageBox.Show("Error in handler", error, false);
 
                 });
             }
@@ -422,10 +419,12 @@ namespace Nucleus.Gaming
             //engine.SetValue("ProtoInputValues", Coop.ProtoInput.ProtoInput.exposedValues);
         }
 
-        public void PrePlay(GenericContext context, GenericGameHandler handler, PlayerInfo player)
+        public void PrePlay(PlayerInfo player)
         {
-            engine.SetValue("Context", context);
-            engine.SetValue("Handler", handler);
+            var handlerInstance = GenericGameHandler.Instance;
+
+            engine.SetValue("Context", handlerInstance.context);
+            engine.SetValue("Handler", handlerInstance);
             engine.SetValue("Player", player);
             engine.SetValue("Game", this);
             engine.SetValue("Hub", Hub);
@@ -437,9 +436,11 @@ namespace Nucleus.Gaming
         /// Clones this Game Info into a new Generic Context
         /// </summary>
         /// <returns></returns>
-        public GenericContext CreateContext(GameProfile profile, PlayerInfo info, GenericGameHandler handler, bool hasKeyboardPlayer)
+        public GenericContext CreateContext(GameProfile profile, PlayerInfo info, bool hasKeyboardPlayer)
         {
-            GenericContext context = new GenericContext(profile, info, handler, hasKeyboardPlayer);
+            var handlerInstance = GenericGameHandler.Instance;
+
+            GenericContext context = new GenericContext(profile, info, handlerInstance, hasKeyboardPlayer);
 
             Type t = GetType();
             PropertyInfo[] props = t.GetProperties();
@@ -490,9 +491,9 @@ namespace Nucleus.Gaming
         }
 
         public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
-       
+
         public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
-       
+
         public string GetSteamLanguage()
         {
             string result;
@@ -507,6 +508,6 @@ namespace Nucleus.Gaming
 
             return result;
         }
-      
+
     }
 }

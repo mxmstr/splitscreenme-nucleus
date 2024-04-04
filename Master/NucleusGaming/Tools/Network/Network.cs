@@ -30,16 +30,19 @@ namespace Nucleus.Gaming.Tools.Network
         public static string dnsServersStr;
 
 
-        public static void ChangeIPPerInstance(GenericGameHandler genericGameHandler, int i, string networkInterfaceOverride = null)
+        public static void ChangeIPPerInstance(int i, string networkInterfaceOverride = null)
         {
-            genericGameHandler.Log(string.Format("Changing IP for instance {0}", i + 1));
+            var handlerInstance = GenericGameHandler.Instance;
+
+            handlerInstance.Log(string.Format("Changing IP for instance {0}", i + 1));
+
             if (i == 0)
             {
                 if (string.IsNullOrEmpty(iniNetworkInterface) || iniNetworkInterface == "Automatic")
                 {
                     string localIP = GetLocalIP();
 
-                    genericGameHandler.Log("No network interface provided, attempting to automatically find it");
+                    handlerInstance.Log("No network interface provided, attempting to automatically find it");
                     var ni = NetworkInterface.GetAllNetworkInterfaces();
                     bool foundNIC = false;
                     foreach (NetworkInterface item in ni)
@@ -54,7 +57,7 @@ namespace Nucleus.Gaming.Tools.Network
                                     if (ipAddress == localIP)
                                     {
                                         iniNetworkInterface = item.Name;
-                                        genericGameHandler.Log("Found network interface: " + iniNetworkInterface);
+                                        handlerInstance.Log("Found network interface: " + iniNetworkInterface);
                                         foundNIC = true;
                                         break;
                                     }
@@ -70,7 +73,7 @@ namespace Nucleus.Gaming.Tools.Network
 
                 if (iniNetworkInterface == null)
                 {
-                    genericGameHandler.Log("ERROR - Unable to resolve network interface");
+                    handlerInstance.Log("ERROR - Unable to resolve network interface");
                     MessageBox.Show("Unable to resolve network interface", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -94,7 +97,8 @@ namespace Nucleus.Gaming.Tools.Network
                             dnsServersStr += dns.ToString() + " ";
                         }
                     }
-                    genericGameHandler.Log("Default IP settings for NetworkInterface: " + iniNetworkInterface + ", IP: " + currentIPaddress + " Subnet Mask: " + currentSubnetMask + " Default Gateway: " + currentGateway + " DHCP: " + isDHCPenabled + " Dnyamic DNS: " + isDynamicDns + " DNS: " + dnsServersStr);
+
+                    handlerInstance.Log("Default IP settings for NetworkInterface: " + iniNetworkInterface + ", IP: " + currentIPaddress + " Subnet Mask: " + currentSubnetMask + " Default Gateway: " + currentGateway + " DHCP: " + isDHCPenabled + " Dnyamic DNS: " + isDynamicDns + " DNS: " + dnsServersStr);
                 }
                 catch (Exception ex)
                 {
@@ -129,7 +133,7 @@ namespace Nucleus.Gaming.Tools.Network
             }
 
             string shostAddr = (hostAddr + i).ToString();
-            genericGameHandler.Log("Changing IP to: " + ipNetwork + shostAddr);
+            handlerInstance.Log("Changing IP to: " + ipNetwork + shostAddr);
 
             if (networkInterfaceOverride != null)
             {
@@ -141,9 +145,11 @@ namespace Nucleus.Gaming.Tools.Network
             }
         }
 
-        public static void ChangeIPPerInstanceRestoreIP(GenericGameHandler genericGameHandler)
+        public static void ChangeIPPerInstanceRestoreIP()
         {
-            genericGameHandler.Log("Reverting IP settings back to normal");
+            var handlerInstance = GenericGameHandler.Instance;
+
+            handlerInstance.Log("Reverting IP settings back to normal");
 
             Forms.Prompt prompt = new Forms.Prompt("Reverting IP settings back to normal. You may receive another prompt to action it.");
             prompt.ShowDialog();
@@ -157,8 +163,9 @@ namespace Nucleus.Gaming.Tools.Network
             }
         }
 
-        public static void ChangeIPPerInstanceAltCreateAdapter(GenericGameHandler genericGameHandler, PlayerInfo player)
+        public static void ChangeIPPerInstanceAltCreateAdapter(PlayerInfo player)
         {
+            var handlerInstance = GenericGameHandler.Instance;
             List<string> adptrs = Network.GetNetAdapters();
 
             Process p = new Process();
@@ -174,7 +181,7 @@ namespace Nucleus.Gaming.Tools.Network
             p.Start();
 
             string stdOut = p.StandardOutput.ReadToEnd();
-            genericGameHandler.Log("ChangeIPPerInstanceAlt install output " + stdOut);
+            handlerInstance.Log("ChangeIPPerInstanceAlt install output " + stdOut);
 
             p.WaitForExit();
 
@@ -191,17 +198,19 @@ namespace Nucleus.Gaming.Tools.Network
 
             if (player.Adapter == null)
             {
-                genericGameHandler.Log("Could not find new network adapter made for this player.");
+                handlerInstance.Log("Could not find new network adapter made for this player.");
             }
 
             Thread.Sleep(3000);
 
-            ChangeIPPerInstance(genericGameHandler, player.PlayerID, player.Adapter);
+            ChangeIPPerInstance(player.PlayerID, player.Adapter);
         }
 
-        public static void ChangeIPPerInstanceAltDeleteAdapter(GenericGameHandler genericGameHandler)
+        public static void ChangeIPPerInstanceAltDeleteAdapter()
         {
-            genericGameHandler.Log("Uninstalling loopback adapters");
+            var handlerInstance = GenericGameHandler.Instance;
+
+            handlerInstance.Log("Uninstalling loopback adapters");
             Process p = new Process();
             //string devconPath = Path.Combine(Directory.GetCurrentDirectory(), "utils\\devcon\\devcon.exe");
             p.StartInfo.FileName = "cmd.exe";
@@ -215,7 +224,7 @@ namespace Nucleus.Gaming.Tools.Network
             p.Start();
 
             string stdOut = p.StandardOutput.ReadToEnd();
-            genericGameHandler.Log("ChangeIPPerInstanceAlt remove output \n" + stdOut);
+            handlerInstance.Log("ChangeIPPerInstanceAlt remove output \n" + stdOut);
 
             p.WaitForExit();
         }

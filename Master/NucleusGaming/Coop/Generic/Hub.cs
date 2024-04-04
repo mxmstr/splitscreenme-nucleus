@@ -13,7 +13,7 @@ namespace Nucleus.Gaming.Coop.Generic
         private static bool connected;
         public static bool Connected
         {
-            get => connected; 
+            get => connected;
             set
             {
                 connected = value;
@@ -59,7 +59,7 @@ namespace Nucleus.Gaming.Coop.Generic
 
             string id = Handler.Id;
             int newVersion = -1;
-         
+
             string resp = Get("https://hub.splitscreen.me/api/v1/" + "handler/" + id);
 
             if (resp == null)
@@ -90,10 +90,10 @@ namespace Nucleus.Gaming.Coop.Generic
             }
 
             newVersion = int.TryParse(array[0]["currentVersion"].ToString(), out int _v) ? _v : -1;
-         
+
             return newVersion > Handler.Version;
         }
-           
+
         public string Get(string uri)
         {
             ServicePointManager.Expect100Continue = false;

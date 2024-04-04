@@ -1,11 +1,5 @@
-﻿using Games;
-using Nucleus.Gaming.Cache;
-using System;
-using System.Collections.Generic;
+﻿using Nucleus.Gaming.Cache;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {

@@ -1,13 +1,15 @@
-﻿using Newtonsoft.Json;
-using Nucleus.Gaming;
+﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using SharpDX.XInput;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Forms;
@@ -36,10 +38,10 @@ namespace Nucleus.Coop.Forms
             bool roundedcorners = bool.Parse(Globals.ThemeConfigFile.IniReadValue("Misc", "UseRoundedCorners"));
             gamepadType = ini.IniReadValue("XUINav", "Type");
 
-            default_Cursor = new Cursor(Globals.ThemeFolder + "cursor.ico");
-            hand_Cursor = new Cursor(Globals.ThemeFolder + "cursor_hand.ico");
-            Cursor.Current = default_Cursor;
+            default_Cursor = Theme_Settings.Default_Cursor;
+            hand_Cursor = Theme_Settings.Hand_Cursor;
             Cursor = default_Cursor;
+
             shortContainer.Cursor = default_Cursor;
             enabled_chk.Cursor = hand_Cursor;
 
@@ -185,7 +187,7 @@ namespace Nucleus.Coop.Forms
                 ini.IniWriteValue("XShortcuts", "LockInputs", "");
             }
 
-            enabled_chk.Checked = bool.Parse(ini.IniReadValue("XUINav", "Enabled")); 
+            enabled_chk.Checked = bool.Parse(ini.IniReadValue("XUINav", "Enabled"));
             CustomToolTips.SetToolTip(enabled_chk, "Requires admin rights for full controller support.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             switch12.Tag = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
@@ -203,7 +205,7 @@ namespace Nucleus.Coop.Forms
 
             foreach (Control c in shortContainer.Controls)
             {
-                if (c.GetType() == typeof(PictureBox))
+                if (c is PictureBox)
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
@@ -215,7 +217,7 @@ namespace Nucleus.Coop.Forms
 
             foreach (Control c in UINavContainer.Controls)
             {
-                if (c.GetType() == typeof(PictureBox))
+                if (c is PictureBox)
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
@@ -230,6 +232,8 @@ namespace Nucleus.Coop.Forms
                     CustomToolTips.SetToolTip(c, "If the cursor move without touching the\r\nleft stick set a higher value(steps of +1000).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
             }
+
+            reminderPict.BackgroundImage = GamepadButtons.Image(1024, gamepadType);//Guide
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
             if (ini.IniReadValue("Misc", "GamepadSettingsLocation") != "")
@@ -249,7 +253,7 @@ namespace Nucleus.Coop.Forms
             {
                 CenterToScreen();
             }
-           
+
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
@@ -264,15 +268,11 @@ namespace Nucleus.Coop.Forms
 
             this.scale = scale;
 
-            SuspendLayout();
-
-            //if (scale > 1.0F)
-            // {
             float newFontSize = 7.25F * scale;
 
             foreach (Control c in shortContainer.Controls)
             {
-                if (c.GetType() == typeof(Label))
+                if (c is Label)
                 {
                     if (c.Text != ("+"))
                     {
@@ -285,12 +285,13 @@ namespace Nucleus.Coop.Forms
             {
                 if (scale > 1.0F)
                 {
-                    if (c.GetType() == typeof(TextBox))
+                    if (c is TextBox)
                     {
                         c.Font = new Font(c.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
                 }
-                if (c.GetType() == typeof(Label))
+
+                if (c is Label)
                 {
                     if (c.Text != ("+"))
                     {
@@ -298,9 +299,6 @@ namespace Nucleus.Coop.Forms
                     }
                 }
             }
-            // }
-
-            ResumeLayout();
         }
 
         private void RefreshTimerTick(Object Object, EventArgs EventArgs)
@@ -505,7 +503,7 @@ namespace Nucleus.Coop.Forms
                 }
             }
         }
-       
+
         private void num_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
@@ -516,7 +514,7 @@ namespace Nucleus.Coop.Forms
 
         private void SetActiveControl(object sender, EventArgs e)
         {
-            if (sender.GetType() != typeof(PictureBox))
+            if (!(sender is PictureBox))
             {
                 return;
             }
@@ -541,13 +539,12 @@ namespace Nucleus.Coop.Forms
         private void radioButtonXbox_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;
-            if(radio.Checked)
+            if (radio.Checked)
             {
                 ini.IniWriteValue("XUINav", "Type", radio.Tag.ToString());
                 gamepadType = radio.Tag.ToString();
                 UpdateGamepadType();
             }
-
         }
 
         private void radioButtonPs_CheckedChanged(object sender, EventArgs e)
@@ -555,7 +552,7 @@ namespace Nucleus.Coop.Forms
             RadioButton radio = (RadioButton)sender;
             if (radio.Checked)
             {
-                ini.IniWriteValue("XUINav","Type", radio.Tag.ToString());
+                ini.IniWriteValue("XUINav", "Type", radio.Tag.ToString());
                 gamepadType = radio.Tag.ToString();
                 UpdateGamepadType();
             }
@@ -565,7 +562,7 @@ namespace Nucleus.Coop.Forms
         {
             foreach (Control c in shortContainer.Controls)
             {
-                if (c.GetType() == typeof(PictureBox))
+                if (c is PictureBox)
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
@@ -574,16 +571,49 @@ namespace Nucleus.Coop.Forms
 
             foreach (Control c in UINavContainer.Controls)
             {
-                if (c.GetType() == typeof(PictureBox))
+                if (c is PictureBox)
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
                 }
             }
+
+            reminderPict.BackgroundImage = GamepadButtons.Image(1024, gamepadType);//Guide
         }
 
         private void Close_Click(object sender, EventArgs e)
         {
+            #region take a picture of the controller shortcuts
+
+            Color defColor = shortContainer.BackColor;
+
+            try
+            {
+                shortContainer.BackColor = Color.Black;
+                Graphics g = shortContainer.CreateGraphics();
+                Bitmap bmp = new Bitmap(shortContainer.Width, shortContainer.Height);
+                shortContainer.DrawToBitmap(bmp, new Rectangle(0, 0, shortContainer.Width, shortContainer.Height));
+
+                string savePath = Path.Combine(Application.StartupPath, $@"gui\shortcuts");
+
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+
+                bmp.Save(Path.Combine(savePath, "XShortcutsReminder.jpeg"), ImageFormat.Jpeg);
+                bmp.Dispose();
+                g.Dispose();
+
+                shortContainer.BackColor = defColor;
+            }
+            catch
+            {
+                shortContainer.BackColor = defColor;
+            }
+
+            #endregion
+
             ini.IniWriteValue("XShortcuts", "SetFocus", switch1.Tag.ToString() + "+" + slave1.Tag.ToString());
             ini.IniWriteValue("XShortcuts", "Close", switch2.Tag.ToString() + "+" + slave2.Tag.ToString());
             ini.IniWriteValue("XShortcuts", "Stop", switch3.Tag.ToString() + "+" + slave3.Tag.ToString());
@@ -647,6 +677,6 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        
+
     }
 }

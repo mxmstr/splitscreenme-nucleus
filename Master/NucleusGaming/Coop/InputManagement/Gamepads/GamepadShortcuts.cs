@@ -1,17 +1,12 @@
-﻿using Nucleus.Gaming.Coop.InputManagement.Gamepads;
-using Nucleus.Gaming.Coop.InputManagement.Structs;
+﻿using Nucleus.Coop.Forms;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows;
 using SharpDX.XInput;
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using Win32;
 
 namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
@@ -37,8 +32,6 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         private static int RT = 9999;
         private static int LT = 10000;
 
-        private static bool ToggleCutscenes;
-
         public static Thread GamepadShortcutsThread;
         private static State previousState;
 
@@ -60,12 +53,12 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                 }
 
                 for (int i = 0; i < GamepadState.Controllers.Length; i++)
-                {                  
+                {
                     if (!GamepadState.Controllers[i].IsConnected)
                     {
                         continue;
                     }
-                  
+
                     State currentState = (State)GamepadState.GetControllerState(i);
 
                     if (previousState.PacketNumber != currentState.PacketNumber)
@@ -73,19 +66,10 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         int button = GamepadState.GetPressedButtons(i);
                         int rt = GamepadState.GetRightTriggerValue(i) > 0 ? button + RT : RT;///return RT + button or RT
                         int lt = GamepadState.GetLeftTriggerValue(i) > 0 ? button + LT : LT;///return LT + button or LT
-
+                        
                         if ((button == Cutscenes || rt == Cutscenes || lt == Cutscenes) && GameProfile.Saved)///cutscenes mode
                         {
-                            if (!ToggleCutscenes)
-                            {
-                                GlobalWindowMethods.ToggleCutScenesMode(true);
-                                ToggleCutscenes = true;
-                            }
-                            else
-                            {
-                                GlobalWindowMethods.ToggleCutScenesMode(false);
-                                ToggleCutscenes = false;
-                            }
+                            GlobalWindowMethods.ToggleCutScenesMode();
                         }
                         else if ((button == SwitchLayout || rt == SwitchLayout || lt == SwitchLayout) && GameProfile.Saved)///Switch layout
                         {
@@ -95,7 +79,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         {
                             if (GenericGameHandler.Instance != null)
                                 GenericGameHandler.Instance.Update(GenericGameHandler.Instance.HWndInterval, true);
-                            Globals.MainOSD.Show(1600, $"Reseting game windows. Please wait...");
+                            Globals.MainOSD.Show(1600, $"Reseting Game Windows. Please Wait...");
 
                         }
                         else if ((button == SetFocus || rt == SetFocus || lt == SetFocus))///Unfocus windows
@@ -131,7 +115,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             Globals.MainOSD.Show(1600, $"See You Later!");
                             Thread.Sleep(5000);
 
-                            if (GenericGameHandler.Instance == null)
+                            if (GenericGameHandler.Instance.hasEnded)
                             {
                                 Process nc = Process.GetCurrentProcess();
                                 nc.Kill();
@@ -163,23 +147,42 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             SendKeys.SendWait("%+{TAB}");
                             Thread.Sleep(500);
                         }
-                   
+                       
                         previousState = currentState;
                         Pressed = button;
                     }
 
                     RightTriggerValue = GamepadState.GetRightTriggerValue(i);
                     LeftTriggerValue = GamepadState.GetLeftTriggerValue(i);
+
+                    #region Toggle shortcuts reminder window
+
+                    if (Pressed == 1024)//Guide button
+                    {
+                        Thread.Sleep(500);//good enough to check for long press here
+
+                        if (GamepadState.GetPressedButtons(i) == 1024)//good enough to check for long press here
+                        {
+                            foreach (ShortcutsReminder reminder in GenericGameHandler.Instance.shortcutsReminders)
+                            {
+                                reminder.Toggle(7);
+                            }
+
+                            Thread.Sleep(500);
+                        }
+                    }
+
+                    #endregion                   
                 }
 
-                if(Pressed > 0)
+                if (Pressed > 0)
                 {
-                    Thread.Sleep(500);
+                    Thread.Sleep(350);
                 }
-                else 
+                else
                 {
                     Thread.Sleep(135);
-                }              
+                }
             }
         }
 
@@ -188,7 +191,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "SetFocus").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "SetFocus").Split('+');
-                SetFocus = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                SetFocus = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {
@@ -198,7 +201,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "Close").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "Close").Split('+');
-                Close = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                Close = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {
@@ -208,7 +211,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "Stop").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "Stop").Split('+');
-                StopSession = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                StopSession = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {
@@ -218,7 +221,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "TopMost").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "TopMost").Split('+');
-                TopMost = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                TopMost = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {
@@ -228,7 +231,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "ResetWindows").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "ResetWindows").Split('+');
-                ResetWindows = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                ResetWindows = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {
@@ -238,7 +241,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "Cutscenes").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "Cutscenes").Split('+');
-                Cutscenes = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                Cutscenes = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {
@@ -248,7 +251,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "Switch").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "Switch").Split('+');
-                SwitchLayout = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                SwitchLayout = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {
@@ -258,7 +261,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "LockInputs").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "LockInputs").Split('+');
-                LockInputs = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                LockInputs = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {
@@ -268,7 +271,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (ini.IniReadValue("XShortcuts", "ReleaseCursor").Contains('+'))
             {
                 string[] str = ini.IniReadValue("XShortcuts", "ReleaseCursor").Split('+');
-                ReleaseCursor = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
+                ReleaseCursor = int.Parse(str[0]) + int.Parse(str[1]);
             }
             else
             {

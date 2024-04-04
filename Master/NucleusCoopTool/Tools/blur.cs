@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -66,7 +65,7 @@ namespace Nucleus.Coop
                     if (_red[i] >= 0) { topRedTotal += _red[i]; topRedCount++; }
                     if (_green[i] >= 0) { topGreenTotal += _green[i]; topGreenCount++; }
                     if (_blue[i] >= 0) { topBlueTotal += _blue[i]; topBlueCount++; }
-                }               
+                }
                 else if (i >= (source.Length - _width * 10))
                 {
                     if (_red[i] >= 0) { bottomRedTotal += _red[i]; bottomRedCount++; }
@@ -76,7 +75,7 @@ namespace Nucleus.Coop
             });
 
 
-            int topRedAverage = topRedTotal/topRedCount;
+            int topRedAverage = topRedTotal / topRedCount;
             int topGreenAverage = topGreenTotal / topGreenCount;
             int topBlueAverage = topBlueTotal / topBlueCount;
 

@@ -1,8 +1,6 @@
-﻿using Nucleus.Coop;
-using Nucleus.Gaming.Controls.SetupScreen;
+﻿using Nucleus.Gaming.Controls.SetupScreen;
 //using SlimDX.DirectInput;
 using SharpDX.DirectInput;
-using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop
 {
-    public class PlayerInfo 
+    public class PlayerInfo
     {
         public List<Rectangle> OtherLayout;
         private RectangleF sourceEditBounds;
@@ -20,7 +18,7 @@ namespace Nucleus.Gaming.Coop
         private Rectangle monitorBounds;
 
         private object tag;
-   
+
         public string IdealProcessor = "*";
         public string Affinity = "";
         public string PriorityClass = "Normal";
@@ -45,10 +43,10 @@ namespace Nucleus.Gaming.Coop
         public bool IsInputUsed;
         public bool IsController;//Good to do not have to loop both Xinput & DInput  
         public bool Vibrate;
-       
+
         public Guid GamepadProductGuid;
         public Guid GamepadGuid;
-       
+
         public Display Display;
         public UserScreen Owner;
         public Joystick DInputJoystick;
@@ -59,7 +57,7 @@ namespace Nucleus.Gaming.Coop
 
         public uint ProtoInputInstanceHandle = 0;
 
-        public int CurrentLayout = 0;       
+        public int CurrentLayout = 0;
         public int ScreenPriority;
         public int GamepadId;
         public int GamepadMask;

@@ -100,56 +100,14 @@ namespace SplitTool.Controls
 
             Control c = e.Control;
             c.Click += C_Click;
-
-            //if (EnableHighlighting)
-            //{
-            //    c.MouseEnter += C_MouseEnter;
-            //    c.MouseLeave += C_MouseLeave;
-            //}                
+            
             DPIManager.Update(this);
         }
-
-        //private void C_MouseEnter(object sender, EventArgs e)
-        //{
-        //    OnMouseEnter(e);
-        //}
-
-        //private void C_MouseLeave(object sender, EventArgs e)
-        //{
-        //    OnMouseLeave(e);
-        //}
 
         private void C_Click(object sender, EventArgs e)
         {
             OnClick(e);
         }
-
-        //protected override void OnLostFocus(EventArgs e)
-        //{
-        //    base.OnLostFocus(e);
-        //}
-
-        //protected override void OnMouseEnter(EventArgs e)
-        //{
-        //    base.OnMouseEnter(e);
-        //    if (!ContainsFocus)
-        //    {
-        //        //BackColor = SelectionColor;
-        //        //titleLabel.BackColor = SelectionColor;
-        //        //descLabel.BackColor = SelectionColor;
-        //    }
-        //}
-
-        //protected override void OnMouseLeave(EventArgs e)
-        //{
-        //    base.OnMouseLeave(e);
-        //    if (!ContainsFocus)
-        //    {
-        //        //BackColor = userOverBackColor;
-        //        //titleLabel.BackColor = userOverBackColor;
-        //        //descLabel.BackColor = userOverBackColor;
-        //    }
-        //}
 
         protected override void OnClick(EventArgs e)
         {

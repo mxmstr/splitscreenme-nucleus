@@ -24,16 +24,19 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
                     string profile = string.Empty;
 
-                    if (!profileDisabled)
+                    if (!currentGameInfo.BackupIgnoreProfiles)
                     {
-                        if (GameProfile.CurrentProfileId != 0)//if an existing profile has been loaded
+                        if (!profileDisabled || !GameProfile.GameInfo.DisableProfiles)
                         {
-                            profile = $"\\Profile{GameProfile.CurrentProfileId}";
+                            if (GameProfile.CurrentProfileId != 0)//if an existing profile has been loaded
+                            {
+                                profile = $"\\Profile{GameProfile.CurrentProfileId}";
 
-                        }
-                        else//if a new profile has been created
-                        {
-                            profile = $"\\Profile{GameProfile.ProfilesCount}";
+                            }
+                            else//if a new profile has been created
+                            {
+                                profile = $"\\Profile{GameProfile.ProfilesCount}";
+                            }
                         }
                     }
 
@@ -91,15 +94,18 @@ namespace Nucleus.Gaming.Tools.BackupFiles
             {
                 string profile = string.Empty;
 
-                if (!profileDisabled)
+                if (!currentGameInfo.BackupIgnoreProfiles )
                 {
-                    if (GameProfile.CurrentProfileId == 0)
+                    if (!profileDisabled || !GameProfile.GameInfo.DisableProfiles)
                     {
-                        Console.WriteLine("No files/folder to restore for this profile");
-                        return;
-                    }
+                        if (GameProfile.CurrentProfileId == 0)
+                        {
+                            Console.WriteLine("No files/folder to restore for this profile");
+                            return;
+                        }
 
-                    profile = $"\\Profile{GameProfile.CurrentProfileId}";
+                        profile = $"\\Profile{GameProfile.CurrentProfileId}";
+                    }
                 }
 
                 string soureContent = $"{nucleusEnvironment}\\Game Files Backup\\{currentGameInfo.GUID}{profile}";
@@ -191,16 +197,19 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
                     string profile = string.Empty;
 
-                    if (!profileDisabled)
+                    if (!currentGameInfo.BackupIgnoreProfiles)
                     {
-                        if (GameProfile.CurrentProfileId != 0)//if an existing profile has been loaded
+                        if (!profileDisabled || !GameProfile.GameInfo.DisableProfiles)
                         {
-                            profile = $"\\Profile{GameProfile.CurrentProfileId}";
+                            if (GameProfile.CurrentProfileId != 0)//if an existing profile has been loaded
+                            {
+                                profile = $"\\Profile{GameProfile.CurrentProfileId}";
 
-                        }
-                        else//if a new profile has been created
-                        {
-                            profile = $"\\Profile{GameProfile.ProfilesCount}";
+                            }
+                            else//if a new profile has been created
+                            {
+                                profile = $"\\Profile{GameProfile.ProfilesCount}";
+                            }
                         }
                     }
 
@@ -274,15 +283,18 @@ namespace Nucleus.Gaming.Tools.BackupFiles
                 {
                     string profile = string.Empty;
 
-                    if (!profileDisabled)
+                    if (!currentGameInfo.BackupIgnoreProfiles)
                     {
-                        if (GameProfile.CurrentProfileId == 0)
+                        if (!profileDisabled || !GameProfile.GameInfo.DisableProfiles)
                         {
-                            Console.WriteLine("No files/folder to restore for this profile");
-                            return;
-                        }
+                            if (GameProfile.CurrentProfileId == 0)
+                            {
+                                Console.WriteLine("No files/folder to restore for this profile");
+                                return;
+                            }
 
-                        profile = $"\\Profile{GameProfile.CurrentProfileId}";
+                            profile = $"\\Profile{GameProfile.CurrentProfileId}";
+                        }
                     }
 
                     string sourceContent = $"{nucleusEnvironment}\\Game Files Backup\\{currentGameInfo.GUID}{profile}";

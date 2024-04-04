@@ -1,12 +1,8 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nucleus.Coop.Tools
 {

@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Nucleus.Coop.Forms;
+﻿using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
-using Nucleus.Gaming.Coop.Generic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +9,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -41,7 +37,7 @@ namespace Nucleus.Coop
         public HubShowcase(MainForm mainForm)
         {
             InitializeComponent();
- 
+
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase-background.png");
             BackgroundImageLayout = ImageLayout.Stretch;
@@ -130,7 +126,7 @@ namespace Nucleus.Coop
                         coverLayer.Click += new EventHandler(this.CoverBoxClick);
 
                         downloadLabel = new Label()
-                        {   
+                        {
                             AutoSize = true,
                             Font = new Font("Franklin Gothic", 8, FontStyle.Regular, GraphicsUnit.Point, 0),
                             BackColor = Color.Transparent,
@@ -163,15 +159,15 @@ namespace Nucleus.Coop
                             TextAlign = ContentAlignment.TopLeft,
                             Dock = DockStyle.Bottom,
                         };
-                        
+
                         authorLabel.Location = new Point(downloadLabel.Location.X, downloadLabel.Top - authorLabel.Height);
-                        
+
                         labels.Add(authorLabel);
                         labelContainer.Controls.Add(authorLabel);
-                       
+
                         authorLabel.BringToFront();
-                                            
-                        labelContainer.Size = new Size(coverBox.Width,authorLabel.Height + downloadLabel.Height);
+
+                        labelContainer.Size = new Size(coverBox.Width, authorLabel.Height + downloadLabel.Height);
                         coverBox.Controls.Add(labelContainer);
 
                         hotnessLabel.Location = new Point(labelContainer.Right - hotnessLabel.Width, downloadLabel.Location.Y);
@@ -235,6 +231,6 @@ namespace Nucleus.Coop
                     showcaseBanner1.Update();
                 }
             }
-        }    
+        }
     }
 }

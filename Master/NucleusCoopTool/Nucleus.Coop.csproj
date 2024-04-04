@@ -232,6 +232,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\AddGameButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -240,6 +243,12 @@
     </Compile>
     <Compile Include="Controls\HubWebView.Designer.cs">
       <DependentUpon>HubWebView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\donationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\donationPanel.Designer.cs">
+      <DependentUpon>donationPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
@@ -304,7 +313,6 @@
     <Compile Include="Controls\InputIcons.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\AddGamesButton.cs" />
     <Compile Include="Tools\ExtractHandler.cs" />
     <Compile Include="Tools\GetGameDetails.cs" />
     <Compile Include="Tools\OpenDebugLog.cs" />
@@ -315,6 +323,12 @@
     <Compile Include="Tools\SetBackroundAndCover.cs" />
     <Compile Include="Tools\StartChecks.cs" />
     <Compile Include="Tools\CustomToolStripRenderer.cs" />
+    <EmbeddedResource Include="Controls\AddGameButton.resx">
+      <DependentUpon>AddGameButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\donationPanel.resx">
+      <DependentUpon>donationPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\HubShowcase.resx">
       <DependentUpon>HubShowcase.cs</DependentUpon>
     </EmbeddedResource>
@@ -441,6 +455,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Mikou271.jpg" />
+    <None Include="Resources\Ilyaki2.jpg" />
+    <None Include="Resources\ZeroFox58661.png" />
+    <None Include="Resources\Mikou27.jpg" />
+    <None Include="Resources\Ilyaki1.jpg" />
+    <None Include="Resources\Ilyaki.jpg" />
+    <None Include="Resources\ZeroFox5866.png" />
     <None Include="Resources\log1.png" />
     <None Include="Resources\magnifier.png" />
     <None Include="Resources\search_game.png" />
@@ -614,8 +635,6 @@
     </Content>
     <Content Include="gui\theme\classic\background.jpg" />
     <Content Include="gui\theme\classic\cover_layer.png" />
-    <Content Include="gui\theme\classic\credits.png" />
-    <Content Include="gui\theme\classic\credits_mousehover.png" />
     <Content Include="gui\theme\classic\cursor.ico" />
     <Content Include="gui\theme\classic\cursor_hand.ico" />
     <Content Include="gui\theme\classic\customLayout.png" />
@@ -623,6 +642,9 @@
     <Content Include="gui\theme\classic\dinput_icon.png" />
     <Content Include="gui\theme\classic\discord.png" />
     <Content Include="gui\theme\classic\discord_mousehover.png" />
+    <Content Include="gui\theme\classic\donation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\classic\extract_nc.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -820,16 +842,13 @@
     <Content Include="gui\theme\default\autoSearch_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\credits.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\credits_mousehover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="gui\theme\default\cursor.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\cursor_hand.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\donation.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\extract_nc.png">
@@ -1265,8 +1284,6 @@
     </Content>
     <Content Include="gui\theme\macstyle\background.jpg" />
     <Content Include="gui\theme\macstyle\cover_layer.png" />
-    <Content Include="gui\theme\macstyle\credits.png" />
-    <Content Include="gui\theme\macstyle\credits_mousehover.png" />
     <Content Include="gui\theme\macstyle\cursor.ico" />
     <Content Include="gui\theme\macstyle\cursor_hand.ico" />
     <Content Include="gui\theme\macstyle\customLayout.png" />
@@ -1274,6 +1291,9 @@
     <Content Include="gui\theme\macstyle\dinput_icon.png" />
     <Content Include="gui\theme\macstyle\discord.png" />
     <Content Include="gui\theme\macstyle\discord_mousehover.png" />
+    <Content Include="gui\theme\macstyle\donation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\macstyle\extract_nc.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

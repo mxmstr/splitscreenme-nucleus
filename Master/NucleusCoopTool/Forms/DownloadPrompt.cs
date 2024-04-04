@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -27,7 +28,7 @@ namespace Nucleus.Coop.Forms
         private bool overwriteWithoutAsking = false;
         private readonly IniFile prompt = Globals.ini;
         private MainForm mainForm;
-        public bool gameExeNoUpdate;
+        //public bool gameExeNoUpdate;
         public string game;
 
         private void controlscollect()
@@ -285,24 +286,35 @@ namespace Nucleus.Coop.Forms
 
             File.Delete(Path.Combine(scriptFolder, zipFile));
 
-            if (!gameExeNoUpdate)
-            {
-                DialogResult dialogResult = MessageBox.Show(
-                    "Downloading and extraction of " + frmHandleTitle +
-                    " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it.",
-                    "Download finished! Add to Nucleus?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (dialogResult == DialogResult.Yes)
-                {
-                    GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-                    SearchGame.Search(mainForm ,exeName, genericGameInfo);
-                }
-            }
-            else
+            if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName, frmHandleTitle))
             {
                 GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-                gameExeNoUpdate = false;
+                string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName.ToLower()).FirstOrDefault().GameGuid;
+                string gameName = GameManager.Instance.Games.Where(c => c.Value.GUID == gameGuid).FirstOrDefault().Value.GameName;
+
+                mainForm.controls.Where(c => c.Value.TitleText == gameName).FirstOrDefault().Value.GameInfo.UpdateAvailable = false;
+                mainForm.button_UpdateAvailable.Visible = false;
+                return;
             }
+
+            //if (!gameExeNoUpdate)
+            //{
+            DialogResult dialogResult = MessageBox.Show(
+                "Downloading and extraction of " + frmHandleTitle +
+                " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it.",
+                "Download finished! Add to Nucleus?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
+                SearchGame.Search(mainForm, exeName, genericGameInfo);
+            }
+            // }
+            //else
+            //{
+            //    GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
+            //    gameExeNoUpdate = false;
+            //}
         }
     }
 }

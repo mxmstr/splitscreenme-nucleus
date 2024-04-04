@@ -24,7 +24,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         public static UserScreen[] screens;
 
         internal static PointF draggingOffset;
-
+        public static Point MousePos => mousePos;
         internal static int draggingIndex = -1;
         internal static int draggingScreen = -1;
         internal static int destBoundsScale;
@@ -324,7 +324,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
         }
 
-        public static Point startPoint;
         public static RectangleF ActiveSizer => activeSizer;
         private static RectangleF activeSizer;
 
@@ -337,7 +336,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             return RectangleF.Empty;
         }
-
 
         internal static void OnMouseDown(MouseEventArgs e)
         {
@@ -562,7 +560,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                         hasLeftRightSpace = false;
                                     }
 
-                                    if (players.Where(pl => (pl != p && pl.ScreenIndex != -1 && pl.ScreenIndex == p.ScreenIndex) && 
+                                    if (players.Where(pl => (pl != p && pl.ScreenIndex != -1 && pl.ScreenIndex == p.ScreenIndex) &&
                                          (
                                           (pl.EditBounds.Top == r.Bottom || (pl.EditBounds.Top == r.Bottom && r.Bottom == screen.UIBounds.Bottom))//has a player bellow or is already at max bottom
                                           ||
@@ -914,7 +912,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
 
             List<PlayerInfo> players = profile.DevicesList;
-      
+
             UserScreen screen = screens[draggingScreen];
             RectangleF s = screen.UIBounds;
 

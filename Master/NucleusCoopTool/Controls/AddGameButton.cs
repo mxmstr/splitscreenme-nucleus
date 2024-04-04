@@ -1,0 +1,224 @@
+﻿using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Controls;
+using Nucleus.Gaming;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Drawing.Drawing2D;
+using System.Windows.Controls.Primitives;
+
+namespace Nucleus.Coop.Controls
+{
+    public partial class AddGameButton : BufferedClientAreaPanel
+    {
+        private MainForm mainForm;
+        private Panel favoriteContainer;
+        private PictureBox btn_AddGamePb;
+        private PictureBox favoriteOnly;
+        private Label btn_AddGameLabel;
+
+        private Bitmap favorite_Unselected;
+        private Bitmap favorite_Selected;
+        public  GameControl currentSelected;
+
+        private bool selected;
+        public bool Selected
+        {
+            get => selected;
+            set
+            {
+               selected = value;
+               Invalidate();            
+            }
+        }
+
+        public AddGameButton(MainForm mainform, int width, int height)
+        {
+            mainForm = mainform;
+            InitializeComponent();
+
+            favorite_Unselected = ImageCache.GetImage(Globals.ThemeFolder + "favorite_unselected.png");
+            favorite_Selected = ImageCache.GetImage(Globals.ThemeFolder + "favorite_selected.png");
+
+            Size = new Size(width, height);
+            Location = new Point(0, 0);
+            BackColor = Color.Transparent;
+            MouseEnter += ZoomInPicture;
+            MouseLeave += ZoomOutPicture;
+            Cursor = mainForm.hand_Cursor;
+
+            int baseSize = Height - 10;
+
+            btn_AddGamePb = new PictureBox()
+            {
+                BackgroundImageLayout = ImageLayout.Stretch,
+                Size = new Size(baseSize, baseSize),
+                Location = new Point(5, Height / 2 - baseSize / 2),
+                Cursor = mainForm.hand_Cursor
+            };
+
+            btn_AddGamePb.MouseEnter += ZoomInPicture;
+            btn_AddGamePb.MouseLeave += ZoomOutPicture;
+
+            btn_AddGameLabel = new Label()
+            {
+                TextAlign = ContentAlignment.MiddleLeft,
+                Font = new Font(mainForm.customFont, 8, FontStyle.Bold, GraphicsUnit.Point, 0),
+                AutoSize = true,
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                BackColor = Color.Transparent,
+                Cursor = mainForm.hand_Cursor,
+            };
+
+            btn_AddGameLabel.MouseEnter += ZoomInPicture;
+            btn_AddGameLabel.MouseLeave += ZoomOutPicture;
+
+            favoriteContainer = new BufferedClientAreaPanel()//So it is easier to click the favorite button without opening the webview
+            {
+                Size = new Size(height, height),
+                BackColor = Color.Transparent,
+                Cursor = mainForm.default_Cursor,
+            };
+
+            favoriteOnly = new PictureBox
+            {
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                BackColor = Color.Transparent,
+                Cursor = mainForm.hand_Cursor,
+                Size = new Size(baseSize / 2, baseSize / 2),
+                Image = mainForm.ShowFavoriteOnly ? favorite_Selected : favorite_Unselected,
+            };
+
+            favoriteOnly.Click += new EventHandler(FavoriteOnly_Click);
+            favoriteOnly.MouseEnter += FavoriteOnly_MouseEnter;
+            favoriteOnly.MouseLeave += FavoriteOnly_MouseLeave;
+
+            CustomToolTips.SetToolTip(favoriteOnly, "Show favorite game(s) only.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+
+            favoriteContainer.Controls.Add(favoriteOnly);
+
+            Controls.Add(btn_AddGamePb);
+            Controls.Add(btn_AddGameLabel);
+            Controls.Add(favoriteContainer);
+
+            Click += new EventHandler(mainForm.ClickAnyControl);
+
+            foreach (Control control in Controls)
+            {
+                control.Click += mainForm.ClickAnyControl;
+                if (control.HasChildren)
+                {
+                    foreach (Control child in control.Controls)
+                    {
+                        child.Click += mainForm.ClickAnyControl;
+                    }
+                }
+            }
+
+            Update(mainForm.Connected);
+        }
+
+        public void Update(bool connected)
+        {
+            Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);
+            btn_AddGamePb.Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);
+            btn_AddGameLabel.Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);
+
+            btn_AddGameLabel.Text = connected ? "Add New Games" : "Offline";
+            btn_AddGamePb.BackgroundImage = connected ? ImageCache.GetImage(Globals.ThemeFolder + "add_game.png") : ImageCache.GetImage(Globals.ThemeFolder + "title_no_hub.png");
+
+            CustomToolTips.SetToolTip(this, connected ? "Install new games." : OfflineToolTipText(), new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_AddGamePb, connected ? "Install new games." : OfflineToolTipText(), new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_AddGameLabel, connected ? "Install new games." : OfflineToolTipText(), new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+
+            btn_AddGameLabel.Location = new Point(btn_AddGamePb.Right + 7, (btn_AddGamePb.Location.Y + btn_AddGamePb.Height / 2) - (btn_AddGameLabel.Height / 2));
+            favoriteContainer.Location = new Point((Width - favoriteContainer.Height) - 2, 0);
+            favoriteOnly.Location = new Point((favoriteContainer.Width - favoriteOnly.Width) - 2, (favoriteContainer.Height / 2) - (favoriteOnly.Height / 2));
+        }
+
+        private void ZoomInPicture(object sender, EventArgs e)
+        {
+            btn_AddGamePb.Size = new Size(btn_AddGamePb.Width += 3, btn_AddGamePb.Height += 3);
+            btn_AddGamePb.Location = new Point(btn_AddGamePb.Location.X - 1, btn_AddGamePb.Location.Y - 1);
+        }
+
+        private void ZoomOutPicture(object sender, EventArgs e)
+        {
+            btn_AddGamePb.Size = new Size(btn_AddGamePb.Width -= 3, btn_AddGamePb.Height -= 3);
+            btn_AddGamePb.Location = new Point(btn_AddGamePb.Location.X + 1, btn_AddGamePb.Location.Y + 1);
+        }
+
+        private string OfflineToolTipText()
+        {
+            return "Nucleus can't reach hub.splitscreen.me." +
+                   "\nClick this button to refresh, if the " +
+                   "\nproblem persist, click the FAQ button.";
+        }
+
+        private void RefreshNetStatus(object sender, EventArgs e)
+        {
+            mainForm.Connected = StartChecks.CheckHubResponse();
+        }
+
+        private void FavoriteOnly_Click(object sender, EventArgs e)
+        {
+            if (GameManager.Instance.User.Games.All(g => g.Favorite == false) && !mainForm.ShowFavoriteOnly) { return; }
+
+            bool selected = favoriteOnly.Image.Equals(favorite_Selected);
+
+            favoriteOnly.Image = selected ? favorite_Unselected : favorite_Selected;
+            mainForm.ShowFavoriteOnly = selected ? false : true;
+
+            Globals.ini.IniWriteValue("Dev", "ShowFavoriteOnly", mainForm.ShowFavoriteOnly.ToString());
+            mainForm.RefreshUI(true);
+            mainForm.Invalidate(false);
+        }
+
+        private void FavoriteOnly_MouseEnter(object sender, EventArgs e)
+        {
+            Control con = sender as Control;
+            con.Size = new Size(con.Width += 3, con.Height += 3);
+            con.Location = new Point(con.Location.X - 1, con.Location.Y - 1);           
+        }
+
+        private void FavoriteOnly_MouseLeave(object sender, EventArgs e)
+        {
+            Control con = sender as Control;
+            con.Size = new Size(con.Width -= 3, con.Height -= 3);
+            con.Location = new Point(con.Location.X + 1, con.Location.Y + 1);
+        }
+
+        private void AddGameButton_Paint(object sender, PaintEventArgs e)
+        {
+            Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
+            Rectangle bounds = new Rectangle(8, 0,Width, Height);
+            Graphics g = e.Graphics;
+
+            Color color = selected ?  Color.FromArgb(85, 51, 153, 255) : Color.FromArgb(80, 72, 72, 72);
+            LinearGradientBrush lgb =
+            new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);
+
+            ColorBlend topcblend = new ColorBlend(3);
+            topcblend.Colors = new Color[3] { Color.Transparent, color, Color.Transparent };
+            topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
+
+            lgb.InterpolationColors = topcblend;
+            lgb.SetBlendTriangularShape(.5f, 1.0f);
+            g.FillRectangle(lgb, bounds);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AddGameButton_Paint);
+            this.ResumeLayout(false);
+        }
+    }
+}
+

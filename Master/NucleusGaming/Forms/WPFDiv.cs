@@ -1,21 +1,18 @@
 ﻿
-using Nucleus.Gaming;
 using Nucleus;
-using Nucleus.Gaming.Cache;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System;
-using System.Windows.Forms;
-using System.Threading;
 
 public static class WPFDivFormThread
 {
-    public static void StartBackgroundForm(GenericGameInfo gen,Display dp)
+    public static void StartBackgroundForm(GenericGameInfo gen, Display dp)
     {
         Thread backgroundFormThread = new Thread(delegate ()
         {
@@ -36,6 +33,7 @@ public class WPFDiv : System.Windows.Window
     private string gameGUID;
     private float alpha = 1.0F;
     private bool fullApha = true;
+
     private int imgIndex = 0;
     private ImageBrush backBrush;
 
@@ -50,13 +48,13 @@ public class WPFDiv : System.Windows.Window
         Name = $"SplitForm{screen.DisplayIndex}";
         Title = Name;
         WindowStartupLocation = WindowStartupLocation.Manual;
-     
+
         Left = screen.Bounds.Left;
         Top = screen.Bounds.Top;
 
         Width = screen.Bounds.Width;
         Height = screen.Bounds.Height;
-        
+
         backBrush = new ImageBrush();
 
         gameGUID = game.GUID;
@@ -121,7 +119,7 @@ public class WPFDiv : System.Windows.Window
                         fading.Start();
                     }
                 }
-            }     
+            }
         }
     }
 

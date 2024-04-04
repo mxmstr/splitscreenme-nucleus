@@ -9,8 +9,10 @@ namespace Nucleus.Gaming.Platform.PCSpecs
 {
     public static class MachineSpecs
     {
-        public static string GetPCspecs(GenericGameHandler genericGameHandler)
+        public static string GetPCspecs()
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             string pcSpecs = "PC Info - ";
             var name = (from x in new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
                         select x.GetPropertyValue("Caption")).FirstOrDefault();
@@ -31,9 +33,9 @@ namespace Nucleus.Gaming.Platform.PCSpecs
                 }
             }
 
-            if (genericGameHandler != null)
+            if (handlerInstance != null)
             {
-                genericGameHandler.Log(pcSpecs);
+                handlerInstance.Log(pcSpecs);
             }
 
             return pcSpecs;

@@ -1,11 +1,6 @@
-﻿using EasyHook;
-using SharpDX.XInput;
+﻿using SharpDX.XInput;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
@@ -25,10 +20,10 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (Controllers[index].IsConnected)
             {
                 State state = (State)GetControllerState(index);
-                
+
                 return (int)state.Gamepad.Buttons;
             }
-           
+
             return 0;
         }
 

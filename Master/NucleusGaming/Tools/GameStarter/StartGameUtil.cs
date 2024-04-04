@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Management.Instrumentation;
 using System.Reflection;
 
 namespace Nucleus.Gaming.Tools.GameStarter
@@ -167,7 +164,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
             lock (locker)
             {
                 string startGamePath = GetStartGamePath();
-           
+
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = startGamePath

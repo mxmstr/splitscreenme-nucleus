@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Nucleus.Coop;
+using Nucleus.Gaming.UI;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -12,8 +14,6 @@ namespace Nucleus.Gaming
         public event Action<object, Control> SelectedChanged;
         public Size Offset { get; set; }
         public Control SelectedControl { get; protected set; }
-        private readonly IniFile themeIni = Globals.ThemeConfigFile;
-        private string[] rgb_SelectionColor;
 
         public int Border
         {
@@ -23,8 +23,6 @@ namespace Nucleus.Gaming
 
         public ControlListBox()
         {
-            rgb_SelectionColor = themeIni.IniReadValue("Colors", "Selection").Split(',');
-
             AutoScaleDimensions = new SizeF(96F, 96F);
             HorizontalScroll.Maximum = 0;
             VerticalScroll.Visible = false;
@@ -111,6 +109,7 @@ namespace Nucleus.Gaming
                 c.ControlAdded += C_ControlAdded;
                 c.Click += c_Click;
                 c.SizeChanged += C_SizeChanged;
+
                 if (c is IRadioControl)
                 {
                     c.MouseEnter += c_MouseEnter;
@@ -130,6 +129,7 @@ namespace Nucleus.Gaming
         private void C_ControlAdded(object sender, ControlEventArgs e)
         {
             Control c = e.Control;
+
             c.Click += c_Click;
             c.MouseEnter += c_MouseEnter;
             c.MouseLeave += c_MouseLeave;
@@ -176,6 +176,17 @@ namespace Nucleus.Gaming
             for (int i = 0; i < Controls.Count; i++)
             {
                 Control c = Controls[i];
+
+                if (c is GameControl || c.Parent is GameControl)
+                {
+                    MouseEventArgs arg = e as MouseEventArgs;
+
+                    if (arg.Button == MouseButtons.Right)
+                    {
+                        return;
+                    }
+                }
+
                 if (c is IRadioControl)
                 {
                     IRadioControl high = (IRadioControl)c;
@@ -210,13 +221,12 @@ namespace Nucleus.Gaming
             SelectedControl = parent;
 
             if (SelectedControl.GetType() != typeof(ComboBox) &&
-                SelectedControl.GetType() != typeof(TextBox) && SelectedControl.GetType() != typeof(Label))
+                SelectedControl.GetType() != typeof(TextBox) && SelectedControl.GetType() != typeof(Label) && SelectedControl.GetType() != typeof(GameControl))
             {
-                SelectedControl.BackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]),
-                                                           int.Parse(rgb_SelectionColor[1]),
-                                                           int.Parse(rgb_SelectionColor[2]),
-                                                           int.Parse(rgb_SelectionColor[3]));
+                SelectedControl.BackColor = Theme_Settings.SelectedBackColor;
             }
+
+            
 
             OnClick(e);
         }

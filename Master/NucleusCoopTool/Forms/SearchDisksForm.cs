@@ -1,7 +1,6 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
-using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
@@ -83,13 +81,13 @@ namespace Nucleus.Coop
 
             InitializeComponent();
 
-            default_Cursor = main.default_Cursor;
-            Cursor.Current = default_Cursor;
+            default_Cursor = Theme_Settings.Default_Cursor;
+            hand_Cursor = Theme_Settings.Hand_Cursor;
             hand_Cursor = main.hand_Cursor;
-            
+
             fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
-            
+
             BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
             closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
 
@@ -99,7 +97,7 @@ namespace Nucleus.Coop
             btn_delPath.BackColor = main.buttonsBackColor;
             btn_selectAll.BackColor = main.buttonsBackColor;
             btn_deselectAll.BackColor = main.buttonsBackColor;
-    
+
             btn_addSelection.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
             btn_customPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
             btnSearch.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
@@ -120,24 +118,7 @@ namespace Nucleus.Coop
                 else
                 {
                     control.Cursor = default_Cursor;
-                }              
-            }
-
-            if (main.useButtonsBorder)
-            {
-                btn_addSelection.FlatAppearance.BorderSize = 1;
-                btn_addSelection.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-                btn_customPath.FlatAppearance.BorderSize = 1;
-                btn_customPath.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-                btnSearch.FlatAppearance.BorderSize = 1;
-                btnSearch.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-
-                btn_delPath.FlatAppearance.BorderSize = 1;
-                btn_delPath.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-                btn_selectAll.FlatAppearance.BorderSize = 1;
-                btn_selectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-                btn_deselectAll.FlatAppearance.BorderSize = 1;
-                btn_deselectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
+                }
             }
 
             closeBtn.Cursor = hand_Cursor;
@@ -151,7 +132,7 @@ namespace Nucleus.Coop
                 else
                 {
                     paths.Add(main.ini.IniReadValue("SearchPaths", x.ToString()));
-                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);                    
+                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
                 }
             }
 
@@ -173,12 +154,12 @@ namespace Nucleus.Coop
             {
                 CenterToScreen();
             }
-            
+
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
 
-        public void UpdateSize(float scale)
+        public new void UpdateSize(float scale)
         {
             if (IsDisposed)
             {
@@ -213,7 +194,7 @@ namespace Nucleus.Coop
                 heightField.SetValue(checkboxFoundGames, addedHeight);
 
             }
-          
+
             float textBoxFontSize = (Font.Size + 4) * scale;
 
             foreach (Control c in ctrls)
@@ -343,15 +324,15 @@ namespace Nucleus.Coop
 
                         //foreach (string sub in Directory.GetDirectories(subDir))
                         //{
-                            //{ continue; }
-                            //if(Directory.GetFiles(path, "*.exe").Length == 0)
-                            //{ 
-                            //    continue;
-                            //}
+                        //{ continue; }
+                        //if(Directory.GetFiles(path, "*.exe").Length == 0)
+                        //{ 
+                        //    continue;
+                        //}
 
-                            //queue.Enqueue(sub);
-                           // Console.WriteLine(sub);
-                       // }
+                        //queue.Enqueue(sub);
+                        // Console.WriteLine(sub);
+                        // }
                     }
                 }
                 catch (Exception ex)
@@ -569,7 +550,7 @@ namespace Nucleus.Coop
             using (FolderBrowserDialog fbd = new FolderBrowserDialog())
             {
                 DialogResult result = fbd.ShowDialog();
-               
+
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     List<bool> wasSelected = new List<bool>();
@@ -582,10 +563,10 @@ namespace Nucleus.Coop
                     paths.Add(fbd.SelectedPath);
                 }
 
-                for(int i = 0; i < paths.Count;i++)
+                for (int i = 0; i < paths.Count; i++)
                 {
-                    main.ini.IniWriteValue("SearchPaths", (i+1).ToString(), paths[i]);
-                    if(disksBox.Items.Contains(paths[i]))
+                    main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), paths[i]);
+                    if (disksBox.Items.Contains(paths[i]))
                     {
                         continue;
                     }
@@ -629,12 +610,12 @@ namespace Nucleus.Coop
                         continue;
                     }
 
-                    UserGameInfo uinfo = GameManager.Instance.TryAddGame(gameToAdd);
-                    if (uinfo != null)
-                    {
-                        main.NewUserGame(uinfo);
-                        numAdded++;
-                    }
+                    //UserGameInfo uinfo = GameManager.Instance.TryAddGame(gameToAdd);
+                    //if (uinfo != null)
+                    //{
+                    //    main.NewUserGame(uinfo);
+                    //    numAdded++;
+                    //}
 
                 }
 
@@ -664,36 +645,36 @@ namespace Nucleus.Coop
         {
             if (disksBox.CheckedItems.Count == 0)
             {
-               return;
+                return;
             }
 
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the paths that are currently unchecked?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialogResult == DialogResult.Yes)
             {
-               // foreach (string item in disksBox.Items.OfType<string>().ToList())
-               List<string> pathsToRemove = new List<string>();
-               for(int i = 0; i < paths.Count;i++)
-               {
+                // foreach (string item in disksBox.Items.OfType<string>().ToList())
+                List<string> pathsToRemove = new List<string>();
+                for (int i = 0; i < paths.Count; i++)
+                {
                     if (i < disksBox.Items.Count)
                     {
                         if (disksBox.CheckedItems.Contains(disksBox.Items[i]))
                         {
-                            main.ini.IniWriteValue("SearchPaths", (i+1).ToString(), disksBox.Items[i].ToString());
+                            main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), disksBox.Items[i].ToString());
                         }
-                        else 
+                        else
                         {
                             pathsToRemove.Add(disksBox.Items[i].ToString());
-                            main.ini.IniWriteValue("SearchPaths", (i+1).ToString(), "");
+                            main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), "");
                         }
                     }
                 }
 
-               foreach(string pathToRemove in pathsToRemove)
-               {
+                foreach (string pathToRemove in pathsToRemove)
+                {
                     disksBox.Items.Remove(pathToRemove);
                     paths.Remove(pathToRemove);
-               }
-                
+                }
+
             }
         }
 

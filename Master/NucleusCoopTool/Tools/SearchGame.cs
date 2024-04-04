@@ -1,10 +1,10 @@
 ﻿using Nucleus.Coop.Forms;
-using Nucleus.Gaming.Coop;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Nucleus.Coop.Tools
 {
@@ -17,12 +17,12 @@ namespace Nucleus.Coop.Tools
                 string result = null;
 
                 if (genericGameInfo != null)
-                { 
+                {
                     if (genericGameInfo.SteamID != null && genericGameInfo.SteamID != "")
                     {
                         result = GameManager.Instance.AutoSearchGameInstallPath(genericGameInfo);
                     }
-                 }
+                }
 
                 using (System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog())
                 {

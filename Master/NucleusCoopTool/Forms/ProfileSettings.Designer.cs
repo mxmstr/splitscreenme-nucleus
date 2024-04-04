@@ -1,23 +1,5 @@
-﻿using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using System;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using Nucleus.Gaming.Windows.Interop;
-using WindowScrape.Constants;
-using System.Runtime.InteropServices;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.Win32;
-using System.Text;
-using System.Runtime.ExceptionServices;
-using System.Reflection;
-using Nucleus.Coop.Forms;
-using Nucleus.Gaming.Coop.ProtoInput;
-using Nucleus.Gaming;
+﻿using System.Windows.Forms;
+
 namespace Nucleus.Coop
 {
     partial class ProfileSettings
@@ -63,10 +45,10 @@ namespace Nucleus.Coop
             this.layoutBtnPicture = new System.Windows.Forms.PictureBox();
             this.layoutTabBtn = new System.Windows.Forms.Button();
             this.layoutTab = new BufferedClientAreaPanel();
+            this.cts_bringToFront = new System.Windows.Forms.CheckBox();
             this.hideDesktop = new System.Windows.Forms.CheckBox();
             this.label71 = new System.Windows.Forms.Label();
             this.cts_Panel = new System.Windows.Forms.Panel();
-            this.cts_bringToFront = new System.Windows.Forms.CheckBox();
             this.cts_unfocus = new System.Windows.Forms.CheckBox();
             this.cts_kar = new System.Windows.Forms.CheckBox();
             this.cts_Mute = new System.Windows.Forms.CheckBox();
@@ -590,6 +572,21 @@ namespace Nucleus.Coop
             this.layoutTab.Size = new System.Drawing.Size(671, 401);
             this.layoutTab.TabIndex = 304;
             // 
+            // cts_bringToFront
+            // 
+            this.cts_bringToFront.AutoSize = true;
+            this.cts_bringToFront.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cts_bringToFront.Enabled = false;
+            this.cts_bringToFront.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cts_bringToFront.Location = new System.Drawing.Point(15, 330);
+            this.cts_bringToFront.Margin = new System.Windows.Forms.Padding(0);
+            this.cts_bringToFront.Name = "cts_bringToFront";
+            this.cts_bringToFront.Size = new System.Drawing.Size(168, 17);
+            this.cts_bringToFront.TabIndex = 165;
+            this.cts_bringToFront.Text = "Bring Back Windows To Front";
+            this.cts_bringToFront.UseVisualStyleBackColor = true;
+            this.cts_bringToFront.Visible = false;
+            // 
             // hideDesktop
             // 
             this.hideDesktop.AutoSize = true;
@@ -624,21 +621,6 @@ namespace Nucleus.Coop
             this.cts_Panel.Name = "cts_Panel";
             this.cts_Panel.Size = new System.Drawing.Size(200, 74);
             this.cts_Panel.TabIndex = 154;
-            // 
-            // cts_bringToFront
-            // 
-            this.cts_bringToFront.AutoSize = true;
-            this.cts_bringToFront.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cts_bringToFront.Enabled = false;
-            this.cts_bringToFront.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cts_bringToFront.Location = new System.Drawing.Point(15, 330);
-            this.cts_bringToFront.Margin = new System.Windows.Forms.Padding(0);
-            this.cts_bringToFront.Name = "cts_bringToFront";
-            this.cts_bringToFront.Size = new System.Drawing.Size(168, 17);
-            this.cts_bringToFront.TabIndex = 165;
-            this.cts_bringToFront.Text = "Bring Back Windows To Front";
-            this.cts_bringToFront.UseVisualStyleBackColor = true;
-            this.cts_bringToFront.Visible = false;
             // 
             // cts_unfocus
             // 
@@ -4816,11 +4798,11 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
-            this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.sharedTab);
             this.Controls.Add(this.processorTab);
+            this.Controls.Add(this.layoutTab);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

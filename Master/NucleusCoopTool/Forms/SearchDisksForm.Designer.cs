@@ -1,23 +1,5 @@
-﻿using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using System;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using Nucleus.Gaming.Windows.Interop;
-using WindowScrape.Constants;
-using System.Runtime.InteropServices;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.Win32;
-using System.Text;
-using System.Runtime.ExceptionServices;
-using System.Reflection;
-using Nucleus.Coop.Forms;
-using Nucleus.Gaming.Coop.ProtoInput;
-using Nucleus.Gaming;
+﻿using System.Windows.Forms;
+
 namespace Nucleus.Coop
 {
     partial class SearchDisksForm

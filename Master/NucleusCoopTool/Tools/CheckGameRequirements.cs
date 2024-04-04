@@ -1,6 +1,4 @@
-﻿using Nucleus.Gaming;
-using Nucleus.Gaming.Coop;
-using System;
+﻿using Nucleus.Gaming.Coop;
 using System.Security.Principal;
 using System.Windows.Forms;
 
@@ -12,12 +10,12 @@ namespace Nucleus.Coop.Tools
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
-            
+
             string message;
             string gamePath = userGameInfo.ExePath;
-            bool imcompatibleGamePath =  gamePath.StartsWith(@"C:\Users\") ||
+            bool imcompatibleGamePath = gamePath.StartsWith(@"C:\Users\") ||
                                          gamePath.StartsWith(@"C:\Windows\");
-            
+
             if ((userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.LaunchAsDifferentUsersAlt) && imcompatibleGamePath)
             {
                 message = $@"This game handler does not support the current {userGameInfo.GameGuid} installation path." + "\n\n" +
@@ -34,8 +32,8 @@ namespace Nucleus.Coop.Tools
 
             if ((userGameInfo.Game.RequiresAdmin || userGameInfo.Game.LaunchAsDifferentUsersAlt || userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.ChangeIPPerInstanceAlt) && !principal.IsInRole(WindowsBuiltInRole.Administrator) ||
                ((userGameInfo.Game.LaunchAsDifferentUsersAlt || userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.ChangeIPPerInstanceAlt) && (Program.ForcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))))
-            {  
-                if(Program.ForcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))
+            {
+                if (Program.ForcedBadPath && principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
                     message = "This game handler does not support the current Nucleus Co-op installation path.\n\n" +
                           "Do NOT install in any of these folders:\n" +
@@ -44,7 +42,7 @@ namespace Nucleus.Coop.Tools
                           "- Any folder with security settings like C:\\Windows\n" +
                           "\n" +
                           "A good place is C:\\Nucleus\\NucleusCoop.exe";
-                }           
+                }
                 else
                 {
                     message = "This handler requires you to run Nucleus as administrator.";

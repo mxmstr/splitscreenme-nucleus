@@ -2,8 +2,10 @@
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.UI;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -18,7 +20,7 @@ namespace Nucleus.Coop
         private PictureBox favoriteBox;
         private Label title;
         private Label players;
-        
+
         private Color radioSelectedBackColor;
         private Color userOverBackColor;
         private Color userLeaveBackColor;
@@ -28,6 +30,8 @@ namespace Nucleus.Coop
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
         private System.Threading.Timer isUpdateAvailableTimer;
+        private Pen borderPenSelected;
+        private Pen borderPen;
 
         protected override CreateParams CreateParams
         {
@@ -51,13 +55,14 @@ namespace Nucleus.Coop
                 string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
                 string customFont = theme.IniReadValue("Font", "FontFamily");
 
-                radioSelectedBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
+                radioSelectedBackColor = Theme_Settings.SelectedBackColor;
                 userOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
                 userLeaveBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
                 favorite_Unselected = ImageCache.GetImage(themePath + "favorite_unselected.png");
                 favorite_Selected = ImageCache.GetImage(themePath + "favorite_selected.png");
+                borderPen = new Pen(Color.FromArgb(100, 255, 255, 255)/*Color.FromArgb(100, radioSelectedBackColor.R, radioSelectedBackColor.G, radioSelectedBackColor.B)*/, 1);
+                borderPenSelected = new Pen(Color.FromArgb(255, radioSelectedBackColor.R, radioSelectedBackColor.G, radioSelectedBackColor.B), 1);
 
-                SuspendLayout();
                 AutoScaleDimensions = new SizeF(96F, 96F);
                 AutoScaleMode = AutoScaleMode.Dpi;
                 AutoSize = false;
@@ -67,9 +72,7 @@ namespace Nucleus.Coop
                 GameInfo = game;
                 UserGameInfo = userGame;
 
-                Cursor default_Cursor = new Cursor(themePath + "cursor.ico");
-                Cursor = default_Cursor;
-                Cursor hand_Cursor = new Cursor(themePath + "cursor_hand.ico");
+                Cursor hand_Cursor = Theme_Settings.Default_Cursor;
 
                 picture = new PictureBox
                 {
@@ -88,7 +91,7 @@ namespace Nucleus.Coop
                 title = new Label
                 {
                     AutoSize = true,
-                    Font = new Font(customFont, 8, FontStyle.Bold, GraphicsUnit.Point, 0),
+                    Font = new Font(customFont, 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0),
                 };
 
                 players = new Label
@@ -121,7 +124,7 @@ namespace Nucleus.Coop
                     Name = "favorite",
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     BackColor = Color.Transparent,
-                    Cursor = hand_Cursor
+                    Cursor = Theme_Settings.Hand_Cursor
                 };
 
                 favoriteBox.Image = favorite ? favorite_Selected : favorite_Unselected;
@@ -133,8 +136,6 @@ namespace Nucleus.Coop
                 players.BackColor = Color.Transparent;
                 playerIcon.BackColor = Color.Transparent;
 
-                ResumeLayout();
-
                 Controls.Add(picture);
                 Controls.Add(title);
                 Controls.Add(players);
@@ -144,7 +145,12 @@ namespace Nucleus.Coop
                     Controls.Add(playerIcon);
                     Controls.Add(favoriteBox);
                 }
-             
+
+                MouseEnter += ZoomInPicture;
+                MouseLeave += ZoomOutPicture;
+                favoriteBox.MouseEnter += ZoomInPicture;
+                favoriteBox.MouseLeave += ZoomOutPicture;
+
                 DPIManager.Register(this);
             }
             catch (Exception ex)
@@ -202,6 +208,7 @@ namespace Nucleus.Coop
             }
 
             favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
+
             float favoriteX = (209 * scale) - (playerIcon.Width + 5);
             float favoriteY = Height - (favoriteBox.Height + 5);
             favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
@@ -217,15 +224,9 @@ namespace Nucleus.Coop
             {
                 if (topLevel.IsHandleCreated && GameInfo != null)
                 {
-                    
                     if (GameInfo.UpdateAvailable)
                     {
-                        title.ForeColor = Color.FromArgb(255,196, 145, 18);
-
-                        topLevel?.Invoke((MethodInvoker)delegate ()
-                        {
-                            CustomToolTips.SetToolTip(this, "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                        });
+                        title.ForeColor = Color.FromArgb(255, 196, 145, 18);
                     }
                 }
             }
@@ -235,48 +236,74 @@ namespace Nucleus.Coop
         {
             base.OnControlAdded(e);
             Control c = e.Control;
-
             if (c.Name != "favorite")
             {
                 c.Click += C_Click;
-                c.MouseEnter += C_MouseEnter;
-                c.MouseLeave += C_MouseLeave;
             }
+            c.MouseEnter += C_MouseEnter;
+            c.MouseLeave += C_MouseLeave;
 
             DPIManager.Update(this);
         }
 
         private void FavoriteBox_Click(object sender, EventArgs e)
         {
+            MouseEventArgs arg = e as MouseEventArgs;
+            if (arg.Button == MouseButtons.Right)
+            {
+                return;
+            }
+
             bool selected = favoriteBox.Image.Equals(favorite_Selected);
-
-            if (selected)
-            {
-                favoriteBox.Image = favorite_Unselected;
-                UserGameInfo.Favorite = false;
-            }
-            else
-            {
-                favoriteBox.Image = favorite_Selected;
-                UserGameInfo.Favorite = true;
-            }
-
+            favoriteBox.Image = selected ? favorite_Unselected : favorite_Selected;
+            UserGameInfo.Favorite = selected ? false : true;
             GameManager.Instance.SaveUserProfile();
         }
 
         private void C_MouseEnter(object sender, EventArgs e)
         {
-            OnMouseEnter(e);
+            Control con = sender as Control;
+            if (con.Name != "favorite")
+            {
+                OnMouseEnter(e);
+            }
+            else
+            {
+                con.Size = new Size(con.Width += 3, con.Height += 3);
+                con.Location = new Point(con.Location.X - 1, con.Location.Y - 1);
+            }
         }
 
         private void C_MouseLeave(object sender, EventArgs e)
         {
-            OnMouseLeave(e);
+            Control con = sender as Control;
+
+            if (con.Name != "favorite")
+            {
+                OnMouseLeave(e);
+            }
+            else
+            {
+                con.Size = new Size(con.Width -= 3, con.Height -= 3);
+                con.Location = new Point(con.Location.X + 1, con.Location.Y + 1);
+            }
+        }
+
+        private void ZoomInPicture(object sender, EventArgs e)
+        {       
+            picture.Size = new Size(picture.Width += 3, picture.Height += 3);
+            picture.Location = new Point(picture.Location.X - 1, picture.Location.Y - 1);
+        }
+
+        private void ZoomOutPicture(object sender, EventArgs e)
+        {
+            picture.Size = new Size(picture.Width -= 3, picture.Height -= 3);
+            picture.Location = new Point(picture.Location.X + 1, picture.Location.Y + 1);
         }
 
         private void C_Click(object sender, EventArgs e)
-        {
-            OnClick(e);
+        {          
+            OnClick(e);            
         }
 
         public Image Image
@@ -294,31 +321,45 @@ namespace Nucleus.Coop
 
         public void RadioSelected()
         {
-            BackColor = radioSelectedBackColor;
+            BackColor = Color.Transparent;
             isSelected = true;
         }
 
         public void RadioUnselected()
         {
-            BackColor = BackColor = Color.Transparent;
             isSelected = false;
         }
 
         public void UserOver()
         {
-            BackColor = userOverBackColor;
         }
 
         public void UserLeave()
         {
-            if (isSelected)
-            {
-                BackColor = userLeaveBackColor;
-            }
-            else
-            {
-                BackColor = Color.Transparent;
-            }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height / 3);
+            Rectangle bounds = new Rectangle(0, 0, favoriteBox.Right, Height);
+
+            Color color = isSelected ? radioSelectedBackColor : Color.FromArgb(80, 72, 72, 72); 
+
+            LinearGradientBrush lgb =
+            new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);
+
+            ColorBlend topcblend = new ColorBlend(3);
+            topcblend.Colors = new Color[3] { color, color, Color.Transparent };
+            topcblend.Positions = new float[3] { 0f, 0.5f, 1.0f };
+
+            lgb.InterpolationColors = topcblend;
+            lgb.SetBlendTriangularShape(.5f, 1.0f);
+            g.FillRectangle(lgb, bounds);
+
+            lgb.Dispose();
+
+            g.Dispose();
         }
     }
 }

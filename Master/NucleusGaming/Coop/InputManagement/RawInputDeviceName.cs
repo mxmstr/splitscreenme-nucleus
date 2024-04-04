@@ -13,7 +13,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             Marshal.FreeHGlobal(dataDispose);
         }
 
-        public string GetDeviceName(IntPtr data,IntPtr hDevice)
+        public string GetDeviceName(IntPtr data, IntPtr hDevice)
         {
             IntPtr deviceHandle = hDevice;
             uint pcbSize = 0;

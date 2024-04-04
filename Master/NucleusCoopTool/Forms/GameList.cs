@@ -33,7 +33,7 @@ namespace Nucleus.Coop.Forms
 
             BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
             btnOk.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); ;
-            
+
             GameManager manager = GameManager.Instance;
 
             foreach (GenericGameInfo game in games)
@@ -46,10 +46,10 @@ namespace Nucleus.Coop.Forms
                 con.Controls.RemoveByKey("favorite");
                 con.Click += Con_Click;
                 con.ForeColor = Color.White;
-               
+
                 listGames.Controls.Add(con);
             }
- 
+
         }
 
         private void Con_Click(object sender, EventArgs e)

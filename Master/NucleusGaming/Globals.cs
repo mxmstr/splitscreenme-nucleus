@@ -1,11 +1,6 @@
-﻿using Jint.Parser.Ast;
-using Nucleus.Gaming.Coop.Generic;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using Nucleus.Gaming.Controls;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Threading;
 
 namespace Nucleus.Gaming
 {
@@ -22,12 +17,12 @@ namespace Nucleus.Gaming
         public static IniFile ThemeConfigFile => new IniFile(Path.Combine(ThemeFolder, "theme.ini"));
 
         public static Button PlayButton;
-        public static RichTextBox NoteZoomTextBox;
+        public static HandlerNotesZoom HandlerNotesZoom;
         public static PictureBox NoteZoomButton;
         public static Button Btn_debuglog;
         public static readonly string GameProfilesFolder = Path.Combine(Application.StartupPath, $"game profiles");
         public static WPF_OSD MainOSD;
         public static string[] Args;
-             
+
     }
 }

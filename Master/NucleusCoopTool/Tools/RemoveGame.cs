@@ -1,12 +1,11 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.IO;
 using System.Windows.Forms;
-using Nucleus.Gaming.Cache;
 
 namespace Nucleus.Coop.Tools
 {
@@ -40,7 +39,7 @@ namespace Nucleus.Coop.Tools
                             jObject["Games"][i].Remove();
                             string output = JsonConvert.SerializeObject(jObject, Formatting.Indented);
                             File.WriteAllText(userProfile, output);
-                            
+
 
                             if (!dontConfirm)
                             {
@@ -104,7 +103,7 @@ namespace Nucleus.Coop.Tools
                                         }
                                     }
 
-                                    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);                              
+                                    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
                                 }
 
                                 main.RefreshUI(true);
@@ -112,7 +111,7 @@ namespace Nucleus.Coop.Tools
                             }
 
                             main.RefreshUI(false);
-                        }                      
+                        }
                     }
                 }
             }

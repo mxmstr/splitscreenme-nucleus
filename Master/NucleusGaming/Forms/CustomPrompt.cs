@@ -1,6 +1,5 @@
 ﻿using Nucleus.Gaming.Cache;
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Forms

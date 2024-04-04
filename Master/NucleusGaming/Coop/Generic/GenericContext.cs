@@ -15,7 +15,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -279,7 +278,7 @@ namespace Nucleus.Gaming
                 sc.UseShellExecute = true;
                 sc.WorkingDirectory = Path.GetDirectoryName(path);
                 sc.ErrorDialog = true;
-                
+
                 Process.Start(sc);
             }
         }
@@ -329,10 +328,10 @@ namespace Nucleus.Gaming
             {
                 if (!UserProfileConvertedToDocuments)
                 {
-                    return $@"{NucleusEnvironmentRoot}\NucleusCoop\{Nickname}\";                  
+                    return $@"{NucleusEnvironmentRoot}\NucleusCoop\{Nickname}\";
                 }
                 else
-                {                  
+                {
                     return DocumentsPlayer;
                 }
             }
@@ -448,17 +447,17 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void ExtractZip(string sourceZip, string contentDestination,string password)
+        public void ExtractZip(string sourceZip, string contentDestination, string password)
         {
             bool isValidZip = ZipFile.CheckZip(sourceZip);
 
             if (isValidZip)
             {
                 ZipFile zip = new ZipFile(sourceZip);
-                
+
                 zip.Password = password;
 
-                if(!Directory.Exists(contentDestination))
+                if (!Directory.Exists(contentDestination))
                 {
                     Directory.CreateDirectory(contentDestination);
                 }
@@ -480,7 +479,7 @@ namespace Nucleus.Gaming
                 return;
             }
 
-            if(hideTaskbar)
+            if (hideTaskbar)
             {
                 HideTaskBar();
             }
@@ -1103,12 +1102,12 @@ namespace Nucleus.Gaming
             string[] lines;
             //if (File.Exists(path))
             //{
-                lines = File.ReadAllLines(path);
-                if (lineNum < 0 || lineNum > lines.Length)
-                {
-                    return;
-                }
-                File.Delete(path);
+            lines = File.ReadAllLines(path);
+            if (lineNum < 0 || lineNum > lines.Length)
+            {
+                return;
+            }
+            File.Delete(path);
             //}
             //else
             //{
@@ -1127,12 +1126,12 @@ namespace Nucleus.Gaming
             string[] lines;
             //if (File.Exists(path))
             //{
-                lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
-                if (lineNum < 0 || lineNum > lines.Length)
-                {
-                    return;
-                }
-                File.Delete(path);
+            lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
+            if (lineNum < 0 || lineNum > lines.Length)
+            {
+                return;
+            }
+            File.Delete(path);
             //}
             //else
             //{
@@ -1151,8 +1150,8 @@ namespace Nucleus.Gaming
             string[] lines;
             //if (File.Exists(path))
             //{
-                lines = File.ReadAllLines(path);
-                File.Delete(path);
+            lines = File.ReadAllLines(path);
+            File.Delete(path);
             //}
             //else
             //{
@@ -1204,8 +1203,8 @@ namespace Nucleus.Gaming
 
             //if (File.Exists(path))
             //{
-                lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
-                File.Delete(path);
+            lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
+            File.Delete(path);
             //}
             //else
             //{
@@ -1256,8 +1255,8 @@ namespace Nucleus.Gaming
             string[] lines;
             //if (File.Exists(path))
             //{
-                lines = File.ReadAllLines(path);
-                File.Delete(path);
+            lines = File.ReadAllLines(path);
+            File.Delete(path);
             //}
             //else
             //{
@@ -1287,8 +1286,8 @@ namespace Nucleus.Gaming
 
             //if (File.Exists(path))
             //{
-                lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
-                File.Delete(path);
+            lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
+            File.Delete(path);
             //}
             //else
             //{
@@ -1316,8 +1315,8 @@ namespace Nucleus.Gaming
             string[] lines;
             //if (File.Exists(path))
             //{
-                lines = File.ReadAllLines(path);
-                File.Delete(path);
+            lines = File.ReadAllLines(path);
+            File.Delete(path);
             //}
             //else
             //{
@@ -1347,8 +1346,8 @@ namespace Nucleus.Gaming
             string[] lines;
             //if (File.Exists(path))
             //{
-                lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
-                File.Delete(path);
+            lines = File.ReadAllLines(path, Encoding.GetEncoding(encoder));
+            File.Delete(path);
             //}
             //else
             //{

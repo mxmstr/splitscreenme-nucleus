@@ -13,10 +13,6 @@ namespace Nucleus.Gaming
         private bool canProceed;
         private bool canPlay;
 
-        private Font nameFont;
-        private Font detailsFont;
-        private Color _BackColor;
-
         public CustomStep CustomStep;
         public ContentManager Content;
 
@@ -37,7 +33,6 @@ namespace Nucleus.Gaming
             base.Initialize(game, profile);
 
             string[] rgb_CoollistInitialColor = Globals.ThemeConfigFile.IniReadValue("Colors", "Selection").Split(',');
-            _BackColor = Color.FromArgb(int.Parse(rgb_CoollistInitialColor[0]), int.Parse(rgb_CoollistInitialColor[1]), int.Parse(rgb_CoollistInitialColor[2]), int.Parse(rgb_CoollistInitialColor[3]));
             toSelect = null;
             Controls.Clear();
 
@@ -71,7 +66,6 @@ namespace Nucleus.Gaming
                     CoolListControl control = new CoolListControl(true)
                     {
                         Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right,
-                        //BackColor = _BackColor,
                         Size = new Size(list.Width, 120),
                         Data = val
                     };
@@ -146,7 +140,7 @@ namespace Nucleus.Gaming
                 CoolListControl c = obj as CoolListControl;
                 profile.Options[CustomStep.Option.Key] = c.Data;
             }
-            else 
+            else
             {
                 profile.Options[CustomStep.Option.Key] = obj;
             }

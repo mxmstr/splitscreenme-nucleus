@@ -1,6 +1,6 @@
-﻿using Games;
-using Nucleus.Gaming.Cache;
+﻿using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.UI;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -33,7 +33,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         private static Bitmap customLayout;
         private static Bitmap manualLayout;
 
-        public static  Cursor hand_Cursor;
+        public static Cursor hand_Cursor;
         public static Cursor default_Cursor;
 
         private static bool controllerIdentification;
@@ -46,6 +46,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         internal static SolidBrush notEnoughPlyrsSBrush;
         private static SolidBrush tagBrush;
         private static SolidBrush sizerBrush;
+        private static SolidBrush screenBackBrush;
 
         private static Pen PositionPlayerScreenPen;
         private static Pen PositionScreenPen;
@@ -70,11 +71,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             customFont = themeIni.IniReadValue("Font", "FontFamily");
 
-            default_Cursor = new Cursor(theme + "cursor.ico");
-            hand_Cursor = new Cursor(theme + "cursor_hand.ico");
+            default_Cursor = Theme_Settings.Default_Cursor;
+            hand_Cursor = Theme_Settings.Hand_Cursor;
 
             playerFont = new Font(customFont, 20.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            playerCustomFont = new Font(customFont, 16.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playerCustomFont = new Font(customFont, 16.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
             playerTextFont = new Font(customFont, 9.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
 
             string[] rgb_PositionControlsFontColor = themeIni.IniReadValue("Colors", "SetupScreenFont").Split(',');
@@ -107,6 +108,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             PositionPlayerScreenPen = new Pen(Color.FromArgb(int.Parse(rgb_PositionPlayerScreenColor[0]), int.Parse(rgb_PositionPlayerScreenColor[1]), int.Parse(rgb_PositionPlayerScreenColor[2])), 1);
             myBrush = new SolidBrush(Color.FromArgb(int.Parse(rgb_PositionControlsFontColor[0]), int.Parse(rgb_PositionControlsFontColor[1]), int.Parse(rgb_PositionControlsFontColor[2])));
             tagBrush = new SolidBrush(Color.FromArgb(200, 0, 0, 0));
+            screenBackBrush = new SolidBrush(Color.FromArgb(60, 0, 0, 0));
             sizerBrush = new SolidBrush(Color.FromArgb(50, 15, 220, 15));
             ghostBoundsPen = new Pen(Color.Red);
             notEnoughPlyrsSBrush = new SolidBrush(Color.FromArgb(255, 245, 4, 68));
@@ -145,9 +147,41 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             {
                 UserScreen s = screens[i];
 
+                if (s.Type != UserScreenType.Manual && s.Type != UserScreenType.FullScreen)
+                {
+                    try
+                    {
+                        var boundsToDraw = s.SubScreensBounds.Values.Where(sb => !GameProfile.Instance.DevicesList.Any(pl => pl.EditBounds.IntersectsWith(sb))).ToArray();
+
+                        if (boundsToDraw.Length > 0)
+                        {
+                            g.DrawRectangles(PositionScreenPen, boundsToDraw);
+                        }
+                    }
+                    catch
+                    { }
+                }
+
+                if (UseSetupScreenBorder)
+                {
+                    g.FillRectangle(screenBackBrush, s.UIBounds);
+                }
+
+                bool intersect = false;
+                RectangleF minimizedSwapType = new Rectangle();
+
+                try
+                {
+                    var interstcWithSwapTypeBound = GameProfile.Instance.DevicesList.Where(dv => dv.EditBounds.IntersectsWith(s.SwapTypeBounds)).ToArray();
+                    intersect = interstcWithSwapTypeBound.Length == 0 || s.SwapTypeBounds.Contains(BoundsFunctions.MousePos);
+                    minimizedSwapType = new RectangleF(s.SwapTypeBounds.X, s.SwapTypeBounds.Y, s.SwapTypeBounds.Width / 2, s.SwapTypeBounds.Height / 2);
+                }
+                catch
+                { }
+
                 if (UseLayoutSelectionBorder)
                 {
-                    g.DrawRectangles(PositionScreenPen, new RectangleF[] { s.SwapTypeBounds});
+                    g.DrawRectangles(PositionScreenPen, new RectangleF[] { intersect ? s.SwapTypeBounds : minimizedSwapType });
                 }
 
                 if (UseSetupScreenImage)
@@ -158,31 +192,31 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 switch (s.Type)
                 {
                     case UserScreenType.FullScreen:
-                        g.DrawImage(fullscreen, s.SwapTypeBounds);
+                        g.DrawImage(fullscreen, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                     case UserScreenType.DualHorizontal:
-                        g.DrawImage(horizontal2, s.SwapTypeBounds);
+                        g.DrawImage(horizontal2, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                     case UserScreenType.DualVertical:
-                        g.DrawImage(vertical2, s.SwapTypeBounds);
+                        g.DrawImage(vertical2, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                     case UserScreenType.FourPlayers:
-                        g.DrawImage(players4, s.SwapTypeBounds);
+                        g.DrawImage(players4, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                     case UserScreenType.SixPlayers:
-                        g.DrawImage(players6, s.SwapTypeBounds);
+                        g.DrawImage(players6, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                     case UserScreenType.EightPlayers:
-                        g.DrawImage(players8, s.SwapTypeBounds);
+                        g.DrawImage(players8, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                     case UserScreenType.SixteenPlayers:
-                        g.DrawImage(players16, s.SwapTypeBounds);
+                        g.DrawImage(players16, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                     case UserScreenType.Custom:
-                        g.DrawImage(customLayout, s.SwapTypeBounds);
+                        g.DrawImage(customLayout, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                     case UserScreenType.Manual:
-                        g.DrawImage(manualLayout, s.SwapTypeBounds);
+                        g.DrawImage(manualLayout, intersect ? s.SwapTypeBounds : minimizedSwapType);
                         break;
                 }
 
@@ -192,20 +226,20 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 }
             }
         }
-  
-        
-        public static void UIDevices(Graphics g,PlayerInfo player)
-        {
-            string str = (player.GamepadId + 1).ToString();
 
+
+        public static void UIDevices(Graphics g, PlayerInfo player)
+        {
             RectangleF s = player.EditBounds;
 
             g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 2, s.Height + 1));
 
             Rectangle gamepadRect = RectangleUtil.ScaleAndCenter(keyboardPic.Size, new Rectangle((int)s.X, (int)s.Y, (int)s.Width, (int)s.Height));
 
-            SizeF size = g.MeasureString(str, playerCustomFont);
-            PointF loc = RectangleUtil.Center(size, s);
+            float height = player.EditBounds.Height / 2.8f > 0 ? (gamepadRect.Height / 2.8f) : 1;
+
+            Font fontToScale = new Font(playerCustomFont.FontFamily, height, FontStyle.Regular, GraphicsUnit.Pixel);
+
             Pen color = (player.GamepadId > colors.Count()) ? new Pen(Color.Magenta) : new Pen(colors[player.GamepadId]);
 
             if (player.ScreenIndex != -1 && player.MonitorBounds != Rectangle.Empty)
@@ -215,13 +249,12 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             if (player.IsXInput)
             {
-                loc.Y -= gamepadRect.Height * 0.2f;
                 var playerColor = colors[player.GamepadId];
-                str = (player.GamepadId + 1).ToString();
+                string str = (player.GamepadId + 1).ToString();
 
-                size = g.MeasureString(str, playerCustomFont);
-                loc = RectangleUtil.Center(size, s);
-                loc.Y -= 5;
+                SizeF size = g.MeasureString(str, fontToScale);
+                PointF loc = RectangleUtil.Center(size, s);
+                loc.Y -= gamepadRect.Height * 0.10f;
 
                 if (DevicesFunctions.PollXInputGamepad(player))
                 {
@@ -230,13 +263,12 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 }
                 else
                 {
-                    if(player.IsInputUsed)
-                    g.DrawImage(xinputPic, gamepadRect);
+                    if (player.IsInputUsed)
+                        g.DrawImage(xinputPic, gamepadRect);
                 }
 
                 if (controllerIdentification && player.IsInputUsed)
-                    g.DrawString(str, playerCustomFont, playerColor, loc);
-
+                    g.DrawString(str, fontToScale, playerColor, loc);
             }
             else if (player.IsKeyboardPlayer && !player.IsRawKeyboard && !player.IsRawMouse)
             {
@@ -289,17 +321,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
             else
             {
-                loc.Y -= gamepadRect.Height * 0.2f;
                 var playerColor = colors[player.GamepadId];
-                str = (player.GamepadId + 1).ToString();
-                size = g.MeasureString(str, playerCustomFont);
-                loc = RectangleUtil.Center(size, s);
-                loc.Y -= 5;
-
-                if (controllerIdentification)
-                {
-                    g.DrawString(str, playerCustomFont, playerColor, loc);
-                }
+                string str = (player.GamepadId + 1).ToString();
+                SizeF size = g.MeasureString(str, fontToScale);
+                PointF loc = RectangleUtil.Center(size, gamepadRect);
+                loc.Y -= gamepadRect.Height * 0.12f;
 
                 if (DevicesFunctions.PollDInputGamepad(player))
                 {
@@ -309,8 +335,15 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 {
                     g.DrawImage(dinputPic, gamepadRect);
                 }
+
+                if (controllerIdentification)
+                {
+                    g.DrawString(str, fontToScale, playerColor, loc);
+                }
             }
 
+
+            fontToScale.Dispose();
         }
 
 
@@ -349,13 +382,19 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             g.FillRectangle(sizerBrush, BoundsFunctions.selectedPlayer.EditBounds);
         }
 
-
         public static void InputsText(Graphics g)
         {
             var inputText = GetInputText();
             g.DrawString(inputText.Item1, playerTextFont, inputText.Item2, new PointF(10, 10));
         }
 
+        public static void LimitsLine(Graphics g)
+        {
+            Rectangle rect = new Rectangle(parent.Location.X, parent.Location.Y, parent.Width - 1, parent.gameProfilesList_btn.Height + 10);
+            g.DrawRectangle(PositionScreenPen, rect);
+            g.FillRectangle(new SolidBrush(Color.FromArgb(80, 0, 0, 0)), rect);
+            g.DrawLine(PositionScreenPen, parent.Location.X, parent.gameProfilesList_btn.Bottom + 5, parent.Width, parent.gameProfilesList_btn.Bottom + 5);
+        }
 
         private static (string, Brush) GetInputText()
         {

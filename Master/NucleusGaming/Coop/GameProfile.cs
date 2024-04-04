@@ -1,12 +1,11 @@
 ﻿using IWshRuntimeLibrary;
-using Jint.Runtime;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Nucleus.Coop;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -40,7 +39,7 @@ namespace Nucleus.Gaming.Coop
 
         private static int totalProfilePlayers;//How many players the loaded profile counts.
         public static int TotalProfilePlayers => totalProfilePlayers;
-     
+
         private static int profilesCount;//Used to check if we need to create a new profile 
         public static int ProfilesCount => profilesCount;
 
@@ -50,7 +49,7 @@ namespace Nucleus.Gaming.Coop
         private static string modeText;// = "New Profile";
         public static string ModeText => modeText;
 
-        public static string GameGUID;
+        public static UserGameInfo GameInfo;
 
         public static List<string> profilesPathList = new List<string>();
 
@@ -73,7 +72,7 @@ namespace Nucleus.Gaming.Coop
             get => useSplitDiv;
             set => useSplitDiv = value;
         }
-        
+
         private static bool hideDesktopOnly;
         public static bool HideDesktopOnly
         {
@@ -222,13 +221,13 @@ namespace Nucleus.Gaming.Coop
         {
             get => updating;
             set => updating = value;
-        }    
+        }
 
         public static List<RectangleF> AllScreens = new List<RectangleF>();
         public static List<ProfilePlayer> ProfilePlayersList = new List<ProfilePlayer>();
         public static List<PlayerInfo> loadedProfilePlayers = new List<PlayerInfo>();
         public static List<PlayerInfo> devicesToMerge = new List<PlayerInfo>();
-        public static List<(Rectangle,RectangleF)> GhostBounds = new List<(Rectangle,RectangleF)>();
+        public static List<(Rectangle, RectangleF)> GhostBounds = new List<(Rectangle, RectangleF)>();
 
         private List<PlayerInfo> GetDevicesList()
         {
@@ -253,7 +252,7 @@ namespace Nucleus.Gaming.Coop
 
         public void Reset()
         {
-            bool profileDisabled = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
+            bool profileDisabled = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")) || GameInfo.DisableProfiles;
 
             setupScreen.CanPlayUpdated(false, false);
 
@@ -311,7 +310,7 @@ namespace Nucleus.Gaming.Coop
                 {
                     options.Add(opt.Key, opt.Value);
                 }
-            
+
                 setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(new Label(), null);
 
                 loadedProfilePlayers.Clear();
@@ -367,7 +366,7 @@ namespace Nucleus.Gaming.Coop
         {
             try
             {
-                string path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{_profileToLoad}].json";
+                string path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{_profileToLoad}].json";
 
                 string jsonString = System.IO.File.ReadAllText(path);
 
@@ -541,7 +540,7 @@ namespace Nucleus.Gaming.Coop
 
                 GetGhostBounds();
 
-                Globals.MainOSD.Show(1000, $"Game Profile N°{_profileToLoad} loaded");
+                Globals.MainOSD.Show(1000, Title != "" ? $"Handler Profile \"{Title}\" Loaded" : $"Handler Profile N°{_profileToLoad} Loaded");
 
                 return true;
 
@@ -552,12 +551,12 @@ namespace Nucleus.Gaming.Coop
                 NucleusMessageBox.Show("", "The profile can't be loaded.\n\n" +
                     "If the error persist delete the profile and create a new one.\n\n" +
                     "[Error]\n\n" + ex.Message, false);
-                
+
                 return false;
             }
         }
 
-        public static void CreateShortcut(string gameGUID, string shortcutId,string profileId,string description)
+        public static void CreateShortcut(string gameGUID, string shortcutId, string profileId, string description)
         {
             object shDesktop = (object)"Desktop";
             WshShell shell = new WshShell();
@@ -576,7 +575,7 @@ namespace Nucleus.Gaming.Coop
 
         private static string GetGameProfilesPath()
         {
-            string path = $"{Globals.GameProfilesFolder}\\{GameGUID}";
+            string path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}";
             if (!Directory.Exists(path))
             {
                 return null;
@@ -593,7 +592,7 @@ namespace Nucleus.Gaming.Coop
             for (int i = 0; i < BoundsFunctions.screens.Length; i++)
             {
                 UserScreen s = BoundsFunctions.screens[i];
-                s.PlayerOnScreen = 0;            
+                s.PlayerOnScreen = 0;
             }
         }
 
@@ -621,8 +620,8 @@ namespace Nucleus.Gaming.Coop
             {
                 cts_BringToFront = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_BringToFront"));
             }
-          
-           useXinputIndex = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
+
+            useXinputIndex = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
         }
 
         public static void UpdateGameProfile(GameProfile profile)
@@ -631,9 +630,9 @@ namespace Nucleus.Gaming.Coop
 
             bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
 
-            if (profilesCount + 1 >= 21 || profileDisabled)
+            if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.DisableProfiles)
             {
-                if (!profileDisabled)
+                if (!profileDisabled || !GameInfo.DisableProfiles)
                 {
                     Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
                 }
@@ -644,16 +643,16 @@ namespace Nucleus.Gaming.Coop
             if (!GameProfile.Loaded || profilesCount == 0)
             {
                 profilesCount++;//increase to set new profile name
-                path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{profilesCount}].json";
+                path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profilesCount}].json";
             }
             else
             {
-                path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{profileToSave}].json";
+                path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profileToSave}].json";
             }
 
-            if (!Directory.Exists($"{Globals.GameProfilesFolder}\\{GameGUID}"))
+            if (!Directory.Exists($"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}"))
             {
-                Directory.CreateDirectory($"{Globals.GameProfilesFolder}\\{GameGUID}");
+                Directory.CreateDirectory($"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}");
             }
 
             JObject options = new JObject();
@@ -714,7 +713,7 @@ namespace Nucleus.Gaming.Coop
             JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
                                                 new JProperty("Cutscenes_Unfocus", cts_Unfocus),
-                                                new JProperty("Cutscenes_BringToFront", cts_BringToFront)); 
+                                                new JProperty("Cutscenes_BringToFront", cts_BringToFront));
 
             JObject JAudioInstances = new JObject();
 
@@ -851,7 +850,7 @@ namespace Nucleus.Gaming.Coop
 
             updating = true;
 
-            Globals.MainOSD.Show(1600, $"Game Profile Updated");
+            Globals.MainOSD.Show(1500, Title != "" ? $"Handler Profile \"{Title}\" Updated" : $"Handler Profile N°{profileToSave} Updated");
         }
 
         public static void SaveGameProfile(GameProfile profile)
@@ -859,9 +858,9 @@ namespace Nucleus.Gaming.Coop
             string path;
             bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
 
-            if (profilesCount + 1 >= 21 || profileDisabled)
+            if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.DisableProfiles)
             {
-                if (!profileDisabled)
+                if (!profileDisabled || !GameInfo.DisableProfiles)
                 {
                     Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
                 }
@@ -873,17 +872,16 @@ namespace Nucleus.Gaming.Coop
             if (profile.deviceList.Count != TotalProfilePlayers || !Loaded || profilesCount == 0)
             {
                 profilesCount++;//increase to set new profile name
-                path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{profilesCount}].json";
-
+                path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profilesCount}].json";
             }
             else
             {
-                path = $"{Globals.GameProfilesFolder}\\{GameGUID}\\Profile[{profileToSave}].json";
+                path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profileToSave}].json";
             }
 
-            if (!Directory.Exists(Path.Combine($"{Globals.GameProfilesFolder}\\{GameGUID}")))
+            if (!Directory.Exists(Path.Combine($"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}")))
             {
-                Directory.CreateDirectory($"{Globals.GameProfilesFolder}\\{GameGUID}");
+                Directory.CreateDirectory($"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}");
             }
 
             JObject options = new JObject();
@@ -947,7 +945,7 @@ namespace Nucleus.Gaming.Coop
             JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
                                                 new JProperty("Cutscenes_Unfocus", cts_Unfocus),
-                                                new JProperty("Cutscenes_BringToFront", cts_BringToFront)); 
+                                                new JProperty("Cutscenes_BringToFront", cts_BringToFront));
 
             foreach (KeyValuePair<string, string> JaudioDevice in AudioInstances)
             {
@@ -1084,9 +1082,9 @@ namespace Nucleus.Gaming.Coop
 
             saved = true;
 
-            LogManager.Log("Game Profile Saved");
+            LogManager.Log("Handler Profile Saved");
 
-            Globals.MainOSD.Show(1600, $"Game Profile Saved");
+            Globals.MainOSD.Show(1600, $"Handler Profile Saved");
         }
 
         public static void FindProfilePlayers(PlayerInfo player)
@@ -1122,10 +1120,10 @@ namespace Nucleus.Gaming.Coop
                 {
                     return;
                 }
-             
+
                 //if the screen looked for is not present look for an other one
                 var scr = FindScreenOrAlternative(profilePlayer);
-               
+
 
                 //if the profile requires more screens than availables
                 if (ProfilePlayersList.Any(pp => pp.ScreenIndex != profilePlayer.ScreenIndex) && scr.Item2 != profilePlayer.ScreenIndex)
@@ -1136,10 +1134,10 @@ namespace Nucleus.Gaming.Coop
                     return;
                 }
 
-                if (Instance.DevicesList.All(lpp => lpp.MonitorBounds != TranslateBounds(profilePlayer, scr.Item1).Item1) && 
+                if (Instance.DevicesList.All(lpp => lpp.MonitorBounds != TranslateBounds(profilePlayer, scr.Item1).Item1) &&
                     ProfilePlayersList.FindIndex(pp => pp == profilePlayer) == loadedProfilePlayers.Count)//avoid to add player in the same bounds                                                                                                                           // ProfilePlayersList.FindIndex(pp => pp == profilePlayer) == loadedProfilePlayers.Count)//make sure to insert player like saved in the game profile
                 {
-                    SetProfilePlayerDatas(player, profilePlayer, scr.Item1, scr.Item2);                  
+                    SetProfilePlayerDatas(player, profilePlayer, scr.Item1, scr.Item2);
                     loadedProfilePlayers.Add(player);
 
                     scr.Item1.PlayerOnScreen++;
@@ -1154,7 +1152,7 @@ namespace Nucleus.Gaming.Coop
                         Ready = false;
                         return;
                     }
-                }        
+                }
             }
 
             if (TotalAssignedPlayers == TotalProfilePlayers)
@@ -1175,7 +1173,7 @@ namespace Nucleus.Gaming.Coop
                 var scr = FindScreenOrAlternative(pp);
                 var ghostBounds = TranslateBounds(pp, scr.Item1);
 
-                GhostBounds.Add(ghostBounds);             
+                GhostBounds.Add(ghostBounds);
             }
         }
 

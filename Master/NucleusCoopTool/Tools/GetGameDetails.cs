@@ -1,17 +1,10 @@
-﻿using Nucleus.Gaming.Coop;
-using Nucleus.Gaming;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Nucleus.Gaming.Platform.PCSpecs;
+using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Platform.PCSpecs;
+using System.IO;
 
 namespace Nucleus.Coop.Tools
 {
