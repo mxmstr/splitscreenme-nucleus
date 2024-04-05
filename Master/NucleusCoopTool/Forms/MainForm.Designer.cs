@@ -53,28 +53,30 @@ namespace Nucleus.Coop
             this.btn_downloadAssets = new System.Windows.Forms.Button();
             this.btn_Discord = new System.Windows.Forms.Button();
             this.gameContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.nullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scriptNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDataFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openOrigExePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteUserProfileConfigPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openUserProfileSavePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteUserProfileSavePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDocumentConfigPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteDocumentConfigPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDocumentSavePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteDocumentSavePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.changeIconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteContentFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.keepInstancesFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disableProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gameNameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.detailsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openHandlerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDataFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openOrigExePathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.openUserProfConfigMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteUserProfConfigMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openUserProfSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteUserProfSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDocumentConfMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteDocumentConfMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDocumentSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteDocumentSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openBackupFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteBackupFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.changeIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteContentFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeGameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.keepInstancesFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableProfilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_Links = new System.Windows.Forms.Button();
             this.third_party_tools_container = new System.Windows.Forms.Panel();
             this.clientAreaPanel = new BufferedClientAreaPanel();
@@ -343,182 +345,196 @@ namespace Nucleus.Coop
             this.gameContextMenuStrip.DropShadowEnabled = false;
             this.gameContextMenuStrip.ImageScalingSize = new System.Drawing.Size(15, 15);
             this.gameContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.nullToolStripMenuItem,
-            this.scriptNotesToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.detailsToolStripMenuItem,
-            this.openScriptToolStripMenuItem,
-            this.openDataFolderToolStripMenuItem,
-            this.openOrigExePathToolStripMenuItem,
-            this.toolStripMenuItem2,
-            this.openToolStripMenuItem,
-            this.deleteUserProfileConfigPathToolStripMenuItem,
-            this.openUserProfileSavePathToolStripMenuItem,
-            this.deleteUserProfileSavePathToolStripMenuItem,
-            this.openDocumentConfigPathToolStripMenuItem,
-            this.deleteDocumentConfigPathToolStripMenuItem,
-            this.openDocumentSavePathToolStripMenuItem,
-            this.deleteDocumentSavePathToolStripMenuItem,
-            this.toolStripMenuItem3,
-            this.changeIconToolStripMenuItem,
-            this.deleteContentFolderToolStripMenuItem,
-            this.deleteToolStripMenuItem,
-            this.keepInstancesFolderToolStripMenuItem,
-            this.disableProfilesToolStripMenuItem});
+            this.gameNameMenuItem,
+            this.notesMenuItem,
+            this.menuSeparator1,
+            this.detailsMenuItem,
+            this.openHandlerMenuItem,
+            this.openDataFolderMenuItem,
+            this.openOrigExePathMenuItem,
+            this.menuSeparator2,
+            this.openUserProfConfigMenuItem,
+            this.deleteUserProfConfigMenuItem,
+            this.openUserProfSaveMenuItem,
+            this.deleteUserProfSaveMenuItem,
+            this.openDocumentConfMenuItem,
+            this.deleteDocumentConfMenuItem,
+            this.openDocumentSaveMenuItem,
+            this.deleteDocumentSaveMenuItem,
+            this.openBackupFolderMenuItem,
+            this.deleteBackupFolderMenuItem,
+            this.menuSeparator3,
+            this.changeIconMenuItem,
+            this.deleteContentFolderMenuItem,
+            this.removeGameMenuItem,
+            this.keepInstancesFolderMenuItem,
+            this.disableProfilesMenuItem});
             this.gameContextMenuStrip.Name = "gameContextMenuStrip";
             this.gameContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.gameContextMenuStrip.Size = new System.Drawing.Size(235, 462);
+            this.gameContextMenuStrip.Size = new System.Drawing.Size(235, 484);
             this.gameContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.GameContextMenuStrip_Opening);
             this.gameContextMenuStrip.Opened += new System.EventHandler(this.GameContextMenuStrip_Opened);
             // 
-            // nullToolStripMenuItem
+            // gameNameMenuItem
             // 
-            this.nullToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
-            this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.nullToolStripMenuItem.Text = "null";
+            this.gameNameMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.gameNameMenuItem.Name = "gameNameMenuItem";
+            this.gameNameMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.gameNameMenuItem.Text = "null";
             // 
-            // scriptNotesToolStripMenuItem
+            // notesMenuItem
             // 
-            this.scriptNotesToolStripMenuItem.Name = "scriptNotesToolStripMenuItem";
-            this.scriptNotesToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.scriptNotesToolStripMenuItem.Text = "Handler Author\'s Notes";
-            this.scriptNotesToolStripMenuItem.Visible = false;
-            this.scriptNotesToolStripMenuItem.Click += new System.EventHandler(this.ScriptNotesToolStripMenuItem_Click);
+            this.notesMenuItem.Name = "notesMenuItem";
+            this.notesMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.notesMenuItem.Text = "Handler Author\'s Notes";
+            this.notesMenuItem.Visible = false;
+            this.notesMenuItem.Click += new System.EventHandler(this.ScriptNotesToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // menuSeparator1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(231, 6);
+            this.menuSeparator1.Name = "menuSeparator1";
+            this.menuSeparator1.Size = new System.Drawing.Size(231, 6);
             // 
-            // detailsToolStripMenuItem
+            // detailsMenuItem
             // 
-            this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
-            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.detailsToolStripMenuItem.Text = "Nucleus Game Details";
-            this.detailsToolStripMenuItem.Click += new System.EventHandler(this.DetailsToolStripMenuItem_Click);
+            this.detailsMenuItem.Name = "detailsMenuItem";
+            this.detailsMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.detailsMenuItem.Text = "Nucleus Game Details";
+            this.detailsMenuItem.Click += new System.EventHandler(this.DetailsToolStripMenuItem_Click);
             // 
-            // openScriptToolStripMenuItem
+            // openHandlerMenuItem
             // 
-            this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.openScriptToolStripMenuItem.Text = "Open Game Handler";
-            this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.OpenScriptToolStripMenuItem_Click);
+            this.openHandlerMenuItem.Name = "openHandlerMenuItem";
+            this.openHandlerMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openHandlerMenuItem.Text = "Open Game Handler";
+            this.openHandlerMenuItem.Click += new System.EventHandler(this.OpenHandlerMenuItem_Click);
             // 
-            // openDataFolderToolStripMenuItem
+            // openDataFolderMenuItem
             // 
-            this.openDataFolderToolStripMenuItem.Name = "openDataFolderToolStripMenuItem";
-            this.openDataFolderToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.openDataFolderToolStripMenuItem.Text = "Open Nucleus Content Folder";
-            this.openDataFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenDataFolderToolStripMenuItem_Click);
+            this.openDataFolderMenuItem.Name = "openDataFolderMenuItem";
+            this.openDataFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openDataFolderMenuItem.Text = "Open Nucleus Content Folder";
+            this.openDataFolderMenuItem.Click += new System.EventHandler(this.OpenDataFolderMenuItem_Click);
             // 
-            // openOrigExePathToolStripMenuItem
+            // openOrigExePathMenuItem
             // 
-            this.openOrigExePathToolStripMenuItem.Name = "openOrigExePathToolStripMenuItem";
-            this.openOrigExePathToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.openOrigExePathToolStripMenuItem.Text = "Open Original Exe Path";
-            this.openOrigExePathToolStripMenuItem.Click += new System.EventHandler(this.OpenOrigExePathToolStripMenuItem_Click);
+            this.openOrigExePathMenuItem.Name = "openOrigExePathMenuItem";
+            this.openOrigExePathMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openOrigExePathMenuItem.Text = "Open Original Exe Path";
+            this.openOrigExePathMenuItem.Click += new System.EventHandler(this.OpenOrigExePathMenuItem_Click);
             // 
-            // toolStripMenuItem2
+            // menuSeparator2
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(231, 6);
+            this.menuSeparator2.Name = "menuSeparator2";
+            this.menuSeparator2.Size = new System.Drawing.Size(231, 6);
             // 
-            // openToolStripMenuItem
+            // openUserProfConfigMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.openToolStripMenuItem.Text = "Open UserProfile Config Path";
-            this.openToolStripMenuItem.Visible = false;
+            this.openUserProfConfigMenuItem.Name = "openUserProfConfigMenuItem";
+            this.openUserProfConfigMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openUserProfConfigMenuItem.Text = "Open UserProfile Config Path";
+            this.openUserProfConfigMenuItem.Visible = false;
             // 
-            // deleteUserProfileConfigPathToolStripMenuItem
+            // deleteUserProfConfigMenuItem
             // 
-            this.deleteUserProfileConfigPathToolStripMenuItem.Name = "deleteUserProfileConfigPathToolStripMenuItem";
-            this.deleteUserProfileConfigPathToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.deleteUserProfileConfigPathToolStripMenuItem.Text = "Delete UserProfile Config Path";
-            this.deleteUserProfileConfigPathToolStripMenuItem.Visible = false;
+            this.deleteUserProfConfigMenuItem.Name = "deleteUserProfConfigMenuItem";
+            this.deleteUserProfConfigMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteUserProfConfigMenuItem.Text = "Delete UserProfile Config Path";
+            this.deleteUserProfConfigMenuItem.Visible = false;
             // 
-            // openUserProfileSavePathToolStripMenuItem
+            // openUserProfSaveMenuItem
             // 
-            this.openUserProfileSavePathToolStripMenuItem.Name = "openUserProfileSavePathToolStripMenuItem";
-            this.openUserProfileSavePathToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.openUserProfileSavePathToolStripMenuItem.Text = "Open UserProfile Save Path";
-            this.openUserProfileSavePathToolStripMenuItem.Visible = false;
+            this.openUserProfSaveMenuItem.Name = "openUserProfSaveMenuItem";
+            this.openUserProfSaveMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openUserProfSaveMenuItem.Text = "Open UserProfile Save Path";
+            this.openUserProfSaveMenuItem.Visible = false;
             // 
-            // deleteUserProfileSavePathToolStripMenuItem
+            // deleteUserProfSaveMenuItem
             // 
-            this.deleteUserProfileSavePathToolStripMenuItem.Name = "deleteUserProfileSavePathToolStripMenuItem";
-            this.deleteUserProfileSavePathToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.deleteUserProfileSavePathToolStripMenuItem.Text = "Delete UserProfile Save Path";
-            this.deleteUserProfileSavePathToolStripMenuItem.Visible = false;
+            this.deleteUserProfSaveMenuItem.Name = "deleteUserProfSaveMenuItem";
+            this.deleteUserProfSaveMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteUserProfSaveMenuItem.Text = "Delete UserProfile Save Path";
+            this.deleteUserProfSaveMenuItem.Visible = false;
             // 
-            // openDocumentConfigPathToolStripMenuItem
+            // openDocumentConfMenuItem
             // 
-            this.openDocumentConfigPathToolStripMenuItem.Name = "openDocumentConfigPathToolStripMenuItem";
-            this.openDocumentConfigPathToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.openDocumentConfigPathToolStripMenuItem.Text = "Open Document Config Path";
-            this.openDocumentConfigPathToolStripMenuItem.Visible = false;
+            this.openDocumentConfMenuItem.Name = "openDocumentConfMenuItem";
+            this.openDocumentConfMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openDocumentConfMenuItem.Text = "Open Document Config Path";
+            this.openDocumentConfMenuItem.Visible = false;
             // 
-            // deleteDocumentConfigPathToolStripMenuItem
+            // deleteDocumentConfMenuItem
             // 
-            this.deleteDocumentConfigPathToolStripMenuItem.Name = "deleteDocumentConfigPathToolStripMenuItem";
-            this.deleteDocumentConfigPathToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.deleteDocumentConfigPathToolStripMenuItem.Text = "Delete Document Config Path";
-            this.deleteDocumentConfigPathToolStripMenuItem.Visible = false;
+            this.deleteDocumentConfMenuItem.Name = "deleteDocumentConfMenuItem";
+            this.deleteDocumentConfMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteDocumentConfMenuItem.Text = "Delete Document Config Path";
+            this.deleteDocumentConfMenuItem.Visible = false;
             // 
-            // openDocumentSavePathToolStripMenuItem
+            // openDocumentSaveMenuItem
             // 
-            this.openDocumentSavePathToolStripMenuItem.Name = "openDocumentSavePathToolStripMenuItem";
-            this.openDocumentSavePathToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.openDocumentSavePathToolStripMenuItem.Text = "Open Document Save Path";
-            this.openDocumentSavePathToolStripMenuItem.Visible = false;
+            this.openDocumentSaveMenuItem.Name = "openDocumentSaveMenuItem";
+            this.openDocumentSaveMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openDocumentSaveMenuItem.Text = "Open Document Save Path";
+            this.openDocumentSaveMenuItem.Visible = false;
             // 
-            // deleteDocumentSavePathToolStripMenuItem
+            // deleteDocumentSaveMenuItem
             // 
-            this.deleteDocumentSavePathToolStripMenuItem.Name = "deleteDocumentSavePathToolStripMenuItem";
-            this.deleteDocumentSavePathToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.deleteDocumentSavePathToolStripMenuItem.Text = "Delete Document Save Path";
-            this.deleteDocumentSavePathToolStripMenuItem.Visible = false;
+            this.deleteDocumentSaveMenuItem.Name = "deleteDocumentSaveMenuItem";
+            this.deleteDocumentSaveMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteDocumentSaveMenuItem.Text = "Delete Document Save Path";
+            this.deleteDocumentSaveMenuItem.Visible = false;
             // 
-            // toolStripMenuItem3
+            // openBackupFolderMenuItem
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(231, 6);
+            this.openBackupFolderMenuItem.Name = "openBackupFolderMenuItem";
+            this.openBackupFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openBackupFolderMenuItem.Text = "Open Backup Folder";
             // 
-            // changeIconToolStripMenuItem
+            // deleteBackupFolderMenuItem
             // 
-            this.changeIconToolStripMenuItem.Name = "changeIconToolStripMenuItem";
-            this.changeIconToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.changeIconToolStripMenuItem.Text = "Change Game Icon";
-            this.changeIconToolStripMenuItem.Click += new System.EventHandler(this.ChangeIconToolStripMenuItem_Click);
+            this.deleteBackupFolderMenuItem.Name = "deleteBackupFolderMenuItem";
+            this.deleteBackupFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteBackupFolderMenuItem.Text = "Delete Backup Folder";
             // 
-            // deleteContentFolderToolStripMenuItem
+            // menuSeparator3
             // 
-            this.deleteContentFolderToolStripMenuItem.Name = "deleteContentFolderToolStripMenuItem";
-            this.deleteContentFolderToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.deleteContentFolderToolStripMenuItem.Text = "Delete Game Content Folder";
-            this.deleteContentFolderToolStripMenuItem.Click += new System.EventHandler(this.DeleteContentFolderToolStripMenuItem_Click);
+            this.menuSeparator3.Name = "menuSeparator3";
+            this.menuSeparator3.Size = new System.Drawing.Size(231, 6);
             // 
-            // deleteToolStripMenuItem
+            // changeIconMenuItem
             // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.deleteToolStripMenuItem.Text = "Remove Game From List";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
+            this.changeIconMenuItem.Name = "changeIconMenuItem";
+            this.changeIconMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.changeIconMenuItem.Text = "Change Game Icon";
+            this.changeIconMenuItem.Click += new System.EventHandler(this.ChangeIconMenuItem_Click);
             // 
-            // keepInstancesFolderToolStripMenuItem
+            // deleteContentFolderMenuItem
             // 
-            this.keepInstancesFolderToolStripMenuItem.Name = "keepInstancesFolderToolStripMenuItem";
-            this.keepInstancesFolderToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.keepInstancesFolderToolStripMenuItem.Text = "Keep Instances Content Folder";
-            this.keepInstancesFolderToolStripMenuItem.Click += new System.EventHandler(this.KeepInstancesFolderToolStripMenuItem_Click);
+            this.deleteContentFolderMenuItem.Name = "deleteContentFolderMenuItem";
+            this.deleteContentFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteContentFolderMenuItem.Text = "Delete Game Content Folder";
+            this.deleteContentFolderMenuItem.Click += new System.EventHandler(this.DeleteContentFolderMenuItem_Click);
             // 
-            // disableProfilesToolStripMenuItem
+            // removeGameMenuItem
             // 
-            this.disableProfilesToolStripMenuItem.Name = "disableProfilesToolStripMenuItem";
-            this.disableProfilesToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.disableProfilesToolStripMenuItem.Text = "Disable Profile";
-            this.disableProfilesToolStripMenuItem.Click += new System.EventHandler(this.DisableProfilesToolStripMenuItem_Click);
+            this.removeGameMenuItem.Name = "removeGameMenuItem";
+            this.removeGameMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.removeGameMenuItem.Text = "Remove Game From List";
+            this.removeGameMenuItem.Click += new System.EventHandler(this.RemoveGameMenuItem_Click);
+            // 
+            // keepInstancesFolderMenuItem
+            // 
+            this.keepInstancesFolderMenuItem.Name = "keepInstancesFolderMenuItem";
+            this.keepInstancesFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.keepInstancesFolderMenuItem.Text = "Keep Instances Content Folder";
+            this.keepInstancesFolderMenuItem.Click += new System.EventHandler(this.KeepInstancesFolderMenuItem_Click);
+            // 
+            // disableProfilesMenuItem
+            // 
+            this.disableProfilesMenuItem.Name = "disableProfilesMenuItem";
+            this.disableProfilesMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.disableProfilesMenuItem.Text = "Disable Profile";
+            this.disableProfilesMenuItem.Click += new System.EventHandler(this.DisableProfilesMenuItem_Click);
             // 
             // btn_Links
             // 
@@ -1148,26 +1164,26 @@ namespace Nucleus.Coop
         private System.Windows.Forms.Button btn_Next;
         private System.Windows.Forms.ToolTip toolTip1;
         public System.Windows.Forms.ContextMenuStrip gameContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem nullToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openScriptToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openDataFolderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem changeIconToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem scriptNotesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openOrigExePathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteContentFolderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteUserProfileConfigPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openUserProfileSavePathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteUserProfileSavePathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem openDocumentConfigPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteDocumentConfigPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openDocumentSavePathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteDocumentSavePathToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gameNameMenuItem;
+        private System.Windows.Forms.ToolStripSeparator menuSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem detailsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeGameMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openHandlerMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openDataFolderMenuItem;
+        private System.Windows.Forms.ToolStripSeparator menuSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem changeIconMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem notesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openOrigExePathMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteContentFolderMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openUserProfConfigMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteUserProfConfigMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openUserProfSaveMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteUserProfSaveMenuItem;
+        private System.Windows.Forms.ToolStripSeparator menuSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem openDocumentConfMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteDocumentConfMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openDocumentSaveMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteDocumentSaveMenuItem;
 		private System.Windows.Forms.PictureBox stepPanelPictureBox;
         private Button minimizeBtn;
         private Button maximizeBtn;
@@ -1194,7 +1210,7 @@ namespace Nucleus.Coop
         public BufferedFlowLayoutPanel icons_Container;
         private Button closeBtn;
         public Button btn_settings;
-        private ToolStripMenuItem keepInstancesFolderToolStripMenuItem;
+        private ToolStripMenuItem keepInstancesFolderMenuItem;
         public PictureBox btn_textSwitcher;
         public BufferedClientAreaPanel coverFrame;
         public BufferedClientAreaPanel cover;
@@ -1211,6 +1227,8 @@ namespace Nucleus.Coop
         private Label lastPlayedAt;
         private BufferedClientAreaPanel infoPanel;
         private BufferedClientAreaPanel stepButtonsPanel;
-        private ToolStripMenuItem disableProfilesToolStripMenuItem;
+        private ToolStripMenuItem disableProfilesMenuItem;
+        private ToolStripMenuItem openBackupFolderMenuItem;
+        private ToolStripMenuItem deleteBackupFolderMenuItem;
     }
 }

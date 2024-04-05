@@ -24,7 +24,6 @@ namespace Nucleus.Coop.Tools
                 for (int i = 0; i < games.Count; i++)
                 {
                     string gameGuid = jObject["Games"][i]["GameGuid"].ToString();
-                    string profiles = jObject["Games"][i]["Profiles"].ToString();
                     string exePath = jObject["Games"][i]["ExePath"].ToString();
 
                     if (gameGuid == currentGameInfo.GameGuid && exePath == currentGameInfo.ExePath)

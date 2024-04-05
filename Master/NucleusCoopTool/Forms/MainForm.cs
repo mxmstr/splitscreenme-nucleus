@@ -1617,7 +1617,7 @@ namespace Nucleus.Coop
 
         private void DetailsToolStripMenuItem_Click(object sender, EventArgs e) => GetGameDetails.GetDetails(currentGameInfo);
 
-        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e) => RemoveGame.Remove(this, currentGameInfo, false);
+        private void RemoveGameMenuItem_Click(object sender, EventArgs e) => RemoveGame.Remove(this, currentGameInfo, false);
 
         private void GameContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -1634,7 +1634,7 @@ namespace Nucleus.Coop
                 {
                     if (c.Text == "No games")
                     {
-                        gameContextMenuStrip.Items[0].Text = "No game selected...";
+                        gameContextMenuStrip.Items["gameNameMenuItem"].Text = "No game selected...";
                         for (int i = 1; i < gameContextMenuStrip.Items.Count; i++)
                         {
                             gameContextMenuStrip.Items[i].Visible = false;
@@ -1651,30 +1651,33 @@ namespace Nucleus.Coop
                 {
                     currentControl = (GameControl)selectedControl;
                     currentGameInfo = currentControl.UserGameInfo;
-                    gameContextMenuStrip.Items[0].Visible = true;
-                    gameContextMenuStrip.Items[2].Visible = true;
+                    gameContextMenuStrip.Items["gameNameMenuItem"].Visible = true;
+                    gameContextMenuStrip.Items["detailsMenuItem"].Visible = true;
                 }
                 else
                 {
                     btnClick = true;
-                    gameContextMenuStrip.Items[0].Visible = false;
+                    gameContextMenuStrip.Items["gameNameMenuItem"].Visible = false;
                 }
 
-                gameContextMenuStrip.Items[1].Visible = false;
-                gameContextMenuStrip.Items[7].Visible = false;
-                gameContextMenuStrip.Items[8].Visible = false;
-                gameContextMenuStrip.Items[9].Visible = false;
-                gameContextMenuStrip.Items[10].Visible = false;
-                gameContextMenuStrip.Items[11].Visible = false;
-                gameContextMenuStrip.Items[12].Visible = false;
-                gameContextMenuStrip.Items[13].Visible = false;
-                gameContextMenuStrip.Items[14].Visible = false;
-                gameContextMenuStrip.Items[15].Visible = false;
-                gameContextMenuStrip.Items[20].Visible = false;
+                gameContextMenuStrip.Items["notesMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["menuSeparator2"].Visible = false;// a separator
+
+                gameContextMenuStrip.Items["openUserProfConfigMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["deleteUserProfConfigMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["openUserProfSaveMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["deleteUserProfSaveMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["openDocumentConfMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["deleteDocumentConfMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["openDocumentSaveMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["deleteDocumentSaveMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["deleteContentFolderMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["openBackupFolderMenuItem"].Visible = false;
+                gameContextMenuStrip.Items["deleteBackupFolderMenuItem"].Visible = false;
 
                 if (string.IsNullOrEmpty(currentGameInfo.GameGuid) || currentGameInfo == null)
                 {
-                    gameContextMenuStrip.Items[0].Text = "No game selected...";
+                    gameContextMenuStrip.Items["gameNameMenuItem"].Text = "No game selected...";
                     for (int i = 1; i < gameContextMenuStrip.Items.Count; i++)
                     {
                         gameContextMenuStrip.Items[i].Visible = false;
@@ -1682,13 +1685,13 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    gameContextMenuStrip.Items[0].Text = currentGameInfo.Game.GameName;
+                    gameContextMenuStrip.Items["gameNameMenuItem"].Text = currentGameInfo.Game.GameName;
 
                     bool userConfigPathExists = false;
                     bool userSavePathExists = false;
                     bool docConfigPathExists = false;
                     bool docSavePathExists = false;
-
+                    bool backupFolderExist = false;
                     //bool userConfigPathConverted = false;
                     if (currentGameInfo.Game.UserProfileConfigPath?.Length > 0 && currentGameInfo.Game.UserProfileConfigPath.ToLower().StartsWith(@"documents\"))
                     {
@@ -1715,12 +1718,13 @@ namespace Nucleus.Coop
 
                         if (string.IsNullOrEmpty(currentGameInfo.Game.UserProfileConfigPath) && string.IsNullOrEmpty(currentGameInfo.Game.UserProfileSavePath) && string.IsNullOrEmpty(currentGameInfo.Game.DocumentsConfigPath) && string.IsNullOrEmpty(currentGameInfo.Game.DocumentsSavePath))
                         {
-                            if (i == 7)
+                            if (i == gameContextMenuStrip.Items.IndexOf(menuSeparator2))
                             {
-                                gameContextMenuStrip.Items[i].Visible = false;
+                              
+                                gameContextMenuStrip.Items["menuSeparator2"].Visible = false;
                             }
                         }
-                        else if (i == 1)
+                        else if (i == gameContextMenuStrip.Items.IndexOf(notesMenuItem))
                         {
                             profilePaths.Clear();
                             profilePaths.Add(Environment.GetEnvironmentVariable("userprofile"));
@@ -1759,10 +1763,10 @@ namespace Nucleus.Coop
 
                         }
 
-                        if (i == 9)
+                        if (i == gameContextMenuStrip.Items.IndexOf(openUserProfConfigMenuItem))
                         {
-                            (gameContextMenuStrip.Items[8] as ToolStripMenuItem).DropDownItems.Clear();
-                            (gameContextMenuStrip.Items[9] as ToolStripMenuItem).DropDownItems.Clear();
+                            (gameContextMenuStrip.Items["openUserProfConfigMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
+                            (gameContextMenuStrip.Items["deleteUserProfConfigMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
 
                             if (currentGameInfo.Game.UserProfileConfigPath?.Length > 0)
                             {
@@ -1770,7 +1774,6 @@ namespace Nucleus.Coop
                                 {
                                     try
                                     {
-
                                         foreach (string profilePath in profilePaths)
                                         {
                                             string currPath = Path.Combine(profilePath, currentGameInfo.Game.UserProfileConfigPath);
@@ -1787,8 +1790,8 @@ namespace Nucleus.Coop
                                                     nucPrefix = "Nucleus: ";
                                                 }
 
-                                                (gameContextMenuStrip.Items[8] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items[9] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["openUserProfConfigMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["deleteUserProfConfigMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
 
                                             }
                                         }
@@ -1798,19 +1801,20 @@ namespace Nucleus.Coop
 
                                     }
                                 }
-                            }
-
-                            if (!userConfigPathExists)
-                            {
-                                gameContextMenuStrip.Items[8].Visible = false;
-                                gameContextMenuStrip.Items[9].Visible = false;
-                            }
+                            }                         
                         }
 
-                        if (i == 11)
+                        if (!userConfigPathExists)
                         {
-                            (gameContextMenuStrip.Items[10] as ToolStripMenuItem).DropDownItems.Clear();
-                            (gameContextMenuStrip.Items[11] as ToolStripMenuItem).DropDownItems.Clear();
+                            gameContextMenuStrip.Items["openUserProfConfigMenuItem"].Visible = false;
+                            gameContextMenuStrip.Items["deleteUserProfConfigMenuItem"].Visible = false;
+                        }
+
+                        if (i == gameContextMenuStrip.Items.IndexOf(openUserProfSaveMenuItem))
+                        {
+                            (gameContextMenuStrip.Items["openUserProfSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
+                            (gameContextMenuStrip.Items["deleteUserProfSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
+
                             if (currentGameInfo.Game.UserProfileSavePath?.Length > 0)
                             {
                                 if (profilePaths.Count > 0)
@@ -1833,8 +1837,8 @@ namespace Nucleus.Coop
                                                     nucPrefix = "Nucleus: ";
                                                 }
 
-                                                (gameContextMenuStrip.Items[10] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items[11] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["openUserProfSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["deleteUserProfSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
                                             }
                                         }
                                     }
@@ -1845,21 +1849,21 @@ namespace Nucleus.Coop
                                 }
 
                             }
-
-                            if (!userSavePathExists)
-                            {
-                                gameContextMenuStrip.Items[10].Visible = false;
-                                gameContextMenuStrip.Items[11].Visible = false;
-                            }
                         }
 
-                        if (i == 13)
+                        if (!userSavePathExists)
                         {
-                            (gameContextMenuStrip.Items[12] as ToolStripMenuItem).DropDownItems.Clear();
-                            (gameContextMenuStrip.Items[13] as ToolStripMenuItem).DropDownItems.Clear();
+                            gameContextMenuStrip.Items["openUserProfSaveMenuItem"].Visible = false;
+                            gameContextMenuStrip.Items["deleteUserProfSaveMenuItem"].Visible = false;
+                        }
+
+                        if (i == gameContextMenuStrip.Items.IndexOf(openDocumentConfMenuItem))
+                        {
+                            (gameContextMenuStrip.Items["openDocumentConfMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
+                            (gameContextMenuStrip.Items["deleteDocumentConfMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
+
                             if (currentGameInfo.Game.DocumentsConfigPath?.Length > 0)
                             {
-
                                 if (profilePaths.Count > 0)
                                 {
                                     try
@@ -1880,8 +1884,8 @@ namespace Nucleus.Coop
                                                     nucPrefix = "Nucleus: ";
                                                 }
 
-                                                (gameContextMenuStrip.Items[12] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items[13] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["openDocumentConfMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["deleteDocumentConfMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
                                             }
                                         }
                                     }
@@ -1890,19 +1894,19 @@ namespace Nucleus.Coop
 
                                     }
                                 }
-                            }
-
-                            if (!docConfigPathExists)
-                            {
-                                gameContextMenuStrip.Items[12].Visible = false;
-                                gameContextMenuStrip.Items[13].Visible = false;
-                            }
+                            }                          
                         }
 
-                        if (i == 15)
+                        if (!docConfigPathExists)
                         {
-                            (gameContextMenuStrip.Items[14] as ToolStripMenuItem).DropDownItems.Clear();
-                            (gameContextMenuStrip.Items[15] as ToolStripMenuItem).DropDownItems.Clear();
+                            gameContextMenuStrip.Items["openDocumentConfMenuItem"].Visible = false;
+                            gameContextMenuStrip.Items["deleteDocumentConfMenuItem"].Visible = false;
+                        }
+
+                        if (i == gameContextMenuStrip.Items.IndexOf(openDocumentSaveMenuItem))
+                        {
+                            (gameContextMenuStrip.Items["openDocumentSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
+                            (gameContextMenuStrip.Items["deleteDocumentSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
 
                             if (currentGameInfo.Game.DocumentsSavePath?.Length > 0)
                             {
@@ -1926,8 +1930,8 @@ namespace Nucleus.Coop
                                                     nucPrefix = "Nucleus: ";
                                                 }
 
-                                                (gameContextMenuStrip.Items[14] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items[15] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["openDocumentSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["deleteDocumentSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
                                             }
                                         }
                                     }
@@ -1936,65 +1940,95 @@ namespace Nucleus.Coop
 
                                     }
                                 }
-                            }
+                            }                 
 
-                            if (!docSavePathExists)
+                            if (!userConfigPathExists && !userSavePathExists && !docConfigPathExists && !docSavePathExists)
                             {
-                                gameContextMenuStrip.Items[14].Visible = false;
-                                gameContextMenuStrip.Items[15].Visible = false;
+                                gameContextMenuStrip.Items["menuSeparator2"].Visible = false;// a separator
                             }
                         }
 
-                        if (i == 16 && !userConfigPathExists && !userSavePathExists && !docConfigPathExists && !docSavePathExists)
+                        if (!docSavePathExists)
                         {
-                            gameContextMenuStrip.Items[7].Visible = false;
+                            gameContextMenuStrip.Items["openDocumentSaveMenuItem"].Visible = false;
+                            gameContextMenuStrip.Items["deleteDocumentSaveMenuItem"].Visible = false;
+                        }
+                      
+                        if (i == gameContextMenuStrip.Items.IndexOf(openBackupFolderMenuItem))
+                        {
+                            (gameContextMenuStrip.Items["openBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
+                            (gameContextMenuStrip.Items["deleteBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
+
+                            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\{currentGameInfo.Game.GUID}";
+
+                            if (Directory.Exists(backupsPath))
+                            {
+                                string[] playersBackup = Directory.GetDirectories(backupsPath, "*", SearchOption.TopDirectoryOnly);
+
+                                foreach (string playerBackup in playersBackup)
+                                {
+                                    string path = playerBackup;
+                                    string playerName = playerBackup.Split('\\').Last();
+                                    (gameContextMenuStrip.Items["openBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Add(playerName, null, new EventHandler(OpenBackupFolderSubmenuItem_Click));
+                                    (gameContextMenuStrip.Items["deleteBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Add(playerName, null, new EventHandler(DeleteBackupFolderSubmenuItem_Click));
+                                }
+
+                                backupFolderExist = true;
+                            }
+
+                        }
+               
+                        if (!backupFolderExist)
+                        {
+                            gameContextMenuStrip.Items["openBackupFolderMenuItem"].Visible = false;
+                            gameContextMenuStrip.Items["deleteBackupFolderMenuItem"].Visible = false;
                         }
 
-                        if (i == 1 && currentGameInfo.Game.Description == null)
+                        if (i == gameContextMenuStrip.Items.IndexOf(notesMenuItem) && currentGameInfo.Game.Description == null)
                         {
-                            gameContextMenuStrip.Items[i].Visible = false;
+                            gameContextMenuStrip.Items[""].Visible = false;
                             if (btnClick)
                             {
-                                gameContextMenuStrip.Items[2].Visible = false;
+                                gameContextMenuStrip.Items["detailsMenuItem"].Visible = false;
                                 i++;
                             }
                         }
 
-                        if (i == 20)
+                        if (i == gameContextMenuStrip.Items.IndexOf(keepInstancesFolderMenuItem))
                         {
                             if (!currentGameInfo.Game.KeepSymLinkOnExit)
                             {
                                 if (currentGameInfo.KeepSymLink)
                                 {
-                                    gameContextMenuStrip.Items[20].Image = ImageCache.GetImage(theme + "locked.png");
+                                    gameContextMenuStrip.Items["keepInstancesFolderMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
                                 }
                                 else
                                 {
-                                    gameContextMenuStrip.Items[20].Image = ImageCache.GetImage(theme + "unlocked.png");
+                                    gameContextMenuStrip.Items["keepInstancesFolderMenuItem"].Image = ImageCache.GetImage(theme + "unlocked.png");
                                 }
                             }
                             else
                             {
-                                gameContextMenuStrip.Items[20].Visible = false;
+                                gameContextMenuStrip.Items["keepInstancesFolderMenuItem"].Visible = false;
                             }
                         }
 
-                        if (i == 21)
+                        if (i == gameContextMenuStrip.Items.IndexOf(disableProfilesMenuItem))
                         {
                             if (!DisableGameProfiles)
                             {
                                 if (currentGameInfo.DisableProfiles)
                                 {
-                                    gameContextMenuStrip.Items[21].Image = ImageCache.GetImage(theme + "locked.png");
+                                    gameContextMenuStrip.Items["disableProfilesMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
                                 }
                                 else
                                 {
-                                    gameContextMenuStrip.Items[21].Image = ImageCache.GetImage(theme + "unlocked.png");
+                                    gameContextMenuStrip.Items["disableProfilesMenuItem"].Image = ImageCache.GetImage(theme + "unlocked.png");
                                 }
                             }
                             else
                             {
-                                gameContextMenuStrip.Items[21].Visible = false;
+                                gameContextMenuStrip.Items["disableProfilesMenuItem"].Visible = false;
                             }
                         }
                     }
@@ -2017,7 +2051,7 @@ namespace Nucleus.Coop
             }
             else
             {
-                gameContextMenuStrip.Items[0].Text = "No game selected...";
+                gameContextMenuStrip.Items["gameNameMenuItem"].Text = "No game selected...";
 
                 for (int i = 1; i < gameContextMenuStrip.Items.Count; i++)
                 {
@@ -2028,6 +2062,37 @@ namespace Nucleus.Coop
 
         private void GameContextMenuStrip_Opened(object sender, EventArgs e)
         => gameContextMenuStrip.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, gameContextMenuStrip.Width - 1, gameContextMenuStrip.Height, 20, 20));
+
+        private void OpenBackupFolderSubmenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\{currentGameInfo.Game.GUID}";
+
+            string path = $"{backupsPath}\\{item.Text}";
+
+            if (Directory.Exists(path))
+            {
+                Process.Start(path);
+            }
+        }
+
+        private void DeleteBackupFolderSubmenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\{currentGameInfo.Game.GUID}";
+
+            string path = $"{backupsPath}\\{item.Text}";
+            
+            DialogResult dialogResult = MessageBox.Show($"Do you really want to delete \"{currentControl.GameInfo.GUID}\" {item.Text}'s backup folder?", $"Delete {item.Text}'s backup folder.", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                }
+            }       
+        }
 
         private void UserProfileOpenSubmenuItem_Click(object sender, EventArgs e)
         {
@@ -2194,13 +2259,13 @@ namespace Nucleus.Coop
             return null;
         }
 
-        private void OpenScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenHandlerMenuItem_Click(object sender, EventArgs e)
         => OpenHandler.OpenRawHandler(currentGameInfo);
 
-        private void OpenDataFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenDataFolderMenuItem_Click(object sender, EventArgs e)
         => OpenGameContentFolder.OpenDataFolder(currentGameInfo);
 
-        private void ChangeIconToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeIconMenuItem_Click(object sender, EventArgs e)
         => ChangeGameIcon.ChangeIcon(this, currentGameInfo, iconsIni);
 
         private void Log(string logMessage)
@@ -2226,7 +2291,7 @@ namespace Nucleus.Coop
             gameContextMenuStrip.Show(ptLowerLeft);
         }
 
-        private void OpenOrigExePathToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenOrigExePathMenuItem_Click(object sender, EventArgs e)
         {
             string path = Path.GetDirectoryName(currentGameInfo.ExePath);
             if (Directory.Exists(path))
@@ -2239,7 +2304,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void DeleteContentFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteContentFolderMenuItem_Click(object sender, EventArgs e)
         {
             string path = Path.Combine(gameManager.GetAppContentPath(), currentGameInfo.Game.GUID);
             if (Directory.Exists(path))
@@ -2643,17 +2708,17 @@ namespace Nucleus.Coop
         private void CloseButtonClick(object sender, EventArgs e)
         => FadeOut();
 
-        private void KeepInstancesFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void KeepInstancesFolderMenuItem_Click(object sender, EventArgs e)
         {
             if (currentGameInfo.KeepSymLink)
             {
                 currentGameInfo.KeepSymLink = false;
-                gameContextMenuStrip.Items[20].Image = ImageCache.GetImage(theme + "locked.png");
+                gameContextMenuStrip.Items["deleteContentFolderMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
             }
             else
             {
                 currentGameInfo.KeepSymLink = true;
-                gameContextMenuStrip.Items[20].Image = ImageCache.GetImage(theme + "unlocked.png");
+                gameContextMenuStrip.Items["deleteContentFolderMenuItem"].Image = ImageCache.GetImage(theme + "unlocked.png");
             }
 
             GameManager.Instance.SaveUserProfile();
@@ -2866,18 +2931,18 @@ namespace Nucleus.Coop
             txt_version.Focus();
         }
 
-        private void DisableProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DisableProfilesMenuItem_Click(object sender, EventArgs e)
         {
             if (currentGameInfo.DisableProfiles)
             {
                 currentGameInfo.DisableProfiles = false;
-                gameContextMenuStrip.Items[21].Image = ImageCache.GetImage(theme + "locked.png");
+                gameContextMenuStrip.Items["disableProfilesMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
                 RefreshUI(true);
             }
             else
             {
                 currentGameInfo.DisableProfiles = true;
-                gameContextMenuStrip.Items[21].Image = ImageCache.GetImage(theme + "unlocked.png");
+                gameContextMenuStrip.Items["disableProfilesMenuItem"].Image = ImageCache.GetImage(theme + "unlocked.png");
                 RefreshUI(true);
             }
 
