@@ -632,7 +632,7 @@ namespace Nucleus.Gaming.Coop
 
             if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.DisableProfiles)
             {
-                if (!profileDisabled || !GameInfo.DisableProfiles)
+                if (!profileDisabled && !GameInfo.DisableProfiles)
                 {
                     Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
                 }
@@ -860,7 +860,7 @@ namespace Nucleus.Gaming.Coop
 
             if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.DisableProfiles)
             {
-                if (!profileDisabled || !GameInfo.DisableProfiles)
+                if (!profileDisabled && !GameInfo.DisableProfiles)
                 {
                     Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
                 }

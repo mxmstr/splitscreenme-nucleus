@@ -1284,11 +1284,11 @@ namespace Nucleus.Gaming
 
                 if (i == 0)
                 {
-                    BackupFiles.StartFilesRestoration(gen);
+                    BackupFiles.StartFilesRestoration();
 
                     Thread.Sleep(200);
 
-                    BackupFiles.StartFoldersRestoration(gen);
+                    BackupFiles.StartFoldersRestoration();
                 }
 
                 if (processingExit)
@@ -3153,7 +3153,7 @@ namespace Nucleus.Gaming
                 //Game.FilesToBackup
                 if (gen.BackupFiles.Length > 0)
                 {
-                    BackupFiles.StartFilesBackup(gen, gen.BackupFiles);
+                    BackupFiles.StartFilesBackup(gen.BackupFiles);
                 }
             }
 
@@ -3164,7 +3164,7 @@ namespace Nucleus.Gaming
                     //Context.FilesToBackup
                     if (context.BackupFiles.Length > 0)
                     {
-                        BackupFiles.StartFilesBackup(gen, context.BackupFiles);
+                        BackupFiles.StartFilesBackup(context.BackupFiles);
                     }
                 }
             }
@@ -3174,7 +3174,7 @@ namespace Nucleus.Gaming
                 //Game.BackupFolders
                 if (gen.BackupFolders.Length > 0)
                 {
-                    BackupFiles.StartFoldersBackup(gen, gen.BackupFolders);
+                    BackupFiles.StartFoldersBackup(gen.BackupFolders);
                 }
             }
 
@@ -3185,7 +3185,7 @@ namespace Nucleus.Gaming
                     //Context.BackupFolders
                     if (context.BackupFolders.Length > 0)
                     {
-                        BackupFiles.StartFoldersBackup(gen, context.BackupFolders);
+                        BackupFiles.StartFoldersBackup(context.BackupFolders);
                     }
                 }
             }

@@ -7,48 +7,37 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 {
     public static class BackupFiles
     {
-        public static void StartFilesBackup(GenericGameInfo currentGameInfo, string[] filesToBackup)
+        private static readonly string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";
+
+        public static void StartFilesBackup(string[] filesToBackup)
         {
-            bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
-            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);//game content root
-            string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";//Nucleus environment root
+            var handlerInstance = GenericGameHandler.Instance;
+            string gameGUID = handlerInstance.currentGameInfo.GUID;
+
+            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);//game content root
+           
+            
+            var players = handlerInstance.profile.DevicesList;
 
             try
             {
-
                 if (Directory.Exists(gameContentPath))
                 {
                     Log("Start processing Files backup");
 
                     string[] instances = Directory.GetDirectories(gameContentPath, "*", SearchOption.TopDirectoryOnly);
 
-                    string profile = string.Empty;
-
-                    if (!currentGameInfo.BackupIgnoreProfiles)
+                    for (int i = 0; i < players.Count(); i++)
                     {
-                        if (!profileDisabled || !GameProfile.GameInfo.DisableProfiles)
-                        {
-                            if (GameProfile.CurrentProfileId != 0)//if an existing profile has been loaded
-                            {
-                                profile = $"\\Profile{GameProfile.CurrentProfileId}";
+                        var player = players[i];
 
-                            }
-                            else//if a new profile has been created
-                            {
-                                profile = $"\\Profile{GameProfile.ProfilesCount}";
-                            }
-                        }
-                    }
-
-                    for (int i = 0; i < instances.Length; i++)//loop through all instanced game folders(game content instances)
-                    {
                         if (Directory.Exists(instances[i]))
                         {
-                            string destPath = $"{nucleusEnvironment}\\Game Files Backup\\{currentGameInfo.GUID}{profile}\\Instance{i}";
+                            string destPath = $"{nucleusEnvironment}\\{gameGUID}\\{player.Nickname}";
 
                             if (!Directory.Exists(destPath))
                             {
-                                Directory.CreateDirectory(destPath);//Create instances backup destination folder
+                                Directory.CreateDirectory(destPath);
                             }
 
                             foreach (string filePath in filesToBackup)
@@ -59,15 +48,15 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
                                 if (!Directory.Exists(fileDest))
                                 {
-                                    Directory.CreateDirectory($"{destPath}\\{fileDest}");//Create file copy/backup destination folder 
+                                    Directory.CreateDirectory($"{destPath}\\{fileDest}");
                                 }
 
                                 if (File.Exists(fileCopy))
                                 {
-                                    File.Delete(fileCopy);//Delete previous backup
+                                    File.Delete(fileCopy);
                                 }
 
-                                File.Copy($"{instances[i]}\\{filePath}", fileCopy);//Create file copy/backup
+                                File.Copy($"{instances[i]}\\{filePath}", fileCopy);
                             }
                         }
                     }
@@ -84,89 +73,66 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
         #region Restore files backups
 
-        public static void StartFilesRestoration(GenericGameInfo currentGameInfo)
+        public static void StartFilesRestoration()
         {
-            bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
-            string destPath = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);
-            string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";
+            var handlerInstance = GenericGameHandler.Instance;
+            string gameGUID = handlerInstance.currentGameInfo.GUID;
+
+            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);
+
+            var players = handlerInstance.profile.DevicesList;
 
             try
             {
-                string profile = string.Empty;
-
-                if (!currentGameInfo.BackupIgnoreProfiles )
-                {
-                    if (!profileDisabled || !GameProfile.GameInfo.DisableProfiles)
-                    {
-                        if (GameProfile.CurrentProfileId == 0)
-                        {
-                            Console.WriteLine("No files/folder to restore for this profile");
-                            return;
-                        }
-
-                        profile = $"\\Profile{GameProfile.CurrentProfileId}";
-                    }
-                }
-
-                string soureContent = $"{nucleusEnvironment}\\Game Files Backup\\{currentGameInfo.GUID}{profile}";
-
-                if (!Directory.Exists(soureContent))
-                {
-                    return;
-                }
+                string sourceContent = $"{nucleusEnvironment}\\{gameGUID}";
 
                 Log("Start processing files restoration");
 
-                string[] sourceInstances = Directory.GetDirectories(soureContent, "*", SearchOption.TopDirectoryOnly);
-
-                for (int i = 0; i < sourceInstances.Length; i++)
+                for (int i = 0; i < players.Count(); i++)
                 {
-                    string sourceInstance = sourceInstances[i];
+                    var player = players[i];
 
-                    if (profileDisabled)
+                    string sourceFolder = $"{sourceContent}\\{player.Nickname}";
+
+                    if (Directory.Exists(sourceFolder))
                     {
-                        if (sourceInstance.Contains("Profile"))
+                        string destInstance = $"{gameContentPath}\\Instance{i}";
+
+                        string[] sourceFiles = Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories);
+
+                        if (!Directory.Exists(destInstance))
                         {
                             continue;
                         }
-                    }
 
-                    if (Directory.Exists(sourceInstance))
-                    {
-                        string destInstance = $"{destPath}\\Instance{i}";
+                        string[] destFiles = Directory.GetFileSystemEntries(destInstance, "*", SearchOption.AllDirectories);
 
-                        string[] sourceFiles = Directory.GetFileSystemEntries(sourceInstance, "*", SearchOption.AllDirectories);
-
-                        if (Directory.Exists(destInstance))
+                        for (int d = 0; d < destFiles.Length; d++)
                         {
-                            string[] destFiles = Directory.GetFileSystemEntries(destInstance, "*", SearchOption.AllDirectories);
+                            string destFile = destFiles[d];
 
-                            for (int d = 0; d < destFiles.Length; d++)
+                            if (File.Exists(destFile))
                             {
-                                string destFile = destFiles[d];
+                                string destFileName = destFiles[d].Split('\\').Last();
 
-                                if (File.Exists(destFile))
+                                for (int s = 0; s < sourceFiles.Length; s++)
                                 {
-                                    string destFileName = destFiles[d].Split('\\').Last();
+                                    string sourceFile = sourceFiles[s];
 
-                                    for (int s = 0; s < sourceFiles.Length; s++)
+                                    if (File.Exists(sourceFile))
                                     {
-                                        string sourceFile = sourceFiles[s];
+                                        string sourceFileName = sourceFiles[s].Split('\\').Last();
 
-                                        if (File.Exists(sourceFile))
+                                        if (destFileName == sourceFileName)
                                         {
-                                            string sourceFileName = sourceFiles[s].Split('\\').Last();
-
-                                            if (destFileName == sourceFileName)
-                                            {
-                                                File.Delete(destFile);
-                                                File.Copy(sourceFile, destFile);
-                                            }
+                                            File.Delete(destFile);
+                                            File.Copy(sourceFile, destFile);
                                         }
                                     }
                                 }
                             }
                         }
+
                     }
                 }
 
@@ -181,11 +147,14 @@ namespace Nucleus.Gaming.Tools.BackupFiles
         #endregion
 
 
-        public static void StartFoldersBackup(GenericGameInfo currentGameInfo, string[] foldersToBackup)
+        public static void StartFoldersBackup(string[] foldersToBackup)
         {
-            bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
-            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);//game content root
-            string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";//Nucleus environment root
+            var handlerInstance = GenericGameHandler.Instance;
+            string gameGUID = handlerInstance.currentGameInfo.GUID;
+
+            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);//game content root
+
+            var players = handlerInstance.profile.DevicesList;
 
             try
             {
@@ -195,39 +164,22 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
                     string[] instances = Directory.GetDirectories(gameContentPath, "*", SearchOption.TopDirectoryOnly);
 
-                    string profile = string.Empty;
-
-                    if (!currentGameInfo.BackupIgnoreProfiles)
+                    for (int i = 0; i < players.Count; i++)
                     {
-                        if (!profileDisabled || !GameProfile.GameInfo.DisableProfiles)
-                        {
-                            if (GameProfile.CurrentProfileId != 0)//if an existing profile has been loaded
-                            {
-                                profile = $"\\Profile{GameProfile.CurrentProfileId}";
+                        var player = players[i];
 
-                            }
-                            else//if a new profile has been created
-                            {
-                                profile = $"\\Profile{GameProfile.ProfilesCount}";
-                            }
-                        }
-                    }
-
-                    for (int i = 0; i < instances.Length; i++)//loop through all instanced game folders(game content instances)
-                    {
                         if (Directory.Exists(instances[i]))
                         {
-                            string instance = instances[i];
-                            string destPath = $"{nucleusEnvironment}\\Game Files Backup\\{currentGameInfo.GUID}{profile}\\Instance{i}";//Build instance folder backup destination path
+                            string destPath = $"{nucleusEnvironment}\\{gameGUID}\\{player.Nickname}";
 
                             if (!Directory.Exists(destPath))
                             {
-                                Directory.CreateDirectory(destPath);//Create instances backup destination folder
+                                Directory.CreateDirectory(destPath);
                             }
 
                             foreach (string sourceFolder in foldersToBackup)
                             {
-                                string sourcePath = $"{instance}\\{sourceFolder}";
+                                string sourcePath = $"{instances[i]}\\{sourceFolder}";
 
                                 string[] sourceFiles = Directory.GetFileSystemEntries(sourcePath, "*", SearchOption.AllDirectories);
 
@@ -271,33 +223,20 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
         #region Restore folders backups
 
-        public static void StartFoldersRestoration(GenericGameInfo currentGameInfo)
+        public static void StartFoldersRestoration()
         {
-            bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
-            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);//game content root
-            string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";//Nucleus environment root
+            var handlerInstance = GenericGameHandler.Instance;
+            string gameGUID = handlerInstance.currentGameInfo.GUID;
+
+            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);//game content root
+            
+            var players = handlerInstance.profile.DevicesList;
 
             try
             {
                 if (Directory.Exists(gameContentPath))
                 {
-                    string profile = string.Empty;
-
-                    if (!currentGameInfo.BackupIgnoreProfiles)
-                    {
-                        if (!profileDisabled || !GameProfile.GameInfo.DisableProfiles)
-                        {
-                            if (GameProfile.CurrentProfileId == 0)
-                            {
-                                Console.WriteLine("No files/folder to restore for this profile");
-                                return;
-                            }
-
-                            profile = $"\\Profile{GameProfile.CurrentProfileId}";
-                        }
-                    }
-
-                    string sourceContent = $"{nucleusEnvironment}\\Game Files Backup\\{currentGameInfo.GUID}{profile}";
+                    string sourceContent = $"{nucleusEnvironment}\\{gameGUID}";
 
                     if (!Directory.Exists(sourceContent))
                     {
@@ -306,65 +245,48 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
                     Log("Start processing folders backups restoration");
 
-                    string[] sourceInstances = Directory.GetDirectories(sourceContent, "*", SearchOption.TopDirectoryOnly);
-
-                    for (int i = 0; i < sourceInstances.Length; i++)
+                    for (int i = 0; i < players.Count; i++)
                     {
-                        string sourceInstance = sourceInstances[i];
+                        var player = players[i];
 
-                        if (profileDisabled)
+                        string sourceFolder = $"{sourceContent}\\{player.Nickname}";
+
+                        if (Directory.Exists(sourceFolder))
                         {
-                            if (sourceInstance.Contains("Profile"))
+                            string destInstance = $"{gameContentPath}\\Instance{i}";
+
+                            if (Directory.Exists(destInstance))
                             {
-                                continue;
-                            }
-                        }
+                                string[] sourceFiles = Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories);
 
-                        if (Directory.Exists(sourceInstance))
-                        {
-                            string[] destInstances = Directory.GetDirectories(gameContentPath, "*", SearchOption.TopDirectoryOnly);
-
-                            for (int d = 0; d < destInstances.Length; d++)
-                            {
-                                string destInstance = destInstances[d];
-
-                                if (Directory.Exists(destInstance))
+                                foreach (string sourceFile in sourceFiles)
                                 {
-                                    string[] sourceFiles = Directory.GetFileSystemEntries(sourceInstance, "*", SearchOption.AllDirectories);
-
-                                    foreach (string sourceFile in sourceFiles)
+                                    if (File.Exists(sourceFile))
                                     {
-                                        if (!sourceFile.Contains($"Instance{d}"))
+                                        string fileName = sourceFile.Split('\\').Last();
+                                        string filePath = sourceFile.Substring(sourceFile.IndexOf(player.Nickname));
+                                        string destPath = filePath.Remove(filePath.IndexOf(player.Nickname), player.Nickname.Length);
+
+                                        string destDirectoryBuild = $"{destInstance}{destPath}";
+                                        string destDirectory = destDirectoryBuild.Remove(destDirectoryBuild.IndexOf(fileName, fileName.Length));
+
+                                        if (!Directory.Exists(destDirectory))
                                         {
-                                            continue;
+                                            Directory.CreateDirectory(destDirectory);
                                         }
 
-                                        if (File.Exists(sourceFile))
+                                        string fileCopy = $"{destInstance}{destPath}";
+
+                                        if (File.Exists(fileCopy))
                                         {
-                                            string fileName = sourceFile.Split('\\').Last();
-                                            string filePath = sourceFile.Substring(sourceFile.IndexOf($"Instance{i}"));
-                                            string destPath = filePath.Remove(filePath.IndexOf($"Instance{i}"), $"Instance{i}".Length);
-
-                                            string destDirectoryBuild = $"{destInstance}{destPath}";
-                                            string destDirectory = destDirectoryBuild.Remove(destDirectoryBuild.IndexOf(fileName, fileName.Length));
-
-                                            if (!Directory.Exists(destDirectory))
-                                            {
-                                                Directory.CreateDirectory(destDirectory);
-                                            }
-
-                                            string fileCopy = $"{destInstance}{destPath}";
-
-                                            if (File.Exists(fileCopy))
-                                            {
-                                                File.Delete(fileCopy);
-                                            }
-
-                                            File.Copy(sourceFile, fileCopy);
+                                            File.Delete(fileCopy);
                                         }
+
+                                        File.Copy(sourceFile, fileCopy);
                                     }
                                 }
                             }
+
                         }
                     }
 

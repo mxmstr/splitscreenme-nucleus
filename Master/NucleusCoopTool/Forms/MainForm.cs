@@ -1813,7 +1813,6 @@ namespace Nucleus.Coop
                             (gameContextMenuStrip.Items[11] as ToolStripMenuItem).DropDownItems.Clear();
                             if (currentGameInfo.Game.UserProfileSavePath?.Length > 0)
                             {
-
                                 if (profilePaths.Count > 0)
                                 {
                                     try
