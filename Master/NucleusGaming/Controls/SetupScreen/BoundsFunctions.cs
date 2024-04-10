@@ -350,7 +350,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             {
                 activeSizer = GetActiveSizer(e);
 
-                if (activeSizer != RectangleF.Empty)
+                if (activeSizer != RectangleF.Empty && screens.All(s => !s.SwapTypeBounds.Contains(mousePos)))
                 {
                     Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                     return;

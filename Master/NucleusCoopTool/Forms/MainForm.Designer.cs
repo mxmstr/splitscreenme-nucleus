@@ -54,8 +54,8 @@ namespace Nucleus.Coop
             this.btn_Discord = new System.Windows.Forms.Button();
             this.gameContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gameNameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.notesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.notesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detailsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openHandlerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openDataFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -346,8 +346,8 @@ namespace Nucleus.Coop
             this.gameContextMenuStrip.ImageScalingSize = new System.Drawing.Size(15, 15);
             this.gameContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gameNameMenuItem,
-            this.notesMenuItem,
             this.menuSeparator1,
+            this.notesMenuItem,
             this.detailsMenuItem,
             this.openHandlerMenuItem,
             this.openDataFolderMenuItem,
@@ -371,7 +371,8 @@ namespace Nucleus.Coop
             this.disableProfilesMenuItem});
             this.gameContextMenuStrip.Name = "gameContextMenuStrip";
             this.gameContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.gameContextMenuStrip.Size = new System.Drawing.Size(235, 484);
+            this.gameContextMenuStrip.Size = new System.Drawing.Size(235, 506);
+            this.gameContextMenuStrip.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.GameContextMenuStrip_Closing);
             this.gameContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.GameContextMenuStrip_Opening);
             this.gameContextMenuStrip.Opened += new System.EventHandler(this.GameContextMenuStrip_Opened);
             // 
@@ -382,18 +383,18 @@ namespace Nucleus.Coop
             this.gameNameMenuItem.Size = new System.Drawing.Size(234, 22);
             this.gameNameMenuItem.Text = "null";
             // 
-            // notesMenuItem
-            // 
-            this.notesMenuItem.Name = "notesMenuItem";
-            this.notesMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.notesMenuItem.Text = "Handler Author\'s Notes";
-            this.notesMenuItem.Visible = false;
-            this.notesMenuItem.Click += new System.EventHandler(this.ScriptNotesToolStripMenuItem_Click);
-            // 
             // menuSeparator1
             // 
             this.menuSeparator1.Name = "menuSeparator1";
             this.menuSeparator1.Size = new System.Drawing.Size(231, 6);
+            // 
+            // notesMenuItem
+            // 
+            this.notesMenuItem.Name = "notesMenuItem";
+            this.notesMenuItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.notesMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.notesMenuItem.Text = "Handler Author\'s Notes";
+            this.notesMenuItem.Visible = false;
             // 
             // detailsMenuItem
             // 

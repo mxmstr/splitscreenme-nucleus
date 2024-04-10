@@ -88,7 +88,6 @@ namespace SplitTool.Controls
                     Height = picture.Height + 20;
                     picture.BackColor = Color.Transparent;
                 }
-
             }
 
             VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.

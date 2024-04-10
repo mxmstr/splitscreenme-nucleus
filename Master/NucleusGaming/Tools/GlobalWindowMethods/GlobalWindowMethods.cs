@@ -1135,8 +1135,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 {
                     handlerInstance.TriggerOSD(100000, "Resetting game windows. Please wait...");
                     data.HWNDRetry = false;
-                    // data.HWnd = null;
-                    //updatedHwnd = false;
                     data.Setted = false;
                     data.Finished = false;
                     data.Status = 0;
@@ -1374,7 +1372,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                             {
                                 if (resetingWindows)
                                 {
-                                    //not tested
+                                    //no proof of it having an effect.
                                     if (!handlerInstance.currentGameInfo.IgnoreWindowBorderCheck)
                                     {
                                         RemoveBorder();

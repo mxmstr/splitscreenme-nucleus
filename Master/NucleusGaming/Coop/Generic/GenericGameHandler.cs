@@ -3683,9 +3683,9 @@ namespace Nucleus.Gaming
                 if (playTime.IsRunning)
                 {
                     if (playTime.Elapsed.Seconds > 0)
-                    {
-                        playTime.Stop();
+                    {                       
                         GameplayTimer.SaveGameplayTime(userGame, playTime.Elapsed.Seconds);
+                        playTime.Stop();
                     }
                 }
             }

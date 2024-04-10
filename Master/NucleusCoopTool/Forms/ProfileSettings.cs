@@ -611,7 +611,6 @@ namespace Nucleus.Coop
             cts_Mute.Checked = GameProfile.Cts_MuteAudioOnly;
             cts_kar.Checked = GameProfile.Cts_KeepAspectRatio;
             cts_unfocus.Checked = GameProfile.Cts_Unfocus;
-            cts_bringToFront.Checked = GameProfile.Cts_BringToFront;
             notes_text.Text = GameProfile.Notes;
             profileTitle.Text = GameProfile.Title;
 
@@ -822,7 +821,7 @@ namespace Nucleus.Coop
             GameProfile.Cts_MuteAudioOnly = cts_Mute.Checked;
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
             GameProfile.Cts_Unfocus = cts_unfocus.Checked;
-            GameProfile.Cts_BringToFront = cts_bringToFront.Checked;
+
             ///Set GameProfile AudioInstances (part of shared GameProfile options)
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {

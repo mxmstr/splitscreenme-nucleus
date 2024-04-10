@@ -14,8 +14,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
             var handlerInstance = GenericGameHandler.Instance;
             string gameGUID = handlerInstance.currentGameInfo.GUID;
 
-            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);//game content root
-           
+            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);//game content root        
             
             var players = handlerInstance.profile.DevicesList;
 
