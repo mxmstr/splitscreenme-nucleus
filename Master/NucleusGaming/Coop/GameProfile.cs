@@ -191,13 +191,6 @@ namespace Nucleus.Gaming.Coop
             set => cts_Unfocus = value;
         }
 
-        private static bool cts_BringToFront;
-        public static bool Cts_BringToFront
-        {
-            get => cts_BringToFront;
-            set => cts_BringToFront = value;
-        }
-
         private static int gamepadCount;
         public static int GamepadCount => gamepadCount;
 
@@ -252,7 +245,7 @@ namespace Nucleus.Gaming.Coop
 
         public void Reset()
         {
-            bool profileDisabled = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")) || GameInfo.DisableProfiles;
+            bool profileDisabled = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
 
             setupScreen.CanPlayUpdated(false, false);
 
@@ -298,7 +291,6 @@ namespace Nucleus.Gaming.Coop
                         player.PlayerID = -1;
                         player.SteamID = -1;
                         player.Nickname = null;
-
                     }
 
                     RefreshKeyboardAndMouse();
@@ -316,10 +308,13 @@ namespace Nucleus.Gaming.Coop
                 loadedProfilePlayers.Clear();
                 devicesToMerge.Clear();
 
-                setupScreen.profileSettings_Tooltip = CustomToolTips.SetToolTip(setupScreen.profileSettings_btn,
+                if (!GameInfo.DisableProfiles)
+                {
+                    setupScreen.profileSettings_Tooltip = CustomToolTips.SetToolTip(setupScreen.profileSettings_btn,
                     $"{Game.GameName} {ModeText.ToLower()} settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
-                ListGameProfiles();
+                    ListGameProfiles();
+                }
             }
 
             if (BoundsFunctions.screens != null)
@@ -414,12 +409,6 @@ namespace Nucleus.Gaming.Coop
                 Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
                 Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
                 Cts_Unfocus = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"];
-
-                if (Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"] != null)//such checks are there so testers/users can still use there existing profiles
-                                                                                        //after new options implementation. Any new option must have that null check.
-                {
-                    Cts_BringToFront = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_BringToFront"];
-                }
 
                 UseXinputIndex = (bool)Jprofile["Use XInput Index"];
                 Network = (string)Jprofile["Network"]["Type"];
@@ -615,45 +604,13 @@ namespace Nucleus.Gaming.Coop
             cts_KeepAspectRatio = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_Unfocus = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
 
-            if (ini.IniReadValue("CustomLayout", "Cts_BringToFront") != "")//such checks are there so testers/users can still use there existing profiles
-                                                                           //after new options implementation. Any new option must have that null check.
-            {
-                cts_BringToFront = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_BringToFront"));
-            }
 
             useXinputIndex = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
         }
 
         public static void UpdateGameProfile(GameProfile profile)
         {
-            string path;
-
-            bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
-
-            if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.DisableProfiles)
-            {
-                if (!profileDisabled && !GameInfo.DisableProfiles)
-                {
-                    Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
-                }
-
-                return;
-            }
-
-            if (!GameProfile.Loaded || profilesCount == 0)
-            {
-                profilesCount++;//increase to set new profile name
-                path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profilesCount}].json";
-            }
-            else
-            {
-                path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profileToSave}].json";
-            }
-
-            if (!Directory.Exists($"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}"))
-            {
-                Directory.CreateDirectory($"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}");
-            }
+            string path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profileToSave}].json";
 
             JObject options = new JObject();
             foreach (KeyValuePair<string, object> opt in profile.Options)
@@ -712,8 +669,7 @@ namespace Nucleus.Gaming.Coop
             JObject JAutoPlay = new JObject(new JProperty("Enabled", autoPlay));
             JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
-                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus),
-                                                new JProperty("Cutscenes_BringToFront", cts_BringToFront));
+                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus));
 
             JObject JAudioInstances = new JObject();
 
@@ -944,8 +900,7 @@ namespace Nucleus.Gaming.Coop
 
             JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
-                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus),
-                                                new JProperty("Cutscenes_BringToFront", cts_BringToFront));
+                                                new JProperty("Cutscenes_Unfocus", cts_Unfocus));
 
             foreach (KeyValuePair<string, string> JaudioDevice in AudioInstances)
             {
@@ -1121,11 +1076,10 @@ namespace Nucleus.Gaming.Coop
                     return;
                 }
 
-                //if the screen looked for is not present look for an other one
+                //if the screen is not present look for an other one
                 var scr = FindScreenOrAlternative(profilePlayer);
 
-
-                //if the profile requires more screens than availables
+                //if the profile requires more screens than available
                 if (ProfilePlayersList.Any(pp => pp.ScreenIndex != profilePlayer.ScreenIndex) && scr.Item2 != profilePlayer.ScreenIndex)
                 {
                     Instance.Reset();
@@ -1416,7 +1370,7 @@ namespace Nucleus.Gaming.Coop
                 PlayerInfo plToUpdate = secondInBounds ?? player;
 
                 int playerIndex = loadedProfilePlayers.FindIndex(pl => pl == plToUpdate);
-                bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() >= playerIndex;
+                bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() >= playerIndex && !GameInfo.DisableProfiles;
 
                 string nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
                                   Globals.ini.IniReadValue("ControllerMapping", "Player_" + (playerIndex + 1));

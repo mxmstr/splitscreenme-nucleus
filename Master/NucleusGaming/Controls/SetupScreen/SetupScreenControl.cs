@@ -139,14 +139,14 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             BoundsFunctions.Initialize(this, game, profile);
             Draw.Initialize(this, game, profile);
 
-            profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
+            profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles")) || game.DisableProfiles;
 
             if (game.Game.UseDevReorder || game.Game.CreateSingleDeviceFile)
             {
                 DevicesFunctions.UseGamepadApiIndex = false;
             }
 
-            if (!profileDisabled || game.DisableProfiles)
+            if (!profileDisabled)
             {
                 ToolTip gameProfilesList_btnTooltip = CustomToolTips.SetToolTip(gameProfilesList_btn, $"{game.Game.GameName} profiles list.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             }
