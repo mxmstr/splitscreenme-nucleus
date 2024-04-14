@@ -371,7 +371,7 @@ namespace Nucleus.Coop
             this.disableProfilesMenuItem});
             this.gameContextMenuStrip.Name = "gameContextMenuStrip";
             this.gameContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.gameContextMenuStrip.Size = new System.Drawing.Size(235, 506);
+            this.gameContextMenuStrip.Size = new System.Drawing.Size(235, 484);
             this.gameContextMenuStrip.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.GameContextMenuStrip_Closing);
             this.gameContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.GameContextMenuStrip_Opening);
             this.gameContextMenuStrip.Opened += new System.EventHandler(this.GameContextMenuStrip_Opened);
@@ -395,6 +395,7 @@ namespace Nucleus.Coop
             this.notesMenuItem.Size = new System.Drawing.Size(234, 22);
             this.notesMenuItem.Text = "Handler Author\'s Notes";
             this.notesMenuItem.Visible = false;
+            this.notesMenuItem.Click += new System.EventHandler(this.NotesMenuItem_Click);
             // 
             // detailsMenuItem
             // 
@@ -725,7 +726,7 @@ namespace Nucleus.Coop
             // 
             this.infoPanel.Controls.Add(this.lastPlayedAt);
             this.infoPanel.Controls.Add(this.playTime);
-            this.infoPanel.Location = new System.Drawing.Point(6, 297);
+            this.infoPanel.Location = new System.Drawing.Point(8, 63);
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new System.Drawing.Size(172, 44);
             this.infoPanel.TabIndex = 39;
@@ -868,7 +869,7 @@ namespace Nucleus.Coop
             this.cover.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.cover.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.cover.Controls.Add(this.coverFrame);
-            this.cover.Location = new System.Drawing.Point(6, 64);
+            this.cover.Location = new System.Drawing.Point(7, 113);
             this.cover.Name = "cover";
             this.cover.Size = new System.Drawing.Size(172, 229);
             this.cover.TabIndex = 27;

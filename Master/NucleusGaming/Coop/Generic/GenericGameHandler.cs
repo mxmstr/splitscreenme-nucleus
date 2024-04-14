@@ -1284,11 +1284,11 @@ namespace Nucleus.Gaming
 
                 if (i == 0)
                 {
-                    BackupFiles.StartFilesRestoration();
+                    //BackupFiles.StartFilesRestoration();
 
-                    Thread.Sleep(200);
+                    //Thread.Sleep(200);
 
-                    BackupFiles.StartFoldersRestoration();
+                    BackupFiles.StartBackupsRestoration();
                 }
 
                 if (processingExit)

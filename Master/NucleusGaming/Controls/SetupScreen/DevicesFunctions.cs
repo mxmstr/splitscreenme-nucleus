@@ -456,7 +456,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                 GamepadId = i
                             };
 
-                            if (useGamepadApiIndex || parent.profileDisabled)
+                            if (useGamepadApiIndex /*|| parent.profileDisabled*/)
                             {
                                 player.GamepadGuid = new Guid($"00000000-0000-0000-0000-20000000000{player.GamepadId + 1}");
                                 player.IsInputUsed = true;

@@ -6,9 +6,9 @@ using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
-    public class ControlListBox : UserControl
+    public class HorizontalControlListBox : UserControl
     {
-        private int totalHeight;
+        private int totalWidth;
         private int border = 1;
 
         public event Action<object, Control> SelectedChanged;
@@ -21,7 +21,7 @@ namespace Nucleus.Gaming
             set => border = value;
         }
 
-        public ControlListBox()
+        public HorizontalControlListBox()
         {
             AutoScaleDimensions = new SizeF(96F, 96F);
             HorizontalScroll.Maximum = 0;
@@ -29,12 +29,6 @@ namespace Nucleus.Gaming
             AutoScroll = true;
             DoubleBuffered = true;
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            this.MouseWheel += new MouseEventHandler( Scrolling);
-        }
-
-        private void Scrolling(object sender, MouseEventArgs se)
-        {
-
         }
 
         public override bool AutoScroll
@@ -66,39 +60,40 @@ namespace Nucleus.Gaming
                 return;
             }
 
-            VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
+            HorizontalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
             updatingSize = true;
 
-            totalHeight = 0;
-            bool isVerticalVisible = VerticalScroll.Visible;
-            int v = isVerticalVisible ? (1 + SystemInformation.VerticalScrollBarWidth) : 0;
+            totalWidth = 0;
+            bool isVerticalVisible = HorizontalScroll.Visible;
+            int v = isVerticalVisible ? (1 + SystemInformation.HorizontalScrollBarHeight) : 0;
 
 
             for (int i = 0; i < Controls.Count; i++)
             {
                 Control con = Controls[i];
-                con.Width = Width - v;
+                con.Height = Height - v;
 
-                con.Location = new Point(0, totalHeight);
-                totalHeight += con.Height + border;
+                con.Location = new Point(totalWidth, 0);
+                totalWidth += con.Width + border;
 
                 con.Invalidate();
             }
 
             updatingSize = false;
 
-            HorizontalScroll.Visible = false;
-            VerticalScroll.Visible = totalHeight > Height;
-            VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
-            if (VerticalScroll.Visible != isVerticalVisible)
+            VerticalScroll.Visible = false;
+            HorizontalScroll.Visible = totalWidth > Width;
+            HorizontalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
+            if (HorizontalScroll.Visible != isVerticalVisible)
             {
                 UpdateSizes(); // need to update again
-                VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
+                HorizontalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
             }
         }
 
         private void C_SizeChanged(object sender, EventArgs e)
         {
+            Control con = (Control)sender;
             // this has the potential of being incredibly slow
             UpdateSizes();
         }
@@ -121,10 +116,11 @@ namespace Nucleus.Gaming
                     c.MouseLeave += c_MouseLeave;
                 }
 
+                int index = Controls.IndexOf(c);
                 Size s = c.Size;
 
-                c.Location = new Point(0, totalHeight);
-                totalHeight += s.Height + border;
+                c.Location = new Point(totalWidth, 0);
+                totalWidth += s.Width + border;
             }
 
             UpdateSizes();
@@ -225,11 +221,13 @@ namespace Nucleus.Gaming
             SelectedControl = parent;
 
             if (SelectedControl.GetType() != typeof(ComboBox) &&
-                SelectedControl.GetType() != typeof(TextBox) && SelectedControl.GetType() != typeof(Label) && SelectedControl.GetType() != typeof(GameControl))
+                SelectedControl.GetType() != typeof(TextBox) && SelectedControl.GetType() != typeof(Label) && SelectedControl.GetType() != typeof(GameControl) && SelectedControl.GetType() != typeof(BufferedFlowLayoutPanel))
             {
                 SelectedControl.BackColor = Theme_Settings.SelectedBackColor;
             }
-         
+
+            
+
             OnClick(e);
         }
     }

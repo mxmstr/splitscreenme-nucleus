@@ -236,7 +236,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             Rectangle gamepadRect = RectangleUtil.ScaleAndCenter(keyboardPic.Size, new Rectangle((int)s.X, (int)s.Y, (int)s.Width, (int)s.Height));
 
-            float height = player.EditBounds.Height / 2.8f > 0 ? (gamepadRect.Height / 2.8f) : 1;
+            float height = player.EditBounds.Height / 2.8f > 0 ? (player.EditBounds.Height / 2.8f) : 1 ;
 
             Font fontToScale = new Font(playerCustomFont.FontFamily, height, FontStyle.Regular, GraphicsUnit.Pixel);
 

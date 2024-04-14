@@ -107,6 +107,12 @@
     <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\HorizontalGameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HorizontalControlListBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\HandlerNotesZoom.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -430,6 +436,12 @@
     <Compile Include="Util\WindowsUsersUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\HorizontalGameControl.resx">
+      <DependentUpon>HorizontalGameControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HorizontalControlListBox.resx">
+      <DependentUpon>HorizontalControlListBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlListBox.resx">
       <DependentUpon>ControlListBox.cs</DependentUpon>
     </EmbeddedResource>

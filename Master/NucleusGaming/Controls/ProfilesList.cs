@@ -173,7 +173,7 @@ namespace Nucleus.Gaming.Controls
                 {
                     Anchor = AnchorStyles.Right,
                     Size = new Size((int)(20 * _scale), (int)(20 * _scale)),
-                    Font = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0),
+                    Font = new Font("Lucida Console", (float)12, FontStyle.Bold, GraphicsUnit.Pixel, 0),
                     ForeColor = Color.Red,
                     FlatStyle = FlatStyle.Flat,
                     TextAlign = ContentAlignment.MiddleCenter,

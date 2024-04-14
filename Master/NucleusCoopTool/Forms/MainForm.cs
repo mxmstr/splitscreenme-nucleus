@@ -12,6 +12,7 @@ using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Platform.PCSpecs;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
@@ -666,10 +667,11 @@ namespace Nucleus.Coop
             clientAreaPanel.Controls.Add(webView);
 
             RefreshUI(true);
+            
             webView.Size = new Size(StepPanel.Width + rightFrame.Width, StepPanel.Height);
             webView.Location = new Point(StepPanel.Location.X, StepPanel.Location.Y);
             btn_AddGame.Selected = true;
-
+           
             Invalidate(false);
         }
 
@@ -971,6 +973,8 @@ namespace Nucleus.Coop
         {
             List<UserGameInfo> games;
 
+            list_Games.Visible = false;///smoother transition
+
             lock (controls)
             {
                 foreach (KeyValuePair<UserGameInfo, GameControl> con in controls)
@@ -996,9 +1000,7 @@ namespace Nucleus.Coop
                     list_Games.Controls.Add(con);
                 }
                 else
-                {
-                    list_Games.Visible = false;///smoother transition
-
+                {                  
                     for (int i = 0; i < games.Count; i++)
                     {
                         UserGameInfo game = games[i];
@@ -1018,10 +1020,8 @@ namespace Nucleus.Coop
                             break;
                         }
 
-                        NewUserGame(game);
-                    }
-
-                    list_Games.Visible = true;
+                        NewUserGame(game);                     
+                    }                                   
                 }
 
                 if (btn_AddGame == null)
@@ -1030,6 +1030,13 @@ namespace Nucleus.Coop
                     game_listSizer.Controls.Add(btn_AddGame);
                     list_Games.Height -= btn_AddGame.Height;
                     list_Games.Top = btn_AddGame.Bottom;
+                }
+
+                list_Games.Visible = true;
+
+                if (currentGame != null)
+                {
+                    list_Games.ScrollControlIntoView(currentControl);
                 }
             }
 
@@ -1050,8 +1057,6 @@ namespace Nucleus.Coop
                 return;
             }
 
-            list_Games.SuspendLayout();
-
             bool favorite = game.Favorite;
 
             GameControl con = new GameControl(game.Game, game, favorite)
@@ -1063,8 +1068,14 @@ namespace Nucleus.Coop
 
             if (ShowFavoriteOnly)
             {
-                if (favorite)
+                if (favorite || con.GameInfo == currentGame)
                 {
+                    if(con.GameInfo == currentGame)
+                    {
+                        con.RadioSelected();
+                        currentControl=con;
+                    }
+
                     controls.Add(game, con);
                     list_Games.Controls.Add(con);
                     ThreadPool.QueueUserWorkItem(GetIcon, game);
@@ -1072,18 +1083,24 @@ namespace Nucleus.Coop
             }
             else
             {
+                if (con.GameInfo == currentGame)
+                {
+                    con.RadioSelected();
+                    currentControl = con;
+                }
+
                 controls.Add(game, con);
                 list_Games.Controls.Add(con);
                 ThreadPool.QueueUserWorkItem(GetIcon, game);
             }
 
-            list_Games.ResumeLayout();
         }
 
         public void RefreshUI(bool refreshAll)
         {
             if (refreshAll)
             {
+                currentGame = null;
                 rightFrame.Visible = false;
                 StepPanel.Visible = false;
                 stepPanelPictureBox.Visible = webView == null ? true : false;
@@ -2306,8 +2323,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void ScriptNotesToolStripMenuItem_Click(object sender, EventArgs e)
-        => NucleusMessageBox.Show("Handler Author's Notes", menuCurrentGameInfo.Game.Description, true);
+        private void NotesMenuItem_Click(object sender, EventArgs e) => NucleusMessageBox.Show("Handler Author's Notes", menuCurrentGameInfo.Game.Description, true);
 
         private void GameOptions_Click(object sender, EventArgs e)
         {
@@ -2610,6 +2626,7 @@ namespace Nucleus.Coop
 
             if (!settings.Visible)
             {
+                Cursor.Current = Cursors.WaitCursor;
                 settings.Visible = true;
                 settings.BringToFront();             
             }
@@ -2654,6 +2671,7 @@ namespace Nucleus.Coop
 
             if (!profileSettings.Visible || profileSettings == null)
             {
+                Cursor.Current = Cursors.WaitCursor;
                 profileSettings.Visible = true;
                 profileSettings.BringToFront();               
                 ProfilesList.Instance.Locked = true;
@@ -3004,6 +3022,7 @@ namespace Nucleus.Coop
             }
 
             GameManager.Instance.SaveUserProfile();
-        }        
+        }
+
     }
 }

@@ -6,11 +6,13 @@ using Nucleus.Gaming.UI;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
-    public class GameControl : UserControl, IDynamicSized, IRadioControl
+    public class HorizontalGameControl : UserControl, IDynamicSized, IRadioControl
     {
         private readonly IniFile ini = Globals.ini;
         public GenericGameInfo GameInfo { get; set; }
@@ -20,6 +22,9 @@ namespace Nucleus.Coop
         private PictureBox favoriteBox;
         private Label title;
         private Label players;
+        private Label playTime;
+        private Label lastPlayed;
+        public BufferedFlowLayoutPanel icons_Container;
 
         private Color radioSelectedBackColor;
         private Color userOverBackColor;
@@ -43,7 +48,7 @@ namespace Nucleus.Coop
             }
         }
 
-        public GameControl(GenericGameInfo game, UserGameInfo userGame, bool favorite)
+        public HorizontalGameControl(GenericGameInfo game, UserGameInfo userGame, bool favorite)
         {
             try
             {
@@ -66,7 +71,7 @@ namespace Nucleus.Coop
                 AutoScaleDimensions = new SizeF(96F, 96F);
                 AutoScaleMode = AutoScaleMode.Dpi;
                 AutoSize = false;
-                Name = "GameControl";
+                Name = "HorizontalGameControl";
                 Size = new Size(209, 42);
 
                 GameInfo = game;
@@ -94,10 +99,22 @@ namespace Nucleus.Coop
                     Font = new Font(customFont, 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0),
                 };
 
+                playTime = new Label
+                {
+                    AutoSize = true,
+                    Font = new Font(customFont, 7.25f, FontStyle.Bold, GraphicsUnit.Point, 0),
+                };
+
+                lastPlayed = new Label
+                {
+                    AutoSize = true,
+                    Font = new Font(customFont, 7.25f, FontStyle.Bold, GraphicsUnit.Point, 0),
+                };
+
                 players = new Label
                 {
                     AutoSize = true,
-                    Font = new Font(customFont, 7, FontStyle.Bold, GraphicsUnit.Point, 0)
+                    Font = new Font(customFont, 7, FontStyle.Regular, GraphicsUnit.Point, 0)
                 };
 
                 if (game == null)
@@ -111,7 +128,7 @@ namespace Nucleus.Coop
                     title.Text = GameInfo.GameName;
                     if (GameInfo.MaxPlayers > 2)
                     {
-                        players.Text = "2 - " + GameInfo.MaxPlayers;
+                        players.Text = "2-" + GameInfo.MaxPlayers;
                     }
                     else
                     {
@@ -132,12 +149,23 @@ namespace Nucleus.Coop
                 title.BackColor = Color.Transparent;
                 TitleText = title.Text;
                 PlayerText = players.Text;
+               
+                icons_Container = new BufferedFlowLayoutPanel();
+                icons_Container.FlowDirection = FlowDirection.LeftToRight;
+                icons_Container.AutoSize = true;
+
                 BackColor = Color.Transparent;
                 players.BackColor = Color.Transparent;
                 playerIcon.BackColor = Color.Transparent;
+                playTime.BackColor = Color.Transparent;
+                lastPlayed.BackColor = Color.Transparent;
+                icons_Container.BackColor = Color.Transparent;
 
                 Controls.Add(picture);
                 Controls.Add(title);
+                //Controls.Add(playTime);
+                //Controls.Add(lastPlayed);
+                Controls.Add(icons_Container);
                 Controls.Add(players);
 
                 if (title.Text != "No games")
@@ -151,6 +179,20 @@ namespace Nucleus.Coop
                 favoriteBox.MouseEnter += ZoomInPicture;
                 favoriteBox.MouseLeave += ZoomOutPicture;
 
+                //if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{game.GUID}")))
+                //{
+                //    string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{game.GUID}")));
+
+                //    if (imgsPath.Length > 0)
+                //    {
+                //        Random rNum = new Random();
+                //        int RandomIndex = rNum.Next(0, imgsPath.Length);
+                //        BackgroundImageLayout = ImageLayout.Stretch;
+                //        BackgroundImage = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{game.GUID}\\{RandomIndex}_{game.GUID}.jpeg"));
+                       
+                //    }                   
+                //}
+ 
                 DPIManager.Register(this);
             }
             catch (Exception ex)
@@ -161,7 +203,7 @@ namespace Nucleus.Coop
             ///Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
             isUpdateAvailableTimer = new System.Threading.Timer(IsUpdateAvailable_Tick, null, 2600, 5200);
         }
-        ~GameControl()
+        ~HorizontalGameControl()
         {
             DPIManager.Unregister(this);
         }
@@ -182,7 +224,7 @@ namespace Nucleus.Coop
             picture.Size = new Size((int)((margin - border) * scale), (int)((margin - border) * scale));
             picture.Location = new Point(border, border);
 
-            //Size plabelSize = TextRenderer.MeasureText(PlayerText, players.Font);
+            Size plabelSize = TextRenderer.MeasureText(PlayerText, players.Font);
 
             title.Text = TitleText;
             players.Text = PlayerText;
@@ -190,13 +232,34 @@ namespace Nucleus.Coop
             title.AutoSize = true;
             title.MaximumSize = new Size((int)(209 * scale) - picture.Width - (border * 2), 0);
 
-           // players.Size = plabelSize;
-            playerIcon.Size = new Size(players.Size.Height + 2, players.Size.Height + 2 );
+            players.Size = plabelSize;
+            playerIcon.Size = new Size(players.Size.Height, players.Size.Height);
 
             title.Location = new Point(picture.Right + border, picture.Location.Y);
-            playerIcon.Location = new Point(title.Location.X + 2, title.Bottom + 3);
-            players.Location = new Point(playerIcon.Right + 2, playerIcon.Bottom - players.Height);
+            playerIcon.Location = new Point(picture.Right + border, title.Bottom);
+            players.Location = new Point(picture.Right + border + playerIcon.Width, playerIcon.Bottom - players.Height);
 
+
+            icons_Container.Controls.Clear();
+            icons_Container.Size = new Size(15, 15);
+            
+            //icons_Container.Controls.AddRange(InputIcons.SetInputsIcons(icons_Container.Size, GameInfo));
+            icons_Container.Location = new Point(players.Right, playerIcon.Top);
+            //Width = title.Right;
+
+
+            //lastPlayed.Text = "Last Played: " + UserGameInfo.GetLastPlayed();
+           // playTime.Text = "Play Time: " + UserGameInfo.GetPlayTime();
+
+            //lastPlayed.Location = new Point(border, picture.Bottom);
+            //if (picture.Height < playerIcon.Bottom)//more than one title row
+            //{
+            //    playTime.Location = new Point(border, playerIcon.Bottom+2);
+            //}
+            //else// one row
+            //{
+            //    playTime.Location = new Point(border, picture.Bottom+2);
+            //}
             if (picture.Height < playerIcon.Bottom)//more than one title row
             {
                 Height = playerIcon.Bottom + border;
@@ -207,12 +270,20 @@ namespace Nucleus.Coop
                 Height = picture.Bottom + border;//adjust the control Height
             }
 
+
+
+           
+
             favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
 
-            float favoriteX = (209 * scale) - (playerIcon.Width + 5);
+            float favoriteX = ((Width - favoriteBox.Width) * scale) - (playerIcon.Width );
             float favoriteY = Height - (favoriteBox.Height + 5);
-            favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
+            favoriteBox.Location = new Point((int)favoriteX, icons_Container.Location.Y);
             CustomToolTips.SetToolTip(favoriteBox, "Add or remove this game from your favorites.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+
+           // Height= icons_Container.Bottom+border;
+
+
             ResumeLayout();
         }
 
@@ -235,14 +306,11 @@ namespace Nucleus.Coop
         protected override void OnControlAdded(ControlEventArgs e)
         {
             base.OnControlAdded(e);
-
             Control c = e.Control;
-
-            if (c != favoriteBox)
+            if (c.Name != "favorite")
             {
                 c.Click += C_Click;
             }
-
             c.MouseEnter += C_MouseEnter;
             c.MouseLeave += C_MouseLeave;
 
@@ -252,7 +320,6 @@ namespace Nucleus.Coop
         private void FavoriteBox_Click(object sender, EventArgs e)
         {
             MouseEventArgs arg = e as MouseEventArgs;
-
             if (arg.Button == MouseButtons.Right)
             {
                 return;
@@ -261,15 +328,13 @@ namespace Nucleus.Coop
             bool selected = favoriteBox.Image.Equals(favorite_Selected);
             favoriteBox.Image = selected ? favorite_Unselected : favorite_Selected;
             UserGameInfo.Favorite = selected ? false : true;
-
             GameManager.Instance.SaveUserProfile();
         }
 
         private void C_MouseEnter(object sender, EventArgs e)
         {
             Control con = sender as Control;
-
-            if (con != favoriteBox)
+            if (con.Name != "favorite")
             {
                 OnMouseEnter(e);
             }
@@ -284,7 +349,7 @@ namespace Nucleus.Coop
         {
             Control con = sender as Control;
 
-            if (con != favoriteBox)
+            if (con.Name != "favorite")
             {
                 OnMouseLeave(e);
             }
@@ -350,7 +415,7 @@ namespace Nucleus.Coop
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height / 3);
             Rectangle bounds = new Rectangle(0, 0, favoriteBox.Right, Height);
 
-            Color color = isSelected ? radioSelectedBackColor : Color.Transparent;// Color.FromArgb(80, 72, 72, 72); 
+            Color color = isSelected ? radioSelectedBackColor : Color.FromArgb(80, 72, 72, 72); 
 
             LinearGradientBrush lgb =
             new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);
@@ -362,7 +427,7 @@ namespace Nucleus.Coop
             lgb.InterpolationColors = topcblend;
             lgb.SetBlendTriangularShape(.5f, 1.0f);
             g.FillRectangle(lgb, bounds);
-
+            g.FillRectangle(new SolidBrush(Color.FromArgb(150, 0, 0, 0)), new Rectangle(0,0,Width,Height));
             lgb.Dispose();
 
             g.Dispose();

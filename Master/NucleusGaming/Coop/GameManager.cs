@@ -346,9 +346,10 @@ namespace Nucleus.Gaming
             return Path.Combine(local, "utils");
         }
 
+        private readonly string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";
         public string GetUserProfilePath()
         {
-            return Path.Combine(GetAppContentPath(), "userprofile.json");
+            return Path.Combine(nucleusEnvironment, "userprofile.json");
         }
 
         public UserGameInfo AddGame(GenericGameInfo game, string exePath)

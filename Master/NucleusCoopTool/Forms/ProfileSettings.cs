@@ -520,6 +520,8 @@ namespace Nucleus.Coop
 
         private void UpdateUiValues()
         {
+            Cursor.Current = Cursors.WaitCursor;
+
             GetPlayersNickNameAndIds();
 
             for (int i = 0; i < 32; i++)

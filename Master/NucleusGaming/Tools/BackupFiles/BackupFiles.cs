@@ -70,80 +70,80 @@ namespace Nucleus.Gaming.Tools.BackupFiles
             }
         }
 
-        #region Restore files backups
+        //#region Restore files backups
 
-        public static void StartFilesRestoration()
-        {
-            var handlerInstance = GenericGameHandler.Instance;
-            string gameGUID = handlerInstance.currentGameInfo.GUID;
+        //public static void StartFilesRestoration()
+        //{
+        //    var handlerInstance = GenericGameHandler.Instance;
+        //    string gameGUID = handlerInstance.currentGameInfo.GUID;
 
-            string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);
+        //    string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);
 
-            var players = handlerInstance.profile.DevicesList;
+        //    var players = handlerInstance.profile.DevicesList;
 
-            try
-            {
-                string sourceContent = $"{nucleusEnvironment}\\{gameGUID}";
+        //    try
+        //    {
+        //        string sourceContent = $"{nucleusEnvironment}\\{gameGUID}";
 
-                Log("Start processing files restoration");
+        //        Log("Start processing files restoration");
 
-                for (int i = 0; i < players.Count(); i++)
-                {
-                    var player = players[i];
+        //        for (int i = 0; i < players.Count(); i++)
+        //        {
+        //            var player = players[i];
 
-                    string sourceFolder = $"{sourceContent}\\{player.Nickname}";
+        //            string sourceFolder = $"{sourceContent}\\{player.Nickname}";
 
-                    if (Directory.Exists(sourceFolder))
-                    {
-                        string destInstance = $"{gameContentPath}\\Instance{i}";
+        //            if (Directory.Exists(sourceFolder))
+        //            {
+        //                string destInstance = $"{gameContentPath}\\Instance{i}";
 
-                        string[] sourceFiles = Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories);
+        //                string[] sourceFiles = Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories);
 
-                        if (!Directory.Exists(destInstance))
-                        {
-                            continue;
-                        }
+        //                if (!Directory.Exists(destInstance))
+        //                {
+        //                    continue;
+        //                }
 
-                        string[] destFiles = Directory.GetFileSystemEntries(destInstance, "*", SearchOption.AllDirectories);
+        //                string[] destFiles = Directory.GetFileSystemEntries(destInstance, "*", SearchOption.AllDirectories);
 
-                        for (int d = 0; d < destFiles.Length; d++)
-                        {
-                            string destFile = destFiles[d];
+        //                for (int d = 0; d < destFiles.Length; d++)
+        //                {
+        //                    string destFile = destFiles[d];
 
-                            if (File.Exists(destFile))
-                            {
-                                string destFileName = destFiles[d].Split('\\').Last();
+        //                    if (File.Exists(destFile))
+        //                    {
+        //                        string destFileName = destFiles[d].Split('\\').Last();
 
-                                for (int s = 0; s < sourceFiles.Length; s++)
-                                {
-                                    string sourceFile = sourceFiles[s];
+        //                        for (int s = 0; s < sourceFiles.Length; s++)
+        //                        {
+        //                            string sourceFile = sourceFiles[s];
 
-                                    if (File.Exists(sourceFile))
-                                    {
-                                        string sourceFileName = sourceFiles[s].Split('\\').Last();
+        //                            if (File.Exists(sourceFile))
+        //                            {
+        //                                string sourceFileName = sourceFiles[s].Split('\\').Last();
 
-                                        if (destFileName == sourceFileName)
-                                        {
-                                            File.Delete(destFile);
-                                            File.Copy(sourceFile, destFile);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+        //                                if (destFileName == sourceFileName)
+        //                                {
+        //                                    File.Delete(destFile);
+        //                                    File.Copy(sourceFile, destFile);
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
 
-                    }
-                }
+        //            }
+        //        }
 
-                Log("Files restoration successful");
-            }
-            catch (Exception ex)
-            {
-                Log($"Files restoration failed\n{ex.Message}");
-            }
-        }
+        //        Log("Files restoration successful");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log($"Files restoration failed\n{ex.Message}");
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
 
         public static void StartFoldersBackup(string[] foldersToBackup)
@@ -222,7 +222,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
         #region Restore folders backups
 
-        public static void StartFoldersRestoration()
+        public static void StartBackupsRestoration()
         {
             var handlerInstance = GenericGameHandler.Instance;
             string gameGUID = handlerInstance.currentGameInfo.GUID;

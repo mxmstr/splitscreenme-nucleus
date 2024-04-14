@@ -57,7 +57,7 @@ namespace Nucleus.Coop.Tools
                     int RandomIndex = rNum.Next(0, imgsPath.Length);
 
                     mainForm.screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));
-                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.screenshotImg); //name(1) => directory name ; name(2) = partial image path 
+                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.screenshotImg);
                     mainForm.GameBorderGradientTop = colorTop;
                     mainForm.GameBorderGradientBottom = colorBottom;
                 }

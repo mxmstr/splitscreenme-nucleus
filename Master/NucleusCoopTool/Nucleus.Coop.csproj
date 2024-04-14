@@ -232,10 +232,16 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\AddGameButton.cs">
+    <Compile Include="Controls\SearchGameButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
+    <Compile Include="Controls\ExtractNCButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\SettingsButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\AddGameButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\HubWebView.cs">
@@ -323,6 +329,15 @@
     <Compile Include="Tools\SetBackroundAndCover.cs" />
     <Compile Include="Tools\StartChecks.cs" />
     <Compile Include="Tools\CustomToolStripRenderer.cs" />
+    <EmbeddedResource Include="Controls\SearchGameButton.resx">
+      <DependentUpon>SearchGameButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ExtractNCButton.resx">
+      <DependentUpon>ExtractNCButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SettingsButton.resx">
+      <DependentUpon>SettingsButton.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\AddGameButton.resx">
       <DependentUpon>AddGameButton.cs</DependentUpon>
     </EmbeddedResource>

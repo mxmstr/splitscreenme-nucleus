@@ -47,7 +47,7 @@ namespace Nucleus.Coop.Controls
             favorite_Selected = ImageCache.GetImage(Globals.ThemeFolder + "favorite_selected.png");
 
             Size = new Size(width, height);
-            Location = new Point(0, 0);
+            //Location = new Point(0, 0);
             BackColor = Color.Transparent;
             MouseEnter += ZoomInPicture;
             MouseLeave += ZoomOutPicture;
@@ -81,7 +81,7 @@ namespace Nucleus.Coop.Controls
 
             favoriteContainer = new BufferedClientAreaPanel()//So it is easier to click the favorite button without opening the webview
             {
-                Size = new Size(height, height),
+                Size = new Size(Height, Height),
                 BackColor = Color.Transparent,
                 Cursor = mainForm.default_Cursor,
             };
@@ -176,7 +176,8 @@ namespace Nucleus.Coop.Controls
             mainForm.ShowFavoriteOnly = selected ? false : true;
 
             Globals.ini.IniWriteValue("Dev", "ShowFavoriteOnly", mainForm.ShowFavoriteOnly.ToString());
-            mainForm.RefreshUI(true);
+           // mainForm.RefreshUI(true);
+           mainForm.RefreshGames();
             mainForm.Invalidate(false);
         }
 
@@ -200,7 +201,7 @@ namespace Nucleus.Coop.Controls
             Rectangle bounds = new Rectangle(8, 0,Width, Height);
             Graphics g = e.Graphics;
 
-            Color color = selected ?  Color.FromArgb(85, 51, 153, 255) : Color.FromArgb(80, 72, 72, 72);
+            Color color = selected ?  Color.FromArgb(85, 51, 153, 255) : Color.Transparent;//Color.FromArgb(80, 72, 72, 72);
             LinearGradientBrush lgb =
             new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);
 

@@ -1032,5 +1032,28 @@ namespace Nucleus.Gaming.Tools.Steam
 
             Console.WriteLine("Steam Client Initialized");
         }
+
+
+        public static string GetSteamPath()
+        {
+            string steamPath = string.Empty;
+            RegistryKey localKey = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.CurrentUser, RegistryView.Registry32);
+
+            localKey = localKey.OpenSubKey(@"Software\Valve\Steam");
+
+            if (localKey != null)
+            {
+                steamPath = localKey.GetValue("SteamPath").ToString();
+                localKey.Close();
+            }
+
+
+            string formatDrive = steamPath[0].ToString().ToUpper();
+            string formatSlash = steamPath.Replace("/", "\\");
+            string formatRemoveDrive = formatSlash.Remove(0,1);
+            string formatedPath = formatDrive + formatRemoveDrive;
+
+            return formatedPath;
+        }
     }
 }

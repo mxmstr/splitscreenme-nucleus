@@ -46,20 +46,20 @@ namespace Nucleus.Gaming.Controls
             SolidBrush brush = new SolidBrush(tooltip.ForeColor);
             e.Graphics.DrawString(e.ToolTipText, e.Font, brush, 2, 2);
 
-            if (e.AssociatedControl.GetType() == typeof(GameControl))
-            {
-                foreach (KeyValuePair<Control, ToolTip> t in tooltipList)
-                {
-                    if (t.Key.GetType() == typeof(GameControl))
-                    {
-                        t.Value.InitialDelay += 200;
-                    }
-                }
-            }
-            else
-            {
-                tooltip.InitialDelay += 100;
-            }
+            //if (e.AssociatedControl.GetType() == typeof(GameControl))
+            //{
+            //    foreach (KeyValuePair<Control, ToolTip> t in tooltipList)
+            //    {
+            //        if (t.Key.GetType() == typeof(GameControl))
+            //        {
+            //            t.Value.InitialDelay += 200;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    tooltip.InitialDelay += 100;
+            //}
 
             brush.Dispose();
         }

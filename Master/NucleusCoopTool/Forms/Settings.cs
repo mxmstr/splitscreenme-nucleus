@@ -101,7 +101,6 @@ namespace Nucleus.Coop
 
             foreach (Control c in ctrls)
             {
-
                 if ((string)c.Tag == "HotKeyTextBox")
                 {
                     c.KeyPress += HKTxt_KeyPress;
@@ -643,6 +642,7 @@ namespace Nucleus.Coop
 
         private void GetPlayersNickNameAndSteamIds()
         {
+
             for (int i = 0; i < 32; i++)
             {
                 nicksList.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)).ToString());
@@ -1319,7 +1319,7 @@ namespace Nucleus.Coop
 
         private void disableGameProfiles_CheckedChanged(object sender, EventArgs e)
         {
-            gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
+            //gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
         }
 
         private void CacheNickname(object sender, EventArgs e)
