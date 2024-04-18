@@ -121,7 +121,6 @@ namespace Nucleus.Coop
 
                 favoriteBox = new PictureBox
                 {
-                    Name = "favorite",
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     BackColor = Color.Transparent,
                     Cursor = Theme_Settings.Hand_Cursor
@@ -182,15 +181,12 @@ namespace Nucleus.Coop
             picture.Size = new Size((int)((margin - border) * scale), (int)((margin - border) * scale));
             picture.Location = new Point(border, border);
 
-            //Size plabelSize = TextRenderer.MeasureText(PlayerText, players.Font);
-
             title.Text = TitleText;
             players.Text = PlayerText;
 
             title.AutoSize = true;
             title.MaximumSize = new Size((int)(209 * scale) - picture.Width - (border * 2), 0);
 
-           // players.Size = plabelSize;
             playerIcon.Size = new Size(players.Size.Height + 2, players.Size.Height + 2 );
 
             title.Location = new Point(picture.Right + border, picture.Location.Y);

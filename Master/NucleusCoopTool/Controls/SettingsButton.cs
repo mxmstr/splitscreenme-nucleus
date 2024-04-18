@@ -55,12 +55,12 @@ namespace Nucleus.Coop.Controls
             btn_SettingsButtonLabel = new Label()
             {
                 TextAlign = ContentAlignment.MiddleLeft,
-                Font = new Font(mainForm.customFont, 8, FontStyle.Bold, GraphicsUnit.Point, 0),
+                Font = new Font(mainForm.customFont, 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0),
                 AutoSize = true,
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
                 BackColor = Color.Transparent,
                 Cursor = mainForm.hand_Cursor,
-                Text = "Nucleus Settings"
+                Text = "Settings"
             };
 
             btn_SettingsButtonLabel.MouseEnter += ZoomInPicture;
@@ -127,7 +127,7 @@ namespace Nucleus.Coop.Controls
 
             lgb.InterpolationColors = topcblend;
             lgb.SetBlendTriangularShape(.5f, 1.0f);
-            g.FillRectangle(lgb, bounds);
+           // g.FillRectangle(lgb, bounds);
         }
 
         private void InitializeComponent()

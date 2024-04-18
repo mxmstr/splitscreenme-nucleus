@@ -127,7 +127,7 @@ namespace Nucleus.Coop.Controls
 
             lgb.InterpolationColors = topcblend;
             lgb.SetBlendTriangularShape(.5f, 1.0f);
-            g.FillRectangle(lgb, bounds);
+            //g.FillRectangle(lgb, bounds);
         }
 
         private void InitializeComponent()

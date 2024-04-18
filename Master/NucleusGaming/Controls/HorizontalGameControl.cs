@@ -307,7 +307,7 @@ namespace Nucleus.Coop
         {
             base.OnControlAdded(e);
             Control c = e.Control;
-            if (c.Name != "favorite")
+            if (c == favoriteBox)
             {
                 c.Click += C_Click;
             }
@@ -334,7 +334,7 @@ namespace Nucleus.Coop
         private void C_MouseEnter(object sender, EventArgs e)
         {
             Control con = sender as Control;
-            if (con.Name != "favorite")
+            if (con == favoriteBox)
             {
                 OnMouseEnter(e);
             }
@@ -349,7 +349,7 @@ namespace Nucleus.Coop
         {
             Control con = sender as Control;
 
-            if (con.Name != "favorite")
+            if (con == favoriteBox)
             {
                 OnMouseLeave(e);
             }

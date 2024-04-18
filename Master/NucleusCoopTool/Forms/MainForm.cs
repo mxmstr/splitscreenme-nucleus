@@ -1,4 +1,5 @@
-﻿using Nucleus.Coop.Controls;
+﻿using Games;
+using Nucleus.Coop.Controls;
 using Nucleus.Coop.Forms;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
@@ -352,10 +353,6 @@ namespace Nucleus.Coop
                                                int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[2]),
                                                int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[3]));
 
-            linksPanel.BackColor = Color.Transparent;
-
-            third_party_tools_container.BackColor = Color.Transparent;
-
             rightFrame.BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "RightFrameBackground").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "RightFrameBackground").Split(',')[1]),
                                                int.Parse(themeIni.IniReadValue("Colors", "RightFrameBackground").Split(',')[2]),
@@ -386,13 +383,9 @@ namespace Nucleus.Coop
             coverFrame.BackgroundImage = ImageCache.GetImage(theme + "cover_layer.png");
             stepPanelPictureBox.Image = ImageCache.GetImage(theme + "logo.png");
             logo.BackgroundImage = ImageCache.GetImage(theme + "title_logo.png");
-            btn_Discord.BackgroundImage = ImageCache.GetImage(theme + "discord.png");
             btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets.png");
-            btn_faq.BackgroundImage = ImageCache.GetImage(theme + "faq.png");
+
             btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_closed.png");
-            btn_reddit.BackgroundImage = ImageCache.GetImage(theme + "reddit.png");
-            btn_SplitCalculator.BackgroundImage = ImageCache.GetImage(theme + "splitcalculator.png");
-            btn_thirdPartytools.BackgroundImage = ImageCache.GetImage(theme + "thirdpartytools.png");
             closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
             maximizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_maximize.png");
             minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
@@ -411,17 +404,11 @@ namespace Nucleus.Coop
 
             CustomToolTips.SetToolTip(btn_Extract, "Extract a handler from a \".nc\" archive.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btnSearch, "Search and add a game to the game list (its handler must be installed).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_Discord, "Join the official Nucleus Co-op discord server.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            
             CustomToolTips.SetToolTip(btn_downloadAssets, "Download or update games covers and screenshots.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_faq, "Nucleus Co-op FAQ.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_reddit, "Official Nucleus Co-op Subreddit.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_SplitCalculator, "This program can estimate the system requirements needed to run a game in split-screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+         
             CustomToolTips.SetToolTip(btn_settings, "Global Nucleus Co-op settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_thirdPartytools, "Third party tools useful to make non xinput controllers work with Nucleus Co-op.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(linkLabel1, "XOutput is a software that can convert DirectInput into XInput.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(linkLabel2, "Xinput emulator for Ps4 controllers.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(linkLabel3, "With HidHide it is possible to deny a specific application access to one or more human interface devices.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(linkLabel4, "Xinput emulator for Ps3 controllers.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+           
             CustomToolTips.SetToolTip(btn_debuglog, "Open Nucleus debug-log.txt file if available, debug log can be disabled in Nucleus settings in the \"Settings\" tab.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(donationBtn, "Nucleus Co-op developers donations links.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
@@ -437,21 +424,16 @@ namespace Nucleus.Coop
             donationBtn.FlatAppearance.MouseOverBackColor = Color.Transparent;
 
             gameContextMenuStrip.BackColor = MenuStripBackColor;
-            gameContextMenuStrip.ForeColor = MenuStripFontColor;
-
-            linksPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, linksPanel.Width, linksPanel.Height, 15, 15));
-            third_party_tools_container.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, third_party_tools_container.Width, third_party_tools_container.Height, 10, 10));
+            gameContextMenuStrip.ForeColor = MenuStripFontColor;          
 
             btn_magnifier.Cursor = hand_Cursor;
             btn_textSwitcher.Cursor = hand_Cursor;
 
-            linkLabel1.Cursor = hand_Cursor;
-            linkLabel2.Cursor = hand_Cursor;
-            linkLabel3.Cursor = hand_Cursor;
-            linkLabel4.Cursor = hand_Cursor;
             logo.Cursor = hand_Cursor;
             gameContextMenuStrip.Cursor = hand_Cursor;
+            socialLinksMenu.Cursor = hand_Cursor;
             button_UpdateAvailable.Cursor = hand_Cursor;
+           
 
             Globals.PlayButton = btn_Play;
             Globals.NoteZoomButton = btn_magnifier;
@@ -496,11 +478,11 @@ namespace Nucleus.Coop
             }
 #if DEBUG
             txt_version.ForeColor = Color.LightSteelBlue;
-            txt_version.Text = "DEBUG " + version;
+            txt_version.Text = " DEBUG " + version;
 #else
             if (bool.Parse(themeIni.IniReadValue("Misc", "HideVersion")) == false)
             {
-                txt_version.Text = version;
+                txt_version.Text = " " + version;
             }
             else
             {
@@ -553,6 +535,9 @@ namespace Nucleus.Coop
 
             gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
             gameContextMenuStrip.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
+
+            socialLinksMenu.Renderer = new CustomToolStripRenderer.MyRenderer();
+            socialLinksMenu.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
 
             RefreshGames();
 
@@ -629,13 +614,18 @@ namespace Nucleus.Coop
             }
 
             gameContextMenuStrip.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            socialLinksMenu.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
             btn_Play.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Bold, GraphicsUnit.Pixel, 0);
 
             scriptAuthorTxt.Font = new Font(customFont, 12 * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             scriptAuthorTxt.Size = new Size((int)(189 * scale), (int)(191 * scale));
+           
             lastPlayedAt.Font = new Font(customFont, 10, FontStyle.Bold, GraphicsUnit.Pixel, 0);
+            lastPlayedAtValue.Font = new Font(customFont, 10, FontStyle.Bold, GraphicsUnit.Pixel, 0);
+
             playTime.Font = new Font(customFont, 10, FontStyle.Bold, GraphicsUnit.Pixel, 0);
+            playTimeValue.Font = new Font(customFont, 10, FontStyle.Bold, GraphicsUnit.Pixel, 0);
         }
 
         public void InsertWebview(object sender, EventArgs e)
@@ -1026,10 +1016,44 @@ namespace Nucleus.Coop
 
                 if (btn_AddGame == null)
                 {
+                    int offset = 5;
+
                     btn_AddGame = new AddGameButton(this, game_listSizer.Width, list_Games.Controls[0].Height);
                     game_listSizer.Controls.Add(btn_AddGame);
-                    list_Games.Height -= btn_AddGame.Height;
+                    list_Games.Height -= btn_AddGame.Height/* + offset*/;
+                    btn_AddGame.Anchor = AnchorStyles.Top| AnchorStyles.Left;
+                    //btn_AddGame.Location = new Point(0, btn_Search.Top - btn_AddGame.Height);
+                    btn_AddGame.Location = new Point(0,0);
                     list_Games.Top = btn_AddGame.Bottom;
+
+
+                    //list_Games.Height -= 40;
+                    //SettingsButton btn_Settings = new SettingsButton(this, 40, 40);
+                    //game_listSizer.Controls.Add(btn_Settings);
+                    //list_Games.Height -= btn_Settings.Height;
+                    //btn_Settings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+                    //btn_Settings.Location = new Point(0, game_listSizer.Height - (btn_Settings.Height));
+                    ////btn_Settings.Location = new Point(0, 0);
+                    ////btn_Settings.Location = new Point(0, 0);
+
+                    //ExtractNCButton btn_Extract = new ExtractNCButton(this, 40, 40);
+                    //game_listSizer.Controls.Add(btn_Extract);
+                    /////list_Games.Height -= btn_Extract.Height;
+                    //btn_Extract.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+                    ////btn_Extract.Location = new Point(0, btn_Settings.Top - btn_Extract.Height);
+                    ////btn_Extract.Location = new Point(0, btn_Search.Bottom);
+                    //btn_Extract.Location = new Point(btn_Settings.Right, btn_Settings.Location.Y);
+
+                    //SearchGameButton btn_Search = new SearchGameButton(this, 40, 40);
+                    //game_listSizer.Controls.Add(btn_Search);
+                    ////list_Games.Height -= btn_Search.Height;
+                    //btn_Search.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+                    ////btn_Search.Location = new Point(0, btn_Extract.Top - btn_Search.Height);
+                    ////btn_Search.Location = new Point(0, btn_Settings.Bottom);
+                    //btn_Search.Location = new Point(btn_Extract.Right, btn_Settings.Location.Y);
+
+
+
                 }
 
                 list_Games.Visible = true;
@@ -1262,8 +1286,11 @@ namespace Nucleus.Coop
 
                 SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
 
-                lastPlayedAt.Text = "Last Played: " + currentGameInfo.GetLastPlayed();
-                playTime.Text = "Play Time: " + currentGameInfo.GetPlayTime();
+                lastPlayedAtValue.Text = currentGameInfo.GetLastPlayed();
+                lastPlayedAtValue.Location = new Point(lastPlayedAt.Right, lastPlayedAt.Location.Y);
+
+                playTimeValue.Text = currentGameInfo.GetPlayTime();
+                playTimeValue.Location = new Point(playTime.Right,playTime.Location.Y);
 
                 if (!currentGameInfo.Game.KeepSymLinkOnExit)
                 {
@@ -1708,8 +1735,10 @@ namespace Nucleus.Coop
                 gameContextMenuStrip.Items["deleteBackupFolderMenuItem"].Visible = false;
 
                 gameContextMenuStrip.Items["gameNameMenuItem"].ForeColor = Color.DodgerBlue;
-                gameContextMenuStrip.Items["gameNameMenuItem"].Image = menuCurrentGameInfo.Icon;
+                gameContextMenuStrip.Items["gameNameMenuItem"].ImageAlign = ContentAlignment.MiddleCenter;
                 gameContextMenuStrip.Items["gameNameMenuItem"].ImageScaling = ToolStripItemImageScaling.SizeToFit;
+                gameContextMenuStrip.Items["gameNameMenuItem"].Image = menuCurrentGameInfo.Icon;
+
 
                 if (string.IsNullOrEmpty(menuCurrentGameInfo?.GameGuid) || menuCurrentGameInfo == null)
                 {
@@ -2409,22 +2438,10 @@ namespace Nucleus.Coop
 
         private void Btn_Links_Click(object sender, EventArgs e)
         {
-            if (linksPanel.Visible)
-            {
-                linksPanel.Visible = false;
-                btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_closed.png");
-
-                if (third_party_tools_container.Visible)
-                {
-                    third_party_tools_container.Visible = false;
-                }
-            }
-            else
-            {
-                linksPanel.BringToFront();
-                linksPanel.Visible = true;
-                btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_opened.png");
-            }
+            Button btnSender = (Button)sender;
+            Point ptLowerLeft = new Point(0, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            socialLinksMenu.Show(ptLowerLeft);
         }
 
         public void ClickAnyControl(object sender, EventArgs e)
@@ -2439,77 +2456,21 @@ namespace Nucleus.Coop
                 profileSettings.BringToFront();
             }
 
-            Button btn;
-
-            if (sender is Button)
+            if (sender != donationBtn)
             {
-                btn = (Button)sender;
-                if (btn.Name == "donationBtn")
+                if (donationPanel != null)
                 {
-                    if (linksPanel.Visible)
-                    {
-                        linksPanel.Visible = false;
-                        btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_closed.png");
-
-                        if (third_party_tools_container.Visible)
-                        {
-                            third_party_tools_container.Visible = false;
-                        }
-                    }
-                    return;
+                    clientAreaPanel.Controls.Remove(donationPanel);
+                    donationPanel.Dispose();
+                    donationPanel = null;
                 }
-
-                if (btn.Name == "btn_Links")
-                {
-                    if (donationPanel != null)
-                    {
-                        clientAreaPanel.Controls.Remove(donationPanel);
-                        donationPanel.Dispose();
-                        donationPanel = null;
-                    }
-
-                    return;
-                }
-            }
-
-            if (donationPanel != null)
-            {
-                clientAreaPanel.Controls.Remove(donationPanel);
-                donationPanel.Dispose();
-                donationPanel = null;
-            }
-
-            if (linksPanel.Visible)
-            {
-                linksPanel.Visible = false;
-                btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_closed.png");
-
-                if (third_party_tools_container.Visible)
-                {
-                    third_party_tools_container.Visible = false;
-                }
-            }
+            }            
         }
-
-        private void Button1_Click_2(object sender, EventArgs e) => Process.Start("https://hub.splitscreen.me/");
-
-        private void Button1_Click(object sender, EventArgs e) => Process.Start("https://discord.com/invite/QDUt8HpCvr");
-
-        private void Button2_Click(object sender, EventArgs e) => Process.Start("https://www.reddit.com/r/nucleuscoop/");
 
         private void Logo_Click(object sender, EventArgs e) => Process.Start("https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases");
 
         private void Link_faq_Click(object sender, EventArgs e) => Process.Start(faq_link);
 
-        private void LinkLabel4_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/nefarius/ScpToolkit/releases"); third_party_tools_container.Visible = false; }
-
-        private void LinkLabel3_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/ViGEm/HidHide/releases"); third_party_tools_container.Visible = false; }
-
-        private void LinkLabel2_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/Ryochan7/DS4Windows/releases"); third_party_tools_container.Visible = false; }
-
-        private void LinkLabel1_LinkClicked(object sender, EventArgs e) { Process.Start("https://github.com/csutorasa/XOutput/releases"); third_party_tools_container.Visible = false; }
-
-        private void Btn_thirdPartytools_Click(object sender, EventArgs e) { if (third_party_tools_container.Visible) { third_party_tools_container.Visible = false; } else { third_party_tools_container.Visible = true; } }
 
         private void ScriptAuthorTxt_LinkClicked(object sender, LinkClickedEventArgs e) => Process.Start(e.LinkText);
 
@@ -2533,26 +2494,7 @@ namespace Nucleus.Coop
 
         private void Btn_downloadAssets_MouseLeave(object sender, EventArgs e) => btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets.png");
 
-        private void Btn_faq_MouseEnter(object sender, EventArgs e) => btn_faq.BackgroundImage = ImageCache.GetImage(theme + "faq_mousehover.png");
-
-        private void Btn_faq_MouseLeave(object sender, EventArgs e) => btn_faq.BackgroundImage = ImageCache.GetImage(theme + "faq.png");
-
-        private void Btn_reddit_MouseEnter(object sender, EventArgs e) => btn_reddit.BackgroundImage = ImageCache.GetImage(theme + "reddit_mousehover.png");
-
-        private void Btn_reddit_MouseLeave(object sender, EventArgs e) => btn_reddit.BackgroundImage = ImageCache.GetImage(theme + "reddit.png");
-
-        private void Btn_Discord_MouseEnter(object sender, EventArgs e) => btn_Discord.BackgroundImage = ImageCache.GetImage(theme + "discord_mousehover.png");
-
-        private void Btn_Discord_MouseLeave(object sender, EventArgs e) => btn_Discord.BackgroundImage = ImageCache.GetImage(theme + "discord.png");
-
-        private void Btn_SplitCalculator_MouseEnter(object sender, EventArgs e) => btn_SplitCalculator.BackgroundImage = ImageCache.GetImage(theme + "splitcalculator_mousehover.png");
-
-        private void Btn_SplitCalculator_MouseLeave(object sender, EventArgs e) => btn_SplitCalculator.BackgroundImage = ImageCache.GetImage(theme + "splitcalculator.png");
-
-        private void Btn_thirdPartytools_MouseEnter(object sender, EventArgs e) => btn_thirdPartytools.BackgroundImage = ImageCache.GetImage(theme + "thirdPartytools_mousehover.png");
-
-        private void Btn_thirdPartytools_MouseLeave(object sender, EventArgs e) => btn_thirdPartytools.BackgroundImage = ImageCache.GetImage(theme + "thirdPartytools.png");
-
+     
         private void Btn_magnifier_Click(object sender, EventArgs e)
         {
             if (!handlerNotesZoom.Visible)
@@ -2730,7 +2672,6 @@ namespace Nucleus.Coop
 
         private void MainForm_ResizeBegin(object sender, EventArgs e)
         {
-            btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_closed.png");
             clientAreaPanel.Visible = false;
             Opacity = 0.6D;
         }
@@ -2894,21 +2835,21 @@ namespace Nucleus.Coop
 
         private void MainButtonFrame_Paint(object sender, PaintEventArgs e)
         {
-            Button firstButton = btn_debuglog.Visible ? btn_debuglog : btn_Extract;
-            Point point1 = new Point(firstButton.Left + 3, firstButton.Top + 10);
-            Point point2 = new Point(firstButton.Left - 5, firstButton.Bottom);
-            Point point3 = new Point(btn_settings.Right + 5, firstButton.Bottom);
-            Point point4 = new Point(btn_settings.Right - 3, firstButton.Top + 10);
-            Point point5 = new Point(firstButton.Left + 3, firstButton.Top + 10);
+            //Button firstButton = btn_debuglog.Visible ? btn_debuglog : btn_Extract;
+            //Point point1 = new Point(firstButton.Left + 3, firstButton.Top + 10);
+            //Point point2 = new Point(firstButton.Left - 5, firstButton.Bottom);
+            //Point point3 = new Point(btn_settings.Right + 5, firstButton.Bottom);
+            //Point point4 = new Point(btn_settings.Right - 3, firstButton.Top + 10);
+            //Point point5 = new Point(firstButton.Left + 3, firstButton.Top + 10);
 
-            Point[] shelf = { point1, point2, point3, point4, point5, };
+            //Point[] shelf = { point1, point2, point3, point4, point5, };
 
-            Pen pen = new Pen(ForeColor, 1);
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
-            e.Graphics.DrawPolygon(pen, shelf);
-            e.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(80, 0, 0, 0)), shelf);
+            //Pen pen = new Pen(ForeColor, 1);
+            //e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            //e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            //e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            //e.Graphics.DrawPolygon(pen, shelf);
+            //e.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(80, 0, 0, 0)), shelf);
         }
 
         private void Btn_debuglog_VisibleChanged(object sender, EventArgs e)
@@ -2925,7 +2866,7 @@ namespace Nucleus.Coop
 
             if (btn_debuglog.Visible)
             {
-                int offset = btn_debuglog.Width;
+                int offset = btn_debuglog.Width / 2;
                 btn_debuglog.Left += offset;
                 btn_Extract.Left += offset;
                 btn_downloadAssets.Left += offset;
@@ -2934,7 +2875,7 @@ namespace Nucleus.Coop
             }
             else
             {
-                int offset = btn_debuglog.Width;
+                int offset = btn_debuglog.Width/2;
                 btn_debuglog.Left -= offset;
                 btn_Extract.Left -= offset;
                 btn_downloadAssets.Left -= offset;
@@ -2946,8 +2887,6 @@ namespace Nucleus.Coop
             btn_downloadAssets.Visible = true;
             btn_settings.Visible = true;
             btnSearch.Visible = true;
-
-            Refresh();
         }
 
         private void DonationBtn_Click(object sender, EventArgs e)
@@ -3024,5 +2963,125 @@ namespace Nucleus.Coop
             GameManager.Instance.SaveUserProfile();
         }
 
+        private void FAQToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start(faq_link);
+
+        private void RedditToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://www.reddit.com/r/nucleuscoop/");
+
+        private void DiscordToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://discord.com/invite/QDUt8HpCvr");
+
+        private void SocialLinksMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            socialLinksMenu.BackColor = MenuStripBackColor;
+            socialLinksMenu.ForeColor = MenuStripFontColor;
+           // socialLinksMenu.BackgroundImage = clientAreaPanel.BackgroundImage;// ImageCache.GetImage(theme + "other_backgrounds.jpg");
+            btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_opened.png");
+
+            for (int i = 0; i < socialLinksMenu.Items.Count; i++)
+            {
+                if (socialLinksMenu.Items[i].GetType() == typeof(ToolStripSeparator))
+                {
+                    continue;
+                }
+
+                ToolStripMenuItem item = socialLinksMenu.Items[i] as ToolStripMenuItem;
+               
+                item.ImageScaling = ToolStripItemImageScaling.None;
+                item.ImageAlign = ContentAlignment.MiddleLeft;
+                
+                if (item == fAQMenuItem)
+                {                  
+                    item.Image = ImageCache.GetImage(theme + "faq.png");
+                    item.ForeColor = Color.Aqua;
+                    item.ToolTipText = "Nucleus Co-op FAQ.";
+                }
+
+                if(item == redditMenuItem)
+                {
+                    item.Image = ImageCache.GetImage(theme + "reddit.png");
+                    item.ForeColor = Color.Aqua;
+                    item.ToolTipText = "Official Nucleus Co-op Subreddit.";
+                }
+                
+                if(item == discordMenuItem)
+                {
+                    item.Image = ImageCache.GetImage(theme + "discord.png");
+                    item.ForeColor = Color.Aqua;
+                    item.ToolTipText = "Join the official Nucleus Co-op discord server.";                                  
+                }
+
+                if (item == splitCalculatorMenuItem)
+                {
+                    item.Image = ImageCache.GetImage(theme + "splitcalculator.png");
+                    item.ToolTipText = "This program can estimate the system requirements needed to run a game in split-screen.";
+                }
+
+                if (item == thirdPartyToolsToolStripMenuItem)
+                {
+                    item.Image = ImageCache.GetImage(theme + "thirdpartytools.png");
+                    item.DropDown. BackgroundImage = socialLinksMenu.BackgroundImage;
+                    item.ToolTipText = "Third party tools useful to make non xinput controllers work with Nucleus Co-op.";
+
+                    if (item.DropDownItems.Count > 0)
+                    {
+                        for (int d = 0; d < item.DropDownItems.Count; d++)
+                        {
+                            ToolStripItem subItem = item.DropDownItems[d];
+
+                            subItem.BackColor = Color.Transparent;
+                            subItem.ForeColor = Color.Aqua;
+
+                            ((ToolStripDropDownMenu)item.DropDown).ShowImageMargin = false;
+
+                            if (subItem == xOutputToolStripMenuItem)
+                            {
+                                subItem.ToolTipText = "XOutput is a software that can convert DirectInput into XInput.";
+                            }
+
+                            if (subItem == dS4WindowsToolStripMenuItem)
+                            {
+                                subItem.ToolTipText = "Xinput emulator for Ps4 controllers.";
+                            }
+
+                            if (subItem == hidHideToolStripMenuItem)
+                            {
+                                subItem.ToolTipText = "With HidHide it is possible to deny a specific application access to one or more human interface devices.";
+                            }
+
+                            if (subItem == scpToolkitToolStripMenuItem)
+                            {
+                                subItem.ToolTipText = "Xinput emulator for Ps3 controllers.";
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        private void SocialLinksMenu_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        {
+            btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_closed.png");
+        }
+
+        private void SplitCalculatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start((Path.Combine(Application.StartupPath, @"utils\SplitCalculator\SplitCalculator.exe")));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(@"SplitCalculator.exe has not been found in the utils\SplitCalculator folder. Try again with a fresh Nucleus Co-op installation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void XOutputToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/csutorasa/XOutput/releases");
+
+        private void DS4WindowsToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/Ryochan7/DS4Windows/releases");
+
+        private void HidHideToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/ViGEm/HidHide/releases");
+
+        private void ScpToolkitToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/nefarius/ScpToolkit/releases");
     }
 }
