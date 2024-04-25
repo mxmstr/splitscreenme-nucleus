@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Nucleus.Gaming.Coop;
+using SharpDX.Direct2D1;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -11,6 +14,26 @@ namespace Nucleus.Gaming.Tools.AudioReroute
 {
     public static class AudioReroute
     {
+        public static void DoAudioRerouteForPlayers(List<PlayerInfo> players)
+        {
+            if (GameProfile.AudioInstances.Count > 0)
+            {
+                for (int pi = 0; pi < players.Count; pi++)
+                {
+                    if ((pi + 1) < GameProfile.AudioInstances.Count())
+                    {
+                        if (GameProfile.AudioCustomSettings && GameProfile.AudioInstances["AudioInstance" + (pi + 1)] != "Default")
+                        {
+                            //Log($"Attempting to switch audio endpoint for process {players[pi].ProcessData.Process.ProcessName} pid ({players[pi].ProcessID}) to DeviceID {GameProfile.AudioInstances["AudioInstance" + (pi + 1)]}");
+                            Thread.Sleep(1000);
+                            SwitchProcessTo(GameProfile.AudioInstances["AudioInstance" + (pi + 1)], 
+                                ERole.ERole_enum_count, EDataFlow.eRender, (uint)players[pi].ProcessID);
+                        }
+                    }
+                }
+            }
+        }
+
         public static void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow, uint processId)
         {
             var roles = new[]

@@ -2,7 +2,9 @@
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Util;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -224,27 +226,60 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
             }
         }
 
-        public static IntPtr CreateUserEnvironment(GenericGameHandler genericGameHandler, GenericGameInfo gen, PlayerInfo player)
-        {
-            IntPtr envPtr = IntPtr.Zero;
-            genericGameHandler.Log("Setting up Nucleus environment");
-            var sb = new StringBuilder();
-            System.Collections.IDictionary envVars = Environment.GetEnvironmentVariables();
-            string username = WindowsIdentity.GetCurrent().Name.Split('\\')[1];
-            envVars["USERPROFILE"] = $@"{genericGameHandler.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}";
-            envVars["HOMEPATH"] = $@"\Users\{username}\NucleusCoop\{player.Nickname}";
-            envVars["APPDATA"] = $@"{genericGameHandler.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Roaming";
-            envVars["LOCALAPPDATA"] = $@"{genericGameHandler.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Local";
+        public static IntPtr CreateUserEnvironment(
+            IDictionary envVars, Process cmd, bool useSpecialFolder, bool useDocs,
+            String nickname, String NucleusEnvironmentRoot, String DocumentsRoot
+        ) {
+            string username =  WindowsIdentity.GetCurrent().Name.Split('\\')[1];
 
-            //Some games will crash if the directories don't exist
-            Directory.CreateDirectory($@"{genericGameHandler.NucleusEnvironmentRoot}\NucleusCoop");
-            Directory.CreateDirectory(envVars["USERPROFILE"].ToString());
-            Directory.CreateDirectory(Path.Combine(envVars["USERPROFILE"].ToString(), "Documents"));
-            Directory.CreateDirectory(envVars["APPDATA"].ToString());
-            Directory.CreateDirectory(envVars["LOCALAPPDATA"].ToString());
-            Directory.CreateDirectory(Path.GetDirectoryName(genericGameHandler.DocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents");
+            if (cmd != null)
+            {
+                cmd.StandardInput.WriteLine($@"set APPDATA={NucleusEnvironmentRoot}\NucleusCoop\{nickname}\AppData\Roaming");
+                cmd.StandardInput.WriteLine($@"set LOCALAPPDATA={NucleusEnvironmentRoot}\NucleusCoop\{nickname}\AppData\Local");
+                cmd.StandardInput.WriteLine($@"set USERPROFILE={NucleusEnvironmentRoot}\NucleusCoop\{nickname}");
+                cmd.StandardInput.WriteLine($@"set HOMEPATH=\Users\{username}\NucleusCoop\{nickname}");
+            }
+            else
+            {
+                if (useSpecialFolder)
+                {
+                    envVars["APPDATA"] = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    envVars["LOCALAPPDATA"] = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                    envVars["USERPROFILE"] = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    envVars["HOMEPATH"] = Environment.GetEnvironmentVariable("homepath");
+                }
+                else
+                {
+                    envVars["APPDATA"] = NucleusEnvironmentRoot + $@"\NucleusCoop\{nickname}\AppData\Roaming";
+                    envVars["LOCALAPPDATA"] = NucleusEnvironmentRoot + $@"\NucleusCoop\{nickname}\AppData\Local";
+                    envVars["USERPROFILE"] = NucleusEnvironmentRoot + $@"\NucleusCoop\{nickname}";
+                    envVars["HOMEPATH"] = Environment.GetEnvironmentVariable("homepath") + $@"\NucleusCoop\{nickname}";
+                }
+            }
 
-            if (gen.DocumentsConfigPath?.Length > 0 || gen.DocumentsSavePath?.Length > 0)
+            if (useSpecialFolder)
+            {
+                string[] paths = {
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+                };
+                foreach (string path in paths) Directory.CreateDirectory(path);
+            }
+            else
+            {
+                string envRoot = NucleusEnvironmentRoot + $@"\NucleusCoop";
+                string docsRoot = Path.GetDirectoryName(DocumentsRoot) + $@"\NucleusCoop";
+                string[] paths = {
+                    envRoot, envRoot + $@"\{nickname}", envRoot + $@"\{nickname}\Documents",
+                    envRoot + $@"\{nickname}\AppData\Roaming", envRoot + $@"\{nickname}\AppData\Local",
+                    docsRoot + $@"\{nickname}\Documents"
+                };
+                foreach (string path in paths) Directory.CreateDirectory(path);
+            }
+
+            if (useDocs)
             {
                 if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
                 {
@@ -252,8 +287,10 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
                 }
 
                 RegistryKey dkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
-                dkey.SetValue("Personal", Path.GetDirectoryName(genericGameHandler.DocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents", (RegistryValueKind)(int)RegType.ExpandString);
+                dkey.SetValue("Personal", Path.GetDirectoryName(DocumentsRoot) + $@"\NucleusCoop\{nickname}\Documents", (RegistryValueKind)(int)RegType.ExpandString);
             }
+
+            var sb = new StringBuilder();
 
             foreach (object envVarKey in envVars.Keys)
             {
@@ -269,12 +306,12 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
                 }
             }
 
+            IntPtr envPtr = IntPtr.Zero;
             sb.Append("\0");
             byte[] envBytes = Encoding.Unicode.GetBytes(sb.ToString());
             envPtr = Marshal.AllocHGlobal(envBytes.Length);
             Marshal.Copy(envBytes, 0, envPtr, envBytes.Length);
             return envPtr;
         }
-       
     }
 }

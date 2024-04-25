@@ -119,6 +119,8 @@ namespace Nucleus.Gaming
 
         bool InjectHookXinput { get; }
 
+        bool InjectHookSDL { get; }
+
         bool InjectDinputToXinputTranslation { get; }
 
         bool UseDInputBlocker { get; }

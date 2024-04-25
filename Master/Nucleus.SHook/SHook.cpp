@@ -14,6 +14,8 @@
 #include <locale>
 #include <codecvt>
 #include <time.h>
+#include <SDL.h>
+#include "Controller.h"
 //#include <stdio.h>
 //#include <Xinput.h>
 using namespace std;
@@ -1163,6 +1165,15 @@ void installFindMutexHooks(LPCWSTR targets)
 	RhWakeUpProcess();
 }
 
+SDL_bool SDLCALL SDL_IsGameController_Hook(int joystick_index)
+{
+	if (Controller::controllerIndex == 0)
+		// user wants no controller on this game (e.g. if using KBM)
+		return SDL_FALSE;
+
+	return (Controller::controllerIndex - 1 == joystick_index) ? SDL_TRUE : SDL_FALSE;
+}
+
 // EasyHook will be looking for this export to support DLL injection. If not found then 
 // DLL injection will fail.
 extern "C" void __declspec(dllexport) __stdcall NativeInjectionEntryPoint(REMOTE_ENTRY_INFO * inRemoteInfo);
@@ -1358,6 +1369,8 @@ void __stdcall NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* inRemoteInfo)
 		}
 		installFindMutexHooks(targets);
 	}
+
+	installHook("SDL.dll", "SDL_IsGameController", SDL_IsGameController_Hook);
 
 	return;
 }

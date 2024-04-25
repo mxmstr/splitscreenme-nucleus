@@ -98,6 +98,7 @@ namespace Nucleus.Gaming
         public string[] CustomUserPlayerValues;
         public string[] CustomUserInstanceValues;
         public bool InjectHookXinput;
+        public bool InjectHookSDL;
         public bool InjectDinputToXinputTranslation;
         public bool UseDInputBlocker;
         public bool BlockRawInput;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Tools.NucleusUsers;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -155,56 +156,11 @@ namespace Nucleus.Inject
                 //string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
                 IDictionary envVars = Environment.GetEnvironmentVariables();
-                var sb = new StringBuilder();
-                //var username = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile).Replace(@"C:\Users\", "");
-                string username = WindowsIdentity.GetCurrent().Name.Split('\\')[1];
-                envVars["USERPROFILE"] = $@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNick}";
-                envVars["HOMEPATH"] = $@"\Users\{username}\NucleusCoop\{playerNick}";
-                envVars["APPDATA"] = $@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNick}\AppData\Roaming";
-                envVars["LOCALAPPDATA"] = $@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNick}\AppData\Local";
 
-                //Some games will crash if the directories don't exist
-                Directory.CreateDirectory($@"{NucleusEnvironmentRoot}\NucleusCoop");
-                Directory.CreateDirectory(envVars["USERPROFILE"].ToString());
-                Directory.CreateDirectory(Path.Combine(envVars["USERPROFILE"].ToString(), "Documents"));
-                Directory.CreateDirectory(envVars["APPDATA"].ToString());
-                Directory.CreateDirectory(envVars["LOCALAPPDATA"].ToString());
-
-                Directory.CreateDirectory(Path.GetDirectoryName(docpath) + $@"\NucleusCoop\{playerNick}\Documents");
-
-                if (useDocs)
-                {
-                    if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
-                    {
-                        //string mydocPath = key.GetValue("Personal").ToString();
-                        ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg"));
-                    }
-
-                    RegistryKey dkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
-                    dkey.SetValue("Personal", Path.GetDirectoryName(docpath) + $@"\NucleusCoop\{playerNick}\Documents", (RegistryValueKind)(int)RegType.ExpandString);
-                }
-
-
-                foreach (object envVarKey in envVars.Keys)
-                {
-                    if (envVarKey != null)
-                    {
-                        string key = envVarKey.ToString();
-                        string value = envVars[envVarKey].ToString();
-
-                        sb.Append(key);
-                        sb.Append("=");
-                        sb.Append(value);
-                        sb.Append("\0");
-                    }
-                }
-
-                sb.Append("\0");
-
-                byte[] envBytes = Encoding.Unicode.GetBytes(sb.ToString());
-                envPtr = Marshal.AllocHGlobal(envBytes.Length);
-                Marshal.Copy(envBytes, 0, envPtr, envBytes.Length);
-
+                envPtr = NucleusUsers.CreateUserEnvironment(
+                    envVars, null, false, useDocs, playerNick,
+                    NucleusEnvironmentRoot, docpath
+                );
                 Thread.Sleep(1000);
             }
 
@@ -403,6 +359,7 @@ namespace Nucleus.Inject
             bool.TryParse(args[i++], out bool reRegisterRawInputMouse);
             bool.TryParse(args[i++], out bool reRegisterRawInputKeyboard);
             bool.TryParse(args[i++], out bool hookXinput);
+            bool.TryParse(args[i++], out bool hookSDL);
             bool.TryParse(args[i++], out bool dinputToXinputTranslation);
 
             string writePipeName = args[i++];
@@ -466,6 +423,7 @@ namespace Nucleus.Inject
             dataToSend[index++] = Bool_1_0(reRegisterRawInputMouse);
             dataToSend[index++] = Bool_1_0(reRegisterRawInputKeyboard);
             dataToSend[index++] = Bool_1_0(hookXinput);
+            dataToSend[index++] = Bool_1_0(hookSDL);
             dataToSend[index++] = Bool_1_0(dinputToXinputTranslation);
 
             dataToSend[index++] = (byte)(logPathLength >> 24);

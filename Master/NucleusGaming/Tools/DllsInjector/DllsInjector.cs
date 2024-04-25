@@ -64,6 +64,7 @@ namespace Nucleus.Gaming.Tools.DllsInjector
                     gen.HookReRegisterRawInputMouse,
                     gen.HookReRegisterRawInputKeyboard,
                     gen.InjectHookXinput,
+                    gen.InjectHookSDL,
                     gen.InjectDinputToXinputTranslation,
 
                     windowNull ? "" : (window.HookPipe?.pipeNameWrite ?? ""),

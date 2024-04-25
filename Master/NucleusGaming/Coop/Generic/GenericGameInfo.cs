@@ -303,6 +303,7 @@ namespace Nucleus.Gaming
         public bool HookReRegisterRawInputMouse = true;
         public bool HookReRegisterRawInputKeyboard = true;
         public bool InjectHookXinput = false;
+        public bool InjectHookSDL = false;
         public bool InjectDinputToXinputTranslation = false;
         //Not hooks
         public bool SendNormalMouseInput = true;

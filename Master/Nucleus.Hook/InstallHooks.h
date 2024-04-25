@@ -21,3 +21,4 @@ void installGetKeyboardStateHook();
 void installMessageFilterHooks();
 
 void installXInputHooks();
+void installSDLHooks();

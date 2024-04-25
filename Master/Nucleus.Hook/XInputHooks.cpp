@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Xinput.h"
 #include "dinput.h"
+#include <SDL.h>
 #include <vector>
 #include "Controller.h"
 
@@ -131,6 +132,17 @@ DWORD WINAPI XInputGetCapabilities_Hook(DWORD dwUserIndex, DWORD dwFlags, XINPUT
 		return XInputGetCapabilities(Controller::controllerIndex - 1, dwFlags, pCapabilities);
 
 	return XInputGetCapabilities(0, dwFlags, pCapabilities);
+}
+
+SDL_bool SDLCALL SDL_IsGameController_Hook(int joystick_index)
+{
+	DEBUGLOG("SDL_IsGameController_Hook\n");
+
+	if (Controller::controllerIndex == 0)
+		// user wants no controller on this game (e.g. if using KBM)
+		return SDL_FALSE;
+
+	return (Controller::controllerIndex == joystick_index) ? SDL_TRUE : SDL_FALSE;
 }
 
 #pragma region DirectInput
@@ -288,4 +300,11 @@ void installXInputHooks()
 		installHookEx("xinput1_3.dll", (LPCSTR)(100), XInputGetStateEx_Hook, true);
 		XInputGetStateEx = t_XInputGetStateEx(GetProcAddress(GetModuleHandle("xinput1_3.dll"), (LPCSTR)(100)));
 	}
+}
+
+void installSDLHooks()
+{
+	//DEBUGLOG("Injecting SDL hooks\n");
+
+	//installHook("SDL.dll", "SDL_IsGameController", SDL_IsGameController_Hook);
 }

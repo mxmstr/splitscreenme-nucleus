@@ -159,6 +159,7 @@ void __stdcall NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* inRemoteInfo)
 	Globals::options.reRegisterRawInputMouse = NEXTBOOL;
 	Globals::options.reRegisterRawInputKeyboard = NEXTBOOL;
 	Globals::options.HookXInput = NEXTBOOL;
+	Globals::options.HookSDL = NEXTBOOL;
 	Globals::options.DinputToXinputTranslation = NEXTBOOL;
 #undef NEXTBOOL
 
@@ -215,6 +216,7 @@ void __stdcall NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* inRemoteInfo)
 		" reRegisterRawInputMouse: " << Globals::options.reRegisterRawInputMouse <<
 		" reRegisterRawInputKeyboard: " << Globals::options.reRegisterRawInputKeyboard <<
 		" hookXinput: " << Globals::options.HookXInput <<
+		" hookSDL: " << Globals::options.HookSDL <<
 		" DinputToXinputTranslation: " << Globals::options.DinputToXinputTranslation <<
 		" controllerIndex: " << Controller::controllerIndex <<
 		" windowWidth: " << windowWidth <<
@@ -250,6 +252,9 @@ void __stdcall NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* inRemoteInfo)
 
 	if (Globals::options.HookXInput)
 		installXInputHooks();
+
+	if (Globals::options.HookSDL)
+		installSDLHooks();
 
 	if (Globals::options.reRegisterRawInput)
 	{

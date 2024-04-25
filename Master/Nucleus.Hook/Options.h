@@ -21,5 +21,6 @@ public:
 	bool reRegisterRawInputMouse;
 	bool reRegisterRawInputKeyboard;
 	bool HookXInput;//TODO: implement
+	bool HookSDL;
 	bool DinputToXinputTranslation;//TODO: implement
 };

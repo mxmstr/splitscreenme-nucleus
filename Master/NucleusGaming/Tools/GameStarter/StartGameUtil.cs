@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.ProtoInput;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Reflection;
 
 namespace Nucleus.Gaming.Tools.GameStarter
@@ -116,23 +116,78 @@ namespace Nucleus.Gaming.Tools.GameStarter
         /// <param name="waitTime"></param>
         /// <param name="mutex"></param>
         /// <returns></returns>
-        public static uint StartGame(string pathToGame, string args, bool hook, bool delay, bool renameMutex, string mutexNames, bool setWindow, bool isDebug, string nucleusFolder, bool blockRaw, bool UseNucleusEnvironment, string playerNick, bool startupHooksEnabled, bool createSingle, string rawHid, int width, int height, int posx, int posy, string docpath, bool usedocs, /*bool runAdmin, string rawHid,*/ string workingDir = null)
-        {
+        public static uint StartGame(GenericGameHandler h) {
             lock (locker)
             {
+                bool protoInputHooksEnabled = h.gen.ProtoInput.InjectStartup;
+                bool startupHooksEnabled = true;
+                if (h.gen.StartHookInstances?.Length > 0)
+                {
+                    string[] instancesToHook = h.gen.StartHookInstances.Split(',');
+                    if (!instancesToHook.ToList().Contains((h.plyrIndex + 1).ToString()))
+                    {
+                        startupHooksEnabled = false;
+                    }
+                }
+
+                /*if (protoInputHooksEnabled)
+                {
+                    //Log("Starting game with ProtoInput");
+
+                    IntPtr envPtr = IntPtr.Zero;
+
+                    if (h.gen.UseNucleusEnvironment)
+                    {
+                        envPtr = NucleusUsers.NucleusUsers.CreateUserEnvironment(h);
+                    }
+
+                    ProtoInputLauncher.InjectStartup(h.exePath,
+                        h.startArgs, 0, h.nucleusRootFolder, h.player.PlayerID + 1, h.gen, h.player, out uint pid, envPtr,
+                        (h.player.IsRawMouse ? (int)h.player.RawMouseDeviceHandle : -1),
+                        (h.player.IsRawKeyboard ? (int)h.player.RawKeyboardDeviceHandle : -1),
+                        (h.gen.ProtoInput.MultipleProtoControllers ? 
+                            (h.player.ProtoController1) : ((h.player.IsRawMouse || h.player.IsRawKeyboard) ? 0 : h.player.GamepadId + 1)),
+                        (h.gen.ProtoInput.MultipleProtoControllers ? h.player.ProtoController2 : 0),
+                        (h.gen.ProtoInput.MultipleProtoControllers ? h.player.ProtoController3 : 0),
+                        (h.gen.ProtoInput.MultipleProtoControllers ? h.player.ProtoController4 : 0)
+                        );
+
+                    try
+                    {
+                        h.proc = Process.GetProcessById((int)pid);
+                    }
+                    catch (Exception)
+                    {
+                        h.proc = null;
+                        //Log("Process By ID failed, setting process to null and continuing, will try and catch it later");
+                    }
+
+                }*/
+
+
                 string startGamePath = GetStartGamePath();
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = startGamePath
                 };
 
-                if (!string.IsNullOrWhiteSpace(workingDir))
+                if (!string.IsNullOrWhiteSpace(h.workingDir))
                 {
-                    workingDir = "|" + workingDir;
+                    h.workingDir = "|" + h.workingDir;
                 }
 
                 //string arguments = 
-                startInfo.Arguments = "\"" + "hook|::|" + hook + "\" \"delay|::|" + delay + "\" \"renamemutex|::|" + renameMutex + "\" \"mutextorename|::|" + mutexNames + "\" \"setwindow|::|" + setWindow + "\" \"isdebug|::|" + isDebug + "\" \"nucleusfolderpath|::|" + nucleusFolder + "\" \"blockraw|::|" + blockRaw + "\" \"nucenv|::|" + UseNucleusEnvironment + "\" \"playernick|::|" + playerNick + "\" \"starthks|::|" + startupHooksEnabled + "\" \"createsingle|::|" + createSingle + "\" \"rawhid|::|" + rawHid + "\" \"width|::|" + width + "\" \"height|::|" + height + "\" \"posx|::|" + posx + "\" \"posy|::|" + posy + "\" \"docpath|::|" + docpath + "\" \"usedocs|::|" + usedocs  /*+ "\" \"rawhid|::|" + rawHid*/ + "\" \"game|::|" + pathToGame + workingDir + ";" + args + "\"";
+                startInfo.Arguments = "\"" + "hook|::|" + h.gen.HookInit + "\" \"delay|::|" + h.gen.HookInitDelay +
+                    "\" \"renamemutex|::|" + h.gen.RenameNotKillMutex + "\" \"mutextorename|::|" + h.mutexNames + 
+                    "\" \"setwindow|::|" + h.gen.SetWindowHookStart + "\" \"isdebug|::|" + h.isDebug + 
+                    "\" \"nucleusfolderpath|::|" + h.nucleusRootFolder + "\" \"blockraw|::|" + h.gen.BlockRawInput + 
+                    "\" \"nucenv|::|" + h.gen.UseNucleusEnvironment + "\" \"playernick|::|" + h.player.Nickname + 
+                    "\" \"starthks|::|" + startupHooksEnabled + "\" \"createsingle|::|" + h.gen.CreateSingleDeviceFile + 
+                    "\" \"rawhid|::|" + h.player.RawHID + 
+                    "\" \"width|::|" + h.player.MonitorBounds.Width + "\" \"height|::|" + h.player.MonitorBounds.Height + 
+                    "\" \"posx|::|" + h.player.MonitorBounds.X + "\" \"posy|::|" + h.player.MonitorBounds.Y + 
+                    "\" \"docpath|::|" + h.DocumentsRoot + "\" \"usedocs|::|" + h.useDocs + 
+                    "\" \"game|::|" + h.exePath + h.workingDir + ";" + h.startArgs + "\"";
                 startInfo.RedirectStandardOutput = true;
                 startInfo.UseShellExecute = false;
 
