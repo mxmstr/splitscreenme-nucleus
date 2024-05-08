@@ -16,7 +16,6 @@ using Nucleus.Gaming.Tools.DirectX9Wrapper;
 using Nucleus.Gaming.Tools.DllsInjector;
 using Nucleus.Gaming.Tools.EACBypass;
 using Nucleus.Gaming.Tools.FlawlessWidescreen;
-using Nucleus.Gaming.Tools.GameplayTimer;
 using Nucleus.Gaming.Tools.GameStarter;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Tools.HexEdit;
@@ -3684,7 +3683,7 @@ namespace Nucleus.Gaming
                 {
                     if (playTime.Elapsed.Seconds > 0)
                     {                       
-                        GameplayTimer.SaveGameplayTime(userGame, playTime.Elapsed.Seconds);
+                        currentGameInfo.MetaInfo.SaveGameplayTime((ulong)playTime.Elapsed.Seconds);
                         playTime.Stop();
                     }
                 }

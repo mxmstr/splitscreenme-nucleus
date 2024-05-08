@@ -4,6 +4,7 @@ using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.UI;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 
 
@@ -32,14 +34,13 @@ namespace Nucleus.Gaming.Controls
         public static readonly string PartialTitle = "Load profile:";
 
         private Pen borderPen;
-        private SetupScreenControl parentControl;
+        private Control parentControl;
 
-        public ProfilesList(SetupScreenControl parent)
+        public ProfilesList(Control parent)
         {
             parentControl = parent;
 
             InitializeComponent();
-            Parent = parent;
 
             Name = "ProfilePanel";
             Size = new Size(300, 3);
@@ -47,7 +48,7 @@ namespace Nucleus.Gaming.Controls
             Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Visible = false;
             BorderStyle = BorderStyle.None;
-            BackColor = Color.FromArgb(150, 0, 0, 0);
+            BackColor = Color.Transparent;
 
             buttonsBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[0]),
                                                   int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
@@ -56,7 +57,7 @@ namespace Nucleus.Gaming.Controls
 
             borderPen = new Pen(Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[0]),
                                                int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[1]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])), 2.0f);
+                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])), 1.0f);
 
             default_Cursor = Theme_Settings.Default_Cursor;
             hand_Cursor = Theme_Settings.Hand_Cursor;
@@ -88,7 +89,7 @@ namespace Nucleus.Gaming.Controls
                             string userNotes = ((string)Jprofile["Notes"] != null && (string)Jprofile["Notes"] != "") ? (string)Jprofile["Notes"] : "";
 
                             string shortcutTitle = selected.Text.StartsWith("Load profile:") ? selected.Text.Split(':')[1] : selected.Text;
-                            GameProfile.CreateShortcut(parentControl.UserGameInfo.GameGuid, shortcutTitle, selected.Name, userNotes);
+                            GameProfile.CreateShortcut(GameProfile.GameInfo.GameGuid, shortcutTitle, selected.Name, userNotes);
                         }
                     }
 
@@ -253,7 +254,7 @@ namespace Nucleus.Gaming.Controls
             var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();//Sort profiles titles by Width so the list Width is set to the max value
             Width = (int)((sortedSizes[0].Width) * _scale) + offset;
 
-            Location = new Point((parentControl.gameProfilesList_btn.Left - Width) + 1, parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
+            Location = new Point((parentControl.Right - Width) + 1, parentControl.Top + 5/*+ parentControl.gameProfilesList_btn.Height / 2*//*+ parentControl.gameProfilesList_btn.Height / 2*/);
 
             try
             {
@@ -262,7 +263,7 @@ namespace Nucleus.Gaming.Controls
                     Region.Dispose();
                 }
 
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -1, Width, Height, 15, 15));
+                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -10, Width + 20, Height, 18, 18));
             }
             catch
             {
@@ -271,7 +272,7 @@ namespace Nucleus.Gaming.Controls
                     Region.Dispose();
                 }
 
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -1, Width, Height, 15, 15));
+                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -10, Width + 20, Height, 18, 12));
             }
 
             BringToFront();
@@ -395,7 +396,8 @@ namespace Nucleus.Gaming.Controls
 
                 if (Controls.Count == 0)
                 {
-                    parentControl.gameProfilesList_btn.Image = ImageCache.GetImage(Globals.ThemeFolder + "profiles_list.png");
+                    Visible = false;
+                    Globals.ProfilesList_btn.Visible = false;
                 }
 
                 Globals.MainOSD.Show(500, "Handler Profile Deleted");
@@ -405,20 +407,46 @@ namespace Nucleus.Gaming.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            //Graphics g = e.Graphics;
+            //g.InterpolationMode = InterpolationMode.HighQualityBilinear;
+            //g.CompositingQuality = CompositingQuality.HighQuality;
+            //g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            //g.SmoothingMode = SmoothingMode.AntiAlias;
+            //g.DrawRectangle(borderPen, new Rectangle(1, 1, Width - 3, Height - 3));
+
+            //g.DrawArc(borderPen, 0, 0, 16, 16, -90, -90);//Top left corner
+            //g.DrawArc(borderPen, 0, Height - 18, 16, 16, 90, 90);//Bottom left corner
+
+            //g.DrawArc(borderPen, Width - 18, 0, 16, 16, -90, 90);//Top Right corner   
+            //g.DrawArc(borderPen, Width - 18, Height - 18, 16, 16, 90, -90);//Bottom Right corner 
+            //string steamAssetPath = SteamFunctions.GetSteamPath() + "\\appcache\\librarycache\\" + GameProfile.Game.SteamID + "_library_hero.jpg";
+            //if (File.Exists(steamAssetPath))
+            //{
+            //    //BackgroundImageLayout = ImageLayout.Zoom;
+            //    //BackgroundImage = new Bitmap(steamAssetPath);
+            //    g.DrawImageUnscaled(Image.FromFile(steamAssetPath), 0, 0);
+            //    g.FillRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0,0,Width,Height));
+            //}
+
+
+            Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
+            //Rectangle bounds = new Rectangle(0, 0, Width, Height);
             Graphics g = e.Graphics;
-            g.InterpolationMode = InterpolationMode.HighQualityBilinear;
-            g.CompositingQuality = CompositingQuality.HighQuality;
-            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.DrawRectangle(borderPen, new Rectangle(1, 1, Width - 3, Height - 3));
 
-            g.DrawArc(borderPen, 0, 0, 16, 16, -90, -90);//Top left corner
-            g.DrawArc(borderPen, 0, Height - 18, 16, 16, 90, 90);//Bottom left corner
+            Color color = Color.FromArgb(100, 0, 0, 0);// Color.FromArgb(120, 0, 0, 0);
+            Color color2 = Color.FromArgb(120, 0, 0, 0);
+            LinearGradientBrush lgb =
+            new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 90f);
 
-            g.DrawArc(borderPen, Width - 18, 0, 16, 16, -90, 90);//Top Right corner   
-            g.DrawArc(borderPen, Width - 18, Height - 18, 16, 16, 90, -90);//Bottom Right corner 
+            ColorBlend topcblend = new ColorBlend(3);
+            topcblend.Colors = new Color[3] { Color.Transparent,color, color2};
+            topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
+
+            lgb.InterpolationColors = topcblend;
+            //lgb.SetBlendTriangularShape(.5f, 1.0f);
+            g.FillRectangle(lgb, gradientBrushbounds);
+
         }
-
 
         public void UpdateSize(float scale)
         {

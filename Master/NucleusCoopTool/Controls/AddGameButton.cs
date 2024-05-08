@@ -47,7 +47,6 @@ namespace Nucleus.Coop.Controls
             favorite_Selected = ImageCache.GetImage(Globals.ThemeFolder + "favorite_selected.png");
 
             Size = new Size(width, height);
-            //Location = new Point(0, 0);
             BackColor = Color.Transparent;
             MouseEnter += ZoomInPicture;
             MouseLeave += ZoomOutPicture;
@@ -176,8 +175,8 @@ namespace Nucleus.Coop.Controls
             mainForm.ShowFavoriteOnly = selected ? false : true;
 
             Globals.ini.IniWriteValue("Dev", "ShowFavoriteOnly", mainForm.ShowFavoriteOnly.ToString());
-           // mainForm.RefreshUI(true);
-           mainForm.RefreshGames();
+
+            mainForm.RefreshGames();
             mainForm.Invalidate(false);
         }
 
@@ -201,7 +200,7 @@ namespace Nucleus.Coop.Controls
             Rectangle bounds = new Rectangle(8, 0,Width, Height);
             Graphics g = e.Graphics;
 
-            Color color = selected ?  Color.FromArgb(85, 51, 153, 255) : Color.Transparent;//Color.FromArgb(80, 72, 72, 72);
+            Color color = selected ? Color.FromArgb(85, 51, 153, 255) : Color.Transparent;// Color.FromArgb(120, 0, 0, 0);
             LinearGradientBrush lgb =
             new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);
 
@@ -212,6 +211,8 @@ namespace Nucleus.Coop.Controls
             lgb.InterpolationColors = topcblend;
             lgb.SetBlendTriangularShape(.5f, 1.0f);
             g.FillRectangle(lgb, bounds);
+            
+            lgb.Dispose();
         }
 
         private void InitializeComponent()

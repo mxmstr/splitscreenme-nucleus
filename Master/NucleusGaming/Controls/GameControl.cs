@@ -238,7 +238,7 @@ namespace Nucleus.Coop
             {
                 c.Click += C_Click;
             }
-
+            
             c.MouseEnter += C_MouseEnter;
             c.MouseLeave += C_MouseLeave;
 
@@ -346,7 +346,7 @@ namespace Nucleus.Coop
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height / 3);
             Rectangle bounds = new Rectangle(0, 0, favoriteBox.Right, Height);
 
-            Color color = isSelected ? radioSelectedBackColor : Color.Transparent;// Color.FromArgb(80, 72, 72, 72); 
+            Color color = isSelected ? radioSelectedBackColor : Color.Transparent; 
 
             LinearGradientBrush lgb =
             new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);

@@ -117,7 +117,8 @@ namespace Nucleus.Coop.Forms
                     new System.Uri($@"https://hub.splitscreen.me/cdn/storage/packages/{Handler.CurrentPackage}/original/handler-{Handler.Id}-v{Handler.CurrentVersion}.nc?download=true"),
                     // Param2 = Path to save
                     Path.Combine(scriptFolder, zipFile)
-                ); ;
+                );
+                
                 wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
             }
         }

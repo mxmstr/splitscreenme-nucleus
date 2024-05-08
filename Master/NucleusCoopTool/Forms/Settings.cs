@@ -641,8 +641,7 @@ namespace Nucleus.Coop
         }
 
         private void GetPlayersNickNameAndSteamIds()
-        {
-
+        {           
             for (int i = 0; i < 32; i++)
             {
                 nicksList.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)).ToString());
@@ -652,8 +651,8 @@ namespace Nucleus.Coop
             for (int i = 0; i < 32; i++)
             {
                 steamIds[i].Items.AddRange(SteamIdsCache.Get.ToArray());
-                steamIds[i].SelectedItem = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
-                steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
+                steamIds[i].SelectedItem = nicksList[i];
+                steamIds[i].Text = steamIdsList[i];
 
                 controllerNicks[i].Items.AddRange(NicknamesCache.Get.ToArray());
 
@@ -665,9 +664,9 @@ namespace Nucleus.Coop
                     }
                 }
 
-                controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-            }
+                controllerNicks[i].SelectedItem = nicksList[i];
+                controllerNicks[i].Text = nicksList[i];
+            }          
         }
 
         private void closeBtnPicture_Click(object sender, EventArgs e)
@@ -753,6 +752,7 @@ namespace Nucleus.Coop
             }
 
             string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
+
             using (FileStream stream = new FileStream(idspath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -834,7 +834,6 @@ namespace Nucleus.Coop
             ini.IniWriteValue("CustomLayout", "Cts_BringToFront", cts_bringToFront.Checked.ToString());
 
             mainForm.lockKeyIniString = lockKey_Cmb.SelectedItem.ToString();
-            mainForm.DebugButtonState(debugLogCheck.Checked);
 
             if (setupScreen != null)
             {
@@ -1424,7 +1423,7 @@ namespace Nucleus.Coop
         }
 
         private void Settings_VisibleChanged(object sender, EventArgs e)
-        {
+        {           
             if (Visible)
             {
                 for (int i = 0; i < 32; i++)

@@ -494,18 +494,13 @@ namespace Nucleus.Coop
                     controllerNicks[i].Items.Clear();
                     controllerNicks[i].Items.AddRange(nicksList.ToArray());
 
-                    controllerNicks[i].SelectedItem = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
                     controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
+                    controllerNicks[i].SelectedItem = controllerNicks[i].Text;
+                    
                     controllerNicks[i].Enabled = false;
 
                     if (GameProfile.ModeText == "New Profile")
                     {
-                        if (player != null)
-                        {
-                            player.Nickname = controllerNicks[i].Text;
-                            player.SteamID = long.Parse(steamIds[i].Text);
-                        }
-
                         steamIds[i].Enabled = true;
                         controllerNicks[i].Enabled = true;
                     }
@@ -520,8 +515,6 @@ namespace Nucleus.Coop
 
         private void UpdateUiValues()
         {
-            Cursor.Current = Cursors.WaitCursor;
-
             GetPlayersNickNameAndIds();
 
             for (int i = 0; i < 32; i++)
@@ -844,7 +837,7 @@ namespace Nucleus.Coop
             if (GameProfile.ModeText != "New Profile")
             {
                 GameProfile.UpdateGameProfile(GameProfile.Instance);
-                setupScreen.gameProfilesList.Update_ProfilesList();
+                ProfilesList.Instance.Update_ProfilesList();
 
                 ///Send control selection event to the Profiles List (update the list and reload the profile)
                 MouseEventArgs eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
@@ -853,7 +846,7 @@ namespace Nucleus.Coop
                 selected.Name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString();
                 selected.Text = $"{ProfilesList.PartialTitle} {selected.Name}";
 
-                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(selected, eventArgs);
+                ProfilesList.Instance.ProfileBtn_CheckedChanged(selected, eventArgs);
             }
 
             ini.IniWriteValue("Misc", "ProfileSettingsLocation", Location.X + "X" + Location.Y);
@@ -1093,10 +1086,13 @@ namespace Nucleus.Coop
         private void profile_info_btn_Click(object sender, EventArgs e)
         {
             NucleusMessageBox.Show(
-                "Info", "Profiles will only save after all instances finish setting up correctly.\n" +
-                "To load a profile click the profile list icon in the setup screen and choose the profile to load by clicking on it in the list.\n" +
-                "Profile settings can be modified before pressing the play button.\n" +
-                "Some of the profile settings could break hooks, resizing or positioning functions so it's better to launch the game with the default profile settings once.", false);
+                "Info", 
+                "- Profiles will be saved after all instances have finished setting up correctly.\n\n" +
+                "- To load a profile click the profile list icon in the setup screen and choose the\n" +
+                "  profile to load by clicking on it in the list.\n\n" +
+                "- Profile settings can be modified before pressing the play button.\n\n" +
+                "- Some of the profile settings could break hooks, resizing or positioning\n" +
+                "  functions so it's better to launch the game with the default profile settings once.", false);
         }
 
         private void cts_Mute_CheckedChanged(object sender, EventArgs e)

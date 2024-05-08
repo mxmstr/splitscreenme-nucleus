@@ -15,14 +15,13 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public string GetDeviceName(IntPtr data, IntPtr hDevice)
         {
-            IntPtr deviceHandle = hDevice;
             uint pcbSize = 0;
 
-            uint result = GetRawInputDeviceInfo(deviceHandle, RawInputDeviceInformationCommand.RIDI_DEVICENAME, data, ref pcbSize);
+            uint result = GetRawInputDeviceInfo(hDevice, RawInputDeviceInformationCommand.RIDI_DEVICENAME, data, ref pcbSize);
 
             IntPtr extraData = Marshal.AllocHGlobal(((int)pcbSize) * 2);
 
-            result = GetRawInputDeviceInfo(deviceHandle, RawInputDeviceInformationCommand.RIDI_DEVICENAME, extraData, ref pcbSize);
+            result = GetRawInputDeviceInfo(hDevice, RawInputDeviceInformationCommand.RIDI_DEVICENAME, extraData, ref pcbSize);
 
             dataDispose = extraData;
 

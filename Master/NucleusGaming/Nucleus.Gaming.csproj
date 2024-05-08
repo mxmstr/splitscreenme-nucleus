@@ -207,6 +207,7 @@
     <Compile Include="Coop\InputManagement\ShortcutsReminderThread.cs" />
     <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
     <Compile Include="Coop\ProfilePlayer.cs" />
+    <Compile Include="Coop\GameMetaInfo.cs" />
     <Compile Include="Forms\ShortcutsReminder\ReminderFormThread.cs" />
     <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.cs">
       <SubType>Form</SubType>
@@ -391,7 +392,6 @@
     <Compile Include="Tools\EACBypass\EACBypass.cs" />
     <Compile Include="Tools\CleanGameContent\CleanGameContent.cs" />
     <Compile Include="Tools\NucleusUsers\NucleusUsers.cs" />
-    <Compile Include="Tools\GameplayTimer\GameplayTimer.cs" />
     <Compile Include="Tools\Steam\GoldbergUpdaterForm.cs">
       <SubType>Form</SubType>
     </Compile>

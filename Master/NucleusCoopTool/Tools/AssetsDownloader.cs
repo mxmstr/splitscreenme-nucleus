@@ -80,7 +80,6 @@ namespace Nucleus.Coop.Tools
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
                     string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
-                    SaveDescriptions(handler.GameDescription, game.GameGuid);
                     DownloadCovers(coverUri, game.GameGuid);
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }
@@ -168,7 +167,6 @@ namespace Nucleus.Coop.Tools
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
                     string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
-                    SaveDescriptions(handler.GameDescription, game.GameGuid);
                     DownloadCovers(coverUri, game.GameGuid);
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }

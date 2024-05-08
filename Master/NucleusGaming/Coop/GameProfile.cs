@@ -20,7 +20,7 @@ namespace Nucleus.Gaming.Coop
     {
         private List<UserScreen> screens;
         public List<UserScreen> Screens => screens;
-        private List<PlayerInfo> deviceList;
+        
 
         public Dictionary<string, object> Options => options;
         private Dictionary<string, object> options;
@@ -28,6 +28,8 @@ namespace Nucleus.Gaming.Coop
         /// Return a list of all players(connected devices)
         /// </summary>       
         public List<PlayerInfo> DevicesList => GetDevicesList();
+        private List<PlayerInfo> deviceList;
+
         private static readonly IniFile ini = Globals.ini;
 
         public static GameProfile Instance;
@@ -35,7 +37,7 @@ namespace Nucleus.Gaming.Coop
         public static GenericGameInfo Game;
         private static SetupScreenControl setupScreen = null;
 
-        public static int TotalAssignedPlayers;//K&m player will count as one only if 2 devices(keyboard & mouse) has the same bounds.
+        public static int TotalAssignedPlayers;//K&m player will count as one only if 2 devices(keyboard & mouse) shares the same bounds.
 
         private static int totalProfilePlayers;//How many players the loaded profile counts.
         public static int TotalProfilePlayers => totalProfilePlayers;
@@ -283,7 +285,7 @@ namespace Nucleus.Gaming.Coop
 
                 if (deviceList != null)//Switching profile
                 {
-                    foreach (PlayerInfo player in deviceList)
+                    foreach (PlayerInfo player in DevicesList)
                     {
                         player.MonitorBounds = Rectangle.Empty;
                         player.EditBounds = player.SourceEditBounds;
@@ -303,15 +305,15 @@ namespace Nucleus.Gaming.Coop
                     options.Add(opt.Key, opt.Value);
                 }
 
-                setupScreen.gameProfilesList.ProfileBtn_CheckedChanged(new Label(), null);
+                ProfilesList.Instance.ProfileBtn_CheckedChanged(new Label(), null);
 
                 loadedProfilePlayers.Clear();
                 devicesToMerge.Clear();
 
                 if (!GameInfo.DisableProfiles)
                 {
-                    setupScreen.profileSettings_Tooltip = CustomToolTips.SetToolTip(setupScreen.profileSettings_btn,
-                    $"{Game.GameName} {ModeText.ToLower()} settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    //setupScreen.profileSettings_Tooltip = CustomToolTips.SetToolTip(setupScreen.profileSettings_btn,
+                    //$"{Game.GameName} {ModeText.ToLower()} settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
                     ListGameProfiles();
                 }
@@ -523,7 +525,6 @@ namespace Nucleus.Gaming.Coop
 
                 modeText = $"Profile n°{profileToSave}";
 
-                setupScreen.profileSettings_Tooltip.SetToolTip(setupScreen.profileSettings_btn, $"{GameProfile.Game.GameName} {GameProfile.ModeText.ToLower()} settings.");
 
                 Ready = true;
 
@@ -814,9 +815,9 @@ namespace Nucleus.Gaming.Coop
             string path;
             bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
 
-            if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.DisableProfiles)
+            if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
             {
-                if (!profileDisabled && !GameInfo.DisableProfiles)
+                if (!profileDisabled && !GameInfo.DisableProfiles && GameInfo.Game.MetaInfo.SaveProfile)
                 {
                     Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
                 }
@@ -825,7 +826,7 @@ namespace Nucleus.Gaming.Coop
                 return;
             }
 
-            if (profile.deviceList.Count != TotalProfilePlayers || !Loaded || profilesCount == 0)
+            if (profile.DevicesList.Count != TotalProfilePlayers || !Loaded || profilesCount == 0)
             {
                 profilesCount++;//increase to set new profile name
                 path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profilesCount}].json";
@@ -1004,7 +1005,7 @@ namespace Nucleus.Gaming.Coop
             (
                new JProperty("Title", Title),
                new JProperty("Notes", Notes),
-               new JProperty("Player(s)", profile.deviceList.Count),
+               new JProperty("Player(s)", profile.DevicesList.Count),
                new JProperty("Controller(s)", gamepadCount),
                new JProperty("K&M", keyboardCount),
                new JProperty("Use XInput Index", useXinputIndex),
@@ -1253,16 +1254,16 @@ namespace Nucleus.Gaming.Coop
 
         private void RefreshKeyboardAndMouse()
         {
-            deviceList.RemoveAll(p => p.IsRawMouse || p.IsRawKeyboard);
+            DevicesList.RemoveAll(p => p.IsRawMouse || p.IsRawKeyboard);
 
             if (Game.SupportsMultipleKeyboardsAndMice)///Raw mice/keyboards
             {
-                deviceList.AddRange(RawInputManager.GetDeviceInputInfos());
+                DevicesList.AddRange(RawInputManager.GetDeviceInputInfos());
             }
 
-            for (int i = 0; i < deviceList.Count(); i++)
+            for (int i = 0; i < DevicesList.Count(); i++)
             {
-                deviceList[i].EditBounds = BoundsFunctions.GetDefaultBounds(i);
+                DevicesList[i].EditBounds = BoundsFunctions.GetDefaultBounds(i);
             }
         }
 
@@ -1326,7 +1327,7 @@ namespace Nucleus.Gaming.Coop
             //Clear profile screens subBounds
             nprof.screens.AsParallel().ForAll(i => i.SubScreensBounds.Clear());
 
-            foreach (PlayerInfo player in nprof.deviceList)
+            foreach (PlayerInfo player in nprof.DevicesList)
             {
                 if (UseSplitDiv && !HideDesktopOnly)
                 {
@@ -1346,7 +1347,7 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 
-            //Remove any screens not containing players 
+            //Remove any screens not containing players based on the above cleanup 
             nprof.Screens.RemoveAll(s => s.SubScreensBounds.Count() == 0);
 
             Dictionary<string, object> noptions = new Dictionary<string, object>();
@@ -1363,6 +1364,7 @@ namespace Nucleus.Gaming.Coop
 
         public static PlayerInfo UpdateProfilePlayerNickAndSID(PlayerInfo player)
         {
+            //TODO: Get nicknames and steam ids form cache?/settings?/profile settings?
             var secondInBounds = loadedProfilePlayers.Where(pl => pl.EditBounds == player.EditBounds && pl != player && pl.ScreenIndex != -1).FirstOrDefault();
 
             if (loadedProfilePlayers.Contains(player) || secondInBounds != null)
@@ -1370,10 +1372,10 @@ namespace Nucleus.Gaming.Coop
                 PlayerInfo plToUpdate = secondInBounds ?? player;
 
                 int playerIndex = loadedProfilePlayers.FindIndex(pl => pl == plToUpdate);
-                bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() >= playerIndex && !GameInfo.DisableProfiles;
+                bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.DisableProfiles;
 
                 string nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
-                                  Globals.ini.IniReadValue("ControllerMapping", "Player_" + (playerIndex + 1));
+                                  Globals.ini.IniReadValue("ControllerMapping", "Player_" + (playerIndex + 1));//
 
                 player.Nickname = nickname;
 
@@ -1385,7 +1387,7 @@ namespace Nucleus.Gaming.Coop
                 }
                 else if (Globals.ini.IniReadValue("SteamIDs", "Player_" + (playerIndex + 1)) != "")
                 {
-                    steamID = Globals.ini.IniReadValue("SteamIDs", "Player_" + (playerIndex + 1));
+                    steamID = Globals.ini.IniReadValue("SteamIDs", "Player_" + (playerIndex + 1));//
                 }
                 else
                 {
@@ -1399,6 +1401,7 @@ namespace Nucleus.Gaming.Coop
 
                 return plToUpdate;
             }
+
             return null;
         }
 

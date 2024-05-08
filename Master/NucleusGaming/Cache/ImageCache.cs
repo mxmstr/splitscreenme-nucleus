@@ -76,7 +76,6 @@ namespace Nucleus.Gaming.Cache
             ///should be fine. It will not be called at all most of the time anyway.
             if (convertToMo > 400)
             {
-                cachedImages.Clear();
                 System.GC.Collect();
             }
         }

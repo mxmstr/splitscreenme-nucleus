@@ -22,16 +22,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         internal float newplayerCustomFontSize;
 
-        public PictureBox instruction_btn;
+        public PictureBox instructionImg;
 
-        internal PictureBox instructionImg;
-        public PictureBox profileSettings_btn;
-        public PictureBox gameProfilesList_btn;
         public ProfilesList gameProfilesList;
-
-        private Bitmap instructionCloseImg;
-        private Bitmap instructionOpenImg;
-        private Bitmap plyrsSettingsIcon;
 
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
@@ -65,24 +58,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.Transparent;
 
-            instructionCloseImg = ImageCache.GetImage(theme + "instruction_closed.png");
-            instructionOpenImg = ImageCache.GetImage(theme + "instruction_opened.png");
-
-            plyrsSettingsIcon = ImageCache.GetImage(theme + "profile_settings.png");
-
-            instruction_btn = new PictureBox();//using a button cause focus issues
-            instruction_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            instruction_btn.Size = new Size(25, 25);
-            instruction_btn.Location = new Point((Width - instruction_btn.Width) - 5, 5);
-            instruction_btn.Font = Draw.playerFont;
-            instruction_btn.BackColor = Color.Transparent;
-            instruction_btn.ForeColor = Color.White;
-            instruction_btn.BackgroundImage = instructionCloseImg;
-            instruction_btn.BackgroundImageLayout = ImageLayout.Stretch;
-            instruction_btn.Cursor = hand_Cursor;
-            instruction_btn.Click += new EventHandler(this.instruction_Click);
-            CustomToolTips.SetToolTip(instruction_btn, "How to setup players.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-
             instructionImg = new PictureBox()
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
@@ -95,30 +70,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 Visible = false
             };
 
-            profileSettings_btn = new PictureBox();///using a button cause focus issues
-            profileSettings_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            profileSettings_btn.BackColor = Color.Transparent;
-            profileSettings_btn.Image = plyrsSettingsIcon;
-            profileSettings_btn.SizeMode = PictureBoxSizeMode.StretchImage;
-            profileSettings_btn.Cursor = hand_Cursor;
-            profileSettings_btn.Font = instruction_btn.Font;
-            profileSettings_btn.Visible = false;
-
-            gameProfilesList_btn = new PictureBox();///using a button cause focus issues
-            gameProfilesList_btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            gameProfilesList_btn.AutoSize = false;
-            gameProfilesList_btn.SizeMode = PictureBoxSizeMode.StretchImage;
-            gameProfilesList_btn.BackColor = Color.Transparent;
-            gameProfilesList_btn.Image = ImageCache.GetImage(theme + "profiles_list.png");
-            gameProfilesList_btn.Text = "Profiles List";
-            gameProfilesList_btn.Cursor = hand_Cursor;
-            gameProfilesList_btn.Visible = false;
-
             gameProfilesList = new ProfilesList(this);
 
-            Controls.Add(instruction_btn);
-            Controls.Add(profileSettings_btn);
-            Controls.Add(gameProfilesList_btn);
             Controls.Add(gameProfilesList);
             Controls.Add(instructionImg);
 
@@ -146,31 +99,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 DevicesFunctions.UseGamepadApiIndex = false;
             }
 
-            if (!profileDisabled)
-            {
-                ToolTip gameProfilesList_btnTooltip = CustomToolTips.SetToolTip(gameProfilesList_btn, $"{game.Game.GameName} profiles list.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            }
-
             DevicesFunctions.UpdateDevices();
-        }
-
-        private void instruction_Click(object sender, EventArgs e)
-        {
-            if (instructionImg.Visible)
-            {
-                SuspendLayout();
-                instruction_btn.BackgroundImage = instructionCloseImg;
-                ResumeLayout();
-                instructionImg.Visible = false;
-            }
-            else
-            {
-                SuspendLayout();
-                instruction_btn.BackgroundImage = instructionOpenImg;
-                ResumeLayout();
-                instructionImg.Visible = true;
-                instructionImg.BringToFront();
-            }
         }
 
         public void UpdateSize(float scale)
@@ -186,19 +115,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             if (!scaled)
             {
                 newplayerCustomFontSize = Draw.playerCustomFont.Size;
-
-                float instructionW = instruction_btn.Width * scale;
-                float instructionH = instruction_btn.Height * scale;
-
-                instruction_btn.Width = (int)instructionW;
-                instruction_btn.Height = (int)instructionH;
-                instruction_btn.Location = new Point((Width - instruction_btn.Width) - 5, 5);
-
-                profileSettings_btn.Size = instruction_btn.Size;
-                profileSettings_btn.Location = new Point(((instruction_btn.Left - profileSettings_btn.Width) - 3), instruction_btn.Top);
-
-                gameProfilesList_btn.Size = instruction_btn.Size;
-                gameProfilesList_btn.Location = new Point(profileSettings_btn.Left - gameProfilesList_btn.Width - 3, instruction_btn.Location.Y);
                 gameProfilesList.UpdateSize(scale);
 
                 scaled = true;
@@ -248,6 +164,12 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             base.OnSizeChanged(e);
             BoundsFunctions.totalBounds = Rectangle.Empty;
             Invalidate(false);
+        }
+
+        protected override void OnDoubleClick(EventArgs e)
+        {
+            base.OnDoubleClick(e);
+            //gameProfilesList.Visible = false;
         }
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)

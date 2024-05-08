@@ -232,17 +232,14 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\SearchGameButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ExtractNCButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\SettingsButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\AddGameButton.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomRadioButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomRadioButton.Designer.cs">
+      <DependentUpon>CustomRadioButton.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\HubWebView.cs">
       <SubType>UserControl</SubType>
@@ -319,6 +316,7 @@
     <Compile Include="Controls\InputIcons.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\DrawParticles.cs" />
     <Compile Include="Tools\ExtractHandler.cs" />
     <Compile Include="Tools\GetGameDetails.cs" />
     <Compile Include="Tools\OpenDebugLog.cs" />
@@ -329,17 +327,11 @@
     <Compile Include="Tools\SetBackroundAndCover.cs" />
     <Compile Include="Tools\StartChecks.cs" />
     <Compile Include="Tools\CustomToolStripRenderer.cs" />
-    <EmbeddedResource Include="Controls\SearchGameButton.resx">
-      <DependentUpon>SearchGameButton.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ExtractNCButton.resx">
-      <DependentUpon>ExtractNCButton.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SettingsButton.resx">
-      <DependentUpon>SettingsButton.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\AddGameButton.resx">
       <DependentUpon>AddGameButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CustomRadioButton.resx">
+      <DependentUpon>CustomRadioButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\donationPanel.resx">
       <DependentUpon>donationPanel.cs</DependentUpon>
@@ -410,9 +402,6 @@
     <None Include="copyoutput\utils\XInputPlus\x86\xinput1_3.dl_" />
     <None Include="copyoutput\utils\XInputPlus\XInputPlus.ini" />
     <None Include="copyoutput\utils\XInputPlus\XInputPlus_Default.ini" />
-    <None Include="gui\icons\icons.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="gui\theme\classic\theme.ini" />
     <None Include="gui\theme\default\theme.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -851,12 +840,6 @@
     <Content Include="gui\theme\default\audio.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\autoSearch.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\autoSearch_mousehover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="gui\theme\default\cursor.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -891,12 +874,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\dinput_icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\discord.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\faq.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\fullscreen.png">
@@ -1088,9 +1065,6 @@
     <Content Include="gui\theme\default\home.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\info.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="gui\theme\default\instruction_closed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1133,9 +1107,6 @@
     <Content Include="gui\theme\default\players.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\profiles_list_opened.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="gui\theme\default\profile_info.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1155,12 +1126,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\proto_mouse.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\reddit.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\reddit_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\refresh.png">
@@ -1185,18 +1150,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\shared.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\showcase_cover_layer.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\splitcalculator.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\text_switcher.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\thirdpartytools.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\title_close.png">
@@ -1248,12 +1201,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\unlocked.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\virtual_keyboard.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\virtual_mouse.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\xinput_background.jpg">

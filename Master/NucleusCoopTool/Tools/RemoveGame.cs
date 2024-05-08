@@ -46,14 +46,12 @@ namespace Nucleus.Coop.Tools
                                 {
                                     try
                                     {
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                                        //ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));                              
                                     }
                                     catch (IOException)
                                     {
-                                        main.coverImg.Dispose();
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                                        //ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                                        main.cover.BackgroundImage.Dispose();
+                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));                                  
                                     }
                                 }
 
@@ -65,7 +63,7 @@ namespace Nucleus.Coop.Tools
                                     }
                                     catch (Exception)
                                     {
-                                        main.screenshotImg.Dispose();
+                                        main.clientAreaPanel.BackgroundImage.Dispose();
                                         Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"), true);
                                     }
                                 }
@@ -83,27 +81,27 @@ namespace Nucleus.Coop.Tools
                                     }
                                 }
 
-                                if (main.iconsIni.IniReadValue("GameIcons", gameGuid) != "")
-                                {
-                                    string[] iniContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
-                                    List<string> newContent = new List<string>();
+                                //if (main.iconsIni.IniReadValue("GameIcons", gameGuid) != "")
+                                //{
+                                //    string[] iniContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
+                                //    List<string> newContent = new List<string>();
 
-                                    for (int index = 0; index < iniContent.Length; index++)
-                                    {
-                                        if (iniContent[index].Contains(gameGuid + "=" + main.iconsIni.IniReadValue("GameIcons", gameGuid)))
-                                        {
-                                            string fullPath = gameGuid + "=" + main.iconsIni.IniReadValue("GameIcons", gameGuid).ToString();
-                                            iniContent[index] = string.Empty;
-                                        }
+                                //    for (int index = 0; index < iniContent.Length; index++)
+                                //    {
+                                //        if (iniContent[index].Contains(gameGuid + "=" + main.iconsIni.IniReadValue("GameIcons", gameGuid)))
+                                //        {
+                                //            string fullPath = gameGuid + "=" + main.iconsIni.IniReadValue("GameIcons", gameGuid).ToString();
+                                //            iniContent[index] = string.Empty;
+                                //        }
 
-                                        if (iniContent[index] != string.Empty)
-                                        {
-                                            newContent.Add(iniContent[index]);
-                                        }
-                                    }
+                                //        if (iniContent[index] != string.Empty)
+                                //        {
+                                //            newContent.Add(iniContent[index]);
+                                //        }
+                                //    }
 
-                                    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
-                                }
+                                //    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
+                                //}
 
                                 main.RefreshUI(true);
                                 return;

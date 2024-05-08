@@ -489,7 +489,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             try
             {
-                PlayerInfo brokenPlayer = null;
+                PlayerInfo hasNullDInputJoystick = null;
 
                 foreach (PlayerInfo player in data)
                 {
@@ -497,22 +497,22 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     {
                         if (player.DInputJoystick == null)
                         {
-                            brokenPlayer = player;
+                            hasNullDInputJoystick = player;
                             continue;
                         }
                     }
                 }
 
-                if (brokenPlayer != null)
+                if (hasNullDInputJoystick != null)
                 {
-                    if (GameProfile.loadedProfilePlayers.Contains(brokenPlayer))
+                    if (GameProfile.loadedProfilePlayers.Contains(hasNullDInputJoystick))
                     {
-                        GameProfile.loadedProfilePlayers.Remove(brokenPlayer);
-                        BoundsFunctions.screens[brokenPlayer.ScreenIndex].PlayerOnScreen--;
+                        GameProfile.loadedProfilePlayers.Remove(hasNullDInputJoystick);
+                        BoundsFunctions.screens[hasNullDInputJoystick.ScreenIndex].PlayerOnScreen--;
                         GameProfile.TotalAssignedPlayers--;
                     }
 
-                    data.Remove(brokenPlayer);
+                    data.Remove(hasNullDInputJoystick);
                 }
             }
             catch
@@ -627,15 +627,15 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             if (total < playerCount)
             {
                 float newVertical = vertical + 1;
-                Draw.playerCustomFont = new Font("Franklin Gothic Medium", parent.newplayerCustomFontSize * 0.8f, FontStyle.Regular, GraphicsUnit.Point, 0);
+                Draw.playerCustomFont = new Font(Draw.playerCustomFont.FontFamily, parent.newplayerCustomFontSize * 0.8f, FontStyle.Regular, GraphicsUnit.Point, 0);
                 playerSize = (int)Math.Round(((playerHeight / 1.2f) / newVertical));
             }
 
-            List<PlayerInfo> reorder = playerData;//.OrderBy(player => player.IsKeyboardPlayer).ThenBy(player => player.IsRawMouse).ThenBy(player => player.IsInputUsed).ToList();
+            //List<PlayerInfo> reorder = playerData;//OrderBy(player => player.IsKeyboardPlayer).ThenBy(player => player.IsRawMouse).ThenBy(player => player.IsInputUsed).ToList();
 
-            for (int i = 0; i < reorder.Count; i++)
+            for (int i = 0; i < playerData.Count; i++)
             {
-                PlayerInfo info = reorder[i];
+                PlayerInfo info = playerData[i];
 
                 if (info.ScreenIndex == -1)
                 {

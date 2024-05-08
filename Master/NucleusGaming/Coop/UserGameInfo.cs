@@ -14,9 +14,7 @@ namespace Nucleus.Gaming.Coop
         private bool favorite = false;
         private bool keepSymLink;
         private bool firstLaunch;
-        private string lastPlayedAt;
-        private string totalPlayTime;
-
+        
         [JsonIgnore]
         public GenericGameInfo Game
         {
@@ -74,52 +72,10 @@ namespace Nucleus.Gaming.Coop
             set => firstLaunch = value;
         }
 
-        public string LastPlayedAt
-        {
-            get => lastPlayedAt;
-            set => lastPlayedAt = value;
-        }
-
-        public string TotalPlayTime
-        {
-            get => totalPlayTime;
-            set => totalPlayTime = value;
-        }
-
         public UserGameInfo()
         {
 
-        }
-
-        public string GetLastPlayed()
-        {
-            if (lastPlayedAt == null)
-            {
-                return "...";
-            }
-
-            return lastPlayedAt.Split(' ')[0];//dispaly the date only
-        }
-
-        public string GetPlayTime()
-        {
-            if (totalPlayTime == null)
-            {
-                return "00h:00m:00s";
-            }
-
-            int totalSeconds = int.Parse(totalPlayTime);
-
-            int seconds = (totalSeconds % 60);
-            int minutes = (totalSeconds % 3600) / 60;
-            int hours = (totalSeconds % 86400) / 3600;
-
-            string formatHours = hours >= 10 ? "" : "0";
-            string formatMinutes = minutes >= 10 ? "" : "0";
-            string formatSecondes = seconds >= 10 ? "" : "0";
-
-            return $"{formatHours}{hours}h:{formatMinutes}{minutes}m:{formatSecondes}{seconds}s";
-        }
+        }       
 
         /// <summary>
         /// If the game exists

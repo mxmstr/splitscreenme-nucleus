@@ -223,6 +223,5 @@ namespace Nucleus.Gaming.Tools.GameStarter
                 File.SetAttributes(dir, FileAttributes.Normal);
             }
         }
-
     }
 }

@@ -38,8 +38,7 @@ namespace Nucleus.Coop.Tools
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
             {
-                mainForm.coverImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                mainForm.cover.BackgroundImage = mainForm.coverImg;
+                mainForm.cover.BackgroundImage = (Bitmap)Image.FromFile(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
             }
             else
             {
@@ -56,8 +55,7 @@ namespace Nucleus.Coop.Tools
                     Random rNum = new Random();
                     int RandomIndex = rNum.Next(0, imgsPath.Length);
 
-                    mainForm.screenshotImg = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg"));
-                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.screenshotImg);
+                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur((Bitmap)Image.FromFile(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg")));
                     mainForm.GameBorderGradientTop = colorTop;
                     mainForm.GameBorderGradientBottom = colorBottom;
                 }
@@ -74,8 +72,7 @@ namespace Nucleus.Coop.Tools
                 mainForm.GameBorderGradientTop = mainForm.BorderGradient;
                 mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
             }
-
-            mainForm.btn_textSwitcher.Visible = !mainForm.handlerNotesZoom.Visible && File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
+         
         }
     }
 }

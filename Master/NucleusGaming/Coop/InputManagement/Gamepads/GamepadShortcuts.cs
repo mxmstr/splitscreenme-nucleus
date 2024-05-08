@@ -89,7 +89,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         }
                         else if ((button == TopMost || rt == TopMost || lt == TopMost))///Minimize/restore windows
                         {
-                            GlobalWindowMethods.ShowHideWindows(GameProfile.Game);
+                            GlobalWindowMethods.ShowHideWindows();
                         }
                         else if (button == StopSession || rt == StopSession || lt == StopSession)///End current session
                         {
@@ -127,9 +127,9 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             {
                                 Globals.MainOSD.Show(1000, "Inputs Locked");
 
-                                LockInput.Lock(GameProfile.Game?.LockInputSuspendsExplorer ?? true, GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
+                                LockInput.Lock(GenericGameHandler.Instance.currentGameInfo?.LockInputSuspendsExplorer ?? true, GenericGameHandler.Instance.currentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
 
-                                if (GameProfile.Game.ToggleUnfocusOnInputsLock)
+                                if (GenericGameHandler.Instance.currentGameInfo.ToggleUnfocusOnInputsLock)
                                 {
                                     GlobalWindowMethods.ChangeForegroundWindow();
                                     Debug.WriteLine("Toggle Unfocus");
@@ -137,7 +137,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             }
                             else
                             {
-                                LockInput.Unlock(GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
+                                LockInput.Unlock(GenericGameHandler.Instance.currentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GenericGameHandler.Instance.currentGameInfo?.ProtoInput);
                                 Globals.MainOSD.Show(1000, "Inputs Unlocked");
                             }
                         }

@@ -27,14 +27,13 @@ namespace Nucleus.Gaming.Controls
             InitializeComponent();
 
             ForeColor = Color.FromArgb(int.Parse(rgb_HandlerNoteFontColor[0]), int.Parse(rgb_HandlerNoteFontColor[1]), int.Parse(rgb_HandlerNoteFontColor[2]));
-            BackColor = Color.FromArgb(200, int.Parse(rgb_HandlerNoteBackColor[0]), int.Parse(rgb_HandlerNoteBackColor[1]), int.Parse(rgb_HandlerNoteBackColor[2]));
+            BackColor = Color.Transparent;
 
             close_Btn.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
             close_Btn.BackColor = Color.Transparent;
             close_Btn.Cursor = new Cursor(Globals.ThemeFolder + "cursor_hand.ico");
 
             linePen = new Pen(TextBox.ForeColor, 1);
-            topBrush = new SolidBrush(Color.FromArgb(100, BackColor.R, BackColor.G, BackColor.B));
 
             MouseDown += HandlerNotesZoom_MouseDown;
 
@@ -96,8 +95,7 @@ namespace Nucleus.Gaming.Controls
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.CompositingQuality = CompositingQuality.HighQuality;
 
-            g.DrawEllipse(linePen, close_Btn.Location.X - 6, close_Btn.Location.Y - 6, close_Btn.Width + 12, close_Btn.Height + 12);
-            g.FillEllipse(topBrush, new Rectangle(close_Btn.Location.X - 6, close_Btn.Location.Y - 6, close_Btn.Width + 12, close_Btn.Height + 12));
+            g.DrawEllipse(linePen, close_Btn.Location.X - 6, close_Btn.Location.Y - 6, close_Btn.Width + 12, close_Btn.Height + 12);            
         }
     }
 }

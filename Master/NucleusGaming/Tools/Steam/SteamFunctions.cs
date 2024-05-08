@@ -1047,7 +1047,6 @@ namespace Nucleus.Gaming.Tools.Steam
                 localKey.Close();
             }
 
-
             string formatDrive = steamPath[0].ToString().ToUpper();
             string formatSlash = steamPath.Replace("/", "\\");
             string formatRemoveDrive = formatSlash.Remove(0,1);

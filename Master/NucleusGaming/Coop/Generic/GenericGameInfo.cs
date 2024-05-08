@@ -181,6 +181,7 @@ namespace Nucleus.Gaming
         public string UserProfileConfigPath;
         public string UserProfileSavePath;
         public string[] PlayerSteamIDs;
+        public bool UseHandlerSteamIds;
         public string[] HexEditExeAddress;
         public string[] HexEditFileAddress;
         public bool ForceUserProfileConfigCopy;
@@ -324,6 +325,7 @@ namespace Nucleus.Gaming
         public bool ToggleUnfocusOnInputsLock = false;//v.2.1.2 see RawInputProcessor & GenericGameHandler
 
         public Type HandlerType => typeof(GenericGameHandler);
+        public GameMetaInfo MetaInfo = new GameMetaInfo();
 
         public GenericGameInfo(string fileName, string folderPath, Stream str, bool[] checkUpdate)//checkUpdate [0]=initial update check [1]=update was available before reloading the handler  
         {
@@ -373,6 +375,8 @@ namespace Nucleus.Gaming
 
                 });
             }
+
+            MetaInfo.LoadGameMetaInfo(GUID);
 
             if (checkUpdate[0])//workaround else handler update is checked before instances setup too,
                                //see MainForm.cs Btn_Play_Click(object sender, EventArgs e) => gameManager.AddScript.

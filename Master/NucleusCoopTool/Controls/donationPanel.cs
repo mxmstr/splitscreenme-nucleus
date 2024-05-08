@@ -28,7 +28,7 @@ namespace Nucleus.Coop.Controls
             Region region2 = new Region(pict2);
             image2.Region = region2;
 
-            System.Drawing.Drawing2D.GraphicsPath pict3 = new System.Drawing.Drawing2D.GraphicsPath();
+            System.Drawing.Drawing2D.GraphicsPath pict3 = new System.Drawing.Drawing2D.GraphicsPath();    
             pict3.AddEllipse(0, 0, image3.Width, image3.Height);
             Region region3 = new Region(pict3);
             image3.Region = region3;

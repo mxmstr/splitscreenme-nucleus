@@ -83,7 +83,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             return new RectangleF(x, y, playerSize, playerSize);
         }
 
-
         internal static void UpdateScreens()
         {
             if (screens == null)

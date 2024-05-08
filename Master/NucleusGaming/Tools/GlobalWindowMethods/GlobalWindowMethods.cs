@@ -1595,16 +1595,21 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
         public static bool TopMostToggle = true;
 
-        public static void ShowHideWindows(GenericGameInfo game)
+        public static void ShowHideWindows()
         {
             var handlerInstance = GenericGameHandler.Instance;
+
+            if(handlerInstance == null)
+            {
+                return;
+            }
 
             if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
             {
                 if (handlerInstance.profile.DevicesList.All(pl => pl.ProcessData == null))
                 {
                     Globals.MainOSD.Show(1600, $"Can't Be Used Now");
-                    return;//return until a player processdata are set 
+                    return;//return until atleast 1 player processdata is set 
                 }
 
                 int windowsFound = 0;
@@ -1646,11 +1651,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     {
                         Globals.MainOSD.Show(1600, $"Game Windows Minimized");
 
-                        if (game.HideTaskbar)
+                        if (handlerInstance.currentGameInfo.HideTaskbar)
                         {
                             User32Util.ShowTaskBar();
                         }
-                        else if (game.ProtoInput.AutoHideTaskbar)
+                        else if (handlerInstance.currentGameInfo.ProtoInput.AutoHideTaskbar)
                         {
                             if (ProtoInput.protoInput.GetTaskbarAutohide())
                             {
@@ -1695,11 +1700,11 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     {
                         Globals.MainOSD.Show(1600, $"Game Windows Restored");
 
-                        if (game.HideTaskbar)
+                        if (handlerInstance.currentGameInfo.HideTaskbar)
                         {
                             User32Util.HideTaskbar();
                         }
-                        else if (game.ProtoInput.AutoHideTaskbar)
+                        else if (handlerInstance.currentGameInfo.ProtoInput.AutoHideTaskbar)
                         {
                             if (!ProtoInput.protoInput.GetTaskbarAutohide())
                             {
