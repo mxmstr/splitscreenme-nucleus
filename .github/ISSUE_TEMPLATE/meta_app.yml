@@ -1,7 +1,7 @@
 name: "🌐 Meta Issue"
 description: Addressing an issue at the repository / project-wide level
 title: '🌐 <meta issue name>'
-labels: [🌐 Meta Issue]
+labels: [🌐 meta mssue]
 body:
   - type: markdown
     attributes:
