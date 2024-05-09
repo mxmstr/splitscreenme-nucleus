@@ -1,6 +1,6 @@
 name: "🌐 Meta Issue"
 description: Addressing an issue at the repository / project-wide level
-title: '🌐 <feature name>'
+title: '🌐 <meta issue name>'
 labels: [🌐 Meta Issue]
 body:
   - type: markdown
@@ -15,21 +15,20 @@ body:
           required: true
 
   - type: textarea
-    id: currentproblem
+    id: currentissue
     attributes:
-      label: Problem
-      description: Tell us about the meta-level issue you would like to address. Feel free to show examples where, why and how it might be useful.
+      label: Issue
+      description: Tell us about the issue you would like to address. Feel free to show examples where, why and how addressing this issue might be useful.
     validations:
       required: true
 
   - type: textarea
-    id: possiblesolution
+    id: suggestedchange
     attributes:
-      label: Possible Solution
-      description: If you have an idea, please tell us how this feature can be implemented.
-
+      label: Suggested Change
+      description: Please suggest any changes that you think could resolve the issue. The more specific, the better!
   - type: textarea
     id: extrainformation
     attributes:
       label: Additional information
-      description: Is there anything else we should know about this feature request?
+      description: Is there anything else we should know, or anything else you would like to add?
