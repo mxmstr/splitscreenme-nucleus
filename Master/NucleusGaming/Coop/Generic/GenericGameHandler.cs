@@ -1048,7 +1048,7 @@ namespace Nucleus.Gaming
                     string[] fileCopiesArr = fileCopies.ToArray();
 
                     bool skipped = false;
-                    bool keepSymlink = gen.KeepSymLinkOnExit || userGame.KeepSymLink;
+                    bool keepSymlink = gen.KeepSymLinkOnExit || userGame.Game.MetaInfo.KeepSymLink;
 
                     if (gen.ForceSymlink || !keepSymlink || symlinkNeeded)
                     {
@@ -3135,6 +3135,7 @@ namespace Nucleus.Gaming
 
                 GamepadNavigation.EnabledRuntime = false;
                 GameProfile.SaveGameProfile(profile);
+                currentGameInfo.MetaInfo.FirstLaunch = false;
             }
 
             gen.OnFinishedSetup?.Invoke();
@@ -3591,6 +3592,7 @@ namespace Nucleus.Gaming
 
                 GamepadNavigation.EnabledRuntime = false;
                 GameProfile.SaveGameProfile(profile);
+                currentGameInfo.MetaInfo.FirstLaunch = false;
             }
 
             gen.OnFinishedSetup?.Invoke();
@@ -3927,7 +3929,7 @@ namespace Nucleus.Gaming
                 FileUtil.CleanOriginalgGameFolder();
             }
 
-            if (!gen.KeepSymLinkOnExit && !userGame.KeepSymLink)
+            if (!gen.KeepSymLinkOnExit && !currentGameInfo.MetaInfo.KeepSymLink)
             {
                 CleanGameContent.CleanContentFolder(gen);
             }

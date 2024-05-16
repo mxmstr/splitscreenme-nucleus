@@ -18,13 +18,11 @@ namespace Nucleus.Gaming
 
         public static Button PlayButton;
         public static HandlerNotesZoom HandlerNotesZoom;
-        public static PictureBox NoteZoomButton;
         public static Button Btn_debuglog;
         public static Button ProfilesList_btn;
 
         public static readonly string GameProfilesFolder = Path.Combine(Application.StartupPath, $"game profiles");
         public static WPF_OSD MainOSD;
-        public static string[] Args;
 
     }
 }

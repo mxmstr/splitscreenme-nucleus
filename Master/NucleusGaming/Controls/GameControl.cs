@@ -20,18 +20,18 @@ namespace Nucleus.Coop
         private PictureBox favoriteBox;
         private Label title;
         private Label players;
-
+        
         private Color radioSelectedBackColor;
-        private Color userOverBackColor;
-        private Color userLeaveBackColor;
+        private Color defaultForeColor;
+
         public bool favorite;
         public string TitleText { get; set; }
         public string PlayerText { get; set; }
+
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
         private System.Threading.Timer isUpdateAvailableTimer;
-        private Pen borderPenSelected;
-        private Pen borderPen;
+
 
         protected override CreateParams CreateParams
         {
@@ -55,13 +55,10 @@ namespace Nucleus.Coop
                 string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
                 string customFont = theme.IniReadValue("Font", "FontFamily");
 
+                defaultForeColor = Color.FromArgb(255,int.Parse(theme.IniReadValue("Colors", "Font").Split(',')[0]), int.Parse(theme.IniReadValue("Colors", "Font").Split(',')[0]), int.Parse(theme.IniReadValue("Colors", "Font").Split(',')[0]));
                 radioSelectedBackColor = Theme_Settings.SelectedBackColor;
-                userOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
-                userLeaveBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
                 favorite_Unselected = ImageCache.GetImage(themePath + "favorite_unselected.png");
                 favorite_Selected = ImageCache.GetImage(themePath + "favorite_selected.png");
-                borderPen = new Pen(Color.FromArgb(100, 255, 255, 255)/*Color.FromArgb(100, radioSelectedBackColor.R, radioSelectedBackColor.G, radioSelectedBackColor.B)*/, 1);
-                borderPenSelected = new Pen(Color.FromArgb(255, radioSelectedBackColor.R, radioSelectedBackColor.G, radioSelectedBackColor.B), 1);
 
                 AutoScaleDimensions = new SizeF(96F, 96F);
                 AutoScaleMode = AutoScaleMode.Dpi;
@@ -128,12 +125,18 @@ namespace Nucleus.Coop
 
                 favoriteBox.Image = favorite ? favorite_Selected : favorite_Unselected;
                 favoriteBox.Click += new EventHandler(FavoriteBox_Click);
+
                 title.BackColor = Color.Transparent;
+         
                 TitleText = title.Text;
+
+
                 PlayerText = players.Text;
-                BackColor = Color.Transparent;
+               
                 players.BackColor = Color.Transparent;
                 playerIcon.BackColor = Color.Transparent;
+
+                BackColor = Color.Transparent;
 
                 Controls.Add(picture);
                 Controls.Add(title);
@@ -158,7 +161,7 @@ namespace Nucleus.Coop
             }
 
             ///Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
-            isUpdateAvailableTimer = new System.Threading.Timer(IsUpdateAvailable_Tick, null, 2600, 5200);
+            isUpdateAvailableTimer = new System.Threading.Timer(IsUpdateAvailable_Tick, null, 1500, 1550);
         }
         ~GameControl()
         {
@@ -220,9 +223,13 @@ namespace Nucleus.Coop
             {
                 if (topLevel.IsHandleCreated && GameInfo != null)
                 {
-                    if (GameInfo.UpdateAvailable)
+                    if (GameInfo.UpdateAvailable && GameInfo.MetaInfo.CheckUpdate)
                     {
                         title.ForeColor = Color.FromArgb(255, 196, 145, 18);
+                    }
+                    else 
+                    {
+                        title.ForeColor = defaultForeColor;
                     }
                 }
             }
@@ -256,7 +263,7 @@ namespace Nucleus.Coop
 
             bool selected = favoriteBox.Image.Equals(favorite_Selected);
             favoriteBox.Image = selected ? favorite_Unselected : favorite_Selected;
-            UserGameInfo.Favorite = selected ? false : true;
+            UserGameInfo.Game.MetaInfo.Favorite = selected ? false : true;
 
             GameManager.Instance.SaveUserProfile();
         }

@@ -292,14 +292,9 @@ namespace Nucleus.Coop.Forms
                 GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
                 string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName.ToLower()).FirstOrDefault().GameGuid;
                 string gameName = GameManager.Instance.Games.Where(c => c.Value.GUID == gameGuid).FirstOrDefault().Value.GameName;
-
-                mainForm.controls.Where(c => c.Value.TitleText == gameName).FirstOrDefault().Value.GameInfo.UpdateAvailable = false;
-                mainForm.button_UpdateAvailable.Visible = false;
                 return;
             }
 
-            //if (!gameExeNoUpdate)
-            //{
             DialogResult dialogResult = MessageBox.Show(
                 "Downloading and extraction of " + frmHandleTitle +
                 " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it.",
@@ -310,12 +305,6 @@ namespace Nucleus.Coop.Forms
                 GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
                 SearchGame.Search(mainForm, exeName, genericGameInfo);
             }
-            // }
-            //else
-            //{
-            //    GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-            //    gameExeNoUpdate = false;
-            //}
         }
     }
 }

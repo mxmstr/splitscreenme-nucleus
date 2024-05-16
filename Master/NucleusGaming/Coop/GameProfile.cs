@@ -310,11 +310,8 @@ namespace Nucleus.Gaming.Coop
                 loadedProfilePlayers.Clear();
                 devicesToMerge.Clear();
 
-                if (!GameInfo.DisableProfiles)
+                if (!GameInfo.Game.MetaInfo.DisableProfiles)
                 {
-                    //setupScreen.profileSettings_Tooltip = CustomToolTips.SetToolTip(setupScreen.profileSettings_btn,
-                    //$"{Game.GameName} {ModeText.ToLower()} settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-
                     ListGameProfiles();
                 }
             }
@@ -815,9 +812,9 @@ namespace Nucleus.Gaming.Coop
             string path;
             bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
 
-            if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
+            if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.Game.MetaInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
             {
-                if (!profileDisabled && !GameInfo.DisableProfiles && GameInfo.Game.MetaInfo.SaveProfile)
+                if (!profileDisabled && !GameInfo.Game.MetaInfo.DisableProfiles && GameInfo.Game.MetaInfo.SaveProfile)
                 {
                     Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
                 }
@@ -1372,7 +1369,7 @@ namespace Nucleus.Gaming.Coop
                 PlayerInfo plToUpdate = secondInBounds ?? player;
 
                 int playerIndex = loadedProfilePlayers.FindIndex(pl => pl == plToUpdate);
-                bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.DisableProfiles;
+                bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
 
                 string nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
                                   Globals.ini.IniReadValue("ControllerMapping", "Player_" + (playerIndex + 1));//

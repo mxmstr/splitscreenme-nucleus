@@ -28,13 +28,14 @@ namespace Nucleus.Gaming.Controls
         public bool Locked = false;
 
         private Cursor hand_Cursor;
-        private Cursor default_Cursor;
-
         private Color buttonsBackColor;
+        private Color foreColor;
         public static readonly string PartialTitle = "Load profile:";
 
-        private Pen borderPen;
+        private int[] backGradient;
+
         private Control parentControl;
+        private bool useGradient;
 
         public ProfilesList(Control parent)
         {
@@ -48,18 +49,32 @@ namespace Nucleus.Gaming.Controls
             Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Visible = false;
             BorderStyle = BorderStyle.None;
-            BackColor = Color.Transparent;
+            
 
-            buttonsBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[0]),
-                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
-                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
-                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[3]));
 
-            borderPen = new Pen(Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[0]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[1]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])), 1.0f);
+            foreColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[0]), 
+                                       int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[1]), 
+                                       int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[2]));
 
-            default_Cursor = Theme_Settings.Default_Cursor;
+            if (int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[0]) == 1)
+            {
+                backGradient = new int[] {int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[0]),
+                                       int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[1]),
+                                       int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[2]),
+                                       int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[2])};
+                
+                BackColor = Color.Transparent;
+                useGradient = true;
+            }
+            else
+            {
+                backGradient = new int[] {0,0,0,0};
+                BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[0]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[1]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[2]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[3]));
+            }
+
             hand_Cursor = Theme_Settings.Hand_Cursor;
 
             Instance = this;
@@ -102,7 +117,7 @@ namespace Nucleus.Gaming.Controls
             {
                 if (c != selected && c.Text != "Unload")
                 {
-                    c.ForeColor = Color.WhiteSmoke;
+                    c.ForeColor = foreColor;
                 }
 
                 if (e == null && c.Text == "Unload")
@@ -213,8 +228,8 @@ namespace Nucleus.Gaming.Controls
                     FlatStyle = FlatStyle.Flat,
                     BackgroundImageLayout = ImageLayout.Zoom,
                     Font = font,
-                    BackColor = buttonsBackColor,
-                    ForeColor = Color.White,
+                    BackColor = Color.Transparent,
+                    ForeColor = foreColor,
                     TextAlign = ContentAlignment.MiddleLeft,
                     Text = text,
                     Height = (int)(20 * _scale),
@@ -254,7 +269,7 @@ namespace Nucleus.Gaming.Controls
             var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();//Sort profiles titles by Width so the list Width is set to the max value
             Width = (int)((sortedSizes[0].Width) * _scale) + offset;
 
-            Location = new Point((parentControl.Right - Width) + 1, parentControl.Top + 5/*+ parentControl.gameProfilesList_btn.Height / 2*//*+ parentControl.gameProfilesList_btn.Height / 2*/);
+            Location = new Point((parentControl.Right - Width) + 1, parentControl.Top);
 
             try
             {
@@ -407,34 +422,11 @@ namespace Nucleus.Gaming.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //Graphics g = e.Graphics;
-            //g.InterpolationMode = InterpolationMode.HighQualityBilinear;
-            //g.CompositingQuality = CompositingQuality.HighQuality;
-            //g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            //g.SmoothingMode = SmoothingMode.AntiAlias;
-            //g.DrawRectangle(borderPen, new Rectangle(1, 1, Width - 3, Height - 3));
-
-            //g.DrawArc(borderPen, 0, 0, 16, 16, -90, -90);//Top left corner
-            //g.DrawArc(borderPen, 0, Height - 18, 16, 16, 90, 90);//Bottom left corner
-
-            //g.DrawArc(borderPen, Width - 18, 0, 16, 16, -90, 90);//Top Right corner   
-            //g.DrawArc(borderPen, Width - 18, Height - 18, 16, 16, 90, -90);//Bottom Right corner 
-            //string steamAssetPath = SteamFunctions.GetSteamPath() + "\\appcache\\librarycache\\" + GameProfile.Game.SteamID + "_library_hero.jpg";
-            //if (File.Exists(steamAssetPath))
-            //{
-            //    //BackgroundImageLayout = ImageLayout.Zoom;
-            //    //BackgroundImage = new Bitmap(steamAssetPath);
-            //    g.DrawImageUnscaled(Image.FromFile(steamAssetPath), 0, 0);
-            //    g.FillRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0,0,Width,Height));
-            //}
-
-
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
-            //Rectangle bounds = new Rectangle(0, 0, Width, Height);
             Graphics g = e.Graphics;
 
-            Color color = Color.FromArgb(100, 0, 0, 0);// Color.FromArgb(120, 0, 0, 0);
-            Color color2 = Color.FromArgb(120, 0, 0, 0);
+            Color color = Color.FromArgb(useGradient ? 100 : 0, backGradient[1], backGradient[2], backGradient[3]);
+            Color color2 = Color.FromArgb(useGradient ? 120 : 0, backGradient[1], backGradient[2], backGradient[3]);
             LinearGradientBrush lgb =
             new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 90f);
 
@@ -443,7 +435,6 @@ namespace Nucleus.Gaming.Controls
             topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
 
             lgb.InterpolationColors = topcblend;
-            //lgb.SetBlendTriangularShape(.5f, 1.0f);
             g.FillRectangle(lgb, gradientBrushbounds);
 
         }

@@ -111,6 +111,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 ///remove all players screens
                 List<PlayerInfo> playerData = profile.DevicesList;
+
                 if (playerData != null)
                 {
                     for (int i = 0; i < playerData.Count; i++)
@@ -133,7 +134,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
             else
             {
-                screensArea = new RectangleF(10.0F, 50.0F + (float)parent.Height * 0.2f + 10F, (float)parent.Width - 20.0F, (float)parent.Height * 0.5f);
+                screensArea = new RectangleF(10.0F, 35.0F + (float)parent.Height * 0.2f, (float)parent.Width - 20.0F, (float)parent.Height * 0.5f);
             }
 
             screensAreaScale = screensArea.Width / (float)totalBounds.Width;
@@ -787,6 +788,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 activeSizer = RectangleF.Empty;
             }
+
+            UpdatetSizersBounds();
         }
 
         private static Point mousePos;
@@ -797,9 +800,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             if (dragging)
             {
-                List<PlayerInfo> players = profile.DevicesList;
-
-                PlayerInfo player = players[draggingIndex];
+                PlayerInfo player = profile.DevicesList[draggingIndex];
 
                 if (!player.IsInputUsed)
                 {
@@ -910,8 +911,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 return false;
             }
 
-            List<PlayerInfo> players = profile.DevicesList;
-
             UserScreen screen = screens[draggingScreen];
             RectangleF s = screen.UIBounds;
 
@@ -929,10 +928,10 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 }
             }
 
-            var playersInDiv = players.Where(pl => (pl != player) && pl.MonitorBounds.IntersectsWith(destMonitorBounds)).ToList();
+            var playersInDiv = profile.DevicesList.Where(pl => (pl != player) && pl.MonitorBounds.IntersectsWith(destMonitorBounds)).ToList();
 
             if (player.IsRawMouse && !(player.IsRawMouse && player.IsRawKeyboard) ? playersInDiv.All(x => x.IsRawKeyboard && !x.IsRawMouse) :
-               player.IsRawKeyboard && !(player.IsRawMouse && player.IsRawKeyboard) ? playersInDiv.All(x => x.IsRawMouse && !x.IsRawKeyboard) :
+                player.IsRawKeyboard && !(player.IsRawMouse && player.IsRawKeyboard) ? playersInDiv.All(x => x.IsRawMouse && !x.IsRawKeyboard) :
                 !playersInDiv.Any())
             {
                 if (GameProfile.Loaded)
@@ -1359,12 +1358,12 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         for (int p = 0; p < players.Count; p++)
                         {
                             PlayerInfo player = players[p];
-
+                           
                             for (int b = 0; b < screen.SubScreensBounds.Count; b++)
                             {
                                 destMonitorBounds = screen.SubScreensBounds.ElementAt(b).Key;
                                 destEditBounds = screen.SubScreensBounds.ElementAt(b).Value;
-
+                                
                                 if (GetFreeSpace(player))
                                 {
                                     if (player.ScreenIndex == -1)

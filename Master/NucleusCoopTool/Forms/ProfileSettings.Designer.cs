@@ -44,7 +44,7 @@ namespace Nucleus.Coop
             this.profile_info_btn = new System.Windows.Forms.PictureBox();
             this.layoutBtnPicture = new System.Windows.Forms.PictureBox();
             this.layoutTabBtn = new System.Windows.Forms.Button();
-            this.layoutTab = new BufferedClientAreaPanel();
+            this.layoutTab = new System.Windows.Forms.Panel();
             this.cts_bringToFront = new System.Windows.Forms.CheckBox();
             this.hideDesktop = new System.Windows.Forms.CheckBox();
             this.label71 = new System.Windows.Forms.Label();
@@ -62,7 +62,7 @@ namespace Nucleus.Coop
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.sharedTab = new BufferedClientAreaPanel();
+            this.sharedTab = new System.Windows.Forms.Panel();
             this.titleLabel = new System.Windows.Forms.Label();
             this.profileTitle = new System.Windows.Forms.TextBox();
             this.warningLabel = new System.Windows.Forms.Label();
@@ -79,7 +79,7 @@ namespace Nucleus.Coop
             this.pauseBetweenInstanceLaunch_TxtBox = new System.Windows.Forms.TextBox();
             this.pauseBetweenInstanceLauch_Label = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.processorTab = new BufferedClientAreaPanel();
+            this.processorTab = new System.Windows.Forms.Panel();
             this.label96 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
             this.coreCountLabel = new System.Windows.Forms.Label();
@@ -216,7 +216,7 @@ namespace Nucleus.Coop
             this.label69 = new System.Windows.Forms.Label();
             this.IdealProcessor17 = new System.Windows.Forms.ComboBox();
             this.label70 = new System.Windows.Forms.Label();
-            this.audioTab = new BufferedClientAreaPanel();
+            this.audioTab = new System.Windows.Forms.Panel();
             this.audioWarningLabel = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
             this.audioCustomSettingsBox = new System.Windows.Forms.GroupBox();
@@ -239,7 +239,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioRefresh = new System.Windows.Forms.Button();
-            this.playersTab = new BufferedClientAreaPanel();
+            this.playersTab = new System.Windows.Forms.Panel();
             this.btnNext = new System.Windows.Forms.Button();
             this.def_sid_comboBox = new System.Windows.Forms.ComboBox();
             this.default_sid_list_label = new System.Windows.Forms.Label();
@@ -485,7 +485,7 @@ namespace Nucleus.Coop
             // 
             this.closeBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.closeBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtnPicture.Location = new System.Drawing.Point(654, 1);
+            this.closeBtnPicture.Location = new System.Drawing.Point(652, 3);
             this.closeBtnPicture.Name = "closeBtnPicture";
             this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.closeBtnPicture.TabIndex = 298;
@@ -514,7 +514,7 @@ namespace Nucleus.Coop
             // 
             this.profile_info_btn.BackColor = System.Drawing.Color.Transparent;
             this.profile_info_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.profile_info_btn.Location = new System.Drawing.Point(635, 1);
+            this.profile_info_btn.Location = new System.Drawing.Point(633, 3);
             this.profile_info_btn.Name = "profile_info_btn";
             this.profile_info_btn.Size = new System.Drawing.Size(19, 19);
             this.profile_info_btn.TabIndex = 301;
@@ -4803,7 +4803,6 @@ namespace Nucleus.Coop
             this.Controls.Add(this.sharedTab);
             this.Controls.Add(this.processorTab);
             this.Controls.Add(this.layoutTab);
-            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -4851,7 +4850,7 @@ namespace Nucleus.Coop
         private Button playersTabBtn;
         private Button audioTabBtn;
         private Button processorTabBtn;
-        private BufferedClientAreaPanel audioTab;
+        private Panel audioTab;
         private Label audioWarningLabel;
         private Label audioDefaultDevice;
         private Label label45;
@@ -4869,7 +4868,7 @@ namespace Nucleus.Coop
         private PictureBox playersBtnPicture;
         private PictureBox sharedBtnPicture;
         private PictureBox processorBtnPicture;
-        private BufferedClientAreaPanel sharedTab;
+        private Panel sharedTab;
         private Label label6;
         private Label label2;
         private Label WIndowsSetupTiming_Label;
@@ -4877,12 +4876,12 @@ namespace Nucleus.Coop
         private TextBox pauseBetweenInstanceLaunch_TxtBox;
         private Label pauseBetweenInstanceLauch_Label;
         private Label label32;
-        private BufferedClientAreaPanel playersTab;
+        private Panel playersTab;
         private PictureBox closeBtnPicture;
         private Label modeLabel;
         private CheckBox autoPlay;
         private ComboBox cmb_Network;
-        private BufferedClientAreaPanel processorTab;
+        private Panel processorTab;
         private ComboBox PriorityClass16;
         private ComboBox PriorityClass15;
         private ComboBox PriorityClass14;
@@ -4963,7 +4962,7 @@ namespace Nucleus.Coop
         private ComboBox AudioInstance1;
         private PictureBox layoutBtnPicture;
         private Button layoutTabBtn;
-        private BufferedClientAreaPanel layoutTab;
+        private Panel layoutTab;
         private Label label71;
         private Panel cts_Panel;
         private CheckBox cts_unfocus;

@@ -55,15 +55,23 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         internal static void ClearDInputDevicesList()
         {
-            foreach (Joystick joystick in JoyStickList)
+            try
             {
-                if (!joystick.IsDisposed)
+                foreach (Joystick joystick in JoyStickList)
                 {
-                    joystick.Dispose();
+                    if (!joystick.IsDisposed)
+                    {
+                        joystick.Dispose();
+                    }
                 }
+
+                JoyStickList.Clear();
+            }
+            catch 
+            {
+                JoyStickList.Clear();
             }
 
-            JoyStickList.Clear();
         }
 
         public static bool PollDInputGamepad(PlayerInfo player)
@@ -614,7 +622,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             float playerWidth = playersWidth * 0.9f;
             float playerHeight = parent.Height * 0.2f;
 
-            playersArea = new RectangleF(10, 27, playersWidth, playerHeight);
+            playersArea = new RectangleF(10, 0, playersWidth, playerHeight);
 
             float playersAreaScale = playersArea.Width * playersArea.Height;
             float maxArea = playersAreaScale / playerCount;
@@ -627,11 +635,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             if (total < playerCount)
             {
                 float newVertical = vertical + 1;
-                Draw.playerCustomFont = new Font(Draw.playerCustomFont.FontFamily, parent.newplayerCustomFontSize * 0.8f, FontStyle.Regular, GraphicsUnit.Point, 0);
+                Draw.playerCustomFont = new Font(Draw.playerCustomFont.FontFamily, Draw.playerCustomFont.Size * 0.8f, FontStyle.Regular, GraphicsUnit.Point, 0);
                 playerSize = (int)Math.Round(((playerHeight / 1.2f) / newVertical));
             }
-
-            //List<PlayerInfo> reorder = playerData;//OrderBy(player => player.IsKeyboardPlayer).ThenBy(player => player.IsRawMouse).ThenBy(player => player.IsInputUsed).ToList();
 
             for (int i = 0; i < playerData.Count; i++)
             {

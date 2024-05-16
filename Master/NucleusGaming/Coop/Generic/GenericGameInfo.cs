@@ -378,18 +378,21 @@ namespace Nucleus.Gaming
 
             MetaInfo.LoadGameMetaInfo(GUID);
 
-            if (checkUpdate[0])//workaround else handler update is checked before instances setup too,
-                               //see MainForm.cs Btn_Play_Click(object sender, EventArgs e) => gameManager.AddScript.
+            if (MetaInfo.CheckUpdate)
             {
-                // Run this in another thread to not block UI
-                System.Threading.Tasks.Task.Run(() =>
+                if (checkUpdate[0])//workaround else handler update is checked before instances setup too,
+                                   //see MainForm.cs Btn_Play_Click(object sender, EventArgs e) => gameManager.AddScript.
                 {
-                    UpdateAvailable = Hub.IsUpdateAvailable(true);
-                });
-            }
-            else
-            {
-                UpdateAvailable = checkUpdate[1];
+                    // Run this in another thread to not block UI
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        UpdateAvailable = Hub.IsUpdateAvailable(true);
+                    });
+                }
+                else
+                {
+                    UpdateAvailable = checkUpdate[1];
+                }
             }
 
             engine.SetValue("Game", (object)null);

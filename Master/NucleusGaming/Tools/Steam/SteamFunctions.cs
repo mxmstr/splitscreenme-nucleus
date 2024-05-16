@@ -333,7 +333,23 @@ namespace Nucleus.Gaming.Tools.Steam
 
                     long steamID;
 
-                    if (player.SteamID == -1)
+                    if(handlerInstance.currentGameInfo.UseHandlerSteamIds)
+                    {
+                        if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                        {
+                            if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                            {
+                                if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                                {
+                                    handlerInstance.Log("Using steam ID from handler");
+                                    steamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                                    player.SteamID = steamID;
+                                }
+                            }
+                        }
+                    }
+
+                    if (player.SteamID == -1 && !handlerInstance.currentGameInfo.UseHandlerSteamIds)
                     {
                         steamID = SteamFunctions.random_steam_id + i;
 
@@ -552,8 +568,24 @@ namespace Nucleus.Gaming.Tools.Steam
             {
                 long steamID;
 
-                if (player.SteamID == -1)
+                if (handlerInstance.currentGameInfo.UseHandlerSteamIds)
                 {
+                    if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                    {
+                        if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                        {
+                            if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                            {
+                                handlerInstance.Log("Using steam ID from handler");
+                                steamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                                player.SteamID = steamID;
+                            }
+                        }
+                    }
+                }
+
+                if (player.SteamID == -1 && !handlerInstance.currentGameInfo.UseHandlerSteamIds)
+                {                   
                     steamID = SteamFunctions.random_steam_id + i;
 
                     while (handlerInstance.profile.DevicesList.Any(p => (p != player) && p.SteamID == steamID))
@@ -714,7 +746,23 @@ namespace Nucleus.Gaming.Tools.Steam
 
             long steamID;
 
-            if (player.SteamID == -1)
+            if (handlerInstance.currentGameInfo.UseHandlerSteamIds)
+            {
+                if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                {
+                    if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                    {
+                        if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                        {
+                            handlerInstance.Log("Using steam ID from handler");
+                            steamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                            player.SteamID = steamID;
+                        }
+                    }
+                }
+            }
+
+            if (player.SteamID == -1 && !handlerInstance.currentGameInfo.UseHandlerSteamIds)
             {
                 steamID = SteamFunctions.random_steam_id + i;
 

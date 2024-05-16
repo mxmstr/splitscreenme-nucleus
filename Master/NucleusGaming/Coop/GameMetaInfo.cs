@@ -39,6 +39,62 @@ namespace Nucleus.Gaming.Coop
             }
         }
 
+        private bool disableProfiles;
+        public bool DisableProfiles
+        {
+            get => disableProfiles;
+            set
+            {
+                disableProfiles = value;
+                SaveGameMetaInfo();
+            }
+        }
+
+        private bool keepSymLink;
+        public bool KeepSymLink
+        {
+            get => keepSymLink;
+            set
+            {
+                keepSymLink = value;
+                SaveGameMetaInfo();
+            }
+        }
+
+        private bool favorite = false;
+        public bool Favorite
+        {
+            get => favorite;
+            set
+            {
+                favorite = value;
+                SaveGameMetaInfo();
+            }
+        }
+
+
+        private bool firstLaunch;
+        public bool FirstLaunch
+        {
+            get => firstLaunch;
+            set
+            {
+                firstLaunch = value;
+                SaveGameMetaInfo();
+            }
+        }
+
+        private bool checkUpdate;
+        public bool CheckUpdate
+        {
+            get => checkUpdate;
+            set
+            {
+                checkUpdate = value;
+                SaveGameMetaInfo();
+            }
+        }
+
         public void LoadGameMetaInfo(string gameGuid)
         {
             try
@@ -61,6 +117,11 @@ namespace Nucleus.Gaming.Coop
                         lastPlayedAt = (string)JMetaInfo[gameGuid]["LastPlayedAt"] != null ? (string)JMetaInfo[gameGuid]["LastPlayedAt"] : null; 
                         iconPath = (string)JMetaInfo[gameGuid]["IconPath"] != null ? (string)JMetaInfo[gameGuid]["IconPath"] : null;
                         saveProfile = JMetaInfo[gameGuid]["SaveProfile"] != null ? (bool)JMetaInfo[gameGuid]["SaveProfile"] : true; 
+                        disableProfiles = JMetaInfo[gameGuid]["DisableProfiles"] != null ? (bool)JMetaInfo[gameGuid]["DisableProfiles"] : false;
+                        keepSymLink = JMetaInfo[gameGuid]["KeepSymLink"] != null ? (bool)JMetaInfo[gameGuid]["KeepSymLink"] : false;
+                        favorite = JMetaInfo[gameGuid]["Favorite"] != null ? (bool)JMetaInfo[gameGuid]["Favorite"] : false;
+                        firstLaunch = JMetaInfo[gameGuid]["FirstLaunch"] != null ? (bool)JMetaInfo[gameGuid]["FirstLaunch"] : true;
+                        checkUpdate = JMetaInfo[gameGuid]["CheckUpdate"] != null ? (bool)JMetaInfo[gameGuid]["CheckUpdate"] : true;
                         return;
                     }
 
@@ -68,6 +129,12 @@ namespace Nucleus.Gaming.Coop
                     lastPlayedAt = null;
                     iconPath = null;
                     saveProfile = true;
+                    disableProfiles = false;
+                    keepSymLink = false;
+                    favorite = false;
+                    firstLaunch = true;
+                    checkUpdate = true;
+
                 }              
             }
             catch (Exception ex)
@@ -103,15 +170,24 @@ namespace Nucleus.Gaming.Coop
                         JMetaInfo[guid]["LastPlayedAt"] = lastPlayedAt;
                         JMetaInfo[guid]["IconPath"] = iconPath;
                         JMetaInfo[guid]["SaveProfile"] = saveProfile;
+                        JMetaInfo[guid]["DisableProfiles"] = disableProfiles;
+                        JMetaInfo[guid]["KeepSymLink"] = keepSymLink;
+                        JMetaInfo[guid]["Favorite"] = favorite;
+                        JMetaInfo[guid]["FirstLaunch"] = firstLaunch;
+                        JMetaInfo[guid]["CheckUpdate"] = checkUpdate;
                     }
                     else
                     {
                         //new game metaInfo
-                        JProperty gameMeta = 
-                            new JProperty(guid, new JObject(new JProperty("TotalPlayTime", totalPlayTime),
+                        JProperty gameMeta = new JProperty(guid, new JObject(new JProperty("TotalPlayTime", totalPlayTime),
                                                             new JProperty("LastPlayedAt", lastPlayedAt),
                                                             new JProperty("IconPath", iconPath),
-                                                            new JProperty("SaveProfile", saveProfile)
+                                                            new JProperty("SaveProfile", saveProfile),
+                                                            new JProperty("DisableProfiles", disableProfiles),
+                                                            new JProperty("KeepSymLink", keepSymLink),
+                                                            new JProperty("Favorite", favorite),
+                                                            new JProperty("FirstLaunch", firstLaunch),
+                                                            new JProperty("CheckUpdate", checkUpdate)
                                                             ));
                         JMetaInfo.Add(gameMeta);
                     }
@@ -121,7 +197,12 @@ namespace Nucleus.Gaming.Coop
                     JObject gameMeta = new JObject(new JProperty("TotalPlayTime", totalPlayTime),
                                                    new JProperty("LastPlayedAt", lastPlayedAt),
                                                    new JProperty("IconPath", iconPath),
-                                                   new JProperty("SaveProfile", saveProfile)
+                                                   new JProperty("SaveProfile", saveProfile),
+                                                   new JProperty("DisableProfiles", disableProfiles),
+                                                   new JProperty("KeepSymLink", keepSymLink),
+                                                   new JProperty("Favorite", favorite),
+                                                   new JProperty("FirstLaunch", firstLaunch),
+                                                   new JProperty("CheckUpdate", checkUpdate)
                                                    );
 
                     JMetaInfo = new JObject

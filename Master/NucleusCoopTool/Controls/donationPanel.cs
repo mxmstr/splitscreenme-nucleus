@@ -20,23 +20,23 @@ namespace Nucleus.Coop.Controls
 
             Ilyaki_label.Cursor = cursor;
             Mikou_label.Cursor = cursor;
-            //Zero_label.Cursor = cursor;
+            Talos91_label.Cursor = cursor;
             btn_credits.Cursor = cursor;
 
-            System.Drawing.Drawing2D.GraphicsPath pict2 = new System.Drawing.Drawing2D.GraphicsPath();
+            System.Drawing.Drawing2D.GraphicsPath pict1 = new System.Drawing.Drawing2D.GraphicsPath();
+            pict1.AddEllipse(0, 0, image1.Width, image1.Height);
+            Region region1 = new Region(pict1);
+            image1.Region = region1;
+
+            System.Drawing.Drawing2D.GraphicsPath pict2 = new System.Drawing.Drawing2D.GraphicsPath();    
             pict2.AddEllipse(0, 0, image2.Width, image2.Height);
             Region region2 = new Region(pict2);
             image2.Region = region2;
 
-            System.Drawing.Drawing2D.GraphicsPath pict3 = new System.Drawing.Drawing2D.GraphicsPath();    
+            System.Drawing.Drawing2D.GraphicsPath pict3 = new System.Drawing.Drawing2D.GraphicsPath();
             pict3.AddEllipse(0, 0, image3.Width, image3.Height);
             Region region3 = new Region(pict3);
             image3.Region = region3;
-        }
-
-        private void Zero_label_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=WUXKHLAD3A3LE&source=url&ssrt=1709401303910");
         }
 
         private void Ilyaki_label_Click(object sender, EventArgs e)
@@ -47,6 +47,11 @@ namespace Nucleus.Coop.Controls
         private void Mikou_label_Click(object sender, EventArgs e)
         {
             Process.Start("https://www.paypal.com/donate/?hosted_button_id=P3NVBYRQ4Z45L");
+        }
+
+        private void Talos91_label_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://ko-fi.com/talos91");
         }
 
         private void Btn_credits_Click(object sender, EventArgs e)
@@ -69,5 +74,6 @@ namespace Nucleus.Coop.Controls
             "\nSpecial thanks to: Talos91, dr.oldboi, PoundlandBacon, Pizzo and the rest of the Splitscreen Dreams discord community.";
             NucleusMessageBox.Show("Credits", text, false);
         }
+
     }
 }

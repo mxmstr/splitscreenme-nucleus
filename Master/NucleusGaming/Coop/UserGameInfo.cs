@@ -8,13 +8,9 @@ namespace Nucleus.Gaming.Coop
     public class UserGameInfo
     {
         private GenericGameInfo game;
-        private List<GameProfile> profiles;
         private string exePath;
         private string gameGuid = "";
-        private bool favorite = false;
-        private bool keepSymLink;
-        private bool firstLaunch;
-        
+            
         [JsonIgnore]
         public GenericGameInfo Game
         {
@@ -41,37 +37,12 @@ namespace Nucleus.Gaming.Coop
             set => gameGuid = value;
         }
 
-        private bool disableProfiles;
-        public bool DisableProfiles
-        {
-            get => disableProfiles;
-            set => disableProfiles = value;
-        }
-
         public string ExePath
         {
             get => exePath;
             set => exePath = value;
-        }
-
-        public bool Favorite
-        {
-            get => favorite;
-            set => favorite = value;
-        }
-
-        public bool KeepSymLink
-        {
-            get => keepSymLink;
-            set => keepSymLink = value;
-        }
-
-        public bool FirstLaunch
-        {
-            get => firstLaunch;
-            set => firstLaunch = value;
-        }
-
+        }     
+   
         public UserGameInfo()
         {
 
@@ -91,7 +62,6 @@ namespace Nucleus.Gaming.Coop
             this.game = game;
             gameGuid = game.GUID;
             this.exePath = exePath.Replace("I", "i");
-            profiles = new List<GameProfile>();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Nucleus.Coop
             this.audioTabBtn = new System.Windows.Forms.Button();
             this.playersTabBtn = new System.Windows.Forms.Button();
             this.settingsTabBtn = new System.Windows.Forms.Button();
-            this.settingsTab = new BufferedClientAreaPanel();
+            this.settingsTab = new System.Windows.Forms.Panel();
             this.btn_Gb_Update = new System.Windows.Forms.Button();
             this.disableGameProfiles = new System.Windows.Forms.CheckBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
@@ -96,12 +96,12 @@ namespace Nucleus.Coop
             this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.cmb_Network = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
-            this.playersTab = new BufferedClientAreaPanel();
+            this.playersTab = new System.Windows.Forms.Panel();
             this.gamepadsAssignMethods = new System.Windows.Forms.CheckBox();
             this.btnNext = new System.Windows.Forms.Button();
             this.def_sid_comboBox = new System.Windows.Forms.ComboBox();
             this.default_sid_list_label = new System.Windows.Forms.Label();
-            this.page1 = new System.Windows.Forms.Panel();
+            this.page1 = new System.Windows.Forms.Panel();;
             this.label48 = new System.Windows.Forms.Label();
             this.label47 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -156,7 +156,7 @@ namespace Nucleus.Coop
             this.label10 = new System.Windows.Forms.Label();
             this.player1N = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.page2 = new System.Windows.Forms.Panel();
+            this.page2 = new System.Windows.Forms.Panel();;
             this.label3 = new System.Windows.Forms.Label();
             this.label62 = new System.Windows.Forms.Label();
             this.label63 = new System.Windows.Forms.Label();
@@ -211,7 +211,7 @@ namespace Nucleus.Coop
             this.label35 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.player28N = new System.Windows.Forms.ComboBox();
-            this.audioTab = new BufferedClientAreaPanel();
+            this.audioTab = new System.Windows.Forms.Panel();
             this.audioWarningLabel = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
             this.audioCustomSettingsBox = new System.Windows.Forms.GroupBox();
@@ -234,7 +234,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioRefresh = new System.Windows.Forms.Button();
-            this.layoutTab = new BufferedClientAreaPanel();
+            this.layoutTab = new System.Windows.Forms.Panel();
             this.cts_bringToFront = new System.Windows.Forms.CheckBox();
             this.hideDesktop = new System.Windows.Forms.CheckBox();
             this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
@@ -244,14 +244,14 @@ namespace Nucleus.Coop
             this.label28 = new System.Windows.Forms.Label();
             this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.label71 = new System.Windows.Forms.Label();
-            this.cts_Panel = new System.Windows.Forms.Panel();
+            this.cts_Panel = new System.Windows.Forms.Panel();;
             this.cts_unfocus = new System.Windows.Forms.CheckBox();
             this.cts_kar = new System.Windows.Forms.CheckBox();
             this.cts_Mute = new System.Windows.Forms.CheckBox();
             this.SplitColors = new System.Windows.Forms.ComboBox();
             this.splitDiv = new System.Windows.Forms.CheckBox();
             this.label49 = new System.Windows.Forms.Label();
-            this.layoutSizer = new System.Windows.Forms.Panel();
+            this.layoutSizer = new System.Windows.Forms.Panel();;
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBtnPicture)).BeginInit();
@@ -272,7 +272,7 @@ namespace Nucleus.Coop
             // 
             this.closeBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.closeBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtnPicture.Location = new System.Drawing.Point(654, 1);
+            this.closeBtnPicture.Location = new System.Drawing.Point(652, 3);
             this.closeBtnPicture.Name = "closeBtnPicture";
             this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.closeBtnPicture.TabIndex = 298;
@@ -3381,7 +3381,6 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
             this.Controls.Add(this.layoutTab);
-            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -3426,7 +3425,7 @@ namespace Nucleus.Coop
         private Button layoutTabBtn;
         private Label default_sid_list_label;
         private ComboBox def_sid_comboBox;
-        private BufferedClientAreaPanel audioTab;
+        private Panel audioTab;
         private Label audioWarningLabel;
         private Label audioDefaultDevice;
         private GroupBox audioCustomSettingsBox;
@@ -3453,12 +3452,12 @@ namespace Nucleus.Coop
         private PictureBox playersBtnPicture;
         private PictureBox settingsBtnPicture;
         private PictureBox layoutBtnPicture;
-        private BufferedClientAreaPanel settingsTab;
+        private Panel settingsTab;
         private Label label32;
-        private BufferedClientAreaPanel playersTab;
+        private Panel playersTab;
         private PictureBox closeBtnPicture;
         private ComboBox cmb_Network;
-        private BufferedClientAreaPanel layoutTab;
+        private Panel layoutTab;
         private CheckBox useNicksCheck;
         private CheckBox scaleOptionCbx;
         private Label label71;

@@ -11,7 +11,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 {
     public class SetupScreenControl : UserInputControl, IDynamicSized
     {
-        private string theme = Globals.ThemeFolder;
         private static SetupScreenControl _setupScreen;
 
         internal bool profileDisabled;
@@ -20,11 +19,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         public override bool CanProceed => canProceed;
         public override bool CanPlay => false;
 
-        internal float newplayerCustomFontSize;
-
         public PictureBox instructionImg;
 
-        public ProfilesList gameProfilesList;
+        public ProfilesList ProfilesList;
 
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
@@ -58,21 +55,20 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.Transparent;
 
-            instructionImg = new PictureBox()
+            instructionImg = new PictureBox()///Size\Location  => UpdateScreens() 
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 BackColor = Color.Black,
                 Image = Resources.instructions,
                 BackgroundImageLayout = ImageLayout.Stretch,
-                Cursor = hand_Cursor,
-                ///Size\Location  see => UpdateScreens() 
+                Cursor = hand_Cursor,             
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Visible = false
             };
 
-            gameProfilesList = new ProfilesList(this);
+            ProfilesList = new ProfilesList(this);
 
-            Controls.Add(gameProfilesList);
+            Controls.Add(ProfilesList);
             Controls.Add(instructionImg);
 
             DPIManager.Register(this);
@@ -92,7 +88,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             BoundsFunctions.Initialize(this, game, profile);
             Draw.Initialize(this, game, profile);
 
-            profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles")) || game.DisableProfiles;
+            profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles")) || game.Game.MetaInfo.DisableProfiles;
 
             if (game.Game.UseDevReorder || game.Game.CreateSingleDeviceFile)
             {
@@ -114,9 +110,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             if (!scaled)
             {
-                newplayerCustomFontSize = Draw.playerCustomFont.Size;
-                gameProfilesList.UpdateSize(scale);
-
+                ProfilesList.UpdateSize(scale);
                 scaled = true;
             }
 
@@ -134,9 +128,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             if (profile != null && profile.DevicesList != null)
             {
-                List<PlayerInfo> data = profile.DevicesList;
-
-                foreach (PlayerInfo player in data)
+                foreach (PlayerInfo player in profile.DevicesList)
                 {
                     player.DInputJoystick?.Dispose();
                 }
@@ -147,9 +139,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             base.Ended();
 
-            List<PlayerInfo> data = profile.DevicesList;
-
-            foreach (PlayerInfo player in data)
+            foreach (PlayerInfo player in profile.DevicesList)
             {
                 player.DInputJoystick?.Dispose();
             }
@@ -169,7 +159,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
-            //gameProfilesList.Visible = false;
+            //ProfilesList.Visible = false;
         }
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
@@ -202,6 +192,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             Graphics g = e.Graphics;
 
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+
             if (BoundsFunctions.selectedPlayer?.MonitorBounds != Rectangle.Empty &&
                 BoundsFunctions.selectedPlayer?.MonitorBounds != null)
             {
@@ -211,37 +203,25 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             Draw.UIScreens(g);
 
-            List<PlayerInfo> players = profile.DevicesList;
+            g.ResetClip();
 
-            if (players.Count == 0)
+            for (int i = 0; i < profile.DevicesList.Count; i++)
             {
-                Draw.NoPlayerText(g);
-            }
-            else
-            {
-                g.ResetClip();
+                PlayerInfo player = profile.DevicesList[i];
 
-                Draw.InputsText(g);
-
-                for (int i = 0; i < players.Count; i++)
+                if (GameProfile.Loaded)
                 {
-                    PlayerInfo player = players[i];
+                    GameProfile.FindProfilePlayers(player);
+                    Draw.GhostBounds(g);
+                }
 
-                    if (GameProfile.Loaded)
-                    {
-                        GameProfile.FindProfilePlayers(player);
+                Draw.UIDevices(g, player);
 
-                        Draw.GhostBounds(g);
-                    }
+                PlayerInfo playerToUpdate = GameProfile.UpdateProfilePlayerNickAndSID(player);
 
-                    Draw.UIDevices(g, player);
-
-                    PlayerInfo playerToUpdate = GameProfile.UpdateProfilePlayerNickAndSID(player);
-
-                    if (playerToUpdate != null && !playerToUpdate.EditBounds.IntersectsWith(BoundsFunctions.ActiveSizer))
-                    {
-                        Draw.PlayerTag(g, playerToUpdate);
-                    }
+                if (playerToUpdate != null && !playerToUpdate.EditBounds.IntersectsWith(BoundsFunctions.ActiveSizer))
+                {
+                    Draw.PlayerTag(g, playerToUpdate);
                 }
             }
 

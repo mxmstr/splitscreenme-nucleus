@@ -206,7 +206,18 @@ namespace Nucleus.Gaming
 
             LogManager.Log("Found game: {0}, full path: {1}", game.GameName, exePath);
             UserGameInfo uinfo = new UserGameInfo();
-            uinfo.FirstLaunch = true;
+
+            game.MetaInfo.FirstLaunch = true;
+
+            //Check for update in case the handler is outdated (using search game => add old handler version)
+            if(game.MetaInfo.CheckUpdate)
+            {
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    game.UpdateAvailable = game.Hub.CheckUpdateAvailable();     
+                });
+            }    
+
             uinfo.InitializeDefault(game, exePath);
             GameManager.Instance.User.Games.Add(uinfo);
             GameManager.Instance.SaveUserProfile();
@@ -266,6 +277,7 @@ namespace Nucleus.Gaming
 
                 LogManager.Log("Found game: {0}, full path: {1}", game.GameName, exePath);
                 UserGameInfo uinfo = new UserGameInfo();
+
                 uinfo.InitializeDefault(game, exePath);
                 GameManager.Instance.User.Games.Add(uinfo);
                 GameManager.Instance.SaveUserProfile();
@@ -402,6 +414,7 @@ namespace Nucleus.Gaming
                 {
                     File.Delete(destination);
                 }
+
                 File.Copy(path, destination);
             }
 
@@ -484,14 +497,24 @@ namespace Nucleus.Gaming
                                         user.Games.RemoveAt(i);
                                         i--;
                                     }
+
+                                    //Check for handler update here so we check only for added games
+                                    if (user.Games[i].Game.MetaInfo.CheckUpdate)
+                                    {
+                                        var game = user.Games[i].Game;
+
+                                        System.Threading.Tasks.Task.Run(() =>
+                                        {
+                                            game.UpdateAvailable = game.Hub.CheckUpdateAvailable();
+                                        });                                      
+                                    }                       
                                 }
                             }
-                            user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
 
+                            user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
                         }
 
                         saveUser(userProfile);
-
                     }
                 }
                 catch
@@ -568,6 +591,7 @@ namespace Nucleus.Gaming
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo f = files[i];
+
                 try
                 {
                     using (Stream str = f.OpenRead())
@@ -575,19 +599,21 @@ namespace Nucleus.Gaming
                         string ext = Path.GetFileNameWithoutExtension(f.Name);
                         string pathBlock = Path.Combine(f.Directory.FullName, ext);
 
-                        GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str, new bool[] { true, false });
+                        GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str, new bool[] { false, false });
 
                         //LogManager.Log("Found game info: " + info.GameName);
                         if (games.Any(c => c.Value.GUID == info.GUID))
                         {
                             games.Remove(info.GUID);
                         }
+
                         games.Add(info.GUID, info);
 
                         if (gameInfos.Any(c => c.Value.GUID == info.GUID))
                         {
                             gameInfos.Remove(info.GUID);
                         }
+
                         gameInfos.Add(info.GUID, info);
                     }
                 }
@@ -629,13 +655,14 @@ namespace Nucleus.Gaming
 
             try
             {
-                GenericGameInfo game = null;
+                GenericGameInfo info = null;
+
                 using (Stream str = f.OpenRead())
                 {
                     string ext = Path.GetFileNameWithoutExtension(f.Name);
                     string pathBlock = Path.Combine(f.Directory.FullName, ext);
 
-                    GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str, checkUpdate);
+                    info = new GenericGameInfo(f.Name, pathBlock, str, checkUpdate);
 
                     LogManager.Log("Found game info: " + info.GameName);
                     if (games.Any(c => c.Value.GUID == info.GUID))
@@ -651,11 +678,24 @@ namespace Nucleus.Gaming
                     }
 
                     gameInfos.Add(info.GUID, info);
-                    game = info;
+                   
+                    UserGameInfo remove = user.Games.Where(ug => ug.GameGuid == info.GUID).FirstOrDefault();
+
+                    //in case of handler update the game info can be reloaded easily
+                    if (remove != null)
+                    {
+                        user.Games.Remove(remove);
+
+                        UserGameInfo updatedInfo = new UserGameInfo();
+                        updatedInfo.InitializeDefault(info, remove.ExePath);
+
+                        user.Games.Add(updatedInfo);
+                    }
                 }
 
                 user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
-                return game;
+
+                return info;
             }
             catch (ArgumentNullException)
             {

@@ -15,19 +15,22 @@ namespace Nucleus.Gaming.Controls
         private SolidBrush topBrush;
 
         private string customFont;
-        public string[] rgb_HandlerNoteFontColor;
-        public string[] rgb_HandlerNoteBackColor;
 
         public HandlerNotesZoom()
         {
             customFont = Globals.ThemeConfigFile.IniReadValue("Font", "FontFamily");
-            rgb_HandlerNoteBackColor = Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBack").Split(',');
-            rgb_HandlerNoteFontColor = Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',');
 
             InitializeComponent();
 
-            ForeColor = Color.FromArgb(int.Parse(rgb_HandlerNoteFontColor[0]), int.Parse(rgb_HandlerNoteFontColor[1]), int.Parse(rgb_HandlerNoteFontColor[2]));
-            BackColor = Color.Transparent;
+            ForeColor = Color.FromArgb(int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',')[0]),
+                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',')[1]), 
+                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',')[2]));
+            
+            BackColor = int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "BackgroundGradient").Split(',')[0]) == 1 ? Color.Transparent : 
+                                       Color.FromArgb(int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBackground").Split(',')[0]),
+                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBackground").Split(',')[1]),
+                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBackground").Split(',')[2]), 
+                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBackground").Split(',')[3])); 
 
             close_Btn.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
             close_Btn.BackColor = Color.Transparent;

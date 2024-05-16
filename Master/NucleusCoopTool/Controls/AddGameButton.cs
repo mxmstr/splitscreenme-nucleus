@@ -25,7 +25,6 @@ namespace Nucleus.Coop.Controls
 
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
-        public  GameControl currentSelected;
 
         private bool selected;
         public bool Selected
@@ -167,7 +166,7 @@ namespace Nucleus.Coop.Controls
 
         private void FavoriteOnly_Click(object sender, EventArgs e)
         {
-            if (GameManager.Instance.User.Games.All(g => g.Favorite == false) && !mainForm.ShowFavoriteOnly) { return; }
+            if (GameManager.Instance.User.Games.All(g => g.Game.MetaInfo.Favorite == false) && !mainForm.ShowFavoriteOnly) { return; }
 
             bool selected = favoriteOnly.Image.Equals(favorite_Selected);
 

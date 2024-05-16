@@ -43,8 +43,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         private static bool UseLayoutSelectionBorder;
         private static bool UseSetupScreenImage;
 
-        internal static SolidBrush myBrush;
-        internal static SolidBrush notEnoughPlyrsSBrush;
         private static SolidBrush tagBrush;
         private static SolidBrush sizerBrush;
         private static SolidBrush screenBackBrush;
@@ -105,20 +103,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             manualLayout = ImageCache.GetImage(theme + "manualLayout.png");
             PositionScreenPen = new Pen(Color.FromArgb(int.Parse(rgb_PositionScreenColor[0]), int.Parse(rgb_PositionScreenColor[1]), int.Parse(rgb_PositionScreenColor[2])), 1);
             PositionPlayerScreenPen = new Pen(Color.FromArgb(int.Parse(rgb_PositionPlayerScreenColor[0]), int.Parse(rgb_PositionPlayerScreenColor[1]), int.Parse(rgb_PositionPlayerScreenColor[2])), 1);
-            myBrush = new SolidBrush(Color.FromArgb(int.Parse(rgb_PositionControlsFontColor[0]), int.Parse(rgb_PositionControlsFontColor[1]), int.Parse(rgb_PositionControlsFontColor[2])));
             tagBrush = new SolidBrush(Color.FromArgb(200, 0, 0, 0));
             screenBackBrush = new SolidBrush(Color.FromArgb(60, 0, 0, 0));
-            sizerBrush = new SolidBrush(Color.FromArgb(50, 255, 255, 255));
+            sizerBrush = new SolidBrush(Color.FromArgb(30, 0, 0, 0));
             ghostBoundsPen = new Pen(Color.Red);
-            notEnoughPlyrsSBrush = new SolidBrush(Color.FromArgb(255, 245, 4, 68));
             destEditBoundsPen = new Pen(Color.FromArgb(255, 15, 220, 15));
-
-            colors = new Color[]
-            {
-             Color.Red, Color.DodgerBlue,Color.LimeGreen,Color.Yellow,Color.SaddleBrown, Color.BlueViolet,Color.Aqua, Color.DarkOrange,Color.Silver,
-              Color.Magenta, Color.SpringGreen, Color.Indigo, Color.Black, Color.White, Color.Bisque, Color.SkyBlue, Color.SeaGreen,Color.Wheat, Color.Crimson, Color.Turquoise, Color.Chocolate,
-              Color.OrangeRed, Color.Olive, Color.DarkRed, Color.Lavender
-            };
 
             ///Flash image attributes
             {
@@ -234,8 +223,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             Font fontToScale = new Font(playerCustomFont.FontFamily, height, FontStyle.Regular, GraphicsUnit.Pixel);
 
-            Pen color = (player.GamepadId > colors.Count()) ? new Pen(Color.Magenta) : new Pen(colors[player.GamepadId]);
-
             if (player.ScreenIndex != -1 && player.MonitorBounds != Rectangle.Empty)
             {
                 g.DrawRectangle(PositionPlayerScreenPen, new Rectangle((int)s.X + 1, (int)s.Y + 1, (int)s.Width, (int)s.Height));
@@ -262,7 +249,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (controllerIdentification && player.IsInputUsed)
                 {
-                    g.DrawString(str, fontToScale, /*playerColor*/ Brushes.White, loc);
+                   g.DrawString(str, fontToScale, Brushes.White, loc);
                 }
             }
             else if (player.IsKeyboardPlayer && !player.IsRawKeyboard && !player.IsRawMouse)
@@ -316,7 +303,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     { 
                         float virtualheight = player.EditBounds.Height / 4f > 0 ? (player.EditBounds.Height / 4f) : 1;
                         Font virtualfontToScale = new Font("Franklin Gothic", virtualheight, FontStyle.Regular, GraphicsUnit.Pixel);
-                        string str = "Virtual";
+                        string str = "virtual";
 
                         SizeF size = g.MeasureString(str, virtualfontToScale);
                         PointF loc = RectangleUtil.Center(size, s);
@@ -326,7 +313,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         RectangleF bounds = new RectangleF(loc.X, loc.Y, size.Width, size.Height);
 
                         Color vcolor = Color.FromArgb(150, 0, 0, 0);
-                        Color vcolor2 = Color.FromArgb(200, 0, 0, 0);
+                        Color vcolor2 = Color.FromArgb(255, 0, 0, 0);
 
                         LinearGradientBrush lgb =
                         new LinearGradientBrush(gradientBrushbounds, vcolor2, vcolor, 90f);
@@ -338,7 +325,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         lgb.InterpolationColors = topcblend;
 
                         g.FillRectangle(lgb, bounds);
-                        g.DrawString(str, virtualfontToScale, Brushes.LawnGreen,loc);
+                        g.DrawString(str, virtualfontToScale, Brushes.YellowGreen,loc);
 
                         virtualfontToScale.Dispose();
                         lgb.Dispose();
@@ -366,7 +353,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     g.DrawString(str, fontToScale, Brushes.White, loc);
                 }
             }
-
 
             fontToScale.Dispose();
         }
@@ -407,82 +393,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             g.FillRectangle(sizerBrush, BoundsFunctions.selectedPlayer.EditBounds);
         }
 
-        public static void InputsText(Graphics g)
-        {
-            var inputText = GetInputText();
-            g.DrawString(inputText.Item1, playerTextFont, inputText.Item2, new PointF(10, 10));
-        }
-
-        public static void LimitsLine(Graphics g)
-        {
-            //Rectangle rect = new Rectangle(parent.Location.X, parent.Location.Y, parent.Width - 1, parent.gameProfilesList_btn.Height + 10);
-            //g.DrawRectangle(PositionScreenPen, rect);
-            //g.FillRectangle(new SolidBrush(Color.FromArgb(80, 0, 0, 0)), rect);
-            //g.DrawLine(PositionScreenPen, parent.Location.X, parent.gameProfilesList_btn.Bottom + 5, parent.Width, parent.gameProfilesList_btn.Bottom + 5);
-        }
-
-        private static (string, Brush) GetInputText()
-        {
-            Brush brush = myBrush;
-
-            string msg = string.Empty;
-
-            if (GameProfile.Loaded)
-            {
-                if (GameProfile.TotalAssignedPlayers > GameProfile.TotalProfilePlayers)
-                {
-                    msg = $"There Is Too Much Players!";
-                    brush = notEnoughPlyrsSBrush;
-                }
-                else if ((GameProfile.TotalProfilePlayers - GameProfile.TotalAssignedPlayers) > 0)
-                {
-                    string st = GameProfile.GamepadCount > 1 ? "Controllers" : "Controller";
-                    string sc = GameProfile.AllScreens.Count() > 1 ? "Screens" : "Screen";
-                    msg = $"{GameProfile.GamepadCount} {st}, {GameProfile.KeyboardCount} K&M And {GameProfile.AllScreens.Count()} {sc}, Were Used Last Time.";
-                    brush = notEnoughPlyrsSBrush;
-                }
-                else if (GameProfile.TotalProfilePlayers == GameProfile.TotalAssignedPlayers)
-                {
-                    msg = $"Profile Ready!";
-                }
-            }
-            else
-            {
-                string screenText = BoundsFunctions.screens.Length > 1 ? "On The Desired Screens" : "On The Screen";
-
-                if (userGameInfo.Game.SupportsMultipleKeyboardsAndMice)
-                {
-                    msg = $"Press A Key\\Button On Each Device & Drop Them {screenText}.";
-
-                }
-                else if (!userGameInfo.Game.SupportsMultipleKeyboardsAndMice && !userGameInfo.Game.SupportsKeyboard)
-                {
-                    if (DevicesFunctions.UseGamepadApiIndex || parent.profileDisabled)
-                    {
-                        msg = $"Drop Gamepads {screenText}.";
-                    }
-                    else
-                    {
-                        msg = $"Press A Button On Each Gamepad & Drop Them {screenText}.";
-                    }
-                }
-                else
-                {
-                    if (DevicesFunctions.UseGamepadApiIndex || parent.profileDisabled)
-                    {
-                        msg = $"Drop Gamepads Or Keyboard & Mouse {screenText}.";
-                    }
-                    else
-                    {
-                        msg = $"Press A Button On Each Gamepad & Drop Devices {screenText}.";
-                    }
-                }
-            }
-
-            return (msg, brush);
-        }
-
-
         public static void DestinationBounds(Graphics g)
         {
             g.DrawRectangles(destEditBoundsPen, new RectangleF[] { BoundsFunctions.destEditBounds });
@@ -492,18 +402,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             g.DrawString(BoundsFunctions.CalculAspectRatio(BoundsFunctions.selectedPlayer), playerTextFont, Brushes.White, parent.Left + 10, parent.Height - 40);
 
-            //g.DrawRectangles(PositionScreenPen, new RectangleF[] { BoundsFunctions.sizerBtnLeft});
-            //g.DrawRectangles(PositionScreenPen, new RectangleF[] { BoundsFunctions.sizerBtnRight });
-            //g.DrawRectangles(PositionScreenPen, new RectangleF[] { BoundsFunctions.sizerBtnTop});
-            //g.DrawRectangles(PositionScreenPen, new RectangleF[] { BoundsFunctions.sizerBtnBottom});
+            //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnLeft });
+            //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnRight });
+            //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnTop });
+            //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnBottom });
         }
-
-
-        public static void NoPlayerText(Graphics g)
-        {
-            g.DrawString("Waiting For Compatible Devices...", playerTextFont, myBrush, new PointF(10, 10));
-        }
-
 
         public static void PlayerTag(Graphics g, PlayerInfo player)
         {

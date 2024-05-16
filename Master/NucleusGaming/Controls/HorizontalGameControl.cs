@@ -327,7 +327,7 @@ namespace Nucleus.Coop
 
             bool selected = favoriteBox.Image.Equals(favorite_Selected);
             favoriteBox.Image = selected ? favorite_Unselected : favorite_Selected;
-            UserGameInfo.Favorite = selected ? false : true;
+            UserGameInfo.Game.MetaInfo.Favorite = selected ? false : true;
             GameManager.Instance.SaveUserProfile();
         }
 
