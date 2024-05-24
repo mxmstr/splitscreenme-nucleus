@@ -15,7 +15,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace Nucleus.Coop.Forms
 {
     public partial class HubWebView : UserControl
@@ -43,6 +42,7 @@ namespace Nucleus.Coop.Forms
         private EventHandler Modal_No_Button_Event;
 
         private List<JObject> installedHandlers = new List<JObject>();
+        public bool Downloading { get; private set; }
 
         public HubWebView(MainForm mainForm)
         {
@@ -230,8 +230,8 @@ namespace Nucleus.Coop.Forms
         {
             string json = JsonConvert.SerializeObject(installedHandlers, Formatting.Indented);
             await webView.ExecuteScriptAsync($"NucleusWebview.setLocalHandlerLibraryArray({json})");
-            // string test = JsonConvert.SerializeObject(new string[] { "test message" }, Formatting.Indented);
-            // await webView.ExecuteScriptAsync($"window.chrome.webview.postMessage({test});");
+            //string test = JsonConvert.SerializeObject(new string[] { "test message" }, Formatting.Indented);
+            //await webView.ExecuteScriptAsync($"window.chrome.webview.postMessage({test});");
         }
 
         private void DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
@@ -251,6 +251,9 @@ namespace Nucleus.Coop.Forms
             if (webView.CoreWebView2.IsDefaultDownloadDialogOpen) webView.CoreWebView2.CloseDefaultDownloadDialog();
         }
 
+        private System.Windows.Forms.Timer downloadStateTimer;
+        private int pending = 0;
+
         private void DownloadStarting(object sender, CoreWebView2DownloadStartingEventArgs e)
         {
             if (!webView.CoreWebView2.Source.StartsWith("https://hub.splitscreen.me/"))
@@ -261,10 +264,44 @@ namespace Nucleus.Coop.Forms
 
             if (downloadOperation == null)
             {
+                Downloading = true;
+                downloadStateTimer = new System.Windows.Forms.Timer();
+                downloadStateTimer.Interval = (200);
+                downloadStateTimer.Tick += new EventHandler(DownloadStateTimerTick);
+                downloadStateTimer.Start();
+
                 e.ResultFilePath = downloadPath;
                 downloadOperation = e.DownloadOperation;
                 downloadOperation.StateChanged += CheckDownloadState;
-                label.Visible = true;
+
+                modal_text.Text = @"⠐ Downloadind Handler Please Wait ⠂";
+                modal_yes.Visible = false;
+                modal_no.Visible = false;
+                modal.Visible = true;
+                modal.BringToFront();
+            }
+        }
+
+        private void DownloadStateTimerTick(object Object, EventArgs EventArgs)
+        {
+            switch (pending)
+            {
+                case 0:
+                    modal_text.Text = @"⠒ Downloadind Handler Please Wait ⠒";
+                    pending++;
+                    break;
+                case 1:
+                    modal_text.Text = @"⠲ Downloadind Handler Please Wait ⠖";
+                    pending++;
+                    break;
+                case 2:
+                    modal_text.Text = "⠴ Downloadind Handler Please Wait ⠦";
+                    pending++;
+                    break;
+                case 3:
+                    modal_text.Text = "⠦ Downloadind Handler Please Wait ⠴";
+                    pending = 0;
+                    break;
             }
         }
 
@@ -272,12 +309,13 @@ namespace Nucleus.Coop.Forms
         {
             if (downloadOperation.State == CoreWebView2DownloadState.Completed && !downloadCompleted)
             {
-                label.Visible = false;
                 zipExtractFinished = false;
                 entriesDone = 0;
                 numEntries = 0;
                 downloadCompleted = true;
                 downloadOperation = null;
+                downloadStateTimer.Dispose();
+                pending = 0;
                 ExtractHandler();
             }
         }
@@ -356,11 +394,14 @@ namespace Nucleus.Coop.Forms
             {
                 modal_text.Text = "A handler with the name " + frmHandleTitle + ".js already exists.\nDo you wish to overwrite it?";
 
+                modal_yes.Visible = true;
                 Modal_Yes_Button_Event = (sender, e) => ModalAddHandler(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
                 modal_yes.Click += Modal_Yes_Button_Event;
 
+                modal_no.Visible = true;
                 Modal_No_Button_Event = (sender, e) => Abort(zip, scriptTempFolder, frmHandleTitle, handlerFolders, exeName);
                 modal_no.Click += Modal_No_Button_Event;
+
                 modal.Visible = true;
                 modal.BringToFront();
                 return;
@@ -387,7 +428,10 @@ namespace Nucleus.Coop.Forms
 
         private void ModalAddHandler(ZipFile zip, string scriptTempFolder, string frmHandleTitle, List<string> handlerFolders, string exeName)
         {
+            modal_yes.Visible = true;
             modal_yes.Click -= Modal_Yes_Button_Event;
+
+            modal_no.Visible = true;
             modal_no.Click -= Modal_No_Button_Event;
 
             if (Directory.Exists(Path.Combine(scriptFolder, frmHandleTitle)))
@@ -442,13 +486,13 @@ namespace Nucleus.Coop.Forms
                 GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
                 string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName.ToLower()).FirstOrDefault().GameGuid;
                 string gameName = GameManager.Instance.Games.Where(c => c.Value.GUID == gameGuid).FirstOrDefault().Value.GameName;
+               
+                BuildHandlersDatas();
+                SendDatas();
 
-                mainForm.controls.Where(c => c.Value.TitleText == gameName).FirstOrDefault().Value.GameInfo.UpdateAvailable = false;
-                mainForm.button_UpdateAvailable.Visible = false;
                 mainForm.RefreshGames();
 
                 HideModal();
-
                 return;
             }
 
@@ -493,21 +537,25 @@ namespace Nucleus.Coop.Forms
             modal.Visible = false;
             downloadCompleted = false;
             modal.SendToBack();
+            Downloading = false;
         }
 
         private void Back_Click(object sender, EventArgs e)
         {
-            webView.CoreWebView2.GoBack();
+            if (webView.CoreWebView2 != null)
+                webView.CoreWebView2.GoBack();
         }
 
         private void Next_Click(object sender, EventArgs e)
         {
-            webView.CoreWebView2.GoForward();
+            if (webView.CoreWebView2 != null)
+                webView.CoreWebView2.GoForward();
         }
 
         private void Home_Click(object sender, EventArgs e)
         {
-            webView.CoreWebView2.Navigate(hubUri);
+            if (webView.CoreWebView2 != null)
+                webView.CoreWebView2.Navigate(hubUri);
         }
 
         public void CloseBtn_Click(object sender, EventArgs e)
@@ -528,6 +576,6 @@ namespace Nucleus.Coop.Forms
                 File.Delete(downloadPath);
             }
         }
-
     }
+
 }

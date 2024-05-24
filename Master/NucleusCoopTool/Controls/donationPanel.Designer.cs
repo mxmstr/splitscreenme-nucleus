@@ -152,9 +152,9 @@
             this.label2.ForeColor = System.Drawing.Color.Silver;
             this.label2.Location = new System.Drawing.Point(15, 176);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(134, 16);
+            this.label2.Size = new System.Drawing.Size(136, 16);
             this.label2.TabIndex = 306;
-            this.label2.Text = "Main administrator";
+            this.label2.Text = "Lead administrator";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Talos91_label

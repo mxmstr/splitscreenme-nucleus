@@ -123,7 +123,7 @@ namespace Nucleus.Coop.Controls
         }
 
         public void Update(bool connected)
-        {
+        {          
             Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);
             btn_AddGamePb.Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);
             btn_AddGameLabel.Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);

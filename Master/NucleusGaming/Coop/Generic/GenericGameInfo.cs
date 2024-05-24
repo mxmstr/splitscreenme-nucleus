@@ -317,6 +317,12 @@ namespace Nucleus.Gaming
         public bool ForceEnvironmentUse;
         public bool ForceLauncherExeIgnoreFileCheck;
 
+        //deprecated kept for backward compatibility => use SteamlessPatch insatead
+        public bool UseSteamless = false;
+        public string SteamlessArgs;
+        public int SteamlessTiming = 2500;
+        //
+
         public string[] SteamlessPatch;//bool apply to launcher,string Steamless Args,int wait for exe pacthing finished.
 
         // Proto Input

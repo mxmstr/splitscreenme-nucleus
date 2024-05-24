@@ -1490,6 +1490,12 @@ namespace Nucleus.Gaming
                     setupDll = false;
                 }
 
+                //backward compat for existing handlers using UseSteamless(old way of applying steamless)
+                if (gen.UseSteamless)
+                {
+                    gen.SteamlessPatch = new string[] { "false", gen.SteamlessArgs, gen.SteamlessTiming.ToString() };
+                }
+
                 if (gen.SteamlessPatch != null)
                 {
                     if (bool.Parse(gen.SteamlessPatch[0]))//patch game launcher
@@ -1499,7 +1505,7 @@ namespace Nucleus.Gaming
                         Thread.Sleep(int.Parse(gen.SteamlessPatch[2]) + 2000);
                     }
                     else//patch game exe
-                    {
+                    {                        
                         Log($"Apply Steamless patch for {gen.ExecutableName} Timing: {gen.SteamlessPatch[2]}ms");
                         SteamFunctions.SteamlessProc(linkBinFolder, gen.ExecutableName, gen.SteamlessPatch[1], int.Parse(gen.SteamlessPatch[2]));
                         Thread.Sleep(int.Parse(gen.SteamlessPatch[2]) + 2000);

@@ -40,7 +40,6 @@
             this.modal_text = new System.Windows.Forms.Label();
             this.modal_yes = new System.Windows.Forms.Button();
             this.modal_no = new System.Windows.Forms.Button();
-            this.label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.webView)).BeginInit();
             this.button_Panel.SuspendLayout();
             this.modal.SuspendLayout();
@@ -138,7 +137,6 @@
             // 
             this.modal.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.modal.Controls.Add(this.modalControlsContainer);
-            this.modal.Controls.Add(this.label);
             this.modal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.modal.Location = new System.Drawing.Point(0, 0);
             this.modal.Name = "modal";
@@ -207,23 +205,6 @@
             this.modal_no.Text = "No";
             this.modal_no.UseVisualStyleBackColor = false;
             // 
-            // label
-            // 
-            this.label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label.AutoSize = true;
-            this.label.BackColor = System.Drawing.Color.Transparent;
-            this.label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label.ForeColor = System.Drawing.Color.White;
-            this.label.Location = new System.Drawing.Point(484, 3);
-            this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(161, 18);
-            this.label.TabIndex = 20;
-            this.label.Text = "Downloading Handler...";
-            this.label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label.Visible = false;
-            // 
             // HubWebView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -238,7 +219,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.webView)).EndInit();
             this.button_Panel.ResumeLayout(false);
             this.modal.ResumeLayout(false);
-            this.modal.PerformLayout();
             this.modalControlsContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -249,7 +229,6 @@
         private Microsoft.Web.WebView2.WinForms.WebView2 webView;
         private System.Windows.Forms.Button closeBtn;
         private BufferedClientAreaPanel modal;
-        private System.Windows.Forms.Label label;
         private System.Windows.Forms.Button back;
         private System.Windows.Forms.Button next;
         private System.Windows.Forms.Button home;

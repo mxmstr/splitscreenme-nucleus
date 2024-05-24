@@ -233,6 +233,12 @@ namespace Nucleus.Coop
 
         private void FadeOut()
         {
+            if (webView != null)
+            {
+               if(webView.Downloading)
+                return;
+            }
+
             formClosing = true;
             I_GameHandlerEndFunc("Close button clicked", true);
 
@@ -683,8 +689,8 @@ namespace Nucleus.Coop
 
             RefreshUI(true);
 
-            webView.Size = new Size(StepPanel.Width + rightFrame.Width, StepPanel.Height);
-            webView.Location = new Point(StepPanel.Location.X, StepPanel.Location.Y);
+            webView.Size = new Size(clientAreaPanel.Width, clientAreaPanel.Height - logo.Bottom +10);
+            webView.Location = new Point(game_listSizer.Location.X, logo.Bottom + 10);
             btn_AddGame.Selected = true;
 
             Invalidate(false);
@@ -692,20 +698,23 @@ namespace Nucleus.Coop
 
         public void WebviewDisposed(object sender, EventArgs e)
         {
-            if (e is MouseEventArgs)
-            {
-                MouseEventArgs click = (MouseEventArgs)e;
-
-                if (click.Button == MouseButtons.Right)
-                {
-                    return;
-                }
-            }
-
             if (webView == null)
             {
                 return;
             }
+
+            if (webView.Downloading)
+            { 
+                return;
+            }
+
+            if (e is MouseEventArgs click)
+            {
+                if (click.Button == MouseButtons.Right)
+                {
+                    return;
+                }
+            }        
 
             clientAreaPanel.Controls.Remove(webView);
             webView.Dispose();
@@ -718,7 +727,7 @@ namespace Nucleus.Coop
                 stepPanelPictureBox.Visible = true;
             }
 
-            Invalidate(false);
+           Invalidate(false);
         }
 
         protected override void OnShown(EventArgs e)
@@ -2001,7 +2010,7 @@ namespace Nucleus.Coop
                             (gameContextMenuStrip.Items["openBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
                             (gameContextMenuStrip.Items["deleteBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
 
-                            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\{menuCurrentGameInfo.Game.GUID}";
+                            string backupsPath = $"{NucleusEnvironmentRoot}\\_Game Files Backup_\\NucleusCoop\\{menuCurrentGameInfo.Game.GUID}";
 
                             if (Directory.Exists(backupsPath))
                             {
@@ -2170,7 +2179,7 @@ namespace Nucleus.Coop
         private void OpenBackupFolderSubmenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
-            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\{menuCurrentGameInfo.Game.GUID}";
+            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\_Game Files Backup_\\{menuCurrentGameInfo.Game.GUID}";
 
             string path = $"{backupsPath}\\{item.Text}";
 
@@ -2183,7 +2192,7 @@ namespace Nucleus.Coop
         private void DeleteBackupFolderSubmenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
-            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\{menuCurrentGameInfo.Game.GUID}";
+            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\_Game Files Backup_\\{menuCurrentGameInfo.Game.GUID}";
 
             string path = $"{backupsPath}\\{item.Text}";
 

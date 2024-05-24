@@ -7,7 +7,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 {
     public static class BackupFiles
     {
-        private static readonly string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";
+        private static readonly string BackupDirectory = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop\_Game Files Backup_";
 
         public static void StartFilesBackup(string[] filesToBackup)
         {
@@ -32,7 +32,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
                         if (Directory.Exists(instances[i]))
                         {
-                            string destPath = $"{nucleusEnvironment}\\{gameGUID}\\{player.Nickname}";
+                            string destPath = $"{BackupDirectory}\\{gameGUID}\\{player.Nickname}";
 
                             if (!Directory.Exists(destPath))
                             {
@@ -70,82 +70,6 @@ namespace Nucleus.Gaming.Tools.BackupFiles
             }
         }
 
-        //#region Restore files backups
-
-        //public static void StartFilesRestoration()
-        //{
-        //    var handlerInstance = GenericGameHandler.Instance;
-        //    string gameGUID = handlerInstance.currentGameInfo.GUID;
-
-        //    string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);
-
-        //    var players = handlerInstance.profile.DevicesList;
-
-        //    try
-        //    {
-        //        string sourceContent = $"{nucleusEnvironment}\\{gameGUID}";
-
-        //        Log("Start processing files restoration");
-
-        //        for (int i = 0; i < players.Count(); i++)
-        //        {
-        //            var player = players[i];
-
-        //            string sourceFolder = $"{sourceContent}\\{player.Nickname}";
-
-        //            if (Directory.Exists(sourceFolder))
-        //            {
-        //                string destInstance = $"{gameContentPath}\\Instance{i}";
-
-        //                string[] sourceFiles = Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories);
-
-        //                if (!Directory.Exists(destInstance))
-        //                {
-        //                    continue;
-        //                }
-
-        //                string[] destFiles = Directory.GetFileSystemEntries(destInstance, "*", SearchOption.AllDirectories);
-
-        //                for (int d = 0; d < destFiles.Length; d++)
-        //                {
-        //                    string destFile = destFiles[d];
-
-        //                    if (File.Exists(destFile))
-        //                    {
-        //                        string destFileName = destFiles[d].Split('\\').Last();
-
-        //                        for (int s = 0; s < sourceFiles.Length; s++)
-        //                        {
-        //                            string sourceFile = sourceFiles[s];
-
-        //                            if (File.Exists(sourceFile))
-        //                            {
-        //                                string sourceFileName = sourceFiles[s].Split('\\').Last();
-
-        //                                if (destFileName == sourceFileName)
-        //                                {
-        //                                    File.Delete(destFile);
-        //                                    File.Copy(sourceFile, destFile);
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-
-        //            }
-        //        }
-
-        //        Log("Files restoration successful");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log($"Files restoration failed\n{ex.Message}");
-        //    }
-        //}
-
-        //#endregion
-
-
         public static void StartFoldersBackup(string[] foldersToBackup)
         {
             var handlerInstance = GenericGameHandler.Instance;
@@ -169,7 +93,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
 
                         if (Directory.Exists(instances[i]))
                         {
-                            string destPath = $"{nucleusEnvironment}\\{gameGUID}\\{player.Nickname}";
+                            string destPath = $"{BackupDirectory}\\{gameGUID}\\{player.Nickname}";
 
                             if (!Directory.Exists(destPath))
                             {
@@ -235,7 +159,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
             {
                 if (Directory.Exists(gameContentPath))
                 {
-                    string sourceContent = $"{nucleusEnvironment}\\{gameGUID}";
+                    string sourceContent = $"{BackupDirectory}\\{gameGUID}";
 
                     if (!Directory.Exists(sourceContent))
                     {
