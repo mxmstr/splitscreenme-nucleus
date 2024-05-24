@@ -1390,12 +1390,14 @@ namespace Nucleus.Coop
         => btn_Play.Enabled = true;
 
         private void StepCanPlay(UserControl obj, bool canProceed, bool autoProceed)
-        {
-            saveProfileRadioBtn.Visible = false;
-
+        {          
             if (canProceed || autoProceed)
             {
                 saveProfileRadioBtn.Visible = !GameProfile.Loaded && !currentGameInfo.Game.MetaInfo.DisableProfiles;
+            }
+            else
+            {
+                saveProfileRadioBtn.Visible = false;
             }
 
             if (btn_Prev.Enabled)

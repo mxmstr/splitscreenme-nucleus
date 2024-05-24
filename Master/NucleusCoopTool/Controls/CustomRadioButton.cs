@@ -104,7 +104,7 @@ namespace Nucleus.Coop.Controls
                 Width += diff;
                 tick.Width += diff;
                 tick.Height = label.Height;
-                label.Location = new Point(label.Location.X+ diff,label.Location.Y);
+                label.Location = new Point(label.Location.X + diff,label.Location.Y); 
                 Location = new Point(Location.X - diff, Location.Y);
             }
 
