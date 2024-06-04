@@ -33,7 +33,7 @@ In general, when submitting a new issue:
 
 2.	**Stick to a Single Issue**: Make sure that you aren’t combining multiple issues into a single ticket. If you have multiple issues (or are looking at a very high-level issue that has multiple sub-issues), make new GitHub issues for each. This makes it easier to track issue resolution and portion off tasks into more actionable chunks.
 
-3.	**Note the Version**: When creating the issue, make sure that you include details on which version of Nucleus Coop or a Handler that you are working with. This can help identify when issues first arise and identify whether they have already been resolved in newer versions.
+3.	**Note the Version and your Environment**: When creating the issue, make sure that you include details on which version of Nucleus Coop or a Handler that you are working with. This can help identify when issues first arise and identify whether they have already been resolved in newer versions. Including "environment" information (operating system, system hardware, controllers used, etc.) can help further isolate issues, in case they are only triggered by certain hardware setups.
 
 4.	**Reproduction**: When filing a bug report, if at all possible, see if you can reproduce the bug and provide detailed steps as to how you did it. This is immensely helpful in narrowing down where problematic code may be triggering.
 
