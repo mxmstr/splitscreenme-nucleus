@@ -98,7 +98,7 @@ If you plan to fork the project and test your own changes, you will need to comp
 **Note:** After cloning your fork to your local development environment, make sure to run the following git command locally to make sure that all the submodule dependencies are downloaded:
 >git submodule update --init --recursive 
 
-This is covered in the linked tutorial but is worth repeating.
+This is covered in the Compiling Guide but is worth repeating.
 
 **Warning** - Nucleus Coop will **not** run correctly without these submodules.
 
