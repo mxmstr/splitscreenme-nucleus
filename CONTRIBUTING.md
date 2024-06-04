@@ -25,7 +25,7 @@ The "developers" channel on the [official Discord Server](https://discord.gg/QDU
 If you’d like to expand the list of supported games (or improve an existing game’s support), check out the detailed [Handler Development Guide](https://www.splitscreen.me/docs/create-handlers)!
 
 ## Issue Contribution
-If you encounter an issue while using Nucleus Coop, or have an idea for a new feature, you can create a GitHub “Issue” [on this page](https://github.com/SplitScreen-Me/splitscreenme-nucleus/issues) using the “New Issue” button. This will take you to a selection page where you can choose the most relevant template for your issue.
+If you encounter an issue while using Nucleus Coop, or have an idea for a new feature, you can create a [GitHub “Issue”](https://github.com/SplitScreen-Me/splitscreenme-nucleus/issues) using the “New Issue” button on the Issue page. This will take you to a selection page where you can choose the most relevant template for your issue.
 
 In general, when submitting a new issue:
 
