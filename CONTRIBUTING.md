@@ -78,6 +78,7 @@ _The **Comparing Changes** selectors must display as follows for the Pull Reques
 >base repository: SplitScreen-Me/splitscreenme-nucleus
 
 If Github defaults the head to SplitScreen-Me/splitscreenme-nucleus, you will need to change the head _first_. Otherwise, GitHub may see you as trying to merge from within the same project and drop the option to select target/destination forks (requiring you to backtrack and start base/head selection over again).
+
 **Base**
 >base:master
 
