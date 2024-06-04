@@ -107,7 +107,7 @@ This is covered in the linked tutorial but is worth repeating.
 * Please write C# code following [standard conventions](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/capitalization-conventions). 
 
 ## Donations
-If you would like to contribute to project developers financially, check out the links under the "Sponsor this Project" section of the [repository homepage](https://github.com/SplitScreen-Me/splitscreenme-nucleus). Donations are always appreciated!
+If you would like to contribute financially to support the project, check out the links under the "Sponsor this Project" section of the [repository homepage](https://github.com/SplitScreen-Me/splitscreenme-nucleus). Donations are always appreciated, but completely voluntary!
 
 # Other Resources
 If you can't find the answers you are looking for here, you may want to take a look at some of the other project documentation.
