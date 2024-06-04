@@ -41,6 +41,8 @@ Note that Nucleus does not add multiplayer or co-op to single player games, the 
 - Microsoft Visual C++ 2015-2019 Redistributable (both x86 and x64)
 
 # How can you contribute?
+If you would like to learn all about contributing to this project, whether bug simply reporting or working on the codebase, check out the [Nucleus Coop Contributing Guide](https://github.com/RangerTJ/splitscreenme-nucleus/blob/master/CONTRIBUTING.md)!
+
 Please report any bugs you may find and provide any feedback you have regarding the app. We are always open to suggestions and we want to make split-screen available for even more games, for everyone! Don't forget to create game handlers and share!
 
 You can find us in the Nucleus subreddit/discord as well as the Splitscreen Dreams discord, a special community created specifically to split-screen games by any means.
