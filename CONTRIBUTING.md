@@ -129,6 +129,7 @@ While it is certainly _possible_ that a quality pull request might be accepted r
 Once the review process is completed to the satisfaction of project enough project maintainers, a project maintainer will merge the pull request with the "master" branch, incorporating any changes within the pull request.
 
 At this point, the contributor's job is done! If your pull request made it this far, congratulations! Your contribution is now part of the project!
+Thank you for contributing!
 
 #### Release Builds
 Periodically, the current lead developer(s) of Nucleus Coop will decide when enough changes have been incorporated into the master branch to justify a new release. After sufficient testing by project maintainers to ensure build stability, a release will be created and published alongside a change log of implemented changed as improvements. Releases include source code along with a more convenient installer and a "portable" (pre-compiled zip folder) option for users to run the program.
