@@ -64,8 +64,10 @@ These will be taken care of as part of the setup git commands, but for reference
 
 #### Local Development Environment Setup 
 1. Fork the repo
-2. clone the repo
+2. Clone the repo
+
      `git clone https://github.com/JoeyJoeJoeShabadooFork/splitscreenme-nucleus`
+
 3. Navigate to the root folder and update the submodules to make sure that all submodule dependencies are downloaded and up-to-date by running the following command:
      ```sh
      cd splitscreenme-nucleus
@@ -141,56 +143,39 @@ Currently, there is no set release schedule, and releases will be published when
 ### Tips and Troubleshooting
 
 #### Updating Submodules
-If you get an error about missing URL's when attempting to initalize and update the submodules, open up .gitmodules (in the project root folder) in a text editor and make sure that the following are listed.
+If you get an error about missing URL's when attempting to initalize and update the submodules, open up .gitmodules (in the project root folder) in a text editor and make sure that the following are listed. 
     
-Even if some of these dependencies are not in active use, the git "update" command may fail to execute if entries and URLs for **all submodule** dependencies cloned from your fork are not found in the .gitmodules file.
+Even if some of these dependencies are not in active use, the git "update" command may fail to execute if entries and URLs for **all submodule** dependencies cloned from your fork are not found in the .gitmodules file. Add anything missing, save the changes to .gitmodules and the command should now work.
+```
+[submodule "Submodules/x360ce"]
+    path = Submodules/x360ce
+    url = https://github.com/lucasassislar/x360ce
 
-    [submodule "Submodules/x360ce"]
-	    path = Submodules/x360ce
-	    url = https://github.com/lucasassislar/x360ce
+[submodule "Submodules/ProtoInput"]
+    path = Submodules/ProtoInput
+    url = https://github.com/ilyaki/protoinput
 
-    [submodule "Submodules/ProtoInput"]
-        path = Submodules/ProtoInput
-        url = https://github.com/ilyaki/protoinput
-
-    [submodule "Submodules/nukeupdater"]
-        path = Submodules/nukeupdater
-        url = https://github.com/lucasassislar/nukeupdater
-        
-    [submodule "Submodules/TypescriptSyntaxPaste"]
-        path = Submodules/TypescriptSyntaxPaste
-        url = https://github.com/nhabuiduc/TypescriptSyntaxPaste.git
+[submodule "Submodules/nukeupdater"]
+    path = Submodules/nukeupdater
+    url = https://github.com/lucasassislar/nukeupdater
+    
+[submodule "Submodules/TypescriptSyntaxPaste"]
+    path = Submodules/TypescriptSyntaxPaste
+    url = https://github.com/nhabuiduc/TypescriptSyntaxPaste.git
+```
 
 #### Project Branches
-As previously mentioned, the "master" branch of the project is the primary development branch of Nucleus Coop. Generally, you should be safe to assume that this is the current branch for everyone to work with. If you ever see other branches with recent updates and aren't sure which branch you should be forking or working from, just ask!
+The "master" branch of the project is the primary development branch of Nucleus Coop. Generally, you should be safe to assume that this is the current branch for everyone to work with. If you ever see other branches with recent updates and aren't sure which branch you should be forking or working from, just ask!
 
-When you submit a Pull Request, make _sure_ that you have the correct "merge" target set. The "base repository" is the target _destination_ for your changes, while the "head repository" is the _source_ of the changes (i.e. your forked repository).
+**When you submit a Pull Request, make _sure_ that you have the correct merge target and source set.** The "base repository" is the target _destination_ for your changes, while the "head repository" is the _source_ of the changes (i.e. your forked repository).
 
-The current iteration of the project has gone through several forks in its history, and when you go to submit a pull request, GitHub may default the merge target to a _different_ fork.
+GitHub may default the **base** to a _different_, earlier fork (such as ZeroFox5866's fork of the project). If this happens, you will need to do the following to avoid submitting your change to the wrong repository:
 
-**After clicking "New Pull Request" on the Pull Request page, make sure that your base and head repositories are correct before continuing.**
+1) Set the **head** to your own fork (it may default to "SplitScreen-Me/splitscreenme-nucleus")
+2) Set the **base** to "SplitScreen-Me/splitscreenme-nucleus"
+3) Verify that the correct branches for the base and head are selected
 
-Make sure that for the "base" repository, the "master" branch is selected. If you are merging to a different branch for some reason, merge to that branch instead. For the head, the branch should be whatever branch you would like to merge from in your own repository fork.
-
-_The **Comparing Changes** selectors must display as follows for the Pull Request to work correctly._
-
-**Base Repository**
->base repository: SplitScreen-Me/splitscreenme-nucleus
-
-If Github defaults the head to SplitScreen-Me/splitscreenme-nucleus, you will need to change the head _first_. Otherwise, GitHub may see you as trying to merge from within the same project and drop the option to select target/destination forks (requiring you to backtrack and start base/head selection over again).
-
-**Base**
->base:master
-
-Use "master" unless you are intentionally merging with a different branch for some reason (in which case, use the target branch instead).
-
-**Head Repository**
->head repository: YourUserName/ForkRepoName
-
-**Compare**
->compare: YourSourceBranch
-
-**Caution** - There may be some delay or browser hitching while selecting repositories while the repository selector populates selection options.
+**Caution** - There may be some delay or browser hitching while selecting repositories.
 
 ## Donations
 If you would like to contribute financially to support the project, check out the links under the "Sponsor this Project" section of the [repository homepage](https://github.com/SplitScreen-Me/splitscreenme-nucleus). Donations are always appreciated, but completely voluntary!
