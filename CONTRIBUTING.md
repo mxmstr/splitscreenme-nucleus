@@ -2,16 +2,17 @@
 Want to help out with the project? We'd love it! There are lots of different ways that you can help, whether it is developing game handlers, contributing to the project codebase, or simply a donation - all are appreciated.
 
 ## Join Discord!
-The "developers" channel on the [official Discord Server](https://discord.gg/QDUt8HpCvr) is a great place to get started! Introduce yourself! Chat with the current project developers about what you would like to work on! This is a great way to get to know those working on the project and can also help guide your development contributions, coordinate work better, etc.
+The "developers" channel on the [official Discord Server](https://discord.gg/QDUt8HpCvr) is a great place to get started! Introduce yourself! Chat with the current project developers about what you would like to work on! This is a great way to get to know those working on the project and can also help guide your development contributions, coordinate work better, etc. You can also find many of us in the Splitscreen Dreams Discord server, a special community created specifically to split-screen games (invite only)!
 
 ## Game Handlers
-If you’d like to expand the list of supported games (or improve an existing game’s support), check out the detailed [Handler Development Guide](https://www.splitscreen.me/docs/create-handlers)!
+If you’d like to expand the list of supported games (or improve an existing game’s support), check out the detailed [Handler Development Guide](https://www.splitscreen.me/docs/create-handlers)! We want to make split-screen available for even more games, and we want them to be available for everyone! Creating and sharing handlers is what makes that happen!
 
 ## Issue Contribution
-If you encounter an issue while using Nucleus Coop, or have an idea for a new feature, you can [create an issue](https://github.com/SplitScreen-Me/splitscreenme-nucleus/issues/new/choose). This will take you to a selection page where you can choose the most relevant template for your issue.
-If you want to suggest a new feature or report a bug for any of our other projects (for example our discord bot, or websites), please check out the appropriate repositories: https://github.com/orgs/SplitScreen-Me/repositories
+If you encounter an issue while using Nucleus Coop, or have an idea for a new feature, you can [create an issue](https://github.com/SplitScreen-Me/splitscreenme-nucleus/issues/new/choose). This will take you to a selection page where you can choose the most relevant template for your issue. We are always open to suggestions!
 
 The SplitScreen.Me FAQ has a great article that discusses [Bug Reporting](https://www.splitscreen.me/docs/faq/#18--where-can-i-report-a-bugissue) in more detail, including how to enable and view log files.
+
+If you want to suggest a new feature or report a bug for any of our _other_ projects (for example our discord bot, or websites), please check out the [appropriate repositories](https://github.com/orgs/SplitScreen-Me/repositories).
 
 ## Security Note
 If you identify a security issue in the code of Nucleus Coop, please do not post a public issue identifying the security threat. This potentially highlights the issue for malicious users to take advantage of the vulnerability. 
@@ -104,7 +105,7 @@ Once you have finished building and testing your changes, it's time to submit th
 
 **Make sure that the _base_ repository is set to "/SplitScreen-Me/splitscreenme-nucleus"!** 
 
-Otherwise, you will be attempting to merge your changes with a different repository. Double-check that you will be merging with the correct _base_ branch as well (generally "master") Also verify that the _head_ repository is set to your fork and the branch of your fork where you made all the changes that you would like to implement.
+Otherwise, you will be attempting to merge your changes with a different repository. Double-check that you will be merging with the correct head branch as well (generally "master") Also verify that the _head_ repository is set to your fork and the branch of your fork where you made all the changes that you would like to implement.
 
 It is a good idea to create a detailed (but concise) comment to accompany the initial pull request to explain:
 * The issue the pull request is addressing
@@ -114,13 +115,16 @@ It is a good idea to create a detailed (but concise) comment to accompany the in
 * Any questions or other comments for contribution reviewers
 
 #### Review Process
-All pull requests will approved by a sufficient number of project maintainers (those with write access to the project repository) before any changes are merged. Before aproving changes, reviewers will determine whether:
+All pull requests will need to be approved by a sufficient number of maintainers before any changes are merged. Before approving changes, reviewers will make sure that:
 * Changes do not interfere with existing features or design plans
-* There are overlap issues (i.e. other developers are already assigned to it) 
+* There are no overlap issues (i.e. other developers are already assigned to it) 
 * Sufficient testing occurred
 * Quality standards are upheld
 
-While it is certainly _possible_ that a quality pull request might be accepted right away, it should be expected that there will be some changes requested of the pull request, and issues that need to be discussed and resolved before it is approved. The pull request post itself is a great place to have these conversations, though contributors should not be afraid to directly message fellow developers either, when doing so is helpful to resolving any issues.
+While it is certainly _possible_ that a quality pull request might be accepted right away, change requests, questions, and discussions should be expected before the pull request can be merged. Discussions around the pull request should preferable be held in the pull request comments. This way it is easy for multiple people to follow progress... but don't hesitate to reach out directly to the developers and maintainers either!
+
+
+it should be expected that there will be some changes requested of the pull request, and issues that need to be discussed and resolved before it is approved. The pull request post itself is a great place to have these conversations, though contributors should not be afraid to directly message fellow developers either, when doing so is helpful to resolving any issues.
 
 ### Implementing Changes
 
