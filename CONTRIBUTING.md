@@ -63,8 +63,8 @@ These will be taken care of as part of the setup git commands, but for reference
 * [nukeupdater](https://github.com/lucasassislar/nukeupdater) - Auto-updates
 
 #### Local Development Environment Setup 
-1. Fork the repo
-2. Clone the repo
+1. Fork the repo on GitHub.
+2. Clone the repo:
 
      `git clone https://github.com/JoeyJoeJoeShabadooFork/splitscreenme-nucleus`
 
