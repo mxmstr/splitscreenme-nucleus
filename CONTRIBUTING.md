@@ -89,7 +89,7 @@ When you are ready to test any changes you make, compile **Nucleus Coop** by ope
 
 Once you have selected your build options and ran the batch build command, your output build directory should have a fully functioning version of the program and everything it needs to run! You can now go to the build directory and run "NucleusCoop.exe" to test out your new build.
 
-As a reminder, please take care to follow the Coding Standards for the project when adding any code-based contributions.
+As a reminder, please take care to follow the [Code Standards](#code-standards) for the project when adding any code-based contributions.
 
 Test your changes **thoroughly** before submitting a Pull Request. Whenever approrpriate, it is strongly recomended that you develop unit-tests with a good test spread to make sure that your new features are working as intended and are capable of handling anticipated edge cases. In cases where this is not possible, please be sure to follow a similar testing paradigm where both average and edge use cases are tested. In the long run, this will save the project a lot of tedious back-tracking and bug-smashing by proactively ensuring that easily-preventable bugs don't sneak into the master build.
 
