@@ -1,26 +1,8 @@
 # Nucleus Coop Contributing Guide  
 Want to help out with the project? We'd love it! There are lots of different ways that you can help, whether it is developing game handlers, contributing to the project codebase, or simply a donation - all are appreciated.
 
-## Communication
-
-### Join Discord!
+## Join Discord!
 The "developers" channel on the [official Discord Server](https://discord.gg/QDUt8HpCvr) is a great place to get started! Introduce yourself! Chat with the current project developers about what you would like to work on! This is a great way to get to know those working on the project and can also help guide your development contributions, coordinate work better, etc.
-
-### Community Expectations
-
-* **NO PIRACY OR ILLEGAL ACTIVITY** - This project does **not** tolerate piracy or any other kind of illegal behavior (or anything that encourages it). Failure to follow this policy will result in swift removal from the development community.
-
-* **Follow the Golden Rule** - Always be respectful, patient, and courteous! Remember, everyone working on this project is doing so with their own free time.
-
-* **Relentless Communication** - Let folks know what you're working on and give status updates when you can. If you get overwhelmed or have to bow out of what you're working on, no worries! Life happens! Just try to keep other developers in the loop so they know what to expect. If you are actively working on a specific issue, it is very helpful to other prospective developers if you leave a comment stating as such on the issue post. Just make sure to add a follow-up comment if that changes!
-
-* **Avoid Duplication** - It's always a good idea to check in with the other developers before you get invested in an idea, as the current GitHub "master" branch may not have had all relevant changes pushed yet. No sense working on something that may be irrelevant!
-
-* **Commitment** - If you plan to take on a particular issue, and have communicated this to the team, please take the commitment seriously. Please don't take on more than you can handle. This way, others with the bandwidth are free to pursue the issue without worrying about whether they might be duplicating labor. If you start working on something and have to back out for any reason, that is fine and totally understandable! Just communicate as soon as possible when your ability to commit changes! If you are working on a specific issue, the issue post itself is a great way to leave status comments that won't get lost in chat scroll.
-
-* **Focus** - Ambitious goals are great! That said, even the simplest coding task can find a way to snowball in complexity _very_ quickly. If you are new to this project (_especially_ if you are new to working on an open source project), try to start with small, discrete issues. Broader contributions take _a lot_ more work to finish and are more likely to lead to messy code-base conflicts. When at all possible, try to narrow the scope to a single, _specific_ issue.
-
-* **Clear Language** - Try to keep technical correspondence as clear as possible and avoid overusing colloquialisms. One of the most awesome things about GitHub is that it is easy for anyone, worldwide, to contribute to an open-source project! As such, please be mindful of potential language barriers between developers. Try to keep things clear and simple, when possible.
 
 ## Game Handlers
 If you’d like to expand the list of supported games (or improve an existing game’s support), check out the detailed [Handler Development Guide](https://www.splitscreen.me/docs/create-handlers)!
@@ -30,21 +12,10 @@ If you encounter an issue while using Nucleus Coop, or have an idea for a new fe
 
 The SplitScreen.Me FAQ has a great article that discusses [Bug Reporting](https://www.splitscreen.me/docs/faq/#18--where-can-i-report-a-bugissue) in more detail, including how to enable and view log files.
 
-### Issue Submission Etiquette
-In general, when submitting a new issue:
+## Security Note
+If you identify a security issue in the code of Nucleus Coop, please do not post a public issue identifying the security threat. This potentially highlights the issue for malicious users to take advantage of the vulnerability. 
 
-1.	**Avoid Duplicates**: Do a quick search to see if a similar issue already exists, to avoid redundancy and cluttering up issues.
-
-2.	**Stick to a Single Issue**: Make sure that you aren’t combining multiple issues into a single ticket. If you have multiple issues (or are looking at a very high-level issue that has multiple sub-issues), make new GitHub issues for each. This makes it easier to track issue resolution and portion off tasks into more actionable chunks.
-
-3.	**Note the Version and your Environment**: When creating the issue, make sure that you include details on which version of Nucleus Coop or a Handler that you are working with. This can help identify when issues first arise and identify whether they have already been resolved in newer versions. Including "environment" information (operating system, system hardware, controllers used, etc.) can help further isolate issues, in case they are only triggered by certain hardware setups.
-
-4.	**Reproduction**: When filing a bug report, if at all possible, see if you can reproduce the bug and provide detailed steps as to how you did it. This is immensely helpful in narrowing down where problematic code may be triggering.
-
-5.	**Include Logs**: If at all possible, please include the text from log files when encountering a crash or other weird issue. The “New Issue” bug form itself has more details on how to do this.
-
-### Security Note
-If you identify a security issue in the code of Nucleus Coop, please do not post a public issue identifying the security threat. This potentially highlights the issue for malicious users to take advantage of the vulnerability. Instead, please reach out to [active project maintainers](https://github.com/SplitScreen-Me/splitscreenme-nucleus?tab=readme-ov-file#credits) directly.
+Instead, please ping @Administrators, @Moderators, or @Developers in the support channel of the Nucleus Coop Discord server, and only share the details once a secure channel of communication has been established.
 
 ## Working on the Source Code
 If you would like to contribute to the codebase of Nucleus Coop as a developer, we would love to have you! Here are some helpful guidelines to make the process go as smoothly as possible!
@@ -54,13 +25,11 @@ If you would like to contribute to the codebase of Nucleus Coop as a developer, 
 
 2.	**Work on your changes**. Make sure to check for updates to the master branch before you create a pull request to avoid unnecessary code conflicts.
 
-3.	**Please adhere to the code standards** when writing your new code.
+3.	 [**Create a pull request**](https://github.com/SplitScreen-Me/splitscreenme-nucleus/pulls) once you are done with your changes! Please verify that your fork is caught up with the master branch beforehand.
 
-4.	 [**Create a pull request**](https://github.com/SplitScreen-Me/splitscreenme-nucleus/pulls) once you are done with your changes! Please verify that your fork is caught up with the master branch beforehand.
+4.	**Your code will be reviewed**, and changes may be requested. Address any issues and repeat as necessary until your change is accepted!
 
-5.	**Your code will be reviewed**, and changes may potentially be requested of your pull request. If this happens, work to address any issues identified and then update the pull request! Repeat as necessary until your code is accepted.
-
-6.	**Done!** Once your code is reviewed and accepted, it will be a part of the project! Congratulations!
+5.	**Done!** Once your code is reviewed and accepted, it will be merged into the codebase of the project! Congratulations! You should see your changes in the next release build!
 
 To learn more about [forking](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo), [cloning](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository), and [pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request), please check out the official GitHub articles.
 
@@ -98,7 +67,7 @@ These will be taken care of as part of the setup git commands, but for reference
 
     `git clone https://github.com/JoeyJoeJoeShabadooFork/splitscreenme-nucleus`
 
-4) Navigate to the top-level of the folder that was just created as part of the cloning process (genearlly "splitscreenme-nucleus"). 
+4) Navigate to the top-level of the folder that was just created as part of the cloning process (generally "splitscreenme-nucleus"). 
 5) Update the submodules to make sure that all submodule dependencies are downloaded and up-to-date by running the following command:
 
     `git submodule update --init --recursive`
@@ -150,7 +119,7 @@ All pull requests will approved by a sufficient number of project maintainers (t
 * Sufficient testing occurred
 * Quality standards are upheld
 
-While it is certainly _possible_ that a quality pull request might be accepted right away, it should be expected that there will be some changes requested of the pull request, and issues that need to be discussed and resolved before it is approved. The pull request post itself is a great place to have these conversations, though conrtibutors should not be afraid to directly message fellow-developers either, when doing so is helpful to resolving any issues.
+While it is certainly _possible_ that a quality pull request might be accepted right away, it should be expected that there will be some changes requested of the pull request, and issues that need to be discussed and resolved before it is approved. The pull request post itself is a great place to have these conversations, though contributors should not be afraid to directly message fellow developers either, when doing so is helpful to resolving any issues.
 
 ### Implementing Changes
 

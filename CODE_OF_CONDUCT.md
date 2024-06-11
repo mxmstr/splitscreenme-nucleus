@@ -66,6 +66,7 @@ To reiterate:
 
 * We do not make handlers that intentionally work for pirated or cracked games.
 * We do not endorse nor condone emulation, cracking and pirating games, or anything else that may otherwise involve compromising the integrity of proprietary software.
+* We do not endorse or condone anything that violates terms of service in online games.
 
 Nucleus Coop is intended to be a way to play **legitimate**, software in split screen by using legitimate means. Any illegal use of the Nucleus Coop software or activity within the Nucleus Coop community is in breach of the Code of Conduct and will be dealt with accordingly.
 
@@ -76,6 +77,10 @@ Rules for the official Nucleus Coop Discord server can be found in the [rules ch
 
 ### Communication Reminders
 * **Follow the Golden Rule** - Always be respectful, patient, and courteous! Remember, everyone working on this project is doing so with their own free time.
+
+* **Avoid _Unsolicited_ DM's** - Please try to to initially get in touch with project developers via relevant Discord server conversations, pings in the appropriate Discord channel, issue threads on Github, etc. 
+
+    It is not that developers don't want to collaborate - far from it! However, project developers can very easily become _bombarded_ with an overwhelming number of DM's given the size of the Nucleus Coop user base, so it's courteous to try to make first contact using a more generalized approach... And this may very well lead to DM correspondence later, if it makes sense.
 
 * **Relentless Communication** - Let folks know what you're working on and give status updates when you can. If you get overwhelmed or have to bow out of what you're working on, no worries! Life happens! Just try to keep other developers in the loop so they know what to expect. If you are actively working on a specific issue, it is very helpful to other prospective developers if you leave a comment stating as such on the issue post. Just make sure to add a follow-up comment if that changes!
 
@@ -88,17 +93,16 @@ Rules for the official Nucleus Coop Discord server can be found in the [rules ch
 * **Clear Language** - Try to keep technical correspondence as clear as possible and avoid overusing colloquialisms. One of the most awesome things about GitHub is that it is easy for anyone, worldwide, to contribute to an open-source project! As such, please be mindful of potential language barriers between developers. Try to keep things clear and simple, when possible.
 
 ### Issue Submission Etiquette
-In general, when submitting a new issue:
 
-1.	**Avoid Duplicates**: Do a quick search to see if a similar issue already exists, to avoid redundancy and cluttering up issues.
+* **Avoid Duplicates** - Do a quick search to see if a similar issue already exists, to avoid redundancy and cluttering up issues.
 
-2.	**Stick to a Single Issue**: Make sure that you aren’t combining multiple issues into a single ticket. If you have multiple issues (or are looking at a very high-level issue that has multiple sub-issues), make new GitHub issues for each. This makes it easier to track issue resolution and portion off tasks into more actionable chunks.
+* **Stick to a Single Issue** -  Make sure that you aren’t combining multiple issues into a single ticket. If you have multiple issues (or are looking at a very high-level issue that has multiple sub-issues), make new GitHub issues for each. This makes it easier to track issue resolution and portion off tasks into more actionable chunks.
 
-3.	**Note the Version and your Environment**: When creating the issue, make sure that you include details on which version of Nucleus Coop or a Handler that you are working with. This can help identify when issues first arise and identify whether they have already been resolved in newer versions. Including "environment" information (operating system, system hardware, controllers used, etc.) can help further isolate issues, in case they are only triggered by certain hardware setups.
+* **Note the Version and your Environment** - When creating the issue, make sure that you include details on which version of Nucleus Coop or a Handler that you are working with. This can help identify when issues first arise and identify whether they have already been resolved in newer versions. Including "environment" information (operating system, system hardware, controllers used, etc.) can help further isolate issues, in case they are only triggered by certain hardware setups.
 
-4.	**Reproduction**: When filing a bug report, if at all possible, see if you can reproduce the bug and provide detailed steps as to how you did it. This is immensely helpful in narrowing down where problematic code may be triggering.
+* **Reproduce It** - When filing a bug report, if at all possible, see if you can reproduce the bug and provide detailed steps as to how you did it. This is immensely helpful in narrowing down where problematic code may be triggering.
 
-5.	**Include Logs**: If at all possible, please include the text from log files when encountering a crash or other weird issue. The “New Issue” bug form itself has more details on how to do this.
+* **Include Logs** - If at all possible, please include the text from log files when encountering a crash or other weird issue. The “New Issue” bug form itself has more details on how to do this.
 
 ## Attribution
 This Code of Conduct is adapted from the Contributor Covenant, version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html.
