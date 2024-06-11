@@ -104,7 +104,7 @@ Once you have finished building and testing your changes, it's time to submit th
 
 **Make sure that the _base_ repository is set to "/SplitScreen-Me/splitscreenme-nucleus"!** 
 
-Otherwise, you will be attempting to merge your changes with a different repository. Double-check that you will be merging with the correct head branch as well (generally "master") Also verify that the _head_ repository is set to your fork and the branch of your fork where you made all the changes that you would like to implement.
+Otherwise, you will be attempting to merge your changes with a different repository. Double-check that you will be merging with the correct _base_ branch as well (generally "master") Also verify that the _head_ repository is set to your fork and the branch of your fork where you made all the changes that you would like to implement.
 
 It is a good idea to create a detailed (but concise) comment to accompany the initial pull request to explain:
 * The issue the pull request is addressing
