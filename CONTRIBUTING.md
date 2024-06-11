@@ -136,7 +136,7 @@ Periodically, the current lead developer(s) of Nucleus Coop will decide when eno
 Currently, there is no set release schedule, and releases will be published when ready and verified stable.
 
 ### Code Standards
-* When in doubt, structure your code to err on the side of readability!
+* When in doubt, structure your code to prioritize readability!
 * Comment large blocks of abstract code with concise descriptions.
 * Please write C# code following [standard conventions](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/capitalization-conventions). 
 
