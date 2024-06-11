@@ -91,7 +91,7 @@ Once you have selected your build options and ran the batch build command, your 
 
 As a reminder, please take care to follow the [Code Standards](#code-standards) for the project when adding any code-based contributions.
 
-Test your changes **thoroughly** before submitting a Pull Request. Whenever approrpriate, it is strongly recomended that you develop unit-tests with a good test spread to make sure that your new features are working as intended and are capable of handling anticipated edge cases. In cases where this is not possible, please be sure to follow a similar testing paradigm where both average and edge use cases are tested. In the long run, this will save the project a lot of tedious back-tracking and bug-smashing by proactively ensuring that easily-preventable bugs don't sneak into the master build.
+Test your changes **thoroughly** before submitting a Pull Request. Whenever appropriate, it is strongly recommended that you develop unit-tests with a good test spread to make sure that your new features are working as intended and are capable of handling anticipated edge cases. In cases where this is not possible, please be sure to follow a similar testing paradigm where both average and edge use cases are tested. In the long run, this will save the project a lot of time, avoiding tedious back-tracking and bug-smashing by proactively ensuring that easily-preventable bugs don't sneak into the master build.
 
 #### Build Configurations
 * Release - The release version of the app (live, user-facing build)
@@ -125,7 +125,7 @@ While it is certainly _possible_ that a quality pull request might be accepted r
 ### Implementing Changes
 
 #### Approval
-Once the review process is completed to the satisfaction of project enough project maintainers, a project maintainer will merge the pull request with the "master" branch, incorporating any changes within the pull request.
+Once the review process is completed to the satisfaction of enough maintainers, a maintainer will merge the pull request with the "master" branch, incorporating any changes within the pull request.
 
 At this point, the contributor's job is done! If your pull request made it this far, congratulations! Your contribution is now part of the project!
 Thank you for contributing!
