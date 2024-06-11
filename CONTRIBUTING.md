@@ -2,12 +2,13 @@
 Want to help out with the project? We'd love it! There are lots of different ways that you can help, whether it is developing game handlers, contributing to the project codebase, or simply a donation - all are appreciated.
 
 ## Communication
-We would love your help! One of the most important parts of that is working with the Nucleus Coop team itself! Connect with other developers on the project to see how you can best help out!
 
 ### Join Discord!
 The "developers" channel on the [official Discord Server](https://discord.gg/QDUt8HpCvr) is a great place to get started! Introduce yourself! Chat with the current project developers about what you would like to work on! This is a great way to get to know those working on the project and can also help guide your development contributions, coordinate work better, etc.
 
-### Tips
+### Community Expectations
+
+* **NO PIRACY OR ILLEGAL ACTIVITY** - This project does **not** tolerate piracy or any other kind of illegal behavior (or anything that encourages it). Failure to follow this policy will result in swift removal from the development community.
 
 * **Follow the Golden Rule** - Always be respectful, patient, and courteous! Remember, everyone working on this project is doing so with their own free time.
 
@@ -27,6 +28,9 @@ If you’d like to expand the list of supported games (or improve an existing ga
 ## Issue Contribution
 If you encounter an issue while using Nucleus Coop, or have an idea for a new feature, you can create a [GitHub “Issue”](https://github.com/SplitScreen-Me/splitscreenme-nucleus/issues) using the “New Issue” button on the Issue page. This will take you to a selection page where you can choose the most relevant template for your issue.
 
+The SplitScreen.Me FAQ has a great article that discusses [Bug Reporting](https://www.splitscreen.me/docs/faq/#18--where-can-i-report-a-bugissue) in more detail, including how to enable and view log files.
+
+### Issue Submission Etiquette
 In general, when submitting a new issue:
 
 1.	**Avoid Duplicates**: Do a quick search to see if a similar issue already exists, to avoid redundancy and cluttering up issues.
@@ -39,10 +43,8 @@ In general, when submitting a new issue:
 
 5.	**Include Logs**: If at all possible, please include the text from log files when encountering a crash or other weird issue. The “New Issue” bug form itself has more details on how to do this.
 
-6.	**Security**: If you identify a security issue in the code of Nucleus Coop, please do not post a public issue identifying the security threat. This potentially highlights the issue for malicious users to take advantage of the vulnerability. Instead, please reach out to [active project maintainers](https://github.com/SplitScreen-Me/splitscreenme-nucleus?tab=readme-ov-file#credits) directly.
-
-### Log Files and Bug Reporting
-The SplitScreen.Me FAQ has a great article that discusses [Bug Reporting](https://www.splitscreen.me/docs/faq/#18--where-can-i-report-a-bugissue) in more detail, including how to enable and view log files.
+### Security Note
+If you identify a security issue in the code of Nucleus Coop, please do not post a public issue identifying the security threat. This potentially highlights the issue for malicious users to take advantage of the vulnerability. Instead, please reach out to [active project maintainers](https://github.com/SplitScreen-Me/splitscreenme-nucleus?tab=readme-ov-file#credits) directly.
 
 ## Working on the Source Code
 If you would like to contribute to the codebase of Nucleus Coop as a developer, we would love to have you! Here are some helpful guidelines to make the process go as smoothly as possible!
@@ -60,11 +62,140 @@ If you would like to contribute to the codebase of Nucleus Coop as a developer, 
 
 6.	**Done!** Once your code is reviewed and accepted, it will be a part of the project! Congratulations!
 
-### Project Branches
+To learn more about [forking](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo), [cloning](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository), and [pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request), please check out the official GitHub articles.
+
+### Getting Started
+
+#### What is the Project's Tech Stack?
+Nucleus Coop is built for modern Windows PC's and is primarily developed in C# using the .NET Framework, with a _tiny_ portion of the codebase being in C++ or other languages. It also incorporates a variety of open-source tools and libraries to deliver its split-screen PC gaming experience. Several of these dependencies are coded in other languages, such as C and C++ (while some others like Proto Input are largely developed in C# too).
+
+Proto Input and x360ce are the most substantial dependencies, as they are responsible for handling controller assignments and hooks, and virtualizing controllers (respectively). 
+
+#### Required Software Tools
+* [Microsoft Visual Studio](https://visualstudio.microsoft.com/)*
+* [Visual Studio SDK](https://learn.microsoft.com/en-us/visualstudio/extensibility/installing-the-visual-studio-sdk)
+* [Microsoft Visual C++ 2015-2019 Redistributable x86](https://aka.ms/vs/17/release/vc_redist.x86.exe) (or newer)
+* [Microsoft Visual C++ 2015-2019 Redistributable x64](https://aka.ms/vs/17/release/vc_redist.x64.exe) (or newer)
+* [Git](https://www.git-scm.com/)
+* [.NET SDK](https://dotnet.microsoft.com/en-us/download) (4.7.2 or higher)
+* IDE of your choice (if not developing in Visual Studio)
+
+All of these tools must be correctly installed, or you will have trouble compiling/running code or setting up your development environment.
+
+*Note: you will need full-fledged Visual Studio, not just Visual Studio _Code_ with C# plugins, as you will need to compile source code from .sln files from within Visual Studio itself as part of creating builds.
+
+#### Submodule Dependencies
+These will be taken care of as part of the setup git commands, but for reference purposes, these are the submodule dependencies that Nucleus Coop uses (and several of these have their own sub-dependencies, which you can explore on their respective repositories).
+* [Proto Input](https://github.com/Ilyaki/ProtoInput) - Libraries that handle input redirects and hook configuration
+* [x360ce](https://github.com/x360ce/x360ce) - X-Box 360 controller emulator
+* [TypescriptSyntaxPaste](https://github.com/nhabuiduc/TypescriptSyntaxPaste) -  Converts C# syntax to typescript
+* [nukeupdater](https://github.com/lucasassislar/nukeupdater) - Auto-updates
+
+#### Local Development Environment Setup 
+1) Create your fork from Nucleus Coop (generally the "master" branch).
+2) Navigate to the folder where you would like your working project folder to reside on your development system. 
+3) Use a command console to clone your fork of the repository. For example, you might run:
+
+    `git clone https://github.com/JoeyJoeJoeShabadooFork/splitscreenme-nucleus`
+
+4) Navigate to the top-level of the folder that was just created as part of the cloning process (genearlly "splitscreenme-nucleus"). 
+5) Update the submodules to make sure that all submodule dependencies are downloaded and up-to-date by running the following command:
+
+    `git submodule update --init --recursive`
+    
+6) Batch Build **Proto Input** by opening its solution file in Visual Studio and batch building it ("Submodules\ProtoInput\src\ProtoInput\ProtoInput.sln" within the project root). 
+
+    The cleanest way is probably to sort by "Solution Config" header under the Batch Build menu and check the boxes that correspond with the version you would like to compile (make sure to check both x86 and x64 boxes for your selected build type).
+
+    Note: you may also refer to the [Compilation](https://nucleus-coop.github.io/docs/compilation/) article for another detailed example of creating builds from the source code.
+
+    Close the Proto Input project out when you're done.
+
+You are now free to work on the Nucleus Coop source code - all dependencies in place! If you get any errors in compiling along the way, you may need to install and run project solution files from an earlier version of Visual Studio or the .NET SDK for better project compatibility.
+
+### Compiling and Testing Changes
+
+When you are ready to test any changes you make, compile **Nucleus Coop** by opening its solution file and running a batch build on it within Visual Studio ("Master\NucleusCoop.sln"). Similar to Proto Input, on the Batch Build menu, select all the x86 and x64 options for the build you would like to compile. 
+
+Once you have selected your build options and run the batch build command, your output build directory should now have a fully functioning versio of the program and everything it needs to run! To test your changes live within Nucleus Coop itself, go to your build directory and run "NucleusCoop.exe" to test out your new build.
+
+As a reminder, please take care to follow the Coding Standards for the project when adding any code-based contributions.
+
+Test your changes **thoroughly** before submitting a Pull Request. Whenever approrpriate, it is strongly recomended that you develop unit-tests with a good test spread to make sure that your new features are working as intended and are capable of handling anticipated edge cases. In cases where this is not possible, please be sure to follow a similar testing paradigm where both average and edge use cases are tested. In the long run, this will save the project a lot of tedious back-tracking and bug-smashing by proactively ensuring that easily-preventable bugs don't sneak into the master build.
+
+#### Build Configurations
+* Release - The release version of the app (live, user-facing build)
+* Debug - Debug version of the app (extra debug features enabled)
+
+### Submitting Changes
+
+#### Create a Pull Request
+Once you have finished building and testing your changes, it's time to submit them! From the /SplitScreen-Me/splitscreenme-nucleus repository, go to the Pull Requests section and click the "New Pull Request" button.
+
+**Make sure that the _base_ repository is set to "/SplitScreen-Me/splitscreenme-nucleus"!** 
+
+Otherwise, you will be attempting to merge your changes with a different repository. Double-check that you will be merging with the correct head branch as well (generally "master") Also verify that the _head_ repository is set to your fork and the branch of your fork where you made all the changes that you would like to implement.
+
+It is a good idea to create a detailed (but concise) comment to accompany the initial pull request to explain:
+* The issue the pull request is addressing
+* What is changed
+* Testing procedures used and their results
+* Potential issues or challenges encountered
+* Any questions or other comments for contribution reviewers
+
+#### Review Process
+All pull requests will approved by a sufficient number of project maintainers (those with write access to the project repository) before any changes are merged. Before aproving changes, reviewers will determine whether:
+* Changes do not interfere with existing features or design plans
+* There are overlap issues (i.e. other developers are already assigned to it) 
+* Sufficient testing occurred
+* Quality standards are upheld
+
+While it is certainly _possible_ that a quality pull request might be accepted right away, it should be expected that there will be some changes requested of the pull request, and issues that need to be discussed and resolved before it is approved. The pull request post itself is a great place to have these conversations, though conrtibutors should not be afraid to directly message fellow-developers either, when doing so is helpful to resolving any issues.
+
+### Implementing Changes
+
+#### Approval
+Once the review process is completed to the satisfaction of project enough project maintainers, a project maintainer will merge the pull request with the "master" branch, incorporating any changes within the pull request.
+
+At this point, the contributor's job is done! If your pull request made it this far, congratulations! Your contribution is now part of the project!
+
+#### Release Builds
+Periodically, the current lead developer(s) of Nucleus Coop will decide when enough changes have been incorporated into the master branch to justify a new release. After sufficient testing by project maintainers to ensure build stability, a release will be created and published alongside a change log of implemented changed as improvements. Releases include source code along with a more convenient installer and a "portable" (pre-compiled zip folder) option for users to run the program.
+
+Currently, there is no set release schedule, and releases will be published when ready and verified stable.
+
+### Code Standards
+* When in doubt, structure your code to err on the side of readability!
+* Comment large blocks of abstract code with concise descriptions.
+* Please write C# code following [standard conventions](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/capitalization-conventions). 
+
+### Tips and Troubleshooting
+
+#### Updating Submodules
+If you get an error about missing URL's when attempting to initalize and update the submodules, open up .gitmodules (in the project root folder) in a text editor and make sure that the following are listed.
+    
+Even if some of these dependencies are not in active use, the git "update" command may fail to execute if entries and URLs for **all submodule** dependencies cloned from your fork are not found in the .gitmodules file.
+
+    [submodule "Submodules/x360ce"]
+	    path = Submodules/x360ce
+	    url = https://github.com/lucasassislar/x360ce
+
+    [submodule "Submodules/ProtoInput"]
+        path = Submodules/ProtoInput
+        url = https://github.com/ilyaki/protoinput
+
+    [submodule "Submodules/nukeupdater"]
+        path = Submodules/nukeupdater
+        url = https://github.com/lucasassislar/nukeupdater
+        
+    [submodule "Submodules/TypescriptSyntaxPaste"]
+        path = Submodules/TypescriptSyntaxPaste
+        url = https://github.com/nhabuiduc/TypescriptSyntaxPaste.git
+
+#### Project Branches
 As previously mentioned, the "master" branch of the project is the primary development branch of Nucleus Coop. Generally, you should be safe to assume that this is the current branch for everyone to work with. If you ever see other branches with recent updates and aren't sure which branch you should be forking or working from, just ask!
 
-### Merging to the Correct Branch
-**Warning** - When you submit a Pull Request, make sure that you have the correct "merge" target set. The "base repository" is the target _destination_ for your changes, while the "head repository" is the _source_ of the changes (i.e. your forked repository).
+When you submit a Pull Request, make _sure_ that you have the correct "merge" target set. The "base repository" is the target _destination_ for your changes, while the "head repository" is the _source_ of the changes (i.e. your forked repository).
 
 The current iteration of the project has gone through several forks in its history, and when you go to submit a pull request, GitHub may default the merge target to a _different_ fork.
 
@@ -91,21 +222,6 @@ Use "master" unless you are intentionally merging with a different branch for so
 >compare: YourSourceBranch
 
 **Caution** - There may be some delay or browser hitching while selecting repositories while the repository selector populates selection options.
-
-### How to Compile for Testing
-If you plan to fork the project and test your own changes, you will need to compile Nucleus Coop from code yourself. Please see the detailed [Compiling Guide](https://nucleus-coop.github.io/docs/compilation/) for specific details on how to compile the project into a runnable executable file.
-
-**Note:** After cloning your fork to your local development environment, make sure to run the following git command locally to make sure that all the submodule dependencies are downloaded:
->git submodule update --init --recursive 
-
-This is covered in the Compiling Guide but is worth repeating.
-
-**Warning** - Nucleus Coop will **not** run correctly without these submodules.
-
-### Code Standards
-* When in doubt, structure your code to err on the side of readability!
-* Comment large blocks of abstract code with concise descriptions.
-* Please write C# code following [standard conventions](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/capitalization-conventions). 
 
 ## Donations
 If you would like to contribute financially to support the project, check out the links under the "Sponsor this Project" section of the [repository homepage](https://github.com/SplitScreen-Me/splitscreenme-nucleus). Donations are always appreciated, but completely voluntary!
