@@ -63,22 +63,19 @@ These will be taken care of as part of the setup git commands, but for reference
 * [nukeupdater](https://github.com/lucasassislar/nukeupdater) - Auto-updates
 
 #### Local Development Environment Setup 
-1) Create your fork from Nucleus Coop (generally the "master" branch).
-2) Navigate to the folder where you would like your working project folder to reside on your development system. 
-3) Use a command console to clone your fork of the repository. For example, you might run:
-
-    `git clone https://github.com/JoeyJoeJoeShabadooFork/splitscreenme-nucleus`
-
-4) Navigate to the top-level of the folder that was just created as part of the cloning process (generally "splitscreenme-nucleus"). 
-5) Update the submodules to make sure that all submodule dependencies are downloaded and up-to-date by running the following command:
-
-    `git submodule update --init --recursive`
-    
-6) Batch Build **Proto Input** by opening its solution file in Visual Studio and batch building it ("Submodules\ProtoInput\src\ProtoInput\ProtoInput.sln" within the project root). 
+1. Fork the repo
+2. clone the repo
+     `git clone https://github.com/JoeyJoeJoeShabadooFork/splitscreenme-nucleus`
+3. Navigate to the root folder and update the submodules to make sure that all submodule dependencies are downloaded and up-to-date by running the following command:
+     ```sh
+     cd splitscreenme-nucleus
+     git submodule update --init --recursive
+     ```
+4. Batch Build **Proto Input** by opening its solution file in Visual Studio and batch building it ("Submodules\ProtoInput\src\ProtoInput\ProtoInput.sln" within the project root). 
 
     The cleanest way is probably to sort by "Solution Config" header under the Batch Build menu and check the boxes that correspond with the version you would like to compile (make sure to check both x86 and x64 boxes for your selected build type).
 
-    Note: you may also refer to the [Compilation](https://nucleus-coop.github.io/docs/compilation/) article for another detailed example of creating builds from the source code.
+    Note: you may also refer to the [Compilation](https://nucleus-coop.github.io/docs/compilation/) article for a more detailed example (with screenshots) of creating builds from the source code.
 
     Close the Proto Input project out when you're done.
 
