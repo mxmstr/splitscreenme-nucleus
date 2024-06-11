@@ -2,7 +2,9 @@
 Want to help out with the project? We'd love it! There are lots of different ways that you can help, whether it is developing game handlers, contributing to the project codebase, or simply a donation - all are appreciated.
 
 ## Join Discord!
-The "developers" channel on the [official Discord Server](https://discord.gg/QDUt8HpCvr) is a great place to get started! Introduce yourself! Chat with the current project developers about what you would like to work on! This is a great way to get to know those working on the project and can also help guide your development contributions, coordinate work better, etc. You can also find many of us in the Splitscreen Dreams Discord server, a special community created specifically to split-screen games (invite only)!
+The "developers" channel on the [official Discord Server](https://discord.gg/QDUt8HpCvr) is a great place to get started! Introduce yourself! Chat with the current project developers about what you would like to work on! This is a great way to get to know those working on the project and can also help guide your development contributions, coordinate work better, etc. 
+
+You can also find many of us in the Splitscreen Dreams Discord server, a special community created specifically to make games playable in split-screen (invite only).
 
 ## Game Handlers
 If you’d like to expand the list of supported games (or improve an existing game’s support), check out the detailed [Handler Development Guide](https://www.splitscreen.me/docs/create-handlers)! We want to make split-screen available for even more games, and we want them to be available for everyone! Creating and sharing handlers is what makes that happen!
