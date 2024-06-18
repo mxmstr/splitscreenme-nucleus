@@ -77,6 +77,7 @@ These will be taken care of as part of the setup git commands, but for reference
      git submodule update --init --recursive
      ```
 4. Install (or Build) Proto Input
+  
    **Option 1 (Recomended):** Use Post-Compiled Proto Input Files
    If you do not plan to work with the Proto Input source code directly, this is the easier approach to handling the Proto Input files that Nucleus Coop depends upon. First, download the most recent version of Nucleus Coop from [Releases](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). Next you will want to compile Nucleus Coop itself following the directions in the following section. If you follow this path and do not compile Proto Input, it's supporting DLL's will not be present. To fix this, simply copy and paste the following files from the root folder of the release build download's root into the root directory of your new Nucleus Coop build (the "Release" or "Debug" subfolder contained within "\splitscreenme-nucleus\Master\NucleusCoopTool\bin\"):
      * ProtoInputHooks32.dll
