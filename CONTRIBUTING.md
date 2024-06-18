@@ -76,11 +76,26 @@ These will be taken care of as part of the setup git commands, but for reference
      cd splitscreenme-nucleus
      git submodule update --init --recursive
      ```
-4. Batch Build **Proto Input** by opening its solution file in Visual Studio and batch building it ("Submodules\ProtoInput\src\ProtoInput\ProtoInput.sln" within the project root). 
+4. Install (or Build) Proto Input
+   **Option 1 (Recomended):** Use Post-Compiled Proto Input Files
+   If you do not plan to work with the Proto Input source code directly, this is the easier approach to handling the Proto Input files that Nucleus Coop depends upon. First, download the most recent version of Nucleus Coop from [Releases](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). Next you will want to compile Nucleus Coop itself following the directions in the following section. If you follow this path and do not compile Proto Input, it's supporting DLL's will not be present. To fix this, simply copy and paste the following files from the root folder of the release build download's root into the root directory of your new Nucleus Coop build (the "Release" or "Debug" subfolder contained within "\splitscreenme-nucleus\Master\NucleusCoopTool\bin\"):
+     * ProtoInputHooks32.dll
+     * ProtoInputHooks64.dll
+     * ProtoInputHost.exe
+     * ProtoInputIJ32.exe
+     * ProtoInputIJ64.exe
+     * ProtoInputIJP32.dll
+     * ProtoInputIJP64.dll
+     * ProtoInputLoader32.dll
+     * ProtoInputLoader64.dll
+     * ProtoInputUtilDynamic32.dll
+     * ProtoInputUtilDynamic64.dll
 
-    The cleanest way is probably to sort by "Solution Config" header under the Batch Build menu and check the boxes that correspond with the version you would like to compile (make sure to check both x86 and x64 boxes for your selected build type).
+   **Option 2:** Batch Build **Proto Input** by opening its solution file in Visual Studio and batch building it ("Submodules\ProtoInput\src\ProtoInput\ProtoInput.sln" within the project root). 
+  
+    The cleanest way to do this is probably to sort by "Solution Config" header under the Batch Build menu and check the boxes that correspond with the version you would like to compile (make sure to check both x86 and x64 boxes for your selected build type).
 
-    Note: you may also refer to the [Compilation](https://nucleus-coop.github.io/docs/compilation/) article for a more detailed example (with screenshots) of creating builds from the source code.
+    Note: If you run into issues compiling ProtoInput.sln, there is a good chance that you are missing some dependencies or add-ons required by Visual Studio or Visual Studrio Build Tools, and you will need to identify and install them. You may also refer to the [Compilation](https://nucleus-coop.github.io/docs/compilation/) article for a more detailed example (with screenshots) of creating builds from the source code. Troubleshooting may also involve fixing ProtoInput.sln project build order dependencies, if sub-componenets appear to be building out of the intended order on your setup. In addition to basic C++ dependencies, you will also need to install C++ ATL for build tools (x86/64), at the minimum.
 
     Close the Proto Input project out when you're done.
 
@@ -88,7 +103,11 @@ You are now free to work on the Nucleus Coop source code - all dependencies in p
 
 ### Compiling and Testing Changes
 
-When you are ready to test any changes you make, compile **Nucleus Coop** by opening its solution file and running a batch build on it within Visual Studio ("Master\NucleusCoop.sln"). Similar to Proto Input, on the Batch Build menu, select all the x86 and x64 options for the build you would like to compile. 
+When you are ready to test any changes you make, compile **Nucleus Coop** by opening its solution file and running a batch build on it within Visual Studio ("Master\NucleusCoop.sln"). 
+
+**Make sure that your project path contains no folders with spaces in their name, or Nucleus Coop may not compile correctly.**
+
+Similar to Proto Input, on the Batch Build menu, select all the x86 and x64 options for the build you would like to compile. 
 
 Once you have selected your build options and ran the batch build command, your output build directory should have a fully functioning version of the program and everything it needs to run! You can now go to the build directory and run "NucleusCoop.exe" to test out your new build.
 
