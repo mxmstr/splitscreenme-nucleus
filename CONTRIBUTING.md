@@ -123,7 +123,7 @@ All pull requests will need to be approved by a sufficient number of maintainers
 * Sufficient testing occurred
 * Quality standards are upheld
 
-While it is certainly _possible_ that a quality pull request might be accepted right away, change requests, questions, and discussions should be expected before the pull request can be merged. Discussions around the pull request should preferable be held in the pull request comments. This way it is easy for multiple people to follow progress... but don't hesitate to reach out directly to the developers and maintainers either!
+While it is certainly _possible_ that a quality pull request might be accepted right away, change requests, questions, and discussions should be expected before the pull request can be merged. Discussions around the pull request should preferably be held in the pull request comments. This way it is easy for multiple people to follow progress... but don't hesitate to reach out directly to the developers and maintainers either!
 
 
 it should be expected that there will be some changes requested of the pull request, and issues that need to be discussed and resolved before it is approved. The pull request post itself is a great place to have these conversations, though contributors should not be afraid to directly message fellow developers either, when doing so is helpful to resolving any issues.
