@@ -96,13 +96,13 @@ These will be taken care of as part of the setup git commands, but for reference
 
   This ensures that the files that would have been built by compiling Proto Input are placed in the correct location in the Nucleus Coop build folder with the executable.
    
-   **Option 2:** Batch Build **Proto Input** by opening its solution file in Visual Studio and batch building it ("Submodules\ProtoInput\src\ProtoInput\ProtoInput.sln" within the project root). 
+   **Option 2:** Batch Build **Proto Input** by opening its solution file in Visual Studio and batch building it ("Submodules\ProtoInput\src\ProtoInput\ProtoInput.sln" within the project root).
   
-    The cleanest way to do this is probably to sort by "Solution Config" header under the Batch Build menu and check the boxes that correspond with the version you would like to compile (make sure to check both x86 and x64 boxes for your selected build type).
+The cleanest way to do this is probably to sort by "Solution Config" header under the Batch Build menu and check the boxes that correspond with the version you would like to compile (make sure to check both x86 and x64 boxes for your selected build type).
 
-    Note: If you run into issues compiling ProtoInput.sln, there is a good chance that you are missing some dependencies or add-ons required by Visual Studio or Visual Studrio Build Tools, and you will need to identify and install them. You may also refer to the [Compilation](https://nucleus-coop.github.io/docs/compilation/) article for a more detailed example (with screenshots) of creating builds from the source code. Troubleshooting may also involve fixing ProtoInput.sln project build order dependencies, if sub-componenets appear to be building out of the intended order on your setup. In addition to basic C++ dependencies, you will also need to install C++ ATL for build tools (x86/64), at the minimum.
+Note: If you run into issues compiling ProtoInput.sln, there is a good chance that you are missing some dependencies or add-ons required by Visual Studio or Visual Studrio Build Tools, and you will need to identify and install them. You may also refer to the [Compilation](https://nucleus-coop.github.io/docs/compilation/) article for a more detailed example (with screenshots) of creating builds from the source code. Troubleshooting may also involve fixing ProtoInput.sln project build order dependencies, if sub-componenets appear to be building out of the intended order on your setup. In addition to basic C++ dependencies, you will also need to install C++ ATL for build tools (x86/64), at the minimum.
 
-    Close the Proto Input project out when you're done.
+Close the Proto Input project out when you're done.
 
 You are now free to work on the Nucleus Coop source code - all dependencies in place! If you get any errors in compiling along the way, you may need to install and run project solution files from an earlier version of Visual Studio or the .NET SDK for better project compatibility.
 
