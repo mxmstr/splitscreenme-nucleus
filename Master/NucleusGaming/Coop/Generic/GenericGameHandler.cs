@@ -31,6 +31,7 @@ using Nucleus.Gaming.Tools.XInputPlusDll;
 using Nucleus.Gaming.Util;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
+using Nucleus.Interop.User32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -45,8 +47,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Markup;
 using WindowScrape.Constants;
 using WindowScrape.Static;
+using WindowScrape.Types;
 
 namespace Nucleus.Gaming
 {
@@ -90,7 +94,6 @@ namespace Nucleus.Gaming
         public int[] procOrder;
         public int keyboardProcId;
         public int numPlayers = 0;
-
         protected int totalPlayers;
         public int TotalPlayers => totalPlayers;
 
@@ -104,10 +107,9 @@ namespace Nucleus.Gaming
         internal CursorModule _cursorModule { get; set; }
         public GameProfile profile;
         private GenericGameInfo gen;
-        public GenericGameInfo currentGameInfo => gen;
+        public GenericGameInfo CurrentGameInfo => gen;
         public GenericContext context;
         private static GenericGameHandler instance;
-        private Thread statusWinThread;
         private UserGameInfo userGame;
         public ProcessData prevProcessData;
         public Process launchProc;
@@ -147,8 +149,6 @@ namespace Nucleus.Gaming
         public bool dllResize = false;
         public bool dllRepos = false;
         public string error;
-        private Stopwatch playTime;
-
 
         public bool Initialize(UserGameInfo game, GameProfile profile, IGameHandler handler)
         {
@@ -238,7 +238,7 @@ namespace Nucleus.Gaming
             {
                 StartUpdateTick(gen.HandlerInterval);
             }
-
+       
             return true;
         }
 
@@ -267,77 +267,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void ShowStatus()
-        {
-            try
-            {
-                string lblTxt = "Engine starting up";
-                if (processingExit)
-                {
-                    lblTxt = "Starting shut down procedures";
-                }
-
-                Label statusLbl = new Label
-                {
-                    Text = lblTxt,
-                    Width = 560,
-                    Height = 93,
-                    AutoSize = false,
-                    Location = new Point(12, 9),
-                    TextAlign = ContentAlignment.MiddleCenter
-                };
-
-                //private Form statusForm;
-                Form statusForm = new Form()
-                {
-                    Text = "Nucleus Coop - Status",
-                    Width = 600,
-                    Height = 150,
-
-                    ControlBox = true,
-                    StartPosition = FormStartPosition.Manual,
-                    Location = new Point(0, 0),
-                    MaximizeBox = false,
-                    MinimizeBox = false,
-                    FormBorderStyle = FormBorderStyle.FixedSingle,
-                    TopMost = true,
-                    AutoScaleMode = AutoScaleMode.Font,
-                    AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F)
-                };
-
-                statusForm.FormClosing += new FormClosingEventHandler(StatusForm_Closing);
-                statusForm.Controls.Add(statusLbl);
-                statusForm.Show();
-
-                while (statusWinThread != null && statusWinThread.IsAlive)
-                {
-                    try
-                    {
-                        if (statusWinThread != null && statusWinThread.IsAlive)
-                        {
-                            Thread.Sleep(100);
-
-                            statusForm.TopMost = true;
-                            statusForm.TopMost = false;
-                            statusForm.TopMost = true;
-                            statusLbl.Text = logMsg;
-                            Application.DoEvents();
-
-                            WindowScrape.Static.HwndInterface.MakeTopMost(statusForm.Handle);
-
-                            try
-                            {
-                                statusForm.Refresh();
-                            }
-                            catch { }
-                        }
-                    }
-                    catch { }
-                }
-            }
-            catch { }
-        }
-
+        
         public string Play()
         {
 
@@ -450,16 +380,19 @@ namespace Nucleus.Gaming
                 Log("The Windows deskop scale will not be set to 100% because this option has been disabled in settings or game profile");
             }
 
-            foreach (Display dp in screensInUse)
+            if (WindowsMerger.Instance == null)
             {
-                if (screensInUse.Contains(dp))
+                foreach (Display dp in screensInUse)
                 {
-                    if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true) || gen.HideDesktop)
+                    if (screensInUse.Contains(dp))
                     {
-                        WPFDivFormThread.StartBackgroundForm(gen, dp);
-                    }
+                        if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true) || gen.HideDesktop)
+                        {
+                            WPFDivFormThread.StartBackgroundForm(gen, dp);
+                        }
 
-                    ReminderFormThread.StartReminderForms(dp.Bounds);
+                        ReminderFormThread.StartReminderForms(dp.Bounds);
+                    }
                 }
             }
 
@@ -501,23 +434,7 @@ namespace Nucleus.Gaming
             numPlayers = players.Count;
 
             Log(string.Format("Number of players: {0}", numPlayers));
-
-            if (ini.IniReadValue("Misc", "ShowStatus") == "True")
-            {
-                try
-                {
-                    if (statusWinThread != null && statusWinThread.IsAlive)
-                    {
-                        statusWinThread.Abort();
-                        Thread.Sleep(50);
-                    }
-
-                    statusWinThread = new Thread(ShowStatus);
-                    statusWinThread.Start();
-                }
-                catch { }
-            }
-
+           
             if (isDebug)
             {
                 Log("Nucleus Co-op version: " + Globals.Version);
@@ -3016,8 +2933,7 @@ namespace Nucleus.Gaming
                             DllsInjector.InjectDLLs(data.Process, nextWindowToInject, players[i]);
                         }
                     }
-
-                    
+          
                     if (!gen.IgnoreWindowBorderCheck)
                     {
                         GlobalWindowMethods.RemoveBorder();
@@ -3037,7 +2953,6 @@ namespace Nucleus.Gaming
                         //Borderlands 2 (and some other games) requires WM_INPUT to be sent to a window named DIEmWin, not the main hWnd.
                         foreach (ProcessThread thread in Process.GetProcessById(window.pid).Threads)
                         {
-
                             int WindowEnum(IntPtr _hWnd, int lParam)
                             {
                                 var threadId = WinApi.GetWindowThreadProcessId(_hWnd, out int pid);
@@ -3062,8 +2977,8 @@ namespace Nucleus.Gaming
 
                     if (gen.SetForegroundWindowElsewhere)
                     {
-                        Log("Setting the foreground window to Nucleus");
-                        GlobalWindowMethods.ChangeForegroundWindow();
+                        Log("Setting the foreground window to Nucleus");                    
+                        GlobalWindowMethods.ChangeForegroundWindow();                                           
                     }
 
                     if (gen.SendFakeFocusMsg)
@@ -3071,8 +2986,10 @@ namespace Nucleus.Gaming
                         WindowFakeFocus.Initialize();
                         WindowFakeFocus.SendFakeFocusMsg();
                     }
-                }
+                }   
             }
+
+            
 
             if (gen.LockInputAtStart)
             {
@@ -3121,30 +3038,26 @@ namespace Nucleus.Gaming
                 RegistryUtil.RestoreUserEnvironmentRegistryPath();
             }
 
-            try
-            {
-                if (statusWinThread != null && statusWinThread.IsAlive)
-                {
-                    Thread.Sleep(5000);
-                    if (statusWinThread != null && statusWinThread.IsAlive)
-                    {
-                        statusWinThread.Abort();
-                    }
-                }
-            }
-            catch { }
-
             if (!processingExit)
-            {
-                playTime = new Stopwatch();
-                playTime.Start();
-
-                GamepadNavigation.EnabledRuntime = false;
-                GameProfile.SaveGameProfile(profile);
-                currentGameInfo.MetaInfo.FirstLaunch = false;
+            {              
+                GameProfile.SaveGameProfile(profile);               
             }
 
             gen.OnFinishedSetup?.Invoke();
+
+            if (WindowsMerger.Instance != null)
+            {
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (gen.RefreshWindowAfterStart)
+                    {
+                        GlobalWindowMethods.ShowWindow(players[i].ProcessData.HWnd.NativePtr, 6);
+                        GlobalWindowMethods.ShowWindow(players[i].ProcessData.HWnd.NativePtr, 9);
+                    }
+
+                    WindowsMerger.Instance.InsertChildsAsync(players[i]);
+                }
+            }
 
             Log("All done!");
 
@@ -3553,19 +3466,7 @@ namespace Nucleus.Gaming
 
                 if (i == (players.Count - 1))
                 {
-                    Log("End process changes - All done!");
-                    try
-                    {
-                        if (statusWinThread != null && statusWinThread.IsAlive)
-                        {
-                            Thread.Sleep(5000);
-                            if (statusWinThread != null && statusWinThread.IsAlive)
-                            {
-                                statusWinThread.Abort();
-                            }
-                        }
-                    }
-                    catch { }
+                    Log("End process changes - All done!");                  
                 }
                 else
                 {
@@ -3592,16 +3493,25 @@ namespace Nucleus.Gaming
             }
 
             if (!processingExit)
-            {
-                playTime = new Stopwatch();
-                playTime.Start();
-
-                GamepadNavigation.EnabledRuntime = false;
+            {          
                 GameProfile.SaveGameProfile(profile);
-                currentGameInfo.MetaInfo.FirstLaunch = false;
             }
 
             gen.OnFinishedSetup?.Invoke();
+
+            if (WindowsMerger.Instance != null)
+            {
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (gen.RefreshWindowAfterStart)
+                    {
+                        GlobalWindowMethods.ShowWindow(players[i].ProcessData.HWnd.NativePtr, 6);
+                        GlobalWindowMethods.ShowWindow(players[i].ProcessData.HWnd.NativePtr, 9);
+                    }
+
+                    WindowsMerger.Instance.InsertChildsAsync(players[i]);
+                }
+            }
         }
 
         struct UpdateTickThread
@@ -3685,18 +3595,6 @@ namespace Nucleus.Gaming
                 return;
             }
 
-            if (playTime != null )
-            {
-                if (playTime.IsRunning)
-                {
-                    if (playTime.Elapsed.Seconds > 0)
-                    {                       
-                        currentGameInfo.MetaInfo.SaveGameplayTime((ulong)playTime.Elapsed.Seconds);
-                        playTime.Stop();
-                    }
-                }
-            }
-
             if (!processingExit)
             {
                 processingExit = true;
@@ -3707,31 +3605,13 @@ namespace Nucleus.Gaming
                 return;
             }
 
-            if (GamepadNavigation.Enabled)
-            {
-                GamepadNavigation.EnabledRuntime = true;
-            }
-
-            if (ini.IniReadValue("Misc", "ShowStatus") == "True")
-            {
-                try
-                {
-                    if (statusWinThread != null && statusWinThread.IsAlive)
-                    {
-                        statusWinThread.Abort();
-                        Thread.Sleep(50);
-                    }
-
-                    statusWinThread = new Thread(ShowStatus);
-                    statusWinThread.Start();
-                }
-                catch { }
-            }
-
             Log("----------------- SHUTTING DOWN -----------------");
 
-            GlobalWindowMethods.finish = false;
-            GlobalWindowMethods.TopMostToggle = true;
+            GlobalWindowMethods.RefreshBools();
+            
+            IntPtr merger = User32Interop.FindWindow(null, "WindowsMerger");
+            Thread.Sleep(100);
+            User32Interop.CloseWindow(merger);
 
             if (splitForms.Count > 0)
             {
@@ -3946,16 +3826,7 @@ namespace Nucleus.Gaming
             }
 #endif
             Log("All done closing operations.");
-
-            try
-            {
-                if (statusWinThread != null && statusWinThread.IsAlive)
-                {
-                    statusWinThread.Abort();
-                }
-            }
-            catch { }
-
+           
             Ended?.Invoke();
         }
 
@@ -3979,14 +3850,6 @@ namespace Nucleus.Gaming
                 }
             }
             catch { }
-        }
-
-        private void StatusForm_Closing(object sender, FormClosingEventArgs e)
-        {
-            if (!processingExit)
-            {
-                Thread.Sleep(5000);
-            }
         }
     }
 }

@@ -19,13 +19,13 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string nucConfigPath = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.currentGameInfo.UserProfileConfigPath);
-            string realConfigPath = Path.Combine(handlerInstance.NucleusEnvironmentRoot, handlerInstance.currentGameInfo.UserProfileConfigPath);
-            if ((!Directory.Exists(nucConfigPath) && Directory.Exists(realConfigPath)) || (Directory.Exists(realConfigPath) && handlerInstance.currentGameInfo.ForceUserProfileConfigCopy))
+            string nucConfigPath = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
+            string realConfigPath = Path.Combine(handlerInstance.NucleusEnvironmentRoot, handlerInstance.CurrentGameInfo.UserProfileConfigPath);
+            if ((!Directory.Exists(nucConfigPath) && Directory.Exists(realConfigPath)) || (Directory.Exists(realConfigPath) && handlerInstance.CurrentGameInfo.ForceUserProfileConfigCopy))
             {
                 Directory.CreateDirectory(nucConfigPath);
 
-                handlerInstance.Log("Config path " + handlerInstance.currentGameInfo.UserProfileConfigPath + " does not exist for Nucleus nickname " + player.Nickname + " environment. Copying folder and all its contents over");
+                handlerInstance.Log("Config path " + handlerInstance.CurrentGameInfo.UserProfileConfigPath + " does not exist for Nucleus nickname " + player.Nickname + " environment. Copying folder and all its contents over");
                 foreach (string dir in Directory.GetDirectories(realConfigPath, "*", SearchOption.AllDirectories))
                 {
                     Directory.CreateDirectory(Path.Combine(nucConfigPath, dir.Substring(realConfigPath.Length + 1)));
@@ -51,13 +51,13 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string nucSavePath = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.currentGameInfo.UserProfileSavePath);
-            string realSavePath = Path.Combine(handlerInstance.NucleusEnvironmentRoot, handlerInstance.currentGameInfo.UserProfileSavePath);
-            if ((!Directory.Exists(nucSavePath) && Directory.Exists(realSavePath)) || (Directory.Exists(realSavePath) && handlerInstance.currentGameInfo.ForceUserProfileSaveCopy))
+            string nucSavePath = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileSavePath);
+            string realSavePath = Path.Combine(handlerInstance.NucleusEnvironmentRoot, handlerInstance.CurrentGameInfo.UserProfileSavePath);
+            if ((!Directory.Exists(nucSavePath) && Directory.Exists(realSavePath)) || (Directory.Exists(realSavePath) && handlerInstance.CurrentGameInfo.ForceUserProfileSaveCopy))
             {
                 Directory.CreateDirectory(nucSavePath);
 
-                handlerInstance.Log("Save path " + handlerInstance.currentGameInfo.UserProfileConfigPath + " does not exist in Nucleus nickname " + player.Nickname + " environment. Copying folder and all its contents over");
+                handlerInstance.Log("Save path " + handlerInstance.CurrentGameInfo.UserProfileConfigPath + " does not exist in Nucleus nickname " + player.Nickname + " environment. Copying folder and all its contents over");
                 foreach (string dir in Directory.GetDirectories(realSavePath, "*", SearchOption.AllDirectories))
                 {
                     Directory.CreateDirectory(Path.Combine(nucSavePath, dir.Substring(realSavePath.Length + 1)));
@@ -84,13 +84,13 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string nucConfigPath = Path.Combine($@"{Path.GetDirectoryName(handlerInstance.DocumentsRoot)}\NucleusCoop\{player.Nickname}\Documents\", handlerInstance.currentGameInfo.DocumentsConfigPath);
-            string realConfigPath = Path.Combine(handlerInstance.DocumentsRoot, handlerInstance.currentGameInfo.DocumentsConfigPath);
-            if ((!Directory.Exists(nucConfigPath) && Directory.Exists(realConfigPath)) || (Directory.Exists(realConfigPath) && handlerInstance.currentGameInfo.ForceDocumentsConfigCopy))
+            string nucConfigPath = Path.Combine($@"{Path.GetDirectoryName(handlerInstance.DocumentsRoot)}\NucleusCoop\{player.Nickname}\Documents\", handlerInstance.CurrentGameInfo.DocumentsConfigPath);
+            string realConfigPath = Path.Combine(handlerInstance.DocumentsRoot, handlerInstance.CurrentGameInfo.DocumentsConfigPath);
+            if ((!Directory.Exists(nucConfigPath) && Directory.Exists(realConfigPath)) || (Directory.Exists(realConfigPath) && handlerInstance.CurrentGameInfo.ForceDocumentsConfigCopy))
             {
                 Directory.CreateDirectory(nucConfigPath);
 
-                handlerInstance.Log("Config path " + handlerInstance.currentGameInfo.DocumentsConfigPath + " does not exist for Nucleus nickname " + player.Nickname + " environment. Copying folder and all its contents over");
+                handlerInstance.Log("Config path " + handlerInstance.CurrentGameInfo.DocumentsConfigPath + " does not exist for Nucleus nickname " + player.Nickname + " environment. Copying folder and all its contents over");
                 foreach (string dir in Directory.GetDirectories(realConfigPath, "*", SearchOption.AllDirectories))
                 {
                     Directory.CreateDirectory(Path.Combine(nucConfigPath, dir.Substring(realConfigPath.Length + 1)));
@@ -117,14 +117,14 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string nucSavePath = Path.Combine($@"{Path.GetDirectoryName(handlerInstance.DocumentsRoot)}\NucleusCoop\{player.Nickname}\Documents\", handlerInstance.currentGameInfo.DocumentsSavePath);
-            string realSavePath = Path.Combine(handlerInstance.DocumentsRoot, handlerInstance.currentGameInfo.DocumentsSavePath);
+            string nucSavePath = Path.Combine($@"{Path.GetDirectoryName(handlerInstance.DocumentsRoot)}\NucleusCoop\{player.Nickname}\Documents\", handlerInstance.CurrentGameInfo.DocumentsSavePath);
+            string realSavePath = Path.Combine(handlerInstance.DocumentsRoot, handlerInstance.CurrentGameInfo.DocumentsSavePath);
 
-            if ((!Directory.Exists(nucSavePath) && Directory.Exists(realSavePath)) || (Directory.Exists(realSavePath) && handlerInstance.currentGameInfo.ForceDocumentsSaveCopy))
+            if ((!Directory.Exists(nucSavePath) && Directory.Exists(realSavePath)) || (Directory.Exists(realSavePath) && handlerInstance.CurrentGameInfo.ForceDocumentsSaveCopy))
             {
                 Directory.CreateDirectory(nucSavePath);
 
-                handlerInstance.Log("Save path " + handlerInstance.currentGameInfo.DocumentsConfigPath + " does not exist in Nucleus nickname " + player.Nickname + " environment. Copying folder and all its contents over");
+                handlerInstance.Log("Save path " + handlerInstance.CurrentGameInfo.DocumentsConfigPath + " does not exist in Nucleus nickname " + player.Nickname + " environment. Copying folder and all its contents over");
                 foreach (string dir in Directory.GetDirectories(realSavePath, "*", SearchOption.AllDirectories))
                 {
                     Directory.CreateDirectory(Path.Combine(nucSavePath, dir.Substring(realSavePath.Length + 1)));
@@ -149,14 +149,14 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         public static void DeleteFilesInConfigPath(PlayerInfo player)
         {
             var handlerInstance = GenericGameHandler.Instance;
-            string path = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.currentGameInfo.UserProfileConfigPath);
+            string path = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
 
-            foreach (string fileName in handlerInstance.currentGameInfo.DeleteFilesInConfigPath)
+            foreach (string fileName in handlerInstance.CurrentGameInfo.DeleteFilesInConfigPath)
             {
                 string[] foundFiles = Directory.GetFiles(path, fileName, SearchOption.AllDirectories);
                 foreach (string foundFile in foundFiles)
                 {
-                    if (!handlerInstance.currentGameInfo.IgnoreDeleteFilesPrompt)
+                    if (!handlerInstance.CurrentGameInfo.IgnoreDeleteFilesPrompt)
                     {
                         DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete '" + foundFile + "'?", "Nucleus - Delete Files In Config Path", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (dialogResult != DialogResult.Yes)
@@ -174,14 +174,14 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         public static void DeleteFilesInSavePath(PlayerInfo player)
         {
             var handlerInstance = GenericGameHandler.Instance;
-            string path = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.currentGameInfo.UserProfileConfigPath);
+            string path = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
 
-            foreach (string fileName in handlerInstance.currentGameInfo.DeleteFilesInSavePath)
+            foreach (string fileName in handlerInstance.CurrentGameInfo.DeleteFilesInSavePath)
             {
                 string[] foundFiles = Directory.GetFiles(path, fileName, SearchOption.AllDirectories);
                 foreach (string foundFile in foundFiles)
                 {
-                    if (!handlerInstance.currentGameInfo.IgnoreDeleteFilesPrompt)
+                    if (!handlerInstance.CurrentGameInfo.IgnoreDeleteFilesPrompt)
                     {
                         DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete '" + foundFile + "'?", "Nucleus - Delete Files In Save Path", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (dialogResult != DialogResult.Yes)
@@ -261,7 +261,7 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
             Directory.CreateDirectory(envVars["LOCALAPPDATA"].ToString());
             Directory.CreateDirectory(Path.GetDirectoryName(handlerInstance.DocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents");
 
-            if (handlerInstance.currentGameInfo.DocumentsConfigPath?.Length > 0 || handlerInstance.currentGameInfo.DocumentsSavePath?.Length > 0)
+            if (handlerInstance.CurrentGameInfo.DocumentsConfigPath?.Length > 0 || handlerInstance.CurrentGameInfo.DocumentsSavePath?.Length > 0)
             {
                 if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
                 {

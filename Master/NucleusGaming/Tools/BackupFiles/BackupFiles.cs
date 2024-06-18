@@ -12,7 +12,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
         public static void StartFilesBackup(string[] filesToBackup)
         {
             var handlerInstance = GenericGameHandler.Instance;
-            string gameGUID = handlerInstance.currentGameInfo.GUID;
+            string gameGUID = handlerInstance.CurrentGameInfo.GUID;
 
             string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);//game content root        
             
@@ -73,7 +73,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
         public static void StartFoldersBackup(string[] foldersToBackup)
         {
             var handlerInstance = GenericGameHandler.Instance;
-            string gameGUID = handlerInstance.currentGameInfo.GUID;
+            string gameGUID = handlerInstance.CurrentGameInfo.GUID;
 
             string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);//game content root
 
@@ -149,7 +149,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
         public static void StartBackupsRestoration()
         {
             var handlerInstance = GenericGameHandler.Instance;
-            string gameGUID = handlerInstance.currentGameInfo.GUID;
+            string gameGUID = handlerInstance.CurrentGameInfo.GUID;
 
             string gameContentPath = Path.Combine(GameManager.Instance.GetAppContentPath(), gameGUID);//game content root
             

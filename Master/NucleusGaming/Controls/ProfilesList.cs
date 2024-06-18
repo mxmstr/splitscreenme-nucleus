@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Jint;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls.SetupScreen;
@@ -12,6 +13,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
@@ -28,7 +30,6 @@ namespace Nucleus.Gaming.Controls
         public bool Locked = false;
 
         private Cursor hand_Cursor;
-        private Color buttonsBackColor;
         private Color foreColor;
         public static readonly string PartialTitle = "Load profile:";
 
@@ -50,8 +51,6 @@ namespace Nucleus.Gaming.Controls
             Visible = false;
             BorderStyle = BorderStyle.None;
             
-
-
             foreColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[0]), 
                                        int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[1]), 
                                        int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[2]));
@@ -78,6 +77,25 @@ namespace Nucleus.Gaming.Controls
             hand_Cursor = Theme_Settings.Hand_Cursor;
 
             Instance = this;
+        }
+
+        public void Update_Reload()
+        {
+            MouseEventArgs eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
+            string name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString();
+
+            Label label = new Label
+            {
+                Name = name,
+                Text = $"{PartialTitle} {name}"
+            };
+
+            ProfileBtn_CheckedChanged(label, eventArgs);
+        }
+
+        public void Update_Unload()
+        {
+            ProfileBtn_CheckedChanged(new Label(), null);
         }
 
         public void ProfileBtn_CheckedChanged(object sender, MouseEventArgs e)
@@ -256,7 +274,7 @@ namespace Nucleus.Gaming.Controls
                     ToolTip unloadTooltip = CustomToolTips.SetToolTip(profileBtn, "Unload current loaded handler profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
 
-                using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new Bitmap(1, 1)))
+                using (Graphics graphics = Graphics.FromImage(new Bitmap(1, 1)))
                 {
                     sizes.Add(graphics.MeasureString(profileBtn.Text, profileBtn.Font, Size.Width, StringFormat.GenericDefault));
                 }
@@ -273,20 +291,12 @@ namespace Nucleus.Gaming.Controls
 
             try
             {
-                if (Region != null)
-                {
-                    Region.Dispose();
-                }
-
+                Region?.Dispose();
                 Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -10, Width + 20, Height, 18, 18));
             }
             catch
             {
-                if (Region != null)
-                {
-                    Region.Dispose();
-                }
-
+                Region?.Dispose();
                 Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -10, Width + 20, Height, 18, 12));
             }
 
@@ -298,7 +308,6 @@ namespace Nucleus.Gaming.Controls
                 Visible = false;
             }
         }
-
 
         //Show profile config or user notes in handler note "zoomed" textbox
         private void Profile_Preview(object sender, EventArgs e)
@@ -320,22 +329,96 @@ namespace Nucleus.Gaming.Controls
             string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(preview.Name) - 1]);
             JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
-            string text;
-
-            if ((string)Jprofile["Notes"] != "" && (string)Jprofile["Notes"] != null)
-            {
-                text = (string)Jprofile["Notes"];
-            }
-            else
-            {
-                text = jsonString;
-            }
-
-            Globals.HandlerNotesZoom.Notes.Text = text;
+            Globals.HandlerNotesZoom.Notes.Text = BuildPreviewText(Jprofile);
             Globals.HandlerNotesZoom.Visible = true;
             Globals.HandlerNotesZoom.BringToFront();
         }
 
+        private string BuildPreviewText(JObject Jprofile)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if(Jprofile["Title"].ToString() != "")
+            {
+               sb.Append($"Title: {Jprofile["Title"]}\n\n");
+            }
+
+            if (Jprofile["Notes"].ToString() != "")
+            {
+                sb.Append($"User Notes:\n");
+                sb.Append($"{Jprofile["Notes"]}\n\n");
+            }
+           
+            sb.Append($"Players Count: {Jprofile["Player(s)"]}\n\n");
+            sb.Append($"Gamepads Used: {Jprofile["Controller(s)"]}\n");
+            sb.Append($"Keyboard/Mouse Combo Used: {Jprofile["K&M"]}\n\n");
+            sb.Append($"Use Xinput Indexes: {Jprofile["Use XInput Index"]}\n");
+            sb.Append($"AutoPlay: {Jprofile["AutoPlay"]["Enabled"]}\n");
+            sb.Append($"Use Custom Nicknames: {Jprofile["UseNicknames"]["Use"]}\n");
+            sb.Append($"Auto Desktop Scaling On: {Jprofile["AutoDesktopScaling"]["Enabled"]}\n\n");
+
+            if(Jprofile["Options"].Count() > 0)
+            {
+                sb.Append($"Choosen Options:\n");
+
+                JToken Joptions = Jprofile["Options"];
+
+                foreach (JProperty Jopt in Joptions)
+                {
+                    sb.Append($" -{(string)Jopt.Name}: {Jopt.Value}\n");
+                }
+
+                sb.Append($"\n");
+            }
+
+            if ((bool)Jprofile["UseSplitDiv"]["Enabled"])
+            {
+                sb.Append($"Splitcreen Division Settings:\n");
+                sb.Append($" -Color: {Jprofile["UseSplitDiv"]["Color"]}\n");
+                sb.Append($" -Hide Desktop Only: {Jprofile["UseSplitDiv"]["HideOnly"]}\n\n");           
+            }
+            else 
+            {
+                sb.Append($"Splitcreen Division: Off\n\n");
+            }
+
+            sb.Append($"Custom Windows Setup Timing: {Jprofile["WindowsSetupTiming"]["Time"]}ms\n");
+            sb.Append($"Custom Instances Startup Wait Time: {Jprofile["PauseBetweenInstanceLaunch"]["Time"]}ms\n\n");
+
+            sb.Append($"Cutscenes Mode Settings:\n");
+            sb.Append($" -Keep Window Size: {Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"]}\n");
+            sb.Append($" -Mute Audio Only: {Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"]}\n");
+            sb.Append($" -UnFocus Game Windows On Exit: {Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"]}\n\n");
+
+            sb.Append($"Players Info:\n");
+
+            for (int i = 0; i < Jprofile["Data"].Count(); i++)
+            {
+                var playerDatas = Jprofile["Data"][i];
+
+                sb.Append($"\n");
+                sb.Append($" -Nickname: {playerDatas["Nickname"]}\n");
+                sb.Append($" -Index: {(int)playerDatas["PlayerID"] + 1}\n");             
+                sb.Append($" -Steam Id: {playerDatas["SteamID"]}\n");
+                
+                bool isController = (bool)playerDatas["IsDInput"] || (bool)playerDatas["IsXInput"];
+                if (isController)
+                {
+                    sb.Append($" -Device Type: Gamepad\n");
+                }
+                else 
+                {
+                    sb.Append($" -Device Type: Keyboard/Mouse\n");
+                }
+
+                sb.Append($" -Screen Index: {playerDatas["ScreenIndex"]}\n");
+                sb.Append($"------------------------");
+            }
+
+            string preview = sb.ToString();
+           
+           return preview;
+        }
 
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
         {
@@ -419,11 +502,9 @@ namespace Nucleus.Gaming.Controls
             }
         }
 
-
         protected override void OnPaint(PaintEventArgs e)
         {
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
-            Graphics g = e.Graphics;
 
             Color color = Color.FromArgb(useGradient ? 100 : 0, backGradient[1], backGradient[2], backGradient[3]);
             Color color2 = Color.FromArgb(useGradient ? 120 : 0, backGradient[1], backGradient[2], backGradient[3]);
@@ -435,8 +516,8 @@ namespace Nucleus.Gaming.Controls
             topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
 
             lgb.InterpolationColors = topcblend;
-            g.FillRectangle(lgb, gradientBrushbounds);
-
+            e.Graphics.FillRectangle(lgb, gradientBrushbounds);
+            lgb.Dispose();
         }
 
         public void UpdateSize(float scale)

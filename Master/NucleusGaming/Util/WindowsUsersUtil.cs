@@ -212,7 +212,7 @@ namespace Nucleus.Gaming.Util
 
             handlerInstance.launchProc = Process.GetProcessById(processInformation.dwProcessId);
 
-            if (handlerInstance.currentGameInfo.TransferNucleusUserAccountProfiles)
+            if (handlerInstance.CurrentGameInfo.TransferNucleusUserAccountProfiles)
             {
                 Thread.Sleep(1000);
                 handlerInstance.Log("Transfer Nucleus user account profiles is enabled");
@@ -221,9 +221,9 @@ namespace Nucleus.Gaming.Util
                 string OrigSourcePath = handlerInstance.NucleusEnvironmentRoot + $@"\NucleusCoop\UserAccounts\{player.UserProfile}";
                 SourcePath.Add(OrigSourcePath);
 
-                if (handlerInstance.currentGameInfo.CopyEnvFoldersToNucleusAccounts?.Length > 0)
+                if (handlerInstance.CurrentGameInfo.CopyEnvFoldersToNucleusAccounts?.Length > 0)
                 {
-                    foreach (string folder in handlerInstance.currentGameInfo.CopyEnvFoldersToNucleusAccounts)
+                    foreach (string folder in handlerInstance.CurrentGameInfo.CopyEnvFoldersToNucleusAccounts)
                     {
                         SourcePath.Add(handlerInstance.NucleusEnvironmentRoot + "\\" + folder);
                     }

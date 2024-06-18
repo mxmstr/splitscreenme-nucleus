@@ -73,6 +73,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 IsBackground = true
             };
+
             serverThread.Start();
 
             if (needWritePipe)

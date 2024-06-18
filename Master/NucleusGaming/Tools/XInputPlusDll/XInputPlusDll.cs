@@ -19,14 +19,14 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
             handlerInstance.Log("Setting up XInput Plus");
             string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\XInputPlus");
 
-            if (handlerInstance.currentGameInfo.XInputPlusOldDll)
+            if (handlerInstance.CurrentGameInfo.XInputPlusOldDll)
             {
                 utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\XInputPlus\\old");
             }
 
             if (setupDll)
             {
-                foreach (string xinputDllName in handlerInstance.currentGameInfo.XInputPlusDll)
+                foreach (string xinputDllName in handlerInstance.CurrentGameInfo.XInputPlusDll)
                 {
                     string xinputDll = "xinput1_3.dl_";
 
@@ -55,11 +55,11 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                 }
             }
 
-            if (!handlerInstance.currentGameInfo.XInputPlusNoIni)
+            if (!handlerInstance.CurrentGameInfo.XInputPlusNoIni)
             {
                 List<string> textChanges = new List<string>();
 
-                if (player.IsController || (player.IsKeyboardPlayer && handlerInstance.currentGameInfo.PlayersPerInstance <= 1))
+                if (player.IsController || (player.IsKeyboardPlayer && handlerInstance.CurrentGameInfo.PlayersPerInstance <= 1))
                 {
                     if (setupDll)
                     {
@@ -72,9 +72,9 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
 
                     handlerInstance.Log("Making changes to the lines in XInputPlus.ini; FileVersion and Controller values");
 
-                    handlerInstance.currentGameInfo.XInputPlusDll = Array.ConvertAll(handlerInstance.currentGameInfo.XInputPlusDll, x => x.ToLower());
+                    handlerInstance.CurrentGameInfo.XInputPlusDll = Array.ConvertAll(handlerInstance.CurrentGameInfo.XInputPlusDll, x => x.ToLower());
 
-                    if (handlerInstance.currentGameInfo.XInputPlusDll.ToList().Any(val => val.StartsWith("dinput") == true)) //(xinputDll.ToLower().StartsWith("dinput"))
+                    if (handlerInstance.CurrentGameInfo.XInputPlusDll.ToList().Any(val => val.StartsWith("dinput") == true)) //(xinputDll.ToLower().StartsWith("dinput"))
                     {
                         handlerInstance.Log("A Dinput dll has been detected, also enabling X2Dinput in XInputPlus.ini");
                         textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"), "EnableX2Dinput=", SearchType.StartsWith) + "|EnableX2Dinput=True");
@@ -84,13 +84,13 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
 
                     if (player.IsController)
                     {
-                        if (handlerInstance.currentGameInfo.PlayersPerInstance > 1)
+                        if (handlerInstance.CurrentGameInfo.PlayersPerInstance > 1)
                         {
-                            for (int x = 1; x <= handlerInstance.currentGameInfo.PlayersPerInstance; x++)
+                            for (int x = 1; x <= handlerInstance.CurrentGameInfo.PlayersPerInstance; x++)
                             {
                                 textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"), "Controller" + x + "=", SearchType.StartsWith) + "|Controller" + x + "=" + (x + handlerInstance.plyrIndex));
                             }
-                            handlerInstance.plyrIndex += handlerInstance.currentGameInfo.PlayersPerInstance;
+                            handlerInstance.plyrIndex += handlerInstance.CurrentGameInfo.PlayersPerInstance;
                         }
                         else
                         {
@@ -116,17 +116,17 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
 
             if (setupDll)
             {
-                handlerInstance.Log(string.Format("Setting up Custom DLL, UseAlpha8CustomDll: {0}", handlerInstance.currentGameInfo.Hook.UseAlpha8CustomDll));
+                handlerInstance.Log(string.Format("Setting up Custom DLL, UseAlpha8CustomDll: {0}", handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll));
 
                 byte[] xdata;
 
-                if (handlerInstance.currentGameInfo.Hook.UseAlpha8CustomDll && !handlerInstance.gameIs64)
+                if (handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll && !handlerInstance.gameIs64)
                 {
                     xdata = Properties.Resources.xinput1_3;
                 }
                 else
                 {
-                    if (handlerInstance.currentGameInfo.Hook.UseAlpha8CustomDll)
+                    if (handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll)
                     {
                         handlerInstance.Log("Using Alpha 10 custom dll as there is no Alpha 8 x64 custom dll");
                     }
@@ -185,22 +185,22 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
 
             x360.IniWriteValue("Options", "Log", "0");
             x360.IniWriteValue("Options", "FileLog", "0");
-            x360.IniWriteValue("Options", "ForceFocus", handlerInstance.currentGameInfo.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "ForceFocus", handlerInstance.CurrentGameInfo.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
 
-            if (!handlerInstance.currentGameInfo.Hook.UseAlpha8CustomDll)
+            if (!handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll)
             {
                 x360.IniWriteValue("Options", "Version", "2");
-                x360.IniWriteValue("Options", "ForceFocusWindowRegex", handlerInstance.currentGameInfo.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
+                x360.IniWriteValue("Options", "ForceFocusWindowRegex", handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                string windowTitle = handlerInstance.currentGameInfo.Hook.ForceFocusWindowName;
-                if (handlerInstance.currentGameInfo.IdInWindowTitle || handlerInstance.currentGameInfo.FlawlessWidescreen?.Length > 0)
+                string windowTitle = handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName;
+                if (handlerInstance.CurrentGameInfo.IdInWindowTitle || handlerInstance.CurrentGameInfo.FlawlessWidescreen?.Length > 0)
                 {
-                    windowTitle = handlerInstance.currentGameInfo.Hook.ForceFocusWindowName + "(" + i + ")";
-                    if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.FlawlessWidescreen))
+                    windowTitle = handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName + "(" + i + ")";
+                    if (!string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.FlawlessWidescreen))
                     {
-                        windowTitle = "Nucleus Instance " + (i + 1) + "(" + handlerInstance.currentGameInfo.Hook.ForceFocusWindowName + ")";
+                        windowTitle = "Nucleus Instance " + (i + 1) + "(" + handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName + ")";
                     }
                 }
                 x360.IniWriteValue("Options", "ForceFocusWindowName", windowTitle.ToString(CultureInfo.InvariantCulture));
@@ -241,7 +241,7 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                 x360.IniWriteValue("Options", "ResHeight", handlerInstance.context.Height.ToString(CultureInfo.InvariantCulture));
             }
 
-            if (!handlerInstance.currentGameInfo.Hook.UseAlpha8CustomDll)
+            if (!handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll)
             {
                 if (handlerInstance.context.Hook.FixResolution)
                 {

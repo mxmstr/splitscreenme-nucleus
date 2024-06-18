@@ -815,8 +815,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 {
                     RectangleF s = screen.UIBounds;
 
-                    float offset = s.Width * 0.05f;
-
                     draggingScreen = screen.Index;
 
                     if (!GetFreeSpace(player))
@@ -836,7 +834,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     destEditBounds = RectangleF.Empty;
                 }
 
-                RectangleF p = new RectangleF(mousePos.X + draggingOffset.X, mousePos.Y + draggingOffset.Y, player.SourceEditBounds.Width, player.SourceEditBounds.Height);
+                RectangleF p = new RectangleF(mousePos.X - (player.EditBounds.Width/2), mousePos.Y - (player.EditBounds.Height/2), player.SourceEditBounds.Width, player.SourceEditBounds.Height);
                 player.EditBounds = p;
 
                 parent.Invalidate(false);

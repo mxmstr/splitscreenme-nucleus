@@ -10,7 +10,7 @@ namespace Nucleus.Coop.Tools
     internal class SetBackroundAndCover
     {
         private static MainForm main;
-        private static int blurValue;
+        private static int blurValue = int.Parse(Globals.ini.IniReadValue("Dev", "Blur"));
         private static Color colorTop;
         private static Color colorBottom;
 
@@ -33,7 +33,6 @@ namespace Nucleus.Coop.Tools
         public static void ApplyBackgroundAndCover(MainForm mainForm, string gameGuid)
         {
             main = mainForm;
-            blurValue = int.Parse(Globals.ini.IniReadValue("Dev", "Blur"));
 
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))

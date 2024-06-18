@@ -7,9 +7,9 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop.Controls
 {
-    public partial class donationPanel : UserControl
+    public partial class DonationPanel : UserControl
     {
-        public donationPanel()
+        public DonationPanel()
         {
             InitializeComponent();
 

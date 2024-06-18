@@ -16,6 +16,7 @@ namespace Nucleus.Gaming.Coop
         private RectangleF sourceEditBounds;
         private RectangleF editBounds;
         private Rectangle monitorBounds;
+        private Rectangle defaultMonitorBounds;
 
         private object tag;
 
@@ -52,6 +53,9 @@ namespace Nucleus.Gaming.Coop
         public Joystick DInputJoystick;
         public OpenXinputController XInputJoystick;
         private ProcessData processData;
+
+        public Window RawInputWindow
+        { get; set; }
 
         public long SteamID = -1;
 
@@ -99,6 +103,12 @@ namespace Nucleus.Gaming.Coop
         {
             get => editBounds;
             set => editBounds = value;
+        }
+
+        public Rectangle DefaultMonitorBounds
+        {
+            get => defaultMonitorBounds;
+            set => defaultMonitorBounds = value;
         }
 
         /// <summary>

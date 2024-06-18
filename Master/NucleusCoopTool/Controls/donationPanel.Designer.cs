@@ -1,6 +1,6 @@
 ﻿namespace Nucleus.Coop.Controls
 {
-    partial class donationPanel
+    partial class DonationPanel
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(donationPanel));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DonationPanel));
             this.Ilyaki_label = new System.Windows.Forms.Label();
             this.Mikou_label = new System.Windows.Forms.Label();
             this.title = new System.Windows.Forms.Label();

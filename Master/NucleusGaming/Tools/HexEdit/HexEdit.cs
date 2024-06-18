@@ -25,7 +25,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string[] splitValues = handlerInstance.currentGameInfo.HexEditFile[i].Split('|');
+            string[] splitValues = handlerInstance.CurrentGameInfo.HexEditFile[i].Split('|');
             if (splitValues.Length == 3)
             {
                 string filePath = splitValues[0];
@@ -60,7 +60,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
             }
             else
             {
-                Log("Invalid # of parameters provided for: " + handlerInstance.currentGameInfo.HexEditFile[i] + ", skipping");
+                Log("Invalid # of parameters provided for: " + handlerInstance.CurrentGameInfo.HexEditFile[i] + ", skipping");
             }
 
             Log("Patching executable complete");
@@ -71,7 +71,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            foreach (string asciiValues in handlerInstance.currentGameInfo.HexEditAllFiles)
+            foreach (string asciiValues in handlerInstance.CurrentGameInfo.HexEditAllFiles)
             {
                 string[] splitValues = asciiValues.Split('|');
                 if (splitValues.Length == 3)
@@ -128,47 +128,47 @@ namespace Nucleus.Gaming.Tools.HexEdit
 
             if (origExists)
             {
-                string[] splitValues = handlerInstance.currentGameInfo.HexEditExe[i].Split('|');
+                string[] splitValues = handlerInstance.CurrentGameInfo.HexEditExe[i].Split('|');
                 if (splitValues.Length == 2)
                 {
-                    Log(string.Format("Temporarily renaming original executable {0} to {1}", handlerInstance.currentGameInfo.ExecutableName, Path.GetFileNameWithoutExtension(handlerInstance.currentGameInfo.ExecutableName) + "-TEMP.exe"));
+                    Log(string.Format("Temporarily renaming original executable {0} to {1}", handlerInstance.CurrentGameInfo.ExecutableName, Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.ExecutableName) + "-TEMP.exe"));
                     File.Move(handlerInstance.exePath, Path.Combine(Path.GetDirectoryName(handlerInstance.exePath), Path.GetFileNameWithoutExtension(handlerInstance.exePath) + "-TEMP.exe"));
-                    Log(string.Format("Created patched executable {0} where the text string '{1}' has been replaced with '{2}'", handlerInstance.currentGameInfo.ExecutableName, splitValues[0], splitValues[1]));
+                    Log(string.Format("Created patched executable {0} where the text string '{1}' has been replaced with '{2}'", handlerInstance.CurrentGameInfo.ExecutableName, splitValues[0], splitValues[1]));
                     handlerInstance.context.PatchFile(handlerInstance.exePath.Substring(0, handlerInstance.exePath.Length - 4) + "-TEMP.exe", handlerInstance.exePath, splitValues[0], splitValues[1]);
-                    Log(string.Format("Deleting temporary executable {0}", Path.GetFileNameWithoutExtension(handlerInstance.currentGameInfo.ExecutableName) + "-TEMP.exe"));
+                    Log(string.Format("Deleting temporary executable {0}", Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.ExecutableName) + "-TEMP.exe"));
                     File.Delete(Path.Combine(Path.GetDirectoryName(handlerInstance.exePath), Path.GetFileNameWithoutExtension(handlerInstance.exePath) + "-TEMP.exe"));
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(handlerInstance.currentGameInfo.HexEditExe[i]))
+                    if (string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.HexEditExe[i]))
                     {
                         Log("Nothing to change for this instance's executable");
                     }
                     else
                     {
-                        Log("Invalid # of parameters provided for: " + handlerInstance.currentGameInfo.HexEditFile[i] + ", skipping");
+                        Log("Invalid # of parameters provided for: " + handlerInstance.CurrentGameInfo.HexEditFile[i] + ", skipping");
                     }
                 }
             }
             else
             {
-                string[] splitValues = handlerInstance.currentGameInfo.HexEditExe[i].Split('|');
+                string[] splitValues = handlerInstance.CurrentGameInfo.HexEditExe[i].Split('|');
                 if (splitValues.Length == 2)
                 {
-                    Log(string.Format("Renaming original executable {0} to {1}", handlerInstance.currentGameInfo.ExecutableName, Path.GetFileNameWithoutExtension(handlerInstance.currentGameInfo.ExecutableName) + "-ORIG.exe"));
+                    Log(string.Format("Renaming original executable {0} to {1}", handlerInstance.CurrentGameInfo.ExecutableName, Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.ExecutableName) + "-ORIG.exe"));
                     File.Move(handlerInstance.exePath, Path.Combine(Path.GetDirectoryName(handlerInstance.exePath), Path.GetFileNameWithoutExtension(handlerInstance.exePath) + "-ORIG.exe"));
-                    Log(string.Format("Created patched executable {0} where {1} has been replaced with {2}", handlerInstance.currentGameInfo.ExecutableName, splitValues[0], splitValues[1]));
+                    Log(string.Format("Created patched executable {0} where {1} has been replaced with {2}", handlerInstance.CurrentGameInfo.ExecutableName, splitValues[0], splitValues[1]));
                     handlerInstance.context.PatchFile(handlerInstance.exePath.Substring(0, handlerInstance.exePath.Length - 4) + "-ORIG.exe", handlerInstance.exePath, splitValues[0], splitValues[1]);
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(handlerInstance.currentGameInfo.HexEditExe[i]))
+                    if (string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.HexEditExe[i]))
                     {
                         Log("Nothing to change for this instance's executable");
                     }
                     else
                     {
-                        Log("Invalid # of parameters provided for: " + handlerInstance.currentGameInfo.HexEditFile[i] + ", skipping");
+                        Log("Invalid # of parameters provided for: " + handlerInstance.CurrentGameInfo.HexEditFile[i] + ", skipping");
                     }
                 }
             }
@@ -187,18 +187,18 @@ namespace Nucleus.Gaming.Tools.HexEdit
                 origExists = true;
             }
 
-            foreach (string asciiValues in handlerInstance.currentGameInfo.HexEditAllExes)
+            foreach (string asciiValues in handlerInstance.CurrentGameInfo.HexEditAllExes)
             {
                 if (origExists)
                 {
                     string[] splitValues = asciiValues.Split('|');
                     if (splitValues.Length == 2)
                     {
-                        Log(string.Format("Temporarily renaming original executable {0} to {1}", handlerInstance.currentGameInfo.ExecutableName, Path.GetFileNameWithoutExtension(handlerInstance.currentGameInfo.ExecutableName) + "-TEMP.exe"));
+                        Log(string.Format("Temporarily renaming original executable {0} to {1}", handlerInstance.CurrentGameInfo.ExecutableName, Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.ExecutableName) + "-TEMP.exe"));
                         File.Move(handlerInstance.exePath, Path.Combine(Path.GetDirectoryName(handlerInstance.exePath), Path.GetFileNameWithoutExtension(handlerInstance.exePath) + "-TEMP.exe"));
-                        Log(string.Format("Created patched executable {0} where the text string '{1}' has been replaced with '{2}'", handlerInstance.currentGameInfo.ExecutableName, splitValues[0], splitValues[1]));
+                        Log(string.Format("Created patched executable {0} where the text string '{1}' has been replaced with '{2}'", handlerInstance.CurrentGameInfo.ExecutableName, splitValues[0], splitValues[1]));
                         handlerInstance.context.PatchFile(handlerInstance.exePath.Substring(0, handlerInstance.exePath.Length - 4) + "-TEMP.exe", handlerInstance.exePath, splitValues[0], splitValues[1]);
-                        Log(string.Format("Deleting temporary executable {0}", Path.GetFileNameWithoutExtension(handlerInstance.currentGameInfo.ExecutableName) + "-TEMP.exe"));
+                        Log(string.Format("Deleting temporary executable {0}", Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.ExecutableName) + "-TEMP.exe"));
                         File.Delete(Path.Combine(Path.GetDirectoryName(handlerInstance.exePath), Path.GetFileNameWithoutExtension(handlerInstance.exePath) + "-TEMP.exe"));
                     }
                     else
@@ -211,9 +211,9 @@ namespace Nucleus.Gaming.Tools.HexEdit
                     string[] splitValues = asciiValues.Split('|');
                     if (splitValues.Length == 2)
                     {
-                        Log(string.Format("Renaming original executable {0} to {1}", handlerInstance.currentGameInfo.ExecutableName, Path.GetFileNameWithoutExtension(handlerInstance.currentGameInfo.ExecutableName) + "-ORIG.exe"));
+                        Log(string.Format("Renaming original executable {0} to {1}", handlerInstance.CurrentGameInfo.ExecutableName, Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.ExecutableName) + "-ORIG.exe"));
                         File.Move(handlerInstance.exePath, Path.Combine(Path.GetDirectoryName(handlerInstance.exePath), Path.GetFileNameWithoutExtension(handlerInstance.exePath) + "-ORIG.exe"));
-                        Log(string.Format("Created patched executable {0} where the text string '{1}' has been replaced with '{2}'", handlerInstance.currentGameInfo.ExecutableName, splitValues[0], splitValues[1]));
+                        Log(string.Format("Created patched executable {0} where the text string '{1}' has been replaced with '{2}'", handlerInstance.CurrentGameInfo.ExecutableName, splitValues[0], splitValues[1]));
                         handlerInstance.context.PatchFile(handlerInstance.exePath.Substring(0, handlerInstance.exePath.Length - 4) + "-ORIG.exe", handlerInstance.exePath, splitValues[0], splitValues[1]);
                     }
                     else
@@ -230,7 +230,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            if (handlerInstance.currentGameInfo.SymlinkExe)
+            if (handlerInstance.CurrentGameInfo.SymlinkExe)
             {
                 Log("Skipping HexEditExeAddress, " + Path.GetFileName(handlerInstance.exePath) + " is symlinked");
                 return;
@@ -238,7 +238,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
 
             Log("HexEditExeAddress - Patching executable, " + Path.GetFileName(handlerInstance.exePath) + ", in instance folder");
 
-            if (!handlerInstance.currentGameInfo.SymlinkGame && !handlerInstance.currentGameInfo.HardlinkGame && !handlerInstance.currentGameInfo.HardcopyGame)
+            if (!handlerInstance.CurrentGameInfo.SymlinkGame && !handlerInstance.CurrentGameInfo.HardlinkGame && !handlerInstance.CurrentGameInfo.HardcopyGame)
             {
                 string fileBackup = Path.Combine(Path.GetDirectoryName(handlerInstance.exePath), Path.GetFileNameWithoutExtension(handlerInstance.exePath) + "_NUCLEUS_BACKUP.exe");
                 if (File.Exists(handlerInstance.exePath) && !File.Exists(fileBackup))
@@ -254,7 +254,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
                 }
             }
 
-            foreach (string hexSplitLine in handlerInstance.currentGameInfo.HexEditExeAddress)
+            foreach (string hexSplitLine in handlerInstance.CurrentGameInfo.HexEditExeAddress)
             {
                 string[] hexSplit = hexSplitLine.Split('|');
                 int indexOffset = 1;
@@ -292,7 +292,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            foreach (string hexSplitLine in handlerInstance.currentGameInfo.HexEditFileAddress)
+            foreach (string hexSplitLine in handlerInstance.CurrentGameInfo.HexEditFileAddress)
             {
                 string[] hexSplit = hexSplitLine.Split('|');
                 int indexOffset = 1;
@@ -320,7 +320,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
 
                 if (File.Exists(fullFilePath))
                 {
-                    if (!handlerInstance.currentGameInfo.SymlinkGame && !handlerInstance.currentGameInfo.HardlinkGame && !handlerInstance.currentGameInfo.HardcopyGame)
+                    if (!handlerInstance.CurrentGameInfo.SymlinkGame && !handlerInstance.CurrentGameInfo.HardlinkGame && !handlerInstance.CurrentGameInfo.HardcopyGame)
                     {
                         string fileBackup = Path.Combine(Path.GetDirectoryName(fullFilePath), Path.GetFileNameWithoutExtension(fullFilePath) + "_NUCLEUS_BACKUP" + Path.GetExtension(fullFilePath));
                         if (File.Exists(fullFilePath) && !File.Exists(fileBackup))

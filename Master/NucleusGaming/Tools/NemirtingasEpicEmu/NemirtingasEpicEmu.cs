@@ -43,7 +43,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
                 {
                     JObject emuSettings;
 
-                    if (handlerInstance.currentGameInfo.AltEpicEmuArgs)
+                    if (handlerInstance.CurrentGameInfo.AltEpicEmuArgs)
                     {
                         emuSettings = new JObject(
                         new JProperty("enable_overlay", false),

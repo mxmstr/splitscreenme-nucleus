@@ -1,14 +1,16 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Nucleus.Gaming.Coop
 {
     public class GameMetaInfo
-    {           
-        private  readonly string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";
-        private  readonly string metaInfoJson = "metaInfo.json";
+    {
+        private readonly string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";
+        private readonly string metaInfoJson = "metaInfo.json";
         private string guid;
 
         private string lastPlayedAt;
@@ -72,7 +74,6 @@ namespace Nucleus.Gaming.Coop
             }
         }
 
-
         private bool firstLaunch;
         public bool FirstLaunch
         {
@@ -114,9 +115,9 @@ namespace Nucleus.Gaming.Coop
                     if (hasMetaInfo)
                     {
                         totalPlayTime = (string)JMetaInfo[gameGuid]["TotalPlayTime"] != null ? (string)JMetaInfo[gameGuid]["TotalPlayTime"] : null;
-                        lastPlayedAt = (string)JMetaInfo[gameGuid]["LastPlayedAt"] != null ? (string)JMetaInfo[gameGuid]["LastPlayedAt"] : null; 
+                        lastPlayedAt = (string)JMetaInfo[gameGuid]["LastPlayedAt"] != null ? (string)JMetaInfo[gameGuid]["LastPlayedAt"] : null;
                         iconPath = (string)JMetaInfo[gameGuid]["IconPath"] != null ? (string)JMetaInfo[gameGuid]["IconPath"] : null;
-                        saveProfile = JMetaInfo[gameGuid]["SaveProfile"] != null ? (bool)JMetaInfo[gameGuid]["SaveProfile"] : true; 
+                        saveProfile = JMetaInfo[gameGuid]["SaveProfile"] != null ? (bool)JMetaInfo[gameGuid]["SaveProfile"] : true;
                         disableProfiles = JMetaInfo[gameGuid]["DisableProfiles"] != null ? (bool)JMetaInfo[gameGuid]["DisableProfiles"] : false;
                         keepSymLink = JMetaInfo[gameGuid]["KeepSymLink"] != null ? (bool)JMetaInfo[gameGuid]["KeepSymLink"] : false;
                         favorite = JMetaInfo[gameGuid]["Favorite"] != null ? (bool)JMetaInfo[gameGuid]["Favorite"] : false;
@@ -135,7 +136,7 @@ namespace Nucleus.Gaming.Coop
                     firstLaunch = true;
                     checkUpdate = true;
 
-                }              
+                }
             }
             catch (Exception ex)
             {
@@ -225,8 +226,8 @@ namespace Nucleus.Gaming.Coop
             {
 
             }
-        }      
-       
+        }
+
         private string FormatPlayTime()
         {
             if (totalPlayTime == null)
@@ -257,19 +258,49 @@ namespace Nucleus.Gaming.Coop
             return lastPlayedAt.Split(' ')[0];//dispaly the date only
         }
 
-        public void SaveGameplayTime(ulong playedTime)
+        private ulong intervale = 20000;//mmilliseconds
+
+        private bool stopped;
+
+        public void StopGameplayTimerThread()
         {
-            if (totalPlayTime == null)
+            stopped = true;
+        }
+
+        public void SaveGameplayTime()
+        {
+            FirstLaunch = false;
+            lastPlayedAt = DateTime.Now.ToString();
+
+            while (!stopped)
             {
-                totalPlayTime = playedTime.ToString();
-            }
-            else
-            {
-                totalPlayTime = (playedTime + ulong.Parse(totalPlayTime)).ToString();
+                Thread.Sleep((int)intervale);
+
+                if (totalPlayTime == null)
+                {
+                    totalPlayTime = (intervale / 1000).ToString();//seconds
+                }
+                else
+                {
+                    totalPlayTime = (intervale / 1000 + ulong.Parse(totalPlayTime)).ToString();//seconds
+                }
+
+                SaveGameMetaInfo();
             }
 
-            lastPlayedAt = DateTime.Now.ToString();
-            SaveGameMetaInfo();
+            stopped = false;
+        }
+
+        public void StartGameplayTimerThread()
+        {
+            Thread backgroundFormThread = new Thread(delegate ()
+            {
+                SaveGameplayTime();
+                System.Windows.Threading.Dispatcher.Run();
+            });
+
+            backgroundFormThread.SetApartmentState(ApartmentState.STA); // needs to be STA or throws exception
+            backgroundFormThread.Start();
         }
     }
 }

@@ -56,10 +56,20 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         private static bool _Enabled;
         public static bool Enabled => _Enabled;
-        public static bool EnabledRuntime;///Can on/off UI navigation later on runtime
+        private static bool EnabledRuntime;///Can on/off UI navigation later on runtime
         private static bool oskVisible;
         private static int DefaultSpeed => 2200;
         private static int SlowDownSpeed = 2200;
+
+        public static void StopUINavigation()
+        {
+            EnabledRuntime = false;
+        }
+
+        public static void StartUINavigation()
+        {
+            EnabledRuntime = true;
+        }
 
         public static void SetCursorSpeed()
         {

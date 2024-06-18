@@ -797,9 +797,9 @@ namespace Nucleus.Coop
             this.lastPlayedAt.ForeColor = System.Drawing.Color.White;
             this.lastPlayedAt.Location = new System.Drawing.Point(3, 3);
             this.lastPlayedAt.Name = "lastPlayedAt";
-            this.lastPlayedAt.Size = new System.Drawing.Size(84, 16);
+            this.lastPlayedAt.Size = new System.Drawing.Size(81, 16);
             this.lastPlayedAt.TabIndex = 37;
-            this.lastPlayedAt.Text = "Last Played: ";
+            this.lastPlayedAt.Text = "Last Played:";
             this.lastPlayedAt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // playTime
@@ -811,9 +811,9 @@ namespace Nucleus.Coop
             this.playTime.ForeColor = System.Drawing.Color.White;
             this.playTime.Location = new System.Drawing.Point(3, 23);
             this.playTime.Name = "playTime";
-            this.playTime.Size = new System.Drawing.Size(74, 16);
+            this.playTime.Size = new System.Drawing.Size(71, 16);
             this.playTime.TabIndex = 38;
-            this.playTime.Text = "Play Time: ";
+            this.playTime.Text = "Play Time:";
             this.playTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // icons_Container

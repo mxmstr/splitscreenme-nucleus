@@ -59,7 +59,7 @@ namespace Nucleus.Coop.Forms
             CustomToolTips.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             brush = new SolidBrush(Color.FromArgb(120, 0, 255, 60));
-            switch15.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
+            switch15.KeyPress += new KeyPressEventHandler(this.Num_KeyPress);
 
             if (roundedcorners)
             {
@@ -228,7 +228,7 @@ namespace Nucleus.Coop.Forms
 
                 if (c.Name == "switch15")
                 {
-                    c.KeyPress += new KeyPressEventHandler(num_KeyPress);
+                    c.KeyPress += new KeyPressEventHandler(Num_KeyPress);
                     CustomToolTips.SetToolTip(c, "If the cursor move without touching the\r\nleft stick set a higher value(steps of +1000).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
             }
@@ -307,7 +307,7 @@ namespace Nucleus.Coop.Forms
                 gamepadTopFront.Invalidate();
         }
 
-        private void gamepadTopFront_Paint(object sender, PaintEventArgs e)
+        private void GamepadTopFront_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             float factor = 1.5F;
@@ -504,7 +504,7 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        private void num_KeyPress(object sender, KeyPressEventArgs e)
+        private void Num_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
@@ -530,7 +530,7 @@ namespace Nucleus.Coop.Forms
             activeControl = pb;
         }
 
-        private void enabled_chk_CheckedChanged(object sender, EventArgs e)
+        private void Enabled_chk_CheckedChanged(object sender, EventArgs e)
         {
             ini.IniWriteValue("XUINav", "Enabled", enabled_chk.Checked.ToString());
             GamepadNavigation.UpdateUINavSettings();
@@ -547,7 +547,7 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        private void radioButtonPs_CheckedChanged(object sender, EventArgs e)
+        private void RadioButtonPs_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;
             if (radio.Checked)
@@ -667,7 +667,7 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        private void gamepadTopFront_MouseDown(object sender, MouseEventArgs e)
+        private void GamepadTopFront_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -676,7 +676,5 @@ namespace Nucleus.Coop.Forms
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
         }
-
-
     }
 }

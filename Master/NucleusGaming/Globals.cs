@@ -23,6 +23,6 @@ namespace Nucleus.Gaming
 
         public static readonly string GameProfilesFolder = Path.Combine(Application.StartupPath, $"game profiles");
         public static WPF_OSD MainOSD;
-
+        public static readonly int NucleusMaxPlayers = 32;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using IWshRuntimeLibrary;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop.InputManagement;
@@ -305,7 +306,7 @@ namespace Nucleus.Gaming.Coop
                     options.Add(opt.Key, opt.Value);
                 }
 
-                ProfilesList.Instance.ProfileBtn_CheckedChanged(new Label(), null);
+                ProfilesList.Instance.Update_Unload();
 
                 loadedProfilePlayers.Clear();
                 devicesToMerge.Clear();
@@ -941,10 +942,10 @@ namespace Nucleus.Gaming.Coop
 
 
                 JObject JMonitorBounds = new JObject(
-                                         new JProperty("X", useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Location.X - 1 : players[i].MonitorBounds.Location.X),
-                                         new JProperty("Y", useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Location.Y - 1 : players[i].MonitorBounds.Location.Y),
-                                         new JProperty("Width", useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Width + 2 : players[i].MonitorBounds.Width),
-                                         new JProperty("Height", useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Height + 2 : players[i].MonitorBounds.Height));
+                                         new JProperty("X",/* useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Location.X - 1 : players[i].MonitorBounds.Location.X*/players[i].DefaultMonitorBounds.X),
+                                         new JProperty("Y", /*useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Location.Y - 1 : players[i].MonitorBounds.Location.Y*/players[i].DefaultMonitorBounds.Y),
+                                         new JProperty("Width", /*useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Width + 2 : players[i].MonitorBounds.Width*/players[i].DefaultMonitorBounds.Width),
+                                         new JProperty("Height", /*useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Height + 2 : players[i].MonitorBounds.Height)*/players[i].DefaultMonitorBounds.Height));
 
                 JObject JEditBounds = new JObject(
                                       new JProperty("X", players[i].EditBounds.X),
@@ -1326,6 +1327,8 @@ namespace Nucleus.Gaming.Coop
 
             foreach (PlayerInfo player in nprof.DevicesList)
             {
+                player.DefaultMonitorBounds = player.MonitorBounds;
+
                 if (UseSplitDiv && !HideDesktopOnly)
                 {
                     player.MonitorBounds = new Rectangle(player.MonitorBounds.X + 1, player.MonitorBounds.Y + 1, player.MonitorBounds.Width - 2, player.MonitorBounds.Height - 2);
@@ -1361,7 +1364,6 @@ namespace Nucleus.Gaming.Coop
 
         public static PlayerInfo UpdateProfilePlayerNickAndSID(PlayerInfo player)
         {
-            //TODO: Get nicknames and steam ids form cache?/settings?/profile settings?
             var secondInBounds = loadedProfilePlayers.Where(pl => pl.EditBounds == player.EditBounds && pl != player && pl.ScreenIndex != -1).FirstOrDefault();
 
             if (loadedProfilePlayers.Contains(player) || secondInBounds != null)
@@ -1369,10 +1371,11 @@ namespace Nucleus.Gaming.Coop
                 PlayerInfo plToUpdate = secondInBounds ?? player;
 
                 int playerIndex = loadedProfilePlayers.FindIndex(pl => pl == plToUpdate);
+
                 bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
 
                 string nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
-                                  Globals.ini.IniReadValue("ControllerMapping", "Player_" + (playerIndex + 1));//
+                                 PlayersIdentityCache.SettingsIniNicknamesList[playerIndex];//
 
                 player.Nickname = nickname;
 
@@ -1382,9 +1385,9 @@ namespace Nucleus.Gaming.Coop
                 {
                     steamID = ProfilePlayersList[playerIndex].SteamID.ToString();
                 }
-                else if (Globals.ini.IniReadValue("SteamIDs", "Player_" + (playerIndex + 1)) != "")
+                else if (PlayersIdentityCache.SettingsIniSteamIdsList[playerIndex] != "")
                 {
-                    steamID = Globals.ini.IniReadValue("SteamIDs", "Player_" + (playerIndex + 1));//
+                    steamID = PlayersIdentityCache.SettingsIniSteamIdsList[playerIndex];//
                 }
                 else
                 {

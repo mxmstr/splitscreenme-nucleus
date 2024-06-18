@@ -787,7 +787,7 @@
             this.enabled_chk.TabIndex = 92;
             this.enabled_chk.Text = "Enable Gamepad UI Navigation";
             this.enabled_chk.UseVisualStyleBackColor = false;
-            this.enabled_chk.CheckedChanged += new System.EventHandler(this.enabled_chk_CheckedChanged);
+            this.enabled_chk.CheckedChanged += new System.EventHandler(this.Enabled_chk_CheckedChanged);
             // 
             // radioButtonXbox
             // 
@@ -819,7 +819,7 @@
             this.radioButtonPs.Tag = "Playstation";
             this.radioButtonPs.Text = "Playstation";
             this.radioButtonPs.UseVisualStyleBackColor = false;
-            this.radioButtonPs.CheckedChanged += new System.EventHandler(this.radioButtonPs_CheckedChanged);
+            this.radioButtonPs.CheckedChanged += new System.EventHandler(this.RadioButtonPs_CheckedChanged);
             // 
             // groupBoxType
             // 
@@ -892,8 +892,8 @@
             this.gamepadTopFront.Name = "gamepadTopFront";
             this.gamepadTopFront.Size = new System.Drawing.Size(228, 229);
             this.gamepadTopFront.TabIndex = 93;
-            this.gamepadTopFront.Paint += new System.Windows.Forms.PaintEventHandler(this.gamepadTopFront_Paint);
-            this.gamepadTopFront.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gamepadTopFront_MouseDown);
+            this.gamepadTopFront.Paint += new System.Windows.Forms.PaintEventHandler(this.GamepadTopFront_Paint);
+            this.gamepadTopFront.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GamepadTopFront_MouseDown);
             // 
             // XInputShortcutsSetup
             // 

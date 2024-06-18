@@ -169,6 +169,10 @@ namespace Nucleus.Gaming
 
         public int PosY => pInfo.MonitorBounds.Y;
 
+        public int NoDPIHandlingWidth => pInfo.MonitorBounds.Width;
+
+        public int NoDPIHandlingHeight => pInfo.MonitorBounds.Height;
+
         public int MonitorWidth => pInfo.Display.Bounds.Width;
 
         public int MonitorHeight => pInfo.Display.Bounds.Height;
@@ -400,7 +404,7 @@ namespace Nucleus.Gaming
 
             foreach (Display dp in parent.screensInUse)
             {
-                WPFDivFormThread.StartBackgroundForm(parent.currentGameInfo, dp);
+                WPFDivFormThread.StartBackgroundForm(parent.CurrentGameInfo, dp);
             }
         }
 
@@ -486,7 +490,7 @@ namespace Nucleus.Gaming
 
             foreach (Display dp in parent.screensInUse)
             {
-                WPFDivFormThread.StartBackgroundForm(parent.currentGameInfo, dp);
+                WPFDivFormThread.StartBackgroundForm(parent.CurrentGameInfo, dp);
             }
         }
 

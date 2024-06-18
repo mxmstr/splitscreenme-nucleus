@@ -29,7 +29,7 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
         public static void Initialize()
         {
             genericGameHandler = GenericGameHandler.Instance;
-            gen = GenericGameHandler.Instance.currentGameInfo;
+            gen = GenericGameHandler.Instance.CurrentGameInfo;
             profile = GenericGameHandler.Instance.profile;
         }
 

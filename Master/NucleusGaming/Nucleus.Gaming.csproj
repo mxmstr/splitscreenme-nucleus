@@ -128,8 +128,7 @@
     <Compile Include="Coop\Generic\Handler.cs" />
     <Compile Include="Cache\HubCache.cs" />
     <Compile Include="Cache\ImageCache.cs" />
-    <Compile Include="Cache\SteamIdsCache.cs" />
-    <Compile Include="Cache\NicknamesCache.cs" />
+    <Compile Include="Cache\PlayersIdentityCache.cs" />
     <Compile Include="Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -201,6 +200,7 @@
     <Compile Include="Coop\InputManagement\Gamepads\GamepadButtons.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadNavigation.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadState.cs" />
+    <Compile Include="Coop\InputManagement\Enums\Hotkeys.cs" />
     <Compile Include="Coop\InputManagement\Osk.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadShortcuts.cs" />
     <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
@@ -313,6 +313,7 @@
     <Compile Include="Forms\ShortcutsReminder\ShortcutsReminder.Designer.cs">
       <DependentUpon>ShortcutsReminder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\WindowMeger.cs" />
     <Compile Include="Forms\WPFDiv.cs" />
     <Compile Include="Forms\WPF_OSD.cs" />
     <Compile Include="Globals.cs" />

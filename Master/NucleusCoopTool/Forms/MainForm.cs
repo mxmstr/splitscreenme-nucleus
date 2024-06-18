@@ -7,6 +7,7 @@ using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
@@ -22,9 +23,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-
+using WindowScrape.Static;
 
 namespace Nucleus.Coop
 {
@@ -58,7 +60,7 @@ namespace Nucleus.Coop
         public XInputShortcutsSetup Xinput_S_Setup;
         private Settings settings = null;
         private ProfileSettings profileSettings = null;
-        private donationPanel donationPanel = null;
+        private DonationPanel donationPanel = null;
 
         private ContentManager content;
         private IGameHandler I_GameHandler;
@@ -83,14 +85,6 @@ namespace Nucleus.Coop
         public HandlerNotesZoom handlerNotesZoom;
         private Button nearestVisible;
 
-        private int KillProcess_HotkeyID = 1;
-        private int TopMost_HotkeyID = 2;
-        private int StopSession_HotkeyID = 3;
-        private int SetFocus_HotkeyID = 4;
-        private int ResetWindows_HotkeyID = 5;
-        private int Cutscenes_HotkeyID = 6;
-        private int Switch_HotkeyID = 7;
-        private int Reminder_HotkeyID = 8;
         private int currentStepIndex;
 
         private List<string> profilePaths = new List<string>();
@@ -111,7 +105,8 @@ namespace Nucleus.Coop
         private bool rainbowTimerRunning = false;
         private bool disableForcedNote;
         public bool ShowFavoriteOnly { get; set; }
-
+        private bool enableParticles;
+        
         private bool disableGameProfiles;
         public bool DisableGameProfiles
         {
@@ -279,8 +274,10 @@ namespace Nucleus.Coop
             roundedCorners = bool.Parse(themeIni.IniReadValue("Misc", "UseroundedCorners"));
             disableGameProfiles = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
             disableForcedNote = bool.Parse(ini.IniReadValue("Misc", "DisableForcedNote"));
+         
             customFont = themeIni.IniReadValue("Font", "FontFamily");
             rgb_font = themeIni.IniReadValue("Colors", "Font").Split(',');
+            enableParticles = bool.Parse(themeIni.IniReadValue("Misc", "EnableParticles"));
 
             rgb_MouseOverColor = themeIni.IniReadValue("Colors", "MouseOver").Split(',');
             rgb_MenuStripBackColor = themeIni.IniReadValue("Colors", "MenuStripBack").Split(',');
@@ -512,6 +509,8 @@ namespace Nucleus.Coop
                 b.MouseLeave += Btn_ZoomOut;
             }
 
+            PlayersIdentityCache.LoadPlayersIdentityCache();
+
             minimizeBtn.Click += new EventHandler(MinimizeButtonClick);
             maximizeBtn.Click += new EventHandler(MaximizeButtonClick);
             closeBtn.Click += new EventHandler(CloseButtonClick);
@@ -661,9 +660,8 @@ namespace Nucleus.Coop
 
         public void InsertWebview(object sender, EventArgs e)
         {
-            if (e is MouseEventArgs)
+            if (e is MouseEventArgs click)
             {
-                MouseEventArgs click = (MouseEventArgs)e;
                 if (click.Button == MouseButtons.Right)
                 {
                     return;
@@ -689,8 +687,8 @@ namespace Nucleus.Coop
 
             RefreshUI(true);
 
-            webView.Size = new Size(clientAreaPanel.Width, clientAreaPanel.Height - logo.Bottom +10);
-            webView.Location = new Point(game_listSizer.Location.X, logo.Bottom + 10);
+            webView.Size = clientAreaPanel.Size;
+            webView.Location = game_listSizer.Location;
             btn_AddGame.Selected = true;
 
             Invalidate(false);
@@ -724,10 +722,10 @@ namespace Nucleus.Coop
 
             if (sender is HubWebView)
             {
-                stepPanelPictureBox.Visible = true;
+                stepPanelPictureBox.Visible = true;    
             }
 
-           Invalidate(false);
+           Invalidate(false);          
         }
 
         protected override void OnShown(EventArgs e)
@@ -738,8 +736,7 @@ namespace Nucleus.Coop
             WebStatusTimer.Interval = (2000);
             WebStatusTimer.Tick += new EventHandler(WebStatusTimerTick);
             WebStatusTimer.Start();
-
-            DPIManager.ForceUpdate();
+            DPIManager.ForceUpdate();        
         }
 
         private void WebStatusTimerTick(object Object, EventArgs EventArgs)
@@ -845,7 +842,7 @@ namespace Nucleus.Coop
             {
                 RawInputAction(m.LParam);
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == TopMost_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.TopMost_HotkeyID)
             {
                 if (hotkeysCooldown || I_GameHandler == null)
                 {
@@ -854,7 +851,7 @@ namespace Nucleus.Coop
 
                 GlobalWindowMethods.ShowHideWindows();
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == StopSession_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.StopSession_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -874,7 +871,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == SetFocus_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.SetFocus_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -892,7 +889,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == ResetWindows_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.ResetWindows_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -908,7 +905,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Cutscenes_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.Cutscenes_HotkeyID)
             {
                 if (hotkeysCooldown || I_GameHandler == null)
                 {
@@ -917,7 +914,7 @@ namespace Nucleus.Coop
 
                 GlobalWindowMethods.ToggleCutScenesMode();
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Switch_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.Switch_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -933,7 +930,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == KillProcess_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.KillProcess_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -950,7 +947,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Reminder_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.Reminder_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -1127,7 +1124,7 @@ namespace Nucleus.Coop
                 setupButtonsPanel.Visible = false;
                 rightFrame.Visible = false;
                 StepPanel.Visible = false;
-                stepPanelPictureBox.Visible = webView == null ? true : false;
+                stepPanelPictureBox.Visible = webView == null;
                 rainbowTimer?.Dispose();
                 rainbowTimerRunning = false;
                 btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
@@ -1597,7 +1594,7 @@ namespace Nucleus.Coop
                 DevicesFunctions.gamepadTimer = new System.Threading.Timer(DevicesFunctions.GamepadTimer_Tick, null, 0, 500);
                 return;
             }
-
+          
             DevicesFunctions.gamepadTimer.Dispose();
 
             currentStep?.Ended();
@@ -1615,6 +1612,8 @@ namespace Nucleus.Coop
             I_GameHandler = gameManager.MakeHandler(currentGame);
             I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile), I_GameHandler);
             I_GameHandler.Ended += Handler_Ended;
+
+            WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(2560,1440));
 
             GameProfile.Game = currentGame;
 
@@ -1649,6 +1648,10 @@ namespace Nucleus.Coop
                     btn_Play.Text = "START";
                     btn_Play.Enabled = false;
                     settings.UnRegHotkeys(this);
+                    IntPtr merger = User32Interop.FindWindow(null, "WindowsMerger");
+
+                    Thread.Sleep(100);
+                    User32Interop.CloseWindow(merger);
                     BringToFront();
                 });
             }
@@ -2177,7 +2180,6 @@ namespace Nucleus.Coop
                 menuCurrentControl = currentControl;
         }
 
-
         private void OpenBackupFolderSubmenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
@@ -2565,8 +2567,51 @@ namespace Nucleus.Coop
             }
         }
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetTopWindow(IntPtr hwnd);
+
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
+            //IntPtr ls = HwndInterface.GetHwndFromTitle(/*"Lossless Scaling 2.9"*/null);
+
+           // Console.WriteLine(ls);
+            //var all = HwndInterface.EnumHwnds();
+
+            //IntPtr fgrdWin = GetTopWindow(IntPtr.Zero);
+            //Console.WriteLine(fgrdWin);
+            //HwndInterface.SetHwndSize(fgrdWin, 150, 150);
+            //Console.WriteLine(User32Interop.GetForegroundWindow());
+            //Console.WriteLine(all.Count);
+            //foreach (var wnd in all)
+            //{
+            //    Size size =  HwndInterface.GetHwndSize(wnd);
+            //    Size expect = new Size(2560,1440);
+
+            //    if(size != expect)
+            //    {
+            //        continue;
+            //    }
+
+            //    if (HwndInterface.GetHwndTitle(wnd) != "Program Manager")
+            //    {
+            //        Console.WriteLine("_______________________________________");
+            //        Console.WriteLine("Class " + HwndInterface.GetHwndClassName(wnd));
+            //        Console.WriteLine("Title " + HwndInterface.GetHwndTitle(wnd));
+            //    }
+
+            //    bool succes = HwndInterface.SetHwndSize(wnd, 150, 150);
+            //    if (succes)
+            //    {
+            //        Console.WriteLine(wnd);
+            //    }
+            //    Console.WriteLine("_______________________________________");
+            //    //HwndInterface.GetHwndClassName(wnd);
+            //    //HwndInterface.GetHwndTitle(wnd);
+            //}
+
+                
+           // return;
+
             if (GenericGameHandler.Instance != null)
             {
                 if (!GenericGameHandler.Instance.HasEnded)
@@ -2614,7 +2659,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (!profileSettings.Visible || profileSettings == null)
+            if (!profileSettings.Visible)
             {
                 ProfilesList.Instance.Locked = true;
                 ProfileSettings.UpdateProfileSettingsUiValues();
@@ -2751,8 +2796,6 @@ namespace Nucleus.Coop
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-
             int edgingHeight = clientAreaPanel.Location.Y;
             Rectangle topGradient = new Rectangle(0, 0, Width, edgingHeight);
             Rectangle bottomGradient = new Rectangle(0, Height - edgingHeight, Width, edgingHeight);
@@ -2798,9 +2841,12 @@ namespace Nucleus.Coop
 
             Rectangle fill = new Rectangle(0, 0, Width, Height);
 
-            g.FillRectangle(borderBrush, fill);
-            g.FillRectangle(topLinearGradientBrush, topGradient);
-            g.FillRectangle(bottomLinearGradientBrush, bottomGradient);
+            e.Graphics.FillRectangle(borderBrush, fill);
+            e.Graphics.FillRectangle(topLinearGradientBrush, topGradient);
+            e.Graphics.FillRectangle(bottomLinearGradientBrush, bottomGradient);
+
+            topLinearGradientBrush.Dispose();
+            bottomLinearGradientBrush.Dispose();
         }
 
         private void Btn_debuglog_Click(object sender, EventArgs e)
@@ -2830,7 +2876,7 @@ namespace Nucleus.Coop
         {
             if (donationPanel == null)
             {
-                donationPanel = new donationPanel();
+                donationPanel = new DonationPanel();
                 donationPanel.Visible = false;
                 clientAreaPanel.Controls.Add(donationPanel);
                 donationPanel.Location = new Point(donationBtn.Left - donationPanel.Width, donationBtn.Bottom + 5);
@@ -2996,7 +3042,6 @@ namespace Nucleus.Coop
                             }
                         }
                     }
-
                 }
             }
         }
@@ -3031,6 +3076,7 @@ namespace Nucleus.Coop
             socialLinksMenu.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20));
         }
 
+
         private void ClientAreaPanel_Paint(object sender, PaintEventArgs e)
         {
             if (backGradient[0] == 0)
@@ -3038,34 +3084,29 @@ namespace Nucleus.Coop
                 return;
             }
 
-            Graphics g = e.Graphics;
-
             Rectangle gradientBrushbounds = new Rectangle(0, 0, mainButtonFrame.Width, Height);
-            Rectangle bounds = new Rectangle(0, 0, clientAreaPanel.Width, clientAreaPanel.Height);
-
-            int alpha = handlerNotesZoom.Visible ? 45 : 0;
 
             Color color1 = Color.FromArgb(230, backGradient[1], backGradient[2], backGradient[3]);
             Color color2 = Color.FromArgb(195, backGradient[1], backGradient[2], backGradient[3]);
-            Color color3 = Color.FromArgb(155 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color4 = Color.FromArgb(130 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color5 = Color.FromArgb(115 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color6 = Color.FromArgb(130 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color7 = Color.FromArgb(155 + alpha, backGradient[1], backGradient[2], backGradient[3]);
+            Color color3 = Color.FromArgb(155, backGradient[1], backGradient[2], backGradient[3]);
+            Color color4 = Color.FromArgb(130, backGradient[1], backGradient[2], backGradient[3]);
+            Color color5 = Color.FromArgb(115, backGradient[1], backGradient[2], backGradient[3]);
+            Color color6 = Color.FromArgb(130, backGradient[1], backGradient[2], backGradient[3]);
+            Color color7 = Color.FromArgb(155, backGradient[1], backGradient[2], backGradient[3]);
             Color color8 = Color.FromArgb(195, backGradient[1], backGradient[2], backGradient[3]);
             Color color9 = Color.FromArgb(230, backGradient[1], backGradient[2], backGradient[3]);
 
-            LinearGradientBrush lgb =
-            new LinearGradientBrush(gradientBrushbounds, color1, color5, 90f);
+            LinearGradientBrush ClientAreaPanel_LinearGradientBrush =
+                new LinearGradientBrush(gradientBrushbounds, color1, color5, 90f);
 
             ColorBlend topcblend = new ColorBlend(9);
             topcblend.Colors = new Color[9] { color1, color2, color3, color4, color5, color6, color7, color8, color9 };
             topcblend.Positions = new float[9] { 0f, 0.125f, 0.250f, 0.375f, 0.500f, 0.625f, 0.750f, 0.875f, 1.0f };
 
-            lgb.InterpolationColors = topcblend;
-            g.FillRectangle(lgb, bounds);
+            ClientAreaPanel_LinearGradientBrush.InterpolationColors = topcblend;
 
-            lgb.Dispose();
+            e.Graphics.FillRectangle(ClientAreaPanel_LinearGradientBrush, clientAreaPanel.ClientRectangle);
+            ClientAreaPanel_LinearGradientBrush.Dispose();
         }
 
         private void SocialLinksMenu_Opened_1(object sender, EventArgs e) => socialLinksMenu.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20));
@@ -3077,28 +3118,23 @@ namespace Nucleus.Coop
                 return;
             }
 
-            Graphics g = e.Graphics;
             Rectangle gradientBrushbounds = new Rectangle(0, 0, game_listSizer.Width / 2, game_listSizer.Height);
-            Rectangle bounds = new Rectangle(0, 0, game_listSizer.Width, game_listSizer.Height);
 
-            int alpha = stepPanelPictureBox.Visible || webView != null ? 120 : 0;
+            Color color1 = Color.FromArgb(20, backGradient[1], backGradient[2], backGradient[3]);
+            Color color2 = Color.FromArgb(100, backGradient[1], backGradient[2], backGradient[3]);
+            Color color3 = Color.FromArgb(100, backGradient[1], backGradient[2], backGradient[3]);
+            Color color4 = Color.FromArgb(20, backGradient[1], backGradient[2], backGradient[3]);
 
-            Color color1 = Color.FromArgb(20 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color2 = Color.FromArgb(100 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color3 = Color.FromArgb(100 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color4 = Color.FromArgb(20 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-
-            LinearGradientBrush lgb =
+            LinearGradientBrush game_listSizer_LinearGradientBrush =
             new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color1, 90f);
 
             ColorBlend topcblend = new ColorBlend(6);
             topcblend.Colors = new Color[6] { Color.Transparent, color1, color2, color3, color4, Color.Transparent };
             topcblend.Positions = new float[6] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
+            game_listSizer_LinearGradientBrush.InterpolationColors = topcblend;
 
-            lgb.InterpolationColors = topcblend;
-            g.FillRectangle(lgb, bounds);
-
-            lgb.Dispose();
+            e.Graphics.FillRectangle(game_listSizer_LinearGradientBrush, game_listSizer.ClientRectangle);
+            game_listSizer_LinearGradientBrush.Dispose();
         }
 
         private void RightFrame_Paint(object sender, PaintEventArgs e)
@@ -3108,32 +3144,29 @@ namespace Nucleus.Coop
                 return;
             }
 
-            Graphics g = e.Graphics;
             Rectangle gradientBrushbounds = new Rectangle(0, 0, rightFrame.Width / 2, rightFrame.Height);
-            Rectangle bounds = new Rectangle(0, 0, rightFrame.Width, rightFrame.Height);
 
-            int alpha = stepPanelPictureBox.Visible || webView != null ? 120 : 0;
+            Color color1 = Color.FromArgb(20, backGradient[1], backGradient[2], backGradient[3]);
+            Color color2 = Color.FromArgb(100, backGradient[1], backGradient[2], backGradient[3]);
+            Color color3 = Color.FromArgb(100, backGradient[1], backGradient[2], backGradient[3]);
+            Color color4 = Color.FromArgb(20, backGradient[1], backGradient[2], backGradient[3]);
 
-            Color color1 = Color.FromArgb(20 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color2 = Color.FromArgb(100 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color3 = Color.FromArgb(100 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-            Color color4 = Color.FromArgb(20 + alpha, backGradient[1], backGradient[2], backGradient[3]);
-
-            LinearGradientBrush lgb =
-            new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color1, 90f);
+            LinearGradientBrush rightFrame_LinearGradientBrush =
+                new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color1, 90f);
 
             ColorBlend topcblend = new ColorBlend(6);
             topcblend.Colors = new Color[6] { Color.Transparent, color1, color2, color3, color4, Color.Transparent };
             topcblend.Positions = new float[6] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
 
-            lgb.InterpolationColors = topcblend;
-            g.FillRectangle(lgb, bounds);
+            rightFrame_LinearGradientBrush.InterpolationColors = topcblend;
 
-            lgb.Dispose();
-        }      
+            e.Graphics.FillRectangle(rightFrame_LinearGradientBrush, rightFrame.ClientRectangle);
+            rightFrame_LinearGradientBrush.Dispose();
+        }    
 
         private void StepPanelPictureBox_Paint(object sender, PaintEventArgs e)
         {
+            if(enableParticles)
             DrawParticles.Draw(sender, e);
         }
 
@@ -3230,10 +3263,12 @@ namespace Nucleus.Coop
                     {
                         button_UpdateAvailable.Visible = update && menuCurrentGameInfo.Game.MetaInfo.CheckUpdate;
                         button_UpdateAvailable.Location = menuCurrentGameInfo.Game.MetaInfo.DisableProfiles ?
-                                                      new Point((btn_gameOptions.Left - button_UpdateAvailable.Width) - (button_UpdateAvailable.Margin.Right + btn_gameOptions.Margin.Left), button_UpdateAvailable.Location.Y) :
-                                                      new Point((nearestVisible.Left - button_UpdateAvailable.Width) - (button_UpdateAvailable.Margin.Right + nearestVisible.Margin.Left), button_UpdateAvailable.Location.Y);
+                        new Point((btn_gameOptions.Left - button_UpdateAvailable.Width) - (button_UpdateAvailable.Margin.Right + btn_gameOptions.Margin.Left), button_UpdateAvailable.Location.Y) :
+                        new Point((nearestVisible.Left - button_UpdateAvailable.Width) - (button_UpdateAvailable.Margin.Right + nearestVisible.Margin.Left), button_UpdateAvailable.Location.Y);
 
-                        saveProfileRadioBtn.Location = button_UpdateAvailable.Visible ? new Point((button_UpdateAvailable.Left - saveProfileRadioBtn.Width) - 5, saveProfileRadioBtn.Location.Y) : new Point((nearestVisible.Left - saveProfileRadioBtn.Width) - 5, saveProfileRadioBtn.Location.Y);
+                        saveProfileRadioBtn.Location = button_UpdateAvailable.Visible ? 
+                        new Point((button_UpdateAvailable.Left - saveProfileRadioBtn.Width) - 5, saveProfileRadioBtn.Location.Y) :                      
+                        new Point((nearestVisible.Left - saveProfileRadioBtn.Width) - 5, saveProfileRadioBtn.Location.Y);
                     }
                 });
             });

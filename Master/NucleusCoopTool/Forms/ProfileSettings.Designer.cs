@@ -419,7 +419,7 @@ namespace Nucleus.Coop
             this.audioTabBtn.Text = "Audio";
             this.audioTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.audioTabBtn.UseVisualStyleBackColor = false;
-            this.audioTabBtn.Click += new System.EventHandler(this.audioTabBtn_Click);
+            this.audioTabBtn.Click += new System.EventHandler(this.AudioTabBtn_Click);
             // 
             // processorTabBtn
             // 
@@ -490,9 +490,9 @@ namespace Nucleus.Coop
             this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.closeBtnPicture.TabIndex = 298;
             this.closeBtnPicture.TabStop = false;
-            this.closeBtnPicture.Click += new System.EventHandler(this.closeBtnPicture_Click);
-            this.closeBtnPicture.MouseEnter += new System.EventHandler(this.closeBtnPicture_MouseEnter);
-            this.closeBtnPicture.MouseLeave += new System.EventHandler(this.closeBtnPicture_MouseLeave);
+            this.closeBtnPicture.Click += new System.EventHandler(this.CloseBtnPicture_Click);
+            this.closeBtnPicture.MouseEnter += new System.EventHandler(this.CloseBtnPicture_MouseEnter);
+            this.closeBtnPicture.MouseLeave += new System.EventHandler(this.CloseBtnPicture_MouseLeave);
             // 
             // modeLabel
             // 
@@ -508,7 +508,7 @@ namespace Nucleus.Coop
             this.modeLabel.TabIndex = 299;
             this.modeLabel.Text = "Profile Settings";
             this.modeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.modeLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.modeLabel_MouseDown);
+            this.modeLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ModeLabel_MouseDown);
             // 
             // profile_info_btn
             // 
@@ -519,9 +519,9 @@ namespace Nucleus.Coop
             this.profile_info_btn.Size = new System.Drawing.Size(19, 19);
             this.profile_info_btn.TabIndex = 301;
             this.profile_info_btn.TabStop = false;
-            this.profile_info_btn.Click += new System.EventHandler(this.profile_info_btn_Click);
-            this.profile_info_btn.MouseEnter += new System.EventHandler(this.profile_info_btn_MouseEnter);
-            this.profile_info_btn.MouseLeave += new System.EventHandler(this.profile_info_btn_MouseLeave);
+            this.profile_info_btn.Click += new System.EventHandler(this.Profile_info_btn_Click);
+            this.profile_info_btn.MouseEnter += new System.EventHandler(this.Profile_info_btn_MouseEnter);
+            this.profile_info_btn.MouseLeave += new System.EventHandler(this.Profile_info_btn_MouseLeave);
             // 
             // layoutBtnPicture
             // 
@@ -651,7 +651,7 @@ namespace Nucleus.Coop
             this.cts_Mute.TabIndex = 140;
             this.cts_Mute.Text = "Mute Audio Only";
             this.cts_Mute.UseVisualStyleBackColor = true;
-            this.cts_Mute.CheckedChanged += new System.EventHandler(this.cts_Mute_CheckedChanged);
+            this.cts_Mute.CheckedChanged += new System.EventHandler(this.Cts_Mute_CheckedChanged);
             // 
             // SplitColors
             // 
@@ -725,7 +725,7 @@ namespace Nucleus.Coop
             this.layoutSizer.Name = "layoutSizer";
             this.layoutSizer.Size = new System.Drawing.Size(245, 170);
             this.layoutSizer.TabIndex = 147;
-            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
+            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.LayoutSizer_Paint);
             // 
             // label29
             // 
@@ -1083,7 +1083,7 @@ namespace Nucleus.Coop
             this.btnProcessorNext.Size = new System.Drawing.Size(38, 22);
             this.btnProcessorNext.TabIndex = 327;
             this.btnProcessorNext.UseVisualStyleBackColor = false;
-            this.btnProcessorNext.Click += new System.EventHandler(this.btnProcessorNext_Click_1);
+            this.btnProcessorNext.Click += new System.EventHandler(this.BtnProcessorNext_Click_1);
             // 
             // label99
             // 
@@ -3195,7 +3195,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio.TabIndex = 19;
             this.audioCustomSettingsRadio.Text = "Custom settings";
             this.audioCustomSettingsRadio.UseVisualStyleBackColor = false;
-            this.audioCustomSettingsRadio.CheckedChanged += new System.EventHandler(this.audioCustomSettingsRadio_CheckedChanged);
+            this.audioCustomSettingsRadio.CheckedChanged += new System.EventHandler(this.AudioCustomSettingsRadio_CheckedChanged);
             // 
             // audioDefaultSettingsRadio
             // 
@@ -3229,7 +3229,7 @@ namespace Nucleus.Coop
             this.audioRefresh.Size = new System.Drawing.Size(26, 23);
             this.audioRefresh.TabIndex = 23;
             this.audioRefresh.UseVisualStyleBackColor = false;
-            this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
+            this.audioRefresh.Click += new System.EventHandler(this.AudioRefresh_Click);
             // 
             // playersTab
             // 
@@ -3259,7 +3259,7 @@ namespace Nucleus.Coop
             this.btnNext.Size = new System.Drawing.Size(38, 22);
             this.btnNext.TabIndex = 299;
             this.btnNext.UseVisualStyleBackColor = false;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            this.btnNext.Click += new System.EventHandler(this.BtnNext_Click);
             // 
             // def_sid_comboBox
             // 

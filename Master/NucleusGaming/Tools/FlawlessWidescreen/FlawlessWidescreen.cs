@@ -20,7 +20,7 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
             string pcArch = pcIs64 ? "x64" : "x86";
             string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\FlawlessWidescreen\\" + pcArch);
 
-            if (handlerInstance.currentGameInfo.FlawlessWidescreenOverrideDisplay)
+            if (handlerInstance.CurrentGameInfo.FlawlessWidescreenOverrideDisplay)
             {
                 List<PlayerInfo> players = handlerInstance.profile.DevicesList;
 
@@ -53,15 +53,15 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
             }
 
 
-            string fwGameFolder = Path.Combine(utilFolder, "PluginCache\\FWS_Plugins\\Modules\\" + handlerInstance.currentGameInfo.FlawlessWidescreen);
-            if (handlerInstance.currentGameInfo.FlawlessWidescreenPluginPath?.Length > 0)
+            string fwGameFolder = Path.Combine(utilFolder, "PluginCache\\FWS_Plugins\\Modules\\" + handlerInstance.CurrentGameInfo.FlawlessWidescreen);
+            if (handlerInstance.CurrentGameInfo.FlawlessWidescreenPluginPath?.Length > 0)
             {
-                fwGameFolder = Path.Combine(utilFolder, handlerInstance.currentGameInfo.FlawlessWidescreenPluginPath + "\\" + handlerInstance.currentGameInfo.FlawlessWidescreen);
+                fwGameFolder = Path.Combine(utilFolder, handlerInstance.CurrentGameInfo.FlawlessWidescreenPluginPath + "\\" + handlerInstance.CurrentGameInfo.FlawlessWidescreen);
             }
 
             if (!Directory.Exists(fwGameFolder))
             {
-                MessageBox.Show("Nucleus could not find an installed plugin for \"" + handlerInstance.currentGameInfo.FlawlessWidescreen + "\" in FlawlessWidescreen. FlawlessWidescreen will now open. Please make sure to install the plugin and make any required changes. When yo close FlawlessWidescreen, Nucleus will continue. Press OK to open FlawlessWidescreen", "Nucleus - Use Flawless Widescreen", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Nucleus could not find an installed plugin for \"" + handlerInstance.CurrentGameInfo.FlawlessWidescreen + "\" in FlawlessWidescreen. FlawlessWidescreen will now open. Please make sure to install the plugin and make any required changes. When yo close FlawlessWidescreen, Nucleus will continue. Press OK to open FlawlessWidescreen", "Nucleus - Use Flawless Widescreen", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 //bool appRunning = false;
                 Process[] runnProcs = Process.GetProcesses();
@@ -84,10 +84,10 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
 
             if (Directory.Exists(fwGameFolder))
             {
-                if (File.Exists(Path.Combine(fwGameFolder, "Dependencies\\Scripts\\" + handlerInstance.currentGameInfo.FlawlessWidescreen + ".lua")))
+                if (File.Exists(Path.Combine(fwGameFolder, "Dependencies\\Scripts\\" + handlerInstance.CurrentGameInfo.FlawlessWidescreen + ".lua")))
                 {
                     List<string> otextChanges = new List<string>();
-                    string oscriptPath = Path.Combine(fwGameFolder, "Dependencies\\Scripts\\" + handlerInstance.currentGameInfo.FlawlessWidescreen + ".lua");
+                    string oscriptPath = Path.Combine(fwGameFolder, "Dependencies\\Scripts\\" + handlerInstance.CurrentGameInfo.FlawlessWidescreen + ".lua");
 
                     otextChanges.Add(handlerInstance.context.FindLineNumberInTextFile(oscriptPath, "Process_WindowName = ", SearchType.StartsWith) + "|Process_WindowName = \"Removed\"");
                     handlerInstance.context.ReplaceLinesInTextFile(oscriptPath, otextChanges.ToArray());
@@ -119,16 +119,16 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
                         CmdUtil.ExecuteCommand(Path.GetDirectoryName(Path.Combine(newFwGameFolder, file_name.Substring(fwGameFolder.Length + 1))), out int exitCode, "copy \"" + file_name + "\" \"" + Path.Combine(newFwGameFolder, file_name.Substring(fwGameFolder.Length + 1)) + "\"", false);
                     }
 
-                    if (file_name.EndsWith("Dependencies\\Scripts\\" + handlerInstance.currentGameInfo.FlawlessWidescreen + ".lua"))
+                    if (file_name.EndsWith("Dependencies\\Scripts\\" + handlerInstance.CurrentGameInfo.FlawlessWidescreen + ".lua"))
                     {
-                        File.Move(Path.Combine(newFwGameFolder + "\\Dependencies\\Scripts\\", handlerInstance.currentGameInfo.FlawlessWidescreen + ".lua"), Path.Combine(newFwGameFolder + "\\Dependencies\\Scripts\\", Path.GetFileNameWithoutExtension(file_name) + " - Nucleus Instance " + (i + 1) + ".lua"));
+                        File.Move(Path.Combine(newFwGameFolder + "\\Dependencies\\Scripts\\", handlerInstance.CurrentGameInfo.FlawlessWidescreen + ".lua"), Path.Combine(newFwGameFolder + "\\Dependencies\\Scripts\\", Path.GetFileNameWithoutExtension(file_name) + " - Nucleus Instance " + (i + 1) + ".lua"));
                     }
                 }
 
                 List<string> textChanges = new List<string>();
-                string scriptPath = Path.Combine(newFwGameFolder, "Dependencies\\Scripts\\" + handlerInstance.currentGameInfo.FlawlessWidescreen + " - Nucleus Instance " + (i + 1) + ".lua");
+                string scriptPath = Path.Combine(newFwGameFolder, "Dependencies\\Scripts\\" + handlerInstance.CurrentGameInfo.FlawlessWidescreen + " - Nucleus Instance " + (i + 1) + ".lua");
 
-                textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(scriptPath, "Process_WindowName = ", SearchType.StartsWith) + "|Process_WindowName = \"" + "Nucleus Instance " + (i + 1) + "(" + handlerInstance.currentGameInfo.Hook.ForceFocusWindowName.Replace("®", "%R") + ")\"");
+                textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(scriptPath, "Process_WindowName = ", SearchType.StartsWith) + "|Process_WindowName = \"" + "Nucleus Instance " + (i + 1) + "(" + handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName.Replace("®", "%R") + ")\"");
                 handlerInstance.context.ReplaceLinesInTextFile(scriptPath, textChanges.ToArray());
 
                 string path = Path.Combine(utilFolder, "Plugins\\FWS_Plugins.fws");
@@ -141,11 +141,11 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
                 XmlNode origNode = null;
                 foreach (XmlNode node in nodes)
                 {
-                    if (node.Attributes["NameSpace"].Value == handlerInstance.currentGameInfo.FlawlessWidescreen)
+                    if (node.Attributes["NameSpace"].Value == handlerInstance.CurrentGameInfo.FlawlessWidescreen)
                     {
                         origNode = node;
                     }
-                    if (node.Attributes["NameSpace"].Value == handlerInstance.currentGameInfo.FlawlessWidescreen + " - Nucleus Instance " + (i + 1))
+                    if (node.Attributes["NameSpace"].Value == handlerInstance.CurrentGameInfo.FlawlessWidescreen + " - Nucleus Instance " + (i + 1))
                     {
                         exists = true;
                     }
@@ -164,7 +164,7 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
                     newNode.InnerXml = origNode.InnerXml;
 
                     XmlAttribute attr = doc.CreateAttribute("NameSpace");
-                    attr.Value = handlerInstance.currentGameInfo.FlawlessWidescreen + " - Nucleus Instance " + (i + 1);
+                    attr.Value = handlerInstance.CurrentGameInfo.FlawlessWidescreen + " - Nucleus Instance " + (i + 1);
 
                     newNode.Attributes.SetNamedItem(attr);
                     newNode["FriendlyName"].InnerText = newNode["FriendlyName"].InnerText + " - Nucleus Instance " + (i + 1);
@@ -212,7 +212,7 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
                 }
             }
 
-            if (handlerInstance.currentGameInfo.FlawlessWidescreenOverrideDisplay)
+            if (handlerInstance.CurrentGameInfo.FlawlessWidescreenOverrideDisplay)
             {
                 handlerInstance.Log("Restoring back up Flawless Widescreen settings file");
                 string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\FlawlessWidescreen\\" + handlerInstance.garch);

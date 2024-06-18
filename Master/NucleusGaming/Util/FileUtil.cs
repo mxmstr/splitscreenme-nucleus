@@ -128,7 +128,7 @@ namespace Nucleus.Gaming
             {
                 handlerInstance.Log("Copying custom files/folders");
                 string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\User");
-                foreach (string customUtil in handlerInstance.currentGameInfo.CopyCustomUtils)
+                foreach (string customUtil in handlerInstance.CurrentGameInfo.CopyCustomUtils)
                 {
                     int numParams = customUtil.Count(x => x == '|') + 1;
                     string[] splitParams = customUtil.Split('|');
@@ -196,7 +196,7 @@ namespace Nucleus.Gaming
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            foreach (string deleteLine in handlerInstance.currentGameInfo.DeleteFiles)
+            foreach (string deleteLine in handlerInstance.CurrentGameInfo.DeleteFiles)
             {
                 string[] deleteSplit = deleteLine.Split('|');
                 int indexOffset = 1;
@@ -213,7 +213,7 @@ namespace Nucleus.Gaming
 
                 if (File.Exists(fullFilePath))
                 {
-                    if (!handlerInstance.currentGameInfo.IgnoreDeleteFilesPrompt)
+                    if (!handlerInstance.CurrentGameInfo.IgnoreDeleteFilesPrompt)
                     {
                         DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete '" + fullFilePath + "'?", "Nucleus - Delete Files In Config Path", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (dialogResult != DialogResult.Yes)
@@ -235,7 +235,7 @@ namespace Nucleus.Gaming
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            foreach (string renameLine in handlerInstance.currentGameInfo.RenameAndOrMoveFiles)
+            foreach (string renameLine in handlerInstance.CurrentGameInfo.RenameAndOrMoveFiles)
             {
                 string[] renameSplit = renameLine.Split('|');
                 int indexOffset = 1;
@@ -277,7 +277,7 @@ namespace Nucleus.Gaming
 
             if (File.Exists(file))
             {
-                if (!handlerInstance.currentGameInfo.SymlinkGame && !handlerInstance.currentGameInfo.HardlinkGame && !handlerInstance.currentGameInfo.HardcopyGame)
+                if (!handlerInstance.CurrentGameInfo.SymlinkGame && !handlerInstance.CurrentGameInfo.HardlinkGame && !handlerInstance.CurrentGameInfo.HardcopyGame)
                 {
                     string fileBackup = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_NUCLEUS_BACKUP" + Path.GetExtension(file));
                     if (!File.Exists(fileBackup))

@@ -71,7 +71,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             {
                 JoyStickList.Clear();
             }
-
         }
 
         public static bool PollDInputGamepad(PlayerInfo player)
@@ -371,7 +370,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 {
                     DeviceInstance device = dInputList[x];
 
-                    if (JoyStickList.All(j => j.Information.InstanceGuid != device.InstanceGuid))
+                    if (JoyStickList.All(j => j?.Information?.InstanceGuid != device?.InstanceGuid))
                     {
                         Joystick joy = new Joystick(dinput, device.InstanceGuid);
                         joy.Acquire();
@@ -415,7 +414,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         }
                     }
 
-                    int numControllers = g.ProtoInput.UseOpenXinput ? 32 : 4;
+                    int numControllers = g.ProtoInput.UseOpenXinput ? 32 : 4;//Big bug here!!if g.ProtoInput.UseOpenXinput is true the ui gamepads won't appears until screen is refreshed (why?)
                     for (int i = 0; i < numControllers; i++)
                     {
                         OpenXinputController c = new OpenXinputController(g.ProtoInput.UseOpenXinput, i);
@@ -466,7 +465,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                             if (useGamepadApiIndex /*|| parent.profileDisabled*/)
                             {
-                                player.GamepadGuid = new Guid($"00000000-0000-0000-0000-20000000000{player.GamepadId + 1}");
+                                string guid = player.GamepadId + 1 >= 10 ? $"00000000-0000-0000-0000-2000000000{player.GamepadId + 1}" : $"00000000-0000-0000-0000-20000000000{player.GamepadId + 1}";
+                                player.GamepadGuid = new Guid(guid);
                                 player.IsInputUsed = true;
                             }
 

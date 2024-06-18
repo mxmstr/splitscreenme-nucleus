@@ -2,16 +2,10 @@
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
-using System.Windows.Controls.Primitives;
 
 namespace Nucleus.Coop.Controls
 {
@@ -197,9 +191,8 @@ namespace Nucleus.Coop.Controls
         {
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
             Rectangle bounds = new Rectangle(8, 0,Width, Height);
-            Graphics g = e.Graphics;
 
-            Color color = selected ? Color.FromArgb(85, 51, 153, 255) : Color.Transparent;// Color.FromArgb(120, 0, 0, 0);
+            Color color = selected ? Color.FromArgb(85, 51, 153, 255) : Color.Transparent;
             LinearGradientBrush lgb =
             new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);
 
@@ -209,7 +202,7 @@ namespace Nucleus.Coop.Controls
 
             lgb.InterpolationColors = topcblend;
             lgb.SetBlendTriangularShape(.5f, 1.0f);
-            g.FillRectangle(lgb, bounds);
+            e.Graphics.FillRectangle(lgb, bounds);
             
             lgb.Dispose();
         }

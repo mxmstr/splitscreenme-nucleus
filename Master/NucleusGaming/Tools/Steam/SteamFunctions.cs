@@ -84,7 +84,7 @@ namespace Nucleus.Gaming.Tools.Steam
             string steam64Dll = string.Empty;
             string steamDll = string.Empty;
 
-            if (handlerInstance.currentGameInfo.GoldbergExperimental)
+            if (handlerInstance.CurrentGameInfo.GoldbergExperimental)
             {
                 handlerInstance.Log("Using experimental Goldberg");
                 steam64Dll += "experimental\\";
@@ -93,7 +93,7 @@ namespace Nucleus.Gaming.Tools.Steam
             steam64Dll += "steam_api64.dll";
             steamDll += "steam_api.dll";
 
-            if (handlerInstance.currentGameInfo.GoldbergExperimentalSteamClient)
+            if (handlerInstance.CurrentGameInfo.GoldbergExperimentalSteamClient)
             {
                 handlerInstance.Log("Using Goldberg Experimental Steam Client");
                 utilFolder += "\\experimental_steamclient";
@@ -109,13 +109,13 @@ namespace Nucleus.Gaming.Tools.Steam
                 FileUtil.FileCheck(Path.Combine(exeFolder, "steamclient_loader.exe"));
                 File.Copy(Path.Combine(utilFolder, "steamclient_loader.exe"), Path.Combine(exeFolder, "steamclient_loader.exe"));
 
-                handlerInstance.currentGameInfo.ExecutableToLaunch = Path.Combine(exeFolder, "steamclient_loader.exe");
-                handlerInstance.currentGameInfo.ForceProcessSearch = true;
-                handlerInstance.currentGameInfo.GoldbergWriteSteamIDAndAccount = true;
+                handlerInstance.CurrentGameInfo.ExecutableToLaunch = Path.Combine(exeFolder, "steamclient_loader.exe");
+                handlerInstance.CurrentGameInfo.ForceProcessSearch = true;
+                handlerInstance.CurrentGameInfo.GoldbergWriteSteamIDAndAccount = true;
 
                 if (i == 0)
                 {
-                    startingArgs = handlerInstance.currentGameInfo.StartArguments;
+                    startingArgs = handlerInstance.CurrentGameInfo.StartArguments;
                 }
 
                 var sb = new StringBuilder();
@@ -123,13 +123,13 @@ namespace Nucleus.Gaming.Tools.Steam
                                 .AppendLine()
                                 .Append("[SteamClient]")
                                 .AppendLine()
-                                .Append($"Exe={handlerInstance.currentGameInfo.ExecutableName}")
+                                .Append($"Exe={handlerInstance.CurrentGameInfo.ExecutableName}")
                                 .AppendLine()
                                 .Append($"ExeRunDir=.")
                                 .AppendLine()
                                 .Append($"ExeCommandLine={startingArgs}")
                                 .AppendLine()
-                                .Append($"AppId={handlerInstance.currentGameInfo.SteamID}")
+                                .Append($"AppId={handlerInstance.CurrentGameInfo.SteamID}")
                                 .AppendLine()
                                 .AppendLine()
                                 .Append("SteamClientDll=steamclient.dll")
@@ -140,13 +140,13 @@ namespace Nucleus.Gaming.Tools.Steam
                 handlerInstance.addedFiles.Add(Path.Combine(exeFolder, "ColdClientLoader.ini"));
 
                 //swalloing the launch arguments for the game here as we will be launching steamclient loader
-                handlerInstance.currentGameInfo.StartArguments = string.Empty;
+                handlerInstance.CurrentGameInfo.StartArguments = string.Empty;
                 handlerInstance.context.StartArguments = string.Empty;
 
                 string settingsFolder = exeFolder + "\\settings";
-                if (handlerInstance.currentGameInfo.GoldbergNoLocalSave)
+                if (handlerInstance.CurrentGameInfo.GoldbergNoLocalSave)
                 {
-                    if (handlerInstance.currentGameInfo.UseNucleusEnvironment)
+                    if (handlerInstance.CurrentGameInfo.UseNucleusEnvironment)
                     {
                         settingsFolder = $@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Roaming\Goldberg SteamEmu Saves\settings\";
                     }
@@ -176,16 +176,16 @@ namespace Nucleus.Gaming.Tools.Steam
 
                 if (handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "" && handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "Automatic")
                 {
-                    handlerInstance.currentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
+                    handlerInstance.CurrentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
                 }
 
-                if (handlerInstance.currentGameInfo.GoldbergLanguage?.Length > 0)
+                if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
                 {
-                    lang = handlerInstance.currentGameInfo.GoldbergLanguage;
+                    lang = handlerInstance.CurrentGameInfo.GoldbergLanguage;
                 }
                 else
                 {
-                    lang = handlerInstance.currentGameInfo.GetSteamLanguage();
+                    lang = handlerInstance.CurrentGameInfo.GetSteamLanguage();
                 }
 
                 File.WriteAllText(Path.Combine(settingsFolder, "language.txt"), lang);
@@ -210,7 +210,7 @@ namespace Nucleus.Gaming.Tools.Steam
 
                     instanceSteamDllFolder = linkFolder.TrimEnd('\\') + "\\" + steamDllFolder.TrimStart('\\');
 
-                    if (handlerInstance.currentGameInfo.UseNucleusEnvironment && handlerInstance.currentGameInfo.GoldbergNoLocalSave)
+                    if (handlerInstance.CurrentGameInfo.UseNucleusEnvironment && handlerInstance.CurrentGameInfo.GoldbergNoLocalSave)
                     {
                         instanceSteamSettingsFolder = $@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Roaming\Goldberg SteamEmu Saves\settings\";
                     }
@@ -230,7 +230,7 @@ namespace Nucleus.Gaming.Tools.Steam
                             {
                                 if (File.Exists(Path.Combine(instanceSteamDllFolder, "steam_api64.dll")))
                                 {
-                                    if (handlerInstance.currentGameInfo.GoldbergExperimental && handlerInstance.currentGameInfo.GoldbergExperimentalRename)
+                                    if (handlerInstance.CurrentGameInfo.GoldbergExperimental && handlerInstance.CurrentGameInfo.GoldbergExperimentalRename)
                                     {
                                         FileUtil.FileCheck(Path.Combine(instanceSteamDllFolder, "cracksteam_api64.dll"));
                                         handlerInstance.Log("Renaming steam_api64.dll to cracksteam_api64.dll");
@@ -258,7 +258,7 @@ namespace Nucleus.Gaming.Tools.Steam
                             {
                                 if (File.Exists(Path.Combine(instanceSteamDllFolder, "steam_api.dll")))
                                 {
-                                    if (handlerInstance.currentGameInfo.GoldbergExperimental && handlerInstance.currentGameInfo.GoldbergExperimentalRename)
+                                    if (handlerInstance.CurrentGameInfo.GoldbergExperimental && handlerInstance.CurrentGameInfo.GoldbergExperimentalRename)
                                     {
                                         FileUtil.FileCheck(Path.Combine(instanceSteamDllFolder, "cracksteam_api.dll"));
                                         handlerInstance.Log("Renaming steam_api.dll to cracksteam_api.dll");
@@ -280,7 +280,7 @@ namespace Nucleus.Gaming.Tools.Steam
                             }
                         }
 
-                        if (handlerInstance.currentGameInfo.GoldbergExperimental)
+                        if (handlerInstance.CurrentGameInfo.GoldbergExperimental)
                         {
                             FileUtil.FileCheck(Path.Combine(instanceSteamDllFolder, "steamclient.dll"));
                             handlerInstance.Log("Placing Goldberg steamclient.dll in instance steam dll folder");
@@ -333,23 +333,23 @@ namespace Nucleus.Gaming.Tools.Steam
 
                     long steamID;
 
-                    if(handlerInstance.currentGameInfo.UseHandlerSteamIds)
+                    if(handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
                     {
-                        if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                        if (handlerInstance.CurrentGameInfo.PlayerSteamIDs != null)
                         {
-                            if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                            if (i < handlerInstance.CurrentGameInfo.PlayerSteamIDs.Length)
                             {
-                                if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                                if (!string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]))
                                 {
                                     handlerInstance.Log("Using steam ID from handler");
-                                    steamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                                    steamID = long.Parse(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]);
                                     player.SteamID = steamID;
                                 }
                             }
                         }
                     }
 
-                    if (player.SteamID == -1 && !handlerInstance.currentGameInfo.UseHandlerSteamIds)
+                    if (player.SteamID == -1 && !handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
                     {
                         steamID = SteamFunctions.random_steam_id + i;
 
@@ -360,14 +360,14 @@ namespace Nucleus.Gaming.Tools.Steam
 
                         player.SteamID = steamID;
 
-                        if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                        if (handlerInstance.CurrentGameInfo.PlayerSteamIDs != null)
                         {
-                            if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                            if (i < handlerInstance.CurrentGameInfo.PlayerSteamIDs.Length)
                             {
-                                if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                                if (!string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]))
                                 {
                                     handlerInstance.Log("Using steam ID from handler");
-                                    steamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                                    steamID = long.Parse(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]);
                                     player.SteamID = steamID;
                                 }
                             }
@@ -392,39 +392,39 @@ namespace Nucleus.Gaming.Tools.Steam
                         string lang = "english";
                         if (handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "" && handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "Automatic")
                         {
-                            handlerInstance.currentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
+                            handlerInstance.CurrentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
                         }
-                        if (handlerInstance.currentGameInfo.GoldbergLanguage?.Length > 0)
+                        if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
                         {
-                            lang = handlerInstance.currentGameInfo.GoldbergLanguage;
+                            lang = handlerInstance.CurrentGameInfo.GoldbergLanguage;
                         }
                         else
                         {
-                            lang = handlerInstance.currentGameInfo.GetSteamLanguage();
+                            lang = handlerInstance.CurrentGameInfo.GetSteamLanguage();
                         }
 
                         handlerInstance.Log("Generating language.txt with language set to " + lang);
                         handlerInstance.addedFiles.Add(Path.Combine(instanceSteamSettingsFolder, "language.txt"));
                         File.WriteAllText(Path.Combine(instanceSteamSettingsFolder, "language.txt"), lang);
 
-                        if (handlerInstance.currentGameInfo.GoldbergIgnoreSteamAppId)
+                        if (handlerInstance.CurrentGameInfo.GoldbergIgnoreSteamAppId)
                         {
                             handlerInstance.Log("Skipping steam_appid.txt creation");
                         }
                         else
                         {
-                            handlerInstance.Log("Generating steam_appid.txt using game steam ID " + handlerInstance.currentGameInfo.SteamID);
+                            handlerInstance.Log("Generating steam_appid.txt using game steam ID " + handlerInstance.CurrentGameInfo.SteamID);
                             handlerInstance.addedFiles.Add(Path.Combine(instanceSteamDllFolder, "steam_appid.txt"));
-                            File.WriteAllText(Path.Combine(instanceSteamDllFolder, "steam_appid.txt"), handlerInstance.currentGameInfo.SteamID);
+                            File.WriteAllText(Path.Combine(instanceSteamDllFolder, "steam_appid.txt"), handlerInstance.CurrentGameInfo.SteamID);
                         }
 
                         handlerInstance.addedFiles.Add(Path.Combine(instanceSteamDllFolder, "local_save.txt"));
-                        if (!handlerInstance.currentGameInfo.GoldbergNoLocalSave)
+                        if (!handlerInstance.CurrentGameInfo.GoldbergNoLocalSave)
                         {
                             File.WriteAllText(Path.Combine(instanceSteamDllFolder, "local_save.txt"), "");
                         }
 
-                        if (handlerInstance.currentGameInfo.GoldbergNeedSteamInterface)
+                        if (handlerInstance.CurrentGameInfo.GoldbergNeedSteamInterface)
                         {
                             handlerInstance.addedFiles.Add(Path.Combine(instanceSteamDllFolder, "steam_interfaces.txt"));
                             if (File.Exists(Path.Combine(utilFolder, "tools\\steam_interfaces.txt")))
@@ -438,14 +438,14 @@ namespace Nucleus.Gaming.Tools.Steam
                                 handlerInstance.Log("Found steam_interfaces.txt in original game folder, copying this file");
                                 File.Copy(Path.Combine(steamDllrootFolder, "steam_interfaces.txt"), Path.Combine(instanceSteamDllFolder, "steam_interfaces.txt"), true);
                             }
-                            else if (File.Exists(nucleusRootFolder.TrimEnd('\\') + "\\handlers\\" + handlerInstance.currentGameInfo.JsFileName.Substring(0, handlerInstance.currentGameInfo.JsFileName.Length - 3) + "\\steam_interfaces.txt"))
+                            else if (File.Exists(nucleusRootFolder.TrimEnd('\\') + "\\handlers\\" + handlerInstance.CurrentGameInfo.JsFileName.Substring(0, handlerInstance.CurrentGameInfo.JsFileName.Length - 3) + "\\steam_interfaces.txt"))
                             {
                                 handlerInstance.Log("Found steam_interfaces.txt in Nucleus game folder");
-                                File.Copy(nucleusRootFolder.TrimEnd('\\') + "\\handlers\\" + handlerInstance.currentGameInfo.JsFileName.Substring(0, handlerInstance.currentGameInfo.JsFileName.Length - 3) + "\\steam_interfaces.txt", Path.Combine(instanceSteamDllFolder, "steam_interfaces.txt"), true);
+                                File.Copy(nucleusRootFolder.TrimEnd('\\') + "\\handlers\\" + handlerInstance.CurrentGameInfo.JsFileName.Substring(0, handlerInstance.CurrentGameInfo.JsFileName.Length - 3) + "\\steam_interfaces.txt", Path.Combine(instanceSteamDllFolder, "steam_interfaces.txt"), true);
                             }
-                            else if (handlerInstance.currentGameInfo.OrigSteamDllPath?.Length > 0 && File.Exists(handlerInstance.currentGameInfo.OrigSteamDllPath))
+                            else if (handlerInstance.CurrentGameInfo.OrigSteamDllPath?.Length > 0 && File.Exists(handlerInstance.CurrentGameInfo.OrigSteamDllPath))
                             {
-                                handlerInstance.Log("Attempting to create steam_interfaces.txt with the steam api dll located at: " + handlerInstance.currentGameInfo.OrigSteamDllPath);
+                                handlerInstance.Log("Attempting to create steam_interfaces.txt with the steam api dll located at: " + handlerInstance.CurrentGameInfo.OrigSteamDllPath);
                                 Process cmd = new Process();
                                 cmd.StartInfo.FileName = "cmd.exe";
                                 cmd.StartInfo.RedirectStandardInput = true;
@@ -454,7 +454,7 @@ namespace Nucleus.Gaming.Tools.Steam
                                 cmd.StartInfo.WorkingDirectory = Path.Combine(utilFolder, "tools");
                                 cmd.Start();
 
-                                cmd.StandardInput.WriteLine("generate_interfaces_file.exe \"" + handlerInstance.currentGameInfo.OrigSteamDllPath + "\"");
+                                cmd.StandardInput.WriteLine("generate_interfaces_file.exe \"" + handlerInstance.CurrentGameInfo.OrigSteamDllPath + "\"");
                                 cmd.StandardInput.Flush();
                                 cmd.StandardInput.Close();
                                 cmd.WaitForExit();
@@ -483,7 +483,7 @@ namespace Nucleus.Gaming.Tools.Steam
 
                 if (steamDllFiles == null || steamDllFiles.Length < 1)
                 {
-                    if (!handlerInstance.currentGameInfo.GoldbergNoWarning)
+                    if (!handlerInstance.CurrentGameInfo.GoldbergNoWarning)
                     {
                         handlerInstance.Log("Unable to locate a steam_api(64).dll file, Goldberg will not be used");
                         NucleusMessageBox.Show("Warning", "Goldberg was unable to locate a steam_api(64).dll file.\nThe built-in Goldberg will not be used.", false);
@@ -514,7 +514,7 @@ namespace Nucleus.Gaming.Tools.Steam
                 files.Add(goldbergNoLocal);
             }
 
-            if (handlerInstance.currentGameInfo.UseNucleusEnvironment)
+            if (handlerInstance.CurrentGameInfo.UseNucleusEnvironment)
             {
                 goldbergNoLocal = $@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Roaming\Goldberg SteamEmu Saves\settings\account_name.txt";
                 if (File.Exists(goldbergNoLocal))
@@ -554,7 +554,7 @@ namespace Nucleus.Gaming.Tools.Steam
                 files.Add(goldbergNoLocal);
             }
 
-            if (handlerInstance.currentGameInfo.UseNucleusEnvironment)
+            if (handlerInstance.CurrentGameInfo.UseNucleusEnvironment)
             {
                 goldbergNoLocal = $@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Roaming\Goldberg SteamEmu Saves\settings\user_steam_id.txt";
 
@@ -568,23 +568,23 @@ namespace Nucleus.Gaming.Tools.Steam
             {
                 long steamID;
 
-                if (handlerInstance.currentGameInfo.UseHandlerSteamIds)
+                if (handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
                 {
-                    if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                    if (handlerInstance.CurrentGameInfo.PlayerSteamIDs != null)
                     {
-                        if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                        if (i < handlerInstance.CurrentGameInfo.PlayerSteamIDs.Length)
                         {
-                            if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                            if (!string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]))
                             {
                                 handlerInstance.Log("Using steam ID from handler");
-                                steamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                                steamID = long.Parse(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]);
                                 player.SteamID = steamID;
                             }
                         }
                     }
                 }
 
-                if (player.SteamID == -1 && !handlerInstance.currentGameInfo.UseHandlerSteamIds)
+                if (player.SteamID == -1 && !handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
                 {                   
                     steamID = SteamFunctions.random_steam_id + i;
 
@@ -595,14 +595,14 @@ namespace Nucleus.Gaming.Tools.Steam
 
                     player.SteamID = steamID;
 
-                    if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                    if (handlerInstance.CurrentGameInfo.PlayerSteamIDs != null)
                     {
-                        if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                        if (i < handlerInstance.CurrentGameInfo.PlayerSteamIDs.Length)
                         {
-                            if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                            if (!string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]))
                             {
                                 handlerInstance.Log("Using steam ID from handler");
-                                steamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                                steamID = long.Parse(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]);
                                 player.SteamID = steamID;
                             }
                         }
@@ -669,14 +669,14 @@ namespace Nucleus.Gaming.Tools.Steam
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            handlerInstance.Log("Creating steam_appid.txt with steam ID " + handlerInstance.currentGameInfo.SteamID + " at " + handlerInstance.instanceExeFolder);
+            handlerInstance.Log("Creating steam_appid.txt with steam ID " + handlerInstance.CurrentGameInfo.SteamID + " at " + handlerInstance.instanceExeFolder);
 
             if (File.Exists(Path.Combine(handlerInstance.instanceExeFolder, "steam_appid.txt")))
             {
                 File.Delete(Path.Combine(handlerInstance.instanceExeFolder, "steam_appid.txt"));
             }
 
-            File.WriteAllText(Path.Combine(handlerInstance.instanceExeFolder, "steam_appid.txt"), handlerInstance.currentGameInfo.SteamID);
+            File.WriteAllText(Path.Combine(handlerInstance.instanceExeFolder, "steam_appid.txt"), handlerInstance.CurrentGameInfo.SteamID);
 
             if (setupDll)
             {
@@ -746,23 +746,23 @@ namespace Nucleus.Gaming.Tools.Steam
 
             long steamID;
 
-            if (handlerInstance.currentGameInfo.UseHandlerSteamIds)
+            if (handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
             {
-                if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                if (handlerInstance.CurrentGameInfo.PlayerSteamIDs != null)
                 {
-                    if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                    if (i < handlerInstance.CurrentGameInfo.PlayerSteamIDs.Length)
                     {
-                        if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                        if (!string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]))
                         {
                             handlerInstance.Log("Using steam ID from handler");
-                            steamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                            steamID = long.Parse(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]);
                             player.SteamID = steamID;
                         }
                     }
                 }
             }
 
-            if (player.SteamID == -1 && !handlerInstance.currentGameInfo.UseHandlerSteamIds)
+            if (player.SteamID == -1 && !handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
             {
                 steamID = SteamFunctions.random_steam_id + i;
 
@@ -774,15 +774,15 @@ namespace Nucleus.Gaming.Tools.Steam
                 emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", (steamID).ToString());
                 player.SteamID = steamID;
 
-                if (handlerInstance.currentGameInfo.PlayerSteamIDs != null)
+                if (handlerInstance.CurrentGameInfo.PlayerSteamIDs != null)
                 {
-                    if (i < handlerInstance.currentGameInfo.PlayerSteamIDs.Length)
+                    if (i < handlerInstance.CurrentGameInfo.PlayerSteamIDs.Length)
                     {
-                        if (!string.IsNullOrEmpty(handlerInstance.currentGameInfo.PlayerSteamIDs[i]))
+                        if (!string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]))
                         {
                             handlerInstance.Log("Using steam ID from handler");
-                            emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", handlerInstance.currentGameInfo.PlayerSteamIDs[i].ToString());
-                            player.SteamID = long.Parse(handlerInstance.currentGameInfo.PlayerSteamIDs[i]);
+                            emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", handlerInstance.CurrentGameInfo.PlayerSteamIDs[i].ToString());
+                            player.SteamID = long.Parse(handlerInstance.CurrentGameInfo.PlayerSteamIDs[i]);
                         }
                     }
                 }
@@ -796,16 +796,16 @@ namespace Nucleus.Gaming.Tools.Steam
 
             if (handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "" && handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "Automatic")
             {
-                handlerInstance.currentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
+                handlerInstance.CurrentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
             }
 
-            if (handlerInstance.currentGameInfo.GoldbergLanguage?.Length > 0)
+            if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
             {
-                lang = handlerInstance.currentGameInfo.GoldbergLanguage;
+                lang = handlerInstance.CurrentGameInfo.GoldbergLanguage;
             }
             else
             {
-                lang = handlerInstance.currentGameInfo.GetSteamLanguage();
+                lang = handlerInstance.CurrentGameInfo.GetSteamLanguage();
             }
 
             emu.IniWriteValue("SmartSteamEmu", "Language", lang);
@@ -822,9 +822,9 @@ namespace Nucleus.Gaming.Tools.Steam
             emu.IniWriteValue("SmartSteamEmu", "DisableOverlay", "1");
             emu.IniWriteValue("SmartSteamEmu", "SeparateStorageByName", "1");
 
-            if (handlerInstance.currentGameInfo.SSEAdditionalLines?.Length > 0)
+            if (handlerInstance.CurrentGameInfo.SSEAdditionalLines?.Length > 0)
             {
-                foreach (string line in handlerInstance.currentGameInfo.SSEAdditionalLines)
+                foreach (string line in handlerInstance.CurrentGameInfo.SSEAdditionalLines)
                 {
                     if (line.Contains("|") && line.Contains("="))
                     {
@@ -841,13 +841,13 @@ namespace Nucleus.Gaming.Tools.Steam
                 }
             }
 
-            if (handlerInstance.currentGameInfo.ForceEnvironmentUse && handlerInstance.currentGameInfo.ThirdPartyLaunch)
+            if (handlerInstance.CurrentGameInfo.ForceEnvironmentUse && handlerInstance.CurrentGameInfo.ThirdPartyLaunch)
             {
                 handlerInstance.Log("Force Nucleus environment use");
 
                 IntPtr envPtr = IntPtr.Zero;
 
-                if (handlerInstance.currentGameInfo.UseNucleusEnvironment)
+                if (handlerInstance.CurrentGameInfo.UseNucleusEnvironment)
                 {
                     handlerInstance.Log("Setting up Nucleus environment");
                     var sb = new StringBuilder();
@@ -866,7 +866,7 @@ namespace Nucleus.Gaming.Tools.Steam
                     Directory.CreateDirectory(envVars["LOCALAPPDATA"].ToString());
                     Directory.CreateDirectory(Path.GetDirectoryName(handlerInstance.DocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents");
 
-                    if (handlerInstance.currentGameInfo.DocumentsConfigPath?.Length > 0 || handlerInstance.currentGameInfo.DocumentsSavePath?.Length > 0)
+                    if (handlerInstance.CurrentGameInfo.DocumentsConfigPath?.Length > 0 || handlerInstance.CurrentGameInfo.DocumentsSavePath?.Length > 0)
                     {
                         if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
                         {
@@ -899,12 +899,12 @@ namespace Nucleus.Gaming.Tools.Steam
                 }
             }
 
-            if (!handlerInstance.currentGameInfo.ThirdPartyLaunch)
+            if (!handlerInstance.CurrentGameInfo.ThirdPartyLaunch)
             {
                 if (handlerInstance.context.KillMutex?.Length > 0)
                 {
                     // to kill the mutexes we need to orphanize the process
-                    while (!ProcessUtil.RunOrphanProcess(emuExe, handlerInstance.currentGameInfo.UseNucleusEnvironment, player.Nickname))
+                    while (!ProcessUtil.RunOrphanProcess(emuExe, handlerInstance.CurrentGameInfo.UseNucleusEnvironment, player.Nickname))
                     {
                         if (GenericGameHandler.Instance.HasEnded)
                         {
@@ -919,7 +919,7 @@ namespace Nucleus.Gaming.Tools.Steam
                 {
                     IntPtr envPtr = IntPtr.Zero;
 
-                    if (handlerInstance.currentGameInfo.UseNucleusEnvironment)
+                    if (handlerInstance.CurrentGameInfo.UseNucleusEnvironment)
                     {
                         handlerInstance.Log("Setting up Nucleus environment");
                         var sb = new StringBuilder();
@@ -938,7 +938,7 @@ namespace Nucleus.Gaming.Tools.Steam
                         Directory.CreateDirectory(envVars["LOCALAPPDATA"].ToString());
                         Directory.CreateDirectory(Path.GetDirectoryName(handlerInstance.DocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents");
 
-                        if (handlerInstance.currentGameInfo.DocumentsConfigPath?.Length > 0 || handlerInstance.currentGameInfo.DocumentsSavePath?.Length > 0)
+                        if (handlerInstance.CurrentGameInfo.DocumentsConfigPath?.Length > 0 || handlerInstance.CurrentGameInfo.DocumentsSavePath?.Length > 0)
                         {
                             if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
                             {
@@ -1003,9 +1003,9 @@ namespace Nucleus.Gaming.Tools.Steam
                 string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\Steam Stub DRM Patcher");
 
                 string archToUse = handlerInstance.garch;
-                if (handlerInstance.currentGameInfo.SteamStubDRMPatcherArch?.Length > 0)
+                if (handlerInstance.CurrentGameInfo.SteamStubDRMPatcherArch?.Length > 0)
                 {
-                    archToUse = "x" + handlerInstance.currentGameInfo.SteamStubDRMPatcherArch;
+                    archToUse = "x" + handlerInstance.CurrentGameInfo.SteamStubDRMPatcherArch;
                 }
 
                 FileUtil.FileCheck(Path.Combine(handlerInstance.instanceExeFolder, "winmm.dll"));

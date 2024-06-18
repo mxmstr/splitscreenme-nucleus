@@ -55,7 +55,7 @@
             this.webView.Location = new System.Drawing.Point(0, 0);
             this.webView.MinimumSize = new System.Drawing.Size(250, 250);
             this.webView.Name = "webView";
-            this.webView.Size = new System.Drawing.Size(1120, 640);
+            this.webView.Size = new System.Drawing.Size(1166, 655);
             this.webView.TabIndex = 0;
             this.webView.ZoomFactor = 1D;
             this.webView.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.WebView_CoreWebView2InitializationCompleted);
@@ -140,7 +140,7 @@
             this.modal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.modal.Location = new System.Drawing.Point(0, 0);
             this.modal.Name = "modal";
-            this.modal.Size = new System.Drawing.Size(1120, 640);
+            this.modal.Size = new System.Drawing.Size(1166, 655);
             this.modal.TabIndex = 21;
             this.modal.Visible = false;
             // 
@@ -154,7 +154,7 @@
             this.modalControlsContainer.Controls.Add(this.modal_no);
             this.modalControlsContainer.Location = new System.Drawing.Point(35, 44);
             this.modalControlsContainer.Name = "modalControlsContainer";
-            this.modalControlsContainer.Size = new System.Drawing.Size(1050, 550);
+            this.modalControlsContainer.Size = new System.Drawing.Size(1096, 565);
             this.modalControlsContainer.TabIndex = 24;
             // 
             // modal_text
@@ -168,7 +168,7 @@
             this.modal_text.ForeColor = System.Drawing.Color.White;
             this.modal_text.Location = new System.Drawing.Point(226, 92);
             this.modal_text.Name = "modal_text";
-            this.modal_text.Size = new System.Drawing.Size(597, 238);
+            this.modal_text.Size = new System.Drawing.Size(643, 238);
             this.modal_text.TabIndex = 23;
             this.modal_text.Text = "label1";
             this.modal_text.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -182,7 +182,7 @@
             this.modal_yes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.modal_yes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.modal_yes.ForeColor = System.Drawing.Color.White;
-            this.modal_yes.Location = new System.Drawing.Point(229, 392);
+            this.modal_yes.Location = new System.Drawing.Point(252, 399);
             this.modal_yes.Name = "modal_yes";
             this.modal_yes.Size = new System.Drawing.Size(214, 66);
             this.modal_yes.TabIndex = 21;
@@ -198,7 +198,7 @@
             this.modal_no.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.modal_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.modal_no.ForeColor = System.Drawing.Color.White;
-            this.modal_no.Location = new System.Drawing.Point(609, 392);
+            this.modal_no.Location = new System.Drawing.Point(632, 399);
             this.modal_no.Name = "modal_no";
             this.modal_no.Size = new System.Drawing.Size(214, 66);
             this.modal_no.TabIndex = 22;
@@ -215,7 +215,7 @@
             this.Controls.Add(this.webView);
             this.DoubleBuffered = true;
             this.Name = "HubWebView";
-            this.Size = new System.Drawing.Size(1120, 640);
+            this.Size = new System.Drawing.Size(1166, 655);
             ((System.ComponentModel.ISupportInitialize)(this.webView)).EndInit();
             this.button_Panel.ResumeLayout(false);
             this.modal.ResumeLayout(false);

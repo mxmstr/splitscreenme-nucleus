@@ -26,11 +26,10 @@ namespace Nucleus.Gaming.Controls
                                        int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',')[1]), 
                                        int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',')[2]));
             
-            BackColor = int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "BackgroundGradient").Split(',')[0]) == 1 ? Color.Transparent : 
-                                       Color.FromArgb(int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBackground").Split(',')[0]),
-                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBackground").Split(',')[1]),
-                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBackground").Split(',')[2]), 
-                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteBackground").Split(',')[3])); 
+            BackColor = Color.FromArgb(int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteZoomBackground").Split(',')[0]),
+                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteZoomBackground").Split(',')[1]),
+                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteZoomBackground").Split(',')[2]), 
+                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteZoomBackground").Split(',')[3])); 
 
             close_Btn.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
             close_Btn.BackColor = Color.Transparent;

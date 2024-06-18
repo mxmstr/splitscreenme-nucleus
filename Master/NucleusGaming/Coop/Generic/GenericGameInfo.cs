@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
@@ -383,6 +384,12 @@ namespace Nucleus.Gaming
             }
 
             MetaInfo.LoadGameMetaInfo(GUID);
+
+            OnFinishedSetup += MetaInfo.StartGameplayTimerThread;
+            OnStop += MetaInfo.StopGameplayTimerThread;
+
+            OnFinishedSetup += GamepadNavigation.StopUINavigation;
+            OnStop += GamepadNavigation.StartUINavigation;
 
             if (MetaInfo.CheckUpdate)
             {

@@ -349,7 +349,6 @@ namespace Nucleus.Coop
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height / 3);
             Rectangle bounds = new Rectangle(0, 0, favoriteBox.Right, Height);
 
@@ -364,11 +363,9 @@ namespace Nucleus.Coop
 
             lgb.InterpolationColors = topcblend;
             lgb.SetBlendTriangularShape(.5f, 1.0f);
-            g.FillRectangle(lgb, bounds);
+            e.Graphics.FillRectangle(lgb, bounds);
 
-            lgb.Dispose();
-
-            g.Dispose();
+            lgb.Dispose();  
         }
     }
 }

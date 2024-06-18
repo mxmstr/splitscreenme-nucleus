@@ -20,9 +20,9 @@ namespace Nucleus.Gaming.Tools.X360ce
             string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\x360ce");
 
             string[] x360cedlls = { "xinput1_3.dll" };
-            if (handlerInstance.currentGameInfo.X360ceDll?.Length > 0)
+            if (handlerInstance.CurrentGameInfo.X360ceDll?.Length > 0)
             {
-                x360cedlls = handlerInstance.currentGameInfo.X360ceDll;
+                x360cedlls = handlerInstance.CurrentGameInfo.X360ceDll;
             }
 
             if (setupDll)
@@ -94,7 +94,7 @@ namespace Nucleus.Gaming.Tools.X360ce
                     }
                     else
                     {
-                        if (handlerInstance.currentGameInfo.SymlinkGame || handlerInstance.currentGameInfo.HardlinkGame || handlerInstance.currentGameInfo.HardcopyGame)
+                        if (handlerInstance.CurrentGameInfo.SymlinkGame || handlerInstance.CurrentGameInfo.HardlinkGame || handlerInstance.CurrentGameInfo.HardcopyGame)
                         {
                             handlerInstance.Log("Carrying over " + x360ceDllName + " from Instance0");
                             FileUtil.FileCheck(Path.Combine(handlerInstance.instanceExeFolder, x360ceDllName));
@@ -104,7 +104,7 @@ namespace Nucleus.Gaming.Tools.X360ce
                 }
             }
 
-            if (i > 0 && (handlerInstance.currentGameInfo.SymlinkGame || handlerInstance.currentGameInfo.HardlinkGame || handlerInstance.currentGameInfo.HardcopyGame))
+            if (i > 0 && (handlerInstance.CurrentGameInfo.SymlinkGame || handlerInstance.CurrentGameInfo.HardlinkGame || handlerInstance.CurrentGameInfo.HardcopyGame))
             {
                 handlerInstance.Log("Carrying over x360ce.ini from Instance0");
 
@@ -144,18 +144,18 @@ namespace Nucleus.Gaming.Tools.X360ce
             if (!player.IsKeyboardPlayer)
             {
                 Thread.Sleep(1000);
-                if (handlerInstance.currentGameInfo.PlayersPerInstance > 1)
+                if (handlerInstance.CurrentGameInfo.PlayersPerInstance > 1)
                 {
-                    for (int x = 1; x <= handlerInstance.currentGameInfo.PlayersPerInstance; x++)
+                    for (int x = 1; x <= handlerInstance.CurrentGameInfo.PlayersPerInstance; x++)
                     {
                         textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "PAD" + x + "=", SearchType.StartsWith) + "|PAD" + x + "=IG_" + players[x].GamepadGuid.ToString().Replace("-", string.Empty));
                     }
-                    for (int x = handlerInstance.currentGameInfo.PlayersPerInstance + 1; x <= 4; x++)
+                    for (int x = handlerInstance.CurrentGameInfo.PlayersPerInstance + 1; x <= 4; x++)
                     {
                         textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), "PAD" + x + "=", SearchType.StartsWith) + "|PAD" + x + "=IG_" + players[x].GamepadGuid.ToString().Replace("-", string.Empty));
                     }
 
-                    handlerInstance.plyrIndex += handlerInstance.currentGameInfo.PlayersPerInstance;
+                    handlerInstance.plyrIndex += handlerInstance.CurrentGameInfo.PlayersPerInstance;
                 }
                 else
                 {
@@ -168,7 +168,7 @@ namespace Nucleus.Gaming.Tools.X360ce
                 handlerInstance.context.ReplaceLinesInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), textChanges.ToArray());
             }
 
-            if (handlerInstance.currentGameInfo.XboxOneControllerFix)
+            if (handlerInstance.CurrentGameInfo.XboxOneControllerFix)
             {
                 Thread.Sleep(1000);
                 handlerInstance.Log("Implementing Xbox One controller fix");
@@ -188,7 +188,7 @@ namespace Nucleus.Gaming.Tools.X360ce
                 handlerInstance.context.ReplaceLinesInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"), textChanges.ToArray());
             }
 
-            if (File.Exists(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini")) && !handlerInstance.currentGameInfo.SymlinkGame && !handlerInstance.currentGameInfo.HardlinkGame && !handlerInstance.currentGameInfo.HardcopyGame)
+            if (File.Exists(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini")) && !handlerInstance.CurrentGameInfo.SymlinkGame && !handlerInstance.CurrentGameInfo.HardlinkGame && !handlerInstance.CurrentGameInfo.HardcopyGame)
             {
                 handlerInstance.Log("x360ce.ini will be deleted upon ending session");
                 handlerInstance.addedFiles.Add(Path.Combine(handlerInstance.instanceExeFolder, "x360ce.ini"));

@@ -477,6 +477,13 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                 if (keyboardMessage == (uint)KeyboardEvents.WM_KEYUP && (rawBuffer.data.keyboard.Flags | 1) != 0 && rawBuffer.data.keyboard.VKey == ToggleLockInputKey)
                 {
+
+                    if(GlobalWindowMethods.ResetingWindows)
+                    {
+                        Globals.MainOSD.Show(1200, "Wait For Game Windows To Be Reseted");
+                        return;
+                    }
+
                     if (!LockInput.IsLocked)
                     {
                         if (CurrentGameInfo == null || GenericGameHandler.Instance.hasEnded)

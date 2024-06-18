@@ -19,7 +19,7 @@ namespace Nucleus.Gaming.Util
                 }
 
                 File.Copy(Path.Combine(instanceExeFolder, userGame.Game.ExecutableName), Path.Combine(instanceExeFolder, newExe));
-                handlerInstance.Log("Changed game executable from " + handlerInstance.currentGameInfo.ExecutableName + " to " + newExe);
+                handlerInstance.Log("Changed game executable from " + handlerInstance.CurrentGameInfo.ExecutableName + " to " + newExe);
             }
 
             if (File.Exists(Path.Combine(instanceExeFolder, newExe)))
@@ -27,7 +27,7 @@ namespace Nucleus.Gaming.Util
                 handlerInstance.exePath = Path.Combine(instanceExeFolder, newExe);
                 handlerInstance.Log("Using " + newExe + " as the game executable");
 
-                if (!handlerInstance.currentGameInfo.SymlinkGame && !handlerInstance.currentGameInfo.HardlinkGame && !handlerInstance.currentGameInfo.HardcopyGame)
+                if (!handlerInstance.CurrentGameInfo.SymlinkGame && !handlerInstance.CurrentGameInfo.HardlinkGame && !handlerInstance.CurrentGameInfo.HardcopyGame)
                 {
                     handlerInstance.Log($"{newExe} will be deleted upon ending session");
                     handlerInstance.addedFiles.Add(Path.Combine(instanceExeFolder, newExe));

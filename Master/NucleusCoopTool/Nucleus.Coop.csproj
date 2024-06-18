@@ -59,6 +59,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -71,6 +72,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|AnyCPU'">
     <OutputPath>bin\TestDebug\</OutputPath>
@@ -79,6 +81,7 @@
     <LangVersion>7.3</LangVersion>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
@@ -89,6 +92,15 @@
   <PropertyGroup>
     <StartupObject>
     </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|Win32'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|Win32'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|Win32'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
@@ -247,11 +259,11 @@
     <Compile Include="Controls\HubWebView.Designer.cs">
       <DependentUpon>HubWebView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\donationPanel.cs">
+    <Compile Include="Controls\DonationPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\donationPanel.Designer.cs">
-      <DependentUpon>donationPanel.cs</DependentUpon>
+    <Compile Include="Controls\DonationPanel.Designer.cs">
+      <DependentUpon>DonationPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
@@ -334,8 +346,8 @@
     <EmbeddedResource Include="Controls\CustomRadioButton.resx">
       <DependentUpon>CustomRadioButton.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\donationPanel.resx">
-      <DependentUpon>donationPanel.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\DonationPanel.resx">
+      <DependentUpon>DonationPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\HubShowcase.resx">
       <DependentUpon>HubShowcase.cs</DependentUpon>

@@ -138,7 +138,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         public override void Ended()
         {
             base.Ended();
-
+           
             foreach (PlayerInfo player in profile.DevicesList)
             {
                 player.DInputJoystick?.Dispose();
@@ -190,20 +190,18 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             base.OnPaint(e);
 
-            Graphics g = e.Graphics;
-
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
 
             if (BoundsFunctions.selectedPlayer?.MonitorBounds != Rectangle.Empty &&
                 BoundsFunctions.selectedPlayer?.MonitorBounds != null)
             {
-                Draw.SelectedPlayerBounds(g);
-                Draw.PlayerBoundsInfo(g);
+                Draw.SelectedPlayerBounds(e.Graphics);
+                Draw.PlayerBoundsInfo(e.Graphics);
             }
 
-            Draw.UIScreens(g);
+            Draw.UIScreens(e.Graphics);
 
-            g.ResetClip();
+            e.Graphics.ResetClip();
 
             for (int i = 0; i < profile.DevicesList.Count; i++)
             {
@@ -212,24 +210,24 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 if (GameProfile.Loaded)
                 {
                     GameProfile.FindProfilePlayers(player);
-                    Draw.GhostBounds(g);
+                    Draw.GhostBounds(e.Graphics);
                 }
 
-                Draw.UIDevices(g, player);
+                Draw.UIDevices(e.Graphics, player);
 
                 PlayerInfo playerToUpdate = GameProfile.UpdateProfilePlayerNickAndSID(player);
 
                 if (playerToUpdate != null && !playerToUpdate.EditBounds.IntersectsWith(BoundsFunctions.ActiveSizer))
                 {
-                    Draw.PlayerTag(g, playerToUpdate);
+                    Draw.PlayerTag(e.Graphics, playerToUpdate);
                 }
             }
 
-            g.ResetClip();
+            e.Graphics.ResetClip();
 
             if (BoundsFunctions.dragging && BoundsFunctions.draggingScreen != -1)
             {
-                Draw.DestinationBounds(g);
+                Draw.DestinationBounds(e.Graphics);
             }
 
             DevicesFunctions.polling = false;

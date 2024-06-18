@@ -6,6 +6,7 @@ using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
@@ -31,18 +32,6 @@ namespace Nucleus.Coop
         private MainForm mainForm = null;
         private SetupScreenControl setupScreen;
         private IniFile ini = Globals.ini;
-
-        public int KillProcess_HotkeyID = 1;
-        public int TopMost_HotkeyID = 2;
-        public int StopSession_HotkeyID = 3;
-        public int SetFocus_HotkeyID = 4;
-        public int ResetWindows_HotkeyID = 5;
-        public int Cutscenes_HotkeyID = 6;
-        public int Switch_HotkeyID = 7;
-        public int Reminder_HotkeyID = 8;
-
-        private List<string> nicksList = new List<string>();
-        private List<string> steamIdsList = new List<string>();
 
         private string prevTheme;
         private string currentNickname;
@@ -97,7 +86,7 @@ namespace Nucleus.Coop
 
             _ctrlr_shorcuts = ctrlr_shorcutsBtn;
 
-            controlscollect();
+            Controlscollect();
 
             foreach (Control c in ctrls)
             {
@@ -140,13 +129,13 @@ namespace Nucleus.Coop
 
                 if ((string)c.Tag == "settingsTab" || (string)c.Tag == "playersTab" || (string)c.Tag == "audioTab" || (string)c.Tag == "layoutTab")
                 {
-                    c.Click += new EventHandler(tabsButtons_highlight);
+                    c.Click += new EventHandler(TabsButtons_highlight);
                     tabsButtons.Add(c);
                 }
 
                 if (c.Name.Contains("steamid") && c is ComboBox)
                 {
-                    c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
+                    c.KeyPress += new KeyPressEventHandler(this.Num_KeyPress);
                     c.Click += new System.EventHandler(Steamid_Click);
                 }
 
@@ -183,7 +172,7 @@ namespace Nucleus.Coop
             plus7.ForeColor = ForeColor;
             plus8.ForeColor = ForeColor;
 
-            audioBtnPicture.Click += new EventHandler(audioBtnPicture_Click);
+            audioBtnPicture.Click += new EventHandler(AudioBtnPicture_Click);
 
             audioRefresh.BackColor = Color.Transparent;
 
@@ -237,17 +226,18 @@ namespace Nucleus.Coop
                 steamid17, steamid18, steamid19, steamid20, steamid21, steamid22, steamid23, steamid24,
                 steamid25, steamid26, steamid27, steamid28, steamid29, steamid30, steamid31, steamid32};
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
-                controllerNicks[i].TextChanged += new EventHandler(SwapNickname);
-                controllerNicks[i].KeyPress += new KeyPressEventHandler(CheckTypingNick);
+                var nickField = controllerNicks[i];
+                nickField.TextChanged += new EventHandler(SwapNickname);
+                nickField.KeyPress += new KeyPressEventHandler(CheckTypingNick);
+                nickField.MouseHover += new EventHandler(CacheNickname);
+                nickField.LostFocus += new EventHandler(UpdateControllerNickItems);
 
-                controllerNicks[i].MouseHover += new EventHandler(CacheNickname);
-                controllerNicks[i].LostFocus += new EventHandler(UpdateControllerNickItems);
-
-                steamIds[i].TextChanged += new EventHandler(SwapSteamId);
-                steamIds[i].MouseHover += new EventHandler(CacheSteamId);
-                steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems);
+                var sidField = steamIds[i];
+                sidField.TextChanged += new EventHandler(SwapSteamId);
+                sidField.MouseHover += new EventHandler(CacheSteamId);
+                sidField.LostFocus += new EventHandler(UpdateSteamIdsItems);
             }
 
             splitDiv.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
@@ -330,7 +320,6 @@ namespace Nucleus.Coop
 
                 themeCbx.Text = _path[last];
                 prevTheme = _path[last];
-
             }
 
             ///epiclangs setting
@@ -487,11 +476,6 @@ namespace Nucleus.Coop
                 debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));
             }
 
-            if (ini.IniReadValue("Misc", "ShowStatus") != "")
-            {
-                statusCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "ShowStatus"));
-            }
-
             if (ini.IniReadValue("Misc", "NucleusAccountPassword") != "")
             {
                 nucUserPassTxt.Text = ini.IniReadValue("Misc", "NucleusAccountPassword");
@@ -511,34 +495,6 @@ namespace Nucleus.Coop
 
             ///network setting
             RefreshCmbNetwork();
-
-            string path = $"{Globals.GameProfilesFolder}\\Nicknames.json";
-
-            if (File.Exists(path))
-            {
-                string jsonString = File.ReadAllText(path);
-
-                JArray JNicks = (JArray)JsonConvert.DeserializeObject(jsonString);
-
-                foreach (JToken nick in JNicks)
-                {
-                    NicknamesCache.Add(nick.ToString());
-                }
-            }
-
-            string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
-
-            if (File.Exists(idspath))
-            {
-                string jsonString = File.ReadAllText(idspath);
-
-                JArray JIds = (JArray)JsonConvert.DeserializeObject(jsonString);
-
-                foreach (JToken id in JIds)
-                {
-                    SteamIdsCache.Add(id.ToString());
-                }
-            }
 
             GetPlayersNickNameAndSteamIds();
 
@@ -578,10 +534,8 @@ namespace Nucleus.Coop
             {
                 DPIManager.Unregister(this);
                 return;
-            }
-
-            SuspendLayout();
-
+            }   
+            
             float newFontSize = Font.Size * scale;
 
             foreach (Control c in ctrls)
@@ -625,8 +579,6 @@ namespace Nucleus.Coop
 
                new Rectangle(settingsTab.Location.X, settingsTab.Location.Y, settingsTab.Width - 1, settingsTab.Height),
             };
-
-            ResumeLayout();
         }
 
         private void SetToolTips()
@@ -642,34 +594,22 @@ namespace Nucleus.Coop
 
         private void GetPlayersNickNameAndSteamIds()
         {           
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
-                nicksList.Add(ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)).ToString());
-                steamIdsList.Add(ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());
-            }
+                var sidField = steamIds[i];
+                sidField.Items.AddRange(PlayersIdentityCache.GetCachedSteamIdsList.ToArray());
+                sidField.Text = PlayersIdentityCache.SettingsIniSteamIdsList[i];
+                sidField.SelectedItem = sidField.Text;
 
-            for (int i = 0; i < 32; i++)
-            {
-                steamIds[i].Items.AddRange(SteamIdsCache.Get.ToArray());
-                steamIds[i].SelectedItem = nicksList[i];
-                steamIds[i].Text = steamIdsList[i];
-
-                controllerNicks[i].Items.AddRange(NicknamesCache.Get.ToArray());
-
-                foreach (string nick in nicksList)
-                {
-                    if (!controllerNicks[i].Items.Contains(nick))
-                    {
-                        controllerNicks[i].Items.Add(nick);
-                    }
-                }
-
-                controllerNicks[i].SelectedItem = nicksList[i];
-                controllerNicks[i].Text = nicksList[i];
+                var nickField = controllerNicks[i];
+                nickField.Items.AddRange(PlayersIdentityCache.GetCachedNicknamesList.ToArray());
+                nickField.Items.AddRange(PlayersIdentityCache.SettingsIniNicknamesList.Where(nic => !nickField.Items.Contains(nic)).ToArray());
+                nickField.Text = PlayersIdentityCache.SettingsIniNicknamesList[i];
+                nickField.SelectedItem = nickField.Text;                
             }          
         }
 
-        private void closeBtnPicture_Click(object sender, EventArgs e)
+        private void CloseBtnPicture_Click(object sender, EventArgs e)
         {
             if (!Directory.Exists(Globals.GameProfilesFolder))
             {
@@ -679,25 +619,29 @@ namespace Nucleus.Coop
             bool sidWrongValue = false;
             bool hasEmptyNickname = false;
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
-                if (controllerNicks[i].Text != "")
-                {
-                    ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), controllerNicks[i].Text);
+                var nickField = controllerNicks[i];
 
-                    if (NicknamesCache.Get.All(n => n != controllerNicks[i].Text))
+                if (nickField.Text != "")
+                {
+                    ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), nickField.Text);
+                   
+                    PlayersIdentityCache.SettingsIniNicknamesList[i] = nickField.Text;
+               
+                    if (PlayersIdentityCache.GetCachedNicknamesList.All(n => n != nickField.Text))
                     {
-                        NicknamesCache.Add(controllerNicks[i].Text);
+                        PlayersIdentityCache.AddNicknameToCache(nickField.Text);
                     }
 
-                    for (int n = 0; n < 32; n++)
+                    for (int n = 0; n < Globals.NucleusMaxPlayers; n++)
                     {
-                        if (controllerNicks[n].Items.Contains(controllerNicks[i].Text))
+                        if (controllerNicks[n].Items.Contains(nickField.Text))
                         {
                             continue;
                         }
 
-                        controllerNicks[n].Items.Add(controllerNicks[i].Text);
+                        controllerNicks[n].Items.Add(nickField.Text);
                     }
                 }
                 else
@@ -705,21 +649,25 @@ namespace Nucleus.Coop
                     hasEmptyNickname = true;
                 }
 
-                if (Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0)
-                {
-                    ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), steamIds[i].Text);
+                var sidField = steamIds[i];
 
-                    if (steamIds[i].Text != "")
+                if (Regex.IsMatch(sidField.Text, "^[0-9]+$") && sidField.Text.Length == 17 || sidField.Text.Length == 0)
+                {
+                    ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), sidField.Text);
+
+                    PlayersIdentityCache.SettingsIniSteamIdsList[i] = sidField.Text;
+
+                    if (sidField.Text != "")
                     {
-                        if (SteamIdsCache.Get.All(n => n != steamIds[i].Text.ToString()))
+                        if (PlayersIdentityCache.GetCachedSteamIdsList.All(n => n != sidField.Text.ToString()))
                         {
-                            SteamIdsCache.Add(steamIds[i].Text.ToString());
+                            PlayersIdentityCache.AddSteamIdToCache(sidField.Text.ToString());
                         }
                     }
                 }
                 else
                 {
-                    steamIds[i].BackColor = Color.Red;
+                    sidField.BackColor = Color.Red;
                     sidWrongValue = true;
                 }
             }
@@ -738,32 +686,8 @@ namespace Nucleus.Coop
                 return;
             }
 
-            string path = $"{Globals.GameProfilesFolder}\\Nicknames.json";
-            using (FileStream stream = new FileStream(path, FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    string json = JsonConvert.SerializeObject(NicknamesCache.Get, Formatting.Indented);
-                    writer.Write(json);
-                    stream.Flush();
-                }
-
-                stream.Dispose();
-            }
-
-            string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
-
-            using (FileStream stream = new FileStream(idspath, FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    string json = JsonConvert.SerializeObject(SteamIdsCache.Get, Formatting.Indented);
-                    writer.Write(json);
-                    stream.Flush();
-                }
-
-                stream.Dispose();
-            }
+            PlayersIdentityCache.SaveNicknamesCache();
+            PlayersIdentityCache.SaveSteamidsCache();
 
             if (audioDefaultSettingsRadio.Checked)
             {
@@ -776,9 +700,8 @@ namespace Nucleus.Coop
 
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
-                if (ctrl is ComboBox)
+                if (ctrl is ComboBox cmb)
                 {
-                    ComboBox cmb = (ComboBox)ctrl;
                     if (audioDevices?.Count > 0 && audioDevices.Keys.Contains(cmb.Text))
                     {
                         ini.IniWriteValue("Audio", cmb.Name, audioDevices[cmb.Text]);
@@ -815,7 +738,6 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Misc", "DebugLog", debugLogCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "SteamLang", cmb_Lang.SelectedItem.ToString());
             ini.IniWriteValue("Misc", "EpicLang", cmb_EpicLang.SelectedItem.ToString());
-            ini.IniWriteValue("Misc", "ShowStatus", statusCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "NucleusAccountPassword", nucUserPassTxt.Text);
             ini.IniWriteValue("Misc", "AutoDesktopScaling", scaleOptionCbx.Checked.ToString());
 
@@ -950,14 +872,14 @@ namespace Nucleus.Coop
 
             try
             {
-                User32Interop.RegisterHotKey(form.Handle, KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, ResetWindows_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, Reminder_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.ResetWindows_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Reminder_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[1].ToString()));
             }
             catch (Exception ex)
             {
@@ -971,14 +893,14 @@ namespace Nucleus.Coop
 
             try
             {
-                User32Interop.UnregisterHotKey(form.Handle, KillProcess_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, TopMost_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, StopSession_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, SetFocus_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, ResetWindows_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, Cutscenes_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, Switch_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, Reminder_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.KillProcess_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.TopMost_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.StopSession_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.SetFocus_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.ResetWindows_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Cutscenes_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Switch_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Reminder_HotkeyID);
             }
             catch (Exception ex)
             {
@@ -992,7 +914,7 @@ namespace Nucleus.Coop
             id.BackColor = Color.White;
         }
 
-        private void cmb_Network_DropDown(object sender, EventArgs e)
+        private void Cmb_Network_DropDown(object sender, EventArgs e)
         {
             RefreshCmbNetwork();
         }
@@ -1019,7 +941,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void cmb_Network_DropDownClosed(object sender, EventArgs e)
+        private void Cmb_Network_DropDownClosed(object sender, EventArgs e)
         {
             if (cmb_Network.SelectedItem == null)
             {
@@ -1027,7 +949,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void audioCustomSettingsRadio_CheckedChanged(object sender, EventArgs e)
+        private void AudioCustomSettingsRadio_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;
             audioCustomSettingsBox.Enabled = radio.Checked;
@@ -1055,9 +977,8 @@ namespace Nucleus.Coop
 
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
-                if (ctrl is ComboBox)
+                if (ctrl is ComboBox cmb)
                 {
-                    ComboBox cmb = (ComboBox)ctrl;
                     string lastItem = cmb.Text;
                     cmb.Items.Clear();
                     cmb.Items.AddRange(audioDevices.Keys.ToArray());
@@ -1078,76 +999,79 @@ namespace Nucleus.Coop
             }
         }
 
-        private void audioRefresh_Click(object sender, EventArgs e)
+        private void AudioRefresh_Click(object sender, EventArgs e)
         {
             RefreshAudioList();
         }
 
-        private void tabsButtons_highlight(object sender, EventArgs e)
+        private void TabsButtons_highlight(object sender, EventArgs e)
         {
             Control c = sender as Control;
 
             for (int i = 0; i < tabsButtons.Count; i++)
-            {
+            {               
+                var button = tabsButtons[i];
+                
                 if (i < tabs.Count)
                 {
-                    if (tabs[i].Name != (string)c.Tag)
+                    var tab = tabs[i];
+
+                    if (tab.Name != (string)c.Tag)
                     {
-                        tabs[i].Visible = false;
+                        tab.Visible = false;
                     }
                     else
                     {
-                        tabs[i].Visible = true;
-                        tabs[i].BringToFront();
+                        tab.Visible = true;
+                        tab.BringToFront();
                     }
                 }
 
-                if (!(tabsButtons[i] is Button))
+                if (!(button is Button))
                 {
                     continue;
                 }
 
-                if (tabsButtons[i].Tag != c.Tag)
+                if (button.Tag != c.Tag)
                 {
-                    tabsButtons[i].BackColor = Color.Transparent;
+                    button.BackColor = Color.Transparent;
                 }
                 else
                 {
-                    tabsButtons[i].BackColor = selectionColor;
+                    button.BackColor = selectionColor;
                 }
             }
         }
 
-        private void audioBtnPicture_Click(object sender, EventArgs e)
+        private void AudioBtnPicture_Click(object sender, EventArgs e)
         {
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
             MMDevice audioDefault = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
             audioDefaultDevice.Text = "Default: " + audioDefault.FriendlyName;
         }
 
-        private void closeBtnPicture_MouseEnter(object sender, EventArgs e)
+        private void CloseBtnPicture_MouseEnter(object sender, EventArgs e)
         {
             closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close_mousehover.png");
         }
 
-        private void closeBtnPicture_MouseLeave(object sender, EventArgs e)
+        private void CloseBtnPicture_MouseLeave(object sender, EventArgs e)
         {
             closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
         }
 
-        private void ctrlr_shorcuts_Click(object sender, EventArgs e)
+        private void Ctrlr_shorcuts_Click(object sender, EventArgs e)
         {
-            if (!mainForm.Xinput_S_Setup.Visible)
+            if (mainForm.Xinput_S_Setup.Visible)
             {
-                mainForm.Xinput_S_Setup?.Show();
+                mainForm.Xinput_S_Setup.BringToFront();            
+                return;
             }
-            else
-            {
-                mainForm.Xinput_S_Setup?.BringToFront();
-            }
+
+            mainForm.Xinput_S_Setup.Show();
         }
 
-        private void keepAccountsCheck_Click(object sender, EventArgs e)
+        private void KeepAccountsCheck_Click(object sender, EventArgs e)
         {
             if (!keepAccountsCheck.Checked)
             {
@@ -1159,7 +1083,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void num_KeyPress(object sender, KeyPressEventArgs e)
+        private void Num_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
@@ -1186,7 +1110,7 @@ namespace Nucleus.Coop
              && !char.IsSeparator(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
-        private void cts_Mute_CheckedChanged(object sender, EventArgs e)
+        private void Cts_Mute_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox mute = (CheckBox)sender;
 
@@ -1207,29 +1131,25 @@ namespace Nucleus.Coop
             }
         }
 
-        private void btnNext_Click(object sender, EventArgs e)
+        private void BtnNext_Click(object sender, EventArgs e)
         {
             if (page1.Visible)
             {
-                SuspendLayout();
                 btnNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page2.png");
                 page1.Visible = false;
                 page2.BringToFront();
                 page2.Visible = true;
-                ResumeLayout();
             }
             else
             {
-                SuspendLayout();
                 btnNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page1.png");
                 page2.Visible = false;
                 page1.BringToFront();
                 page1.Visible = true;
-                ResumeLayout();
             }
         }
 
-        private void controlscollect()
+        private void Controlscollect()
         {
             foreach (Control control in Controls)
             {
@@ -1253,7 +1173,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void layoutSizer_Paint(object sender, PaintEventArgs e)
+        private void LayoutSizer_Paint(object sender, PaintEventArgs e)
         {
             Graphics gs = e.Graphics;
 
@@ -1310,15 +1230,10 @@ namespace Nucleus.Coop
             g.DrawRectangles(bordersPen, tabBorders);
         }
 
-        private void btn_Gb_Update_Click(object sender, EventArgs e)
+        private void Btn_Gb_Update_Click(object sender, EventArgs e)
         {
             GoldbergUpdaterForm gbUpdater = new GoldbergUpdaterForm();
             gbUpdater.ShowDialog();
-        }
-
-        private void disableGameProfiles_CheckedChanged(object sender, EventArgs e)
-        {
-            //gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
         }
 
         private void CacheNickname(object sender, EventArgs e)
@@ -1354,7 +1269,6 @@ namespace Nucleus.Coop
         private void CacheSteamId(object sender, EventArgs e)
         {
             ComboBox cb = sender as ComboBox;
-
             currentSteamId = cb.Text;
         }
 
@@ -1385,12 +1299,12 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (!NicknamesCache.Get.Any(n => n == cb.Text))
+            if (!PlayersIdentityCache.GetCachedNicknamesList.Any(n => n == cb.Text))
             {
-                NicknamesCache.Add(cb.Text);
+                PlayersIdentityCache.AddNicknameToCache(cb.Text);
             }
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 if (!controllerNicks[i].Items.Contains(cb.Text))
                 {
@@ -1408,12 +1322,12 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (!SteamIdsCache.Get.Any(n => n == cb.Text))
+            if (!PlayersIdentityCache.GetCachedSteamIdsList.Any(n => n == cb.Text))
             {
-                SteamIdsCache.Add(cb.Text);
+                PlayersIdentityCache.AddSteamIdToCache(cb.Text);
             }
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 if (!steamIds[i].Items.Contains(cb.Text))
                 {
@@ -1426,32 +1340,12 @@ namespace Nucleus.Coop
         {           
             if (Visible)
             {
-                for (int i = 0; i < 32; i++)
-                {
-                    foreach (string nick in NicknamesCache.Get)
-                    {
-                        if (!controllerNicks[i].Items.Contains(nick))
-                        {
-                            controllerNicks[i].Items.Add(nick);
-                        }
-                    }
-
-                    foreach (string sid in SteamIdsCache.Get)
-                    {
-                        if (!steamIds[i].Items.Contains(sid))
-                        {
-                            steamIds[i].Items.Add(sid);
-                        }
-                    }
-                }
-
                 //Update in case the logmanager prompt updated the value
                 debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));
             }
 
             mainForm.DisableGameProfiles = disableGameProfiles.Checked;
         }
-
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
@@ -1465,6 +1359,5 @@ namespace Nucleus.Coop
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
         }
-
     }
 }

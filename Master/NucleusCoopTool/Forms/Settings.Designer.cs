@@ -52,7 +52,6 @@ namespace Nucleus.Coop
             this.cmb_EpicLang = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.ignoreInputLockReminderCheckbox = new System.Windows.Forms.CheckBox();
-            this.statusCheck = new System.Windows.Forms.CheckBox();
             this.cmb_Lang = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.debugLogCheck = new System.Windows.Forms.CheckBox();
@@ -101,7 +100,7 @@ namespace Nucleus.Coop
             this.btnNext = new System.Windows.Forms.Button();
             this.def_sid_comboBox = new System.Windows.Forms.ComboBox();
             this.default_sid_list_label = new System.Windows.Forms.Label();
-            this.page1 = new System.Windows.Forms.Panel();;
+            this.page1 = new System.Windows.Forms.Panel();
             this.label48 = new System.Windows.Forms.Label();
             this.label47 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -156,7 +155,7 @@ namespace Nucleus.Coop
             this.label10 = new System.Windows.Forms.Label();
             this.player1N = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.page2 = new System.Windows.Forms.Panel();;
+            this.page2 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label62 = new System.Windows.Forms.Label();
             this.label63 = new System.Windows.Forms.Label();
@@ -244,14 +243,14 @@ namespace Nucleus.Coop
             this.label28 = new System.Windows.Forms.Label();
             this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.label71 = new System.Windows.Forms.Label();
-            this.cts_Panel = new System.Windows.Forms.Panel();;
+            this.cts_Panel = new System.Windows.Forms.Panel();
             this.cts_unfocus = new System.Windows.Forms.CheckBox();
             this.cts_kar = new System.Windows.Forms.CheckBox();
             this.cts_Mute = new System.Windows.Forms.CheckBox();
             this.SplitColors = new System.Windows.Forms.ComboBox();
             this.splitDiv = new System.Windows.Forms.CheckBox();
             this.label49 = new System.Windows.Forms.Label();
-            this.layoutSizer = new System.Windows.Forms.Panel();;
+            this.layoutSizer = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBtnPicture)).BeginInit();
@@ -277,9 +276,9 @@ namespace Nucleus.Coop
             this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.closeBtnPicture.TabIndex = 298;
             this.closeBtnPicture.TabStop = false;
-            this.closeBtnPicture.Click += new System.EventHandler(this.closeBtnPicture_Click);
-            this.closeBtnPicture.MouseEnter += new System.EventHandler(this.closeBtnPicture_MouseEnter);
-            this.closeBtnPicture.MouseLeave += new System.EventHandler(this.closeBtnPicture_MouseLeave);
+            this.closeBtnPicture.Click += new System.EventHandler(this.CloseBtnPicture_Click);
+            this.closeBtnPicture.MouseEnter += new System.EventHandler(this.CloseBtnPicture_MouseEnter);
+            this.closeBtnPicture.MouseLeave += new System.EventHandler(this.CloseBtnPicture_MouseLeave);
             // 
             // layoutBtnPicture
             // 
@@ -356,7 +355,7 @@ namespace Nucleus.Coop
             this.audioTabBtn.Text = "Audio";
             this.audioTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.audioTabBtn.UseVisualStyleBackColor = false;
-            this.audioTabBtn.Click += new System.EventHandler(this.audioBtnPicture_Click);
+            this.audioTabBtn.Click += new System.EventHandler(this.AudioBtnPicture_Click);
             // 
             // playersTabBtn
             // 
@@ -406,7 +405,6 @@ namespace Nucleus.Coop
             this.settingsTab.Controls.Add(this.cmb_EpicLang);
             this.settingsTab.Controls.Add(this.label1);
             this.settingsTab.Controls.Add(this.ignoreInputLockReminderCheckbox);
-            this.settingsTab.Controls.Add(this.statusCheck);
             this.settingsTab.Controls.Add(this.cmb_Lang);
             this.settingsTab.Controls.Add(this.label2);
             this.settingsTab.Controls.Add(this.debugLogCheck);
@@ -430,7 +428,7 @@ namespace Nucleus.Coop
             this.btn_Gb_Update.TabIndex = 169;
             this.btn_Gb_Update.Text = "Goldberg Steam Emulator Updater";
             this.btn_Gb_Update.UseVisualStyleBackColor = false;
-            this.btn_Gb_Update.Click += new System.EventHandler(this.btn_Gb_Update_Click);
+            this.btn_Gb_Update.Click += new System.EventHandler(this.Btn_Gb_Update_Click);
             // 
             // disableGameProfiles
             // 
@@ -439,7 +437,7 @@ namespace Nucleus.Coop
             this.disableGameProfiles.Checked = true;
             this.disableGameProfiles.CheckState = System.Windows.Forms.CheckState.Checked;
             this.disableGameProfiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.disableGameProfiles.Location = new System.Drawing.Point(14, 339);
+            this.disableGameProfiles.Location = new System.Drawing.Point(14, 316);
             this.disableGameProfiles.Margin = new System.Windows.Forms.Padding(2);
             this.disableGameProfiles.Name = "disableGameProfiles";
             this.disableGameProfiles.Size = new System.Drawing.Size(129, 17);
@@ -447,21 +445,20 @@ namespace Nucleus.Coop
             this.disableGameProfiles.Tag = "";
             this.disableGameProfiles.Text = "Disable Game Profiles";
             this.disableGameProfiles.UseVisualStyleBackColor = false;
-            this.disableGameProfiles.CheckedChanged += new System.EventHandler(this.disableGameProfiles_CheckedChanged);
             // 
             // keepAccountsCheck
             // 
             this.keepAccountsCheck.AutoSize = true;
             this.keepAccountsCheck.BackColor = System.Drawing.Color.Transparent;
             this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.keepAccountsCheck.Location = new System.Drawing.Point(14, 297);
+            this.keepAccountsCheck.Location = new System.Drawing.Point(14, 274);
             this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
             this.keepAccountsCheck.Name = "keepAccountsCheck";
             this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
             this.keepAccountsCheck.TabIndex = 166;
             this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
             this.keepAccountsCheck.UseVisualStyleBackColor = false;
-            this.keepAccountsCheck.Click += new System.EventHandler(this.keepAccountsCheck_Click);
+            this.keepAccountsCheck.Click += new System.EventHandler(this.KeepAccountsCheck_Click);
             // 
             // ctrlr_shorcutsBtn
             // 
@@ -476,7 +473,7 @@ namespace Nucleus.Coop
             this.ctrlr_shorcutsBtn.TabIndex = 164;
             this.ctrlr_shorcutsBtn.Text = "Controller Shortcuts Setup";
             this.ctrlr_shorcutsBtn.UseVisualStyleBackColor = false;
-            this.ctrlr_shorcutsBtn.Click += new System.EventHandler(this.ctrlr_shorcuts_Click);
+            this.ctrlr_shorcutsBtn.Click += new System.EventHandler(this.Ctrlr_shorcuts_Click);
             // 
             // nucUserPassTxt
             // 
@@ -586,25 +583,13 @@ namespace Nucleus.Coop
             // 
             this.ignoreInputLockReminderCheckbox.AutoSize = true;
             this.ignoreInputLockReminderCheckbox.BackColor = System.Drawing.Color.Transparent;
-            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(14, 273);
+            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(14, 250);
             this.ignoreInputLockReminderCheckbox.Margin = new System.Windows.Forms.Padding(2);
             this.ignoreInputLockReminderCheckbox.Name = "ignoreInputLockReminderCheckbox";
             this.ignoreInputLockReminderCheckbox.Size = new System.Drawing.Size(178, 19);
             this.ignoreInputLockReminderCheckbox.TabIndex = 157;
             this.ignoreInputLockReminderCheckbox.Text = "Ignore Input Lock Reminder";
             this.ignoreInputLockReminderCheckbox.UseVisualStyleBackColor = false;
-            // 
-            // statusCheck
-            // 
-            this.statusCheck.AutoSize = true;
-            this.statusCheck.BackColor = System.Drawing.Color.Transparent;
-            this.statusCheck.Location = new System.Drawing.Point(14, 250);
-            this.statusCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.statusCheck.Name = "statusCheck";
-            this.statusCheck.Size = new System.Drawing.Size(225, 19);
-            this.statusCheck.TabIndex = 156;
-            this.statusCheck.Text = "Show Status Window (Experimental)";
-            this.statusCheck.UseVisualStyleBackColor = false;
             // 
             // cmb_Lang
             // 
@@ -1208,7 +1193,7 @@ namespace Nucleus.Coop
             this.scaleOptionCbx.Checked = true;
             this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
             this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scaleOptionCbx.Location = new System.Drawing.Point(14, 318);
+            this.scaleOptionCbx.Location = new System.Drawing.Point(14, 295);
             this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
             this.scaleOptionCbx.Name = "scaleOptionCbx";
             this.scaleOptionCbx.Size = new System.Drawing.Size(185, 17);
@@ -1238,8 +1223,8 @@ namespace Nucleus.Coop
             this.cmb_Network.Name = "cmb_Network";
             this.cmb_Network.Size = new System.Drawing.Size(198, 21);
             this.cmb_Network.TabIndex = 136;
-            this.cmb_Network.DropDown += new System.EventHandler(this.cmb_Network_DropDown);
-            this.cmb_Network.DropDownClosed += new System.EventHandler(this.cmb_Network_DropDownClosed);
+            this.cmb_Network.DropDown += new System.EventHandler(this.Cmb_Network_DropDown);
+            this.cmb_Network.DropDownClosed += new System.EventHandler(this.Cmb_Network_DropDownClosed);
             // 
             // label32
             // 
@@ -1292,7 +1277,7 @@ namespace Nucleus.Coop
             this.btnNext.Size = new System.Drawing.Size(38, 22);
             this.btnNext.TabIndex = 294;
             this.btnNext.UseVisualStyleBackColor = false;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            this.btnNext.Click += new System.EventHandler(this.BtnNext_Click);
             // 
             // def_sid_comboBox
             // 
@@ -3087,7 +3072,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio.TabIndex = 19;
             this.audioCustomSettingsRadio.Text = "Custom settings";
             this.audioCustomSettingsRadio.UseVisualStyleBackColor = false;
-            this.audioCustomSettingsRadio.CheckedChanged += new System.EventHandler(this.audioCustomSettingsRadio_CheckedChanged);
+            this.audioCustomSettingsRadio.CheckedChanged += new System.EventHandler(this.AudioCustomSettingsRadio_CheckedChanged);
             // 
             // audioDefaultSettingsRadio
             // 
@@ -3121,7 +3106,7 @@ namespace Nucleus.Coop
             this.audioRefresh.Size = new System.Drawing.Size(26, 23);
             this.audioRefresh.TabIndex = 23;
             this.audioRefresh.UseVisualStyleBackColor = false;
-            this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
+            this.audioRefresh.Click += new System.EventHandler(this.AudioRefresh_Click);
             // 
             // layoutTab
             // 
@@ -3310,7 +3295,7 @@ namespace Nucleus.Coop
             this.cts_Mute.TabIndex = 140;
             this.cts_Mute.Text = "Mute Audio Only";
             this.cts_Mute.UseVisualStyleBackColor = true;
-            this.cts_Mute.CheckedChanged += new System.EventHandler(this.cts_Mute_CheckedChanged);
+            this.cts_Mute.CheckedChanged += new System.EventHandler(this.Cts_Mute_CheckedChanged);
             // 
             // SplitColors
             // 
@@ -3359,7 +3344,7 @@ namespace Nucleus.Coop
             this.layoutSizer.Name = "layoutSizer";
             this.layoutSizer.Size = new System.Drawing.Size(245, 170);
             this.layoutSizer.TabIndex = 147;
-            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
+            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.LayoutSizer_Paint);
             // 
             // Settings
             // 
@@ -3478,7 +3463,6 @@ namespace Nucleus.Coop
         private ComboBox cmb_EpicLang;
         private Label label1;
         private CheckBox ignoreInputLockReminderCheckbox;
-        private CheckBox statusCheck;
         private ComboBox cmb_Lang;
         private Label label2;
         private CheckBox debugLogCheck;

@@ -19,8 +19,8 @@ namespace Nucleus.Coop.Forms
 {
     public partial class HubWebView : UserControl
     {
-        private readonly string darkReaderFolder = Path.Combine(Application.StartupPath, $"webview\\darkreader");
-        private readonly string cacheFolder = Path.Combine(Application.StartupPath, $"webview\\cache");
+        private readonly string darkReaderDirectory = Path.Combine(Application.StartupPath, $"webview\\darkreader");
+        private readonly string cacheDirectory= Path.Combine(Application.StartupPath, $"webview\\cache");
         private string downloadPath = Path.Combine(Application.StartupPath, "handlers\\handler.nc");
         private string scriptFolder = GameManager.Instance.GetJsScriptsPath();
         private readonly string hubUri = "https://hub.splitscreen.me/?fromWebview=true";
@@ -158,7 +158,7 @@ namespace Nucleus.Coop.Forms
                 environmentOptions.AreBrowserExtensionsEnabled = true;
 
                 webView.CreationProperties = new CoreWebView2CreationProperties();
-                webView.CreationProperties.UserDataFolder = cacheFolder;
+                webView.CreationProperties.UserDataFolder = cacheDirectory;
 
                 if (Directory.Exists(webView.CreationProperties.UserDataFolder))
                 {
@@ -192,22 +192,30 @@ namespace Nucleus.Coop.Forms
 #endif
                     webViewSettings.IsScriptEnabled = true;
 
+                    var get_Extensions = await webView.CoreWebView2.Profile.GetBrowserExtensionsAsync();
+
+                    if (get_Extensions.All(ext => ext.Name != "Dark Reader"))
+                    {
+                        await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderDirectory);
+                    }
+
+                    CoreWebView2BrowserExtension DarkReader = get_Extensions.Where(ext => ext.Name == "Dark Reader").FirstOrDefault();
+
+                    DarkReader?.EnableAsync(true);
+
                     if (webView.Source.AbsolutePath == "blank")
                     {
                         webView.Source = new Uri(hubUri);
                     }
-
-                    if (hasFreshCahe)
-                    {
-                        await webView.CoreWebView2.Profile.AddBrowserExtensionAsync(darkReaderFolder);
-                    }
-
+               
                     webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += IsDefaultDownloadDialogOpenChanged;
                     webView.CoreWebView2.DOMContentLoaded += new EventHandler<CoreWebView2DOMContentLoadedEventArgs>(DOMContentLoaded);
                     webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);
                     webView.CoreWebView2.NewWindowRequested += new EventHandler<CoreWebView2NewWindowRequestedEventArgs>(NewWindowRequested);
                     webView.CoreWebView2.WebMessageReceived += new EventHandler<CoreWebView2WebMessageReceivedEventArgs>(WebMessageReceived);
-
+                    webView.CoreWebView2.ProcessFailed += new EventHandler<CoreWebView2ProcessFailedEventArgs>(ProcessFailed);
+                    webView.CoreWebView2.Profile.PreferredColorScheme = CoreWebView2PreferredColorScheme.Dark;
+                
                     BringToFront();
                 }
             }
@@ -217,6 +225,11 @@ namespace Nucleus.Coop.Forms
         private void WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
             Console.WriteLine(e.WebMessageAsJson);
+        }
+
+        private void ProcessFailed(object sender, CoreWebView2ProcessFailedEventArgs e)
+        {
+            this.Dispose();
         }
 
         private void NewWindowRequested(object sender, CoreWebView2NewWindowRequestedEventArgs e)
@@ -266,7 +279,7 @@ namespace Nucleus.Coop.Forms
             {
                 Downloading = true;
                 downloadStateTimer = new System.Windows.Forms.Timer();
-                downloadStateTimer.Interval = (200);
+                downloadStateTimer.Interval = (150);
                 downloadStateTimer.Tick += new EventHandler(DownloadStateTimerTick);
                 downloadStateTimer.Start();
 
@@ -274,7 +287,7 @@ namespace Nucleus.Coop.Forms
                 downloadOperation = e.DownloadOperation;
                 downloadOperation.StateChanged += CheckDownloadState;
 
-                modal_text.Text = @"⠐ Downloadind Handler Please Wait ⠂";
+                modal_text.Text = "⠐ Downloadind Handler Please Wait ⠂";
                 modal_yes.Visible = false;
                 modal_no.Visible = false;
                 modal.Visible = true;
@@ -287,11 +300,11 @@ namespace Nucleus.Coop.Forms
             switch (pending)
             {
                 case 0:
-                    modal_text.Text = @"⠒ Downloadind Handler Please Wait ⠒";
+                    modal_text.Text = "⠒ Downloadind Handler Please Wait ⠒";
                     pending++;
                     break;
                 case 1:
-                    modal_text.Text = @"⠲ Downloadind Handler Please Wait ⠖";
+                    modal_text.Text = "⠲ Downloadind Handler Please Wait ⠖";
                     pending++;
                     break;
                 case 2:
@@ -300,6 +313,14 @@ namespace Nucleus.Coop.Forms
                     break;
                 case 3:
                     modal_text.Text = "⠦ Downloadind Handler Please Wait ⠴";
+                    pending++;
+                    break;
+                case 4:
+                    modal_text.Text = "⠶ Downloadind Handler Please Wait ⠶";
+                    pending++;
+                    break;
+                case 5:
+                    modal_text.Text = "⠂ Downloadind Handler Please Wait ⠐";
                     pending = 0;
                     break;
             }
@@ -559,7 +580,7 @@ namespace Nucleus.Coop.Forms
         }
 
         public void CloseBtn_Click(object sender, EventArgs e)
-        {
+        {   
             webView.Dispose();
             Dispose();
         }

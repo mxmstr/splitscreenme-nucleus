@@ -23,11 +23,11 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         private static int SwitchLayout;
         private static int LockInputs;
         private static int ReleaseCursor;
-        public static int Pressed;
-        public static int RightTriggerValue;
-        public static int LeftTriggerValue;
-        public static (int, int) RightStickValue;
-        public static (int, int) LeftstickValue;
+        private static int Pressed;
+        private static int RightTriggerValue;
+        private static int LeftTriggerValue;
+        private static (int, int) RightStickValue;
+        private static (int, int) LeftstickValue;
 
         private static int RT = 9999;
         private static int LT = 10000;
@@ -127,9 +127,9 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             {
                                 Globals.MainOSD.Show(1000, "Inputs Locked");
 
-                                LockInput.Lock(GenericGameHandler.Instance.currentGameInfo?.LockInputSuspendsExplorer ?? true, GenericGameHandler.Instance.currentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
+                                LockInput.Lock(GenericGameHandler.Instance.CurrentGameInfo?.LockInputSuspendsExplorer ?? true, GenericGameHandler.Instance.CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
 
-                                if (GenericGameHandler.Instance.currentGameInfo.ToggleUnfocusOnInputsLock)
+                                if (GenericGameHandler.Instance.CurrentGameInfo.ToggleUnfocusOnInputsLock)
                                 {
                                     GlobalWindowMethods.ChangeForegroundWindow();
                                     Debug.WriteLine("Toggle Unfocus");
@@ -137,7 +137,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             }
                             else
                             {
-                                LockInput.Unlock(GenericGameHandler.Instance.currentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GenericGameHandler.Instance.currentGameInfo?.ProtoInput);
+                                LockInput.Unlock(GenericGameHandler.Instance.CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GenericGameHandler.Instance.CurrentGameInfo?.ProtoInput);
                                 Globals.MainOSD.Show(1000, "Inputs Unlocked");
                             }
                         }

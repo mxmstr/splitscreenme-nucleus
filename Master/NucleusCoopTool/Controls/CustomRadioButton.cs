@@ -185,8 +185,6 @@ namespace Nucleus.Coop.Controls
 
         private void CustomRadioButton_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
 
             Color color = Color.FromArgb(0, 0, 0, 0);
@@ -200,7 +198,7 @@ namespace Nucleus.Coop.Controls
             lgb.InterpolationColors = topcblend;
             lgb.SetBlendTriangularShape(.5f, 1.0f);
 
-            g.FillRectangle(lgb, new Rectangle(0, -3, Width - 1, Height + 5));
+            e.Graphics.FillRectangle(lgb, new Rectangle(0, -3, Width - 1, Height + 5));
             lgb.Dispose();
         }
 

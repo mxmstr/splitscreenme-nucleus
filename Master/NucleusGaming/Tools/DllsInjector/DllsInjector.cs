@@ -39,12 +39,12 @@ namespace Nucleus.Gaming.Tools.DllsInjector
 		            "Nucleus.Hook32.dll", // lib path x86. Inject32/64 will decide which one to use, so pass in both
 		            "Nucleus.Hook64.dll", // lib path x64
 		            proc.NucleusGetMainWindowHandle(), // Game hWnd
-		            handlerInstance.currentGameInfo.HookFocus, // Hook GetForegroundWindow/etc
-		            handlerInstance.currentGameInfo.HideCursor,
+		            handlerInstance.CurrentGameInfo.HookFocus, // Hook GetForegroundWindow/etc
+		            handlerInstance.CurrentGameInfo.HideCursor,
                     handlerInstance.isDebug,
                     handlerInstance.nucleusFolderPath, // Primarily for log output
-		            handlerInstance.currentGameInfo.SetWindowHook, // SetWindow hook (prevents window from moving)
-					handlerInstance.currentGameInfo.PreventWindowDeactivation,
+		            handlerInstance.CurrentGameInfo.SetWindowHook, // SetWindow hook (prevents window from moving)
+					handlerInstance.CurrentGameInfo.PreventWindowDeactivation,
                     player.MonitorBounds.Width,
                     player.MonitorBounds.Height,
                     player.MonitorBounds.X,
@@ -52,21 +52,21 @@ namespace Nucleus.Gaming.Tools.DllsInjector
                     (player.IsRawMouse || player.IsRawKeyboard) ? 0 : (player.GamepadId+1),
 
                     //These options are enabled by default, but if the game isn't using these features the hooks are unwanted
-					handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookSetCursorPos,
-                    handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookGetCursorPos,
-                    handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookGetKeyState,
-                    handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookGetAsyncKeyState,
-                    handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookGetKeyboardState,
-                    handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookFilterRawInput,
-                    handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookFilterMouseMessages,
-                    handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookUseLegacyInput,
-                    !handlerInstance.currentGameInfo.HookDontUpdateLegacyInMouseMsg,
-                    handlerInstance.currentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.currentGameInfo.HookMouseVisibility,
-                    handlerInstance.currentGameInfo.HookReRegisterRawInput,
-                    handlerInstance.currentGameInfo.HookReRegisterRawInputMouse,
-                    handlerInstance.currentGameInfo.HookReRegisterRawInputKeyboard,
-                    handlerInstance.currentGameInfo.InjectHookXinput,
-                    handlerInstance.currentGameInfo.InjectDinputToXinputTranslation,
+					handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookSetCursorPos,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookGetCursorPos,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookGetKeyState,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookGetAsyncKeyState,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookGetKeyboardState,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookFilterRawInput,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookFilterMouseMessages,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookUseLegacyInput,
+                    !handlerInstance.CurrentGameInfo.HookDontUpdateLegacyInMouseMsg,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookMouseVisibility,
+                    handlerInstance.CurrentGameInfo.HookReRegisterRawInput,
+                    handlerInstance.CurrentGameInfo.HookReRegisterRawInputMouse,
+                    handlerInstance.CurrentGameInfo.HookReRegisterRawInputKeyboard,
+                    handlerInstance.CurrentGameInfo.InjectHookXinput,
+                    handlerInstance.CurrentGameInfo.InjectDinputToXinputTranslation,
 
                     windowNull ? "" : (window.HookPipe?.pipeNameWrite ?? ""),
                     windowNull ? "" : (window.HookPipe?.pipeNameRead ?? ""),

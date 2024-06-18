@@ -18,6 +18,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -90,7 +91,7 @@ namespace Nucleus.Coop
 
             BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
 
-            controlscollect();
+            Controlscollect();
 
             foreach (Control c in ctrls)
             {
@@ -126,7 +127,7 @@ namespace Nucleus.Coop
 
                 if ((string)c.Tag == "sharedTab" || (string)c.Tag == "playersTab" || (string)c.Tag == "audioTab" || (string)c.Tag == "processorTab" || (string)c.Tag == "layoutTab")
                 {
-                    c.Click += new EventHandler(tabsButtons_highlight);
+                    c.Click += new EventHandler(TabsButtons_highlight);
                     tabsButtons.Add(c);
                 }
 
@@ -139,12 +140,12 @@ namespace Nucleus.Coop
 
                 if (c.Name.Contains("pauseBetweenInstanceLaunch_TxtBox") || c.Name.Contains("WindowsSetupTiming_TextBox"))
                 {
-                    c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
+                    c.KeyPress += new KeyPressEventHandler(this.Num_KeyPress);
                 }
 
                 if (c.Name.Contains("steamid") && c is ComboBox)
                 {
-                    c.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
+                    c.KeyPress += new KeyPressEventHandler(this.Num_KeyPress);
                     c.Click += new System.EventHandler(Steamid_Click);
                 }
             }
@@ -162,7 +163,7 @@ namespace Nucleus.Coop
             btnNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
             btnProcessorNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
 
-            audioBtnPicture.Click += new EventHandler(audioTabBtn_Click);
+            audioBtnPicture.Click += new EventHandler(AudioTabBtn_Click);
 
             btnNext.BackColor = mf.buttonsBackColor;
             btnProcessorNext.BackColor = mf.buttonsBackColor;
@@ -204,36 +205,42 @@ namespace Nucleus.Coop
                 PriorityClass25, PriorityClass26, PriorityClass27, PriorityClass28, PriorityClass29, PriorityClass30, PriorityClass31, PriorityClass32};
 
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
-                controllerNicks[i].TextChanged += new EventHandler(SwapNickname);
-                controllerNicks[i].KeyPress += new KeyPressEventHandler(CheckTypingNick);
-                controllerNicks[i].MouseHover += new EventHandler(CacheNickname);
-                controllerNicks[i].LostFocus += new EventHandler(UpdateControllerNickItems);
+                var nickField = controllerNicks[i];
+                nickField.TextChanged += new EventHandler(SwapNickname);
+                nickField.KeyPress += new KeyPressEventHandler(CheckTypingNick);
+                nickField.MouseHover += new EventHandler(CacheNickname);
+                nickField.LostFocus += new EventHandler(UpdateControllerNickItems);
 
-                steamIds[i].TextChanged += new EventHandler(SwapSteamId);
-                steamIds[i].MouseHover += new EventHandler(CacheSteamId);
-                steamIds[i].LostFocus += new EventHandler(UpdateSteamIdsItems);
+                var sidField = steamIds[i];
+                sidField.TextChanged += new EventHandler(SwapSteamId);
+                sidField.MouseHover += new EventHandler(CacheSteamId);
+                sidField.LostFocus += new EventHandler(UpdateSteamIdsItems);
             }
 
             for (int p = 0; p < Environment.ProcessorCount; p++)
             {
                 for (int all = 0; all < IdealProcessors.Length; all++)
                 {
+                    var idealField = IdealProcessors[all];
+
                     if (p == 0)
                     {
-                        IdealProcessors[all].Items.Add("*");
-                        IdealProcessors[all].SelectedIndex = 0;
+                        idealField.Items.Add("*");
+                        idealField.SelectedIndex = 0;
                     }
 
-                    IdealProcessors[all].Items.Add((IdealProcessors[all].Items.Count).ToString());
-                    IdealProcessors[all].Click += new EventHandler(IdealProcessor_Click);
-                    IdealProcessors[all].SelectedIndexChanged += new EventHandler(IdealProcessor_Click);
-                    IdealProcessors[all].KeyPress += new KeyPressEventHandler(Affinity_KeyPress);
+                    idealField.Items.Add((idealField.Items.Count).ToString());
+                    idealField.Click += new EventHandler(IdealProcessor_Click);
+                    idealField.SelectedIndexChanged += new EventHandler(IdealProcessor_Click);
+                    idealField.KeyPress += new KeyPressEventHandler(Affinity_KeyPress);
 
-                    Affinitys[all].Text = "";
-                    Affinitys[all].Click += new EventHandler(Affinity_Click);
-                    Affinitys[all].KeyPress += new KeyPressEventHandler(Affinity_KeyPress);
+                    var affinityField = Affinitys[all];
+
+                    affinityField.Text = "";
+                    affinityField.Click += new EventHandler(Affinity_Click);
+                    affinityField.KeyPress += new KeyPressEventHandler(Affinity_KeyPress);
                 }
             }
 
@@ -317,34 +324,6 @@ namespace Nucleus.Coop
             numUpDownHor.InvalidParent = true;
 
             RefreshAudioList();
-
-            string path = $"{Globals.GameProfilesFolder}\\Nicknames.json";
-
-            if (File.Exists(path))
-            {
-                string jsonString = File.ReadAllText(path);
-
-                JArray JNicks = (JArray)JsonConvert.DeserializeObject(jsonString);
-
-                foreach (JToken nick in JNicks)
-                {
-                    NicknamesCache.Add(nick.ToString());
-                }
-            }
-
-            string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
-
-            if (File.Exists(idspath))
-            {
-                string jsonString = File.ReadAllText(idspath);
-
-                JArray JIds = (JArray)JsonConvert.DeserializeObject(jsonString);
-
-                foreach (JToken id in JIds)
-                {
-                    SteamIdsCache.Add(id.ToString());
-                }
-            }
 
             GetPlayersNickNameAndIds();
 
@@ -446,63 +425,55 @@ namespace Nucleus.Coop
             List<ProfilePlayer> playersList = GameProfile.ProfilePlayersList;
 
             steamIdsList.Clear();
-
-            for (int nic = 0; nic < 32; nic++)
-            {
-                if (!NicknamesCache.Get.Any(n => n == "Player" + (nic + 1)))
-                {
-                    NicknamesCache.Add(ini.IniReadValue("ControllerMapping", "Player_" + (nic + 1)));
-                }
-            }
-
-            steamIdsList.AddRange(SteamIdsCache.Get.ToArray());
+            steamIdsList.AddRange(PlayersIdentityCache.GetCachedSteamIdsList.ToArray());
 
             nicksList.Clear();
-            nicksList.AddRange(NicknamesCache.Get);
+            nicksList.AddRange(PlayersIdentityCache.GetCachedNicknamesList);
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
-                ProfilePlayer player = null;
+                var nickField = controllerNicks[i];
+                var sidField = steamIds[i];
 
                 if (i < playersList.Count)
                 {
-                    player = playersList[i];
+                    ProfilePlayer player = playersList[i];
 
-                    steamIds[i].Items.Clear();
-                    steamIds[i].Items.AddRange(steamIdsList.ToArray());
+                    sidField.Items.Clear();
+                    sidField.Items.AddRange(steamIdsList.ToArray());
 
-                    steamIds[i].SelectedItem = player.SteamID.ToString();
-                    steamIds[i].Text = player.SteamID.ToString();
-                    steamIds[i].Enabled = true;
+                    sidField.SelectedItem = player.SteamID.ToString();
+                    sidField.Text = player.SteamID.ToString();
+                    sidField.Enabled = true;
 
-                    controllerNicks[i].Items.Clear();
-                    controllerNicks[i].Items.AddRange(nicksList.ToArray());
+                    nickField.Items.Clear();
+                    nickField.Items.AddRange(nicksList.ToArray());
 
-                    controllerNicks[i].SelectedItem = player.Nickname;
-                    controllerNicks[i].Text = player.Nickname.ToString();
-                    controllerNicks[i].Enabled = true;
+                    nickField.SelectedItem = player.Nickname;
+                    nickField.Text = player.Nickname.ToString();
+                    nickField.Enabled = true;
                 }
                 else
                 {
-                    steamIds[i].Items.Clear();
-                    steamIds[i].Items.AddRange(SteamIdsCache.Get.ToArray());
+                    sidField.Items.Clear();
+                    sidField.Items.AddRange(PlayersIdentityCache.GetCachedSteamIdsList.ToArray());
 
-                    steamIds[i].Text = ini.IniReadValue("SteamIDs", "Player_" + (i + 1));
-                    steamIds[i].SelectedItem = steamIds[i].Text;
-                    steamIds[i].Enabled = false;
+                    sidField.Text = PlayersIdentityCache.SettingsIniSteamIdsList[i];
+                    sidField.SelectedItem = sidField.Text;
+                    sidField.Enabled = false;
 
-                    controllerNicks[i].Items.Clear();
-                    controllerNicks[i].Items.AddRange(nicksList.ToArray());
+                    nickField.Items.Clear();
+                    nickField.Items.AddRange(nicksList.ToArray());
 
-                    controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", "Player_" + (i + 1));
-                    controllerNicks[i].SelectedItem = controllerNicks[i].Text;
-                    
-                    controllerNicks[i].Enabled = false;
+                    nickField.Text = PlayersIdentityCache.SettingsIniNicknamesList[i];
+                    nickField.SelectedItem = nickField.Text;
+
+                    nickField.Enabled = false;
 
                     if (GameProfile.ModeText == "New Profile")
                     {
-                        steamIds[i].Enabled = true;
-                        controllerNicks[i].Enabled = true;
+                        sidField.Enabled = true;
+                        nickField.Enabled = true;
                     }
                 }
             }
@@ -517,7 +488,7 @@ namespace Nucleus.Coop
         {
             GetPlayersNickNameAndIds();
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 ProfilePlayer player = null;
 
@@ -526,56 +497,60 @@ namespace Nucleus.Coop
                     player = GameProfile.ProfilePlayersList[i];
                 }
 
+                var idealField = IdealProcessors[i];
+                var affinityField = Affinitys[i];
+                var priorityField = PriorityClasses[i];
+
                 if (player != null)
                 {
                     if (player.IdealProcessor != null)
                     {
-                        IdealProcessors[i].SelectedIndex = IdealProcessors[i].Items.IndexOf(player.IdealProcessor);
+                        idealField.SelectedIndex = idealField.Items.IndexOf(player.IdealProcessor);
                     }
                     else
                     {
-                        IdealProcessors[i].SelectedIndex = 0;
+                        idealField.SelectedIndex = 0;
                     }
 
                     if (player.Affinity != null)
                     {
-                        Affinitys[i].Text = player.Affinity;
+                        affinityField.Text = player.Affinity;
                     }
                     else
                     {
-                        Affinitys[i].Text = "";
+                        affinityField.Text = "";
                     }
 
                     if (player.PriorityClass != null)
                     {
-                        PriorityClasses[i].SelectedIndex = PriorityClasses[i].Items.IndexOf(player.PriorityClass);
+                        priorityField.SelectedIndex = priorityField.Items.IndexOf(player.PriorityClass);
                     }
                     else
                     {
                         player.PriorityClass = "Normal";
-                        PriorityClasses[i].SelectedIndex = 0;
+                        priorityField.SelectedIndex = 0;
                     }
 
-                    IdealProcessors[i].Enabled = true;
-                    Affinitys[i].Enabled = true;
-                    PriorityClasses[i].Enabled = true;
+                    idealField.Enabled = true;
+                    affinityField.Enabled = true;
+                    priorityField.Enabled = true;
                 }
                 else
                 {
-                    IdealProcessors[i].Text = "*";
-                    IdealProcessors[i].Enabled = false;
+                    idealField.Text = "*";
+                    idealField.Enabled = false;
 
-                    Affinitys[i].Text = "";
-                    Affinitys[i].Enabled = false;
+                    affinityField.Text = "";
+                    affinityField.Enabled = false;
 
-                    PriorityClasses[i].Text = "Normal";
-                    PriorityClasses[i].Enabled = false;
+                    priorityField.Text = "Normal";
+                    priorityField.Enabled = false;
 
                     if (GameProfile.ModeText == "New Profile")
                     {
-                        IdealProcessors[i].Enabled = true;
-                        Affinitys[i].Enabled = true;
-                        PriorityClasses[i].Enabled = true;
+                        idealField.Enabled = true;
+                        affinityField.Enabled = true;
+                        priorityField.Enabled = true;
                     }
                 }
             }
@@ -615,7 +590,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void closeBtnPicture_Click(object sender, EventArgs e)///Set GameProfile values
+        private void CloseBtnPicture_Click(object sender, EventArgs e)///Set GameProfile values
         {
             if (!Directory.Exists(Globals.GameProfilesFolder))
             {
@@ -629,8 +604,8 @@ namespace Nucleus.Coop
 
             if (GameProfile.ProfilePlayersList.Count == 0)
             {
-                ///Create profile players for new game profile
-                for (int i = 0; i < 32; i++)
+                //Create profile players for new game profile
+                for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
                 {
                     ProfilePlayer player = new ProfilePlayer();
                     GameProfile.ProfilePlayersList.Add(player);
@@ -641,14 +616,15 @@ namespace Nucleus.Coop
             {
                 ProfilePlayer player = GameProfile.ProfilePlayersList[i];
 
-                if (controllerNicks[i].Text != "")
-                {
-                    ///Set GameProfile Nicknames
-                    player.Nickname = controllerNicks[i].Text;
+                //Set GameProfile Nicknames
+                var nickField = controllerNicks[i];
+                if (nickField.Text != "")
+                {             
+                    player.Nickname = nickField.Text;
 
-                    if (NicknamesCache.Get.All(n => n != controllerNicks[i].Text))
+                    if (PlayersIdentityCache.GetCachedNicknamesList.All(n => n != nickField.Text))
                     {
-                        NicknamesCache.Add(controllerNicks[i].Text);
+                        PlayersIdentityCache.AddNicknameToCache(nickField.Text);
                     }
                 }
                 else
@@ -656,16 +632,17 @@ namespace Nucleus.Coop
                     hasEmptyNickname = true;
                 }
 
-                ///Set GameProfile Steam ids
-                if ((Regex.IsMatch(steamIds[i].Text, "^[0-9]+$") && steamIds[i].Text.Length == 17 || steamIds[i].Text.Length == 0) || steamIds[i].Text == "0" || steamIds[i].Text == "-1")
+                //Set GameProfile Steam ids
+                var sidField = steamIds[i];
+                if ((Regex.IsMatch(sidField.Text, "^[0-9]+$") && sidField.Text.Length == 17 || sidField.Text.Length == 0) || sidField.Text == "0" || sidField.Text == "-1")
                 {
-                    if (steamIds[i].Text != "")
+                    if (sidField.Text != "")
                     {
-                        player.SteamID = long.Parse(steamIds[i].Text.ToString());
+                        player.SteamID = long.Parse(sidField.Text.ToString());
 
-                        if (SteamIdsCache.Get.All(n => n == steamIds[i].Text.ToString()) && steamIds[i].Text != "0" && steamIds[i].Text != "-1")
+                        if (PlayersIdentityCache.GetCachedSteamIdsList.All(n => n == sidField.Text.ToString()) && sidField.Text != "0" && sidField.Text != "-1")
                         {
-                            SteamIdsCache.Add(steamIds[i].Text.ToString());
+                            PlayersIdentityCache.AddSteamIdToCache(sidField.Text.ToString());
                         }
                     }
                     else
@@ -675,64 +652,68 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    ///Invalid Steam id detected
-                    steamIds[i].BackColor = Color.Red;
+                    //Invalid Steam id detected
+                    sidField.BackColor = Color.Red;
                     sidWrongValue = true;
                     break;
                 }
 
-                ///Set GameProfile Ideal Processors
-                if (IdealProcessors[i].Text == "" || IdealProcessors[i].Text == null)
+                //Set GameProfile Ideal Processors
+                var idealField = IdealProcessors[i];
+                if (idealField.Text == "" || idealField.Text == null)
                 {
-                    IdealProcessors[i].Text = "*";
+                    idealField.Text = "*";
                 }
 
                 int wrongValue = Environment.ProcessorCount;
-                if (IdealProcessors[i].Text != "*")
+
+                if (idealField.Text != "*")
                 {
-                    if (int.Parse(IdealProcessors[i].Text) > wrongValue)
+                    if (int.Parse(idealField.Text) > wrongValue)
                     {
-                        ///Invalid Ideal Processor detected
-                        IdealProcessors[i].BackColor = Color.Red;
+                        //Invalid Ideal Processor detected
+                        idealField.BackColor = Color.Red;
                         IdealProcessorsWrongValue = true;
                         break;
                     }
                 }
 
-                player.IdealProcessor = IdealProcessors[i].Text;
+                player.IdealProcessor = idealField.Text;
 
-                ///Set GameProfile Processors Affinity
-                if (Affinitys[i].Text == null)
+                //Set GameProfile Processors Affinity
+                var affinityField = Affinitys[i];
+                if (affinityField.Text == null)
                 {
-                    Affinitys[i].Text = "";
+                    affinityField.Text = "";
                 }
 
                 int maxValue = Environment.ProcessorCount;
 
-                string[] values = Affinitys[i].Text.Split(',');
+                string[] values = affinityField.Text.Split(',');
                 foreach (string val in values)
                 {
                     if (val != "")
                     {
                         if (int.Parse(val) > maxValue)
                         {
-                            ///Invalid affinity detected
-                            Affinitys[i].BackColor = Color.Red;
+                            //Invalid affinity detected
+                            affinityField.BackColor = Color.Red;
                             affinitysWrongValue = true;
                             break;
                         }
                     }
                 }
 
-                player.Affinity = Affinitys[i].Text;
+                player.Affinity = affinityField.Text;
 
-                ///Set GameProfile Priority Classes
-                if (PriorityClasses[i].Text == "" || PriorityClasses[i].Text == null)
+                //Set GameProfile Priority Classes
+                var priorityField = PriorityClasses[i];
+                if (priorityField.Text == "" || priorityField.Text == null)
                 {
-                    PriorityClasses[i].Text = "Normal";
+                    priorityField.Text = "Normal";
                 }
 
-                player.PriorityClass = PriorityClasses[i].Text;
+                player.PriorityClass = priorityField.Text;
             }
 
             ///Warn user for empty nickame fields
@@ -767,33 +748,8 @@ namespace Nucleus.Coop
                 return;
             }
 
-            ///Save new added nicknames in Nicknames.json
-            string path = $"{Globals.GameProfilesFolder}\\Nicknames.json";
-            using (FileStream stream = new FileStream(path, FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    string json = JsonConvert.SerializeObject(NicknamesCache.Get, Formatting.Indented);
-                    writer.Write(json);
-                    stream.Flush();
-                }
-
-                stream.Dispose();
-            }
-
-            ///Save new added Steam ids in SteamIds.json
-            string idspath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
-            using (FileStream stream = new FileStream(idspath, FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    string json = JsonConvert.SerializeObject(SteamIdsCache.Get, Formatting.Indented);
-                    writer.Write(json);
-                    stream.Flush();
-                }
-
-                stream.Dispose();
-            }
+            PlayersIdentityCache.SaveNicknamesCache();
+            PlayersIdentityCache.SaveSteamidsCache();
 
             ///Set shared GameProfile options
             GameProfile.Title = profileTitle.Text;
@@ -820,9 +776,8 @@ namespace Nucleus.Coop
             ///Set GameProfile AudioInstances (part of shared GameProfile options)
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
-                if (ctrl is ComboBox)
+                if (ctrl is ComboBox cmb)
                 {
-                    ComboBox cmb = (ComboBox)ctrl;
                     if (audioDevices?.Count > 0 && audioDevices.Keys.Contains(cmb.Text))
                     {
                         GameProfile.AudioInstances.Add(cmb.Name, audioDevices[cmb.Text]);
@@ -838,15 +793,7 @@ namespace Nucleus.Coop
             {
                 GameProfile.UpdateGameProfile(GameProfile.Instance);
                 ProfilesList.Instance.Update_ProfilesList();
-
-                ///Send control selection event to the Profiles List (update the list and reload the profile)
-                MouseEventArgs eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
-
-                Label selected = new Label();
-                selected.Name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString();
-                selected.Text = $"{ProfilesList.PartialTitle} {selected.Name}";
-
-                ProfilesList.Instance.ProfileBtn_CheckedChanged(selected, eventArgs);
+                ProfilesList.Instance.Update_Reload();
             }
 
             ini.IniWriteValue("Misc", "ProfileSettingsLocation", Location.X + "X" + Location.Y);
@@ -860,7 +807,7 @@ namespace Nucleus.Coop
             id.BackColor = Color.White;
         }
 
-        private void cmb_Network_DropDown(object sender, EventArgs e)
+        private void Cmb_Network_DropDown(object sender, EventArgs e)
         {
             RefreshCmbNetwork();
         }
@@ -886,7 +833,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void cmb_Network_DropDownClosed(object sender, EventArgs e)
+        private void Cmb_Network_DropDownClosed(object sender, EventArgs e)
         {
             if (cmb_Network.SelectedItem == null)
             {
@@ -894,7 +841,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void audioCustomSettingsRadio_CheckedChanged(object sender, EventArgs e)
+        private void AudioCustomSettingsRadio_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;
             audioCustomSettingsBox.Enabled = radio.Checked;
@@ -932,9 +879,8 @@ namespace Nucleus.Coop
 
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
-                if (ctrl is ComboBox)
+                if (ctrl is ComboBox cmb)
                 {
-                    ComboBox cmb = (ComboBox)ctrl;
                     cmb.Items.Clear();
                     cmb.Items.AddRange(audioDevices.Keys.ToArray());
 
@@ -975,47 +921,51 @@ namespace Nucleus.Coop
             }
         }
 
-        private void audioRefresh_Click(object sender, EventArgs e)
+        private void AudioRefresh_Click(object sender, EventArgs e)
         {
             RefreshAudioList();
         }
 
-        private void tabsButtons_highlight(object sender, EventArgs e)
+        private void TabsButtons_highlight(object sender, EventArgs e)
         {
             Control c = sender as Control;
 
             for (int i = 0; i < tabsButtons.Count; i++)
             {
+                var button = tabsButtons[i];
+
                 if (i < tabs.Count)
                 {
-                    if (tabs[i].Name != (string)c.Tag)
+                    var tab = tabs[i];
+
+                    if (tab.Name != (string)c.Tag)
                     {
-                        tabs[i].Visible = false;
+                        tab.Visible = false;
                     }
                     else
                     {
-                        tabs[i].Visible = true;
-                        tabs[i].BringToFront();
+                        tab.Visible = true;
+                        tab.BringToFront();
                     }
                 }
 
-                if (!(tabsButtons[i] is Button))
+                if (!(button is Button))
                 {
                     continue;
                 }
 
-                if (tabsButtons[i].Tag != c.Tag)
+                if (button.Tag != c.Tag)
                 {
-                    tabsButtons[i].BackColor = Color.Transparent;
+                    button.BackColor = Color.Transparent;
                 }
                 else
                 {
-                    tabsButtons[i].BackColor = selectionColor;
+                    button.BackColor = selectionColor;
                 }
             }
         }
 
-        private void audioTabBtn_Click(object sender, EventArgs e)
+        private void AudioTabBtn_Click(object sender, EventArgs e)
         {
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
             MMDevice audioDefault = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
@@ -1024,7 +974,7 @@ namespace Nucleus.Coop
 
         private void IdealProcessor_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 IdealProcessors[i].BackColor = Color.White;
                 Affinitys[i].BackColor = Color.Gray;
@@ -1034,7 +984,7 @@ namespace Nucleus.Coop
 
         private void Affinity_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 Affinitys[i].BackColor = Color.White;
                 IdealProcessors[i].BackColor = Color.Gray;
@@ -1042,7 +992,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void num_KeyPress(object sender, KeyPressEventArgs e)
+        private void Num_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
@@ -1063,27 +1013,27 @@ namespace Nucleus.Coop
             e.Handled = true;
         }
 
-        private void closeBtnPicture_MouseEnter(object sender, EventArgs e)
+        private void CloseBtnPicture_MouseEnter(object sender, EventArgs e)
         {
             closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close_mousehover.png");
         }
 
-        private void closeBtnPicture_MouseLeave(object sender, EventArgs e)
+        private void CloseBtnPicture_MouseLeave(object sender, EventArgs e)
         {
             closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
         }
 
-        private void profile_info_btn_MouseEnter(object sender, EventArgs e)
+        private void Profile_info_btn_MouseEnter(object sender, EventArgs e)
         {
             profile_info_btn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "profile_info_mousehover.png");
         }
 
-        private void profile_info_btn_MouseLeave(object sender, EventArgs e)
+        private void Profile_info_btn_MouseLeave(object sender, EventArgs e)
         {
             profile_info_btn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "profile_info.png");
         }
 
-        private void profile_info_btn_Click(object sender, EventArgs e)
+        private void Profile_info_btn_Click(object sender, EventArgs e)
         {
             NucleusMessageBox.Show(
                 "Info", 
@@ -1095,7 +1045,7 @@ namespace Nucleus.Coop
                 "  functions so it's better to launch the game with the default profile settings once.", false);
         }
 
-        private void cts_Mute_CheckedChanged(object sender, EventArgs e)
+        private void Cts_Mute_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox mute = (CheckBox)sender;
             if (mute.Checked)
@@ -1115,51 +1065,43 @@ namespace Nucleus.Coop
             }
         }
 
-        private void btnNext_Click(object sender, EventArgs e)
+        private void BtnNext_Click(object sender, EventArgs e)
         {
             if (page1.Visible)
             {
-                SuspendLayout();
                 btnNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page2.png");
                 page1.Visible = false;
                 page2.BringToFront();
                 page2.Visible = true;
-                ResumeLayout();
             }
             else
             {
-                SuspendLayout();
                 btnNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page1.png");
                 page2.Visible = false;
                 page1.BringToFront();
                 page1.Visible = true;
-                ResumeLayout();
             }
         }
 
-        private void btnProcessorNext_Click_1(object sender, EventArgs e)
+        private void BtnProcessorNext_Click_1(object sender, EventArgs e)
         {
             if (processorPage1.Visible)
             {
-                SuspendLayout();
                 btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page2.png");
                 processorPage1.Visible = false;
                 processorPage2.BringToFront();
                 processorPage2.Visible = true;
-                ResumeLayout();
             }
             else
             {
-                SuspendLayout();
                 btnProcessorNext.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "page1.png");
                 processorPage2.Visible = false;
                 processorPage1.BringToFront();
                 processorPage1.Visible = true;
-                ResumeLayout();
             }
         }
 
-        private void controlscollect()
+        private void Controlscollect()
         {
             foreach (Control control in Controls)
             {
@@ -1183,7 +1125,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void layoutSizer_Paint(object sender, PaintEventArgs e)
+        private void LayoutSizer_Paint(object sender, PaintEventArgs e)
         {
             Graphics gs = e.Graphics;
 
@@ -1313,16 +1255,17 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (!NicknamesCache.Get.Any(n => n == cb.Text))
+            if (PlayersIdentityCache.GetCachedNicknamesList.All(n => n != cb.Text))
             {
-                NicknamesCache.Add(cb.Text);
+                PlayersIdentityCache.AddNicknameToCache(cb.Text);
             }
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
-                if (!controllerNicks[i].Items.Contains(cb.Text))
+                var nickField = controllerNicks[i];
+                if (!nickField.Items.Contains(cb.Text))
                 {
-                    controllerNicks[i].Items.Add(cb.Text);
+                    nickField.Items.Add(cb.Text);
                 }
             }
         }
@@ -1336,16 +1279,17 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (!SteamIdsCache.Get.Any(n => n == cb.Text))
+            if (PlayersIdentityCache.GetCachedSteamIdsList.All(sid => sid != cb.Text))
             {
-                SteamIdsCache.Add(cb.Text);
+                PlayersIdentityCache.AddSteamIdToCache(cb.Text);
             }
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
-                if (!steamIds[i].Items.Contains(cb.Text))
+                var sidField = steamIds[i];
+                if (!sidField.Items.Contains(cb.Text))
                 {
-                    steamIds[i].Items.Add(cb.Text);
+                    sidField.Items.Add(cb.Text);
                 }
             }
         }
@@ -1363,7 +1307,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private void modeLabel_MouseDown(object sender, MouseEventArgs e)
+        private void ModeLabel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {

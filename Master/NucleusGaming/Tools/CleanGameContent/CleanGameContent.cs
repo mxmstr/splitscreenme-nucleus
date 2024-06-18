@@ -24,7 +24,7 @@ namespace Nucleus.Gaming
                         }
                     }
 
-                    LogManager.Log("Game content cleaned.");
+                    //LogManager.Log("Game content cleaned.");
                 }
                 catch
                 {
