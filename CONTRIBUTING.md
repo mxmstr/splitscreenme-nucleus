@@ -150,7 +150,7 @@ Currently, there is no set release schedule, and releases will be published when
 If you get an error about missing URL's when attempting to initalize and update the submodules, open up .gitmodules (in the project root folder) in a text editor and make sure that the following are listed. 
     
 Even if some of these dependencies are not in active use, the git "update" command may fail to execute if entries and URLs for **all submodule** dependencies cloned from your fork are not found in the .gitmodules file. Add anything missing, save the changes to .gitmodules and the command should now work.
-```
+```ini
 [submodule "Submodules/x360ce"]
     path = Submodules/x360ce
     url = https://github.com/lucasassislar/x360ce
