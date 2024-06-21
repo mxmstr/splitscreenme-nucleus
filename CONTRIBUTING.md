@@ -78,7 +78,8 @@ These will be taken care of as part of the setup git commands, but for reference
      ```
 4. Install (or Build) Proto Input
   
-   **Option 1 (Recomended):** Use Post-Compiled Proto Input Files
+   **Option 1 (Recommended):** Use Post-Compiled Proto Input Files
+
    
    This is the simplest approach to handling Proto Input file dependencies. If you have no plans to work with the Proto Input source code directly, this is the recomended approach, at is much simpler and has less potential for complications.
 
