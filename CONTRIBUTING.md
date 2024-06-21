@@ -113,7 +113,8 @@ You are now free to work on the Nucleus Coop source code - all dependencies in p
 
 When you are ready to test any changes you make, compile **Nucleus Coop** by opening its solution file and running a batch build on it within Visual Studio ("Master\NucleusCoop.sln"). 
 
-**Make sure that your project path contains no folders with spaces in their name, or Nucleus Coop may not compile correctly.**
+> [!IMPORTANT]  
+> Make sure that your project path contains no folders with spaces in their name, or Nucleus Coop may not compile correctly.
 
 Similar to Proto Input, on the Batch Build menu, select all the x86 and x64 options for the build you would like to compile. 
 
