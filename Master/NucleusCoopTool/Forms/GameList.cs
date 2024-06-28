@@ -1,8 +1,13 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.Coop.Tools;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
@@ -22,7 +27,6 @@ namespace Nucleus.Coop.Forms
         private GenericGameInfo clicked;
 
         public GenericGameInfo Selected => clicked;
-
         protected override Size DefaultSize => new Size(440, 710);
 
         public GameList(List<GenericGameInfo> games)
@@ -44,12 +48,12 @@ namespace Nucleus.Coop.Forms
                 };
 
                 con.Controls.RemoveByKey("favorite");
+                con.Image = ImageCache.GetImage(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png"));
                 con.Click += Con_Click;
                 con.ForeColor = Color.White;
 
-                listGames.Controls.Add(con);
+                listGames.Controls.Add(con);                     
             }
-
         }
 
         private void Con_Click(object sender, EventArgs e)

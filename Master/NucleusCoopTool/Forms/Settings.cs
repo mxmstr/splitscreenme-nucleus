@@ -7,6 +7,7 @@ using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
+using Nucleus.Gaming.Tools.MonitorsDpiScaling;
 using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
@@ -18,11 +19,14 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+
 
 namespace Nucleus.Coop
 {
@@ -161,7 +165,7 @@ namespace Nucleus.Coop
             closeBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "title_close.png");
             audioRefresh.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
             btnNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
-
+            refreshScreenDatasButton.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
 
             plus1.ForeColor = ForeColor;
             plus2.ForeColor = ForeColor;
@@ -171,6 +175,7 @@ namespace Nucleus.Coop
             plus6.ForeColor = ForeColor;
             plus7.ForeColor = ForeColor;
             plus8.ForeColor = ForeColor;
+            plus9.ForeColor = ForeColor;
 
             audioBtnPicture.Click += new EventHandler(AudioBtnPicture_Click);
 
@@ -246,14 +251,8 @@ namespace Nucleus.Coop
             cts_kar.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_unfocus.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
 
-            if (ini.IniReadValue("CustomLayout", "Cts_BringToFront") != "")//such checks are there so testers/users can still use there existing profiles
-                                                                           //after new options implementation. Any new option must have that null check.
-            {
-                cts_bringToFront.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_BringToFront"));
-            }
-
-            disableGameProfiles.Checked = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
-
+            enable_WMerger.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger"));            
+            losslessHook.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "LosslessHook"));
 
             if (ini.IniReadValue("CustomLayout", "HorizontalLines") != "")
             {
@@ -270,6 +269,7 @@ namespace Nucleus.Coop
                 numMaxPlyrs.Value = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
             }
 
+            disableGameProfiles.Checked = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
             gamepadsAssignMethods.Checked = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
             gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
 
@@ -466,6 +466,20 @@ namespace Nucleus.Coop
                 ini.IniWriteValue("Hotkeys", "ShortcutsReminder", "");
             }
 
+            if (ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Contains('+'))
+            {
+                string[] switchMergerChildForeGround = ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+');
+                if ((switchMergerChildForeGround[0] == "Ctrl" || switchMergerChildForeGround[0] == "Alt" || switchMergerChildForeGround[0] == "Shift") && switchMergerChildForeGround[1].Length == 1 && Regex.IsMatch(switchMergerChildForeGround[1], @"^[a-zA-Z0-9]+$"))
+                {
+                    smfw_Cmb.SelectedItem = switchMergerChildForeGround[0];
+                    smfw_HKTxt.Text = switchMergerChildForeGround[1];
+                }
+            }
+            else
+            {
+                ini.IniWriteValue("Hotkeys", "switchMergerChildForeGround", "");
+            }
+
             if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "")
             {
                 ignoreInputLockReminderCheckbox.Checked = bool.Parse(ini.IniReadValue("Misc", "IgnoreInputLockReminder"));
@@ -479,7 +493,7 @@ namespace Nucleus.Coop
             if (ini.IniReadValue("Misc", "NucleusAccountPassword") != "")
             {
                 nucUserPassTxt.Text = ini.IniReadValue("Misc", "NucleusAccountPassword");
-            }
+            }       
 
             if (ini.IniReadValue("Audio", "Custom") == "0")
             {
@@ -490,6 +504,8 @@ namespace Nucleus.Coop
             {
                 audioCustomSettingsRadio.Checked = true;
             }
+
+            GetAllScreensResolutions();
 
             RefreshAudioList();
 
@@ -566,6 +582,7 @@ namespace Nucleus.Coop
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) /*- 4*/);
             audioWarningLabel.Location = new Point(audioTab.Width / 2 - audioWarningLabel.Width / 2, audioWarningLabel.Location.Y);
             gamepadsAssignMethods.Location = new Point((page1.Location.X + label7.Location.X) + 2, (page1.Top - 5) - gamepadsAssignMethods.Height);
+            refreshScreenDatasButton.Location = new Point(mergerResSelectorLabel.Right, refreshScreenDatasButton.Location.Y);
 
             int tabButtonsY = settingsTabBtn.Location.Y - 1;
             int tabButtonsHeight = settingsTabBtn.Height + 1;
@@ -590,6 +607,14 @@ namespace Nucleus.Coop
                                                              "will not save per player gamepad but use XInput indexes instead \n" +
                                                              "(switching modes could prevent some profiles to load properly).\n" +
                                                              "Note: Nucleus will return to the main screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(enable_WMerger, "Game windows will be merged to a single window\n" +
+                                                       "so Lossless Scaling can be used with Nucleus.\n " +
+                                                       "Note that there's no mutiple monitor support yet.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+           
+            CustomToolTips.SetToolTip(losslessHook, "Lossless will not stop upscaling if an other window get the focus, useful\n" +
+                                                    "if game windows requiers real focus to receive inputs.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 }); 
+            CustomToolTips.SetToolTip(mergerShortcutLabel, "Each press will set an other child window as foreground window(similar to Alt+Tab).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndSteamIds()
@@ -730,6 +755,7 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Hotkeys", "Cutscenes", csm_Cmb.SelectedItem.ToString() + "+" + csm_HKTxt.Text);
             ini.IniWriteValue("Hotkeys", "Switch", swl_Cmb.SelectedItem.ToString() + "+" + swl_HKTxt.Text);
             ini.IniWriteValue("Hotkeys", "ShortcutsReminder", rm_Cmb.SelectedItem.ToString() + "+" + rm_HKTxt.Text);
+            ini.IniWriteValue("Hotkeys", "SwitchMergerChildForeGround", smfw_Cmb.SelectedItem.ToString() + "+" + smfw_HKTxt.Text);
 
             ini.IniWriteValue("Misc", "UseNicksInGame", useNicksCheck.Checked.ToString());
             ini.IniWriteValue("Misc", "KeepAccounts", keepAccountsCheck.Checked.ToString());
@@ -753,9 +779,10 @@ namespace Nucleus.Coop
             ini.IniWriteValue("CustomLayout", "Cts_MuteAudioOnly", cts_Mute.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "Cts_KeepAspectRatio", cts_kar.Checked.ToString());
             ini.IniWriteValue("CustomLayout", "Cts_Unfocus", cts_unfocus.Checked.ToString());
-            ini.IniWriteValue("CustomLayout", "Cts_BringToFront", cts_bringToFront.Checked.ToString());
+            ini.IniWriteValue("CustomLayout", "WindowsMerger", enable_WMerger.Checked.ToString());
 
             mainForm.lockKeyIniString = lockKey_Cmb.SelectedItem.ToString();
+            RawInputProcessor.UpdateLockKey();
 
             if (setupScreen != null)
             {
@@ -834,18 +861,19 @@ namespace Nucleus.Coop
                 Application.Restart();
                 Process.GetCurrentProcess().Kill();
                 return;
-            }
-
-            Visible = false;
+            }         
 
             Globals.MainOSD.Show(500, "Settings Saved");
 
             if (Location.X == -32000 || Width == 0)
             {
+                Visible = false;
                 return;
             }
 
             ini.IniWriteValue("Misc", "SettingsLocation", Location.X + "X" + Location.Y);
+            mainForm.BringToFront();//for some reasons settings is disposed if the parent is minized
+            Visible = false;
         }
 
         private int GetMod(string modifier)
@@ -880,6 +908,9 @@ namespace Nucleus.Coop
                 User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
                 User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Reminder_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Merger_WindowSwitch, GetMod(ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+')[1].ToString()));
+
+
             }
             catch (Exception ex)
             {
@@ -901,6 +932,8 @@ namespace Nucleus.Coop
                 User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Cutscenes_HotkeyID);
                 User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Switch_HotkeyID);
                 User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Reminder_HotkeyID);
+                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Merger_WindowSwitch);
+                
             }
             catch (Exception ex)
             {
@@ -1119,15 +1152,12 @@ namespace Nucleus.Coop
                 cts_kar.Checked = false;
                 cts_kar.Enabled = false;
                 cts_unfocus.Checked = false;
-                cts_unfocus.Enabled = false;
-                cts_bringToFront.Checked = false;
-                cts_bringToFront.Enabled = false;
+                cts_unfocus.Enabled = false;           
             }
             else
             {
                 cts_kar.Enabled = true;
                 cts_unfocus.Enabled = true;
-                cts_bringToFront.Enabled = true;
             }
         }
 
@@ -1336,10 +1366,135 @@ namespace Nucleus.Coop
             }
         }
 
+        private Dictionary<string, List<string>> AllScreensRes;    
+        private List<Label> screensLabels;
+        private List<Rectangle> screensResControlsRow;
+
+        private void GetAllScreensResolutions()
+        {
+            screen_panel.Visible = false;
+            screensResControlsRow = new List<Rectangle>();
+            screensLabels = new List<Label>();
+            AllScreensRes = new Dictionary<string, List<string>>();
+            screen_panel.Controls.Clear();
+
+            MonitorsDpiScaling.DEVMODE vDevMode = new MonitorsDpiScaling.DEVMODE();
+
+            int i = 0;
+
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                string iniMergerRes = ini.IniReadValue("CustomLayout", "WindowsMergerRes");
+
+                if (iniMergerRes == "")
+                {
+                    if (screen.Primary)
+                    {
+
+                        ini.IniWriteValue("CustomLayout", "WindowsMergerRes", $"{screen.Bounds.Width}X{screen.Bounds.Height}");
+                        selectedRes.Text = $"{screen.Bounds.Width}X{screen.Bounds.Height}";         
+                    }
+                }
+                else 
+                {
+                    selectedRes.Text = ini.IniReadValue("CustomLayout", "WindowsMergerRes");
+                }
+
+                ComboBox resCmb = new ComboBox();
+                resCmb.BackColor = Color.Black;
+                resCmb.ForeColor = Color.White;
+                resCmb.FlatStyle = FlatStyle.Flat;
+                resCmb.TextChanged += SaveSelectedRes;
+
+                Label resLabel = new Label();
+                resLabel.AutoSize = true;
+                string cleanName = screen.DeviceName.Substring(screen.DeviceName.LastIndexOf('\\') + 1);
+                resLabel.Text = $"⛶ {cleanName}";
+
+                CustomToolTips.SetToolTip(resLabel, "Click here to identify the screen", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+
+                if (screensLabels.Count == 0)
+                {
+                    screen_panel.Controls.Add(resLabel);
+                    resLabel.Location = new Point(0, 5);
+                    screensLabels.Add(resLabel);
+                    screen_panel.Controls.Add(resCmb);
+                }
+                else
+                {
+                    screen_panel.Controls.Add(resLabel);
+                    resLabel.Location = new Point(screensLabels[screensLabels.Count - 1].Location.X, screensLabels[screensLabels.Count - 1].Bottom + 4);
+                    screensLabels.Add(resLabel);
+                    screen_panel.Controls.Add(resCmb);
+                }
+
+                List<string> resolutions = new List<string>();
+
+                while (MonitorsDpiScaling.EnumDisplaySettings(screen.DeviceName, i, ref vDevMode))
+                {
+                    string resString = $"{vDevMode.dmPelsWidth}X{vDevMode.dmPelsHeight}";
+
+                    if (resolutions.Contains(resString) || vDevMode.dmPelsWidth > screen.Bounds.Width || vDevMode.dmPelsHeight > screen.Bounds.Height)
+                    {
+                        i++;
+                        continue;
+                    }
+
+                    resolutions.Add(resString);
+                    i++;
+                }
+
+                string currentScreenRes = $"{screen.Bounds.Width}X{screen.Bounds.Height}";
+  
+                resCmb.Items.AddRange(resolutions.ToArray()); 
+                resCmb.SelectedItem = iniMergerRes == "" ?  currentScreenRes : iniMergerRes;
+                resLabel.Text += $" ({currentScreenRes})";
+
+                if (screensLabels.Count == 0)
+                {
+                    resCmb.Location = new Point(resLabel.Right + 4, resLabel.Top);
+                }
+                else
+                {
+                    resCmb.Location = new Point(resLabel.Right + 4, resLabel.Top);
+                }
+
+                resLabel.Location = new Point(resLabel.Left, resCmb.Location.Y + (resCmb.Height/2 - resLabel.Height/2));
+                resLabel.Tag = screen.Bounds.Location;
+                resLabel.Click += IdentifyScreen;
+
+                Rectangle border = new Rectangle(resLabel.Location.X,resCmb.Location.Y, resCmb.Right, resCmb.Height -1);
+                screensResControlsRow.Add(border);
+               
+                AllScreensRes.Add(screen.DeviceName, resolutions);
+
+               i = 0;
+            }
+
+            refreshScreensData = false;
+            screen_panel.Visible = true;
+        }
+
+        private void IdentifyScreen(object sender,EventArgs e)
+        {
+            Label lb = sender as Label; 
+            ScreenId identifierWindow = new ScreenId((Point)lb.Tag);
+            identifierWindow.Show();
+        }
+
+        private void SaveSelectedRes(object sender, EventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+            selectedRes.Text = cmb.Text;
+            ini.IniWriteValue("CustomLayout", "WindowsMergerRes", cmb.Text);
+        }
+
         private void Settings_VisibleChanged(object sender, EventArgs e)
         {           
             if (Visible)
             {
+                //Reload do not cache so we always have fresh screen datas.
+                GetAllScreensResolutions();
                 //Update in case the logmanager prompt updated the value
                 debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));
             }
@@ -1358,6 +1513,26 @@ namespace Nucleus.Coop
                 IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
+        }
+
+        private void LosslessHook_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            ini.IniWriteValue("CustomLayout", "LosslessHook", checkBox.Checked.ToString());
+        }
+
+        private void Screen_panel_Paint(object sender, PaintEventArgs e)
+        {
+            if(!refreshScreensData)
+            e.Graphics.DrawRectangles(bordersPen, screensResControlsRow.ToArray());
+        }
+
+        private bool refreshScreensData;
+
+        private void RefreshScreenDatasButton_Click(object sender, EventArgs e)
+        {
+            refreshScreensData = true;
+            GetAllScreensResolutions();
         }
     }
 }

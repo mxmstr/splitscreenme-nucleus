@@ -75,6 +75,7 @@ namespace Nucleus.Coop
                 {
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     BackColor = Color.Transparent,
+                    Name = "pictureBox"
                 };
 
                 playerIcon = new PictureBox
@@ -120,7 +121,8 @@ namespace Nucleus.Coop
                 {
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     BackColor = Color.Transparent,
-                    Cursor = Theme_Settings.Hand_Cursor
+                    Cursor = Theme_Settings.Hand_Cursor,
+                    Name = "favorite"
                 };
 
                 favoriteBox.Image = favorite ? favorite_Selected : favorite_Unselected;
@@ -330,7 +332,6 @@ namespace Nucleus.Coop
 
         public void RadioSelected()
         {
-            BackColor = Color.Transparent;
             isSelected = true;
         }
 

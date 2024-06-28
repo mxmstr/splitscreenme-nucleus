@@ -126,7 +126,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             base.Dispose(disposing);
 
-            if (profile != null && profile.DevicesList != null)
+            if (profile?.DevicesList != null)
             {
                 foreach (PlayerInfo player in profile.DevicesList)
                 {
@@ -141,6 +141,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
            
             foreach (PlayerInfo player in profile.DevicesList)
             {
+                player.DInputJoystick?.Unacquire();
                 player.DInputJoystick?.Dispose();
             }
 
@@ -159,7 +160,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
-            //ProfilesList.Visible = false;
         }
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)

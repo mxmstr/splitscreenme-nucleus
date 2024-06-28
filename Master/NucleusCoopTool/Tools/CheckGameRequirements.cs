@@ -1,4 +1,6 @@
 ﻿using Nucleus.Gaming.Coop;
+using System.Diagnostics;
+using System.Reflection;
 using System.Security.Principal;
 using System.Windows.Forms;
 
@@ -15,6 +17,7 @@ namespace Nucleus.Coop.Tools
             string gamePath = userGameInfo.ExePath;
             bool imcompatibleGamePath = gamePath.StartsWith(@"C:\Users\") ||
                                          gamePath.StartsWith(@"C:\Windows\");
+            bool skip = false;
 
             if ((userGameInfo.Game.LaunchAsDifferentUsers || userGameInfo.Game.LaunchAsDifferentUsersAlt) && imcompatibleGamePath)
             {
@@ -45,17 +48,49 @@ namespace Nucleus.Coop.Tools
                 }
                 else
                 {
-                    message = "This handler requires you to run Nucleus as administrator.";
+                    message = "";
+
+                    DialogResult dialogResult = MessageBox.Show("This handler requires you to run Nucleus as administrator.\n" +
+                                                                "Restart Nucleus as administrator?", "Requires administrator rights", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        RestartAsAdmin(Assembly.GetExecutingAssembly().Location);
+                        return false;
+                    }
+
+                    skip = true;
                 }
 
-                MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                if(!skip)
+                {
+                    MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                
                 return false;
             }
             else
             {
                 return true;
             }
+        }
+
+
+        private static void RestartAsAdmin(string fileName)
+        {
+            var proc = new Process
+            {
+                StartInfo =
+               {
+                   FileName = fileName,
+                   UseShellExecute = true,
+                   Verb = "runas"
+                }
+            };
+
+            proc.Start();
+
+            //admin prompt give enough time
+            Process.GetCurrentProcess().Kill();
         }
     }
 }

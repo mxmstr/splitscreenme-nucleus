@@ -22,7 +22,7 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        struct DEVMODE
+        public struct DEVMODE
         {
             public const int DM_PELSWIDTH = 0x80000;
             public const int DM_PELSHEIGHT = 0x100000;
@@ -103,7 +103,7 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        static extern bool EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
+        public static extern bool EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
 
         private static DISP_CHANGE SetResolution(int w, int h, string deviceName)
         {

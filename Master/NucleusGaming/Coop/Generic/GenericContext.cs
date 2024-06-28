@@ -274,7 +274,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void StartProcess(string path)
+        public bool StartProcess(string path)
         {
             if (File.Exists(path))
             {
@@ -285,9 +285,11 @@ namespace Nucleus.Gaming
 
                 Process.Start(sc);
             }
+
+            return true;
         }
 
-        public void ProceedSymlink()
+        public bool ProceedSymlink()
         {
             string[] filesToSymlink = SymlinkFiles;
             for (int f = 0; f < filesToSymlink.Length; f++)
@@ -297,6 +299,39 @@ namespace Nucleus.Gaming
                 CmdUtil.MkLinkFile(Path.Combine(OrigRootFolder, s), Path.Combine(RootFolder, s), out int exitCode);
                 //Console.WriteLine(OrigRootFolder + s + " => Instance folder " + RootFolder + s);
             }
+
+            return true;
+        }
+
+        public string SearchSubFolder(string parentDirectory, string searchPattern)
+        {
+            if (!Directory.Exists(parentDirectory) || searchPattern == null || searchPattern == "")
+            {
+                return null;
+            }
+
+            string[] subFolders = Directory.GetDirectories(parentDirectory);
+            string searchPatternResult = subFolders.Where(sub => sub.Contains(searchPattern)).FirstOrDefault();
+
+            if (searchPatternResult != null)
+            {
+                return searchPatternResult;
+            }
+
+            return null;
+        }
+
+        public string[] SearchSubFolders(string parentDirectory, string searchPattern)
+        {
+            if (!Directory.Exists(parentDirectory) || searchPattern == null || searchPattern == "")
+            {
+                return null;
+            }
+
+            string[] subFolders = Directory.GetDirectories(parentDirectory);
+            string[] searchPatternResults = subFolders.Where(sub => sub.Contains(searchPattern)).ToArray();      
+
+            return searchPatternResults;
         }
 
         public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
@@ -408,12 +443,13 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void CopyFolder(string source, string destination)
+        public bool CopyFolder(string source, string destination)
         {
             FileUtil.CopyDirectory(source, new DirectoryInfo(source), destination, out int exitCode, new string[0], new string[0], true);
+            return true;
         }
 
-        public void EditZipFile(string sourceZip, string password, string savePath, string[] itemsToAdd, string[] entriesToRemove)//itemsToAdd can be file or directory(recursive). https://documentation.help/DotNetZip/7d020d58-d917-63a8-6b5c-c5519767063d.htm
+        public bool EditZipFile(string sourceZip, string password, string savePath, string[] itemsToAdd, string[] entriesToRemove)//itemsToAdd can be file or directory(recursive). https://documentation.help/DotNetZip/7d020d58-d917-63a8-6b5c-c5519767063d.htm
         {
             bool isValidZip = ZipFile.CheckZip(sourceZip);
 
@@ -449,9 +485,11 @@ namespace Nucleus.Gaming
             {
                 System.Windows.Forms.MessageBox.Show("Zip file doesn't exist,is corrupted or in an unsupported format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            return true;
         }
 
-        public void ExtractZip(string sourceZip, string contentDestination, string password)
+        public bool ExtractZip(string sourceZip, string contentDestination, string password)
         {
             bool isValidZip = ZipFile.CheckZip(sourceZip);
 
@@ -474,6 +512,8 @@ namespace Nucleus.Gaming
             {
                 System.Windows.Forms.MessageBox.Show("Zip file doesn't exist,is corrupted or in an unsupported format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            return true;
         }
 
         public void HideDesktop(bool hideTaskbar)
@@ -504,7 +544,7 @@ namespace Nucleus.Gaming
             User32Util.HideTaskbar();
         }
 
-        public void BackupFile(string[] filePaths, bool overwrite)
+        public bool BackupFile(string[] filePaths, bool overwrite)
         {
             for (int i = 0; i < filePaths.Length; i++)
             {
@@ -522,9 +562,11 @@ namespace Nucleus.Gaming
                     Log($"Unable to backup {filePath}, file does not exist");
                 }
             }
+
+            return true;
         }
 
-        public void BackupFile(string filePath, bool overwrite)//backward compatibility
+        public bool BackupFile(string filePath, bool overwrite)//backward compatibility
         {
             if (pInfo.PlayerID == 0)
             {
@@ -540,9 +582,11 @@ namespace Nucleus.Gaming
                     Log($"Unable to backup {filePath}, file does not exist");
                 }
             }
+
+            return true;
         }
 
-        public void CopyScriptFolder(string DestinationPath)
+        public bool CopyScriptFolder(string DestinationPath)
         {
             string SourcePath = ScriptFolder;
             try
@@ -563,7 +607,10 @@ namespace Nucleus.Gaming
             }
             catch
             {
+                return false;
             }
+
+            return true;
         }
 
         public int RandomInt(int min, int max)
@@ -1045,7 +1092,7 @@ namespace Nucleus.Gaming
             return filesFound.ToArray();
         }
 
-        public void WriteTextFile(string path, string[] lines)
+        public bool WriteTextFile(string path, string[] lines)
         {
             if (File.Exists(path))
             {
@@ -1053,6 +1100,8 @@ namespace Nucleus.Gaming
             }
 
             File.WriteAllLines(path, lines);
+
+            return true;
         }
 
         public int FindLineNumberInTextFile(string path, string searchValue, SearchType type)
@@ -1135,6 +1184,7 @@ namespace Nucleus.Gaming
             {
                 return;
             }
+
             File.Delete(path);
             //}
             //else
@@ -1149,7 +1199,7 @@ namespace Nucleus.Gaming
             File.WriteAllLines(path, lines, Encoding.GetEncoding(encoder));
         }
 
-        public void RemoveLineInTextFile(string path, string searchValue, SearchType type)
+        public bool RemoveLineInTextFile(string path, string searchValue, SearchType type)
         {
             string[] lines;
             //if (File.Exists(path))
@@ -1198,10 +1248,13 @@ namespace Nucleus.Gaming
                 //    lines.Where(w => w != lines[i]).ToArray();
                 //}
             }
+
             File.WriteAllLines(path, lines);
+
+            return true;
         }
 
-        public void RemoveLineInTextFile(string path, string searchValue, SearchType type, string encoder)
+        public bool RemoveLineInTextFile(string path, string searchValue, SearchType type, string encoder)
         {
             string[] lines;
 
@@ -1251,10 +1304,13 @@ namespace Nucleus.Gaming
                 //    lines.Where(w => w != lines[i]).ToArray();
                 //}
             }
+
             File.WriteAllLines(path, lines, Encoding.GetEncoding(encoder));
+
+            return true;
         }
 
-        public void ReplaceLinesInTextFile(string path, string[] newLines)
+        public bool ReplaceLinesInTextFile(string path, string[] newLines)
         {
             string[] lines;
             //if (File.Exists(path))
@@ -1282,9 +1338,11 @@ namespace Nucleus.Gaming
             }
 
             File.WriteAllLines(path, lines);
+
+            return true;
         }
 
-        public void ReplaceLinesInTextFile(string path, string[] newLines, string encoder)
+        public bool ReplaceLinesInTextFile(string path, string[] newLines, string encoder)
         {
             string[] lines;
 
@@ -1312,9 +1370,11 @@ namespace Nucleus.Gaming
             }
 
             File.WriteAllLines(path, lines, Encoding.GetEncoding(encoder));
+
+            return true;
         }
 
-        public void ReplacePartialLinesInTextFile(string path, string[] newLines)
+        public bool ReplacePartialLinesInTextFile(string path, string[] newLines)
         {
             string[] lines;
             //if (File.Exists(path))
@@ -1343,9 +1403,11 @@ namespace Nucleus.Gaming
             }
 
             File.WriteAllLines(path, lines);
+
+            return true;
         }
 
-        public void ReplacePartialLinesInTextFile(string path, string[] newLines, string encoder)
+        public bool ReplacePartialLinesInTextFile(string path, string[] newLines, string encoder)
         {
             string[] lines;
             //if (File.Exists(path))
@@ -1374,9 +1436,11 @@ namespace Nucleus.Gaming
             }
 
             File.WriteAllLines(path, lines, Encoding.GetEncoding(encoder));
+
+            return true;
         }
 
-        public void EditTextFile(string path, string[] refLines, string[] newLines, string encoder)
+        public bool EditTextFile(string path, string[] refLines, string[] newLines, string encoder)
         {
             //if (!File.Exists(path))
             //{
@@ -1415,6 +1479,8 @@ namespace Nucleus.Gaming
             }
 
             File.WriteAllLines(path, newFileContent, Encoding.GetEncoding(encoder));
+
+            return true;
         }
 
         //public void EditTextFile(string sourceFilePath, string destinationPath, string[] newLinesArray, string encoder)//require the file to be copied and not symlinked or to be added in the symslink exclusion list in some cases
@@ -1502,7 +1568,7 @@ namespace Nucleus.Gaming
             return new SaveInfo(section, key, value);
         }
 
-        public void ModifySaveFile(string installSavePath, string saveFullPath, SaveType type, params SaveInfo[] info)
+        public bool ModifySaveFile(string installSavePath, string saveFullPath, SaveType type, params SaveInfo[] info)
         {
             //if (!File.Exists(installSavePath))
             //{
@@ -1550,9 +1616,11 @@ namespace Nucleus.Gaming
                 default:
                     throw new NotImplementedException();
             }
+
+            return true;
         }
 
-        public void HexEdit(string fileToEdit, string address, byte[] newBytes)
+        public bool HexEdit(string fileToEdit, string address, byte[] newBytes)
         {
             //if (!File.Exists(fileToEdit))
             //{
@@ -1566,9 +1634,11 @@ namespace Nucleus.Gaming
                 stream.Position = long.Parse(address, NumberStyles.HexNumber);
                 stream.Write(newBytes, 0, newBytes.Length);
             }
+
+            return true;
         }
 
-        public void PatchFileFindAll(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
+        public bool PatchFileFindAll(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
         {
             //if (!File.Exists(originalFile))
             //{
@@ -1609,9 +1679,11 @@ namespace Nucleus.Gaming
 
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);
+
+            return true;
         }
 
-        public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, string patchPattern, bool patchall) // 2.1.2
+        public bool PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, string patchPattern, bool patchall) // 2.1.2
         {
             //if (!File.Exists(originalFile))
             //{
@@ -1686,9 +1758,11 @@ namespace Nucleus.Gaming
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);
             Log("Patching finished");
+
+            return true;
         }
 
-        public void PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, int insert, int offset, bool patchall) // 2.1.2
+        public bool PatchFileFindPattern(string originalFile, string patchedFile, string origPattern, int insert, int offset, bool patchall) // 2.1.2
         {
             //if (!File.Exists(originalFile))
             //{
@@ -1783,10 +1857,12 @@ namespace Nucleus.Gaming
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);
             Log("Patching finished");
+
+            return true;
         }
 
 
-        public void PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
+        public bool PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
         {
             //if (!File.Exists(originalFile))
             //{
@@ -1841,9 +1917,11 @@ namespace Nucleus.Gaming
 
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);
+
+            return true;
         }
 
-        public void PatchFile(string originalFile, string patchedFile, string spatchFind, string spatchReplace)
+        public bool PatchFile(string originalFile, string patchedFile, string spatchFind, string spatchReplace)
         {
             //if (!File.Exists(originalFile))
             //{
@@ -1901,11 +1979,13 @@ namespace Nucleus.Gaming
 
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);
+
+            return true;
         }
 
         //XPath syntax
         //https://www.w3schools.com/xml/xpath_syntax.asp
-        public void ChangeXmlAttributeValue(string path, string xpath, string attributeName, string attributeValue)
+        public bool ChangeXmlAttributeValue(string path, string xpath, string attributeName, string attributeValue)
         {
             path = Environment.ExpandEnvironmentVariables(path);
 
@@ -1917,9 +1997,11 @@ namespace Nucleus.Gaming
                 node.Attributes[attributeName].Value = attributeValue;
             }
             doc.Save(path);
+
+            return true;
         }
 
-        public void ChangeXmlNodeValue(string path, string xpath, string nodeValue)
+        public bool ChangeXmlNodeValue(string path, string xpath, string nodeValue)
         {
             //if (!File.Exists(path))
             //{
@@ -1938,9 +2020,10 @@ namespace Nucleus.Gaming
                 node.Value = nodeValue;
             }
             doc.Save(path);
+            return true;
         }
 
-        public void ChangeXmlNodeInnerTextValue(string path, string xpath, string innerTextValue)
+        public bool ChangeXmlNodeInnerTextValue(string path, string xpath, string innerTextValue)
         {
             //if (!File.Exists(path))
             //{
@@ -1958,9 +2041,10 @@ namespace Nucleus.Gaming
                 node.InnerText = innerTextValue;
             }
             doc.Save(path);
+            return true;
         }
 
-        public void CreateRegKey(string baseKey, string sKey, string subKey)
+        public bool CreateRegKey(string baseKey, string sKey, string subKey)
         {
             if (baseKey == "HKEY_LOCAL_MACHINE" || baseKey == "HKEY_CURRENT_USER")
             {
@@ -1977,9 +2061,11 @@ namespace Nucleus.Gaming
                     key.Close();
                 }
             }
+
+            return true;
         }
 
-        private void ExportRegistry(string strKey, string filepath)
+        private bool ExportRegistry(string strKey, string filepath)
         {
             try
             {
@@ -2002,6 +2088,8 @@ namespace Nucleus.Gaming
             {
                 Log(string.Format("ERROR: Unable to export {0}. {1}", Path.GetFileName(filepath), ex.Message));
             }
+
+            return true;
         }
 
         public void DeleteRegKey(string baseKey, string sKey, string subKey)
@@ -2243,12 +2331,14 @@ namespace Nucleus.Gaming
             key.Close();
         }
 
-        public void KillProcessesMatchingWindowName(string name)
+        public bool KillProcessesMatchingWindowName(string name)
         {
             foreach (Process p in System.Diagnostics.Process.GetProcesses().Where(x => x.MainWindowTitle.ToLower().Contains(name.ToLower())).ToArray())
             {
                 p.Kill();
             }
+
+            return true;
         }
 
         public void Wait(int wait)
@@ -2257,15 +2347,17 @@ namespace Nucleus.Gaming
             Thread.Sleep(wait);
         }
 
-        public void KillProcessesMatchingProcessName(string name)
+        public bool KillProcessesMatchingProcessName(string name)
         {
             foreach (Process p in System.Diagnostics.Process.GetProcesses().Where(x => x.ProcessName.ToLower().Contains(name.ToLower())).ToArray())
             {
                 p.Kill();
             }
+
+            return true;
         }
 
-        public void MoveFolder(string sourceDirName, string destDirName)
+        public bool MoveFolder(string sourceDirName, string destDirName)
         {
             //if (!Directory.Exists(sourceDirName))
             //{
@@ -2299,6 +2391,8 @@ namespace Nucleus.Gaming
                     }
                 }
             }
+
+            return true;
         }
     }
 }

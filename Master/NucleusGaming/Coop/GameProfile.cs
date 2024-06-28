@@ -110,6 +110,20 @@ namespace Nucleus.Gaming.Coop
             set => autoDesktopScaling = value;
         }
 
+        private static bool enableWindowsMerger;
+        public static bool EnableWindowsMerger
+        {
+            get => enableWindowsMerger;
+            set => enableWindowsMerger = value;
+        }
+
+        private static bool enableLosslessHook;
+        public static bool EnableLosslessHook
+        {
+            get => enableLosslessHook;
+            set => enableLosslessHook = value;
+        }
+       
         private static bool autoPlay;
         public static bool AutoPlay
         {
@@ -143,6 +157,13 @@ namespace Nucleus.Gaming.Coop
         {
             get => title;
             set => title = value;
+        }
+
+        private static string mergerResolution = "Automatic";
+        public static string MergerResolution
+        {
+            get => mergerResolution;
+            set => mergerResolution = value;
         }
 
         private static int pauseBetweenInstanceLaunch;
@@ -192,6 +213,13 @@ namespace Nucleus.Gaming.Coop
         {
             get => cts_Unfocus;
             set => cts_Unfocus = value;
+        }
+
+        private static bool stop_UINav;
+        public static bool Stop_UINav
+        {
+            get => stop_UINav;
+            set => stop_UINav = value;
         }
 
         private static int gamepadCount;
@@ -407,9 +435,15 @@ namespace Nucleus.Gaming.Coop
                 AutoDesktopScaling = (bool)Jprofile["AutoDesktopScaling"]["Enabled"];
                 UseNicknames = (bool)Jprofile["UseNicknames"]["Use"];
                 Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
-                Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
+                Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];              
                 Cts_Unfocus = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"];
 
+                Stop_UINav = Jprofile["StopGPUINav"] != null ? (bool)Jprofile["StopGPUINav"]["Enabled"] : false;
+
+                EnableWindowsMerger = Jprofile["EnableWindowsMerger"]!= null ? (bool)Jprofile["EnableWindowsMerger"]["Enabled"] : false;
+                EnableLosslessHook = Jprofile["EnableLosslessHook"] != null ? (bool)Jprofile["EnableLosslessHook"]["Enabled"] : false;
+                MergerResolution = Jprofile["MergerResolution"] != null ? (string)Jprofile["MergerResolution"] : "";
+                
                 UseXinputIndex = (bool)Jprofile["Use XInput Index"];
                 Network = (string)Jprofile["Network"]["Type"];
                 CustomLayout_Ver = (int)Jprofile["CustomLayout"]["Ver"];
@@ -604,6 +638,10 @@ namespace Nucleus.Gaming.Coop
             cts_Unfocus = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
 
 
+            enableWindowsMerger = bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger"));
+            enableLosslessHook = bool.Parse(ini.IniReadValue("CustomLayout", "LosslessHook"));
+            mergerResolution = ini.IniReadValue("CustomLayout", "WindowsMergerRes");
+
             useXinputIndex = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
         }
 
@@ -670,6 +708,13 @@ namespace Nucleus.Gaming.Coop
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
                                                 new JProperty("Cutscenes_Unfocus", cts_Unfocus));
 
+
+            JObject JStop_UINav = new JObject(new JProperty("Enabled", stop_UINav));
+       
+
+            JObject JEnableMerger = new JObject(new JProperty("Enabled", enableWindowsMerger));
+            JObject JEnableLosslessHook = new JObject(new JProperty("Enabled", enableLosslessHook));
+           
             JObject JAudioInstances = new JObject();
 
             foreach (KeyValuePair<string, string> JaudioDevice in AudioInstances)
@@ -787,6 +832,10 @@ namespace Nucleus.Gaming.Coop
                new JProperty("AudioSettings", JAudioSettings),
                new JProperty("AudioInstances", JAudioInstances),
                new JProperty("CutscenesModeSettings", JCts_Settings),
+               new JProperty("StopGPUINav", JStop_UINav), 
+               new JProperty("EnableWindowsMerger", JEnableMerger),            
+               new JProperty("MergerResolution", mergerResolution),
+               new JProperty("EnableLosslessHook", JEnableLosslessHook),
                new JProperty("AllScreens", JScreens)
 
             );
@@ -900,6 +949,11 @@ namespace Nucleus.Gaming.Coop
             JObject JCts_Settings = new JObject(new JProperty("Cutscenes_KeepAspectRatio", cts_KeepAspectRatio),
                                                 new JProperty("Cutscenes_MuteAudioOnly", cts_MuteAudioOnly),
                                                 new JProperty("Cutscenes_Unfocus", cts_Unfocus));
+
+            JObject JStop_UINav = new JObject(new JProperty("Enabled", stop_UINav));
+
+            JObject JEnableMerger = new JObject(new JProperty("Enabled", EnableWindowsMerger));
+            JObject JEnableLosslessHook = new JObject(new JProperty("Enabled", EnableLosslessHook));
 
             foreach (KeyValuePair<string, string> JaudioDevice in AudioInstances)
             {
@@ -1020,6 +1074,10 @@ namespace Nucleus.Gaming.Coop
                new JProperty("AudioSettings", JAudioSettings),
                new JProperty("AudioInstances", JAudioInstances),
                new JProperty("CutscenesModeSettings", JCts_Settings),
+               new JProperty("StopGPUINav", JStop_UINav),
+               new JProperty("EnableWindowsMerger", JEnableMerger),
+               new JProperty("MergerResolution", mergerResolution),
+               new JProperty("EnableLosslessHook", JEnableLosslessHook), 
                new JProperty("AllScreens", JScreens)
 
             );
@@ -1375,7 +1433,7 @@ namespace Nucleus.Gaming.Coop
                 bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
 
                 string nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
-                                 PlayersIdentityCache.SettingsIniNicknamesList[playerIndex];//
+                                 PlayersIdentityCache.SettingsIniNicknamesList[playerIndex];
 
                 player.Nickname = nickname;
 
@@ -1387,7 +1445,7 @@ namespace Nucleus.Gaming.Coop
                 }
                 else if (PlayersIdentityCache.SettingsIniSteamIdsList[playerIndex] != "")
                 {
-                    steamID = PlayersIdentityCache.SettingsIniSteamIdsList[playerIndex];//
+                    steamID = PlayersIdentityCache.SettingsIniSteamIdsList[playerIndex];
                 }
                 else
                 {

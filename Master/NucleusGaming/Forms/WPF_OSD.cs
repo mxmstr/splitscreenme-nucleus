@@ -128,6 +128,12 @@ public class WPF_OSD : Window
                 Show();
 
                 IntPtr hwnd = User32Interop.FindWindow(null, Title);
+
+                while (hwnd == IntPtr.Zero)
+                {
+                    hwnd = User32Interop.FindWindow(null, Title);
+                }
+
                 if (!setStyle)
                 {
                     //hide the window from Alt + Tab

@@ -726,7 +726,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                 // data.HWnd.TopMost = false;//debug
 
-                Rectangle localizeFirstOfScr = new Rectangle(p.Owner.display.Location.X, p.Owner.display.Location.Y, 20, 20);
+                Rectangle ownerBounds = WindowsMerger.Instance == null ? new Rectangle(p.Owner.display.X, p.Owner.display.Y, p.Owner.display.Width, p.Owner.display.Height)
+                                                                       : WindowsMerger.Instance.WindowBounds;
+
+                Rectangle localizeFirstOfScr = new Rectangle(ownerBounds.Location.X, ownerBounds.Location.Y, 20, 20);
                 Rectangle playerWindow = new Rectangle(data.HWnd.Location.X, data.HWnd.Location.Y, data.HWnd.Size.Width, data.HWnd.Size.Height);
                 bool fisrtOfScr = localizeFirstOfScr.IntersectsWith(playerWindow);
 
@@ -738,15 +741,17 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 if (p.Owner.Type == UserScreenType.DualHorizontal)
                 {
                     foreach (UserScreen screen in screens)
-                    {
+                    {                        
                         if (screen.DisplayIndex == p.Owner.DisplayIndex)
                         {
+                            Rectangle screenBounds = WindowsMerger.Instance == null ? new Rectangle(screen.MonitorBounds.X, screen.MonitorBounds.Y, screen.MonitorBounds.Width, screen.MonitorBounds.Height)
+                                                                       : WindowsMerger.Instance.WindowBounds;
                             if (fisrtOfScr)
                             {
-                                Rectangle Win = new Rectangle(adjust ? p.Owner.display.Location.X + 1 : p.Owner.display.Location.X,
-                                                              adjust ? p.Owner.display.Location.Y + 1 : p.Owner.display.Location.Y,
-                                                              adjust ? (p.Owner.display.Width / 2) - 3 : p.Owner.display.Width / 2,
-                                                              adjust ? p.Owner.display.Height - 2 : p.Owner.display.Height);
+                                Rectangle Win = new Rectangle(adjust ? ownerBounds.Location.X + 1 : ownerBounds.Location.X,
+                                                              adjust ? ownerBounds.Location.Y + 1 : p.Owner.display.Location.Y,
+                                                              adjust ? (ownerBounds.Width / 2) - 3 : ownerBounds.Width / 2,
+                                                              adjust ? ownerBounds.Height - 2 : ownerBounds.Height);
                                 data.HWnd.Size = Win.Size;
                                 data.HWnd.Location = Win.Location;
                                 p.MonitorBounds = Win;
@@ -755,10 +760,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                             }
                             else
                             {
-                                Rectangle Win = new Rectangle(adjust ? (screen.MonitorBounds.X + (screen.MonitorBounds.Width / 2)) + 1 : screen.MonitorBounds.X + screen.MonitorBounds.Width / 2,
-                                                              adjust ? screen.MonitorBounds.Y + 1 : screen.MonitorBounds.Y,
-                                                              adjust ? (screen.MonitorBounds.Width / 2) - 4 : screen.MonitorBounds.Width / 2,
-                                                              adjust ? screen.MonitorBounds.Height - 2 : screen.MonitorBounds.Height);
+                                Rectangle Win = new Rectangle(adjust ? (screenBounds.X + (screenBounds.Width / 2)) + 1 : screenBounds.X + screenBounds.Width / 2,
+                                                              adjust ? screenBounds.Y + 1 : screenBounds.Y,
+                                                              adjust ? (screenBounds.Width / 2) - 4 : screenBounds.Width / 2,
+                                                              adjust ? screenBounds.Height - 2 : screenBounds.Height);
                                 data.HWnd.Size = Win.Size;
                                 data.HWnd.Location = Win.Location;
                                 p.MonitorBounds = Win;
@@ -776,13 +781,15 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                         //Console.WriteLine(p.Owner.MonitorBounds + " " + screen.MonitorBounds);
                         if (screen.DisplayIndex == p.Owner.DisplayIndex)
                         {
+                            Rectangle screenBounds = WindowsMerger.Instance == null ? new Rectangle(screen.MonitorBounds.X, screen.MonitorBounds.Y, screen.MonitorBounds.Width, screen.MonitorBounds.Height)
+                                                                       : WindowsMerger.Instance.WindowBounds;
 
                             if (fisrtOfScr)
                             {
-                                Rectangle Win = new Rectangle(adjust ? p.Owner.display.X + 2 : p.Owner.display.X,
-                                                               adjust ? p.Owner.display.Y + 2 : p.Owner.display.Y,
-                                                               adjust ? p.Owner.display.Width - 4 : p.Owner.display.Width,
-                                                               adjust ? (p.Owner.display.Height / 2) - 2 : p.Owner.display.Height / 2);
+                                Rectangle Win = new Rectangle(adjust ? ownerBounds.X + 2 : ownerBounds.X,
+                                                               adjust ? ownerBounds.Y + 2 : ownerBounds.Y,
+                                                               adjust ? ownerBounds.Width - 4 : ownerBounds.Width,
+                                                               adjust ? (ownerBounds.Height / 2) - 2 : ownerBounds.Height / 2);
                                 data.HWnd.Size = Win.Size;
                                 data.HWnd.Location = Win.Location;
                                 p.MonitorBounds = Win;
@@ -792,10 +799,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                             else
                             {
 
-                                Rectangle Win = new Rectangle(adjust ? screen.MonitorBounds.X + 2 : screen.MonitorBounds.X,
-                                                              adjust ? (screen.MonitorBounds.Y + (screen.MonitorBounds.Height / 2)) + 2 : screen.MonitorBounds.Y + screen.MonitorBounds.Height / 2,
-                                                              adjust ? screen.MonitorBounds.Width - 4 : screen.MonitorBounds.Width,
-                                                              adjust ? (screen.MonitorBounds.Height / 2) - 4 : screen.MonitorBounds.Height / 2);
+                                Rectangle Win = new Rectangle(adjust ? screenBounds.X + 2 : screenBounds.X,
+                                                              adjust ? (screenBounds.Y + (screenBounds.Height / 2)) + 2 : screenBounds.Y + screenBounds.Height / 2,
+                                                              adjust ? screenBounds.Width - 4 : screenBounds.Width,
+                                                              adjust ? (screenBounds.Height / 2) - 4 : screenBounds.Height / 2);
 
                                 data.HWnd.Size = Win.Size;
                                 data.HWnd.Location = Win.Location;
@@ -1029,7 +1036,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                 if (data == null)
                 {
-                    //continue;
                     Globals.MainOSD.Show(1600, $"Can't Be Used Now");
                     return;
                 }
@@ -1151,7 +1157,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
 
             Application.DoEvents();
-
+ 
             for (int i = 0; i < players.Count; i++)
             {             
                 PlayerInfo p = players[i];
@@ -1161,15 +1167,14 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 {
                     continue;
                 }
-
-                if (refresh)
+                
+                if (ResetingWindows && data.Finished)
                 {
                     handlerInstance.TriggerOSD(100000, "Resetting game windows. Please wait...");
                     data.HWNDRetry = false;
                     data.Setted = false;
                     data.Finished = false;
                     data.Status = 0;
-                    ResetingWindows = true;
                 }
             
                 if (data.Finished)
@@ -1325,8 +1330,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                     WindowStyleChanges(data);
                                 }
 
-                                data.Finished = true;
-
+                               
                                 Debug.WriteLine("State 2");
                                 handlerInstance.Log("Update State 2");
 
@@ -1346,8 +1350,10 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
                                         handlerInstance.TriggerOSD(2000, "Game Windows Resetted");
                                         ResetingWindows = false;
-                                    }
+                                    }                
                                 }
+
+                                data.Finished = true;
                             }
                             else if (data.Status == 1)
                             {
@@ -1379,23 +1385,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                     {
                                         handlerInstance._cursorModule.AddOtherGameHandle(data.Process.NucleusGetMainWindowHandle());
                                     }
-                                }
-
-                                if (i == (players.Count - 1) && !handlerInstance.CurrentGameInfo.ProcessChangesAtEnd)
-                                {
-                                    if (ResetingWindows)
-                                    {
-                                        if (handlerInstance.CurrentGameInfo.SetForegroundWindowElsewhere)
-                                        {
-                                            ChangeForegroundWindow();
-                                        }
-
-                                        handlerInstance.TriggerOSD(2000, "Game Windows Resetted");
-                                        ResetingWindows = false;
-                                    }
-
-                                    handlerInstance.Log("(Update) All done!");
-                                }
+                                }                           
                             }
                             else if (data.Status == 0)
                             {
@@ -1491,6 +1481,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                                 data.Size.Height = p.MonitorBounds.Height;
                                             }
                                         }
+
                                         handlerInstance.Log(string.Format("(Update) Resizing game window for pid {0} to the following width:{1}, height:{2}", data.Process.Id, data.Size.Width, data.Size.Height));
                                         data.HWnd.Size = data.Size;
                                     }
@@ -1569,7 +1560,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 {
                                     if (WindowsMerger.Instance != null)
                                     {
-                                        if (WindowsMerger.Instance.RefreshChilds(p) != IntPtr.Zero)
+                                        if (WindowsMerger.Instance.RefreshChildWinows(p) != IntPtr.Zero)
                                         {
                                             data.Setted = true;
                                             continue;
@@ -1819,24 +1810,16 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         {
             IntPtr windowToFocus = IntPtr.Zero;
 
-
-
             if (WindowsMerger.Instance != null)
             {
-                //windowToFocus = GetTopWindow(IntPtr.Zero);//lossless most likely
-                //windowToFocus = GetTopWindow(IntPtr.Zero);//lossless most likely
-                //Console.WriteLine("Class " + HwndInterface.GetHwndClassName(windowToFocus));
-                //Console.WriteLine("Title " + HwndInterface.GetHwndTitle(windowToFocus));
+                if (windowToFocus == IntPtr.Zero)
+                {
+                    windowToFocus = User32Interop.FindWindow(null, "WindowsMerger");
+                }
+              
+                User32Interop.SetForegroundWindow(windowToFocus);
                 return;
             }
-
-            //if (windowToFocus != IntPtr.Zero)
-            //{
-            //    //Thread.Sleep(1000);
-            //    //User32Interop.SetForegroundWindow(windowToFocus);
-            //    return;
-            //}
-
 
             foreach (WPFDiv back in GenericGameHandler.Instance.splitForms)
             {
@@ -1859,8 +1842,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
             if (windowToFocus != IntPtr.Zero)
             {
-                //ShowWindow(windowToFocus, 6);
-                //ShowWindow(windowToFocus, 9);
                 User32Interop.SetForegroundWindow(windowToFocus);
             }
         }

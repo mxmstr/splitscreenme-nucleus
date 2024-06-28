@@ -365,7 +365,6 @@ namespace StartGame
                         {
                             if (gameProc.GetMainModuleFileName().ToLower() == path.ToLower())
                             {
-
                                 Log("Process with this path is already running! Skipping creating a new process");
                                 pOutPID = (uint)gameProc.Id;
                                 alreadyExists = true;
@@ -402,7 +401,7 @@ namespace StartGame
                             {
                             0, // Tier 0 : start up hook
 							path, // EXE path
-							args, // Command line arguments. TODO: these args should be converted to base64 to prevent any special characters e.g. " breaking the injargs
+							args, // Command line arguments. //TODO: these args should be converted to base64 to prevent any special characters e.g. " breaking the injargs
 							pCreationFlags, // Process creation flags
 							0, // InInjectionOptions (EasyHook)
 							Path.Combine(currDir, "Nucleus.SHook32.dll"), // lib path 32

@@ -1,5 +1,9 @@
 ﻿using Nucleus.Gaming.Forms.NucleusMessageBox;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System;
 using System.IO;
+using System.Linq;
 
 namespace Nucleus.Gaming
 {
@@ -12,6 +16,38 @@ namespace Nucleus.Gaming
             if (Directory.Exists(path))
             {
                 string[] instances = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
+
+                try
+                {
+                    Process[] procs = Process.GetProcesses();
+
+                    List<string> addtlProcsToKill = new List<string>();
+                    if (currentGameInfo.KillProcessesOnClose?.Length > 0)
+                    {
+                        addtlProcsToKill = currentGameInfo.KillProcessesOnClose.ToList();
+                    }
+
+                    foreach (Process proc in procs)
+                    {
+                        try
+                        {
+                            if ((currentGameInfo.LauncherExe != null && !currentGameInfo.LauncherExe.Contains("NucleusDefined") && proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(currentGameInfo.LauncherExe.ToLower())) || addtlProcsToKill.Contains(proc.ProcessName, StringComparer.OrdinalIgnoreCase) || proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(currentGameInfo.ExecutableName.ToLower()) || (currentGameInfo.Hook.ForceFocusWindowName != "" && proc.MainWindowTitle == currentGameInfo.Hook.ForceFocusWindowName))
+                            {
+                                LogManager.Log(string.Format("Killing process {0} (pid {1})", proc.ProcessName, proc.Id));
+                                proc.Kill();
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            LogManager.Log(ex.InnerException + " " + ex.Message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Log(ex.InnerException + " " + ex.Message);
+                }
 
                 try
                 {

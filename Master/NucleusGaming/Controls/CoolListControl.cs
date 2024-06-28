@@ -1,6 +1,10 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SplitTool.Controls
@@ -8,7 +12,7 @@ namespace SplitTool.Controls
     public class CoolListControl : UserControl, IDynamicSized
     {
         private Label titleLabel;
-        protected Label descLabel;
+        protected LinkLabel descLabel;
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
 
@@ -31,7 +35,11 @@ namespace SplitTool.Controls
         public string Details
         {
             get => descLabel.Text;
-            set => descLabel.Text = value;
+            set
+            {
+                descLabel.Text = value;
+                SetDescLabelLinkArea(value);
+            }
         }
 
         public bool EnableHighlighting { get; private set; }
@@ -45,7 +53,7 @@ namespace SplitTool.Controls
             string customFont = Globals.ThemeConfigFile.IniReadValue("Font", "FontFamily");
 
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            BackColor = Color.Transparent;
+            BackColor = Color.FromArgb(60, 0, 0, 0);
 
             titleLabel = new Label
             {
@@ -53,17 +61,49 @@ namespace SplitTool.Controls
                 BackColor = Color.Transparent
             };
 
-            descLabel = new Label
+            descLabel = new LinkLabel
             {
-                Font = new Font(customFont, 9.25f, FontStyle.Regular, GraphicsUnit.Point, 0),
-                BackColor = Color.Transparent
+                Font = new Font(customFont, 10.0f, FontStyle.Regular, GraphicsUnit.Point, 0),
+                BackColor = Color.Transparent,
+                LinkColor = Color.Orange,
+                ActiveLinkColor = Color.DimGray
             };
 
+            descLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(DescLabelLinkClicked);
+            
             Controls.Add(titleLabel);
             Controls.Add(descLabel);
+
             DPIManager.Register(this);
         }
 
+        private void DescLabelLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var link = sender as LinkLabel;
+            Process.Start(link.Tag.ToString());
+        }
+       
+
+        private void SetDescLabelLinkArea(string value)
+        {
+            var wordList = value.Split(' ').ToList();
+            var search = wordList.Where(word => word.StartsWith("http:") || word.StartsWith("file:") ||
+                                                                      word.StartsWith("mailto:") || word.StartsWith("ftp:") ||
+                                                                      word.StartsWith("https:") || word.StartsWith("gopher:") ||
+                                                                      word.StartsWith("nntp:") || word.StartsWith("prospero:") ||
+                                                                      word.StartsWith("telnet:") || word.StartsWith("news:") ||
+                                                                      word.StartsWith("wais:") || word.StartsWith("outlook:")).FirstOrDefault();
+            if (search != null)
+            {            
+                descLabel.LinkArea = new LinkArea(value.IndexOf(search), search.Length);
+                descLabel.Tag = search;
+            }
+            else 
+            {
+                descLabel.LinkArea = new LinkArea(0, 0);
+            }
+        }
+       
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -118,5 +158,30 @@ namespace SplitTool.Controls
             }
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            //Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(1, 1, Width-1, Height-1, 20, 20));
+            //RectangleF gradientBrushbounds = Region.GetBounds(e.Graphics);
+
+            //Color color1 = Color.FromArgb(55, 0, 0, 0);
+            //Color color2 = Color.FromArgb(80, 0, 0, 0);
+            //Color color3 = Color.FromArgb(100, 0, 0, 0);
+            //Color color4 = Color.FromArgb(100, 0, 0, 0);
+            //Color color5 = Color.FromArgb(80, 0, 0, 0);
+            //Color color6 = Color.FromArgb(55, 0, 0, 0);
+
+            //LinearGradientBrush rightFrame_LinearGradientBrush =
+            //    new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color1, 90f);
+
+            //ColorBlend topcblend = new ColorBlend(6);
+            //topcblend.Colors = new Color[6] { color1, color2, color3, color4, color5, color6 };
+            //topcblend.Positions = new float[6] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
+
+            //rightFrame_LinearGradientBrush.InterpolationColors = topcblend;
+
+            //e.Graphics.FillRectangle(rightFrame_LinearGradientBrush, ClientRectangle);
+            //rightFrame_LinearGradientBrush.Dispose();
+            //Region.Dispose();
+        }
     }
 }

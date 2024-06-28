@@ -2,28 +2,30 @@
 using Nucleus.Gaming;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 
 namespace Nucleus.Coop.Tools
 {
-    internal static  class InputsText
+    internal static class InputsText
     {
-        internal static Color regular;
+        internal static Color defaultForeColor;
         internal static Color notEnoughPlayers = Color.FromArgb(255, 245, 4, 68);
+
+        static InputsText()
+        {
+            string[] rgb_font = Globals.ThemeConfigFile.IniReadValue("Colors", "Font").Split(',');
+            defaultForeColor = Color.FromArgb(int.Parse(rgb_font[0]), int.Parse(rgb_font[1]), int.Parse(rgb_font[2]));
+        }
 
         public static (string, Color) GetInputText(MainForm main)
         {
-            if(regular == null)
-            {
-                string[] rgb_PositionControlsFontColor = Globals.ThemeConfigFile.IniReadValue("Colors", "SetupScreenFont").Split(',');
-                regular = Color.FromArgb(int.Parse(rgb_PositionControlsFontColor[0]), int.Parse(rgb_PositionControlsFontColor[1]), int.Parse(rgb_PositionControlsFontColor[2]));
-                notEnoughPlayers = Color.FromArgb(255, 245, 4, 68);
-            }
-           
-            Color color = regular;
+            Color color = defaultForeColor;
 
             string msg = string.Empty;
+
+            if(main.currentStepIndex == 0)
 
             if(GameProfile.Instance.DevicesList.Count == 0)
             {
@@ -84,6 +86,5 @@ namespace Nucleus.Coop.Tools
 
             return (msg, color);
         }
-
     }
 }

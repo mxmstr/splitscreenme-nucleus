@@ -15,6 +15,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
         ResetWindows_HotkeyID = 5,
         Cutscenes_HotkeyID = 6,
         Switch_HotkeyID = 7,
-        Reminder_HotkeyID = 8
+        Reminder_HotkeyID = 8,
+        Merger_WindowSwitch = 9
     }
 }

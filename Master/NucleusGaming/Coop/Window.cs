@@ -342,35 +342,6 @@ namespace Nucleus.Gaming.Coop
             Bounds = bounds;
         }
 
-        public void UpdateBoundsForMergerOffset(IntPtr mergerHandle)
-        {
-            //TODO: on another thread?
-            bool mergerResult = WinApi.GetWindowRect(mergerHandle, out RECT mergerBounds);
-            //Bring to top
-            if (pointerForm != null)
-            {
-                WinApi.SetWindowPos(pointerForm.Handle, (IntPtr)(-1), 0, 0, 0, 0,
-                    0x0002 | 0x0008 | 0x0001);
-                WinApi.BringWindowToTop(pointerForm.Handle);
-            }
-
-            //Hide the cursor if window is gone
-            bool ret = WinApi.GetWindowRect(hWnd, out RECT bounds);
-            if (CursorVisibility && !ret)
-            {
-                CursorVisibility = false;
-            }
-
-            RECT newBounds = new RECT();
-
-            newBounds.Left = mergerBounds.Left + bounds.Left/* + mergerLoc.X*/;
-            newBounds.Top = mergerBounds.Top + bounds.Top /*+ mergerLoc.Y*/;
-            newBounds.Right = bounds.Right;
-            newBounds.Bottom = bounds.Bottom;
-            
-            Bounds = newBounds; 
-        }
-
         public void CreateHookPipe(GenericGameInfo gameInfo)
         {
             HookPipe = new HookPipe(hWnd, this, gameInfo.HookMouseVisibility, OnPipeClosed, gameInfo);

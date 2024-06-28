@@ -270,7 +270,8 @@ namespace Nucleus.Gaming
         
         public string Play()
         {
-
+            if(GameProfile.Stop_UINav) { GamepadNavigation.StopUINavigation(); }
+            
             if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
             {
                 MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -380,20 +381,22 @@ namespace Nucleus.Gaming
                 Log("The Windows deskop scale will not be set to 100% because this option has been disabled in settings or game profile");
             }
 
-            if (WindowsMerger.Instance == null)
+
+            foreach (Display dp in screensInUse)
             {
-                foreach (Display dp in screensInUse)
+                if (screensInUse.Contains(dp))
                 {
-                    if (screensInUse.Contains(dp))
+                    if (WindowsMerger.Instance == null)
                     {
                         if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true) || gen.HideDesktop)
                         {
                             WPFDivFormThread.StartBackgroundForm(gen, dp);
                         }
-
-                        ReminderFormThread.StartReminderForms(dp.Bounds);
                     }
+
+                    ReminderFormThread.StartReminderForms(dp.Bounds);
                 }
+
             }
 
             gen.SetPlayerList(players);
@@ -426,7 +429,7 @@ namespace Nucleus.Gaming
                 workingFolder = Path.Combine(exeFolder, gen.WorkingFolder.ToLower());
             }
 
-            gen.LockInputToggleKey = RawInputProcessor.ToggleLockInputKey;
+            gen.LockInputToggleKey = RawInputProcessor.LockInputKey;
 
             RawInputManager.windows.Clear();
             Window nextWindowToInject = null;
@@ -3045,20 +3048,8 @@ namespace Nucleus.Gaming
 
             gen.OnFinishedSetup?.Invoke();
 
-            if (WindowsMerger.Instance != null)
-            {
-                for (int i = 0; i < players.Count; i++)
-                {
-                    if (gen.RefreshWindowAfterStart)
-                    {
-                        GlobalWindowMethods.ShowWindow(players[i].ProcessData.HWnd.NativePtr, 6);
-                        GlobalWindowMethods.ShowWindow(players[i].ProcessData.HWnd.NativePtr, 9);
-                    }
-
-                    WindowsMerger.Instance.InsertChildsAsync(players[i]);
-                }
-            }
-
+            WindowsMerger.Instance?.InsertGameWindows();
+          
             Log("All done!");
 
             return string.Empty;
@@ -3499,19 +3490,7 @@ namespace Nucleus.Gaming
 
             gen.OnFinishedSetup?.Invoke();
 
-            if (WindowsMerger.Instance != null)
-            {
-                for (int i = 0; i < players.Count; i++)
-                {
-                    if (gen.RefreshWindowAfterStart)
-                    {
-                        GlobalWindowMethods.ShowWindow(players[i].ProcessData.HWnd.NativePtr, 6);
-                        GlobalWindowMethods.ShowWindow(players[i].ProcessData.HWnd.NativePtr, 9);
-                    }
-
-                    WindowsMerger.Instance.InsertChildsAsync(players[i]);
-                }
-            }
+            WindowsMerger.Instance?.InsertGameWindows();
         }
 
         struct UpdateTickThread
@@ -3590,7 +3569,7 @@ namespace Nucleus.Gaming
         {
             if (fromStopButton && LockInput.IsLocked)
             {
-                //TODO: For some reason the Stop button is clicked during split screen. Temporary fix is to not end if input is locked.//Should be fixed now by unfocusing the stop button.
+                //TODO/: For some reason the Stop button is clicked during split screen. Temporary fix is to not end if input is locked.//Should be fixed now by unfocusing the stop button.
                 Log("IGNORING SHUTDOWN BECAUSE INPUT LOCKED");
                 return;
             }
@@ -3608,11 +3587,9 @@ namespace Nucleus.Gaming
             Log("----------------- SHUTTING DOWN -----------------");
 
             GlobalWindowMethods.RefreshBools();
-            
-            IntPtr merger = User32Interop.FindWindow(null, "WindowsMerger");
-            Thread.Sleep(100);
-            User32Interop.CloseWindow(merger);
-
+           
+            WindowsMerger.Instance?.Dispose();
+           
             if (splitForms.Count > 0)
             {
                 foreach (WPFDiv backgroundForm in splitForms)
@@ -3815,7 +3792,7 @@ namespace Nucleus.Gaming
                 FileUtil.CleanOriginalgGameFolder();
             }
 
-            if (!gen.KeepSymLinkOnExit && !currentGameInfo.MetaInfo.KeepSymLink)
+            if (!gen.KeepSymLinkOnExit && !CurrentGameInfo.MetaInfo.KeepSymLink)
             {
                 CleanGameContent.CleanContentFolder(gen);
             }

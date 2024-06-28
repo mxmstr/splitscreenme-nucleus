@@ -98,6 +98,7 @@ namespace Nucleus.Gaming
                                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
                                 Size = new Size(140, 80)
                             };
+
                             box.Location = new Point(list.Width - box.Width - 10, 10);
                             box.SizeMode = PictureBoxSizeMode.Zoom;
                             box.Image = img;

@@ -170,7 +170,7 @@ namespace Nucleus.Gaming
                     }
                     else //file
                     {
-                        FileUtil.FileCheck(Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)));
+                        FileCheck(Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)));
 
                         handlerInstance.Log("Copying " + utilName + " to " + "Instance" + i + "\\" + utilPath);
                         File.Copy(Path.Combine(utilFolder, utilName), Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)), true);

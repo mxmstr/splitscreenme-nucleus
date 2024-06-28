@@ -70,34 +70,40 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         if ((button == Cutscenes || rt == Cutscenes || lt == Cutscenes) && GameProfile.Saved)///cutscenes mode
                         {
                             GlobalWindowMethods.ToggleCutScenesMode();
+                            Thread.Sleep(500);
                         }
                         else if ((button == SwitchLayout || rt == SwitchLayout || lt == SwitchLayout) && GameProfile.Saved)///Switch layout
                         {
                             GlobalWindowMethods.SwitchLayout();
+                            Thread.Sleep(500);
                         }
                         else if ((button == ResetWindows || rt == ResetWindows || lt == ResetWindows) && GameProfile.Saved)///Reset windows
                         {
                             if (GenericGameHandler.Instance != null)
-                                GenericGameHandler.Instance.Update(GenericGameHandler.Instance.HWndInterval, true);
-                            Globals.MainOSD.Show(1600, $"Reseting Game Windows. Please Wait...");
+                                GlobalWindowMethods.ResetingWindows = true;
+                            Thread.Sleep(500);
 
                         }
                         else if ((button == SetFocus || rt == SetFocus || lt == SetFocus))///Unfocus windows
                         {
                             GlobalWindowMethods.ChangeForegroundWindow();
                             Globals.MainOSD.Show(1600, $"Game Windows Unfocused");
+                            Thread.Sleep(500);
                         }
                         else if ((button == TopMost || rt == TopMost || lt == TopMost))///Minimize/restore windows
                         {
                             GlobalWindowMethods.ShowHideWindows();
+                            Thread.Sleep(500);
                         }
                         else if (button == StopSession || rt == StopSession || lt == StopSession)///End current session
                         {
                             if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                             {
                                 if (GenericGameHandler.Instance != null)
+                                {
                                     GenericGameHandler.Instance.End(true);
-                                Globals.MainOSD.Show(1600, $"Session Ended");
+                                    Globals.MainOSD.Show(1600, $"Session Ended");
+                                }
                             }
                             else
                             {
@@ -106,19 +112,15 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         }
                         else if (button == Close || rt == Close || lt == Close)///Close nucleus
                         {
-                            if (GenericGameHandler.Instance != null)
-                            {
-                                GenericGameHandler.Instance.End(false);
-                            }
+                            GenericGameHandler.Instance?.End(false);
 
-                            User32Util.ShowTaskBar();
-                            Globals.MainOSD.Show(1600, $"See You Later!");
+                            //User32Util.ShowTaskBar();
+
                             Thread.Sleep(5000);
 
                             if (GenericGameHandler.Instance.hasEnded)
-                            {
-                                Process nc = Process.GetCurrentProcess();
-                                nc.Kill();
+                            {                               
+                                Process.GetCurrentProcess().Kill();
                             }
                         }
                         else if ((button == LockInputs || rt == LockInputs || lt == LockInputs) && GameProfile.Saved)///Lock k&m inputs
@@ -132,8 +134,9 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                                 if (GenericGameHandler.Instance.CurrentGameInfo.ToggleUnfocusOnInputsLock)
                                 {
                                     GlobalWindowMethods.ChangeForegroundWindow();
-                                    Debug.WriteLine("Toggle Unfocus");
                                 }
+
+                                Thread.Sleep(1000);
                             }
                             else
                             {

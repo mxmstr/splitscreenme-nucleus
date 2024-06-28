@@ -1,5 +1,6 @@
 ﻿using Nucleus.Coop;
 using Nucleus.Gaming.UI;
+using SplitTool.Controls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -196,25 +197,20 @@ namespace Nucleus.Gaming
                     IRadioControl high = (IRadioControl)c;
                     if (parent == c)
                     {
-                        // highlight
+                        //highlight
                         high.RadioSelected();
                     }
                     else
                     {
-                        high.RadioUnselected();
+                       high.RadioUnselected();
                     }
+
+                    c.Invalidate();
                 }
             }
 
             if (parent != null && parent != SelectedControl)
             {
-                if (SelectedControl != null &&
-                    SelectedControl.GetType() != typeof(ComboBox) &&
-                    SelectedControl.GetType() != typeof(TextBox))
-                {
-                    SelectedControl.BackColor = Color.Transparent;
-                }
-
                 if (SelectedChanged != null)
                 {
                     SelectedControl = parent;
@@ -222,14 +218,6 @@ namespace Nucleus.Gaming
                 }
             }
 
-            SelectedControl = parent;
-
-            if (SelectedControl.GetType() != typeof(ComboBox) &&
-                SelectedControl.GetType() != typeof(TextBox) && SelectedControl.GetType() != typeof(Label) && SelectedControl.GetType() != typeof(GameControl))
-            {
-                SelectedControl.BackColor = Theme_Settings.SelectedBackColor;
-            }
-         
             OnClick(e);
         }
     }

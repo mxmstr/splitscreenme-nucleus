@@ -6,7 +6,9 @@ using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Tools.MonitorsDpiScaling;
 using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using System;
@@ -58,7 +60,9 @@ namespace Nucleus.Coop
         private Rectangle[] tabBorders;
 
         private Pen bordersPen;
+        private SolidBrush resBackBrush;
 
+        private bool refreshScreensData;
         private bool shouldSwapNick = true;
 
         protected override CreateParams CreateParams
@@ -162,6 +166,7 @@ namespace Nucleus.Coop
             profile_info_btn.BackgroundImage = ImageCache.GetImage(mf.theme + "profile_info.png");
             btnNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
             btnProcessorNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
+            refreshScreenDatasButton.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
 
             audioBtnPicture.Click += new EventHandler(AudioTabBtn_Click);
 
@@ -418,6 +423,14 @@ namespace Nucleus.Coop
                                                                          "Could break positioning/resizing for some games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(splitDiv, "May not work for all games.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(hideDesktop, "Will only show the splitscreen division window without adjusting the game windows size and offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(enable_WMerger, "Game windows will be merged to a single window\n" +
+                                                           "so upscaling tools such as Lossless Scaling or Magpie\n" +
+                                                           "can be used with Nucleus. Note that there's no mutiple monitor support yet.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+
+            CustomToolTips.SetToolTip(losslessHook, "Lossless will not stop upscaling if an other window get the focus, useful\n" +
+                                                    "if game windows requiers real focus to receive inputs.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndIds()
@@ -487,6 +500,7 @@ namespace Nucleus.Coop
         private void UpdateUiValues()
         {
             GetPlayersNickNameAndIds();
+            GetAllScreensResolutions();
 
             for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
@@ -583,6 +597,9 @@ namespace Nucleus.Coop
             cts_unfocus.Checked = GameProfile.Cts_Unfocus;
             notes_text.Text = GameProfile.Notes;
             profileTitle.Text = GameProfile.Title;
+            enable_WMerger.Checked = GameProfile.EnableWindowsMerger;
+            losslessHook.Checked = GameProfile.EnableLosslessHook;
+            selectedRes.Text = GameProfile.MergerResolution;
 
             if (GameProfile.Instance != null)
             {
@@ -772,6 +789,9 @@ namespace Nucleus.Coop
             GameProfile.Cts_MuteAudioOnly = cts_Mute.Checked;
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
             GameProfile.Cts_Unfocus = cts_unfocus.Checked;
+            GameProfile.EnableWindowsMerger = enable_WMerger.Checked;
+            GameProfile.EnableLosslessHook = losslessHook.Checked;
+            GameProfile.MergerResolution = selectedRes.Text;
 
             ///Set GameProfile AudioInstances (part of shared GameProfile options)
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
@@ -1053,15 +1073,11 @@ namespace Nucleus.Coop
                 cts_kar.Checked = false;
                 cts_kar.Enabled = false;
                 cts_unfocus.Checked = false;
-                cts_unfocus.Enabled = false;
-                cts_bringToFront.Checked = false;
-                cts_bringToFront.Enabled = false;
+                cts_unfocus.Enabled = false;                
             }
             else
             {
                 cts_kar.Enabled = true;
-                cts_unfocus.Enabled = true;
-                cts_bringToFront.Enabled = true;
             }
         }
 
@@ -1294,6 +1310,130 @@ namespace Nucleus.Coop
             }
         }
 
+        private Dictionary<string, List<string>> AllScreensRes;
+        private List<Label> screensLabels;
+        private List<Rectangle> screensResControlsRow;
+
+        private void GetAllScreensResolutions()
+        {
+            screen_panel.Visible = false;
+            screensResControlsRow = new List<Rectangle>();
+            screensLabels = new List<Label>();
+            AllScreensRes = new Dictionary<string, List<string>>();
+            screen_panel.Controls.Clear();
+
+            MonitorsDpiScaling.DEVMODE vDevMode = new MonitorsDpiScaling.DEVMODE();
+
+            int i = 0;
+
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                string iniMergerRes = GameProfile.MergerResolution;
+
+                if (iniMergerRes == "")
+                {
+                    if (screen.Primary)
+                    {
+                        string newMergerRes = $"{screen.Bounds.Width}X{screen.Bounds.Height}";
+                        GameProfile.MergerResolution = newMergerRes;
+                        selectedRes.Text = newMergerRes;
+                    }
+                }
+                else
+                {
+                    selectedRes.Text = GameProfile.MergerResolution;
+                }
+
+                ComboBox resCmb = new ComboBox();
+                resCmb.BackColor = Color.Black;
+                resCmb.ForeColor = Color.White;
+                resCmb.FlatStyle = FlatStyle.Flat;
+                resCmb.TextChanged += SaveSelectedRes;
+
+                Label resLabel = new Label();
+                resLabel.AutoSize = true;
+                string cleanName = screen.DeviceName.Substring(screen.DeviceName.LastIndexOf('\\') + 1);
+                resLabel.Text = $"⛶ {cleanName}";
+
+                CustomToolTips.SetToolTip(resLabel, "Click here to identify the screen", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+
+                if (screensLabels.Count == 0)
+                {
+                    screen_panel.Controls.Add(resLabel);
+                    resLabel.Location = new Point(0, 5);
+                    screensLabels.Add(resLabel);
+                    screen_panel.Controls.Add(resCmb);
+                }
+                else
+                {
+                    screen_panel.Controls.Add(resLabel);
+                    resLabel.Location = new Point(screensLabels[screensLabels.Count - 1].Location.X, screensLabels[screensLabels.Count - 1].Bottom + 4);
+                    screensLabels.Add(resLabel);
+                    resLabel.Refresh();
+                    screen_panel.Controls.Add(resCmb);
+                }
+
+                List<string> resolutions = new List<string>();
+
+                while (MonitorsDpiScaling.EnumDisplaySettings(screen.DeviceName, i, ref vDevMode))
+                {
+                    string resString = $"{vDevMode.dmPelsWidth}X{vDevMode.dmPelsHeight}";
+
+                    if (resolutions.Contains(resString) || vDevMode.dmPelsWidth > screen.Bounds.Width || vDevMode.dmPelsHeight > screen.Bounds.Height)
+                    {
+                        i++;
+                        continue;
+                    }
+
+                    resolutions.Add(resString);
+                    i++;
+                }
+
+                string currentScreenRes = $"{screen.Bounds.Width}X{screen.Bounds.Height}";
+
+                resCmb.Items.AddRange(resolutions.ToArray());
+                resCmb.SelectedItem = iniMergerRes == "" ? currentScreenRes : iniMergerRes;
+                resLabel.Text += $" ({currentScreenRes})";
+
+                if (screensLabels.Count == 0)
+                {
+                    resCmb.Location = new Point(resLabel.Right + 4, resLabel.Top);
+                }
+                else
+                {
+                    resCmb.Location = new Point(resLabel.Right + 4, resLabel.Top);
+                }
+
+                resLabel.Location = new Point(resLabel.Left, resCmb.Location.Y + (resCmb.Height / 2 - resLabel.Height / 2));
+                resLabel.Tag = screen.Bounds.Location;
+                resLabel.Click += IdentifyScreen;
+
+                Rectangle border = new Rectangle(resLabel.Location.X, resCmb.Location.Y, resCmb.Right, resCmb.Height - 1);
+                screensResControlsRow.Add(border);
+
+                AllScreensRes.Add(screen.DeviceName, resolutions);
+
+                i = 0;
+            }
+
+            refreshScreensData = false;
+            screen_panel.Visible = true;
+        }
+
+        private void IdentifyScreen(object sender, EventArgs e)
+        {
+            Label lb = sender as Label;
+            ScreenId identifierWindow = new ScreenId((Point)lb.Tag);
+            identifierWindow.Show();
+        }
+
+        private void SaveSelectedRes(object sender, EventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+            selectedRes.Text = cmb.Text;
+            GameProfile.MergerResolution = cmb.Text;
+        }
+
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
 
@@ -1315,6 +1455,28 @@ namespace Nucleus.Coop
                 IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
+        }
+
+        private void Screen_panel_Paint(object sender, PaintEventArgs e)
+        {
+            if (resBackBrush == null)
+            {
+                resBackBrush = new SolidBrush(Color.FromArgb(150, 0, 0, 0));
+            }
+
+            if (!refreshScreensData)
+                e.Graphics.DrawRectangles(bordersPen, screensResControlsRow.ToArray());
+        }
+
+        private void RefreshScreenDatasButton_Click(object sender, EventArgs e)
+        {
+            refreshScreensData = true;
+            GetAllScreensResolutions();
+        }
+
+        private void StopUINav_CheckedChanged(object sender, EventArgs e)
+        {
+            GameProfile.Stop_UINav = stopUINav.Checked;
         }
     }
 }

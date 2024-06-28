@@ -17,59 +17,11 @@ namespace Nucleus.Gaming.Coop.InputManagement
     {
         private static RawInputProcessor rawInputProcessor = null;
 
-        private static int LockInputKey;
-        public static int ToggleLockInputKey
+        public static int LockInputKey {get; private set;}
+
+        public static void UpdateLockKey()
         {
-            get
-            {
-                IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-                string lockKey = ini.IniReadValue("Hotkeys", "LockKey");
-
-                IDictionary<string, int> lockKeys = new Dictionary<string, int>
-                {
-                    { "End", 0x23 },
-                    { "Home", 0x24 },
-                    { "Delete", 0x2E },
-                    { "Multiply", 0x6A },
-                    { "F1", 0x70 },
-                    { "F2", 0x71 },
-                    { "F3", 0x72 },
-                    { "F4", 0x73 },
-                    { "F5", 0x74 },
-                    { "F6", 0x75 },
-                    { "F7", 0x76 },
-                    { "F8", 0x77 },
-                    { "F9", 0x78 },
-                    { "F10", 0x79 },
-                    { "F11", 0x7A },
-                    { "F12", 0x7B },
-                    { "+", 0xBB },
-                    { "-", 0xBD },
-                    { "Numpad 0", 0x60 },
-                    { "Numpad 1", 0x61 },
-                    { "Numpad 2", 0x62 },
-                    { "Numpad 3", 0x63 },
-                    { "Numpad 4", 0x64 },
-                    { "Numpad 5", 0x65 },
-                    { "Numpad 6", 0x66 },
-                    { "Numpad 7", 0x67 },
-                    { "Numpad 8", 0x68 },
-                    { "Numpad 9", 0x69 }
-                };
-
-                foreach (KeyValuePair<string, int> key in lockKeys)
-                {
-                    if (key.Key != lockKey)
-                    {
-                        continue;
-                    }
-
-                    LockInputKey = key.Value;
-                    break;
-                }
-
-                return LockInputKey;
-            }
+            LockInputKey = LockInput.GetLockKey();
         }
 
         private readonly Func<bool> splitScreenRunning;
@@ -130,6 +82,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 Debug.WriteLine("Warning: rawInputProcessor is being reassigned");
             }
 
+            LockInputKey = LockInput.GetLockKey();
             rawInputProcessor = this;
         }
 
@@ -475,7 +428,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 uint keyboardMessage = rawBuffer.data.keyboard.Message;
                 bool keyUpOrDown = keyboardMessage == (uint)KeyboardEvents.WM_KEYDOWN || keyboardMessage == (uint)KeyboardEvents.WM_KEYUP;
 
-                if (keyboardMessage == (uint)KeyboardEvents.WM_KEYUP && (rawBuffer.data.keyboard.Flags | 1) != 0 && rawBuffer.data.keyboard.VKey == ToggleLockInputKey)
+                if (keyboardMessage == (uint)KeyboardEvents.WM_KEYUP && (rawBuffer.data.keyboard.Flags | 1) != 0 && rawBuffer.data.keyboard.VKey == LockInputKey)
                 {
 
                     if(GlobalWindowMethods.ResetingWindows)

@@ -92,12 +92,11 @@ namespace Nucleus.Gaming.Controls
 
         private void HandlerNotesZoom_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            g.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
-            g.DrawEllipse(linePen, close_Btn.Location.X - 6, close_Btn.Location.Y - 6, close_Btn.Width + 12, close_Btn.Height + 12);            
+            e.Graphics.DrawEllipse(linePen, close_Btn.Location.X - 6, close_Btn.Location.Y - 6, close_Btn.Width + 12, close_Btn.Height + 12);            
         }
     }
 }

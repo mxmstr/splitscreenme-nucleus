@@ -7,26 +7,26 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-
 using System.Windows.Threading;
 using Size = System.Windows.Size;
 using System.Drawing;
 using WindowScrape.Types;
-using RECT = WindowScrape.Types.RECT;
-using System.Windows.Documents;
 using System.Collections.Generic;
 using System.Windows.Interop;
 using WindowScrape.Static;
 using Nucleus.Gaming.Windows.Interop;
-using System.Windows.Markup;
 using WindowScrape.Constants;
 using System.IO;
-using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Diagnostics;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using System.Linq;
 
 public static class WindowsMergerThread
 {
+    public static Thread MergerThread;
+
     public static void StartWindowsMerger(Size size)
     {
         Thread windowsMergerThread = new Thread(() =>
@@ -38,6 +38,8 @@ public static class WindowsMergerThread
 
         windowsMergerThread.SetApartmentState(ApartmentState.STA);
         windowsMergerThread.Start();
+
+        MergerThread = windowsMergerThread;
     }
 }
 
@@ -45,9 +47,6 @@ public class WindowsMerger : System.Windows.Window
 {
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetParent(IntPtr hWnd);
 
     [DllImport("user32.dll")]
     public static extern IntPtr FindWindow(string className, string windowText);
@@ -59,27 +58,21 @@ public class WindowsMerger : System.Windows.Window
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool GetClientRect(IntPtr hWnd, out Nucleus.Gaming.Coop.BasicTypes.RECT lpRect);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
+   
+    private System.Windows.Forms.Timer fading;
+    private SolidColorBrush userColor;
+    private string gameGUID;
+    private float alpha = 1.0F;
+    private bool fullApha = true;
 
-    public const uint SWP_NOZORDER = 0x0004;
-    public const uint SWP_ASYNCWINDOWPOS = 0x4000;
-    public const uint SWP_NOSENDCHANGING = 0x0400;
-    public const uint SWP_NOACTIVATE = 0x0010;
+    private int imgIndex = 0;
+    private ImageBrush backBrush;
 
-    public const int GWL_EXSTYLE = -20;
-    public const int GWL_HINSTANCE = -6;
-    public const int GWL_HWNDPARENT = -8;
-    public const int GWL_ID = -12;
-    public const int GWL_STYLE = -16;
-    public const int GWL_USERDATA =-21;
-    public const int GWL_WNDPROC = -4;
+    public IntPtr Handle { get;private set;}
 
-    public IntPtr Handle => handle;
-    private IntPtr handle = IntPtr.Zero;
-    public Rectangle WindowBounds;
+    public Rectangle WindowBounds { get; private set; }
 
-    public static WindowsMerger Instance;
+    public static WindowsMerger Instance { get;private set;}
 
     public WindowsMerger(Size size)
     {
@@ -90,21 +83,24 @@ public class WindowsMerger : System.Windows.Window
         WindowStartupLocation = WindowStartupLocation.Manual;        
         ResizeMode = ResizeMode.NoResize;
         WindowStyle = WindowStyle.None;
-        
-        Left = 0;
-        Top = 0;
 
-        Width = size.Width;
-        Height = size.Height; 
-        
+        Top = 0; Left = 0; Width = size.Width; Height = size.Height;
+
         WindowBounds = new Rectangle((int)this.Left,(int)Top,(int)Width,(int)Height);
         Instance = this;
 
         backBrush = new ImageBrush();
         Setup();
-
+        
         Loaded += async (sender, e) => await GetHandleAsync();
         //Loaded += MainWindowLoaded;
+    } 
+
+    public void Dispose()
+    {
+        Dispatcher.Invoke(new Action(() => { Close(); }));
+        WindowsMergerThread.MergerThread.Abort();
+        Instance = null;
     }
 
     private void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -115,22 +111,26 @@ public class WindowsMerger : System.Windows.Window
 
     private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        //Console.WriteLine(msg);
+        if(msg != 127)
+        {
+            Console.WriteLine(msg);
+        }
+       
         return IntPtr.Zero;
     }
 
     private async Task GetHandleAsync()
     {
-        while (handle == IntPtr.Zero)
+        while (Handle == IntPtr.Zero)
         {
-            handle = FindWindow(null, Title);
+            Handle = FindWindow(null, Title);
             await Task.Delay(50);
         }
 
-        await GetChildWindowsAsync();
+        await SetNewPlayersBoundsAsync();
     }
 
-    private async Task GetChildWindowsAsync()
+    private async Task SetNewPlayersBoundsAsync()
     {
         if (GenericGameHandler.Instance != null)
         {
@@ -141,46 +141,115 @@ public class WindowsMerger : System.Windows.Window
                 await SetChildBoundsAsync(player);
             }
         }
+
+        if (bool.Parse(Globals.ini.IniReadValue("CustomLayout", "LosslessHook")) && !GameProfile.Ready)//such checks are there so testers/users can still use there existing profiles                                                                       //after new options implementation. Any new option must have that null check.
+        {
+            await InjectLosslessHookAsync();
+        }
+        else if(GameProfile.EnableLosslessHook)
+        {
+            await InjectLosslessHookAsync();
+        }
+
+        await Task.CompletedTask;
+    }
+
+    private async Task InjectLosslessHookAsync()
+    {
+        Process[] searchLossless = Process.GetProcessesByName("LosslessScaling");
+
+        while (searchLossless.Length == 0)
+        {
+            Console.WriteLine("Waiting for lossless process...");
+            searchLossless = Process.GetProcessesByName("LosslessScaling");
+            await Task.Delay(1500);
+        }
+
+        string pid = searchLossless[0].Id.ToString();
+
+        string injectorPath = Path.Combine(System.Windows.Forms.Application.StartupPath, $@"utils\Hooks\Hk_IJ.exe");
+
+        ProcessStartInfo startInfo = new ProcessStartInfo();
+        startInfo.FileName = injectorPath;
+        startInfo.Arguments = $"\"{pid}\" \"Lossless_Hook.dll\" \"Lossless_Hook.dll\"";
+        startInfo.CreateNoWindow = false;
+        startInfo.UseShellExecute = false;
+        startInfo.WorkingDirectory = Path.Combine(System.Windows.Forms.Application.StartupPath, $@"utils\Hooks");
+        startInfo.RedirectStandardOutput = false;
+
+        Process injectProc = Process.Start(startInfo);
+
+        injectProc.WaitForExit();
+
+        await Task.CompletedTask;
     }
 
     private async Task SetChildBoundsAsync(PlayerInfo player)
     {
-        GetClientRect(handle, out Nucleus.Gaming.Coop.BasicTypes.RECT clientRect);
+        GetClientRect(Handle, out Nucleus.Gaming.Coop.BasicTypes.RECT clientRect);
         player.MonitorBounds = TranslateBounds(player, new Rectangle(clientRect.Left, clientRect.Top, clientRect.Right, clientRect.Bottom));
+
         await Task.CompletedTask;
     }
 
-    private List<IntPtr> childsHandle = new List<IntPtr>();
+    private Dictionary<string, IntPtr> childsInfo = new Dictionary<string, IntPtr>();
 
-    public IntPtr InsertChildsAsync(PlayerInfo player)
+    private int currentFocused = 0;
+
+    public void SwitchChildFocus()
     {
-        var procData = player.ProcessData;
+        if (childsInfo.Count == 0)
+        {
+            return;
+        }
+        
+        if (currentFocused == childsInfo.Count) { currentFocused = 0; }
 
-        SetParent(procData.HWnd.NativePtr, handle);
-        player.ProcessData.HWnd = new HwndObject(procData.HWnd.NativePtr);
+        var players = childsInfo.Keys.ToList();
+        HwndInterface.ActivateWindow(childsInfo[players[currentFocused]]);
+        Globals.MainOSD.Show(1600, $"{players[currentFocused]} Window Focused");
 
-        User32Interop.SetWindowPos(procData.HWnd.NativePtr, IntPtr.Zero, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
-        player.ProcessData.Position = player.MonitorBounds.Location;
-        player.ProcessData.Size = player.MonitorBounds.Size;
-        player.RawInputWindow.UpdateBounds();
-        childsHandle.Add(procData.HWnd.NativePtr);
-        SetupFinished();
-
-        return procData.HWnd.NativePtr;
+        currentFocused++;
     }
 
-    public IntPtr RefreshChilds(PlayerInfo player)
+    public void InsertGameWindows()
+    {
+        var players = GenericGameHandler.Instance.profile.DevicesList;
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            PlayerInfo player = players[i];
+
+            if (GenericGameHandler.Instance.CurrentGameInfo.RefreshWindowAfterStart)
+            {
+                GlobalWindowMethods.ShowWindow(player.ProcessData.HWnd.NativePtr, 6);
+                GlobalWindowMethods.ShowWindow(player.ProcessData.HWnd.NativePtr, 9);
+            }
+
+            SetParent(player.ProcessData.HWnd.NativePtr, Handle);
+            player.ProcessData.HWnd = new HwndObject(player.ProcessData.HWnd.NativePtr);
+
+            User32Interop.SetWindowPos(player.ProcessData.HWnd.NativePtr, IntPtr.Zero, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
+            player.ProcessData.Position = player.MonitorBounds.Location;
+            player.ProcessData.Size = player.MonitorBounds.Size;
+            player.RawInputWindow.UpdateBounds();
+            childsInfo.Add(player.Nickname,player.ProcessData.HWnd.NativePtr);
+        }
+       
+        SetupFinished();
+    }
+
+    public IntPtr RefreshChildWinows(PlayerInfo player)
     {
         IntPtr foundChild = IntPtr.Zero;
-        var childs = HwndInterface.EnumChildren(handle);
+        var childs = HwndInterface.EnumChildren(Handle);
 
         foreach (var child in childs)
         {
             if (child == player.ProcessData.HWnd.NativePtr)
             {
                 player.ProcessData.HWnd = new HwndObject(child);
-                //User32Interop.SetWindowPos(child, IntPtr.Zero, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
-                User32Interop.MoveWindow(child, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height,true);
+                User32Interop.MoveWindow(child, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height, true);
                 player.ProcessData.Position = player.MonitorBounds.Location;
                 player.ProcessData.Size = player.MonitorBounds.Size;
                 foundChild = child;
@@ -209,6 +278,7 @@ public class WindowsMerger : System.Windows.Window
         );
     }
 
+    //Extra aesthetic setup
     private void Setup()
     {
         gameGUID = GenericGameHandler.Instance.CurrentGameInfo.GUID;
@@ -269,15 +339,6 @@ public class WindowsMerger : System.Windows.Window
         }
     }
 
-    private System.Windows.Forms.Timer fading;
-    private SolidColorBrush userColor;
-    private string gameGUID;
-    private float alpha = 1.0F;
-    private bool fullApha = true;
-
-    private int imgIndex = 0;
-    private ImageBrush backBrush;
-
     private void FadingTick(object Object, EventArgs EventArgs)
     {
         if (fullApha)
@@ -325,6 +386,6 @@ public class WindowsMerger : System.Windows.Window
             fading.Dispose();
         }
 
-        this.Dispatcher.Invoke(new Action(() => { Background = userColor; }));
-    }
+        Dispatcher.Invoke(new Action(() => { Background = userColor; }));
+    } 
 }

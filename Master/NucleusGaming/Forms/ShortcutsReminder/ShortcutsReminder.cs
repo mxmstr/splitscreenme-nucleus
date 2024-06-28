@@ -69,8 +69,9 @@ namespace Nucleus.Coop.Forms
 
                     Show();
                     IsVisible = true;
-
+                    TopMost = true;
                     hideTimer.Interval = closeAfterSeconds * 1000;
+                    BringToFront();
                     hideTimer.Start();
                 });
             }

@@ -61,6 +61,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 {
                     if (!joystick.IsDisposed)
                     {
+                        joystick.Unacquire();
                         joystick.Dispose();
                     }
                 }
@@ -414,7 +415,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         }
                     }
 
-                    int numControllers = g.ProtoInput.UseOpenXinput ? 32 : 4;//Big bug here!!if g.ProtoInput.UseOpenXinput is true the ui gamepads won't appears until screen is refreshed (why?)
+                    int numControllers = g.ProtoInput.UseOpenXinput ? 32 : 4;//TODO: Big bug here!!if g.ProtoInput.UseOpenXinput is true the ui gamepads won't appears until screen is refreshed (why?)
                     for (int i = 0; i < numControllers; i++)
                     {
                         OpenXinputController c = new OpenXinputController(g.ProtoInput.UseOpenXinput, i);

@@ -581,21 +581,20 @@ namespace Nucleus.Coop.Forms
 
         public void CloseBtn_Click(object sender, EventArgs e)
         {   
-            webView.Dispose();
+            webView?.Dispose();
             Dispose();
         }
 
         private void DisposeContent(object sender, EventArgs e)
         {
-            if (zip != null)
-            {
-                zip.Dispose();
-            }
+            zip?.Dispose();
 
             if (File.Exists(downloadPath))
             {
                 File.Delete(downloadPath);
             }
+
+            webView?.Dispose();
         }
     }
 

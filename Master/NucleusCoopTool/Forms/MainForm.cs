@@ -85,7 +85,7 @@ namespace Nucleus.Coop
         public HandlerNotesZoom handlerNotesZoom;
         private Button nearestVisible;
 
-        private int currentStepIndex;
+        public int currentStepIndex { get; private set; }
 
         private List<string> profilePaths = new List<string>();
         private List<Control> allFormControls = new List<Control>();
@@ -561,6 +561,8 @@ namespace Nucleus.Coop
             socialLinksMenu.Renderer = new CustomToolStripRenderer.MyRenderer();
             socialLinksMenu.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
 
+            GetGameIcon.MainForm = this;
+
             RefreshGames();
 
             StartPosition = FormStartPosition.Manual;
@@ -881,8 +883,7 @@ namespace Nucleus.Coop
                     }
 
                     GlobalWindowMethods.ChangeForegroundWindow();
-                    TriggerOSD(2000, "Game Windows Unfocused");
-                    mainButtonFrame.Focus();
+                    TriggerOSD(2000, "Game Windows Unfocused");                  
                 }
                 else
                 {
@@ -898,7 +899,7 @@ namespace Nucleus.Coop
                         return;
                     }
 
-                    I_GameHandler.Update(GenericGameHandler.Instance.HWndInterval, true);
+                    GlobalWindowMethods.ResetingWindows = true;
                 }
                 else
                 {
@@ -960,6 +961,22 @@ namespace Nucleus.Coop
                     {
                         reminder.Toggle(7);
                     }
+                }
+                else
+                {
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                }
+            }
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.Merger_WindowSwitch)
+            {
+                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                {
+                    if (hotkeysCooldown)
+                    {
+                        return;
+                    }
+
+                    WindowsMerger.Instance?.SwitchChildFocus();
                 }
                 else
                 {
@@ -1098,7 +1115,7 @@ namespace Nucleus.Coop
 
                     controls.Add(game, con);
                     list_Games.Controls.Add(con);
-                    ThreadPool.QueueUserWorkItem(GetIcon, game);
+                    ThreadPool.QueueUserWorkItem(GetGameIcon.GetIcon, game);
                 }
             }
             else
@@ -1111,7 +1128,7 @@ namespace Nucleus.Coop
 
                 controls.Add(game, con);
                 list_Games.Controls.Add(con);
-                ThreadPool.QueueUserWorkItem(GetIcon, game);
+                ThreadPool.QueueUserWorkItem(GetGameIcon.GetIcon, game);
             }
         }
 
@@ -1131,60 +1148,10 @@ namespace Nucleus.Coop
                 clientAreaPanel.BackgroundImage = defBackground;
             }
 
+            DevicesFunctions.gamepadTimer?.Dispose();
             RefreshGames();
 
             mainButtonFrame.Focus();
-        }
-
-        public void GetIcon(object state)
-        {
-            UserGameInfo game = (UserGameInfo)state;
-            Bitmap bmp;
-
-            string iconPath = game.Game.MetaInfo.IconPath;
-
-            try
-            {
-                if (File.Exists(iconPath))
-                {
-                    if (iconPath.EndsWith(".exe"))
-                    {
-                        Icon icon = Shell32.GetIcon(iconPath, false);
-                        bmp = icon.ToBitmap();
-                        icon.Dispose();
-                    }
-                    else
-                    {
-                        bmp = ImageCache.GetImage(iconPath);
-                    }
-                }
-                else
-                {
-                    Icon icon = Shell32.GetIcon(game.ExePath, false);
-                    bmp = icon.ToBitmap();
-                    icon.Dispose();
-                }
-            }
-            catch
-            {
-                bmp = ImageCache.GetImage(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png"));
-            }
-
-            if (bmp == null)
-            {
-                bmp = ImageCache.GetImage(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png"));
-            }
-
-            game.Icon = bmp;
-
-            lock (controls)
-            {
-                if (controls.ContainsKey(game))
-                {
-                    GameControl control = controls[game];
-                    control.Image = game.Icon;
-                }
-            }
         }
 
         private void Btn_downloadAssets_Click(object sender, EventArgs e)
@@ -1603,7 +1570,7 @@ namespace Nucleus.Coop
 
             btn_Prev.Enabled = false;
 
-            //reload the hanlder here so it can be edited/updated until play button get clicked
+            //reload the handler here so it can be edited/updated until play button get clicked
             gameManager.AddScript(Path.GetFileNameWithoutExtension(currentGame.JsFileName), new bool[] { false, currentGame.UpdateAvailable });
 
             currentGame = gameManager.GetGame(currentGameInfo.ExePath);
@@ -1613,8 +1580,17 @@ namespace Nucleus.Coop
             I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile), I_GameHandler);
             I_GameHandler.Ended += Handler_Ended;
 
-            WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(2560,1440));
-
+            if(bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger")) && !GameProfile.Ready)
+            {
+                string[] mergerRes = ini.IniReadValue("CustomLayout", "WindowsMergerRes").Split('X');
+                WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
+            }
+            else if (GameProfile.EnableWindowsMerger)
+            {
+                string[] mergerRes = GameProfile.MergerResolution.Split('X');//GameProfile string "MergerRes" here
+                WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
+            }
+                
             GameProfile.Game = currentGame;
 
             if (profileSettings.Visible)
@@ -1648,10 +1624,9 @@ namespace Nucleus.Coop
                     btn_Play.Text = "START";
                     btn_Play.Enabled = false;
                     settings.UnRegHotkeys(this);
-                    IntPtr merger = User32Interop.FindWindow(null, "WindowsMerger");
 
-                    Thread.Sleep(100);
-                    User32Interop.CloseWindow(merger);
+                    //WindowsMerger.Instance?.Dispose();
+
                     BringToFront();
                 });
             }
@@ -2567,51 +2542,8 @@ namespace Nucleus.Coop
             }
         }
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetTopWindow(IntPtr hwnd);
-
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
-            //IntPtr ls = HwndInterface.GetHwndFromTitle(/*"Lossless Scaling 2.9"*/null);
-
-           // Console.WriteLine(ls);
-            //var all = HwndInterface.EnumHwnds();
-
-            //IntPtr fgrdWin = GetTopWindow(IntPtr.Zero);
-            //Console.WriteLine(fgrdWin);
-            //HwndInterface.SetHwndSize(fgrdWin, 150, 150);
-            //Console.WriteLine(User32Interop.GetForegroundWindow());
-            //Console.WriteLine(all.Count);
-            //foreach (var wnd in all)
-            //{
-            //    Size size =  HwndInterface.GetHwndSize(wnd);
-            //    Size expect = new Size(2560,1440);
-
-            //    if(size != expect)
-            //    {
-            //        continue;
-            //    }
-
-            //    if (HwndInterface.GetHwndTitle(wnd) != "Program Manager")
-            //    {
-            //        Console.WriteLine("_______________________________________");
-            //        Console.WriteLine("Class " + HwndInterface.GetHwndClassName(wnd));
-            //        Console.WriteLine("Title " + HwndInterface.GetHwndTitle(wnd));
-            //    }
-
-            //    bool succes = HwndInterface.SetHwndSize(wnd, 150, 150);
-            //    if (succes)
-            //    {
-            //        Console.WriteLine(wnd);
-            //    }
-            //    Console.WriteLine("_______________________________________");
-            //    //HwndInterface.GetHwndClassName(wnd);
-            //    //HwndInterface.GetHwndTitle(wnd);
-            //}
-
-                
-           // return;
-
             if (GenericGameHandler.Instance != null)
             {
                 if (!GenericGameHandler.Instance.HasEnded)
@@ -3211,7 +3143,7 @@ namespace Nucleus.Coop
 
             InputsTextLabel.Text = inputText.Item1;
             InputsTextLabel.ForeColor = inputText.Item2;
-            InputsTextLabel.Location = new Point(InputsTextLabel.Location.X, setupButtonsPanel.Location.Y + ( setupButtonsPanel.Height/2 - InputsTextLabel.Height/2)/*mainButtonFrame.Bottom - InputsTextLabel.Height*/);
+            InputsTextLabel.Location = new Point(InputsTextLabel.Location.X, setupButtonsPanel.Location.Y + ( setupButtonsPanel.Height/2 - InputsTextLabel.Height/2));
         }
 
         private void CoverMenuItem_Click(object sender, EventArgs e)

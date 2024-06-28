@@ -59,7 +59,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -265,6 +265,7 @@
     <Compile Include="Controls\DonationPanel.Designer.cs">
       <DependentUpon>DonationPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Screen_Identifier.cs" />
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -331,6 +332,7 @@
     <Compile Include="Tools\DrawParticles.cs" />
     <Compile Include="Tools\ExtractHandler.cs" />
     <Compile Include="Tools\GetGameDetails.cs" />
+    <Compile Include="Tools\GetGameIcon.cs" />
     <Compile Include="Tools\InputsText.cs" />
     <Compile Include="Tools\OpenDebugLog.cs" />
     <Compile Include="Tools\OpenGameContentFolder.cs" />

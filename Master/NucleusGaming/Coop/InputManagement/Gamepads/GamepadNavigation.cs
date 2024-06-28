@@ -63,12 +63,14 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         public static void StopUINavigation()
         {
+            if (_Enabled) 
             EnabledRuntime = false;
         }
 
         public static void StartUINavigation()
         {
-            EnabledRuntime = true;
+            if (_Enabled)
+                EnabledRuntime = true;
         }
 
         public static void SetCursorSpeed()

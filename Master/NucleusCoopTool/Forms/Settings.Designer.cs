@@ -234,7 +234,18 @@ namespace Nucleus.Coop
             this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioRefresh = new System.Windows.Forms.Button();
             this.layoutTab = new System.Windows.Forms.Panel();
-            this.cts_bringToFront = new System.Windows.Forms.CheckBox();
+            this.smfw_Cmb = new System.Windows.Forms.ComboBox();
+            this.plus9 = new System.Windows.Forms.Label();
+            this.mergerShortcutLabel = new System.Windows.Forms.Label();
+            this.smfw_HKTxt = new System.Windows.Forms.TextBox();
+            this.refreshScreenDatasButton = new System.Windows.Forms.Button();
+            this.mergerResSelectorLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.mergerSettingsLabel = new System.Windows.Forms.Label();
+            this.losslessHook = new System.Windows.Forms.CheckBox();
+            this.selectedRes = new System.Windows.Forms.TextBox();
+            this.screen_panel = new System.Windows.Forms.Panel();
+            this.enable_WMerger = new System.Windows.Forms.CheckBox();
             this.hideDesktop = new System.Windows.Forms.CheckBox();
             this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
@@ -3114,7 +3125,18 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.layoutTab.Controls.Add(this.cts_bringToFront);
+            this.layoutTab.Controls.Add(this.smfw_Cmb);
+            this.layoutTab.Controls.Add(this.plus9);
+            this.layoutTab.Controls.Add(this.mergerShortcutLabel);
+            this.layoutTab.Controls.Add(this.smfw_HKTxt);
+            this.layoutTab.Controls.Add(this.refreshScreenDatasButton);
+            this.layoutTab.Controls.Add(this.mergerResSelectorLabel);
+            this.layoutTab.Controls.Add(this.label4);
+            this.layoutTab.Controls.Add(this.mergerSettingsLabel);
+            this.layoutTab.Controls.Add(this.losslessHook);
+            this.layoutTab.Controls.Add(this.selectedRes);
+            this.layoutTab.Controls.Add(this.screen_panel);
+            this.layoutTab.Controls.Add(this.enable_WMerger);
             this.layoutTab.Controls.Add(this.hideDesktop);
             this.layoutTab.Controls.Add(this.numMaxPlyrs);
             this.layoutTab.Controls.Add(this.numUpDownVer);
@@ -3128,32 +3150,161 @@ namespace Nucleus.Coop
             this.layoutTab.Controls.Add(this.splitDiv);
             this.layoutTab.Controls.Add(this.label49);
             this.layoutTab.Controls.Add(this.layoutSizer);
-            this.layoutTab.Location = new System.Drawing.Point(0, 42);
+            this.layoutTab.Location = new System.Drawing.Point(0, 25);
             this.layoutTab.Name = "layoutTab";
             this.layoutTab.Size = new System.Drawing.Size(674, 391);
-            this.layoutTab.TabIndex = 300;
+            this.layoutTab.TabIndex = 300;          
             // 
-            // cts_bringToFront
+            // smfw_Cmb
             // 
-            this.cts_bringToFront.AutoSize = true;
-            this.cts_bringToFront.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.cts_bringToFront.Enabled = false;
-            this.cts_bringToFront.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cts_bringToFront.Location = new System.Drawing.Point(18, 334);
-            this.cts_bringToFront.Margin = new System.Windows.Forms.Padding(0);
-            this.cts_bringToFront.Name = "cts_bringToFront";
-            this.cts_bringToFront.Size = new System.Drawing.Size(168, 17);
-            this.cts_bringToFront.TabIndex = 166;
-            this.cts_bringToFront.Text = "Bring Back Windows To Front";
-            this.cts_bringToFront.UseVisualStyleBackColor = true;
-            this.cts_bringToFront.Visible = false;
+            this.smfw_Cmb.BackColor = System.Drawing.Color.White;
+            this.smfw_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.smfw_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.smfw_Cmb.FormattingEnabled = true;
+            this.smfw_Cmb.Items.AddRange(new object[] {
+            "Ctrl",
+            "Alt",
+            "Shift"});
+            this.smfw_Cmb.Location = new System.Drawing.Point(14, 355);
+            this.smfw_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.smfw_Cmb.Name = "smfw_Cmb";
+            this.smfw_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.smfw_Cmb.TabIndex = 174;
+            // 
+            // plus9
+            // 
+            this.plus9.AutoSize = true;
+            this.plus9.ForeColor = System.Drawing.Color.Black;
+            this.plus9.Location = new System.Drawing.Point(84, 360);
+            this.plus9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus9.Name = "plus9";
+            this.plus9.Size = new System.Drawing.Size(14, 15);
+            this.plus9.TabIndex = 177;
+            this.plus9.Text = "+";
+            this.plus9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mergerShortcutLabel
+            // 
+            this.mergerShortcutLabel.AutoSize = true;
+            this.mergerShortcutLabel.Location = new System.Drawing.Point(12, 337);
+            this.mergerShortcutLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.mergerShortcutLabel.Name = "mergerShortcutLabel";
+            this.mergerShortcutLabel.Size = new System.Drawing.Size(204, 15);
+            this.mergerShortcutLabel.TabIndex = 176;
+            this.mergerShortcutLabel.Text = "Change Childs Foreground Window:";
+            this.mergerShortcutLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // smfw_HKTxt
+            // 
+            this.smfw_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.smfw_HKTxt.Location = new System.Drawing.Point(100, 356);
+            this.smfw_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.smfw_HKTxt.MaxLength = 1;
+            this.smfw_HKTxt.Name = "smfw_HKTxt";
+            this.smfw_HKTxt.ShortcutsEnabled = false;
+            this.smfw_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.smfw_HKTxt.TabIndex = 175;
+            this.smfw_HKTxt.Tag = "HotKeyTextBox";
+            this.smfw_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // refreshScreenDatasButton
+            // 
+            this.refreshScreenDatasButton.BackColor = System.Drawing.Color.Transparent;
+            this.refreshScreenDatasButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.refreshScreenDatasButton.FlatAppearance.BorderSize = 0;
+            this.refreshScreenDatasButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.refreshScreenDatasButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.refreshScreenDatasButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refreshScreenDatasButton.Location = new System.Drawing.Point(461, 217);
+            this.refreshScreenDatasButton.Name = "refreshScreenDatasButton";
+            this.refreshScreenDatasButton.Size = new System.Drawing.Size(18, 18);
+            this.refreshScreenDatasButton.TabIndex = 173;
+            this.refreshScreenDatasButton.UseVisualStyleBackColor = false;
+            this.refreshScreenDatasButton.Click += new System.EventHandler(this.RefreshScreenDatasButton_Click);
+            // 
+            // mergerResSelectorLabel
+            // 
+            this.mergerResSelectorLabel.AutoSize = true;
+            this.mergerResSelectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mergerResSelectorLabel.Location = new System.Drawing.Point(280, 220);
+            this.mergerResSelectorLabel.Name = "mergerResSelectorLabel";
+            this.mergerResSelectorLabel.Size = new System.Drawing.Size(176, 13);
+            this.mergerResSelectorLabel.TabIndex = 172;
+            this.mergerResSelectorLabel.Text = "Select Windows Merger Resolution ";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(12, 261);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(99, 13);
+            this.label4.TabIndex = 171;
+            this.label4.Text = "Window Resolution";
+            // 
+            // mergerSettingsLabel
+            // 
+            this.mergerSettingsLabel.AutoSize = true;
+            this.mergerSettingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mergerSettingsLabel.Location = new System.Drawing.Point(12, 216);
+            this.mergerSettingsLabel.Name = "mergerSettingsLabel";
+            this.mergerSettingsLabel.Size = new System.Drawing.Size(128, 13);
+            this.mergerSettingsLabel.TabIndex = 170;
+            this.mergerSettingsLabel.Text = "Windows Merger Settings";
+            // 
+            // losslessHook
+            // 
+            this.losslessHook.AutoSize = true;
+            this.losslessHook.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.losslessHook.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.losslessHook.Location = new System.Drawing.Point(15, 308);
+            this.losslessHook.Margin = new System.Windows.Forms.Padding(0);
+            this.losslessHook.Name = "losslessHook";
+            this.losslessHook.Size = new System.Drawing.Size(131, 17);
+            this.losslessHook.TabIndex = 169;
+            this.losslessHook.Text = "Enable Lossless Hook";
+            this.losslessHook.UseVisualStyleBackColor = true;
+            this.losslessHook.CheckedChanged += new System.EventHandler(this.LosslessHook_CheckedChanged);
+            // 
+            // selectedRes
+            // 
+            this.selectedRes.BackColor = System.Drawing.SystemColors.MenuText;
+            this.selectedRes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.selectedRes.ForeColor = System.Drawing.SystemColors.Menu;
+            this.selectedRes.Location = new System.Drawing.Point(14, 279);
+            this.selectedRes.Name = "selectedRes";
+            this.selectedRes.ReadOnly = true;
+            this.selectedRes.ShortcutsEnabled = false;
+            this.selectedRes.Size = new System.Drawing.Size(99, 21);
+            this.selectedRes.TabIndex = 168;
+            // 
+            // screen_panel
+            // 
+            this.screen_panel.Location = new System.Drawing.Point(283, 237);
+            this.screen_panel.Name = "screen_panel";
+            this.screen_panel.Size = new System.Drawing.Size(378, 148);
+            this.screen_panel.TabIndex = 167;
+            this.screen_panel.Paint += new System.Windows.Forms.PaintEventHandler(this.Screen_panel_Paint);
+            // 
+            // enable_WMerger
+            // 
+            this.enable_WMerger.AutoSize = true;
+            this.enable_WMerger.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.enable_WMerger.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enable_WMerger.Location = new System.Drawing.Point(15, 238);
+            this.enable_WMerger.Margin = new System.Windows.Forms.Padding(0);
+            this.enable_WMerger.Name = "enable_WMerger";
+            this.enable_WMerger.Size = new System.Drawing.Size(142, 17);
+            this.enable_WMerger.TabIndex = 166;
+            this.enable_WMerger.Text = "Enable Windows Merger";
+            this.enable_WMerger.UseVisualStyleBackColor = true;
             // 
             // hideDesktop
             // 
             this.hideDesktop.AutoSize = true;
             this.hideDesktop.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.hideDesktop.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hideDesktop.Location = new System.Drawing.Point(17, 132);
+            this.hideDesktop.Location = new System.Drawing.Point(16, 38);
             this.hideDesktop.Margin = new System.Windows.Forms.Padding(0);
             this.hideDesktop.Name = "hideDesktop";
             this.hideDesktop.Size = new System.Drawing.Size(115, 17);
@@ -3167,7 +3318,7 @@ namespace Nucleus.Coop
             this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
             this.numMaxPlyrs.Enabled = false;
             this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(300, 249);
+            this.numMaxPlyrs.Location = new System.Drawing.Point(300, 155);
             this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
             this.numMaxPlyrs.Name = "numMaxPlyrs";
             this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
@@ -3179,7 +3330,7 @@ namespace Nucleus.Coop
             this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(298, 151);
+            this.numUpDownVer.Location = new System.Drawing.Point(298, 57);
             this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownVer.Name = "numUpDownVer";
             this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
@@ -3193,7 +3344,7 @@ namespace Nucleus.Coop
             this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(290, 226);
+            this.label29.Location = new System.Drawing.Point(290, 132);
             this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(64, 13);
@@ -3209,7 +3360,7 @@ namespace Nucleus.Coop
             this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(290, 179);
+            this.label27.Location = new System.Drawing.Point(290, 85);
             this.label27.Margin = new System.Windows.Forms.Padding(0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(99, 13);
@@ -3224,7 +3375,7 @@ namespace Nucleus.Coop
             this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(287, 132);
+            this.label28.Location = new System.Drawing.Point(287, 38);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(90, 13);
@@ -3237,7 +3388,7 @@ namespace Nucleus.Coop
             this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
             this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(299, 198);
+            this.numUpDownHor.Location = new System.Drawing.Point(299, 104);
             this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
             this.numUpDownHor.Name = "numUpDownHor";
             this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
@@ -3247,8 +3398,8 @@ namespace Nucleus.Coop
             // label71
             // 
             this.label71.AutoSize = true;
-            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(12, 216);
+            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label71.Location = new System.Drawing.Point(12, 116);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(128, 13);
             this.label71.TabIndex = 155;
@@ -3261,7 +3412,7 @@ namespace Nucleus.Coop
             this.cts_Panel.Controls.Add(this.cts_kar);
             this.cts_Panel.Controls.Add(this.cts_Mute);
             this.cts_Panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cts_Panel.Location = new System.Drawing.Point(11, 232);
+            this.cts_Panel.Location = new System.Drawing.Point(11, 132);
             this.cts_Panel.Name = "cts_Panel";
             this.cts_Panel.Size = new System.Drawing.Size(200, 74);
             this.cts_Panel.TabIndex = 154;
@@ -3301,7 +3452,7 @@ namespace Nucleus.Coop
             // 
             this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(15, 182);
+            this.SplitColors.Location = new System.Drawing.Point(17, 81);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
@@ -3312,7 +3463,7 @@ namespace Nucleus.Coop
             this.splitDiv.AutoSize = true;
             this.splitDiv.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.splitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.splitDiv.Location = new System.Drawing.Point(17, 107);
+            this.splitDiv.Location = new System.Drawing.Point(16, 13);
             this.splitDiv.Margin = new System.Windows.Forms.Padding(0);
             this.splitDiv.Name = "splitDiv";
             this.splitDiv.Size = new System.Drawing.Size(118, 17);
@@ -3325,7 +3476,7 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(13, 163);
+            this.label49.Location = new System.Drawing.Point(14, 62);
             this.label49.Margin = new System.Windows.Forms.Padding(0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(105, 15);
@@ -3337,7 +3488,7 @@ namespace Nucleus.Coop
             // 
             this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
-            this.layoutSizer.Location = new System.Drawing.Point(416, 113);
+            this.layoutSizer.Location = new System.Drawing.Point(416, 19);
             this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
             this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
@@ -3353,6 +3504,7 @@ namespace Nucleus.Coop
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(674, 418);
+            this.ControlBox = false;
             this.Controls.Add(this.closeBtnPicture);
             this.Controls.Add(this.layoutBtnPicture);
             this.Controls.Add(this.settingsBtnPicture);
@@ -3362,15 +3514,20 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
+            this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.settingsTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
-            this.Controls.Add(this.layoutTab);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(0);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Settings";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Settings";
             this.VisibleChanged += new System.EventHandler(this.Settings_VisibleChanged);
@@ -3619,10 +3776,21 @@ namespace Nucleus.Coop
         private Button btn_Gb_Update;
         private CheckBox gamepadsAssignMethods;
         private CheckBox hideDesktop;
-        private CheckBox cts_bringToFront;
+        private CheckBox enable_WMerger;
         private ComboBox rm_Cmb;
         private Label plus8;
         private Label hkLabel2;
         private TextBox rm_HKTxt;
+        private Panel screen_panel;
+        private TextBox selectedRes;
+        private CheckBox losslessHook;
+        private Label label4;
+        private Label mergerSettingsLabel;
+        private Label mergerResSelectorLabel;
+        private Button refreshScreenDatasButton;
+        private ComboBox smfw_Cmb;
+        private Label plus9;
+        private Label mergerShortcutLabel;
+        private TextBox smfw_HKTxt;
     }
 }
