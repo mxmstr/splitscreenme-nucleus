@@ -26,7 +26,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using WindowScrape.Static;
 
 namespace Nucleus.Coop
 {
@@ -844,7 +843,7 @@ namespace Nucleus.Coop
             {
                 RawInputAction(m.LParam);
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.TopMost_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.TopMost_HotkeyID)
             {
                 if (hotkeysCooldown || I_GameHandler == null)
                 {
@@ -853,7 +852,7 @@ namespace Nucleus.Coop
 
                 GlobalWindowMethods.ShowHideWindows();
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.StopSession_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.StopSession_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -873,7 +872,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.SetFocus_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.SetFocus_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -890,7 +889,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.ResetWindows_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.ResetWindows_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -906,7 +905,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.Cutscenes_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Cutscenes_HotkeyID)
             {
                 if (hotkeysCooldown || I_GameHandler == null)
                 {
@@ -915,7 +914,7 @@ namespace Nucleus.Coop
 
                 GlobalWindowMethods.ToggleCutScenesMode();
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.Switch_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Switch_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -931,7 +930,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.KillProcess_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.KillProcess_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -948,7 +947,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.Reminder_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Reminder_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -967,7 +966,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == (int)Hotkeys.Merger_WindowSwitch)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.MergerFocusSwitch_HotkeyID)
             {
                 if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
                 {
@@ -977,6 +976,54 @@ namespace Nucleus.Coop
                     }
 
                     WindowsMerger.Instance?.SwitchChildFocus();
+                }
+                else
+                {
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                }
+            }
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_1)
+            {
+                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                {
+                    if (hotkeysCooldown)
+                    {
+                        return;
+                    }
+
+                    GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_1.Invoke();
+                }
+                else
+                {
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                }
+            }
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_2)
+            {
+                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                {
+                    if (hotkeysCooldown)
+                    {
+                        return;
+                    }
+
+                    GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_2.Invoke();
+                }
+                else
+                {
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                }
+            }
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_3)
+            {
+                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                {
+                    if (hotkeysCooldown)
+                    {
+                        return;
+                    }
+
+                    GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_3.Invoke();
                 }
                 else
                 {
@@ -1357,7 +1404,7 @@ namespace Nucleus.Coop
         {          
             if (canProceed || autoProceed)
             {
-                saveProfileRadioBtn.Visible = !GameProfile.Loaded && !currentGameInfo.Game.MetaInfo.DisableProfiles;
+                saveProfileRadioBtn.Visible = !GameProfile.Loaded && !currentGameInfo.Game.MetaInfo.DisableProfiles && !disableGameProfiles;
             }
             else
             {
@@ -1397,7 +1444,7 @@ namespace Nucleus.Coop
                 btn_Next.BackgroundImage = ImageCache.GetImage(theme + "arrow_right.png");
             }
 
-            if (currentGame.Options.Count == 0)
+            if (currentGame?.Options?.Count == 0)
             {
                 EnablePlay();
                 return;
@@ -1551,7 +1598,7 @@ namespace Nucleus.Coop
             }
             catch { }
         }
-
+  
         private void Btn_Play_Click(object sender, EventArgs e)
         {
             if (btn_Play.Text == "S T O P")
@@ -1575,30 +1622,21 @@ namespace Nucleus.Coop
 
             currentGame = gameManager.GetGame(currentGameInfo.ExePath);
             currentGameInfo.InitializeDefault(currentGame, currentGameInfo.ExePath);
-
-            I_GameHandler = gameManager.MakeHandler(currentGame);
+            I_GameHandler = gameManager.MakeHandler(currentGame);   
             I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile), I_GameHandler);
             I_GameHandler.Ended += Handler_Ended;
-
-            if(bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger")) && !GameProfile.Ready)
-            {
-                string[] mergerRes = ini.IniReadValue("CustomLayout", "WindowsMergerRes").Split('X');
-                WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
-            }
-            else if (GameProfile.EnableWindowsMerger)
-            {
-                string[] mergerRes = GameProfile.MergerResolution.Split('X');//GameProfile string "MergerRes" here
-                WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
-            }
-                
-            GameProfile.Game = currentGame;
 
             if (profileSettings.Visible)
             {
                 profileSettings.Visible = false;
             }
 
-            settings.RegHotkeys(this);
+            Hotkeys.RegHotkeys(this.Handle);
+
+            if (currentGame.CustomHotkeys != null)
+            {
+                Hotkeys.RegCustomHotkeys(currentGame);
+            }
 
             WindowState = FormWindowState.Minimized;
 
@@ -1623,9 +1661,7 @@ namespace Nucleus.Coop
                     mainButtonFrame.Focus();
                     btn_Play.Text = "START";
                     btn_Play.Enabled = false;
-                    settings.UnRegHotkeys(this);
-
-                    //WindowsMerger.Instance?.Dispose();
+                    Hotkeys.UnRegHotkeys();
 
                     BringToFront();
                 });

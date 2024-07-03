@@ -22,6 +22,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 Priority = ThreadPriority.AboveNormal,
                 IsBackground = true
             };
+
             windowThread.Start(rawInputProcessor);
         }
 
@@ -151,6 +152,8 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         name = deviceName.GetDeviceName(pData, rid.hDevice);
                         deviceName.Dispose();
                     }
+
+                    Marshal.FreeHGlobal(pData);//Possibly fix a very random Heap Corruption exception(???)
 
                     yield return (device, rid.hDevice, name);
                 }

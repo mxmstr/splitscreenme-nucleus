@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
@@ -317,7 +318,6 @@ namespace Nucleus.Gaming
         public int LockInputToggleKey = 0x23;//End by default. Keys: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
         public bool ForceEnvironmentUse;
         public bool ForceLauncherExeIgnoreFileCheck;
-
         //deprecated kept for backward compatibility => use SteamlessPatch insatead
         public bool UseSteamless = false;
         public string SteamlessArgs;
@@ -330,6 +330,11 @@ namespace Nucleus.Gaming
         public ProtoInputOptions ProtoInput = new ProtoInputOptions();
         public bool LockInputSuspendsExplorer = false;
         public bool ToggleUnfocusOnInputsLock = false;//v.2.1.2 see RawInputProcessor & GenericGameHandler
+        public string[] CustomHotkeys;
+
+        public Action OnCustomHotKey_1;
+        public Action OnCustomHotKey_2;
+        public Action OnCustomHotKey_3;
 
         public Type HandlerType => typeof(GenericGameHandler);
         public GameMetaInfo MetaInfo = new GameMetaInfo();
@@ -390,6 +395,7 @@ namespace Nucleus.Gaming
 
             OnFinishedSetup += GamepadNavigation.StopUINavigation;
             OnStop += GamepadNavigation.StartUINavigation;
+            OnStop += Hotkeys.UnRegCustomHotkeys;
 
             if (MetaInfo.CheckUpdate)
             {

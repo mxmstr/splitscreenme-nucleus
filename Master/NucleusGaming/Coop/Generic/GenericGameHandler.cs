@@ -267,16 +267,15 @@ namespace Nucleus.Gaming
             }
         }
 
-        
         public string Play()
         {
-            if(GameProfile.Stop_UINav) { GamepadNavigation.StopUINavigation(); }
-            
-            if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "True")
+            if (!bool.Parse(ini.IniReadValue("Misc", "IgnoreInputLockReminder")))
             {
-                MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+                MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information,MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly,false);
+            }    
 
+            if (GameProfile.Stop_UINav) { GamepadNavigation.StopUINavigation(); }
+                     
             if (gen.NeedSteamClient)
             {
                 SteamFunctions.StartSteamClient();
@@ -378,15 +377,29 @@ namespace Nucleus.Gaming
             }
             else
             {
-                Log("The Windows deskop scale will not be set to 100% because this option has been disabled in settings or game profile");
+                Log("The Windows deskop scale will not be set to 100% because this option has been disabled in settings and/or game profile");
             }
 
+            bool hasMerger = false;
+
+            if (GameProfile.EnableWindowsMerger && !gen.MetaInfo.DisableProfiles && !bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
+            {
+                string[] mergerRes = GameProfile.MergerResolution.Split('X');
+                WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
+                hasMerger = true;
+            }
+            else if (bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger")) && (gen.MetaInfo.DisableProfiles || bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"))))
+            {
+                string[] mergerRes = ini.IniReadValue("CustomLayout", "WindowsMergerRes").Split('X');
+                WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
+                hasMerger = true;
+            }
 
             foreach (Display dp in screensInUse)
             {
                 if (screensInUse.Contains(dp))
                 {
-                    if (WindowsMerger.Instance == null)
+                    if (!hasMerger)
                     {
                         if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true) || gen.HideDesktop)
                         {
@@ -396,7 +409,6 @@ namespace Nucleus.Gaming
 
                     ReminderFormThread.StartReminderForms(dp.Bounds);
                 }
-
             }
 
             gen.SetPlayerList(players);
@@ -3719,6 +3731,7 @@ namespace Nucleus.Gaming
 
             foreach (PlayerInfo player in data)
             {
+                player.DInputJoystick?.Unacquire();
                 player.DInputJoystick?.Dispose();
             }
 

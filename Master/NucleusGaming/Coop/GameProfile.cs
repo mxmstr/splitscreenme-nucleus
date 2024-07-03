@@ -51,6 +51,7 @@ namespace Nucleus.Gaming.Coop
 
         private static string modeText;// = "New Profile";
         public static string ModeText => modeText;
+        public static bool IsNewProfile => modeText == "New Profile";
 
         public static UserGameInfo GameInfo;
 
@@ -636,7 +637,6 @@ namespace Nucleus.Gaming.Coop
             cts_MuteAudioOnly = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
             cts_KeepAspectRatio = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
             cts_Unfocus = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
-
 
             enableWindowsMerger = bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger"));
             enableLosslessHook = bool.Parse(ini.IniReadValue("CustomLayout", "LosslessHook"));

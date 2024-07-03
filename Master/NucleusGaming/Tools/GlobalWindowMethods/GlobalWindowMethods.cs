@@ -1560,7 +1560,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 {
                                     if (WindowsMerger.Instance != null)
                                     {
-                                        if (WindowsMerger.Instance.RefreshChildWinows(p) != IntPtr.Zero)
+                                        if (WindowsMerger.Instance.RefreshChildWindows(p) != IntPtr.Zero)
                                         {
                                             data.Setted = true;
                                             continue;
@@ -1812,11 +1812,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
             if (WindowsMerger.Instance != null)
             {
-                if (windowToFocus == IntPtr.Zero)
-                {
-                    windowToFocus = User32Interop.FindWindow(null, "WindowsMerger");
-                }
-              
+                windowToFocus = User32Interop.FindWindow(null, "WindowsMerger");            
                 User32Interop.SetForegroundWindow(windowToFocus);
                 return;
             }

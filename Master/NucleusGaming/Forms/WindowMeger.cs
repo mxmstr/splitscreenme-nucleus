@@ -1,6 +1,5 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.BasicTypes;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -22,13 +21,14 @@ using System.Windows.Media;
 using System.Diagnostics;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System.Linq;
+using System.Windows.Forms;
 
 public static class WindowsMergerThread
 {
     public static Thread MergerThread;
 
     public static void StartWindowsMerger(Size size)
-    {
+    {   
         Thread windowsMergerThread = new Thread(() =>
         {
             var backgroundForm = new WindowsMerger(size);
@@ -58,7 +58,6 @@ public class WindowsMerger : System.Windows.Window
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool GetClientRect(IntPtr hWnd, out Nucleus.Gaming.Coop.BasicTypes.RECT lpRect);
 
-   
     private System.Windows.Forms.Timer fading;
     private SolidColorBrush userColor;
     private string gameGUID;
@@ -75,7 +74,7 @@ public class WindowsMerger : System.Windows.Window
     public static WindowsMerger Instance { get;private set;}
 
     public WindowsMerger(Size size)
-    {
+    {       
         Name = "WindowsMerger";
         Title = Name;
         Background = System.Windows.Media.Brushes.Black;
@@ -83,7 +82,7 @@ public class WindowsMerger : System.Windows.Window
         WindowStartupLocation = WindowStartupLocation.Manual;        
         ResizeMode = ResizeMode.NoResize;
         WindowStyle = WindowStyle.None;
-
+        
         Top = 0; Left = 0; Width = size.Width; Height = size.Height;
 
         WindowBounds = new Rectangle((int)this.Left,(int)Top,(int)Width,(int)Height);
@@ -218,7 +217,24 @@ public class WindowsMerger : System.Windows.Window
 
         for (int i = 0; i < players.Count; i++)
         {
+            Thread.Sleep(1200);//2000
+
             PlayerInfo player = players[i];
+
+            while (player.ProcessData == null)
+            {
+                Thread.Sleep(150);
+            }
+
+            while (player.ProcessData.HWnd == null)
+            {
+                Thread.Sleep(150);
+            }
+
+            while (player.ProcessData.HWnd.NativePtr == null)
+            {
+                Thread.Sleep(150);
+            }
 
             if (GenericGameHandler.Instance.CurrentGameInfo.RefreshWindowAfterStart)
             {
@@ -227,19 +243,29 @@ public class WindowsMerger : System.Windows.Window
             }
 
             SetParent(player.ProcessData.HWnd.NativePtr, Handle);
+            Thread.Sleep(500);//1000
             player.ProcessData.HWnd = new HwndObject(player.ProcessData.HWnd.NativePtr);
 
-            User32Interop.SetWindowPos(player.ProcessData.HWnd.NativePtr, IntPtr.Zero, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
+            HwndInterface.MoveWindow(player.ProcessData.HWnd.NativePtr, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height, true);
+            //User32Interop.SetWindowPos(player.ProcessData.HWnd.NativePtr, IntPtr.Zero, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
+            Thread.Sleep(500);//1000
+
             player.ProcessData.Position = player.MonitorBounds.Location;
             player.ProcessData.Size = player.MonitorBounds.Size;
+
+            while (player.RawInputWindow == null)
+            {
+                Thread.Sleep(150);
+            }
+
             player.RawInputWindow.UpdateBounds();
-            childsInfo.Add(player.Nickname,player.ProcessData.HWnd.NativePtr);
+            childsInfo.Add(player.Nickname, player.ProcessData.HWnd.NativePtr);
         }
-       
+
         SetupFinished();
     }
 
-    public IntPtr RefreshChildWinows(PlayerInfo player)
+    public IntPtr RefreshChildWindows(PlayerInfo player)
     {
         IntPtr foundChild = IntPtr.Zero;
         var childs = HwndInterface.EnumChildren(Handle);
@@ -381,11 +407,7 @@ public class WindowsMerger : System.Windows.Window
 
     private void SetupFinished()
     {
-        if (fading != null)
-        {
-            fading.Dispose();
-        }
-
-        Dispatcher.Invoke(new Action(() => { Background = userColor; }));
+       fading?.Dispose();
+       Dispatcher.Invoke(new Action(() => { Background = userColor; }));
     } 
 }

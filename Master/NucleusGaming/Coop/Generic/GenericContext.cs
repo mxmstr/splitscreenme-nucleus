@@ -858,7 +858,7 @@ namespace Nucleus.Gaming
                         {
                             if (showFilePath)
                             {
-                                Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
+                                Forms.Prompt prompt = new Forms.Prompt(customText + " File path: " + filePaths[fileIndex]);
                                 prompt.ShowDialog();
                             }
                             else
@@ -895,7 +895,7 @@ namespace Nucleus.Gaming
                         {
                             if (showFilePath)
                             {
-                                Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
+                                Forms.Prompt prompt = new Forms.Prompt(customText + " File path: " + filePaths[fileIndex]);
                                 prompt.ShowDialog();
 
                                 ProcessStartInfo psi = new ProcessStartInfo
@@ -954,7 +954,7 @@ namespace Nucleus.Gaming
                         {
                             if (showFilePath)
                             {
-                                Forms.Prompt prompt = new Forms.Prompt(customText + filePaths[fileIndex]);
+                                Forms.Prompt prompt = new Forms.Prompt(customText + " File path: " + filePaths[fileIndex]);
                                 prompt.ShowDialog();
 
                                 ProcessStartInfo psi = new ProcessStartInfo

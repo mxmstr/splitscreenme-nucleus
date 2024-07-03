@@ -429,7 +429,7 @@ namespace Nucleus.Coop
                                                            "can be used with Nucleus. Note that there's no mutiple monitor support yet.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             CustomToolTips.SetToolTip(losslessHook, "Lossless will not stop upscaling if an other window get the focus, useful\n" +
-                                                    "if game windows requiers real focus to receive inputs.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                                                    "if game windows requires real focus to receive inputs.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
@@ -483,7 +483,7 @@ namespace Nucleus.Coop
 
                     nickField.Enabled = false;
 
-                    if (GameProfile.ModeText == "New Profile")
+                    if (GameProfile.IsNewProfile)
                     {
                         sidField.Enabled = true;
                         nickField.Enabled = true;
@@ -560,7 +560,7 @@ namespace Nucleus.Coop
                     priorityField.Text = "Normal";
                     priorityField.Enabled = false;
 
-                    if (GameProfile.ModeText == "New Profile")
+                    if (GameProfile.IsNewProfile)
                     {
                         idealField.Enabled = true;
                         affinityField.Enabled = true;
@@ -569,7 +569,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            if (GameProfile.ModeText == "New Profile")
+            if (GameProfile.IsNewProfile)
             {
                 GameProfile.AudioInstances.Clear();
             }
@@ -809,7 +809,7 @@ namespace Nucleus.Coop
             ProfilesList.Instance.Locked = false;
 
             ///Update profile[#].json file
-            if (GameProfile.ModeText != "New Profile")
+            if (!GameProfile.IsNewProfile)
             {
                 GameProfile.UpdateGameProfile(GameProfile.Instance);
                 ProfilesList.Instance.Update_ProfilesList();
@@ -892,7 +892,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            if (GameProfile.ModeText == "New Profile")
+            if (GameProfile.IsNewProfile)
             {
                 GameProfile.AudioInstances.Clear();
             }
@@ -904,7 +904,7 @@ namespace Nucleus.Coop
                     cmb.Items.Clear();
                     cmb.Items.AddRange(audioDevices.Keys.ToArray());
 
-                    if (GameProfile.ModeText == "New Profile")
+                    if (GameProfile.IsNewProfile)
                     {
                         if (audioDevices.Values.Contains(ini.IniReadValue("Audio", cmb.Name)))
                         {

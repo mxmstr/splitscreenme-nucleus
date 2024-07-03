@@ -748,7 +748,7 @@ namespace Nucleus.Coop
             // 
             this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(14, 74);
+            this.SplitColors.Location = new System.Drawing.Point(14, 77);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
@@ -797,7 +797,7 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(12, 52);
+            this.label49.Location = new System.Drawing.Point(12, 55);
             this.label49.Margin = new System.Windows.Forms.Padding(0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(105, 15);
@@ -4904,11 +4904,11 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
-            this.Controls.Add(this.sharedTab);
-            this.Controls.Add(this.processorTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
+            this.Controls.Add(this.sharedTab);
+            this.Controls.Add(this.processorTab);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

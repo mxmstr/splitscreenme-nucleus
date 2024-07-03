@@ -200,7 +200,7 @@
     <Compile Include="Coop\InputManagement\Gamepads\GamepadButtons.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadNavigation.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadState.cs" />
-    <Compile Include="Coop\InputManagement\Enums\Hotkeys.cs" />
+    <Compile Include="Coop\InputManagement\Hotkeys.cs" />
     <Compile Include="Coop\InputManagement\Osk.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadShortcuts.cs" />
     <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />

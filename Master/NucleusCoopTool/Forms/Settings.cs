@@ -612,7 +612,7 @@ namespace Nucleus.Coop
                                                        "Note that there's no mutiple monitor support yet.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
            
             CustomToolTips.SetToolTip(losslessHook, "Lossless will not stop upscaling if an other window get the focus, useful\n" +
-                                                    "if game windows requiers real focus to receive inputs.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                                                    "if game windows requires real focus to receive inputs.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 }); 
             CustomToolTips.SetToolTip(mergerShortcutLabel, "Each press will set an other child window as foreground window(similar to Alt+Tab).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
@@ -809,7 +809,7 @@ namespace Nucleus.Coop
                 needToRestart = true;
             }
 
-            if (GameProfile.ModeText == "New Profile" || disableGameProfileschanged)
+            if (GameProfile.IsNewProfile || disableGameProfileschanged)
             {
                 if (GameProfile.Instance != null)
                 {
@@ -874,71 +874,6 @@ namespace Nucleus.Coop
             ini.IniWriteValue("Misc", "SettingsLocation", Location.X + "X" + Location.Y);
             mainForm.BringToFront();//for some reasons settings is disposed if the parent is minized
             Visible = false;
-        }
-
-        private int GetMod(string modifier)
-        {
-            int mod = 0;
-            switch (modifier)
-            {
-                case "Ctrl":
-                    mod = 2;
-                    break;
-                case "Alt":
-                    mod = 1;
-                    break;
-                case "Shift":
-                    mod = 4;
-                    break;
-            }
-            return mod;
-        }
-
-        public void RegHotkeys(MainForm form)
-        {
-            mainForm = form;
-
-            try
-            {
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.KillProcess_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.TopMost_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.StopSession_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.SetFocus_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.ResetWindows_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Cutscenes_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Switch_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Reminder_HotkeyID, GetMod(ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(form.Handle, (int)Hotkeys.Merger_WindowSwitch, GetMod(ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+')[1].ToString()));
-
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error registering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        public void UnRegHotkeys(MainForm form)
-        {
-            mainForm = form;
-
-            try
-            {
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.KillProcess_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.TopMost_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.StopSession_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.SetFocus_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.ResetWindows_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Cutscenes_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Switch_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Reminder_HotkeyID);
-                User32Interop.UnregisterHotKey(form.Handle, (int)Hotkeys.Merger_WindowSwitch);
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error unregistering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void Steamid_Click(object sender, EventArgs e)
@@ -1390,9 +1325,8 @@ namespace Nucleus.Coop
                 {
                     if (screen.Primary)
                     {
-
                         ini.IniWriteValue("CustomLayout", "WindowsMergerRes", $"{screen.Bounds.Width}X{screen.Bounds.Height}");
-                        selectedRes.Text = $"{screen.Bounds.Width}X{screen.Bounds.Height}";         
+                        selectedRes.Text = $"{screen.Bounds.Width}X{screen.Bounds.Height}";
                     }
                 }
                 else 
@@ -1470,7 +1404,7 @@ namespace Nucleus.Coop
 
                i = 0;
             }
-
+            
             refreshScreensData = false;
             screen_panel.Visible = true;
         }

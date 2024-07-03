@@ -54,7 +54,7 @@ namespace Nucleus.Coop.Tools
                                                                 "Restart Nucleus as administrator?", "Requires administrator rights", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        RestartAsAdmin(Assembly.GetExecutingAssembly().Location);
+                        RestartAsAdmin();
                         return false;
                     }
 
@@ -75,13 +75,13 @@ namespace Nucleus.Coop.Tools
         }
 
 
-        private static void RestartAsAdmin(string fileName)
+        private static void RestartAsAdmin()
         {
             var proc = new Process
             {
                 StartInfo =
-               {
-                   FileName = fileName,
+                {
+                   FileName = Assembly.GetExecutingAssembly().Location,
                    UseShellExecute = true,
                    Verb = "runas"
                 }
