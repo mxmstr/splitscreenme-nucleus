@@ -138,7 +138,7 @@ namespace Nucleus.Gaming.Coop
 
                 }
             }
-            catch (Exception ex)
+            catch 
             {
 
             }
@@ -222,7 +222,7 @@ namespace Nucleus.Gaming.Coop
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
 
             }

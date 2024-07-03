@@ -26,8 +26,6 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         private static int Pressed;
         private static int RightTriggerValue;
         private static int LeftTriggerValue;
-        private static (int, int) RightStickValue;
-        private static (int, int) LeftstickValue;
 
         private static int RT = 9999;
         private static int LT = 10000;

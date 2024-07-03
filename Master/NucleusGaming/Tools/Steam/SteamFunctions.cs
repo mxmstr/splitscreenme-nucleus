@@ -299,6 +299,7 @@ namespace Nucleus.Gaming.Tools.Steam
                             continue;
                         }
                     }
+
                     handlerInstance.Log("New steam api folder found");
                     prevSteamDllFilePath = Path.GetDirectoryName(nameFile);
 

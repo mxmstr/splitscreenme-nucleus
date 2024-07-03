@@ -52,8 +52,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         private static Pen ghostBoundsPen;
         private static Pen destEditBoundsPen;
 
-        private static Color[] colors;
-
         private static ImageAttributes flashImageAttributes;
 
         public static Font playerFont;

@@ -240,6 +240,7 @@ namespace Nucleus.Gaming.Coop
             get => useXinputIndex;
             set => useXinputIndex = value;
         }
+
         //Avoid "Autoplay" to be applied right after setting the option in profile settings
         private static bool updating;
         public static bool Updating
@@ -996,10 +997,10 @@ namespace Nucleus.Gaming.Coop
 
 
                 JObject JMonitorBounds = new JObject(
-                                         new JProperty("X",/* useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Location.X - 1 : players[i].MonitorBounds.Location.X*/players[i].DefaultMonitorBounds.X),
-                                         new JProperty("Y", /*useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Location.Y - 1 : players[i].MonitorBounds.Location.Y*/players[i].DefaultMonitorBounds.Y),
-                                         new JProperty("Width", /*useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Width + 2 : players[i].MonitorBounds.Width*/players[i].DefaultMonitorBounds.Width),
-                                         new JProperty("Height", /*useSplitDiv && !hideDesktopOnly ? players[i].MonitorBounds.Height + 2 : players[i].MonitorBounds.Height)*/players[i].DefaultMonitorBounds.Height));
+                                         new JProperty("X", players[i].DefaultMonitorBounds.X),
+                                         new JProperty("Y", players[i].DefaultMonitorBounds.Y),
+                                         new JProperty("Width", players[i].DefaultMonitorBounds.Width),
+                                         new JProperty("Height", players[i].DefaultMonitorBounds.Height));
 
                 JObject JEditBounds = new JObject(
                                       new JProperty("X", players[i].EditBounds.X),

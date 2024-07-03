@@ -395,7 +395,11 @@ namespace Nucleus.Gaming
 
             OnFinishedSetup += GamepadNavigation.StopUINavigation;
             OnStop += GamepadNavigation.StartUINavigation;
-            OnStop += Hotkeys.UnRegCustomHotkeys;
+
+            if (CustomHotkeys != null)
+            {
+                OnStop += Hotkeys.UnRegCustomHotkeys;
+            }
 
             if (MetaInfo.CheckUpdate)
             {

@@ -337,7 +337,7 @@ namespace Nucleus.Gaming
                 {
                     continue;//skip already merged k&m devices on profile load 
                 }
-
+              
                 var firstInGroup = group.First();
                 var secondInGroup = group.Last();
 

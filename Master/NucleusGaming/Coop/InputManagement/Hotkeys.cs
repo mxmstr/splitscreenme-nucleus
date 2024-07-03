@@ -19,9 +19,9 @@ namespace Nucleus.Gaming.Coop.InputManagement
         public const int Reminder_HotkeyID = 8;
         public const int MergerFocusSwitch_HotkeyID = 9;
 
-        public static int Custom_Hotkey_1;
-        public static int Custom_Hotkey_2;
-        public static int Custom_Hotkey_3;
+        public static int Custom_Hotkey_1 = 10;
+        public static int Custom_Hotkey_2 = 11;
+        public static int Custom_Hotkey_3 = 12;
 
         private static int GetMod(string modifier)
         {
@@ -60,81 +60,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
             {
                 MessageBox.Show("Error registering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        public static void RegCustomHotkeys(GenericGameInfo _currentGameInfo)
-        {
-            currentGameInfo = _currentGameInfo;
-
-            try
-            {
-                if (_currentGameInfo.CustomHotkeys != null)
-                {
-                    int customHotkeysStartIndex = 10;
-
-                    for (int i = 0; i < _currentGameInfo.CustomHotkeys.Length; i++)
-                    {
-                        string[] values = _currentGameInfo.CustomHotkeys[i].Split('|');
-
-                        switch (i)
-                        {
-                            case 0:
-                                Custom_Hotkey_1 = customHotkeysStartIndex;
-                                break;
-                            case 1:
-                                Custom_Hotkey_2 = customHotkeysStartIndex;
-                                break;
-                            case 2:
-                                Custom_Hotkey_3 = customHotkeysStartIndex;
-                                break;
-                        }
-
-                        User32Interop.RegisterHotKey(formHandle, customHotkeysStartIndex, GetMod(values[0]), (int)Enum.Parse(typeof(Keys), values[1]));
-                        customHotkeysStartIndex++;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error registering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        public static void UnRegCustomHotkeys()
-        {
-            try
-            {
-                if (currentGameInfo.CustomHotkeys != null)
-                {
-                    int customHotkeysStartIndex = 10;
-
-                    for (int i = 0; i < currentGameInfo.CustomHotkeys.Length; i++)
-                    {
-                        string[] values = currentGameInfo.CustomHotkeys[i].Split('|');
-
-                        switch (i)
-                        {
-                            case 0:
-                                Custom_Hotkey_1 = customHotkeysStartIndex;
-                                break;
-                            case 1:
-                                Custom_Hotkey_2 = customHotkeysStartIndex;
-                                break;
-                            case 2:
-                                Custom_Hotkey_3 = customHotkeysStartIndex;
-                                break;
-                        }
-
-                        User32Interop.UnregisterHotKey(formHandle, customHotkeysStartIndex);
-                        customHotkeysStartIndex++;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error registering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        }      
 
         public static void UnRegHotkeys()
         {
@@ -154,6 +80,76 @@ namespace Nucleus.Gaming.Coop.InputManagement
             catch (Exception ex)
             {
                 MessageBox.Show("Error unregistering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void RegCustomHotkeys(GenericGameInfo _currentGameInfo)
+        {
+            currentGameInfo = _currentGameInfo;
+
+            try
+            {
+                if (_currentGameInfo.CustomHotkeys != null)
+                {                 
+                    for (int i = 0; i < _currentGameInfo.CustomHotkeys.Length; i++)
+                    {
+                        string[] keys = _currentGameInfo.CustomHotkeys[i].Split('|');
+
+                        switch (i)
+                        {
+                            case 0:
+                                User32Interop.RegisterHotKey(formHandle, Custom_Hotkey_1, GetMod(keys[0]), (int)Enum.Parse(typeof(Keys), keys[1]));
+                                break;
+                            case 1:
+                                User32Interop.RegisterHotKey(formHandle, Custom_Hotkey_2, GetMod(keys[0]), (int)Enum.Parse(typeof(Keys), keys[1]));
+                                break;
+                            case 2:
+                                User32Interop.RegisterHotKey(formHandle, Custom_Hotkey_3, GetMod(keys[0]), (int)Enum.Parse(typeof(Keys), keys[1]));
+                                break;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error registering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void UnRegCustomHotkeys()
+        {
+            if (currentGameInfo == null)
+            {
+                return;
+            }
+
+            try
+            {
+                if (currentGameInfo.CustomHotkeys != null)
+                {
+                    for (int i = 0; i < currentGameInfo.CustomHotkeys.Length; i++)
+                    {
+                        switch (i)
+                        {
+                            case 0:
+                                User32Interop.UnregisterHotKey(formHandle, Custom_Hotkey_1);
+                                break;
+                            case 1:
+                                User32Interop.UnregisterHotKey(formHandle, Custom_Hotkey_2);
+                                break;
+                            case 2:
+                                User32Interop.UnregisterHotKey(formHandle, Custom_Hotkey_3);
+                                break;
+                        }                                          
+                    }
+                }
+
+                currentGameInfo = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error registering hotkeys " + ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

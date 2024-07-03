@@ -1213,7 +1213,6 @@ namespace Nucleus.Coop
         }
 
         private int r = 0;
-        private int g = 0;
         private int b = 0;
         private bool loop = false;
 

@@ -12,7 +12,6 @@ namespace Nucleus.Gaming.Controls
     {
         public TransparentRichTextBox Notes => TextBox;
         private Pen linePen;
-        private SolidBrush topBrush;
 
         private string customFont;
 

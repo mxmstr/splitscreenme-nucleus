@@ -44,7 +44,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
         private Window window;
         private int toSendDeltaX, toSendDeltaY, toSendAbsX, toSendAbsY;
         private bool haveMousePosToSend;
-        private bool loopThreadWaitingForMousePosToSend;
+
         private ManualResetEventSlim xyResetEvent = new ManualResetEventSlim(false);
 
         private Action onClosed;

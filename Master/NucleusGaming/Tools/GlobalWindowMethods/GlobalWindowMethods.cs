@@ -75,14 +75,12 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         public static void RefreshBools()
         {
             ResetingWindows = false;
-            switchingLayout = false;
             TopMostToggle = true;
             CutsceneOn = false;
             canSwitchLayout = true;
         }
 
         public static bool ResetingWindows { get; set; }
-        private static bool switchingLayout;
         private static bool canSwitchLayout = true;
 
         public static void ResetWindows(ProcessData processData, int x, int y, int w, int h, int i)
@@ -701,7 +699,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 {
                     pl.OtherLayout = null;
                     pl.CurrentLayout = 0;
-                    switchingLayout = false;
                     pl.MonitorBounds = new Rectangle(pl.ProcessData.HWnd.Location, pl.ProcessData.HWnd.Size);
                 }
                 return;
