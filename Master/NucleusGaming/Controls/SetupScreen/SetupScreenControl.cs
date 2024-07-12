@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Cache;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Properties;
 using Nucleus.Gaming.UI;
@@ -88,7 +89,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             BoundsFunctions.Initialize(this, game, profile);
             Draw.Initialize(this, game, profile);
 
-            profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles")) || game.Game.MetaInfo.DisableProfiles;
+            profileDisabled = bool.Parse(App_Misc.DisableGameProfiles) || game.Game.MetaInfo.DisableProfiles;
 
             if (game.Game.UseDevReorder || game.Game.CreateSingleDeviceFile)
             {

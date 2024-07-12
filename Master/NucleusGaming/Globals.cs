@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Controls;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Controls;
 using System.IO;
 using System.Windows.Forms;
 
@@ -11,7 +12,7 @@ namespace Nucleus.Gaming
         public static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         //return theme path(current theme folder)
-        public static string ThemeFolder => Path.Combine(Application.StartupPath, $@"gui\theme\{ini.IniReadValue("Theme", "Theme")}\");
+        public static string ThemeFolder => Path.Combine(Application.StartupPath, $@"gui\theme\{App_Misc.Theme}\");
 
         //return theme.ini file(current theme)
         public static IniFile ThemeConfigFile => new IniFile(Path.Combine(ThemeFolder, "theme.ini"));

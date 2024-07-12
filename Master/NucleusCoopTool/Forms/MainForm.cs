@@ -2,6 +2,7 @@
 using Nucleus.Coop.Forms;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
@@ -43,7 +44,7 @@ namespace Nucleus.Coop
         private string NucleusEnvironmentRoot => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public string customFont;
-        public string lockKeyIniString;
+        //public string App_Hotkeys.LockInputs;
         public string[] rgb_font;
         public string[] rgb_MouseOverColor;
         public string[] rgb_MenuStripBackColor;
@@ -269,10 +270,10 @@ namespace Nucleus.Coop
             connected = Program.Connected;
             Hub.Connected = connected;
 
-            ShowFavoriteOnly = bool.Parse(Globals.ini.IniReadValue("Dev", "ShowFavoriteOnly"));
+            ShowFavoriteOnly = bool.Parse(App_Misc.ShowFavoriteOnly);
             roundedCorners = bool.Parse(themeIni.IniReadValue("Misc", "UseroundedCorners"));
-            disableGameProfiles = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
-            disableForcedNote = bool.Parse(ini.IniReadValue("Misc", "DisableForcedNote"));
+            disableGameProfiles = bool.Parse(App_Misc.DisableGameProfiles);
+            disableForcedNote = bool.Parse(App_Misc.DisableForcedNote);
          
             customFont = themeIni.IniReadValue("Font", "FontFamily");
             rgb_font = themeIni.IniReadValue("Colors", "Font").Split(',');
@@ -302,13 +303,11 @@ namespace Nucleus.Coop
             ButtonsBorderColor = Color.FromArgb(int.Parse(rgb_ButtonsBorderColor[0]), int.Parse(rgb_ButtonsBorderColor[1]), int.Parse(rgb_ButtonsBorderColor[2]));
             SelectionBackColor = Theme_Settings.SelectedBackColor;
 
-            lockKeyIniString = ini.IniReadValue("Hotkeys", "LockKey");
-
             InitializeComponent();
 
-            if (ini.IniReadValue("Misc", "WindowSize") != "")
+            if (App_Misc.WindowSize != "")
             {
-                string[] windowSize = ini.IniReadValue("Misc", "WindowSize").Split('X');
+                string[] windowSize = App_Misc.WindowSize.Split('X');
                 Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
             }
 
@@ -406,7 +405,7 @@ namespace Nucleus.Coop
             profilesList_btn.BackgroundImage = ImageCache.GetImage(theme + "profiles_list.png");
             profileSettings_btn.BackgroundImage = ImageCache.GetImage(theme + "profile_settings.png");
 
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (App_Misc.DebugLog == "True")
             {
                 btn_debuglog.Visible = true;
             }
@@ -569,9 +568,9 @@ namespace Nucleus.Coop
             Rectangle area = Screen.PrimaryScreen.Bounds;
             osdBounds = area;
 
-            if (ini.IniReadValue("Misc", "WindowLocation") != "")
+            if (App_Misc.WindowLocation != "")
             {
-                string[] windowLocation = ini.IniReadValue("Misc", "WindowLocation").Split('X');
+                string[] windowLocation = App_Misc.WindowLocation.Split('X');
 
                 if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
                 {
@@ -869,7 +868,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.SetFocus_HotkeyID)
@@ -886,7 +885,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.ResetWindows_HotkeyID)
@@ -902,7 +901,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Cutscenes_HotkeyID)
@@ -927,7 +926,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.KillProcess_HotkeyID)
@@ -944,7 +943,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Reminder_HotkeyID)
@@ -963,7 +962,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.MergerFocusSwitch_HotkeyID)
@@ -979,7 +978,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_1)
@@ -995,7 +994,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_2)
@@ -1011,7 +1010,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_3)
@@ -1027,7 +1026,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {lockKeyIniString} Key)");
+                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
 
@@ -2397,7 +2396,7 @@ namespace Nucleus.Coop
 
         private void Log(string logMessage)
         {
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (App_Misc.DebugLog == "True")
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {
@@ -2730,8 +2729,8 @@ namespace Nucleus.Coop
                 return;
             }
 
-            ini.IniWriteValue("Misc", "WindowSize", Width + "X" + Height);
-            ini.IniWriteValue("Misc", "WindowLocation", Location.X + "X" + Location.Y);
+            App_Misc.WindowSize =  Width + "X" + Height;
+            App_Misc.WindowLocation = Location.X + "X" + Location.Y;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) => SaveNucleusWindowPosAndLoc();
@@ -3038,12 +3037,6 @@ namespace Nucleus.Coop
 
         private void ScpToolkitToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/nefarius/ScpToolkit/releases");
 
-        private void SocialLinksMenu_Opened(object sender, EventArgs e)
-        {
-            socialLinksMenu.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20));
-        }
-
-
         private void ClientAreaPanel_Paint(object sender, PaintEventArgs e)
         {
             if (backGradient[0] == 0)
@@ -3076,7 +3069,8 @@ namespace Nucleus.Coop
             ClientAreaPanel_LinearGradientBrush.Dispose();
         }
 
-        private void SocialLinksMenu_Opened_1(object sender, EventArgs e) => socialLinksMenu.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20));
+        private void SocialLinksMenu_Opened(object sender, EventArgs e) =>
+        socialLinksMenu.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20));
 
         private void Game_listSizer_Paint(object sender, PaintEventArgs e)
         {

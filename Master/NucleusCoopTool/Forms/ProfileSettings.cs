@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
@@ -333,9 +334,9 @@ namespace Nucleus.Coop
             GetPlayersNickNameAndIds();
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
-            if (ini.IniReadValue("Misc", "ProfileSettingsLocation") != "")
+            if (App_Misc.ProfileSettingsLocation != "")
             {
-                string[] windowLocation = ini.IniReadValue("Misc", "ProfileSettingsLocation").Split('X');
+                string[] windowLocation = App_Misc.ProfileSettingsLocation.Split('X');
 
                 if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
                 {
@@ -567,11 +568,6 @@ namespace Nucleus.Coop
                         priorityField.Enabled = true;
                     }
                 }
-            }
-
-            if (GameProfile.IsNewProfile)
-            {
-                GameProfile.AudioInstances.Clear();
             }
 
             RefreshAudioList();
@@ -816,7 +812,7 @@ namespace Nucleus.Coop
                 ProfilesList.Instance.Update_Reload();
             }
 
-            ini.IniWriteValue("Misc", "ProfileSettingsLocation", Location.X + "X" + Location.Y);
+            App_Misc.ProfileSettingsLocation = Location.X + "X" + Location.Y;
 
             Visible = false;
         }
@@ -892,11 +888,6 @@ namespace Nucleus.Coop
                 }
             }
 
-            if (GameProfile.IsNewProfile)
-            {
-                GameProfile.AudioInstances.Clear();
-            }
-
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
             {
                 if (ctrl is ComboBox cmb)
@@ -906,10 +897,18 @@ namespace Nucleus.Coop
 
                     if (GameProfile.IsNewProfile)
                     {
-                        if (audioDevices.Values.Contains(ini.IniReadValue("Audio", cmb.Name)))
+                        if (GameProfile.AudioInstances.Any(device => device.Key == cmb.Name))
                         {
-                            cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == ini.IniReadValue("Audio", cmb.Name)).Key;
-                            GameProfile.AudioInstances.Add(cmb.Name, ini.IniReadValue("Audio", cmb.Name));
+                            if (audioDevices.Values.Contains(GameProfile.AudioInstances[cmb.Name]))
+                            {
+                                cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == GameProfile.AudioInstances[cmb.Name]).Key;
+                            }
+                        }                       
+                        else  if (audioDevices.Values.Contains(App_Audio.Instances_AudioOutput[cmb.Name]))
+                        {
+                            cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == App_Audio.Instances_AudioOutput[cmb.Name]).Key;
+                            
+                            GameProfile.AudioInstances.Add(cmb.Name, App_Audio.Instances_AudioOutput[cmb.Name]);
                         }
                         else
                         {
@@ -1328,9 +1327,9 @@ namespace Nucleus.Coop
 
             foreach (Screen screen in Screen.AllScreens)
             {
-                string iniMergerRes = GameProfile.MergerResolution;
+                string mergerRes = GameProfile.MergerResolution;
 
-                if (iniMergerRes == "")
+                if (mergerRes == "")
                 {
                     if (screen.Primary)
                     {
@@ -1392,7 +1391,7 @@ namespace Nucleus.Coop
                 string currentScreenRes = $"{screen.Bounds.Width}X{screen.Bounds.Height}";
 
                 resCmb.Items.AddRange(resolutions.ToArray());
-                resCmb.SelectedItem = iniMergerRes == "" ? currentScreenRes : iniMergerRes;
+                resCmb.SelectedItem = mergerRes == "" ? currentScreenRes : mergerRes;
                 resLabel.Text += $" ({currentScreenRes})";
 
                 if (screensLabels.Count == 0)

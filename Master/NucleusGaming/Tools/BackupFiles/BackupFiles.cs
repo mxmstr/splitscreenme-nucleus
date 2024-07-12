@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Coop;
 using System;
 using System.IO;
 using System.Linq;
@@ -228,7 +229,7 @@ namespace Nucleus.Gaming.Tools.BackupFiles
         {
             try
             {
-                if (Globals.ini.IniReadValue("Misc", "DebugLog") == "True")
+                if (App_Misc.DebugLog == "True")
                 {
                     using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                     {

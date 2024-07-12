@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using Nucleus.Gaming.App.Settings;
 
 namespace Nucleus.Coop.Controls
 {
@@ -167,8 +168,7 @@ namespace Nucleus.Coop.Controls
             favoriteOnly.Image = selected ? favorite_Unselected : favorite_Selected;
             mainForm.ShowFavoriteOnly = selected ? false : true;
 
-            Globals.ini.IniWriteValue("Dev", "ShowFavoriteOnly", mainForm.ShowFavoriteOnly.ToString());
-
+            App_Misc.ShowFavoriteOnly = mainForm.ShowFavoriteOnly.ToString(); 
             mainForm.RefreshGames();
             mainForm.Invalidate(false);
         }

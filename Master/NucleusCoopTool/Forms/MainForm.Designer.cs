@@ -405,7 +405,7 @@ namespace Nucleus.Coop
             this.socialLinksMenu.Size = new System.Drawing.Size(137, 126);
             this.socialLinksMenu.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.SocialLinksMenu_Closing);
             this.socialLinksMenu.Opening += new System.ComponentModel.CancelEventHandler(this.SocialLinksMenu_Opening);
-            this.socialLinksMenu.Opened += new System.EventHandler(this.SocialLinksMenu_Opened_1);
+            this.socialLinksMenu.Opened += new System.EventHandler(this.SocialLinksMenu_Opened);
             // 
             // fAQMenuItem
             // 

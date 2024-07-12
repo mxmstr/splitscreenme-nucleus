@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
@@ -150,7 +151,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
 
         public static string GetEpicLanguage()
         {
-            string epicLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
+            string epicLanguage = App_Misc.EpicLang;
             string EpicLang = "";
 
             IDictionary<string, string> epiclangs = new Dictionary<string, string>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Nucleus;
 using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Windows;
 using System;
 using System.Collections;
@@ -82,8 +83,6 @@ namespace StartGame
         private static string nucleusFolderPath;
 
         private static uint pOutPID = 0;
-
-        private static readonly IniFile ini = new Nucleus.Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         [DllImport("EasyHook64.dll", CharSet = CharSet.Ansi)]
         private static extern int RhCreateAndInject(
@@ -241,7 +240,7 @@ namespace StartGame
 
         static void Log(string logMessage)
         {
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (bool.Parse(App_Misc.DebugLog))
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {

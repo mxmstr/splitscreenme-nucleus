@@ -1,4 +1,6 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Platform.PCSpecs;
 using Nucleus.Gaming.Windows;
 using System;
 using System.IO;
@@ -7,15 +9,16 @@ using System.Windows.Forms;
 namespace Nucleus.Coop
 {
     static class Program
-    {
-        private static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
+    {      
         public static bool Connected;
         public static bool ForcedBadPath;
 
         [STAThread]
         static void Main()
         {
-            if (!bool.Parse(ini.IniReadValue("Misc", "NucleusMultiInstances")))
+            Settings_Loader.InitializeSettings();
+
+            if (App_Misc.NucleusMultiInstances == "" || App_Misc.NucleusMultiInstances == "False")
             {
                 if (StartChecks.IsAlreadyRunning())
                     return;
@@ -23,7 +26,7 @@ namespace Nucleus.Coop
 
             StartChecks.Check_VCRVersion();
 
-            if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
+            if (App_Misc.DisablePathCheck == "" || App_Misc.DisablePathCheck == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
             {
                 if (!StartChecks.StartCheck(true))
                     ForcedBadPath = true;
@@ -34,7 +37,7 @@ namespace Nucleus.Coop
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
             StartChecks.CheckAppUpdate();//a decommenter
-            StartChecks.CheckDebugLogSize(ini);
+            StartChecks.CheckDebugLogSize();
 
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware

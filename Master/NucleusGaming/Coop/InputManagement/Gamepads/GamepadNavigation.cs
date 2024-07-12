@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.App.Settings;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -8,8 +9,6 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
     public static class GamepadNavigation
     {
-        private static IniFile ini = Globals.ini;
-
         [DllImport("user32.dll")]
         public static extern bool GetCursorPos(out POINT lpPoint);
 
@@ -267,31 +266,13 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         public static void UpdateUINavSettings()
         {
-            _Enabled = bool.Parse(ini.IniReadValue("XUINav", "Enabled"));
-            Deadzone = int.Parse(ini.IniReadValue("XUINav", "Deadzone"));
-            Dragdrop = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
-            RightClick = int.Parse(ini.IniReadValue("XUINav", "RightClick"));
-            LeftClick = int.Parse(ini.IniReadValue("XUINav", "LeftClick"));
-
-            if (ini.IniReadValue("XUINav", "LockUIControl").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XUINav", "LockUIControl").Split('+');
-                LockUIControl = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XUINav", "LockUIControl", "");
-            }
-
-            if (ini.IniReadValue("XUINav", "OpenOsk").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XUINav", "OpenOsk").Split('+');
-                OpenOsk = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XUINav", "OpenOsk", "");
-            }
+            _Enabled = bool.Parse(App_GamePadNavigation.Enabled);
+            Deadzone = int.Parse(App_GamePadNavigation.Deadzone);
+            Dragdrop = int.Parse(App_GamePadNavigation.DragDrop);
+            RightClick = int.Parse(App_GamePadNavigation.RightClick);
+            LeftClick = int.Parse(App_GamePadNavigation.LeftClick);
+            LockUIControl = Convert.ToInt32(App_GamePadNavigation.TogglekUINavigation.Item1) + Convert.ToInt32(App_GamePadNavigation.TogglekUINavigation.Item2);
+            OpenOsk = Convert.ToInt32(App_GamePadNavigation.OpenOsk.Item1) + Convert.ToInt32(App_GamePadNavigation.OpenOsk.Item2);
 
             EnabledRuntime = _Enabled;
         }

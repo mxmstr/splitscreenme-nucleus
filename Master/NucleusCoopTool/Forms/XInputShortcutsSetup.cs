@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.InputManagement.Gamepads;
@@ -18,7 +19,7 @@ namespace Nucleus.Coop.Forms
 {
     public partial class XInputShortcutsSetup : Form, IDynamicSized
     {
-        private IniFile ini = Globals.ini;
+        //private IniFile ini = Globals.ini;
         private Bitmap controllerTop;
         private Bitmap controllerFront;
         private PictureBox activeControl;
@@ -36,7 +37,7 @@ namespace Nucleus.Coop.Forms
         {
             InitializeComponent();
             bool roundedcorners = bool.Parse(Globals.ThemeConfigFile.IniReadValue("Misc", "UseRoundedCorners"));
-            gamepadType = ini.IniReadValue("XUINav", "Type");
+            gamepadType = App_GamePadNavigation.Type;
 
             default_Cursor = Theme_Settings.Default_Cursor;
             hand_Cursor = Theme_Settings.Hand_Cursor;
@@ -66,134 +67,47 @@ namespace Nucleus.Coop.Forms
                 Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
-            if (ini.IniReadValue("XShortcuts", "SetFocus").Contains('+'))
-            {
-                string[] SetFocus = ini.IniReadValue("XShortcuts", "SetFocus").Split('+');
-                switch1.Tag = int.Parse(SetFocus[0]);
-                slave1.Tag = int.Parse(SetFocus[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "SetFocus", "");
-            }
+            switch1.Tag = int.Parse(App_GamePadShortcuts.SetFocus.Item1);
+            slave1.Tag = int.Parse(App_GamePadShortcuts.SetFocus.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "Close").Contains('+'))
-            {
-                string[] Close = ini.IniReadValue("XShortcuts", "Close").Split('+');
-                switch2.Tag = int.Parse(Close[0]);
-                slave2.Tag = int.Parse(Close[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Close", "");
-            }
+            switch2.Tag = int.Parse(App_GamePadShortcuts.Close.Item1);
+            slave2.Tag = int.Parse(App_GamePadShortcuts.Close.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "Stop").Contains('+'))
-            {
-                string[] Stop = ini.IniReadValue("XShortcuts", "Stop").Split('+');
-                switch3.Tag = int.Parse(Stop[0]);
-                slave3.Tag = int.Parse(Stop[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Stop", "");
-            }
+            switch3.Tag = int.Parse(App_GamePadShortcuts.StopSession.Item1);
+            slave3.Tag = int.Parse(App_GamePadShortcuts.StopSession.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "TopMost").Contains('+'))
-            {
-                string[] TopMost = ini.IniReadValue("XShortcuts", "TopMost").Split('+');
-                switch4.Tag = int.Parse(TopMost[0]);
-                slave4.Tag = int.Parse(TopMost[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "TopMost", "");
-            }
+            switch4.Tag = int.Parse(App_GamePadShortcuts.TopMost.Item1);
+            slave4.Tag = int.Parse(App_GamePadShortcuts.TopMost.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "ResetWindows").Contains('+'))
-            {
-                string[] ResetWindows = ini.IniReadValue("XShortcuts", "ResetWindows").Split('+');
-                switch5.Tag = int.Parse(ResetWindows[0]);
-                slave5.Tag = int.Parse(ResetWindows[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "ResetWindows", "");
-            }
+            switch5.Tag = int.Parse(App_GamePadShortcuts.ResetWindows.Item1);
+            slave5.Tag = int.Parse(App_GamePadShortcuts.ResetWindows.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "Cutscenes").Contains('+'))
-            {
-                string[] Cutscenes = ini.IniReadValue("XShortcuts", "Cutscenes").Split('+');
-                switch6.Tag = int.Parse(Cutscenes[0]);
-                slave6.Tag = int.Parse(Cutscenes[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Cutscenes", "");
-            }
+            switch6.Tag = int.Parse(App_GamePadShortcuts.CutscenesMode.Item1);
+            slave6.Tag = int.Parse(App_GamePadShortcuts.CutscenesMode.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "Switch").Contains('+'))
-            {
-                string[] Switch = ini.IniReadValue("XShortcuts", "Switch").Split('+');
-                switch7.Tag = int.Parse(Switch[0]);
-                slave7.Tag = int.Parse(Switch[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Switch", "");
-            }
+            switch7.Tag = int.Parse(App_GamePadShortcuts.SwitchLayout.Item1);
+            slave7.Tag = int.Parse(App_GamePadShortcuts.SwitchLayout.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "LockInputs").Contains('+'))
-            {
-                string[] LockInputs = ini.IniReadValue("XShortcuts", "LockInputs").Split('+');
-                switch8.Tag = int.Parse(LockInputs[0]);
-                slave8.Tag = int.Parse(LockInputs[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            switch8.Tag = int.Parse(App_GamePadShortcuts.LockInputs.Item1);
+            slave8.Tag = int.Parse(App_GamePadShortcuts.LockInputs.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "ReleaseCursor").Contains('+'))
-            {
-                string[] ReleaseCursor = ini.IniReadValue("XShortcuts", "ReleaseCursor").Split('+');
-                switch9.Tag = int.Parse(ReleaseCursor[0]);
-                slave9.Tag = int.Parse(ReleaseCursor[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            switch9.Tag = int.Parse(App_GamePadShortcuts.ReleaseCursor.Item1);
+            slave9.Tag = int.Parse(App_GamePadShortcuts.ReleaseCursor.Item2);
 
-            if (ini.IniReadValue("XUINav", "LockUIControl").Contains('+'))
-            {
-                string[] LockUIControl = ini.IniReadValue("XUINav", "LockUIControl").Split('+');
-                switch10.Tag = int.Parse(LockUIControl[0]);
-                slave10.Tag = int.Parse(LockUIControl[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            switch10.Tag = int.Parse(App_GamePadNavigation.TogglekUINavigation.Item1);
+            slave10.Tag = int.Parse(App_GamePadNavigation.TogglekUINavigation.Item2);
 
-            if (ini.IniReadValue("XUINav", "LockUIControl").Contains('+'))
-            {
-                string[] OpenOsk = ini.IniReadValue("XUINav", "OpenOsk").Split('+');
-                switch11.Tag = int.Parse(OpenOsk[0]);
-                slave11.Tag = int.Parse(OpenOsk[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            switch11.Tag = int.Parse(App_GamePadNavigation.OpenOsk.Item1);
+            slave11.Tag = int.Parse(App_GamePadNavigation.OpenOsk.Item2);
 
-            enabled_chk.Checked = bool.Parse(ini.IniReadValue("XUINav", "Enabled"));
+
+            enabled_chk.Checked = bool.Parse(App_GamePadNavigation.Enabled);
             CustomToolTips.SetToolTip(enabled_chk, "Requires admin rights for full controller support.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
-            switch12.Tag = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
-            switch13.Tag = int.Parse(ini.IniReadValue("XUINav", "RightClick"));
-            switch14.Tag = int.Parse(ini.IniReadValue("XUINav", "LeftClick"));
-            switch15.Text = ini.IniReadValue("XUINav", "Deadzone");
+            switch12.Tag = int.Parse(App_GamePadNavigation.DragDrop);
+            switch13.Tag = int.Parse(App_GamePadNavigation.RightClick);
+            switch14.Tag = int.Parse(App_GamePadNavigation.LeftClick);
+            switch15.Text = App_GamePadNavigation.Deadzone;
 
             foreach (RadioButton rb in groupBoxType.Controls)
             {
@@ -236,9 +150,9 @@ namespace Nucleus.Coop.Forms
             reminderPict.BackgroundImage = GamepadButtons.Image(1024, gamepadType);//Guide
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
-            if (ini.IniReadValue("Misc", "GamepadSettingsLocation") != "")
+            if (App_Misc.GamepadSettingsLocation != "")
             {
-                string[] windowLocation = ini.IniReadValue("Misc", "GamepadSettingsLocation").Split('X');
+                string[] windowLocation = App_Misc.GamepadSettingsLocation.Split('X');
 
                 if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
                 {
@@ -532,7 +446,7 @@ namespace Nucleus.Coop.Forms
 
         private void Enabled_chk_CheckedChanged(object sender, EventArgs e)
         {
-            ini.IniWriteValue("XUINav", "Enabled", enabled_chk.Checked.ToString());
+            App_GamePadNavigation.Enabled = enabled_chk.Checked.ToString();
             GamepadNavigation.UpdateUINavSettings();
         }
 
@@ -541,7 +455,7 @@ namespace Nucleus.Coop.Forms
             RadioButton radio = (RadioButton)sender;
             if (radio.Checked)
             {
-                ini.IniWriteValue("XUINav", "Type", radio.Tag.ToString());
+                App_GamePadNavigation.Type = radio.Tag.ToString();
                 gamepadType = radio.Tag.ToString();
                 UpdateGamepadType();
             }
@@ -552,7 +466,7 @@ namespace Nucleus.Coop.Forms
             RadioButton radio = (RadioButton)sender;
             if (radio.Checked)
             {
-                ini.IniWriteValue("XUINav", "Type", radio.Tag.ToString());
+                App_GamePadNavigation.Type = radio.Tag.ToString();
                 gamepadType = radio.Tag.ToString();
                 UpdateGamepadType();
             }
@@ -614,29 +528,29 @@ namespace Nucleus.Coop.Forms
 
             #endregion
 
-            ini.IniWriteValue("XShortcuts", "SetFocus", switch1.Tag.ToString() + "+" + slave1.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Close", switch2.Tag.ToString() + "+" + slave2.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Stop", switch3.Tag.ToString() + "+" + slave3.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "TopMost", switch4.Tag.ToString() + "+" + slave4.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "ResetWindows", switch5.Tag.ToString() + "+" + slave5.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Cutscenes", switch6.Tag.ToString() + "+" + slave6.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Switch", switch7.Tag.ToString() + "+" + slave7.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "LockInputs", switch8.Tag.ToString() + "+" + slave8.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "ReleaseCursor", switch9.Tag.ToString() + "+" + slave9.Tag.ToString());
+            App_GamePadShortcuts.SetFocus = Tuple.Create(switch1.Tag.ToString(), slave1.Tag.ToString());
+            App_GamePadShortcuts.Close = Tuple.Create(switch2.Tag.ToString(), slave2.Tag.ToString());
+            App_GamePadShortcuts.StopSession = Tuple.Create(switch3.Tag.ToString(), slave3.Tag.ToString());
+            App_GamePadShortcuts.TopMost = Tuple.Create(switch4.Tag.ToString(), slave4.Tag.ToString());
+            App_GamePadShortcuts.ResetWindows = Tuple.Create(switch5.Tag.ToString(), slave5.Tag.ToString());
+            App_GamePadShortcuts.CutscenesMode = Tuple.Create(switch6.Tag.ToString(), slave6.Tag.ToString());
+            App_GamePadShortcuts.SwitchLayout = Tuple.Create(switch7.Tag.ToString(), slave7.Tag.ToString());
+            App_GamePadShortcuts.LockInputs = Tuple.Create(switch8.Tag.ToString(), slave8.Tag.ToString());
+            App_GamePadShortcuts.ReleaseCursor = Tuple.Create(switch9.Tag.ToString(), slave9.Tag.ToString());
 
-            ini.IniWriteValue("XUINav", "LockUIControl", switch10.Tag.ToString() + "+" + slave10.Tag.ToString());
-            ini.IniWriteValue("XUINav", "OpenOsk", switch11.Tag.ToString() + "+" + slave11.Tag.ToString());
-            ini.IniWriteValue("XUINav", "DragDrop", switch12.Tag.ToString());
-            ini.IniWriteValue("XUINav", "RightClick", switch13.Tag.ToString());
-            ini.IniWriteValue("XUINav", "LeftClick", switch14.Tag.ToString());
+            App_GamePadNavigation.TogglekUINavigation = Tuple.Create(switch10.Tag.ToString(), slave10.Tag.ToString());
+            App_GamePadNavigation.OpenOsk = Tuple.Create(switch11.Tag.ToString(), slave11.Tag.ToString());
+            App_GamePadNavigation.DragDrop = switch12.Tag.ToString();
+            App_GamePadNavigation.RightClick = switch13.Tag.ToString();
+            App_GamePadNavigation.LeftClick = switch14.Tag.ToString();
 
             if (switch15.Text == "")
             {
                 switch15.Text = "10000";
             }
 
-            ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
-            ini.IniWriteValue("Misc", "GamepadSettingsLocation", Location.X + "X" + Location.Y);
+            App_GamePadNavigation.Deadzone = switch15.Text;
+            App_Misc.GamepadSettingsLocation = Location.X + "X" + Location.Y;
 
             GamepadShortcuts.UpdateShortcutsValue();
             GamepadNavigation.UpdateUINavSettings();

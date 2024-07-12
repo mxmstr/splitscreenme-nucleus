@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
@@ -35,7 +36,6 @@ namespace Nucleus.Coop
     {
         private MainForm mainForm = null;
         private SetupScreenControl setupScreen;
-        private IniFile ini = Globals.ini;
 
         private string prevTheme;
         private string currentNickname;
@@ -71,7 +71,7 @@ namespace Nucleus.Coop
 
         public Settings(MainForm mf, SetupScreenControl pc)
         {
-            fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
+            fontSize = float.Parse(Globals.ThemeConfigFile.IniReadValue("Font", "SettingsFontSize"));
             mainForm = mf;
             setupScreen = pc;
 
@@ -83,7 +83,7 @@ namespace Nucleus.Coop
             hand_Cursor = Theme_Settings.Hand_Cursor;
             Cursor = default_Cursor;
 
-            var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
+            var borderscolor = Globals.ThemeConfigFile.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Theme_Settings.SelectedBackColor;
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
             BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
@@ -245,32 +245,32 @@ namespace Nucleus.Coop
                 sidField.LostFocus += new EventHandler(UpdateSteamIdsItems);
             }
 
-            splitDiv.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
-            hideDesktop.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "HideOnly"));
-            cts_Mute.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
-            cts_kar.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
-            cts_unfocus.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
+            splitDiv.Checked = bool.Parse(App_Layouts.SplitDiv);
+            hideDesktop.Checked = bool.Parse(App_Layouts.HideOnly);
+            cts_Mute.Checked = bool.Parse(App_Layouts.Cts_MuteAudioOnly);
+            cts_kar.Checked = bool.Parse(App_Layouts.Cts_KeepAspectRatio);
+            cts_unfocus.Checked = bool.Parse(App_Layouts.Cts_Unfocus);
 
-            enable_WMerger.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger"));            
-            losslessHook.Checked = bool.Parse(ini.IniReadValue("CustomLayout", "LosslessHook"));
+            enable_WMerger.Checked = bool.Parse(App_Layouts.WindowsMerger);
+            losslessHook.Checked = bool.Parse(App_Layouts.LosslessHook);
 
-            if (ini.IniReadValue("CustomLayout", "HorizontalLines") != "")
+            if (App_Layouts.HorizontalLines != "")
             {
-                numUpDownHor.Value = int.Parse(ini.IniReadValue("CustomLayout", "HorizontalLines"));
+                numUpDownHor.Value = int.Parse(App_Layouts.HorizontalLines);
             }
 
-            if (ini.IniReadValue("CustomLayout", "VerticalLines") != "")
+            if (App_Layouts.VerticalLines != "")
             {
-                numUpDownVer.Value = int.Parse(ini.IniReadValue("CustomLayout", "VerticalLines"));
+                numUpDownVer.Value = int.Parse(App_Layouts.VerticalLines);
             }
 
-            if (ini.IniReadValue("CustomLayout", "MaxPlayers") != "")
+            if (App_Layouts.MaxPlayers != "")
             {
-                numMaxPlyrs.Value = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
+                numMaxPlyrs.Value = int.Parse(App_Layouts.MaxPlayers);
             }
 
-            disableGameProfiles.Checked = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
-            gamepadsAssignMethods.Checked = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
+            disableGameProfiles.Checked = bool.Parse(App_Misc.DisableGameProfiles);
+            gamepadsAssignMethods.Checked = bool.Parse(App_Misc.UseXinputIndex);
             gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
 
             DevicesFunctions.UseGamepadApiIndex = gamepadsAssignMethods.Checked;
@@ -278,9 +278,9 @@ namespace Nucleus.Coop
             ///network setting
             RefreshCmbNetwork();
 
-            if (ini.IniReadValue("Misc", "Network") != "")
+            if (App_Misc.Network != "")
             {
-                cmb_Network.Text = ini.IniReadValue("Misc", "Network");
+                cmb_Network.Text = App_Misc.Network;
             }
             else
             {
@@ -299,7 +299,7 @@ namespace Nucleus.Coop
             SplitColors.Items.Add("Yellow");
             SplitColors.Items.Add("Green");
 
-            SplitColors.SelectedItem = ini.IniReadValue("CustomLayout", "SplitDivColor");
+            SplitColors.SelectedItem = App_Layouts.SplitDivColor;
 
             string[] themeList = Directory.GetDirectories(Path.Combine(Application.StartupPath, @"gui\theme\"));
 
@@ -323,179 +323,100 @@ namespace Nucleus.Coop
             }
 
             ///epiclangs setting
-            cmb_EpicLang.SelectedItem = ini.IniReadValue("Misc", "EpicLang");
+            cmb_EpicLang.SelectedItem = App_Misc.EpicLang;
 
-            useNicksCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
+            useNicksCheck.Checked = bool.Parse(App_Misc.UseNicksInGame);
 
-            keepAccountsCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "KeepAccounts"));
+            keepAccountsCheck.Checked = bool.Parse(App_Misc.KeepAccounts);
 
             ///auto scale setting
-            scaleOptionCbx.Checked = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
+            scaleOptionCbx.Checked = bool.Parse(App_Misc.AutoDesktopScaling);
 
             ///Custom HotKey setting
-            lockKey_Cmb.Text = ini.IniReadValue("Hotkeys", "LockKey");
+            lockKey_Cmb.Text = App_Hotkeys.LockInputs;
 
-            if (ini.IniReadValue("Misc", "SteamLang") != "")
+            if (App_Misc.SteamLang != "")
             {
-                cmb_Lang.Text = ini.IniReadValue("Misc", "SteamLang");
+                cmb_Lang.Text = App_Misc.SteamLang;
             }
             else
             {
                 cmb_Lang.SelectedIndex = 0;
             }
 
-            if (ini.IniReadValue("Hotkeys", "Close").Contains('+'))
+            if ((App_Hotkeys.CloseApp.Item1 == "Ctrl" || App_Hotkeys.CloseApp.Item1 == "Alt" || App_Hotkeys.CloseApp.Item1 == "Shift") && App_Hotkeys.CloseApp.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.CloseApp.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] closeHk = ini.IniReadValue("Hotkeys", "Close").Split('+');
-                if ((closeHk[0] == "Ctrl" || closeHk[0] == "Alt" || closeHk[0] == "Shift") && closeHk[1].Length == 1 && Regex.IsMatch(closeHk[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    cn_Cmb.SelectedItem = closeHk[0];
-                    cn_HKTxt.Text = closeHk[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "Close", "");
+                cn_Cmb.SelectedItem = App_Hotkeys.CloseApp.Item1;
+                cn_HKTxt.Text = App_Hotkeys.CloseApp.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "Stop").Contains('+'))
+            if ((App_Hotkeys.StopSession.Item1 == "Ctrl" || App_Hotkeys.StopSession.Item1 == "Alt" || App_Hotkeys.StopSession.Item1 == "Shift") && App_Hotkeys.StopSession.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.StopSession.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] stopHk = ini.IniReadValue("Hotkeys", "Stop").Split('+');
-                if ((stopHk[0] == "Ctrl" || stopHk[0] == "Alt" || stopHk[0] == "Shift") && stopHk[1].Length == 1 && Regex.IsMatch(stopHk[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    ss_Cmb.SelectedItem = stopHk[0];
-                    ss_HKTxt.Text = stopHk[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "Stop", "");
+                ss_Cmb.SelectedItem = App_Hotkeys.StopSession.Item1;
+                ss_HKTxt.Text = App_Hotkeys.StopSession.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "TopMost").Contains('+'))
+            if ((App_Hotkeys.TopMost.Item1 == "Ctrl" || App_Hotkeys.TopMost.Item1 == "Alt" || App_Hotkeys.TopMost.Item1 == "Shift") && App_Hotkeys.TopMost.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.TopMost.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] topHk = ini.IniReadValue("Hotkeys", "TopMost").Split('+');
-                if ((topHk[0] == "Ctrl" || topHk[0] == "Alt" || topHk[0] == "Shift") && topHk[1].Length == 1 && Regex.IsMatch(topHk[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    ttm_Cmb.SelectedItem = topHk[0];
-                    ttm_HKTxt.Text = topHk[1];
-                }
+                ttm_Cmb.SelectedItem = App_Hotkeys.TopMost.Item1;
+                ttm_HKTxt.Text = App_Hotkeys.TopMost.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "Stop").Contains('+'))
+            if ((App_Hotkeys.SetFocus.Item1 == "Ctrl" || App_Hotkeys.SetFocus.Item1 == "Alt" || App_Hotkeys.SetFocus.Item1 == "Shift") && App_Hotkeys.SetFocus.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.SetFocus.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] stopHk = ini.IniReadValue("Hotkeys", "Stop").Split('+');
-                if ((stopHk[0] == "Ctrl" || stopHk[0] == "Alt" || stopHk[0] == "Shift") && stopHk[1].Length == 1 && Regex.IsMatch(stopHk[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    ss_Cmb.SelectedItem = stopHk[0];
-                    ss_HKTxt.Text = stopHk[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "Stop", "");
+                tu_Cmb.SelectedItem = App_Hotkeys.SetFocus.Item1;
+                tu_HKTxt.Text = App_Hotkeys.SetFocus.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "SetFocus").Contains('+'))
+            if ((App_Hotkeys.ResetWindows.Item1 == "Ctrl" || App_Hotkeys.ResetWindows.Item1 == "Alt" || App_Hotkeys.ResetWindows.Item1 == "Shift") && App_Hotkeys.ResetWindows.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.ResetWindows.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] foreground = ini.IniReadValue("Hotkeys", "SetFocus").Split('+');
-                if ((foreground[0] == "Ctrl" || foreground[0] == "Alt" || foreground[0] == "Shift") && foreground[1].Length == 1 && Regex.IsMatch(foreground[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    tu_Cmb.SelectedItem = foreground[0];
-                    tu_HKTxt.Text = foreground[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "SetFocus", "");
+                rw_Cmb.SelectedItem = App_Hotkeys.ResetWindows.Item1;
+                rw_HKTxt.Text = App_Hotkeys.ResetWindows.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "ResetWindows").Contains('+'))
+            if ((App_Hotkeys.CutscenesMode.Item1 == "Ctrl" || App_Hotkeys.CutscenesMode.Item1 == "Alt" || App_Hotkeys.CutscenesMode.Item1 == "Shift") && App_Hotkeys.CutscenesMode.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.CutscenesMode.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] resetWindows = ini.IniReadValue("Hotkeys", "ResetWindows").Split('+');
-                if ((resetWindows[0] == "Ctrl" || resetWindows[0] == "Alt" || resetWindows[0] == "Shift") && resetWindows[1].Length == 1 && Regex.IsMatch(resetWindows[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    rw_Cmb.SelectedItem = resetWindows[0];
-                    rw_HKTxt.Text = resetWindows[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "ResetWindows", "");
+                csm_Cmb.SelectedItem = App_Hotkeys.CutscenesMode.Item1;
+                csm_HKTxt.Text = App_Hotkeys.CutscenesMode.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "Cutscenes").Contains('+'))
+            if ((App_Hotkeys.SwitchLayout.Item1 == "Ctrl" || App_Hotkeys.SwitchLayout.Item1 == "Alt" || App_Hotkeys.SwitchLayout.Item1 == "Shift") && App_Hotkeys.SwitchLayout.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.SwitchLayout.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] cutscenes = ini.IniReadValue("Hotkeys", "Cutscenes").Split('+');
-                if ((cutscenes[0] == "Ctrl" || cutscenes[0] == "Alt" || cutscenes[0] == "Shift") && cutscenes[1].Length == 1 && Regex.IsMatch(cutscenes[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    csm_Cmb.SelectedItem = cutscenes[0];
-                    csm_HKTxt.Text = cutscenes[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "Cutscenes", "");
+                swl_Cmb.SelectedItem = App_Hotkeys.SwitchLayout.Item1;
+                swl_HKTxt.Text = App_Hotkeys.SwitchLayout.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "Switch").Contains('+'))
+            if ((App_Hotkeys.ShortcutsReminder.Item1 == "Ctrl" || App_Hotkeys.ShortcutsReminder.Item1 == "Alt" || App_Hotkeys.ShortcutsReminder.Item1 == "Shift") && App_Hotkeys.ShortcutsReminder.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.ShortcutsReminder.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] swl = ini.IniReadValue("Hotkeys", "Switch").Split('+');
-                if ((swl[0] == "Ctrl" || swl[0] == "Alt" || swl[0] == "Shift") && swl[1].Length == 1 && Regex.IsMatch(swl[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    swl_Cmb.SelectedItem = swl[0];
-                    swl_HKTxt.Text = swl[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "Switch", "");
+                rm_Cmb.SelectedItem = App_Hotkeys.ShortcutsReminder.Item1;
+                rm_HKTxt.Text = App_Hotkeys.ShortcutsReminder.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "ShortcutsReminder").Contains('+'))
+
+
+            if ((App_Hotkeys.SwitchMergerForeGroundChild.Item1 == "Ctrl" || App_Hotkeys.SwitchMergerForeGroundChild.Item1 == "Alt" || App_Hotkeys.SwitchMergerForeGroundChild.Item1 == "Shift") && App_Hotkeys.SwitchMergerForeGroundChild.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.SwitchMergerForeGroundChild.Item2, @"^[a-zA-Z0-9]+$"))
             {
-                string[] rml = ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+');
-                if ((rml[0] == "Ctrl" || rml[0] == "Alt" || rml[0] == "Shift") && rml[1].Length == 1 && Regex.IsMatch(rml[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    rm_Cmb.SelectedItem = rml[0];
-                    rm_HKTxt.Text = rml[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "ShortcutsReminder", "");
+                smfw_Cmb.SelectedItem = App_Hotkeys.SwitchMergerForeGroundChild.Item1;
+                smfw_HKTxt.Text = App_Hotkeys.SwitchMergerForeGroundChild.Item2;
             }
 
-            if (ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Contains('+'))
+
+            if (App_Misc.IgnoreInputLockReminder != "")
             {
-                string[] switchMergerChildForeGround = ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+');
-                if ((switchMergerChildForeGround[0] == "Ctrl" || switchMergerChildForeGround[0] == "Alt" || switchMergerChildForeGround[0] == "Shift") && switchMergerChildForeGround[1].Length == 1 && Regex.IsMatch(switchMergerChildForeGround[1], @"^[a-zA-Z0-9]+$"))
-                {
-                    smfw_Cmb.SelectedItem = switchMergerChildForeGround[0];
-                    smfw_HKTxt.Text = switchMergerChildForeGround[1];
-                }
-            }
-            else
-            {
-                ini.IniWriteValue("Hotkeys", "switchMergerChildForeGround", "");
+                ignoreInputLockReminderCheckbox.Checked = bool.Parse(App_Misc.IgnoreInputLockReminder);
             }
 
-            if (ini.IniReadValue("Misc", "IgnoreInputLockReminder") != "")
+            if (App_Misc.DebugLog != "")
             {
-                ignoreInputLockReminderCheckbox.Checked = bool.Parse(ini.IniReadValue("Misc", "IgnoreInputLockReminder"));
+                debugLogCheck.Checked = bool.Parse(App_Misc.DebugLog);
             }
 
-            if (ini.IniReadValue("Misc", "DebugLog") != "")
+            if (App_Misc.NucleusAccountPassword != "")
             {
-                debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));
+                nucUserPassTxt.Text = App_Misc.NucleusAccountPassword;
             }
 
-            if (ini.IniReadValue("Misc", "NucleusAccountPassword") != "")
-            {
-                nucUserPassTxt.Text = ini.IniReadValue("Misc", "NucleusAccountPassword");
-            }       
-
-            if (ini.IniReadValue("Audio", "Custom") == "0")
+            if (App_Audio.Custom == "0")
             {
                 audioDefaultSettingsRadio.Checked = true;
                 audioCustomSettingsBox.Enabled = false;
@@ -515,9 +436,9 @@ namespace Nucleus.Coop
             GetPlayersNickNameAndSteamIds();
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
-            if (ini.IniReadValue("Misc", "SettingsLocation") != "")
+            if (App_Misc.SettingsLocation != "")
             {
-                string[] windowLocation = ini.IniReadValue("Misc", "SettingsLocation").Split('X');
+                string[] windowLocation = App_Misc.SettingsLocation.Split('X');
 
                 if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
                 {
@@ -550,8 +471,8 @@ namespace Nucleus.Coop
             {
                 DPIManager.Unregister(this);
                 return;
-            }   
-            
+            }
+
             float newFontSize = Font.Size * scale;
 
             foreach (Control c in ctrls)
@@ -610,15 +531,15 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(enable_WMerger, "Game windows will be merged to a single window\n" +
                                                        "so Lossless Scaling can be used with Nucleus.\n " +
                                                        "Note that there's no mutiple monitor support yet.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-           
+
             CustomToolTips.SetToolTip(losslessHook, "Lossless will not stop upscaling if an other window get the focus, useful\n" +
                                                     "if game windows requires real focus to receive inputs.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 }); 
+            CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(mergerShortcutLabel, "Each press will set an other child window as foreground window(similar to Alt+Tab).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndSteamIds()
-        {           
+        {
             for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 var sidField = steamIds[i];
@@ -630,8 +551,8 @@ namespace Nucleus.Coop
                 nickField.Items.AddRange(PlayersIdentityCache.GetCachedNicknamesList.ToArray());
                 nickField.Items.AddRange(PlayersIdentityCache.SettingsIniNicknamesList.Where(nic => !nickField.Items.Contains(nic)).ToArray());
                 nickField.Text = PlayersIdentityCache.SettingsIniNicknamesList[i];
-                nickField.SelectedItem = nickField.Text;                
-            }          
+                nickField.SelectedItem = nickField.Text;
+            }
         }
 
         private void CloseBtnPicture_Click(object sender, EventArgs e)
@@ -650,10 +571,10 @@ namespace Nucleus.Coop
 
                 if (nickField.Text != "")
                 {
-                    ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), nickField.Text);
-                   
+                    Globals.ini.IniWriteValue("ControllerMapping", "Player_" + (i + 1), nickField.Text);
+
                     PlayersIdentityCache.SettingsIniNicknamesList[i] = nickField.Text;
-               
+
                     if (PlayersIdentityCache.GetCachedNicknamesList.All(n => n != nickField.Text))
                     {
                         PlayersIdentityCache.AddNicknameToCache(nickField.Text);
@@ -678,7 +599,7 @@ namespace Nucleus.Coop
 
                 if (Regex.IsMatch(sidField.Text, "^[0-9]+$") && sidField.Text.Length == 17 || sidField.Text.Length == 0)
                 {
-                    ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), sidField.Text);
+                    Globals.ini.IniWriteValue("SteamIDs", "Player_" + (i + 1), sidField.Text);
 
                     PlayersIdentityCache.SettingsIniSteamIdsList[i] = sidField.Text;
 
@@ -716,11 +637,11 @@ namespace Nucleus.Coop
 
             if (audioDefaultSettingsRadio.Checked)
             {
-                ini.IniWriteValue("Audio", "Custom", 0.ToString());
+                App_Audio.Custom = 0.ToString();
             }
             else
             {
-                ini.IniWriteValue("Audio", "Custom", 1.ToString());
+                App_Audio.Custom = 1.ToString();
             }
 
             foreach (Control ctrl in audioCustomSettingsBox.Controls)
@@ -729,7 +650,7 @@ namespace Nucleus.Coop
                 {
                     if (audioDevices?.Count > 0 && audioDevices.Keys.Contains(cmb.Text))
                     {
-                        ini.IniWriteValue("Audio", cmb.Name, audioDevices[cmb.Text]);
+                        App_Audio.SaveAudioOutput(cmb.Name, audioDevices[cmb.Text]);
                     }
                 }
             }
@@ -746,42 +667,42 @@ namespace Nucleus.Coop
                 }
             }
 
-            ini.IniWriteValue("Hotkeys", "Close", cn_Cmb.SelectedItem.ToString() + "+" + cn_HKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "Stop", ss_Cmb.SelectedItem.ToString() + "+" + ss_HKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "TopMost", ttm_Cmb.SelectedItem.ToString() + "+" + ttm_HKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "SetFocus", tu_Cmb.SelectedItem.ToString() + "+" + tu_HKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "ResetWindows", rw_Cmb.SelectedItem.ToString() + "+" + rw_HKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "LockKey", lockKey_Cmb.SelectedItem.ToString());
-            ini.IniWriteValue("Hotkeys", "Cutscenes", csm_Cmb.SelectedItem.ToString() + "+" + csm_HKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "Switch", swl_Cmb.SelectedItem.ToString() + "+" + swl_HKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "ShortcutsReminder", rm_Cmb.SelectedItem.ToString() + "+" + rm_HKTxt.Text);
-            ini.IniWriteValue("Hotkeys", "SwitchMergerChildForeGround", smfw_Cmb.SelectedItem.ToString() + "+" + smfw_HKTxt.Text);
+            App_Hotkeys.CloseApp = Tuple.Create(cn_Cmb.SelectedItem.ToString(), cn_HKTxt.Text);
+            App_Hotkeys.StopSession = Tuple.Create(ss_Cmb.SelectedItem.ToString(), ss_HKTxt.Text);
+            App_Hotkeys.TopMost = Tuple.Create(ttm_Cmb.SelectedItem.ToString(), ttm_HKTxt.Text);
+            App_Hotkeys.SetFocus = Tuple.Create(tu_Cmb.SelectedItem.ToString(), tu_HKTxt.Text);
+            App_Hotkeys.ResetWindows = Tuple.Create(rw_Cmb.SelectedItem.ToString(), rw_HKTxt.Text);
+            App_Hotkeys.LockInputs = lockKey_Cmb.SelectedItem.ToString();
+            App_Hotkeys.CutscenesMode = Tuple.Create(csm_Cmb.SelectedItem.ToString(), csm_HKTxt.Text);
+            App_Hotkeys.SwitchLayout = Tuple.Create(swl_Cmb.SelectedItem.ToString(), swl_HKTxt.Text);
+            App_Hotkeys.ShortcutsReminder = Tuple.Create(rm_Cmb.SelectedItem.ToString(), rm_HKTxt.Text);
+            App_Hotkeys.SwitchMergerForeGroundChild = Tuple.Create(smfw_Cmb.SelectedItem.ToString(), smfw_HKTxt.Text);
 
-            ini.IniWriteValue("Misc", "UseNicksInGame", useNicksCheck.Checked.ToString());
-            ini.IniWriteValue("Misc", "KeepAccounts", keepAccountsCheck.Checked.ToString());
-            ini.IniWriteValue("Misc", "Network", cmb_Network.Text.ToString());
-            ini.IniWriteValue("Misc", "IgnoreInputLockReminder", ignoreInputLockReminderCheckbox.Checked.ToString());
-            ini.IniWriteValue("Misc", "DebugLog", debugLogCheck.Checked.ToString());
-            ini.IniWriteValue("Misc", "SteamLang", cmb_Lang.SelectedItem.ToString());
-            ini.IniWriteValue("Misc", "EpicLang", cmb_EpicLang.SelectedItem.ToString());
-            ini.IniWriteValue("Misc", "NucleusAccountPassword", nucUserPassTxt.Text);
-            ini.IniWriteValue("Misc", "AutoDesktopScaling", scaleOptionCbx.Checked.ToString());
+            App_Misc.UseNicksInGame = useNicksCheck.Checked.ToString();
+            App_Misc.KeepAccounts = keepAccountsCheck.Checked.ToString();
+            App_Misc.Network = cmb_Network.Text.ToString();
+            App_Misc.IgnoreInputLockReminder = ignoreInputLockReminderCheckbox.Checked.ToString();
+            App_Misc.DebugLog = debugLogCheck.Checked.ToString();
+            App_Misc.SteamLang = cmb_Lang.SelectedItem.ToString();
+            App_Misc.EpicLang = cmb_EpicLang.SelectedItem.ToString();
 
-            ini.IniWriteValue("Dev", "UseXinputIndex", gamepadsAssignMethods.Checked.ToString());
+            App_Misc.NucleusAccountPassword = nucUserPassTxt.Text;
+            App_Misc.AutoDesktopScaling = scaleOptionCbx.Checked.ToString();
 
-            ini.IniWriteValue("CustomLayout", "SplitDiv", splitDiv.Checked.ToString());
-            ini.IniWriteValue("CustomLayout", "HideOnly", hideDesktop.Checked.ToString());
-            ini.IniWriteValue("CustomLayout", "SplitDivColor", SplitColors.Text.ToString());
-            ini.IniWriteValue("CustomLayout", "HorizontalLines", numUpDownHor.Value.ToString());
-            ini.IniWriteValue("CustomLayout", "VerticalLines", numUpDownVer.Value.ToString());
-            ini.IniWriteValue("CustomLayout", "MaxPlayers", numMaxPlyrs.Value.ToString());
+            App_Misc.UseXinputIndex = gamepadsAssignMethods.Checked.ToString();
 
-            ini.IniWriteValue("CustomLayout", "Cts_MuteAudioOnly", cts_Mute.Checked.ToString());
-            ini.IniWriteValue("CustomLayout", "Cts_KeepAspectRatio", cts_kar.Checked.ToString());
-            ini.IniWriteValue("CustomLayout", "Cts_Unfocus", cts_unfocus.Checked.ToString());
-            ini.IniWriteValue("CustomLayout", "WindowsMerger", enable_WMerger.Checked.ToString());
+            App_Layouts.SplitDiv = splitDiv.Checked.ToString();
+            App_Layouts.HideOnly = hideDesktop.Checked.ToString();
+            App_Layouts.SplitDivColor = SplitColors.Text.ToString();
+            App_Layouts.HorizontalLines = numUpDownHor.Value.ToString();
+            App_Layouts.VerticalLines = numUpDownVer.Value.ToString();
+            App_Layouts.MaxPlayers = numMaxPlyrs.Value.ToString();
 
-            mainForm.lockKeyIniString = lockKey_Cmb.SelectedItem.ToString();
+            App_Layouts.Cts_MuteAudioOnly = cts_Mute.Checked.ToString();
+            App_Layouts.Cts_KeepAspectRatio = cts_kar.Checked.ToString();
+            App_Layouts.Cts_Unfocus = cts_unfocus.Checked.ToString();
+            App_Layouts.WindowsMerger = enable_WMerger.Checked.ToString();
+
             RawInputProcessor.UpdateLockKey();
 
             if (setupScreen != null)
@@ -793,18 +714,18 @@ namespace Nucleus.Coop
                 }
             }
 
-            bool disableGameProfileschanged = disableGameProfiles.Checked != bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
+            bool disableGameProfileschanged = disableGameProfiles.Checked != bool.Parse(App_Misc.DisableGameProfiles);
 
             if (disableGameProfileschanged)
             {
-                ini.IniWriteValue("Misc", "DisableGameProfiles", disableGameProfiles.Checked.ToString());
+                App_Misc.DisableGameProfiles = disableGameProfiles.Checked.ToString();
             }
 
             bool needToRestart = false;
 
             if (themeCbx.SelectedItem.ToString() != prevTheme)
             {
-                ini.IniWriteValue("Theme", "Theme", themeCbx.SelectedItem.ToString());
+                App_Misc.Theme = themeCbx.SelectedItem.ToString();
                 mainForm.restartRequired = true;
                 needToRestart = true;
             }
@@ -861,7 +782,7 @@ namespace Nucleus.Coop
                 Application.Restart();
                 Process.GetCurrentProcess().Kill();
                 return;
-            }         
+            }
 
             Globals.MainOSD.Show(500, "Settings Saved");
 
@@ -871,7 +792,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            ini.IniWriteValue("Misc", "SettingsLocation", Location.X + "X" + Location.Y);
+            App_Misc.SettingsLocation = Location.X + "X" + Location.Y;
             mainForm.BringToFront();//for some reasons settings is disposed if the parent is minized
             Visible = false;
         }
@@ -955,9 +876,9 @@ namespace Nucleus.Coop
                     {
                         cmb.SelectedItem = lastItem;
                     }
-                    else if (audioDevices.Values.Contains(ini.IniReadValue("Audio", cmb.Name)))
+                    else if (audioDevices.Values.Contains(App_Audio.Instances_AudioOutput[cmb.Name]))
                     {
-                        cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == ini.IniReadValue("Audio", cmb.Name)).Key;
+                        cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == App_Audio.Instances_AudioOutput[cmb.Name]).Key;
                     }
                     else
                     {
@@ -977,9 +898,9 @@ namespace Nucleus.Coop
             Control c = sender as Control;
 
             for (int i = 0; i < tabsButtons.Count; i++)
-            {               
+            {
                 var button = tabsButtons[i];
-                
+
                 if (i < tabs.Count)
                 {
                     var tab = tabs[i];
@@ -1032,7 +953,7 @@ namespace Nucleus.Coop
         {
             if (mainForm.Xinput_S_Setup.Visible)
             {
-                mainForm.Xinput_S_Setup.BringToFront();            
+                mainForm.Xinput_S_Setup.BringToFront();
                 return;
             }
 
@@ -1087,7 +1008,7 @@ namespace Nucleus.Coop
                 cts_kar.Checked = false;
                 cts_kar.Enabled = false;
                 cts_unfocus.Checked = false;
-                cts_unfocus.Enabled = false;           
+                cts_unfocus.Enabled = false;
             }
             else
             {
@@ -1301,7 +1222,7 @@ namespace Nucleus.Coop
             }
         }
 
-        private Dictionary<string, List<string>> AllScreensRes;    
+        private Dictionary<string, List<string>> AllScreensRes;
         private List<Label> screensLabels;
         private List<Rectangle> screensResControlsRow;
 
@@ -1319,19 +1240,19 @@ namespace Nucleus.Coop
 
             foreach (Screen screen in Screen.AllScreens)
             {
-                string iniMergerRes = ini.IniReadValue("CustomLayout", "WindowsMergerRes");
+                string mergerRes = App_Layouts.WindowsMergerRes;
 
-                if (iniMergerRes == "")
+                if (mergerRes == "")
                 {
                     if (screen.Primary)
                     {
-                        ini.IniWriteValue("CustomLayout", "WindowsMergerRes", $"{screen.Bounds.Width}X{screen.Bounds.Height}");
-                        selectedRes.Text = $"{screen.Bounds.Width}X{screen.Bounds.Height}";
+                        App_Layouts.WindowsMergerRes = $"{screen.Bounds.Width}X{screen.Bounds.Height}";
+                        selectedRes.Text = App_Layouts.WindowsMergerRes;
                     }
                 }
-                else 
+                else
                 {
-                    selectedRes.Text = ini.IniReadValue("CustomLayout", "WindowsMergerRes");
+                    selectedRes.Text = App_Layouts.WindowsMergerRes;
                 }
 
                 ComboBox resCmb = new ComboBox();
@@ -1379,9 +1300,9 @@ namespace Nucleus.Coop
                 }
 
                 string currentScreenRes = $"{screen.Bounds.Width}X{screen.Bounds.Height}";
-  
-                resCmb.Items.AddRange(resolutions.ToArray()); 
-                resCmb.SelectedItem = iniMergerRes == "" ?  currentScreenRes : iniMergerRes;
+
+                resCmb.Items.AddRange(resolutions.ToArray());
+                resCmb.SelectedItem = mergerRes == "" ? currentScreenRes : mergerRes;
                 resLabel.Text += $" ({currentScreenRes})";
 
                 if (screensLabels.Count == 0)
@@ -1393,25 +1314,25 @@ namespace Nucleus.Coop
                     resCmb.Location = new Point(resLabel.Right + 4, resLabel.Top);
                 }
 
-                resLabel.Location = new Point(resLabel.Left, resCmb.Location.Y + (resCmb.Height/2 - resLabel.Height/2));
+                resLabel.Location = new Point(resLabel.Left, resCmb.Location.Y + (resCmb.Height / 2 - resLabel.Height / 2));
                 resLabel.Tag = screen.Bounds.Location;
                 resLabel.Click += IdentifyScreen;
 
-                Rectangle border = new Rectangle(resLabel.Location.X,resCmb.Location.Y, resCmb.Right, resCmb.Height -1);
+                Rectangle border = new Rectangle(resLabel.Location.X, resCmb.Location.Y, resCmb.Right, resCmb.Height - 1);
                 screensResControlsRow.Add(border);
-               
+
                 AllScreensRes.Add(screen.DeviceName, resolutions);
 
-               i = 0;
+                i = 0;
             }
-            
+
             refreshScreensData = false;
             screen_panel.Visible = true;
         }
 
-        private void IdentifyScreen(object sender,EventArgs e)
+        private void IdentifyScreen(object sender, EventArgs e)
         {
-            Label lb = sender as Label; 
+            Label lb = sender as Label;
             ScreenId identifierWindow = new ScreenId((Point)lb.Tag);
             identifierWindow.Show();
         }
@@ -1420,17 +1341,17 @@ namespace Nucleus.Coop
         {
             ComboBox cmb = sender as ComboBox;
             selectedRes.Text = cmb.Text;
-            ini.IniWriteValue("CustomLayout", "WindowsMergerRes", cmb.Text);
+            App_Layouts.WindowsMergerRes = cmb.Text;
         }
 
         private void Settings_VisibleChanged(object sender, EventArgs e)
-        {           
+        {
             if (Visible)
             {
                 //Reload do not cache so we always have fresh screen datas.
                 GetAllScreensResolutions();
                 //Update in case the logmanager prompt updated the value
-                debugLogCheck.Checked = bool.Parse(ini.IniReadValue("Misc", "DebugLog"));
+                debugLogCheck.Checked = bool.Parse(App_Misc.DebugLog);
             }
 
             mainForm.DisableGameProfiles = disableGameProfiles.Checked;
@@ -1452,13 +1373,13 @@ namespace Nucleus.Coop
         private void LosslessHook_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = sender as CheckBox;
-            ini.IniWriteValue("CustomLayout", "LosslessHook", checkBox.Checked.ToString());
+            App_Layouts.LosslessHook = checkBox.Checked.ToString();
         }
 
         private void Screen_panel_Paint(object sender, PaintEventArgs e)
         {
-            if(!refreshScreensData)
-            e.Graphics.DrawRectangles(bordersPen, screensResControlsRow.ToArray());
+            if (!refreshScreensData)
+                e.Graphics.DrawRectangles(bordersPen, screensResControlsRow.ToArray());
         }
 
         private bool refreshScreensData;

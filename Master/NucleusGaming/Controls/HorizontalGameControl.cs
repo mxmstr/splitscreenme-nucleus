@@ -14,7 +14,6 @@ namespace Nucleus.Coop
 {
     public class HorizontalGameControl : UserControl, IDynamicSized, IRadioControl
     {
-        private readonly IniFile ini = Globals.ini;
         public GenericGameInfo GameInfo { get; set; }
         public UserGameInfo UserGameInfo { get; private set; }
         private PictureBox picture;

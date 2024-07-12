@@ -71,7 +71,7 @@ namespace Nucleus.Coop
             txt_Stage.Visible = false;
             progressBar1.Visible = false;
             txt_Path.Visible = false;
-            ini.IniWriteValue("Misc", "AutoSearchLocation", Location.X + "X" + Location.Y);
+            //ini.IniWriteValue("Misc", "AutoSearchLocation", Location.X + "X" + Location.Y);
             this.Visible = false;
         }
 
@@ -125,30 +125,30 @@ namespace Nucleus.Coop
 
             for (int x = 1; x <= 100; x++)
             {
-                if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
-                {
-                    continue;
-                }
-                else
-                {
-                    paths.Add(main.ini.IniReadValue("SearchPaths", x.ToString()));
-                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
-                }
+                //if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
+                //{
+                //    continue;
+                //}
+                //else
+                //{
+                //    //paths.Add(main.ini.IniReadValue("SearchPaths", x.ToString()));
+                //    //disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
+                //}
             }
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
-            if (ini.IniReadValue("Misc", "AutoSearchLocation") != "")
+            if (/*ini.IniReadValue("Misc", "AutoSearchLocation") != ""*/true)
             {
-                string[] windowLocation = ini.IniReadValue("Misc", "AutoSearchLocation").Split('X');
+               // string[] windowLocation = ini.IniReadValue("Misc", "AutoSearchLocation").Split('X');
 
-                if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
-                {
-                    CenterToScreen();
-                }
-                else
-                {
-                    Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
-                }
+                //if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
+                //{
+                //    CenterToScreen();
+                //}
+                //else
+                //{
+                //    Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+                //}
             }
             else
             {
@@ -565,7 +565,7 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < paths.Count; i++)
                 {
-                    main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), paths[i]);
+                    //main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), paths[i]);
                     if (disksBox.Items.Contains(paths[i]))
                     {
                         continue;
@@ -659,12 +659,12 @@ namespace Nucleus.Coop
                     {
                         if (disksBox.CheckedItems.Contains(disksBox.Items[i]))
                         {
-                            main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), disksBox.Items[i].ToString());
+                            //main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), disksBox.Items[i].ToString());
                         }
                         else
                         {
                             pathsToRemove.Add(disksBox.Items[i].ToString());
-                            main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), "");
+                            //main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), "");
                         }
                     }
                 }

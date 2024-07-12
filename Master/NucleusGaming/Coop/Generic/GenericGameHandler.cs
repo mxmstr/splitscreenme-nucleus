@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Coop.Forms;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.Generic.Cursor;
@@ -114,7 +115,6 @@ namespace Nucleus.Gaming
         public ProcessData prevProcessData;
         public Process launchProc;
         public UserScreen owner;
-        public readonly IniFile ini = Globals.ini;
 
         public Thread FakeFocus => WindowFakeFocus.fakeFocus;
 
@@ -156,7 +156,7 @@ namespace Nucleus.Gaming
             userGame = game;
             this.profile = profile;
 
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (App_Misc.DebugLog == "True")
             {
                 isDebug = true;
             }
@@ -269,7 +269,7 @@ namespace Nucleus.Gaming
 
         public string Play()
         {
-            if (!bool.Parse(ini.IniReadValue("Misc", "IgnoreInputLockReminder")))
+            if (!bool.Parse(App_Misc.IgnoreInputLockReminder))
             {
                 MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information,MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly,false);
             }    
@@ -382,15 +382,15 @@ namespace Nucleus.Gaming
 
             bool hasMerger = false;
 
-            if (GameProfile.EnableWindowsMerger && !gen.MetaInfo.DisableProfiles && !bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles")))
+            if (GameProfile.EnableWindowsMerger && !gen.MetaInfo.DisableProfiles && !bool.Parse(App_Misc.DisableGameProfiles))
             {
                 string[] mergerRes = GameProfile.MergerResolution.Split('X');
                 WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
                 hasMerger = true;
             }
-            else if (bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger")) && (gen.MetaInfo.DisableProfiles || bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"))))
+            else if (bool.Parse(App_Layouts.WindowsMerger) && (gen.MetaInfo.DisableProfiles || bool.Parse(App_Misc.DisableGameProfiles)))
             {
-                string[] mergerRes = ini.IniReadValue("CustomLayout", "WindowsMergerRes").Split('X');
+                string[] mergerRes = App_Layouts.WindowsMergerRes.Split('X');
                 WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
                 hasMerger = true;
             }
@@ -468,9 +468,9 @@ namespace Nucleus.Gaming
                 Log("########## END OF HANDLER ##########");
             }
 
-            if (ini.IniReadValue("Misc", "NucleusAccountPassword") != "12345" && ini.IniReadValue("Misc", "NucleusAccountPassword") != "")
+            if (App_Misc.NucleusAccountPassword != "12345" && App_Misc.NucleusAccountPassword != "")
             {
-                nucleusUserAccountsPassword = ini.IniReadValue("Misc", "NucleusAccountPassword");
+                nucleusUserAccountsPassword = App_Misc.NucleusAccountPassword;
             }
 
             for (int i = 0; i < players.Count; i++)
@@ -3731,7 +3731,6 @@ namespace Nucleus.Gaming
 
             foreach (PlayerInfo player in data)
             {
-                player.DInputJoystick?.Unacquire();
                 player.DInputJoystick?.Dispose();
             }
 
@@ -3744,7 +3743,7 @@ namespace Nucleus.Gaming
                     NucleusUsers.TransferNucleusUserAccountProfiles(data);
                 }
 
-                if (!bool.Parse(ini.IniReadValue("Misc", "KeepAccounts")))
+                if (!bool.Parse(App_Misc.KeepAccounts))
                 {
                     if (gen.LaunchAsDifferentUsers || gen.LaunchAsDifferentUsersAlt)
                     {
@@ -3810,7 +3809,7 @@ namespace Nucleus.Gaming
                 CleanGameContent.CleanContentFolder(gen);
             }
 
-            if  (!bool.Parse(ini.IniReadValue("Misc", "KeepAccounts")))
+            if  (!bool.Parse(App_Misc.KeepAccounts))
             {
                 WindowsUsersUtil.DeleteCreatedWindowsUserFolder();
             }
@@ -3830,7 +3829,7 @@ namespace Nucleus.Gaming
             {
                 logMsg = logMessage;
 
-                if (ini.IniReadValue("Misc", "DebugLog") == "True")
+                if (App_Misc.DebugLog == "True")
                 {
                     using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                     {

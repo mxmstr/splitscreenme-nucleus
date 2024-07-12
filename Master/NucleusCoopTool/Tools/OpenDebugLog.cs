@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,10 +13,10 @@ namespace Nucleus.Coop.Tools
         {
             try
             {
-                if (Globals.ini.IniReadValue("Dev", "TextEditorPath") != "Default")
+                if (App_Misc.TextEditorPath != "Default")
                 {
                     Process.Start(Application.StartupPath);
-                    Process.Start($"{Globals.ini.IniReadValue("Dev", "TextEditorPath")}", Path.Combine(Application.StartupPath, "debug-log.txt"));
+                    Process.Start($"{App_Misc.TextEditorPath}", Path.Combine(Application.StartupPath, "debug-log.txt"));
                 }
                 else
                 {

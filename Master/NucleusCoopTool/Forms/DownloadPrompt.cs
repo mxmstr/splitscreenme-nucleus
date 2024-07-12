@@ -26,7 +26,6 @@ namespace Nucleus.Coop.Forms
         private int entriesDone = 0;
         private float fontSize;
         private bool overwriteWithoutAsking = false;
-        private readonly IniFile prompt = Globals.ini;
         private MainForm mainForm;
         //public bool gameExeNoUpdate;
         public string game;

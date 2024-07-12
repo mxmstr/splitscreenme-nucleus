@@ -1,6 +1,7 @@
 ﻿using Nucleus.Gaming.Windows.Interop;
 using System.Windows.Forms;
 using System;
+using Nucleus.Gaming.App.Settings;
 
 namespace Nucleus.Gaming.Coop.InputManagement
 {
@@ -44,17 +45,18 @@ namespace Nucleus.Gaming.Coop.InputManagement
         public static void RegHotkeys(IntPtr _formHandle)
         {
             formHandle = _formHandle;
+
             try
             {
-                User32Interop.RegisterHotKey(_formHandle, KillProcess_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "Close").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "Close").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(_formHandle, TopMost_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(_formHandle, StopSession_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "Stop").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "Stop").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(_formHandle, SetFocus_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "SetFocus").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(_formHandle, ResetWindows_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "ResetWindows").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(_formHandle, Cutscenes_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "Cutscenes").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(_formHandle, Switch_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "Switch").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "Switch").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(_formHandle, Reminder_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[1].ToString()));
-                User32Interop.RegisterHotKey(_formHandle, MergerFocusSwitch_HotkeyID, GetMod(Globals.ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+')[0].ToString()), (int)Enum.Parse(typeof(Keys), Globals.ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+')[1].ToString()));
+                User32Interop.RegisterHotKey(_formHandle, KillProcess_HotkeyID, GetMod(App_Hotkeys.CloseApp.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.CloseApp.Item2));
+                User32Interop.RegisterHotKey(_formHandle, TopMost_HotkeyID, GetMod(App_Hotkeys.TopMost.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.TopMost.Item2));
+                User32Interop.RegisterHotKey(_formHandle, StopSession_HotkeyID, GetMod(App_Hotkeys.StopSession.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.StopSession.Item2));
+                User32Interop.RegisterHotKey(_formHandle, SetFocus_HotkeyID, GetMod(App_Hotkeys.SetFocus.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.SetFocus.Item2));
+                User32Interop.RegisterHotKey(_formHandle, ResetWindows_HotkeyID, GetMod(App_Hotkeys.ResetWindows.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.ResetWindows.Item2));
+                User32Interop.RegisterHotKey(_formHandle, Cutscenes_HotkeyID, GetMod(App_Hotkeys.CutscenesMode.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.CutscenesMode.Item2));
+                User32Interop.RegisterHotKey(_formHandle, Switch_HotkeyID, GetMod(App_Hotkeys.SwitchLayout.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.SwitchLayout.Item2));
+                User32Interop.RegisterHotKey(_formHandle, Reminder_HotkeyID, GetMod(App_Hotkeys.ShortcutsReminder.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.ShortcutsReminder.Item2));
+                User32Interop.RegisterHotKey(_formHandle, MergerFocusSwitch_HotkeyID, GetMod(App_Hotkeys.SwitchMergerForeGroundChild.Item1), (int)Enum.Parse(typeof(Keys), App_Hotkeys.SwitchMergerForeGroundChild.Item2));
             }
             catch (Exception ex)
             {

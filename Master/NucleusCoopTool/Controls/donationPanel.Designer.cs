@@ -29,33 +29,20 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DonationPanel));
-            this.Ilyaki_label = new System.Windows.Forms.Label();
             this.Mikou_label = new System.Windows.Forms.Label();
             this.title = new System.Windows.Forms.Label();
             this.image2 = new System.Windows.Forms.PictureBox();
-            this.image1 = new System.Windows.Forms.PictureBox();
             this.btn_credits = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Talos91_label = new System.Windows.Forms.Label();
             this.image3 = new System.Windows.Forms.PictureBox();
+            this.Ilyaki_label = new System.Windows.Forms.Label();
+            this.image1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.image2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.image1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.image3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.image1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // Ilyaki_label
-            // 
-            this.Ilyaki_label.AutoSize = true;
-            this.Ilyaki_label.BackColor = System.Drawing.Color.Transparent;
-            this.Ilyaki_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Ilyaki_label.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Ilyaki_label.Location = new System.Drawing.Point(74, 74);
-            this.Ilyaki_label.Name = "Ilyaki_label";
-            this.Ilyaki_label.Size = new System.Drawing.Size(50, 16);
-            this.Ilyaki_label.TabIndex = 5;
-            this.Ilyaki_label.Text = "🔗Ilyaki";
-            this.Ilyaki_label.Click += new System.EventHandler(this.Ilyaki_label_Click);
             // 
             // Mikou_label
             // 
@@ -63,7 +50,7 @@
             this.Mikou_label.BackColor = System.Drawing.Color.Transparent;
             this.Mikou_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Mikou_label.ForeColor = System.Drawing.Color.MediumPurple;
-            this.Mikou_label.Location = new System.Drawing.Point(74, 130);
+            this.Mikou_label.Location = new System.Drawing.Point(74, 73);
             this.Mikou_label.Name = "Mikou_label";
             this.Mikou_label.Size = new System.Drawing.Size(124, 16);
             this.Mikou_label.TabIndex = 7;
@@ -90,22 +77,11 @@
             this.image2.BackColor = System.Drawing.Color.Transparent;
             this.image2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("image2.BackgroundImage")));
             this.image2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.image2.Location = new System.Drawing.Point(18, 111);
+            this.image2.Location = new System.Drawing.Point(18, 54);
             this.image2.Name = "image2";
             this.image2.Size = new System.Drawing.Size(50, 50);
             this.image2.TabIndex = 6;
             this.image2.TabStop = false;
-            // 
-            // image1
-            // 
-            this.image1.BackColor = System.Drawing.Color.Transparent;
-            this.image1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("image1.BackgroundImage")));
-            this.image1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.image1.Location = new System.Drawing.Point(18, 55);
-            this.image1.Name = "image1";
-            this.image1.Size = new System.Drawing.Size(50, 50);
-            this.image1.TabIndex = 4;
-            this.image1.TabStop = false;
             // 
             // btn_credits
             // 
@@ -181,7 +157,30 @@
             this.image3.TabIndex = 304;
             this.image3.TabStop = false;
             // 
-            // donationPanel
+            // Ilyaki_label
+            // 
+            this.Ilyaki_label.AutoSize = true;
+            this.Ilyaki_label.BackColor = System.Drawing.Color.Transparent;
+            this.Ilyaki_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Ilyaki_label.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.Ilyaki_label.Location = new System.Drawing.Point(74, 129);
+            this.Ilyaki_label.Name = "Ilyaki_label";
+            this.Ilyaki_label.Size = new System.Drawing.Size(50, 16);
+            this.Ilyaki_label.TabIndex = 308;
+            this.Ilyaki_label.Text = "🔗Ilyaki";
+            // 
+            // image1
+            // 
+            this.image1.BackColor = System.Drawing.Color.Transparent;
+            this.image1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("image1.BackgroundImage")));
+            this.image1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.image1.Location = new System.Drawing.Point(18, 110);
+            this.image1.Name = "image1";
+            this.image1.Size = new System.Drawing.Size(50, 50);
+            this.image1.TabIndex = 307;
+            this.image1.TabStop = false;
+            // 
+            // DonationPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -189,6 +188,8 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.Ilyaki_label);
+            this.Controls.Add(this.image1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Talos91_label);
             this.Controls.Add(this.image3);
@@ -197,22 +198,18 @@
             this.Controls.Add(this.title);
             this.Controls.Add(this.Mikou_label);
             this.Controls.Add(this.image2);
-            this.Controls.Add(this.Ilyaki_label);
-            this.Controls.Add(this.image1);
             this.DoubleBuffered = true;
-            this.Name = "donationPanel";
+            this.Name = "DonationPanel";
             this.Size = new System.Drawing.Size(315, 270);
             ((System.ComponentModel.ISupportInitialize)(this.image2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.image1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.image3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.image1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label Ilyaki_label;
-        private System.Windows.Forms.PictureBox image1;
         private System.Windows.Forms.Label Mikou_label;
         private System.Windows.Forms.PictureBox image2;
         private System.Windows.Forms.Label title;
@@ -221,5 +218,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label Talos91_label;
         private System.Windows.Forms.PictureBox image3;
+        private System.Windows.Forms.Label Ilyaki_label;
+        private System.Windows.Forms.PictureBox image1;
     }
 }

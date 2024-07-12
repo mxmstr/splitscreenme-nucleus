@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using System;
 using System.Drawing;
@@ -10,7 +11,7 @@ namespace Nucleus.Coop.Tools
     internal class SetBackroundAndCover
     {
         private static MainForm main;
-        private static int blurValue = int.Parse(Globals.ini.IniReadValue("Dev", "Blur"));
+        private static int blurValue = int.Parse(App_Misc.Blur);
         private static Color colorTop;
         private static Color colorBottom;
 

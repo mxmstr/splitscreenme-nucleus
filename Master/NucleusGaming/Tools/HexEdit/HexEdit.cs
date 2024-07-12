@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.App.Settings;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -8,10 +9,9 @@ namespace Nucleus.Gaming.Tools.HexEdit
 {
     public static class HexEdit
     {
-        private static readonly IniFile ini = new Gaming.IniFile(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Settings.ini"));
         private static void Log(string logMessage)
         {
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (bool.Parse(App_Misc.DebugLog))
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {

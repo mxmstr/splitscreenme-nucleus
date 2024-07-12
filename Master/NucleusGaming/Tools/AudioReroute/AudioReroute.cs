@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -77,6 +78,20 @@ namespace Nucleus.Gaming.Tools.AudioReroute
                 }
             }
 
+            private IAudioPolicyConfigFactoryFor21H2 _sharedPolicyConfigFor21H2;
+            private IAudioPolicyConfigFactoryFor21H2 PolicyConfigFor21H2
+            {
+                get
+                {
+                    if (_sharedPolicyConfigFor21H2 != null)
+                    {
+                        return _sharedPolicyConfigFor21H2;
+                    }
+
+                    return _sharedPolicyConfigFor21H2 = AudioPolicyConfigFactoryFor21H2.Create();
+                }
+            }
+
             private static string GenerateDeviceId(string deviceId, EDataFlow flow)
             {
                 return $"{MMDEVAPI_TOKEN}{deviceId}{(flow == EDataFlow.eRender ? DEVINTERFACE_AUDIO_RENDER : DEVINTERFACE_AUDIO_CAPTURE)}";
@@ -111,9 +126,19 @@ namespace Nucleus.Gaming.Tools.AudioReroute
                         ComBase.WindowsCreateString(str, (uint)str.Length, out stringPtrDeviceId);
                     }
 
-                    foreach (var eRole in roles)
+                    if (Is21H2Update())
                     {
-                        PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, stringPtrDeviceId);
+                        foreach (var eRole in roles)
+                        {
+                            PolicyConfigFor21H2.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, stringPtrDeviceId);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var eRole in roles)
+                        {
+                            PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, stringPtrDeviceId);
+                        }
                     }
                 }
                 catch (COMException e) when ((e.ErrorCode & ErrorConst.COM_ERROR_MASK) == ErrorConst.COM_ERROR_NOT_FOUND)
@@ -300,10 +325,40 @@ namespace Nucleus.Gaming.Tools.AudioReroute
         }
 
 
-
         [Guid("2a59116d-6c4f-45e0-a74f-707e3fef9258")]
         [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
         public interface IAudioPolicyConfigFactory
+        {
+            int __incomplete__add_CtxVolumeChange();
+            int __incomplete__remove_CtxVolumeChanged();
+            int __incomplete__add_RingerVibrateStateChanged();
+            int __incomplete__remove_RingerVibrateStateChange();
+            int __incomplete__SetVolumeGroupGainForId();
+            int __incomplete__GetVolumeGroupGainForId();
+            int __incomplete__GetActiveVolumeGroupForEndpointId();
+            int __incomplete__GetVolumeGroupsForEndpoint();
+            int __incomplete__GetCurrentVolumeContext();
+            int __incomplete__SetVolumeGroupMuteForId();
+            int __incomplete__GetVolumeGroupMuteForId();
+            int __incomplete__SetRingerVibrateState();
+            int __incomplete__GetRingerVibrateState();
+            int __incomplete__SetPreferredChatApplication();
+            int __incomplete__ResetPreferredChatApplication();
+            int __incomplete__GetPreferredChatApplication();
+            int __incomplete__GetCurrentChatApplications();
+            int __incomplete__add_ChatContextChanged();
+            int __incomplete__remove_ChatContextChanged();
+            [PreserveSig]
+            HRESULT SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, IntPtr deviceId);
+            [PreserveSig]
+            HRESULT GetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, [Out, MarshalAs(UnmanagedType.HString)] out string deviceId);
+            [PreserveSig]
+            HRESULT ClearAllPersistedApplicationDefaultEndpoints();
+        }
+
+        [Guid("ab3d4648-e242-459f-b02f-541c70306324")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
+        public interface IAudioPolicyConfigFactoryFor21H2
         {
             int __incomplete__add_CtxVolumeChange();
             int __incomplete__remove_CtxVolumeChanged();
@@ -355,6 +410,53 @@ namespace Nucleus.Gaming.Tools.AudioReroute
                 ComBase.RoGetActivationFactory("Windows.Media.Internal.AudioPolicyConfig", ref iid, out object factory);
                 return (IAudioPolicyConfigFactory)factory;
             }
+        }
+
+        internal sealed class AudioPolicyConfigFactoryFor21H2
+        {
+            public static IAudioPolicyConfigFactoryFor21H2 Create()
+            {
+                var iid = typeof(IAudioPolicyConfigFactoryFor21H2).GUID;
+                ComBase.RoGetActivationFactory("Windows.Media.Internal.AudioPolicyConfig", ref iid, out object factory);
+                return (IAudioPolicyConfigFactoryFor21H2)factory;
+            }
+        }
+
+        static bool Is21H2Update()
+        {
+            var buildNumber = GetWindowsBuildNumber();
+
+            // Check for Windows 10/11 21H2 version
+            if (buildNumber >= 19044)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        static int GetWindowsBuildNumber()
+        {
+            try
+            {
+                using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+                {
+                    if (key != null)
+                    {
+                        var buildNumber = key.GetValue("CurrentBuildNumber") as string;
+                        if (int.TryParse(buildNumber, out int result))
+                        {
+                            return result;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while getting the build number: " + ex.Message);
+            }
+
+            return 0;
         }
     }
 }

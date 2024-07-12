@@ -22,6 +22,7 @@ using System.Diagnostics;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System.Linq;
 using System.Windows.Forms;
+using Nucleus.Gaming.App.Settings;
 
 public static class WindowsMergerThread
 {
@@ -141,7 +142,7 @@ public class WindowsMerger : System.Windows.Window
             }
         }
 
-        if (bool.Parse(Globals.ini.IniReadValue("CustomLayout", "LosslessHook")) && !GameProfile.Ready)//such checks are there so testers/users can still use there existing profiles                                                                       //after new options implementation. Any new option must have that null check.
+        if (bool.Parse(App_Layouts.LosslessHook) && !GameProfile.Ready)
         {
             await InjectLosslessHookAsync();
         }
@@ -159,7 +160,7 @@ public class WindowsMerger : System.Windows.Window
 
         while (searchLossless.Length == 0)
         {
-            Console.WriteLine("Waiting for lossless process...");
+            //Console.WriteLine("Waiting for lossless process...");
             searchLossless = Process.GetProcessesByName("LosslessScaling");
             await Task.Delay(1500);
         }

@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ public class WPF_OSD : Window
     private const int GWL_EX_STYLE = -20;
     private const int WS_EX_APPWINDOW = 0x00040000, WS_EX_TOOLWINDOW = 0x00000080;
 
-    private string[] osdColor = Globals.ini.IniReadValue("Dev", "OSDColor").Split(',');
+    private string[] osdColor = App_Misc.OSDColor.Split(',');
 
     private System.Windows.Controls.Label Value;
 

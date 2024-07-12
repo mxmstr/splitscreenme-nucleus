@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Windows;
@@ -1756,7 +1757,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
             }
             else
             {
-                Globals.MainOSD.Show(1600, $"Unlock Inputs First (Press {Globals.ini.IniReadValue("Hotkeys", "LockKey")} key)");
+                Globals.MainOSD.Show(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} key)");
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using IWshRuntimeLibrary;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Controls.SetupScreen;
@@ -30,8 +31,6 @@ namespace Nucleus.Gaming.Coop
         /// </summary>       
         public List<PlayerInfo> DevicesList => GetDevicesList();
         private List<PlayerInfo> deviceList;
-
-        private static readonly IniFile ini = Globals.ini;
 
         public static GameProfile Instance;
 
@@ -278,7 +277,7 @@ namespace Nucleus.Gaming.Coop
 
         public void Reset()
         {
-            bool profileDisabled = bool.Parse(ini.IniReadValue("Misc", "DisableGameProfiles"));
+            bool profileDisabled = bool.Parse(App_Misc.DisableGameProfiles);
 
             setupScreen.CanPlayUpdated(false, false);
 
@@ -286,6 +285,7 @@ namespace Nucleus.Gaming.Coop
             AllScreens.Clear();
             GhostBounds.Clear();
             totalProfilePlayers = 0;
+            AudioInstances.Clear();
 
             showError = false;
             autoPlay = false;
@@ -622,28 +622,27 @@ namespace Nucleus.Gaming.Coop
 
         public static void UpdateSharedSettings()
         {
-            autoDesktopScaling = bool.Parse(ini.IniReadValue("Misc", "AutoDesktopScaling"));
-            useNicknames = bool.Parse(ini.IniReadValue("Misc", "UseNicksInGame"));
-            useSplitDiv = bool.Parse(ini.IniReadValue("CustomLayout", "SplitDiv"));
-            hideDesktopOnly = bool.Parse(ini.IniReadValue("CustomLayout", "HideOnly"));
-            customLayout_Ver = int.Parse(ini.IniReadValue("CustomLayout", "VerticalLines"));
-            customLayout_Hor = int.Parse(ini.IniReadValue("CustomLayout", "HorizontalLines"));
-            customLayout_Max = int.Parse(ini.IniReadValue("CustomLayout", "MaxPlayers"));
-            splitDivColor = ini.IniReadValue("CustomLayout", "SplitDivColor");
-            network = ini.IniReadValue("Misc", "Network");
+            autoDesktopScaling = bool.Parse(App_Misc.AutoDesktopScaling);
+            useNicknames = bool.Parse(App_Misc.UseNicksInGame);
+            useXinputIndex = bool.Parse(App_Misc.UseXinputIndex);   
+            network = App_Misc.Network;
 
-            audioCustomSettings = int.Parse(ini.IniReadValue("Audio", "Custom")) == 1;
+            audioCustomSettings = int.Parse(App_Audio.Custom) == 1;
             audioDefaultSettings = audioCustomSettings == false;
 
-            cts_MuteAudioOnly = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_MuteAudioOnly"));
-            cts_KeepAspectRatio = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_KeepAspectRatio"));
-            cts_Unfocus = bool.Parse(ini.IniReadValue("CustomLayout", "Cts_Unfocus"));
+            useSplitDiv = bool.Parse(App_Layouts.SplitDiv);
+            splitDivColor = App_Layouts.SplitDivColor;
+            hideDesktopOnly = bool.Parse(App_Layouts.HideOnly);
+            customLayout_Ver = int.Parse(App_Layouts.VerticalLines);
+            customLayout_Hor = int.Parse(App_Layouts.HorizontalLines);
+            customLayout_Max = int.Parse(App_Layouts.MaxPlayers);
+            cts_MuteAudioOnly = bool.Parse(App_Layouts.Cts_MuteAudioOnly);
+            cts_KeepAspectRatio = bool.Parse(App_Layouts.Cts_KeepAspectRatio);
+            cts_Unfocus = bool.Parse(App_Layouts.Cts_Unfocus);
 
-            enableWindowsMerger = bool.Parse(ini.IniReadValue("CustomLayout", "WindowsMerger"));
-            enableLosslessHook = bool.Parse(ini.IniReadValue("CustomLayout", "LosslessHook"));
-            mergerResolution = ini.IniReadValue("CustomLayout", "WindowsMergerRes");
-
-            useXinputIndex = bool.Parse(ini.IniReadValue("Dev", "UseXinputIndex"));
+            enableWindowsMerger = bool.Parse(App_Layouts.WindowsMerger);
+            enableLosslessHook = bool.Parse(App_Layouts.LosslessHook);
+            mergerResolution = App_Layouts.WindowsMergerRes;           
         }
 
         public static void UpdateGameProfile(GameProfile profile)
@@ -861,7 +860,7 @@ namespace Nucleus.Gaming.Coop
         public static void SaveGameProfile(GameProfile profile)
         {
             string path;
-            bool profileDisabled = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
+            bool profileDisabled = bool.Parse(App_Misc.DisableGameProfiles);
 
             if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.Game.MetaInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
             {

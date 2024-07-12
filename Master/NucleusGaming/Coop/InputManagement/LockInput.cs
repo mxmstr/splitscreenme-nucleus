@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Coop.ProtoInput;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Coop.ProtoInput;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -120,8 +121,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public static int GetLockKey()
         {
-            IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-            string lockKey = ini.IniReadValue("Hotkeys", "LockKey");
+            string lockKey = App_Hotkeys.LockInputs;
 
             foreach (KeyValuePair<string, int> key in lockKeys)
             {

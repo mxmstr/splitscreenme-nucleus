@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Interop;
 using Nucleus.Gaming.Tools.Steam;
@@ -20,13 +21,12 @@ namespace Nucleus
 {
     public static class ProcessUtil
     {
-        private static readonly IniFile ini = Globals.ini;
         private static string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private static string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         private static void Log(string logMessage)
         {
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (App_Misc.DebugLog == "True")
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {

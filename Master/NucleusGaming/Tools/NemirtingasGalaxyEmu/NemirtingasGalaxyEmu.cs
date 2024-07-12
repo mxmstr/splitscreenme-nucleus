@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop;
 using System;
 using System.IO;
@@ -132,7 +133,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasGalaxyEmu
 
         public static string GetGogLanguage()
         {
-            return Globals.ini.IniReadValue("Misc", "EpicLang").ToLower();
+            return App_Misc.EpicLang.ToLower();
         }
     }
 }

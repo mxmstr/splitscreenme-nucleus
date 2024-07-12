@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Util;
@@ -174,9 +175,9 @@ namespace Nucleus.Gaming.Tools.Steam
 
                 string lang = "english";
 
-                if (handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "" && handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "Automatic")
+                if (App_Misc.SteamLang != "" && App_Misc.SteamLang != "Automatic")
                 {
-                    handlerInstance.CurrentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
+                    handlerInstance.CurrentGameInfo.GoldbergLanguage = App_Misc.SteamLang.ToLower();
                 }
 
                 if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
@@ -303,7 +304,7 @@ namespace Nucleus.Gaming.Tools.Steam
                     handlerInstance.Log("New steam api folder found");
                     prevSteamDllFilePath = Path.GetDirectoryName(nameFile);
 
-                    if (handlerInstance.ini.IniReadValue("Misc", "UseNicksInGame") == "True" && !string.IsNullOrEmpty(player.Nickname))
+                    if (App_Misc.UseNicksInGame == "True" && !string.IsNullOrEmpty(player.Nickname))
                     {
                         if (setupDll)
                         {
@@ -320,7 +321,7 @@ namespace Nucleus.Gaming.Tools.Steam
                             handlerInstance.addedFiles.Add(Path.Combine(instanceSteamSettingsFolder, "account_name.txt"));
                         }
 
-                        if (handlerInstance.ini.IniReadValue("Misc", "UseNicksInGame") == "True" && handlerInstance.ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)) != "")
+                        if (App_Misc.UseNicksInGame == "True" && Cache.PlayersIdentityCache.SettingsIniNicknamesList[i] != "")
                         {
                             File.WriteAllText(Path.Combine(instanceSteamSettingsFolder, "account_name.txt"), player.Nickname);
                             handlerInstance.Log("Generating account_name.txt with nickname " + player.Nickname);
@@ -391,9 +392,10 @@ namespace Nucleus.Gaming.Tools.Steam
                     if (setupDll)
                     {
                         string lang = "english";
-                        if (handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "" && handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "Automatic")
+
+                        if (App_Misc.SteamLang != "" && App_Misc.SteamLang != "Automatic")
                         {
-                            handlerInstance.CurrentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
+                            handlerInstance.CurrentGameInfo.GoldbergLanguage = App_Misc.SteamLang.ToLower();
                         }
                         if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
                         {
@@ -795,9 +797,9 @@ namespace Nucleus.Gaming.Tools.Steam
 
             string lang = "english";
 
-            if (handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "" && handlerInstance.ini.IniReadValue("Misc", "SteamLang") != "Automatic")
+            if (App_Misc.SteamLang != "" && App_Misc.SteamLang != "Automatic")
             {
-                handlerInstance.CurrentGameInfo.GoldbergLanguage = handlerInstance.ini.IniReadValue("Misc", "SteamLang").ToLower();
+                handlerInstance.CurrentGameInfo.GoldbergLanguage = App_Misc.SteamLang.ToLower();
             }
 
             if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
@@ -811,7 +813,7 @@ namespace Nucleus.Gaming.Tools.Steam
 
             emu.IniWriteValue("SmartSteamEmu", "Language", lang);
 
-            if (handlerInstance.ini.IniReadValue("Misc", "UseNicksInGame") == "True" && !string.IsNullOrEmpty(player.Nickname))
+            if (App_Misc.UseNicksInGame == "True" && !string.IsNullOrEmpty(player.Nickname))
             {
                 emu.IniWriteValue("SmartSteamEmu", "PersonaName", player.Nickname);
             }

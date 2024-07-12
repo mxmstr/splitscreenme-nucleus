@@ -19,19 +19,7 @@ namespace Nucleus.Gaming.Platform.PCSpecs
 
             pcSpecs += name != null ? "OS: " + name.ToString() + ", " : "Windows OS: Unknown, ";
 
-            const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-
-            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
-            {
-                if (ndpKey != null && ndpKey.GetValue("Release") != null)
-                {
-                    pcSpecs += $".NET Framework Version: {GetNetFrameworkVersion.CheckFor45PlusVersion((int)ndpKey.GetValue("Release"))}";
-                }
-                else
-                {
-                    pcSpecs += $".NET Framework Version: {Environment.Version}";
-                }
-            }
+            pcSpecs += $".NET Framework Version: {GetNETFrameworkVersion()}"; 
 
             if (handlerInstance != null)
             {
@@ -39,6 +27,23 @@ namespace Nucleus.Gaming.Platform.PCSpecs
             }
 
             return pcSpecs;
+        }
+
+        public static string GetNETFrameworkVersion()
+        {
+            const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+
+            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
+            {
+                if (ndpKey != null && ndpKey.GetValue("Release") != null)
+                {
+                    return GetNetFrameworkVersion.CheckFor45PlusVersion((int)ndpKey.GetValue("Release"));
+                }
+                else
+                {
+                    return Environment.Version.ToString();
+                }
+            }
         }
 
         public enum MachineType : ushort

@@ -12,7 +12,6 @@ namespace Nucleus.Gaming.Tools.GameStarter
     {
         private static string lastLine;
         private static object locker = new object();
-        private static readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         public static string GetStartGamePath()
         {

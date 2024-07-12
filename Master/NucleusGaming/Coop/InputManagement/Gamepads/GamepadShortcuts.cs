@@ -1,4 +1,5 @@
 ﻿using Nucleus.Coop.Forms;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows;
 using SharpDX.XInput;
@@ -12,7 +13,6 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
     public static class GamepadShortcuts
     {
-        private static IniFile ini = Globals.ini;
 
         private static int SetFocus;
         private static int Close;
@@ -64,7 +64,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         int button = GamepadState.GetPressedButtons(i);
                         int rt = GamepadState.GetRightTriggerValue(i) > 0 ? button + RT : RT;///return RT + button or RT
                         int lt = GamepadState.GetLeftTriggerValue(i) > 0 ? button + LT : LT;///return LT + button or LT
-                        
+
                         if ((button == Cutscenes || rt == Cutscenes || lt == Cutscenes) && GameProfile.Saved)///cutscenes mode
                         {
                             GlobalWindowMethods.ToggleCutScenesMode();
@@ -117,7 +117,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             Thread.Sleep(5000);
 
                             if (GenericGameHandler.Instance.hasEnded)
-                            {                               
+                            {
                                 Process.GetCurrentProcess().Kill();
                             }
                         }
@@ -148,7 +148,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             SendKeys.SendWait("%+{TAB}");
                             Thread.Sleep(500);
                         }
-                       
+
                         previousState = currentState;
                         Pressed = button;
                     }
@@ -189,95 +189,23 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         public static void UpdateShortcutsValue()
         {
-            if (ini.IniReadValue("XShortcuts", "SetFocus").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "SetFocus").Split('+');
-                SetFocus = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "SetFocus", "");
-            }
+            SetFocus = int.Parse(App_GamePadShortcuts.SetFocus.Item1) + int.Parse(App_GamePadShortcuts.SetFocus.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "Close").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "Close").Split('+');
-                Close = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Close", "");
-            }
+            Close = int.Parse(App_GamePadShortcuts.Close.Item1) + int.Parse(App_GamePadShortcuts.Close.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "Stop").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "Stop").Split('+');
-                StopSession = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Stop", "");
-            }
+            StopSession = int.Parse(App_GamePadShortcuts.StopSession.Item1) + int.Parse(App_GamePadShortcuts.StopSession.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "TopMost").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "TopMost").Split('+');
-                TopMost = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "TopMost", "");
-            }
+            TopMost = int.Parse(App_GamePadShortcuts.TopMost.Item1) + int.Parse(App_GamePadShortcuts.TopMost.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "ResetWindows").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "ResetWindows").Split('+');
-                ResetWindows = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "ResetWindows", "");
-            }
+            ResetWindows = int.Parse(App_GamePadShortcuts.ResetWindows.Item1) + int.Parse(App_GamePadShortcuts.ResetWindows.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "Cutscenes").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "Cutscenes").Split('+');
-                Cutscenes = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Cutscenes", "");
-            }
+            Cutscenes = int.Parse(App_GamePadShortcuts.CutscenesMode.Item1) + int.Parse(App_GamePadShortcuts.CutscenesMode.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "Switch").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "Switch").Split('+');
-                SwitchLayout = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Switch", "");
-            }
+            SwitchLayout = int.Parse(App_GamePadShortcuts.SwitchLayout.Item1) + int.Parse(App_GamePadShortcuts.SwitchLayout.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "LockInputs").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "LockInputs").Split('+');
-                LockInputs = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            LockInputs = int.Parse(App_GamePadShortcuts.LockInputs.Item1) + int.Parse(App_GamePadShortcuts.LockInputs.Item2);
 
-            if (ini.IniReadValue("XShortcuts", "ReleaseCursor").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "ReleaseCursor").Split('+');
-                ReleaseCursor = int.Parse(str[0]) + int.Parse(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "ReleaseCursor", "");
-            }
+            ReleaseCursor = int.Parse(App_GamePadShortcuts.TopMost.Item1) + int.Parse(App_GamePadShortcuts.TopMost.Item2);
         }
     }
 }
