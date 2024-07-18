@@ -1077,6 +1077,7 @@ namespace Nucleus.Coop
             else
             {
                 cts_kar.Enabled = true;
+                cts_unfocus.Enabled = true;
             }
         }
 
