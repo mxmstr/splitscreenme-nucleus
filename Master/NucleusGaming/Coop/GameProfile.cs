@@ -1,4 +1,4 @@
-﻿using IWshRuntimeLibrary;
+﻿//using IWshRuntimeLibrary;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming.App.Settings;
@@ -582,19 +582,19 @@ namespace Nucleus.Gaming.Coop
 
         public static void CreateShortcut(string gameGUID, string shortcutId, string profileId, string description)
         {
-            object shDesktop = (object)"Desktop";
-            WshShell shell = new WshShell();
+           // object shDesktop = (object)"Desktop";
+           ////WshShell shell = new WshShell();
 
-            string shortcutTitle = $@"\Profile_{shortcutId}_{gameGUID}.lnk";
-            string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + shortcutTitle;
-            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
-            shortcut.Description = description != "" ? description : $"{gameGUID} Nucleus shortcut.";
-            shortcut.TargetPath = Application.StartupPath + "\\Profiles Launcher.exe";
-            shortcut.WorkingDirectory = Application.StartupPath;
-            shortcut.Arguments = $"\"{gameGUID}\" \"{profileId}\"";
-            UserGameInfo currentGameInfo = GameManager.Instance.User.Games.Where(c => c.GameGuid == gameGUID).FirstOrDefault();
-            shortcut.IconLocation = currentGameInfo.ExePath;
-            shortcut.Save();
+           // string shortcutTitle = $@"\Profile_{shortcutId}_{gameGUID}.lnk";
+           // string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + shortcutTitle;
+           // //IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+           // shortcut.Description = description != "" ? description : $"{gameGUID} Nucleus shortcut.";
+           // shortcut.TargetPath = Application.StartupPath + "\\Profiles Launcher.exe";
+           // shortcut.WorkingDirectory = Application.StartupPath;
+           // shortcut.Arguments = $"\"{gameGUID}\" \"{profileId}\"";
+           // UserGameInfo currentGameInfo = GameManager.Instance.User.Games.Where(c => c.GameGuid == gameGUID).FirstOrDefault();
+           // shortcut.IconLocation = currentGameInfo.ExePath;
+           // shortcut.Save();
         }
 
         private static string GetGameProfilesPath()
