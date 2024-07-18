@@ -299,7 +299,7 @@ namespace Nucleus.Gaming.Coop
                 System.Windows.Threading.Dispatcher.Run();
             });
 
-            backgroundFormThread.SetApartmentState(ApartmentState.STA); // needs to be STA or throws exception
+            backgroundFormThread.SetApartmentState(ApartmentState.STA);
             backgroundFormThread.Start();
         }
     }

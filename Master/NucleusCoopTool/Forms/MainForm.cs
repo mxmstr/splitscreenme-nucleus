@@ -1204,7 +1204,7 @@ namespace Nucleus.Coop
         {
             if (gameManager.User.Games.Count == 0)
             {
-                TriggerOSD(1600, $"Add Game(s) In Your List");
+                TriggerOSD(1600, $"Add Game(s) to Your List");
                 return;
             }
 
@@ -2558,7 +2558,7 @@ namespace Nucleus.Coop
                 if (currentGameInfo.Game.MetaInfo.FirstLaunch)
                 {
                     handlerNotesZoom.warning.Visible = true;
-                    handlerNotesZoom.warning.Text = "⚠ Important! Launch the game out of Nucleus before launching the handler for the first time.  ⚠";
+                    handlerNotesZoom.warning.Text = "⚠ Important! Launch the game out of Nucleus before launching the handler for the first time. ⚠";
                     handlerNotesZoom.Notes.Text = scriptAuthorTxt.Text;
                 }
                 else
