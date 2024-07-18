@@ -287,7 +287,7 @@ namespace Nucleus.Coop.Forms
                 downloadOperation = e.DownloadOperation;
                 downloadOperation.StateChanged += CheckDownloadState;
 
-                modal_text.Text = "⠐ Downloadind Handler Please Wait ⠂";
+                modal_text.Text = "⠐ Downloading Handler Please Wait ⠂";
                 modal_yes.Visible = false;
                 modal_no.Visible = false;
                 modal.Visible = true;
@@ -300,27 +300,27 @@ namespace Nucleus.Coop.Forms
             switch (pending)
             {
                 case 0:
-                    modal_text.Text = "⠒ Downloadind Handler Please Wait ⠒";
+                    modal_text.Text = "⠒ Downloading Handler Please Wait ⠒";
                     pending++;
                     break;
                 case 1:
-                    modal_text.Text = "⠲ Downloadind Handler Please Wait ⠖";
+                    modal_text.Text = "⠲ Downloading Handler Please Wait ⠖";
                     pending++;
                     break;
                 case 2:
-                    modal_text.Text = "⠴ Downloadind Handler Please Wait ⠦";
+                    modal_text.Text = "⠴ Downloading Handler Please Wait ⠦";
                     pending++;
                     break;
                 case 3:
-                    modal_text.Text = "⠦ Downloadind Handler Please Wait ⠴";
+                    modal_text.Text = "⠦ Downloading Handler Please Wait ⠴";
                     pending++;
                     break;
                 case 4:
-                    modal_text.Text = "⠶ Downloadind Handler Please Wait ⠶";
+                    modal_text.Text = "⠶ Downloading Handler Please Wait ⠶";
                     pending++;
                     break;
                 case 5:
-                    modal_text.Text = "⠂ Downloadind Handler Please Wait ⠐";
+                    modal_text.Text = "⠂ Downloading Handler Please Wait ⠐";
                     pending = 0;
                     break;
             }
