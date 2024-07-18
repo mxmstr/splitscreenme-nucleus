@@ -33,7 +33,7 @@ namespace Nucleus.Gaming.Cache
             else
             {
                 AddToCache(path);
-                return new Bitmap(path);
+                return AddGetImage(path);
             }
         }
 
@@ -62,8 +62,7 @@ namespace Nucleus.Gaming.Cache
 
             if (cachedImages.ContainsKey(path))
             {
-                Bitmap bitmap;
-                cachedImages.TryRemove(path, out bitmap);
+                cachedImages.TryRemove(path, out Bitmap bitmap);
             }
         }
 
