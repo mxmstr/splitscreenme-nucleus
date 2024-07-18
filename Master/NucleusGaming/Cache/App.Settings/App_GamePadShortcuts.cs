@@ -53,7 +53,9 @@ namespace Nucleus.Gaming.App.Settings
         public static Tuple<string, string> ResetWindows 
         { 
             get => resetWindows; 
-            set { resetWindows = value; 
+            set 
+            { 
+                resetWindows = value; 
                 Globals.ini.IniWriteValue("XShortcuts", "ResetWindows", $"{value.Item1}+{value.Item2}"); 
             } 
         }
@@ -73,7 +75,8 @@ namespace Nucleus.Gaming.App.Settings
         public static Tuple<string, string> SwitchLayout 
         { 
             get => _switch; 
-            set { 
+            set 
+            { 
                 _switch = value; Globals.ini.IniWriteValue("XShortcuts", "Switch", $"{value.Item1}+{value.Item2}");
             } 
         }
@@ -88,7 +91,10 @@ namespace Nucleus.Gaming.App.Settings
         public static Tuple<string, string> LockInputs 
         { 
             get => lockInputs; 
-            set { lockInputs = value; Globals.ini.IniWriteValue("XShortcuts", "LockInputs", $"{value.Item1}+{value.Item2}");
+            set 
+            {
+                lockInputs = value; 
+                Globals.ini.IniWriteValue("XShortcuts", "LockInputs", $"{value.Item1}+{value.Item2}");
             } 
         }
 

@@ -23,7 +23,8 @@ namespace Nucleus.Gaming.App.Settings
         public static Tuple<string, string> StopSession 
         {
             get => stop; 
-            set { 
+            set 
+            { 
                 stop = value; 
                 Globals.ini.IniWriteValue("Hotkeys", "Stop", $"{value.Item1}+{value.Item2}");
             } 
@@ -33,7 +34,8 @@ namespace Nucleus.Gaming.App.Settings
         public static Tuple<string, string> TopMost 
         { 
             get => topMost; 
-            set {
+            set
+            {
                 topMost = value; 
                 Globals.ini.IniWriteValue("Hotkeys", "TopMost", $"{value.Item1}+{value.Item2}"); 
             }
@@ -54,7 +56,9 @@ namespace Nucleus.Gaming.App.Settings
         public static Tuple<string, string> ResetWindows 
         { 
             get => resetWindows; 
-            set { resetWindows = value; 
+            set 
+            { 
+                resetWindows = value; 
                 Globals.ini.IniWriteValue("Hotkeys", "ResetWindows", $"{value.Item1}+{value.Item2}"); 
             } 
         }
@@ -85,7 +89,9 @@ namespace Nucleus.Gaming.App.Settings
         public static Tuple<string, string> ShortcutsReminder 
         { 
             get => shortcutsReminder; 
-            set { shortcutsReminder = value; 
+            set
+            { 
+                shortcutsReminder = value; 
                 Globals.ini.IniWriteValue("Hotkeys", "ShortcutsReminder", $"{value.Item1}+{value.Item2}"); 
             } 
         }
@@ -94,7 +100,9 @@ namespace Nucleus.Gaming.App.Settings
         public static Tuple<string, string> SwitchMergerForeGroundChild
         { 
             get => switchMergerChildForeGround; 
-            set { switchMergerChildForeGround = value; 
+            set 
+            {
+                switchMergerChildForeGround = value; 
                 Globals.ini.IniWriteValue("Hotkeys", "SwitchMergerChildForeGround", $"{value.Item1}+{value.Item2}");
             } 
         }

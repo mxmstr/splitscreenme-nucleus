@@ -11,7 +11,15 @@ namespace Nucleus.Gaming.App.Settings
         public static  Dictionary<string,string> Instances_AudioOutput = new Dictionary<string,string>();
 
         private static string custom;
-        public static string Custom { get => custom; set { custom = value; Globals.ini.IniWriteValue("Audio", "Custom", value); } }
+        public static string Custom 
+        { 
+            get => custom; 
+            set 
+            { 
+                custom = value;
+                Globals.ini.IniWriteValue("Audio", "Custom", value);
+            } 
+        }
 
         public static void SaveAudioOutput(string key, string value)
         {

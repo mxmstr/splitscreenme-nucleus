@@ -793,7 +793,7 @@ namespace Nucleus.Coop
             }
 
             App_Misc.SettingsLocation = Location.X + "X" + Location.Y;
-            mainForm.BringToFront();//for some reasons settings is disposed if the parent is minized
+            mainForm.BringToFront();
             Visible = false;
         }
 

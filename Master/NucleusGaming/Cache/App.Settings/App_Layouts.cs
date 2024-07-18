@@ -23,7 +23,8 @@ namespace Nucleus.Gaming.App.Settings
         { 
             get => windowsMergerRes; 
             set 
-            { windowsMergerRes = value; 
+            { 
+                windowsMergerRes = value; 
                 Globals.ini.IniWriteValue("CustomLayout", "WindowsMergerRes", value); 
             } 
         }
@@ -108,7 +109,9 @@ namespace Nucleus.Gaming.App.Settings
         public static string Cts_KeepAspectRatio 
         { 
             get => cts_KeepAspectRatio; 
-            set { cts_KeepAspectRatio = value;
+            set 
+            { 
+                cts_KeepAspectRatio = value;
                 Globals.ini.IniWriteValue("CustomLayout", "Cts_KeepAspectRatio", value); 
             } 
         }

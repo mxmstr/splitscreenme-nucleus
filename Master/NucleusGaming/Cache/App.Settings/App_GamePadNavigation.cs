@@ -33,7 +33,9 @@ namespace Nucleus.Gaming.App.Settings
         public static string Deadzone
         {
             get => deadzone;
-            set { deadzone = value; Globals.ini.IniWriteValue("XUINav", "Deadzone", value);
+            set
+            { 
+                deadzone = value; Globals.ini.IniWriteValue("XUINav", "Deadzone", value);
             } 
         }
 
@@ -41,7 +43,9 @@ namespace Nucleus.Gaming.App.Settings
         public static string DragDrop 
         {
             get => dragDrop; 
-            set { dragDrop = value; 
+            set
+            {
+                dragDrop = value; 
                 Globals.ini.IniWriteValue("XUINav", "DragDrop", value); 
             } 
         }
