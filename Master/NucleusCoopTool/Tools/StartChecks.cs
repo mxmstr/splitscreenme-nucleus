@@ -235,9 +235,15 @@ namespace Nucleus.Coop
             {
                 string message = "Using OneDrive as default documents path will break most handlers because Nucleus can't access its storage." +
                                  "To change your documents path log out from the OneDrive app and right click your Documents folder in file explorer, go to properties, " +
-                                 "select path or location and set it to the default Windows one when done delete \"User Shell Folders.reg\" from \"utils\\backup\" if the file exists.";
+                                 "select path or location and set it to the default Windows."; /*one when done delete \"User Shell Folders.reg\" from \"utils\\backup\" if the file exists.";*/
 
                 MessageBox.Show(message, "OneDrive must be disabled", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                if(File.Exists(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg")))
+                {
+                    File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
+                }
+
             }
 
             if (problematic)

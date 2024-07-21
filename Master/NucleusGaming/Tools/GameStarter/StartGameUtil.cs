@@ -215,11 +215,16 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
         public static void UnlockGameFiles(string origGamefolder)
         {
-            string[] subDirectories = Directory.GetFileSystemEntries(origGamefolder, "*", SearchOption.AllDirectories);
+            string[] fileSystemEntries = Directory.GetFileSystemEntries(origGamefolder, "*", SearchOption.AllDirectories);
 
-            foreach (string dir in subDirectories)
+            foreach (string entry in fileSystemEntries)
             {
-                File.SetAttributes(dir, FileAttributes.Normal);
+                if(!File.Exists(entry) && !Directory.Exists(entry))
+                {
+                    continue;
+                }
+
+                File.SetAttributes(entry, FileAttributes.Normal);
             }
         }
     }

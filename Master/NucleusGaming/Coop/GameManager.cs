@@ -195,7 +195,7 @@ namespace Nucleus.Gaming
             string lower = exePath.ToLower();
 
             // search for the same exe on the user profile
-            if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
+            if (Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
             {
                 DialogResult dialogResult = MessageBox.Show("This game's executable is already in your library. Do you wish to add it anyway?\n\nExecutable Path: " + exePath, "Already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (dialogResult == DialogResult.No)
@@ -219,8 +219,8 @@ namespace Nucleus.Gaming
             }    
 
             uinfo.InitializeDefault(game, exePath);
-            GameManager.Instance.User.Games.Add(uinfo);
-            GameManager.Instance.SaveUserProfile();
+            Instance.User.Games.Add(uinfo);
+            Instance.SaveUserProfile();
 
             return uinfo;
         }
@@ -263,7 +263,7 @@ namespace Nucleus.Gaming
                 }
 
                 // search for the same exe on the user profile
-                if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
+                if (Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
                 {
                     continue;
                 }
@@ -279,8 +279,8 @@ namespace Nucleus.Gaming
                 UserGameInfo uinfo = new UserGameInfo();
 
                 uinfo.InitializeDefault(game, exePath);
-                GameManager.Instance.User.Games.Add(uinfo);
-                GameManager.Instance.SaveUserProfile();
+                Instance.User.Games.Add(uinfo);
+                Instance.SaveUserProfile();
 
                 return uinfo;
             }

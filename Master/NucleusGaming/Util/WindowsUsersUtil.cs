@@ -94,7 +94,6 @@ namespace Nucleus.Gaming.Util
             return oPrincipalContext;
         }
 
-
         public static void CreateWindowsUser(PlayerInfo player, int i)
         {
             var handlerInstance = GenericGameHandler.Instance;
