@@ -396,7 +396,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Tools\AudioReroute\AudioReroute.cs" />
-    <Compile Include="Tools\BackupFiles\BackupFiles.cs" />
+    <Compile Include="Tools\BackupDatas\BackupDatas.cs" />
     <Compile Include="Tools\DevReorder\DevReorder.cs" />
     <Compile Include="Tools\DInputBlocker\DInputBlocker.cs" />
     <Compile Include="Tools\DirectX9Wrapper\DirectX9Wrapper.cs" />

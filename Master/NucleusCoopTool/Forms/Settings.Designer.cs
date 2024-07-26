@@ -1227,6 +1227,7 @@ namespace Nucleus.Coop
             // 
             // cmb_Network
             // 
+            this.cmb_Network.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_Network.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmb_Network.Location = new System.Drawing.Point(15, 170);
@@ -3413,6 +3414,7 @@ namespace Nucleus.Coop
             // 
             // SplitColors
             // 
+            this.SplitColors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SplitColors.Location = new System.Drawing.Point(17, 83);
@@ -3514,10 +3516,10 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
+            this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.settingsTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
-            this.Controls.Add(this.layoutTab);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
