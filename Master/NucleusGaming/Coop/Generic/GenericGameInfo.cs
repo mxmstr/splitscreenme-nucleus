@@ -398,7 +398,7 @@ namespace Nucleus.Gaming
 
             if (CustomHotkeys != null)
             {
-                OnStop += Hotkeys.UnRegCustomHotkeys;
+                OnStop += RegisterHotkeys.UnRegCustomHotkeys;
             }
 
             if (MetaInfo.CheckUpdate)

@@ -47,25 +47,21 @@ using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Markup;
 using WindowScrape.Constants;
 using WindowScrape.Static;
 using WindowScrape.Types;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Nucleus.Gaming
 {
     public class GenericGameHandler : IGameHandler, ILogNode
     {
-        public void TriggerOSD(int timerMS, string text)
-        {
-            Globals.MainOSD.Show(timerMS, text);
-        }
-
         public List<WPFDiv> splitForms = new List<WPFDiv>();
         public List<ShortcutsReminder> shortcutsReminders = new List<ShortcutsReminder>();
 
-        private string logMsg;
         private string origExePath;
         public string NucleusEnvironmentRoot => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         public string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -99,7 +95,7 @@ namespace Nucleus.Gaming
         public int TotalPlayers => totalPlayers;
 
         public double origRatio = 1;
-        public double timer { get; set; }
+        public double Timer { get; set; }
         protected double timerInterval = 1000;
         public double TimerInterval => timerInterval;
 
@@ -433,7 +429,7 @@ namespace Nucleus.Gaming
 
             if (!string.IsNullOrEmpty(gen.BinariesFolder))
             {
-                rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder.ToLower(), "");
+                rootFolder = StringUtil.GetRootFromBinariesFolder(exeFolder, gen.BinariesFolder);
             }
 
             if (!string.IsNullOrEmpty(gen.WorkingFolder))
@@ -441,7 +437,7 @@ namespace Nucleus.Gaming
                 workingFolder = Path.Combine(exeFolder, gen.WorkingFolder.ToLower());
             }
 
-            gen.LockInputToggleKey = RawInputProcessor.LockInputKey;
+            gen.LockInputToggleKey = App_Hotkeys.LockKeyValue;
 
             RawInputManager.windows.Clear();
             Window nextWindowToInject = null;
@@ -1215,11 +1211,7 @@ namespace Nucleus.Gaming
 
                 if (i == 0)
                 {
-                    //BackupFiles.StartFilesRestoration();
-
-                    //Thread.Sleep(200);
-
-                    BackupFiles.StartBackupsRestoration();
+                    BackupDatas.StartBackupsRestoration();
                 }
 
                 if (processingExit)
@@ -1626,7 +1618,7 @@ namespace Nucleus.Gaming
                 }
                 else
                 {
-                    TriggerOSD(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
+                    Globals.MainOSD.Show(1200, $"Starting {gen.GameName} instance for {player.Nickname} as Player #{player.PlayerID + 1}");
                 }
 
                 if (context.NeedsSteamEmulation)
@@ -2461,7 +2453,7 @@ namespace Nucleus.Gaming
 
                     if (proc == null || gen.ForceProcessPick)
                     {
-                        proc = LaunchProcessPick(player);
+                        proc = ProcessPickerRuntime.LaunchProcessPick(player);
                     }
 
                 }
@@ -3004,8 +2996,6 @@ namespace Nucleus.Gaming
                 }   
             }
 
-            
-
             if (gen.LockInputAtStart)
             {
                 Thread.Sleep(5000);
@@ -3015,13 +3005,13 @@ namespace Nucleus.Gaming
                     GlobalWindowMethods.ChangeForegroundWindow();
                 }
 
-                LockInput.Lock(gen.LockInputSuspendsExplorer, gen.ProtoInput.FreezeExternalInputWhenInputNotLocked, gen?.ProtoInput);
+                LockInputRuntime.Lock(gen.LockInputSuspendsExplorer, gen.ProtoInput.FreezeExternalInputWhenInputNotLocked, gen?.ProtoInput);
 
-                TriggerOSD(1600, "Inputs Locked");
+                Globals.MainOSD.Show(1600, "Inputs Locked");
             }
 
             // Call the input lock/unlock callbacks, just in case they haven't been called with the players fully setup
-            if (LockInput.IsLocked)
+            if (LockInputRuntime.IsLocked)
             {
                 gen.ProtoInput.OnInputLocked?.Invoke();
             }
@@ -3067,210 +3057,6 @@ namespace Nucleus.Gaming
             return string.Empty;
         }
 
-        #region Here we backup files/folders added if any specified in the game handler
-        private void ProceedBackup()
-        {
-            if (gen.BackupFiles != null)
-            {
-                //Game.FilesToBackup
-                if (gen.BackupFiles.Length > 0)
-                {
-                    BackupFiles.StartFilesBackup(gen.BackupFiles);
-                }
-            }
-
-            if (context != null)
-            {
-                if (context.BackupFiles != null)
-                {
-                    //Context.FilesToBackup
-                    if (context.BackupFiles.Length > 0)
-                    {
-                        BackupFiles.StartFilesBackup(context.BackupFiles);
-                    }
-                }
-            }
-
-            if (gen.BackupFolders != null)
-            {
-                //Game.BackupFolders
-                if (gen.BackupFolders.Length > 0)
-                {
-                    BackupFiles.StartFoldersBackup(gen.BackupFolders);
-                }
-            }
-
-            if (context != null)
-            {
-                if (context.BackupFolders != null)
-                {
-                    //Context.BackupFolders
-                    if (context.BackupFolders.Length > 0)
-                    {
-                        BackupFiles.StartFoldersBackup(context.BackupFolders);
-                    }
-                }
-            }
-        }
-
-        #endregion
-
-        private Process LaunchProcessPick(PlayerInfo player)
-        {
-            ProcessPicker ppform = new ProcessPicker(); //using ProcessPicker.cs 
-            Log("Launching process picker");
-
-            ppform.pplistBox.DoubleClick += new EventHandler(SelBtn_Click);
-
-            foreach (Control c in ppform.Controls)
-            {
-                if (c.Name == "refrshBtn")
-                {
-                    c.Click += new EventHandler(RefrshBtn_Click);
-                }
-            }
-
-            foreach (Control c in ppform.Controls)
-            {
-                if (c.Name == "selBtn")
-                {
-                    c.Click += new EventHandler(SelBtn_Click);
-                }
-            }
-
-            Process[] allProc = Process.GetProcesses();
-
-            foreach (Process p in allProc)
-            {
-                if (p.Id == 0 || string.IsNullOrEmpty(p.MainWindowTitle))
-                {
-                    continue;
-                }
-                if (attachedIds.Contains(p.Id))
-                {
-                    if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
-                    {
-                        ppform.pplistBox.Items.Insert(0, p.Id + " - (DO NOT USE - Already assigned in Nucleus) " + p.ProcessName);
-                    }
-                    else
-                    {
-                        ppform.pplistBox.Items.Add(p.Id + " - (DO NOT USE - Already assigned in Nucleus) " + p.ProcessName);
-                    }
-                }
-                else
-                {
-                    if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
-                    {
-                        ppform.pplistBox.Items.Insert(0, p.Id + " - " + p.ProcessName);
-                    }
-                    else
-                    {
-                        ppform.pplistBox.Items.Add(p.Id + " - " + p.ProcessName);
-                    }
-                }
-            }
-
-            ppform.ShowDialog();
-            WindowScrape.Static.HwndInterface.MakeTopMost(ppform.Handle);
-
-            if (ppform.pplistBox.SelectedItem != null)
-            {
-                Process proc = Process.GetProcessById(int.Parse(ppform.pplistBox.SelectedItem.ToString().Split(' ')[0]));
-                Log(string.Format("Obtained process {0} (pid {1}) via process picker", proc.ProcessName, proc.Id));
-                attached.Add(proc);
-                attachedIds.Add(proc.Id);
-                player.ProcessID = proc.Id;
-
-                if (player.IsKeyboardPlayer && !player.IsRawKeyboard)
-                {
-                    keyboardProcId = proc.Id;
-                }
-
-                return proc;
-            }
-
-            return null;
-        }
-
-        public void SelBtn_Click(object sender, EventArgs e)
-        {
-            Control control = (Control)sender;
-            Form ppform = control.FindForm();
-
-            if (control.GetType() == typeof(ListBox))
-            {
-                ListBox listBox = control as ListBox;
-                if (listBox.SelectedItem == null)
-                {
-                    MessageBox.Show("No process has been selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-            else if (control.GetType() == typeof(Button))
-            {
-                foreach (Control c in ppform.Controls)
-                {
-                    if (c.GetType() == typeof(ListBox))
-                    {
-                        ListBox listBox = c as ListBox;
-                        if (listBox.SelectedItem == null)
-                        {
-                            MessageBox.Show("No process has been selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
-                }
-            }
-
-            ppform.Close();
-        }
-
-        public void RefrshBtn_Click(object sender, EventArgs e)
-        {
-            Control control = (Button)sender;
-
-            Form ppform = control.FindForm();
-            foreach (Control l in ppform.Controls)
-            {
-                if (l.GetType() == typeof(ListBox))
-                {
-                    ListBox listBox = l as ListBox;
-                    listBox.Items.Clear();
-
-                    Process[] allProc = Process.GetProcesses();
-                    foreach (Process p in allProc)
-                    {
-                        if (p.Id == 0 || string.IsNullOrEmpty(p.MainWindowTitle))
-                        {
-                            continue;
-                        }
-                        if (attachedIds.Contains(p.Id))
-                        {
-                            if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
-                            {
-                                listBox.Items.Insert(0, p.Id + " - (DO NOT USE - Already assigned in Nucleus)" + p.ProcessName);
-                            }
-                            else
-                            {
-                                listBox.Items.Add(p.Id + " - (DO NOT USE - Already assigned in Nucleus)" + p.ProcessName);
-                            }
-                        }
-                        else
-                        {
-                            if (p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower()) || (gen.LauncherExe?.Length > 0 && p.ProcessName.ToLower().Contains(Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower())))
-                            {
-                                listBox.Items.Insert(0, p.Id + " - " + p.ProcessName);
-                            }
-                            else
-                            {
-                                listBox.Items.Add(p.Id + " - " + p.ProcessName);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         private void ProcessChangeAtEnd()
         {
             List<PlayerInfo> players = profile.DevicesList;
@@ -3283,6 +3069,7 @@ namespace Nucleus.Gaming
 
                 PlayerInfo player = players[i];
                 Rectangle playerBounds = player.MonitorBounds;
+
                 owner = player.Owner;
                 playerBoundsWidth = playerBounds.Width;
                 playerBoundsHeight = playerBounds.Height;
@@ -3326,6 +3113,7 @@ namespace Nucleus.Gaming
                 }
 
                 ProcessData pdata = null;
+
                 if (player.ProcessData != null)
                 {
                     Log(string.Format("Using player process data. Process: {0} (pid {1})", player.ProcessData.Process.ProcessName, player.ProcessData.Process.Id));
@@ -3334,7 +3122,9 @@ namespace Nucleus.Gaming
                 else
                 {
                     Process[] cProcs;
+
                     Log("Player process data was null. Attempting to find process by executable name and start time");
+
                     try
                     {
                         cProcs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(gen.ExecutableName)).OrderBy(p => p.StartTime).ToArray();
@@ -3549,37 +3339,9 @@ namespace Nucleus.Gaming
             GlobalWindowMethods.UpdateAndRefreshGameWindows(delayMS, refresh);
         }
 
-        public void CenterCursor()
-        {
-            List<PlayerInfo> players = profile.DevicesList;
-            if (players == null)
-            {
-                return;
-            }
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                PlayerInfo p = players[i];
-
-                if (p.IsKeyboardPlayer && !p.IsRawKeyboard)
-                {
-                    ProcessData data = p.ProcessData;
-                    if (data == null)
-                    {
-                        continue;
-                    }
-
-                    if (data.HWnd != null)
-                    {
-                        User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
-                    }
-                }
-            }
-        }
-
         public void End(bool fromStopButton)
         {
-            if (fromStopButton && LockInput.IsLocked)
+            if (fromStopButton && LockInputRuntime.IsLocked)
             {
                 //TODO/: For some reason the Stop button is clicked during split screen. Temporary fix is to not end if input is locked.//Should be fixed now by unfocusing the stop button.
                 Log("IGNORING SHUTDOWN BECAUSE INPUT LOCKED");
@@ -3638,7 +3400,7 @@ namespace Nucleus.Gaming
                 shortcutsReminders.Clear();
             }
 
-            LockInput.Unlock(false, gen?.ProtoInput);
+            LockInputRuntime.Unlock(false, gen?.ProtoInput);
 
             gen.OnStop?.Invoke();
 
@@ -3681,7 +3443,7 @@ namespace Nucleus.Gaming
                 string rootFolder = exeFolder;
                 if (!string.IsNullOrEmpty(gen.BinariesFolder))
                 {
-                    rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder.ToLower(), "");
+                    rootFolder = StringUtil.GetRootFromBinariesFolder(exeFolder, gen.BinariesFolder);
                 }
 
                 foreach (string file in gen.DeleteOnClose)
@@ -3795,7 +3557,7 @@ namespace Nucleus.Gaming
 
             RawInputManager.EndSplitScreen();
 
-            ProceedBackup();
+            BackupDatas.ProceedBackup();
 
             // delete symlink folder and users accounts 
 #if RELEASE
@@ -3827,8 +3589,6 @@ namespace Nucleus.Gaming
         {
             try
             {
-                logMsg = logMessage;
-
                 if (App_Misc.DebugLog == "True")
                 {
                     using (StreamWriter writer = new StreamWriter("debug-log.txt", true))

@@ -1342,7 +1342,7 @@ namespace Nucleus.Gaming.Coop
 
         internal static (Rectangle, RectangleF) TranslateBounds(ProfilePlayer profilePlayer, UserScreen screen)
         {
-            RectangleF ogScrUiBounds = GameProfile.AllScreens[profilePlayer.ScreenIndex];
+            RectangleF ogScrUiBounds = AllScreens[profilePlayer.ScreenIndex];
             RectangleF ogEditBounds = profilePlayer.EditBounds;
 
             Vector2 ogScruiLoc = new Vector2(ogScrUiBounds.X, ogScrUiBounds.Y);//original screen ui location

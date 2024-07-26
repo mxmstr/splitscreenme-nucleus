@@ -842,7 +842,7 @@ namespace Nucleus.Coop
             {
                 RawInputAction(m.LParam);
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.TopMost_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.TopMost_HotkeyID)
             {
                 if (hotkeysCooldown || I_GameHandler == null)
                 {
@@ -851,9 +851,9 @@ namespace Nucleus.Coop
 
                 GlobalWindowMethods.ShowHideWindows();
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.StopSession_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.StopSession_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown || I_GameHandler == null)
                     {
@@ -871,9 +871,9 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.SetFocus_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.SetFocus_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown || I_GameHandler == null)
                     {
@@ -888,9 +888,9 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.ResetWindows_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.ResetWindows_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown || I_GameHandler == null)
                     {
@@ -904,7 +904,7 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Cutscenes_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Cutscenes_HotkeyID)
             {
                 if (hotkeysCooldown || I_GameHandler == null)
                 {
@@ -913,9 +913,9 @@ namespace Nucleus.Coop
 
                 GlobalWindowMethods.ToggleCutScenesMode();
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Switch_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Switch_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown || I_GameHandler == null)
                     {
@@ -929,9 +929,9 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.KillProcess_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.KillProcess_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown)
                     {
@@ -946,9 +946,9 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Reminder_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Reminder_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown)
                     {
@@ -965,9 +965,9 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.MergerFocusSwitch_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.MergerFocusSwitch_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown)
                     {
@@ -981,9 +981,9 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_1)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Custom_Hotkey_1)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown)
                     {
@@ -997,9 +997,9 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_2)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Custom_Hotkey_2)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown)
                     {
@@ -1013,9 +1013,9 @@ namespace Nucleus.Coop
                     TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == Hotkeys.Custom_Hotkey_3)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Custom_Hotkey_3)
             {
-                if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                 {
                     if (hotkeysCooldown)
                     {
@@ -1629,11 +1629,11 @@ namespace Nucleus.Coop
                 profileSettings.Visible = false;
             }
 
-            Hotkeys.RegHotkeys(this.Handle);
+            RegisterHotkeys.RegHotkeys(this.Handle);
 
             if (currentGame.CustomHotkeys != null)
             {
-                Hotkeys.RegCustomHotkeys(currentGame);
+                RegisterHotkeys.RegCustomHotkeys(currentGame);
             }
 
             WindowState = FormWindowState.Minimized;
@@ -1659,7 +1659,7 @@ namespace Nucleus.Coop
                     mainButtonFrame.Focus();
                     btn_Play.Text = "START";
                     btn_Play.Enabled = false;
-                    Hotkeys.UnRegHotkeys();
+                    RegisterHotkeys.UnRegHotkeys();
 
                     BringToFront();
                 });

@@ -39,11 +39,7 @@ namespace Nucleus.Gaming
             // grab the CustomStep and extract what we have to show from it
             GameOption option = CustomStep.Option;
 
-            if (option.List == null)
-            {
-
-            }
-            else
+            if (option.List != null)
             {
                 ControlListBox list = new ControlListBox
                 {

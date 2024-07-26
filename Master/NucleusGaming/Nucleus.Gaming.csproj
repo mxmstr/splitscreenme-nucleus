@@ -211,7 +211,7 @@
     <Compile Include="Coop\InputManagement\Gamepads\GamepadButtons.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadNavigation.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadState.cs" />
-    <Compile Include="Coop\InputManagement\Hotkeys.cs" />
+    <Compile Include="Coop\InputManagement\RegisterHotkeys.cs" />
     <Compile Include="Coop\InputManagement\Osk.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadShortcuts.cs" />
     <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
@@ -249,7 +249,7 @@
     <Compile Include="Coop\InputManagement\Enums\WNDCLASSEX.cs" />
     <Compile Include="Coop\InputManagement\HookPipe.cs" />
     <Compile Include="Coop\InputManagement\InputInterceptor.cs" />
-    <Compile Include="Coop\InputManagement\LockInput.cs" />
+    <Compile Include="Coop\InputManagement\LockInputRuntime.cs" />
     <Compile Include="Coop\InputManagement\Logger.cs" />
     <Compile Include="Coop\InputManagement\RawInputManager.cs" />
     <Compile Include="Coop\InputManagement\RawInputProcessor.cs" />

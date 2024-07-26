@@ -39,14 +39,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasGalaxyEmu
                 }
 
                 try
-                {
-                    if (i == 0)
-                    {
-                    }
-                    else
-                    {
-                    }
-
+                {                 
                     JObject emuSettings;
                     emuSettings = new JObject(
                     new JProperty("api_version", "1.100.2.0"),

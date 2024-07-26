@@ -230,6 +230,7 @@ namespace Nucleus.Coop
                 for (int all = 0; all < IdealProcessors.Length; all++)
                 {
                     var idealField = IdealProcessors[all];
+                    idealField.DropDownStyle = ComboBoxStyle.DropDownList;
 
                     if (p == 0)
                     {
@@ -243,7 +244,6 @@ namespace Nucleus.Coop
                     idealField.KeyPress += new KeyPressEventHandler(Affinity_KeyPress);
 
                     var affinityField = Affinitys[all];
-
                     affinityField.Text = "";
                     affinityField.Click += new EventHandler(Affinity_Click);
                     affinityField.KeyPress += new KeyPressEventHandler(Affinity_KeyPress);
@@ -267,6 +267,7 @@ namespace Nucleus.Coop
 
             foreach (ComboBox pClass in PriorityClasses)
             {
+                pClass.DropDownStyle = ComboBoxStyle.DropDownList;
                 pClass.SelectedIndex = 0;
                 pClass.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
             }
@@ -779,8 +780,8 @@ namespace Nucleus.Coop
             GameProfile.HideDesktopOnly = hideDesktop.Checked;
             GameProfile.SplitDivColor = SplitColors.Text;
             GameProfile.AutoDesktopScaling = scaleOptionCbx.Checked;
-            GameProfile.PauseBetweenInstanceLaunch = int.Parse(pauseBetweenInstanceLaunch_TxtBox.Text);
-            GameProfile.HWndInterval = int.Parse(WindowsSetupTiming_TextBox.Text.ToString());
+            GameProfile.PauseBetweenInstanceLaunch = pauseBetweenInstanceLaunch_TxtBox.Text == "" ? 0 : int.Parse(pauseBetweenInstanceLaunch_TxtBox.Text);
+            GameProfile.HWndInterval = WindowsSetupTiming_TextBox.Text == "" ? 0 : int.Parse(WindowsSetupTiming_TextBox.Text);
             GameProfile.AudioInstances.Clear();
             GameProfile.Cts_MuteAudioOnly = cts_Mute.Checked;
             GameProfile.Cts_KeepAspectRatio = cts_kar.Checked;
@@ -1349,6 +1350,7 @@ namespace Nucleus.Coop
                 resCmb.ForeColor = Color.White;
                 resCmb.FlatStyle = FlatStyle.Flat;
                 resCmb.TextChanged += SaveSelectedRes;
+                resCmb.DropDownStyle = ComboBoxStyle.DropDownList;
 
                 Label resLabel = new Label();
                 resLabel.AutoSize = true;
@@ -1478,5 +1480,6 @@ namespace Nucleus.Coop
         {
             GameProfile.Stop_UINav = stopUINav.Checked;
         }
+
     }
 }

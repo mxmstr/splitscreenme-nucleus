@@ -187,6 +187,7 @@ namespace Nucleus.Coop.Forms
                     {
                         handlerFolders.Add(ze.FileName.TrimEnd('/'));
                     }
+
                     ze.Extract(scriptTempFolder, ExtractExistingFileAction.OverwriteSilently);
                 }
                 else

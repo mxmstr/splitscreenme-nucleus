@@ -281,6 +281,7 @@ namespace Nucleus.Coop
             if (App_Misc.Network != "")
             {
                 cmb_Network.Text = App_Misc.Network;
+                cmb_Network.SelectedIndex = cmb_Network.Items.IndexOf(App_Misc.Network);
             }
             else
             {
@@ -429,9 +430,6 @@ namespace Nucleus.Coop
             GetAllScreensResolutions();
 
             RefreshAudioList();
-
-            ///network setting
-            RefreshCmbNetwork();
 
             GetPlayersNickNameAndSteamIds();
 
@@ -667,6 +665,13 @@ namespace Nucleus.Coop
                 }
             }
 
+
+            if (smfw_HKTxt.Text == "")
+            {
+                MessageBox.Show("Merger hotkey value can't be empty", "Invalid hotkey value!");
+                return;
+            }
+
             App_Hotkeys.CloseApp = Tuple.Create(cn_Cmb.SelectedItem.ToString(), cn_HKTxt.Text);
             App_Hotkeys.StopSession = Tuple.Create(ss_Cmb.SelectedItem.ToString(), ss_HKTxt.Text);
             App_Hotkeys.TopMost = Tuple.Create(ttm_Cmb.SelectedItem.ToString(), ttm_HKTxt.Text);
@@ -702,8 +707,6 @@ namespace Nucleus.Coop
             App_Layouts.Cts_KeepAspectRatio = cts_kar.Checked.ToString();
             App_Layouts.Cts_Unfocus = cts_unfocus.Checked.ToString();
             App_Layouts.WindowsMerger = enable_WMerger.Checked.ToString();
-
-            RawInputProcessor.UpdateLockKey();
 
             if (setupScreen != null)
             {
@@ -1260,6 +1263,7 @@ namespace Nucleus.Coop
                 resCmb.ForeColor = Color.White;
                 resCmb.FlatStyle = FlatStyle.Flat;
                 resCmb.TextChanged += SaveSelectedRes;
+                resCmb.DropDownStyle = ComboBoxStyle.DropDownList;
 
                 Label resLabel = new Label();
                 resLabel.AutoSize = true;

@@ -1144,14 +1144,14 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
 
             List<PlayerInfo> players = handlerInstance.profile.DevicesList;
 
-            handlerInstance.timer += delayMS;
+            handlerInstance.Timer += delayMS;
 
             bool updatedHwnd = false;
 
-            if (handlerInstance.timer > handlerInstance.HWndInterval)
+            if (handlerInstance.Timer > handlerInstance.HWndInterval)
             {
                 updatedHwnd = true;
-                handlerInstance.timer = 0;
+                handlerInstance.Timer = 0;
             }
 
             Application.DoEvents();
@@ -1168,7 +1168,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 
                 if (ResetingWindows && data.Finished)
                 {
-                    handlerInstance.TriggerOSD(100000, "Resetting game windows. Please wait...");
+                    Globals.MainOSD.Show(100000, "Resetting game windows. Please wait...");
                     data.HWNDRetry = false;
                     data.Setted = false;
                     data.Finished = false;
@@ -1346,7 +1346,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                             ChangeForegroundWindow();
                                         }
 
-                                        handlerInstance.TriggerOSD(2000, "Game Windows Resetted");
+                                        Globals.MainOSD.Show(2000, "Game Windows Resetted");
                                         ResetingWindows = false;
                                     }                
                                 }
@@ -1630,7 +1630,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 return;
             }
 
-            if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+            if (!LockInputRuntime.IsLocked)
             {
                 if (handlerInstance.profile.DevicesList.All(pl => pl.ProcessData == null))
                 {
@@ -1800,9 +1800,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                 }
             }
         }
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetTopWindow(IntPtr hwnd);
 
         public static void ChangeForegroundWindow()
         {

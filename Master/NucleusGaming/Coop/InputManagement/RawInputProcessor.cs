@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Coop.BasicTypes;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Coop.BasicTypes;
 using Nucleus.Gaming.Coop.InputManagement.Enums;
 using Nucleus.Gaming.Coop.InputManagement.Structs;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
@@ -17,12 +18,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
     {
         private static RawInputProcessor rawInputProcessor = null;
 
-        public static int LockInputKey {get; private set;}
-
-        public static void UpdateLockKey()
-        {
-            LockInputKey = LockInput.GetLockKey();
-        }
+        
 
         private readonly Func<bool> splitScreenRunning;
 
@@ -82,7 +78,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 Debug.WriteLine("Warning: rawInputProcessor is being reassigned");
             }
 
-            LockInputKey = LockInput.GetLockKey();
+            //LockInputKey = LockInput.GetLockKey();
             rawInputProcessor = this;
         }
 
@@ -428,7 +424,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                 uint keyboardMessage = rawBuffer.data.keyboard.Message;
                 bool keyUpOrDown = keyboardMessage == (uint)KeyboardEvents.WM_KEYDOWN || keyboardMessage == (uint)KeyboardEvents.WM_KEYUP;
 
-                if (keyboardMessage == (uint)KeyboardEvents.WM_KEYUP && (rawBuffer.data.keyboard.Flags | 1) != 0 && rawBuffer.data.keyboard.VKey == LockInputKey)
+                if (keyboardMessage == (uint)KeyboardEvents.WM_KEYUP && (rawBuffer.data.keyboard.Flags | 1) != 0 && rawBuffer.data.keyboard.VKey == App_Hotkeys.LockKeyValue)
                 {
 
                     if(GlobalWindowMethods.ResetingWindows)
@@ -437,7 +433,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                         return;
                     }
 
-                    if (!LockInput.IsLocked)
+                    if (!LockInputRuntime.IsLocked)
                     {
                         if (CurrentGameInfo == null || GenericGameHandler.Instance.hasEnded)
                         {
@@ -446,7 +442,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
                         Globals.MainOSD.Show(1000, "Inputs Locked");
 
-                        LockInput.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
+                        LockInputRuntime.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
 
                         if (CurrentGameInfo.ToggleUnfocusOnInputsLock)
                         {
@@ -455,7 +451,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     }
                     else
                     {
-                        LockInput.Unlock(CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
+                        LockInputRuntime.Unlock(CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
                         Globals.MainOSD.Show(1000, "Inputs Unlocked");
                     }
                 }

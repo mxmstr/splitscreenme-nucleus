@@ -746,6 +746,7 @@ namespace Nucleus.Coop
             // 
             // SplitColors
             // 
+            this.SplitColors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SplitColors.Location = new System.Drawing.Point(14, 77);
@@ -2822,9 +2823,9 @@ namespace Nucleus.Coop
             this.scaleOptionCbx.Location = new System.Drawing.Point(38, 134);
             this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
             this.scaleOptionCbx.Name = "scaleOptionCbx";
-            this.scaleOptionCbx.Size = new System.Drawing.Size(175, 17);
+            this.scaleOptionCbx.Size = new System.Drawing.Size(185, 17);
             this.scaleOptionCbx.TabIndex = 148;
-            this.scaleOptionCbx.Text = "Auto set desktop scale to 100%";
+            this.scaleOptionCbx.Text = "Auto Set Desktop Scale To 100%";
             this.scaleOptionCbx.UseVisualStyleBackColor = false;
             // 
             // useNicksCheck
@@ -2866,6 +2867,7 @@ namespace Nucleus.Coop
             // 
             // cmb_Network
             // 
+            this.cmb_Network.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_Network.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmb_Network.Location = new System.Drawing.Point(37, 205);
@@ -4904,11 +4906,11 @@ namespace Nucleus.Coop
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.sharedTabBtn);
             this.Controls.Add(this.modeLabel);
+            this.Controls.Add(this.sharedTab);
+            this.Controls.Add(this.processorTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.playersTab);
             this.Controls.Add(this.audioTab);
-            this.Controls.Add(this.sharedTab);
-            this.Controls.Add(this.processorTab);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

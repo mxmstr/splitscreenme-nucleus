@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.Coop.InputManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -114,14 +115,54 @@ namespace Nucleus.Gaming.App.Settings
             set 
             { 
                 lockInputs = value; 
-                Globals.ini.IniWriteValue("Hotkeys", "LockKey", value); 
+                Globals.ini.IniWriteValue("Hotkeys", "LockKey", value);
+                ParseLockKey();
             } 
+        }
+
+        private static IDictionary<string, int> lockKeys = new Dictionary<string, int>
+        {
+                    { "End", 0x23 },
+                    { "Home", 0x24 },
+                    { "Delete", 0x2E },
+                    { "Multiply", 0x6A },
+                    { "F1", 0x70 },
+                    { "F2", 0x71 },
+                    { "F3", 0x72 },
+                    { "F4", 0x73 },
+                    { "F5", 0x74 },
+                    { "F6", 0x75 },
+                    { "F7", 0x76 },
+                    { "F8", 0x77 },
+                    { "F9", 0x78 },
+                    { "F10", 0x79 },
+                    { "F11", 0x7A },
+                    { "F12", 0x7B },
+                    { "+", 0xBB },
+                    { "-", 0xBD },
+                    { "Numpad 0", 0x60 },
+                    { "Numpad 1", 0x61 },
+                    { "Numpad 2", 0x62 },
+                    { "Numpad 3", 0x63 },
+                    { "Numpad 4", 0x64 },
+                    { "Numpad 5", 0x65 },
+                    { "Numpad 6", 0x66 },
+                    { "Numpad 7", 0x67 },
+                    { "Numpad 8", 0x68 },
+                    { "Numpad 9", 0x69 }
+        };
+
+        public static int LockKeyValue { get; private set; }
+
+        private static void ParseLockKey()
+        {
+            int key = lockKeys.Where(k => k.Key == LockInputs).FirstOrDefault().Value;
+            LockKeyValue = key == 0 ? 0x23 : key;
         }
 
         public static bool LoadSettings()
         {
-            try
-            {
+
                 //Todo: Add check for empty fields and set default values
                 close = Tuple.Create(Globals.ini.IniReadValue("Hotkeys", "Close").Split('+')[0], Globals.ini.IniReadValue("Hotkeys", "Close").Split('+')[1]);
                 stop = Tuple.Create(Globals.ini.IniReadValue("Hotkeys", "Stop").Split('+')[0], Globals.ini.IniReadValue("Hotkeys", "Stop").Split('+')[1]);
@@ -133,14 +174,9 @@ namespace Nucleus.Gaming.App.Settings
                 shortcutsReminder = Tuple.Create(Globals.ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[0], Globals.ini.IniReadValue("Hotkeys", "ShortcutsReminder").Split('+')[1]);
                 switchMergerChildForeGround = Tuple.Create(Globals.ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+')[0], Globals.ini.IniReadValue("Hotkeys", "SwitchMergerChildForeGround").Split('+')[1]);
                 lockInputs = Globals.ini.IniReadValue("Hotkeys", "LockKey");
-            }
-            catch (Exception ex)
-            {
-                //message box
-                return false;
-            }
+                ParseLockKey();
 
-            return true;
+                return true;
         }
     }
 }
