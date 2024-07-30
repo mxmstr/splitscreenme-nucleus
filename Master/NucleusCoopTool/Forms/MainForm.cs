@@ -834,200 +834,87 @@ namespace Nucleus.Coop
                 if (m.Msg == 0x020)//Do not reset custom cursor when the mouse hover over the Form background(needed because of the custom resizing/moving messages handling) 
                 {
                     m.Result = IntPtr.Zero;
+                    base.WndProc(ref m);
                     return;
                 }
             }
+
+            if (hotkeysCooldown)
+            {
+                base.WndProc(ref m);
+                return;
+            }
+
+            if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Cutscenes_HotkeyID && I_GameHandler != null)
+            {
+                GlobalWindowMethods.ToggleCutScenesMode();
+                base.WndProc(ref m);
+                return;
+            }
+
+            if (LockInputRuntime.IsLocked)
+            {
+                TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
+                base.WndProc(ref m);
+                return;
+            }     
 
             if (m.Msg == 0x00FF)//WM_INPUT
             {
                 RawInputAction(m.LParam);
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.TopMost_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.TopMost_HotkeyID && I_GameHandler != null)
             {
-                if (hotkeysCooldown || I_GameHandler == null)
-                {
-                    return;
-                }
-
                 GlobalWindowMethods.ShowHideWindows();
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.StopSession_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.StopSession_HotkeyID && I_GameHandler != null)
             {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
+                if (btn_Play.Text == "S T O P")
                 {
-                    if (hotkeysCooldown || I_GameHandler == null)
-                    {
-                        return;
-                    }
-
-                    if (btn_Play.Text == "S T O P")
-                    {
-                        Btn_Play_Click(this, null);
-                        TriggerOSD(2000, "Session Ended");
-                    }
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
+                    Btn_Play_Click(this, null);
+                    TriggerOSD(2000, "Session Ended");
                 }
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.SetFocus_HotkeyID)
-            {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
-                {
-                    if (hotkeysCooldown || I_GameHandler == null)
-                    {
-                        return;
-                    }
-
-                    GlobalWindowMethods.ChangeForegroundWindow();
-                    TriggerOSD(2000, "Game Windows Unfocused");                  
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
-                }
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.SetFocus_HotkeyID && I_GameHandler != null)
+            {     
+                GlobalWindowMethods.ChangeForegroundWindow();
+                TriggerOSD(2000, "Game Windows Unfocused");
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.ResetWindows_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.ResetWindows_HotkeyID && I_GameHandler != null)
             {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
-                {
-                    if (hotkeysCooldown || I_GameHandler == null)
-                    {
-                        return;
-                    }
-
-                    GlobalWindowMethods.ResetingWindows = true;
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
-                }
+                GlobalWindowMethods.ResetingWindows = true;
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Cutscenes_HotkeyID)
+            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Switch_HotkeyID && I_GameHandler != null)
             {
-                if (hotkeysCooldown || I_GameHandler == null)
-                {
-                    return;
-                }
-
-                GlobalWindowMethods.ToggleCutScenesMode();
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Switch_HotkeyID)
-            {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
-                {
-                    if (hotkeysCooldown || I_GameHandler == null)
-                    {
-                        return;
-                    }
-
-                    GlobalWindowMethods.SwitchLayout();
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
-                }
+                GlobalWindowMethods.SwitchLayout();
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.KillProcess_HotkeyID)
-            {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
-                {
-                    if (hotkeysCooldown)
-                    {
-                        return;
-                    }
-
-                    User32Util.ShowTaskBar();
-                    Close();
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
-                }
+            { 
+                User32Util.ShowTaskBar();
+                Close();
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Reminder_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
+                foreach (ShortcutsReminder reminder in GenericGameHandler.Instance.shortcutsReminders)
                 {
-                    if (hotkeysCooldown)
-                    {
-                        return;
-                    }
-
-                    foreach (ShortcutsReminder reminder in GenericGameHandler.Instance.shortcutsReminders)
-                    {
-                        reminder.Toggle(7);
-                    }
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
+                    reminder.Toggle(7);
                 }
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.MergerFocusSwitch_HotkeyID)
             {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
-                {
-                    if (hotkeysCooldown)
-                    {
-                        return;
-                    }
-
-                    WindowsMerger.Instance?.SwitchChildFocus();
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
-                }
+                WindowsMerger.Instance?.SwitchChildFocus();
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Custom_Hotkey_1)
             {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
-                {
-                    if (hotkeysCooldown)
-                    {
-                        return;
-                    }
-
-                    GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_1.Invoke();
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
-                }
+                GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_1.Invoke();
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Custom_Hotkey_2)
             {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
-                {
-                    if (hotkeysCooldown)
-                    {
-                        return;
-                    }
-
-                    GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_2.Invoke();
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
-                }
+                GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_2.Invoke();
             }
             else if (m.Msg == 0x0312 && m.WParam.ToInt32() == RegisterHotkeys.Custom_Hotkey_3)
             {
-                if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
-                {
-                    if (hotkeysCooldown)
-                    {
-                        return;
-                    }
-
-                    GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_3.Invoke();
-                }
-                else
-                {
-                    TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
-                }
+                GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_3.Invoke();
             }
 
             base.WndProc(ref m);
@@ -1238,11 +1125,6 @@ namespace Nucleus.Coop
                 }
 
                 HandlerNoteTitle.ForeColor = Color.FromArgb(r, r, 255, b);
-            }
-            else if (text.Contains("Description"))
-            {
-                HandlerNoteTitle.ForeColor = Color.Gold;
-                HandlerNoteTitle.Font = new Font(HandlerNoteTitle.Font.FontFamily, (float)HandlerNoteTitle.Font.Size, FontStyle.Regular);
             }
         }
 

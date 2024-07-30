@@ -299,11 +299,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                             changed = true;
 
-                            if (GameProfile.loadedProfilePlayers.Contains(data[j]))
+                            if (GameProfile.AssignedDevices.Contains(data[j]))
                             {
                                 BoundsFunctions.screens[data[j].ScreenIndex].PlayerOnScreen--;
                                 GameProfile.TotalAssignedPlayers--;
-                                GameProfile.loadedProfilePlayers.Remove(data[j]);
+                                GameProfile.AssignedDevices.Remove(data[j]);
                             }
 
                             data.RemoveAt(j);
@@ -402,9 +402,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                                 changed = true;
 
-                                if (GameProfile.loadedProfilePlayers.Contains(data[j]))
+                                if (GameProfile.AssignedDevices.Contains(data[j]))
                                 {
-                                    GameProfile.loadedProfilePlayers.Remove(data[j]);
+                                    GameProfile.AssignedDevices.Remove(data[j]);
                                     BoundsFunctions.screens[data[j].ScreenIndex].PlayerOnScreen--;
                                     GameProfile.TotalAssignedPlayers--;
                                 }
@@ -515,9 +515,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (hasNullDInputJoystick != null)
                 {
-                    if (GameProfile.loadedProfilePlayers.Contains(hasNullDInputJoystick))
+                    if (GameProfile.AssignedDevices.Contains(hasNullDInputJoystick))
                     {
-                        GameProfile.loadedProfilePlayers.Remove(hasNullDInputJoystick);
+                        GameProfile.AssignedDevices.Remove(hasNullDInputJoystick);
                         BoundsFunctions.screens[hasNullDInputJoystick.ScreenIndex].PlayerOnScreen--;
                         GameProfile.TotalAssignedPlayers--;
                     }

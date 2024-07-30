@@ -152,11 +152,8 @@ namespace Nucleus.Gaming
             userGame = game;
             this.profile = profile;
 
-            if (App_Misc.DebugLog == "True")
-            {
-                isDebug = true;
-            }
-
+            isDebug = App_Misc.DebugLog == "True";
+           
             Network.iniNetworkInterface = GameProfile.Network;
 
             List<PlayerInfo> players = profile.DevicesList;
@@ -206,11 +203,8 @@ namespace Nucleus.Gaming
             JsFilename = gen.JsFileName;
             HandlerGUID = gen.GUID;
 
-            if (gen.LaunchAsDifferentUsers || gen.LaunchAsDifferentUsersAlt)
-            {
-                UsingNucleusAccounts = true;
-            }
-
+            UsingNucleusAccounts = gen.LaunchAsDifferentUsers || gen.LaunchAsDifferentUsersAlt;
+            
             if (GameProfile.HWndInterval > 0)
             {
                 HWndInterval = GameProfile.HWndInterval;
@@ -342,7 +336,6 @@ namespace Nucleus.Gaming
 
                 if (firstInGroup.IsRawKeyboard) firstInGroup.RawKeyboardDeviceHandle = group.First(x => x.RawKeyboardDeviceHandle != (IntPtr)(-1)).RawKeyboardDeviceHandle;
                 if (firstInGroup.IsRawMouse) firstInGroup.RawMouseDeviceHandle = group.First(x => x.RawMouseDeviceHandle != (IntPtr)(-1)).RawMouseDeviceHandle;
-
 
                 firstInGroup.HIDDeviceID = new string[2] { firstInGroup.HIDDeviceID[0], secondInGroup.HIDDeviceID[0] };
 

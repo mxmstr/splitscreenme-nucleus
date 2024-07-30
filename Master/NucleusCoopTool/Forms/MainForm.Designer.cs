@@ -459,28 +459,28 @@ namespace Nucleus.Coop
             // xOutputToolStripMenuItem
             // 
             this.xOutputToolStripMenuItem.Name = "xOutputToolStripMenuItem";
-            this.xOutputToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.xOutputToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.xOutputToolStripMenuItem.Text = "XOutput";
             this.xOutputToolStripMenuItem.Click += new System.EventHandler(this.XOutputToolStripMenuItem_Click);
             // 
             // dS4WindowsToolStripMenuItem
             // 
             this.dS4WindowsToolStripMenuItem.Name = "dS4WindowsToolStripMenuItem";
-            this.dS4WindowsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.dS4WindowsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dS4WindowsToolStripMenuItem.Text = "DS4Windows";
             this.dS4WindowsToolStripMenuItem.Click += new System.EventHandler(this.DS4WindowsToolStripMenuItem_Click);
             // 
             // hidHideToolStripMenuItem
             // 
             this.hidHideToolStripMenuItem.Name = "hidHideToolStripMenuItem";
-            this.hidHideToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.hidHideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hidHideToolStripMenuItem.Text = "HidHide";
             this.hidHideToolStripMenuItem.Click += new System.EventHandler(this.HidHideToolStripMenuItem_Click);
             // 
             // scpToolkitToolStripMenuItem
             // 
             this.scpToolkitToolStripMenuItem.Name = "scpToolkitToolStripMenuItem";
-            this.scpToolkitToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.scpToolkitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.scpToolkitToolStripMenuItem.Text = "ScpToolkit";
             this.scpToolkitToolStripMenuItem.Click += new System.EventHandler(this.ScpToolkitToolStripMenuItem_Click);
             // 

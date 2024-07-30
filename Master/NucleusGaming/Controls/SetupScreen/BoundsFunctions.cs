@@ -43,7 +43,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         internal static bool dragging = false;
 
 
-        internal static string CalculAspectRatio(PlayerInfo selectedPlayer)
+        internal static string PlayerBoundsInfoText(PlayerInfo selectedPlayer)
         {
             int width = selectedPlayer.MonitorBounds.Width;
             int height = selectedPlayer.MonitorBounds.Height;
@@ -673,13 +673,13 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             if ((player.IsRawKeyboard || player.IsRawMouse) && !(player.IsRawKeyboard && player.IsRawMouse))
             {
-                if (GameProfile.loadedProfilePlayers.Any(pl => pl.MonitorBounds == destMonitorBounds))
+                if (GameProfile.AssignedDevices.Any(pl => pl.MonitorBounds == destMonitorBounds))
                 {
-                    GameProfile.devicesToMerge.Add(player);
+                    GameProfile.DevicesToMerge.Add(player);
                 }
                 else
                 {
-                    GameProfile.loadedProfilePlayers.Add(player);
+                    GameProfile.AssignedDevices.Add(player);
                 }
 
                 if (profile.DevicesList.Where(pp => pp.MonitorBounds == destMonitorBounds).Count() == 1)
@@ -690,7 +690,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
             else
             {
-                GameProfile.loadedProfilePlayers.Add(player);
+                GameProfile.AssignedDevices.Add(player);
                 screens[screenIndex].PlayerOnScreen++;
                 GameProfile.TotalAssignedPlayers++;
             }
@@ -713,13 +713,21 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             if ((player.IsRawKeyboard || player.IsRawMouse) && !(player.IsRawKeyboard && player.IsRawMouse))
             {
-                if (GameProfile.loadedProfilePlayers.Contains(player))
+                if (GameProfile.AssignedDevices.Contains(player))
                 {
-                    GameProfile.loadedProfilePlayers.Remove(player);
+                    GameProfile.AssignedDevices.Remove(player);
+
+                    PlayerInfo secondInBounds = GameProfile.DevicesToMerge.Where(pl => pl.EditBounds == player.EditBounds && pl != player && pl.ScreenIndex != -1).FirstOrDefault();
+
+                    if(secondInBounds != null)
+                    {
+                        GameProfile.AssignedDevices.Add(secondInBounds);
+                        GameProfile.DevicesToMerge.Remove(secondInBounds);  
+                    }
                 }
-                else if (GameProfile.devicesToMerge.Contains(player))
+                else if (GameProfile.DevicesToMerge.Contains(player))
                 {
-                    GameProfile.devicesToMerge.Remove(player);
+                    GameProfile.DevicesToMerge.Remove(player);
                 }
 
                 if (profile.DevicesList.Where(pp => pp.MonitorBounds == player.MonitorBounds).Count() == 2)
@@ -730,7 +738,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
             else
             {
-                GameProfile.loadedProfilePlayers.Remove(player);
+                GameProfile.AssignedDevices.Remove(player);
                 screens[screenIndex].PlayerOnScreen--;
                 GameProfile.TotalAssignedPlayers--;
             }
@@ -834,7 +842,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     destEditBounds = RectangleF.Empty;
                 }
 
-                RectangleF p = new RectangleF(mousePos.X - (player.EditBounds.Width/2), mousePos.Y - (player.EditBounds.Height/2), player.SourceEditBounds.Width, player.SourceEditBounds.Height);
+                RectangleF p = new RectangleF(mousePos.X - (player.EditBounds.Width / 2), mousePos.Y - (player.EditBounds.Height / 2), player.SourceEditBounds.Width, player.SourceEditBounds.Height);
                 player.EditBounds = p;
 
                 parent.Invalidate(false);
@@ -970,10 +978,10 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         internal static void UpdatetSizersBounds()
         {
-            sizerBtnLeft = new RectangleF(sizer.Left, sizer.Top + (sizer.Height / 3), sizer.Width / 3, sizer.Height / 3);
-            sizerBtnRight = new RectangleF(sizer.Right - sizer.Width / 3, sizer.Top + (sizer.Height / 3), sizer.Width / 3, sizer.Height / 3);
-            sizerBtnTop = new RectangleF(sizer.Left + (sizer.Width / 3), sizer.Top, (sizer.Width / 3), (sizer.Height / 3));
-            sizerBtnBottom = new RectangleF(sizer.Left + (sizer.Width / 3), sizer.Bottom - (sizer.Height / 3), (sizer.Width / 3), (sizer.Height / 3));
+            sizerBtnLeft = new RectangleF(sizer.Left, sizer.Top + (sizer.Height / 3), sizer.Width / 5, sizer.Height / 3);
+            sizerBtnRight = new RectangleF(sizer.Right - sizer.Width / 5, sizer.Top + (sizer.Height / 3), sizer.Width / 5, sizer.Height / 3);
+            sizerBtnTop = new RectangleF(sizer.Left + (sizer.Width / 3), sizer.Top, (sizer.Width / 3), (sizer.Height / 5));
+            sizerBtnBottom = new RectangleF(sizer.Left + (sizer.Width / 3), sizer.Bottom - (sizer.Height / 5), (sizer.Width / 3), (sizer.Height / 5));
             sizerBtnCenter = new RectangleF(sizerBtnLeft.Right, sizerBtnTop.Bottom, sizerBtnRight.Left - sizerBtnLeft.Right, sizerBtnBottom.Top - sizerBtnTop.Bottom);
         }
 
@@ -1080,7 +1088,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                 }
 
                                 sizer = p.EditBounds;
-                                sizerBtnLeft = new RectangleF(sizer.Left, sizer.Top + (sizer.Height / 3), sizer.Width / 3, sizer.Height / 3);
+                                UpdatetSizersBounds();
                                 activeSizer = sizerBtnLeft;
                                 Cursor.Position = parent.PointToScreen(new Point((int)(parent.Location.X + activeSizer.X + activeSizer.Width / 2), (int)(parent.Location.Y + activeSizer.Y + activeSizer.Height / 2)));
                             }
@@ -1356,12 +1364,12 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         for (int p = 0; p < players.Count; p++)
                         {
                             PlayerInfo player = players[p];
-                           
+
                             for (int b = 0; b < screen.SubScreensBounds.Count; b++)
                             {
                                 destMonitorBounds = screen.SubScreensBounds.ElementAt(b).Key;
                                 destEditBounds = screen.SubScreensBounds.ElementAt(b).Value;
-                                
+
                                 if (GetFreeSpace(player))
                                 {
                                     if (player.ScreenIndex == -1)
@@ -1381,6 +1389,18 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 {
                     DevicesFunctions.UpdateDevices();
                 }
+            }
+        }
+
+        public static void RefreshScreens()
+        {
+            screens = null;
+            UpdateScreens();
+
+            for (int i = 0; i < screens.Length; i++)
+            {
+                UserScreen s = screens[i];
+                s.PlayerOnScreen = 0;
             }
         }
     }

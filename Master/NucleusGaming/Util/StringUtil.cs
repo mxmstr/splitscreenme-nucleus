@@ -127,9 +127,9 @@ namespace Nucleus.Gaming
             return result;
         }
 
-        public static string GetRootFromBinariesFolder(string gameExe, string binariesToRemove)
+        public static string GetRootFromBinariesFolder(string gameExePath, string binariesToRemove)
         {
-            string[] exeSubStrings = gameExe.Split('\\');
+            string[] exeSubStrings = gameExePath.Split('\\');
             string binariesStart = binariesToRemove.Split('\\')[0].ToLower();
 
             string end = string.Empty;
@@ -157,7 +157,7 @@ namespace Nucleus.Gaming
                 return end;
             }
 
-            return gameExe;
+            return gameExePath;
         }
 
         public static string InternalGetRelativePath(DirectoryInfo dirInfo, DirectoryInfo rootInfo, string str)

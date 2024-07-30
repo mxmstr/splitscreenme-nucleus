@@ -237,9 +237,9 @@ namespace Nucleus.Gaming.Coop
 
             ulong totalSeconds = ulong.Parse(totalPlayTime);
 
-            ulong seconds = (totalSeconds % 60);
-            ulong minutes = (totalSeconds % 3600) / 60;
-            ulong hours = (totalSeconds % 86400) / 3600;
+            ulong seconds = totalSeconds % 60;
+            ulong minutes = (totalSeconds / 60) % 60;
+            ulong hours = totalSeconds / 3600;
 
             string formatHours = hours >= 10 ? "" : "0";
             string formatMinutes = minutes >= 10 ? "" : "0";

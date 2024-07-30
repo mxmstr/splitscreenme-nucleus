@@ -23,7 +23,6 @@ namespace Nucleus.Gaming.Coop
         private List<UserScreen> screens;
         public List<UserScreen> Screens => screens;
         
-
         public Dictionary<string, object> Options => options;
         private Dictionary<string, object> options;
         /// <summary>
@@ -37,7 +36,7 @@ namespace Nucleus.Gaming.Coop
         public static GenericGameInfo Game;
         private static SetupScreenControl setupScreen = null;
 
-        public static int TotalAssignedPlayers;//K&m player will count as one only if 2 devices(keyboard & mouse) shares the same bounds.
+        public static int TotalAssignedPlayers;//K&m player will count as one only if 2 devices(keyboard & mouse) do share the same bounds.
 
         private static int totalProfilePlayers;//How many players the loaded profile counts.
         public static int TotalProfilePlayers => totalProfilePlayers;
@@ -250,8 +249,8 @@ namespace Nucleus.Gaming.Coop
 
         public static List<RectangleF> AllScreens = new List<RectangleF>();
         public static List<ProfilePlayer> ProfilePlayersList = new List<ProfilePlayer>();
-        public static List<PlayerInfo> loadedProfilePlayers = new List<PlayerInfo>();
-        public static List<PlayerInfo> devicesToMerge = new List<PlayerInfo>();
+        public static List<PlayerInfo> AssignedDevices = new List<PlayerInfo>();
+        public static List<PlayerInfo> DevicesToMerge = new List<PlayerInfo>();
         public static List<(Rectangle, RectangleF)> GhostBounds = new List<(Rectangle, RectangleF)>();
 
         private List<PlayerInfo> GetDevicesList()
@@ -264,10 +263,12 @@ namespace Nucleus.Gaming.Coop
 
         private void ListGameProfiles()
         {
-            string path = GetGameProfilesPath();
+
             profilesPathList.Clear();
             profilesCount = 0;
 
+            string path = GetGameProfilesPath();
+            
             if (path != null)
             {
                 profilesPathList = Directory.EnumerateFiles(path).OrderBy(s => s.Length).ToList();
@@ -312,7 +313,7 @@ namespace Nucleus.Gaming.Coop
             {
                 TotalAssignedPlayers = 0;
 
-                RefreshSetupScreen();
+                BoundsFunctions.RefreshScreens();
 
                 if (deviceList != null)//Switching profile
                 {
@@ -338,8 +339,8 @@ namespace Nucleus.Gaming.Coop
 
                 ProfilesList.Instance.Update_Unload();
 
-                loadedProfilePlayers.Clear();
-                devicesToMerge.Clear();
+                AssignedDevices.Clear();
+                DevicesToMerge.Clear();
 
                 if (!GameInfo.Game.MetaInfo.DisableProfiles)
                 {
@@ -366,8 +367,8 @@ namespace Nucleus.Gaming.Coop
                 deviceList = new List<PlayerInfo>();
             }
 
-            loadedProfilePlayers.Clear();
-            devicesToMerge.Clear();
+            AssignedDevices.Clear();
+            DevicesToMerge.Clear();
 
             TotalAssignedPlayers = 0;
 
@@ -606,18 +607,6 @@ namespace Nucleus.Gaming.Coop
             }
 
             return path;
-        }
-
-        private static void RefreshSetupScreen()
-        {
-            BoundsFunctions.screens = null;
-            BoundsFunctions.UpdateScreens();
-
-            for (int i = 0; i < BoundsFunctions.screens.Length; i++)
-            {
-                UserScreen s = BoundsFunctions.screens[i];
-                s.PlayerOnScreen = 0;
-            }
         }
 
         public static void UpdateSharedSettings()
@@ -1101,7 +1090,7 @@ namespace Nucleus.Gaming.Coop
 
         public static void FindProfilePlayers(PlayerInfo player)
         {
-            if (loadedProfilePlayers.Contains(player) || BoundsFunctions.dragging)
+            if (AssignedDevices.Contains(player) || BoundsFunctions.dragging)
             {
                 return;
             }
@@ -1146,10 +1135,10 @@ namespace Nucleus.Gaming.Coop
                 }
 
                 if (Instance.DevicesList.All(lpp => lpp.MonitorBounds != TranslateBounds(profilePlayer, scr.Item1).Item1) &&
-                    ProfilePlayersList.FindIndex(pp => pp == profilePlayer) == loadedProfilePlayers.Count)//avoid to add player in the same bounds                                                                                                                           // ProfilePlayersList.FindIndex(pp => pp == profilePlayer) == loadedProfilePlayers.Count)//make sure to insert player like saved in the game profile
+                    ProfilePlayersList.FindIndex(pp => pp == profilePlayer) == AssignedDevices.Count)//avoid to add player in the same bounds                                                                                                                           // ProfilePlayersList.FindIndex(pp => pp == profilePlayer) == AssignedDevices.Count)//make sure to insert player like saved in the game profile
                 {
                     SetProfilePlayerDatas(player, profilePlayer, scr.Item1, scr.Item2);
-                    loadedProfilePlayers.Add(player);
+                    AssignedDevices.Add(player);
 
                     scr.Item1.PlayerOnScreen++;
                     TotalAssignedPlayers++;
@@ -1222,7 +1211,7 @@ namespace Nucleus.Gaming.Coop
             {
                 foreach (ProfilePlayer pp in ProfilePlayersList)
                 {
-                    if (loadedProfilePlayers.All(lp => lp.PlayerID != pp.PlayerID) && (pp.IsDInput || pp.IsXInput))
+                    if (AssignedDevices.All(lp => lp.PlayerID != pp.PlayerID) && (pp.IsDInput || pp.IsXInput))
                     {
                         profilePlayer = pp;
                         skipGuid = true;
@@ -1372,11 +1361,11 @@ namespace Nucleus.Gaming.Coop
 
         public static GameProfile CleanClone(GameProfile profile)
         {
-            loadedProfilePlayers.AddRange(devicesToMerge);
+            AssignedDevices.AddRange(DevicesToMerge);
 
             GameProfile nprof = new GameProfile
             {
-                deviceList = loadedProfilePlayers,
+                deviceList = AssignedDevices,
                 screens = profile.screens,
             };
 
@@ -1421,23 +1410,19 @@ namespace Nucleus.Gaming.Coop
         }
 
         public static PlayerInfo UpdateProfilePlayerNickAndSID(PlayerInfo player)
-        {
-            var secondInBounds = loadedProfilePlayers.Where(pl => pl.EditBounds == player.EditBounds && pl != player && pl.ScreenIndex != -1).FirstOrDefault();
-
-            if (loadedProfilePlayers.Contains(player) || secondInBounds != null)
+        {                     
+            if (AssignedDevices.Contains(player))
             {
-                PlayerInfo plToUpdate = secondInBounds ?? player;
-
-                int playerIndex = loadedProfilePlayers.FindIndex(pl => pl == plToUpdate);
+                PlayerInfo secondInBounds = DevicesToMerge.Where(pl => pl.EditBounds == player.EditBounds && pl != player).FirstOrDefault();
+       
+                int playerIndex = AssignedDevices.FindIndex(pl => pl == player);
 
                 bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
 
-                string nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
+                player.Nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
                                  PlayersIdentityCache.SettingsIniNicknamesList[playerIndex];
-
-                player.Nickname = nickname;
-
-                string steamID;
+                
+                string steamID = "-1";
 
                 if (getNameFromProfile)
                 {
@@ -1447,17 +1432,16 @@ namespace Nucleus.Gaming.Coop
                 {
                     steamID = PlayersIdentityCache.SettingsIniSteamIdsList[playerIndex];
                 }
-                else
+                
+                player.SteamID = long.Parse(steamID);            
+
+                if (secondInBounds != null)
                 {
-                    steamID = "-1";
+                    secondInBounds.Nickname = player.Nickname;
+                    secondInBounds.SteamID = player.SteamID;
                 }
 
-                if (steamID != "")
-                {
-                    player.SteamID = long.Parse(steamID);
-                }
-
-                return plToUpdate;
+                return player;
             }
 
             return null;

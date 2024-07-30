@@ -398,7 +398,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public static void PlayerBoundsInfo(Graphics g)
         {
-            g.DrawString(BoundsFunctions.CalculAspectRatio(BoundsFunctions.selectedPlayer), playerTextFont, Brushes.White, parent.Left + 10, parent.Height - 40);
+            g.DrawString(BoundsFunctions.PlayerBoundsInfoText(BoundsFunctions.selectedPlayer), playerTextFont, Brushes.White, parent.Left + 10, parent.Height - 40);
 
             //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnLeft });
             //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnRight });
@@ -411,7 +411,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             RectangleF s = player.EditBounds;
 
             g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 1, s.Height + 1));
-            int playerIndex = GameProfile.loadedProfilePlayers.FindIndex(pl => pl == player);
+            int playerIndex = GameProfile.AssignedDevices.FindIndex(pl => pl == player);
 
             string tag = $"P{playerIndex + 1}: {player.Nickname}";
 

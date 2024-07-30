@@ -763,7 +763,7 @@ namespace Nucleus.Coop
             }
 
             PlayersIdentityCache.SaveNicknamesCache();
-            PlayersIdentityCache.SaveSteamidsCache();
+            PlayersIdentityCache.SaveSteamIdsCache();
 
             ///Set shared GameProfile options
             GameProfile.Title = profileTitle.Text;

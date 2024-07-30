@@ -99,7 +99,7 @@ namespace Nucleus.Gaming.Cache
             LoadSteamIdsFromSettingsIni();
         }
 
-        public static void SaveSteamidsCache()
+        public static void SaveSteamIdsCache()
         {
             using (FileStream stream = new FileStream(sidJsonPath, FileMode.Create))
             {

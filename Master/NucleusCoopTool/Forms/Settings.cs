@@ -631,7 +631,7 @@ namespace Nucleus.Coop
             }
 
             PlayersIdentityCache.SaveNicknamesCache();
-            PlayersIdentityCache.SaveSteamidsCache();
+            PlayersIdentityCache.SaveSteamIdsCache();
 
             if (audioDefaultSettingsRadio.Checked)
             {

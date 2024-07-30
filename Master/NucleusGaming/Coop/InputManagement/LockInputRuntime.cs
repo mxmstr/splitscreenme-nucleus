@@ -83,8 +83,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
 
             protoOptions?.OnInputUnlocked?.Invoke();
-        }
-
-       
+        } 
     }
 }
