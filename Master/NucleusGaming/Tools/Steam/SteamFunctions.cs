@@ -353,11 +353,11 @@ namespace Nucleus.Gaming.Tools.Steam
 
                     if (player.SteamID == -1 && !handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
                     {
-                        steamID = SteamFunctions.random_steam_id + i;
+                        steamID = random_steam_id + i;
 
                         while (handlerInstance.profile.DevicesList.Any(p => p.SteamID == steamID))
                         {
-                            steamID = SteamFunctions.random_steam_id++;
+                            steamID = random_steam_id++;
                         }
 
                         player.SteamID = steamID;
@@ -589,11 +589,11 @@ namespace Nucleus.Gaming.Tools.Steam
 
                 if (player.SteamID == -1 && !handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
                 {                   
-                    steamID = SteamFunctions.random_steam_id + i;
+                    steamID = random_steam_id + i;
 
                     while (handlerInstance.profile.DevicesList.Any(p => (p != player) && p.SteamID == steamID))
                     {
-                        steamID = SteamFunctions.random_steam_id++;
+                        steamID = random_steam_id++;
                     }
 
                     player.SteamID = steamID;
@@ -767,11 +767,11 @@ namespace Nucleus.Gaming.Tools.Steam
 
             if (player.SteamID == -1 && !handlerInstance.CurrentGameInfo.UseHandlerSteamIds)
             {
-                steamID = SteamFunctions.random_steam_id + i;
+                steamID = random_steam_id + i;
 
                 while (handlerInstance.profile.DevicesList.Any(p => (p != player) && p.SteamID == steamID))
                 {
-                    steamID = SteamFunctions.random_steam_id++;
+                    steamID = random_steam_id++;
                 }
 
                 emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", (steamID).ToString());

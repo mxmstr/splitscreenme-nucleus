@@ -51,8 +51,7 @@ namespace Nucleus.Coop
         private float fontSize;
         private List<Control> ctrls = new List<Control>();
         private IDictionary<string, string> audioDevices;
-        private Cursor hand_Cursor;
-        private Cursor default_Cursor;
+
         private Color selectionColor;
 
         private Rectangle[] tabBorders;
@@ -78,10 +77,8 @@ namespace Nucleus.Coop
             InitializeComponent();
 
             FormBorderStyle = FormBorderStyle.None;
-
-            default_Cursor = Theme_Settings.Default_Cursor;
-            hand_Cursor = Theme_Settings.Hand_Cursor;
-            Cursor = default_Cursor;
+    
+            Cursor = Theme_Settings.Default_Cursor;
 
             var borderscolor = Globals.ThemeConfigFile.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Theme_Settings.SelectedBackColor;
@@ -122,7 +119,7 @@ namespace Nucleus.Coop
                     c.Name != "layoutTab" && c.Name != "layoutSizer"
                     && !(c is Label) && !(c is TextBox))
                 {
-                    c.Cursor = hand_Cursor;
+                    c.Cursor = Theme_Settings.Hand_Cursor;
                 }
 
                 if (c.Name == "settingsTab" || c.Name == "playersTab" || c.Name == "audioTab" || c.Name == "layoutTab")

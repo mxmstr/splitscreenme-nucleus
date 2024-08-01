@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Nucleus.Coop.Tools;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -57,31 +58,31 @@ namespace Nucleus.Coop.Forms
 
             modalControlsContainer.BackColor = Color.FromArgb(255, 24, 26, 27);
             modal_yes.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
-            modal_yes.Cursor = mainForm.hand_Cursor;
+            modal_yes.Cursor = Theme_Settings.Hand_Cursor;
             modal_no.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
-            modal_no.Cursor = mainForm.hand_Cursor;
+            modal_no.Cursor = Theme_Settings.Hand_Cursor;
 
             modal_text.BackColor = Color.FromArgb(255, 24, 26, 27);
 
             home.BackgroundImage = ImageCache.GetImage(theme + "home.png");
             home.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             home.BackColor = BackColor;
-            home.Cursor = mainForm.hand_Cursor;
+            home.Cursor = Theme_Settings.Hand_Cursor;
 
             back.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
             back.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             back.BackColor = BackColor;
-            back.Cursor = mainForm.hand_Cursor;
+            back.Cursor = Theme_Settings.Hand_Cursor;
 
             next.BackgroundImage = ImageCache.GetImage(theme + "arrow_right.png");
             next.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             next.BackColor = BackColor;
-            next.Cursor = mainForm.hand_Cursor;
+            next.Cursor = Theme_Settings.Hand_Cursor;
 
             closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
             closeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 0, 98, 190);
             closeBtn.BackColor = BackColor;
-            closeBtn.Cursor = mainForm.hand_Cursor;
+            closeBtn.Cursor = Theme_Settings.Hand_Cursor;
 
             webView.DefaultBackgroundColor = BackColor;
 

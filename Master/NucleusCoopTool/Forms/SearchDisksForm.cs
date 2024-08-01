@@ -83,7 +83,6 @@ namespace Nucleus.Coop
 
             default_Cursor = Theme_Settings.Default_Cursor;
             hand_Cursor = Theme_Settings.Hand_Cursor;
-            hand_Cursor = main.hand_Cursor;
 
             fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));

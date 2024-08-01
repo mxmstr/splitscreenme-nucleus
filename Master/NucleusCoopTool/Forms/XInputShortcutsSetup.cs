@@ -25,8 +25,7 @@ namespace Nucleus.Coop.Forms
         private PictureBox activeControl;
         private Timer refreshTimer = new Timer();
         private float scale;
-        private Cursor default_Cursor;
-        private Cursor hand_Cursor;
+        
         private SolidBrush brush;
         public static new bool Enabled;
         private string gamepadType;
@@ -39,12 +38,10 @@ namespace Nucleus.Coop.Forms
             bool roundedcorners = bool.Parse(Globals.ThemeConfigFile.IniReadValue("Misc", "UseRoundedCorners"));
             gamepadType = App_GamePadNavigation.Type;
 
-            default_Cursor = Theme_Settings.Default_Cursor;
-            hand_Cursor = Theme_Settings.Hand_Cursor;
-            Cursor = default_Cursor;
+            Cursor = Theme_Settings.Default_Cursor;
 
-            shortContainer.Cursor = default_Cursor;
-            enabled_chk.Cursor = hand_Cursor;
+            shortContainer.Cursor = Theme_Settings.Default_Cursor;
+            enabled_chk.Cursor = Theme_Settings.Hand_Cursor;
 
             refreshTimer.Tick += new EventHandler(RefreshTimerTick);
             refreshTimer.Interval = 500;
@@ -125,7 +122,7 @@ namespace Nucleus.Coop.Forms
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
                     pictureBox.MouseClick += new MouseEventHandler(SetActiveControl);
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
-                    pictureBox.Cursor = hand_Cursor;
+                    pictureBox.Cursor = Theme_Settings.Hand_Cursor;
                 }
             }
 
@@ -137,7 +134,7 @@ namespace Nucleus.Coop.Forms
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
                     pictureBox.MouseClick += new MouseEventHandler(SetActiveControl);
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
-                    pictureBox.Cursor = hand_Cursor;
+                    pictureBox.Cursor = Theme_Settings.Hand_Cursor;
                 }
 
                 if (c.Name == "switch15")

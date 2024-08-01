@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Nucleus.Gaming.Platform.PCSpecs;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -126,7 +127,7 @@ namespace Nucleus.Gaming.Tools.AudioReroute
                         ComBase.WindowsCreateString(str, (uint)str.Length, out stringPtrDeviceId);
                     }
 
-                    if (Is21H2Update())
+                    if (MachineSpecs.Is21H2Update())
                     {
                         foreach (var eRole in roles)
                         {
@@ -422,41 +423,6 @@ namespace Nucleus.Gaming.Tools.AudioReroute
             }
         }
 
-        static bool Is21H2Update()
-        {
-            var buildNumber = GetWindowsBuildNumber();
-
-            // Check for Windows 10/11 21H2 version
-            if (buildNumber >= 19044)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        static int GetWindowsBuildNumber()
-        {
-            try
-            {
-                using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
-                {
-                    if (key != null)
-                    {
-                        var buildNumber = key.GetValue("CurrentBuildNumber") as string;
-                        if (int.TryParse(buildNumber, out int result))
-                        {
-                            return result;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occurred while getting the build number: " + ex.Message);
-            }
-
-            return 0;
-        }
+       
     }
 }

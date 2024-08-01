@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.UI;
 
 namespace Nucleus.Coop.Controls
 {
@@ -44,7 +45,7 @@ namespace Nucleus.Coop.Controls
             BackColor = Color.Transparent;
             MouseEnter += ZoomInPicture;
             MouseLeave += ZoomOutPicture;
-            Cursor = mainForm.hand_Cursor;
+            Cursor = Theme_Settings.Hand_Cursor;
 
             int baseSize = Height - 10;
 
@@ -53,7 +54,7 @@ namespace Nucleus.Coop.Controls
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Size = new Size(baseSize, baseSize),
                 Location = new Point(5, Height / 2 - baseSize / 2),
-                Cursor = mainForm.hand_Cursor
+                Cursor = Theme_Settings.Hand_Cursor,
             };
 
             btn_AddGamePb.MouseEnter += ZoomInPicture;
@@ -66,7 +67,7 @@ namespace Nucleus.Coop.Controls
                 AutoSize = true,
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
                 BackColor = Color.Transparent,
-                Cursor = mainForm.hand_Cursor,
+                Cursor = Theme_Settings.Hand_Cursor,
             };
 
             btn_AddGameLabel.MouseEnter += ZoomInPicture;
@@ -76,14 +77,14 @@ namespace Nucleus.Coop.Controls
             {
                 Size = new Size(Height, Height),
                 BackColor = Color.Transparent,
-                Cursor = mainForm.default_Cursor,
+                Cursor = Theme_Settings.Default_Cursor,
             };
 
             favoriteOnly = new PictureBox
             {
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackColor = Color.Transparent,
-                Cursor = mainForm.hand_Cursor,
+                Cursor = Theme_Settings.Hand_Cursor,
                 Size = new Size(baseSize / 2, baseSize / 2),
                 Image = mainForm.ShowFavoriteOnly ? favorite_Selected : favorite_Unselected,
             };

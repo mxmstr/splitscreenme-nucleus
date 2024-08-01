@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -108,7 +109,7 @@ namespace Nucleus.Coop
                             BackgroundImageLayout = ImageLayout.Stretch,
                             Dock = DockStyle.Bottom,
                             BackColor = Color.FromArgb(190, 0, 0, 0),
-                            Cursor = mainForm.default_Cursor
+                            Cursor = Theme_Settings.Default_Cursor
                         };
 
                         Panel coverLayer = new Panel()
@@ -119,7 +120,7 @@ namespace Nucleus.Coop
                             Dock = DockStyle.Fill,
                             BackColor = Color.Transparent,
                             BackgroundImage = ImageCache.GetImage(mainForm.theme + "showcase_cover_layer.png"),
-                            Cursor = mainForm.hand_Cursor
+                            Cursor = Theme_Settings.Hand_Cursor
                         };
 
                         coverLayer.Name = $@"https://hub.splitscreen.me/handler/{hubLink[cover_index]}";

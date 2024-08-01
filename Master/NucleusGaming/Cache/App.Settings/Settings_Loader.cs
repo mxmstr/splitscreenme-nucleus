@@ -20,7 +20,7 @@ namespace Nucleus.Gaming.App.Settings
                 App_Layouts.LoadSettings();
                 App_Audio.LoadSettings();
             }
-            catch (Exception ex)
+            catch
             {
                 MessageBox.Show("Nucleus is unable to load its settings.\n" +
                                 "Do not edit settings.ini manually.\n" +
@@ -31,8 +31,5 @@ namespace Nucleus.Gaming.App.Settings
 
             return true;
         }
-
-
-
     }
 }

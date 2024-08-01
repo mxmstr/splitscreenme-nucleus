@@ -177,9 +177,6 @@ namespace Nucleus.Coop
         private Rectangle osdBounds;
         public FileInfo fontPath;
 
-        public Cursor hand_Cursor;
-        public Cursor default_Cursor;
-
         private void Controlscollect()
         {
             foreach (Control control in Controls)
@@ -310,11 +307,8 @@ namespace Nucleus.Coop
                 string[] windowSize = App_Misc.WindowSize.Split('X');
                 Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
             }
-
-            default_Cursor = Theme_Settings.Default_Cursor;
-            hand_Cursor = Theme_Settings.Hand_Cursor;
-
-            Cursor = default_Cursor;
+           
+            Cursor = Theme_Settings.Default_Cursor;
 
             if (roundedCorners)
             {
@@ -436,13 +430,13 @@ namespace Nucleus.Coop
             gameContextMenuStrip.BackColor = MenuStripBackColor;
             gameContextMenuStrip.ForeColor = MenuStripFontColor;
 
-            btn_expandNotes.Cursor = hand_Cursor;
+            btn_expandNotes.Cursor = Theme_Settings.Hand_Cursor;
 
-            logo.Cursor = hand_Cursor;
-            gameContextMenuStrip.Cursor = hand_Cursor;
-            socialLinksMenu.Cursor = hand_Cursor;
-            button_UpdateAvailable.Cursor = hand_Cursor;
-            saveProfileRadioBtn.TickCursor = hand_Cursor;
+            logo.Cursor = Theme_Settings.Hand_Cursor;
+            gameContextMenuStrip.Cursor = Theme_Settings.Hand_Cursor;
+            socialLinksMenu.Cursor = Theme_Settings.Hand_Cursor;
+            button_UpdateAvailable.Cursor = Theme_Settings.Hand_Cursor;
+            saveProfileRadioBtn.TickCursor = Theme_Settings.Hand_Cursor;
 
             Globals.PlayButton = btn_Play;
             Globals.Btn_debuglog = btn_debuglog;
@@ -477,7 +471,7 @@ namespace Nucleus.Coop
 
                 if (control is Button)
                 {
-                    control.Cursor = hand_Cursor;
+                    control.Cursor = Theme_Settings.Hand_Cursor;
                 }
 
                 control.Click += new EventHandler(ClickAnyControl);
@@ -818,9 +812,9 @@ namespace Nucleus.Coop
             }
             else
             {
-                if (Cursor.Current != default_Cursor)
+                if (Cursor.Current != Theme_Settings.Default_Cursor)
                 {
-                    Cursor.Current = default_Cursor;
+                    Cursor.Current = Theme_Settings.Default_Cursor;
                 }
 
                 canResize = false;

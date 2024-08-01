@@ -225,9 +225,7 @@ namespace Nucleus.Gaming
             {
                 SelectedControl.BackColor = Theme_Settings.SelectedBackColor;
             }
-
             
-
             OnClick(e);
         }
     }

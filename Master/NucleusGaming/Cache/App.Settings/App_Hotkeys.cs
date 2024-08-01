@@ -16,7 +16,7 @@ namespace Nucleus.Gaming.App.Settings
             set
             {
                 close = value;
-                Globals.ini.IniWriteValue("Hotkeys", "Close", $"{value[0]}+{value[1]}");
+                Globals.ini.IniWriteValue("Hotkeys", "Close", $"{value[0]} + {value[1]}");
             }
         }
     
@@ -49,7 +49,7 @@ namespace Nucleus.Gaming.App.Settings
             set 
             { 
                 setFocus = value;
-                Globals.ini.IniWriteValue("Hotkeys", "SetFocus", $"{value[0]}  +  {value[1]}"); 
+                Globals.ini.IniWriteValue("Hotkeys", "SetFocus", $"{value[0]} + {value[1]}"); 
             } 
         }
 
@@ -60,7 +60,7 @@ namespace Nucleus.Gaming.App.Settings
             set 
             { 
                 resetWindows = value; 
-                Globals.ini.IniWriteValue("Hotkeys", "ResetWindows", $"{value[0]}  +  {value[1]}"); 
+                Globals.ini.IniWriteValue("Hotkeys", "ResetWindows", $"{value[0]} + {value[1]}"); 
             } 
         }
 
@@ -71,7 +71,7 @@ namespace Nucleus.Gaming.App.Settings
             set 
             { 
                 cutscenes = value; 
-                Globals.ini.IniWriteValue("Hotkeys", "Cutscenes", $"{value[0]}  +  {value[1]}");
+                Globals.ini.IniWriteValue("Hotkeys", "Cutscenes", $"{value[0]} + {value[1]}");
             } 
         }
 
@@ -82,7 +82,7 @@ namespace Nucleus.Gaming.App.Settings
             set 
             { 
                 _switch = value; 
-                Globals.ini.IniWriteValue("Hotkeys", "Switch", $"{value[0]}   +   {value[1]}"); 
+                Globals.ini.IniWriteValue("Hotkeys", "Switch", $"{value[0]} + {value[1]}"); 
             } 
         }
 
@@ -93,7 +93,7 @@ namespace Nucleus.Gaming.App.Settings
             set
             { 
                 shortcutsReminder = value; 
-                Globals.ini.IniWriteValue("Hotkeys", "ShortcutsReminder", $"{value[0]}   +   {value[1]}"); 
+                Globals.ini.IniWriteValue("Hotkeys", "ShortcutsReminder", $"{value[0]} + {value[1]}"); 
             } 
         }
 
@@ -104,7 +104,7 @@ namespace Nucleus.Gaming.App.Settings
             set 
             {
                 switchMergerChildForeGround = value; 
-                Globals.ini.IniWriteValue("Hotkeys", "SwitchMergerChildForeGround", $"{value[0]}   +   {value[1]}");
+                Globals.ini.IniWriteValue("Hotkeys", "SwitchMergerChildForeGround", $"{value[0]} + {value[1]}");
             } 
         }
 
@@ -120,7 +120,7 @@ namespace Nucleus.Gaming.App.Settings
             } 
         }
 
-        private static IDictionary<string, int> lockKeys = new Dictionary<string, int>
+        private static IDictionary<string, int> lockKeysDict = new Dictionary<string, int>
         {
                     { "End", 0x23 },
                     { "Home", 0x24 },
@@ -156,7 +156,7 @@ namespace Nucleus.Gaming.App.Settings
 
         private static void ParseLockKey()
         {
-            int key = lockKeys.Where(k => k.Key == LockInputs).FirstOrDefault().Value;
+            int key = lockKeysDict.Where(k => k.Key == LockInputs).FirstOrDefault().Value;
             LockKeyValue = key == 0 ? 0x23 : key;
         }
 

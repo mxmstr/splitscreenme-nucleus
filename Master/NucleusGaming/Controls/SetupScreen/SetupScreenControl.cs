@@ -24,9 +24,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public ProfilesList ProfilesList;
 
-        private Cursor hand_Cursor;
-        private Cursor default_Cursor;
-
         public ToolTip profileSettings_Tooltip;
 
         public override string Title => "Position Players";
@@ -48,10 +45,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             DevicesFunctions.Initialize(this, null, null);
             BoundsFunctions.Initialize(this, null, null);
 
-            default_Cursor = Theme_Settings.Default_Cursor;
-            hand_Cursor = Theme_Settings.Hand_Cursor;
-
-            Cursor = default_Cursor;
+            Cursor = Theme_Settings.Default_Cursor;
 
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.Transparent;
@@ -62,7 +56,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 BackColor = Color.Black,
                 Image = Resources.instructions,
                 BackgroundImageLayout = ImageLayout.Stretch,
-                Cursor = hand_Cursor,             
+                Cursor = Theme_Settings.Hand_Cursor,
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Visible = false
             };

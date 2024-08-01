@@ -68,8 +68,6 @@ namespace Nucleus.Coop
                 GameInfo = game;
                 UserGameInfo = userGame;
 
-                Cursor hand_Cursor = Theme_Settings.Default_Cursor;
-
                 picture = new PictureBox
                 {
                     SizeMode = PictureBoxSizeMode.StretchImage,

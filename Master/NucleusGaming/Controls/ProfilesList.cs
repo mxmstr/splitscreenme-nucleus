@@ -29,7 +29,6 @@ namespace Nucleus.Gaming.Controls
         public static ProfilesList Instance;
         public bool Locked = false;
 
-        private Cursor hand_Cursor;
         private Color foreColor;
         public static readonly string PartialTitle = "Load profile:";
 
@@ -73,8 +72,6 @@ namespace Nucleus.Gaming.Controls
                                                int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[2]),
                                                int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[3]));
             }
-
-            hand_Cursor = Theme_Settings.Hand_Cursor;
 
             Instance = this;
         }
@@ -212,7 +209,7 @@ namespace Nucleus.Gaming.Controls
                     FlatStyle = FlatStyle.Flat,
                     TextAlign = ContentAlignment.MiddleCenter,
                     Text = "X",
-                    Cursor = hand_Cursor
+                    Cursor = Theme_Settings.Hand_Cursor
                 };
 
                 ToolTip deleteTooltip = CustomToolTips.SetToolTip(deleteBtn, $"Delete handler profile {i + 1}.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -231,7 +228,7 @@ namespace Nucleus.Gaming.Controls
                     ForeColor = Color.Green,
                     FlatStyle = FlatStyle.Flat,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    Cursor = hand_Cursor
+                    Cursor = Theme_Settings.Hand_Cursor
                 };
 
                 ToolTip notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show handler profile content\nor user notes if available.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -251,7 +248,7 @@ namespace Nucleus.Gaming.Controls
                     TextAlign = ContentAlignment.MiddleLeft,
                     Text = text,
                     Height = (int)(20 * _scale),
-                    Cursor = hand_Cursor
+                    Cursor = Theme_Settings.Hand_Cursor
                 };
 
                 string profileBtnToolTipText = File.Exists(Application.StartupPath + "\\Profiles Launcher.exe") ? $"Load handler profile {profileBtn.Name}. Right click to export a shortcut to desktop." : $"Load handler profile {profileBtn.Name}.";

@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -357,7 +358,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 }
                 else
                 {
-                    Cursor.Current = Draw.hand_Cursor;
+                    Cursor.Current = Theme_Settings.Hand_Cursor; 
                 }
 
                 for (int i = 0; i < screens.Length; i++)
@@ -758,7 +759,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             if (activeSizer == RectangleF.Empty)
             {
-                parent.Cursor = Draw.default_Cursor;
+                parent.Cursor = Theme_Settings.Hand_Cursor;
             }
 
             if (e.Button == MouseButtons.Left)
@@ -886,9 +887,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     sizer = RectangleF.Empty;
                 }
 
-                if (parent.Cursor != Draw.default_Cursor)
+                if (parent.Cursor != Theme_Settings.Default_Cursor)
                 {
-                    parent.Cursor = Draw.default_Cursor;
+                    parent.Cursor = Theme_Settings.Default_Cursor;
                 }
             }
         }
@@ -906,7 +907,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
             else
             {
-                parent.Cursor = Draw.hand_Cursor;
+                parent.Cursor = Theme_Settings.Default_Cursor;
             }
         }
 

@@ -53,8 +53,6 @@ namespace Nucleus.Coop
         private float fontSize;
 
         private IDictionary<string, string> audioDevices;
-        private Cursor hand_Cursor;
-        private Cursor default_Cursor;
 
         private Color selectionColor;
 
@@ -85,11 +83,9 @@ namespace Nucleus.Coop
 
             InitializeComponent();
 
-            default_Cursor = Theme_Settings.Default_Cursor;
-            hand_Cursor = Theme_Settings.Hand_Cursor;
-            Cursor = default_Cursor;
+            Cursor = Theme_Settings.Default_Cursor;
 
-            
+
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Theme_Settings.SelectedBackColor;
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
@@ -121,7 +117,7 @@ namespace Nucleus.Coop
                     c.Name != "processorTab" && c.Name != "layoutTab" && c.Name != "layoutSizer" && c.Name != "notes_text"
                     && !(c is Label) && !(c is TextBox))
                 {
-                    c.Cursor = hand_Cursor;
+                    c.Cursor = Theme_Settings.Hand_Cursor;
                 }
 
                 if (c.Name == "sharedTab" || c.Name == "playersTab" || c.Name == "audioTab" || c.Name == "processorTab" || c.Name == "layoutTab")
@@ -176,7 +172,7 @@ namespace Nucleus.Coop
 
             audioRefresh.BackColor = Color.Transparent;
 
-            modeLabel.Cursor = default_Cursor;
+            modeLabel.Cursor = Theme_Settings.Default_Cursor;
 
             def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
 

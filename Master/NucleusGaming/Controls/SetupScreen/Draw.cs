@@ -34,9 +34,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         private static Bitmap customLayout;
         private static Bitmap manualLayout;
 
-        public static Cursor hand_Cursor;
-        public static Cursor default_Cursor;
-
         private static bool controllerIdentification;
 
         private static bool UseSetupScreenBorder;
@@ -67,9 +64,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             userGameInfo = _userGameInfo;
 
             customFont = themeIni.IniReadValue("Font", "FontFamily");
-
-            default_Cursor = Theme_Settings.Default_Cursor;
-            hand_Cursor = Theme_Settings.Hand_Cursor;
 
             playerFont = new Font(customFont, 20.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
             playerCustomFont = new Font("Vermin Vibes 2 Soft", 12.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
