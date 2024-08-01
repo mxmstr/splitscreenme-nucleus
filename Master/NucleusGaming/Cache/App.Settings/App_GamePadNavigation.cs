@@ -102,7 +102,6 @@ namespace Nucleus.Gaming.App.Settings
             rightClick = int.Parse(Globals.ini.IniReadValue("XUINav", "RightClick"));
             leftClick = int.Parse(Globals.ini.IniReadValue("XUINav", "LeftClick"));
             togglekUINavigation = new int[]{ int.Parse(Globals.ini.IniReadValue("XUINav", "LockUIControl").Split('+')[0]), int.Parse(Globals.ini.IniReadValue("XUINav", "LockUIControl").Split('+')[1])};
-
             openOsk = new int[] { int.Parse(Globals.ini.IniReadValue("XUINav", "OpenOsk").Split('+')[0]), int.Parse(Globals.ini.IniReadValue("XUINav", "OpenOsk").Split('+')[1])};
 
             return true;

@@ -256,7 +256,7 @@ namespace Nucleus.Coop
 
              numUpDownHor.Value = App_Layouts.HorizontalLines;           
              numUpDownVer.Value = App_Layouts.VerticalLines;
-             numMaxPlyrs.Value =    App_Layouts.MaxPlayers;
+             numMaxPlyrs.Value = App_Layouts.MaxPlayers;
             
 
             disableGameProfiles.Checked = App_Misc.DisableGameProfiles;
@@ -335,60 +335,58 @@ namespace Nucleus.Coop
                 cmb_Lang.SelectedIndex = 0;
             }
 
-            if ((App_Hotkeys.CloseApp.Item1 == "Ctrl" || App_Hotkeys.CloseApp.Item1 == "Alt" || App_Hotkeys.CloseApp.Item1 == "Shift") && App_Hotkeys.CloseApp.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.CloseApp.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.CloseApp[0] == "Ctrl" || App_Hotkeys.CloseApp[0] == "Alt" || App_Hotkeys.CloseApp[0] == "Shift") && App_Hotkeys.CloseApp[1].Length == 1 && Regex.IsMatch(App_Hotkeys.CloseApp[1], @"^[a-zA-Z0-9]+$"))
             {
-                cn_Cmb.SelectedItem = App_Hotkeys.CloseApp.Item1;
-                cn_HKTxt.Text = App_Hotkeys.CloseApp.Item2;
+                cn_Cmb.SelectedItem = App_Hotkeys.CloseApp[0];
+                cn_HKTxt.Text = App_Hotkeys.CloseApp[1];
             }
 
-            if ((App_Hotkeys.StopSession.Item1 == "Ctrl" || App_Hotkeys.StopSession.Item1 == "Alt" || App_Hotkeys.StopSession.Item1 == "Shift") && App_Hotkeys.StopSession.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.StopSession.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.StopSession[0] == "Ctrl" || App_Hotkeys.StopSession[0] == "Alt" || App_Hotkeys.StopSession[0] == "Shift") && App_Hotkeys.StopSession[1].Length == 1 && Regex.IsMatch(App_Hotkeys.StopSession[1], @"^[a-zA-Z0-9]+$"))
             {
-                ss_Cmb.SelectedItem = App_Hotkeys.StopSession.Item1;
-                ss_HKTxt.Text = App_Hotkeys.StopSession.Item2;
+                ss_Cmb.SelectedItem = App_Hotkeys.StopSession[0];
+                ss_HKTxt.Text = App_Hotkeys.StopSession[1];
             }
 
-            if ((App_Hotkeys.TopMost.Item1 == "Ctrl" || App_Hotkeys.TopMost.Item1 == "Alt" || App_Hotkeys.TopMost.Item1 == "Shift") && App_Hotkeys.TopMost.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.TopMost.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.TopMost[0] == "Ctrl" || App_Hotkeys.TopMost[0] == "Alt" || App_Hotkeys.TopMost[0] == "Shift") && App_Hotkeys.TopMost[1].Length == 1 && Regex.IsMatch(App_Hotkeys.TopMost[1], @"^[a-zA-Z0-9]+$"))
             {
-                ttm_Cmb.SelectedItem = App_Hotkeys.TopMost.Item1;
-                ttm_HKTxt.Text = App_Hotkeys.TopMost.Item2;
+                ttm_Cmb.SelectedItem = App_Hotkeys.TopMost[0];
+                ttm_HKTxt.Text = App_Hotkeys.TopMost[1];
             }
 
-            if ((App_Hotkeys.SetFocus.Item1 == "Ctrl" || App_Hotkeys.SetFocus.Item1 == "Alt" || App_Hotkeys.SetFocus.Item1 == "Shift") && App_Hotkeys.SetFocus.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.SetFocus.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.SetFocus[0] == "Ctrl" || App_Hotkeys.SetFocus[0] == "Alt" || App_Hotkeys.SetFocus[0] == "Shift") && App_Hotkeys.SetFocus[1].Length == 1 && Regex.IsMatch(App_Hotkeys.SetFocus[1], @"^[a-zA-Z0-9]+$"))
             {
-                tu_Cmb.SelectedItem = App_Hotkeys.SetFocus.Item1;
-                tu_HKTxt.Text = App_Hotkeys.SetFocus.Item2;
+                tu_Cmb.SelectedItem = App_Hotkeys.SetFocus[0];
+                tu_HKTxt.Text = App_Hotkeys.SetFocus[1];
             }
 
-            if ((App_Hotkeys.ResetWindows.Item1 == "Ctrl" || App_Hotkeys.ResetWindows.Item1 == "Alt" || App_Hotkeys.ResetWindows.Item1 == "Shift") && App_Hotkeys.ResetWindows.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.ResetWindows.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.ResetWindows[0] == "Ctrl" || App_Hotkeys.ResetWindows[0] == "Alt" || App_Hotkeys.ResetWindows[0] == "Shift") && App_Hotkeys.ResetWindows[1].Length == 1 && Regex.IsMatch(App_Hotkeys.ResetWindows[1], @"^[a-zA-Z0-9]+$"))
             {
-                rw_Cmb.SelectedItem = App_Hotkeys.ResetWindows.Item1;
-                rw_HKTxt.Text = App_Hotkeys.ResetWindows.Item2;
+                rw_Cmb.SelectedItem = App_Hotkeys.ResetWindows[0];
+                rw_HKTxt.Text = App_Hotkeys.ResetWindows[1];
             }
 
-            if ((App_Hotkeys.CutscenesMode.Item1 == "Ctrl" || App_Hotkeys.CutscenesMode.Item1 == "Alt" || App_Hotkeys.CutscenesMode.Item1 == "Shift") && App_Hotkeys.CutscenesMode.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.CutscenesMode.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.CutscenesMode[0] == "Ctrl" || App_Hotkeys.CutscenesMode[0] == "Alt" || App_Hotkeys.CutscenesMode[0] == "Shift") && App_Hotkeys.CutscenesMode[1].Length == 1 && Regex.IsMatch(App_Hotkeys.CutscenesMode[1], @"^[a-zA-Z0-9]+$"))
             {
-                csm_Cmb.SelectedItem = App_Hotkeys.CutscenesMode.Item1;
-                csm_HKTxt.Text = App_Hotkeys.CutscenesMode.Item2;
+                csm_Cmb.SelectedItem = App_Hotkeys.CutscenesMode[0];
+                csm_HKTxt.Text = App_Hotkeys.CutscenesMode[1];
             }
 
-            if ((App_Hotkeys.SwitchLayout.Item1 == "Ctrl" || App_Hotkeys.SwitchLayout.Item1 == "Alt" || App_Hotkeys.SwitchLayout.Item1 == "Shift") && App_Hotkeys.SwitchLayout.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.SwitchLayout.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.SwitchLayout[0] == "Ctrl" || App_Hotkeys.SwitchLayout[0] == "Alt" || App_Hotkeys.SwitchLayout[0] == "Shift") && App_Hotkeys.SwitchLayout[1].Length == 1 && Regex.IsMatch(App_Hotkeys.SwitchLayout[1], @"^[a-zA-Z0-9]+$"))
             {
-                swl_Cmb.SelectedItem = App_Hotkeys.SwitchLayout.Item1;
-                swl_HKTxt.Text = App_Hotkeys.SwitchLayout.Item2;
+                swl_Cmb.SelectedItem = App_Hotkeys.SwitchLayout[0];
+                swl_HKTxt.Text = App_Hotkeys.SwitchLayout[1];
             }
 
-            if ((App_Hotkeys.ShortcutsReminder.Item1 == "Ctrl" || App_Hotkeys.ShortcutsReminder.Item1 == "Alt" || App_Hotkeys.ShortcutsReminder.Item1 == "Shift") && App_Hotkeys.ShortcutsReminder.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.ShortcutsReminder.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.ShortcutsReminder[0] == "Ctrl" || App_Hotkeys.ShortcutsReminder[0] == "Alt" || App_Hotkeys.ShortcutsReminder[0] == "Shift") && App_Hotkeys.ShortcutsReminder[1].Length == 1 && Regex.IsMatch(App_Hotkeys.ShortcutsReminder[1], @"^[a-zA-Z0-9]+$"))
             {
-                rm_Cmb.SelectedItem = App_Hotkeys.ShortcutsReminder.Item1;
-                rm_HKTxt.Text = App_Hotkeys.ShortcutsReminder.Item2;
+                rm_Cmb.SelectedItem = App_Hotkeys.ShortcutsReminder[0];
+                rm_HKTxt.Text = App_Hotkeys.ShortcutsReminder[1];
             }
 
-
-
-            if ((App_Hotkeys.SwitchMergerForeGroundChild.Item1 == "Ctrl" || App_Hotkeys.SwitchMergerForeGroundChild.Item1 == "Alt" || App_Hotkeys.SwitchMergerForeGroundChild.Item1 == "Shift") && App_Hotkeys.SwitchMergerForeGroundChild.Item2.Length == 1 && Regex.IsMatch(App_Hotkeys.SwitchMergerForeGroundChild.Item2, @"^[a-zA-Z0-9]+$"))
+            if ((App_Hotkeys.SwitchMergerForeGroundChild[0] == "Ctrl" || App_Hotkeys.SwitchMergerForeGroundChild[0] == "Alt" || App_Hotkeys.SwitchMergerForeGroundChild[0] == "Shift") && App_Hotkeys.SwitchMergerForeGroundChild[1].Length == 1 && Regex.IsMatch(App_Hotkeys.SwitchMergerForeGroundChild[1], @"^[a-zA-Z0-9]+$"))
             {
-                smfw_Cmb.SelectedItem = App_Hotkeys.SwitchMergerForeGroundChild.Item1;
-                smfw_HKTxt.Text = App_Hotkeys.SwitchMergerForeGroundChild.Item2;
+                smfw_Cmb.SelectedItem = App_Hotkeys.SwitchMergerForeGroundChild[0];
+                smfw_HKTxt.Text = App_Hotkeys.SwitchMergerForeGroundChild[1];
             }
 
             ignoreInputLockReminderCheckbox.Checked = App_Misc.IgnoreInputLockReminder;
@@ -656,16 +654,16 @@ namespace Nucleus.Coop
                 return;
             }
 
-            App_Hotkeys.CloseApp = Tuple.Create(cn_Cmb.SelectedItem.ToString(), cn_HKTxt.Text);
-            App_Hotkeys.StopSession = Tuple.Create(ss_Cmb.SelectedItem.ToString(), ss_HKTxt.Text);
-            App_Hotkeys.TopMost = Tuple.Create(ttm_Cmb.SelectedItem.ToString(), ttm_HKTxt.Text);
-            App_Hotkeys.SetFocus = Tuple.Create(tu_Cmb.SelectedItem.ToString(), tu_HKTxt.Text);
-            App_Hotkeys.ResetWindows = Tuple.Create(rw_Cmb.SelectedItem.ToString(), rw_HKTxt.Text);
+            App_Hotkeys.CloseApp = new string[] { cn_Cmb.SelectedItem.ToString(), cn_HKTxt.Text };
+            App_Hotkeys.StopSession = new string[] { ss_Cmb.SelectedItem.ToString(), ss_HKTxt.Text };
+            App_Hotkeys.TopMost = new string[] { ttm_Cmb.SelectedItem.ToString(), ttm_HKTxt.Text };
+            App_Hotkeys.SetFocus = new string[] { tu_Cmb.SelectedItem.ToString(), tu_HKTxt.Text };
+            App_Hotkeys.ResetWindows = new string[] { rw_Cmb.SelectedItem.ToString(), rw_HKTxt.Text };
             App_Hotkeys.LockInputs = lockKey_Cmb.SelectedItem.ToString();
-            App_Hotkeys.CutscenesMode = Tuple.Create(csm_Cmb.SelectedItem.ToString(), csm_HKTxt.Text);
-            App_Hotkeys.SwitchLayout = Tuple.Create(swl_Cmb.SelectedItem.ToString(), swl_HKTxt.Text);
-            App_Hotkeys.ShortcutsReminder = Tuple.Create(rm_Cmb.SelectedItem.ToString(), rm_HKTxt.Text);
-            App_Hotkeys.SwitchMergerForeGroundChild = Tuple.Create(smfw_Cmb.SelectedItem.ToString(), smfw_HKTxt.Text);
+            App_Hotkeys.CutscenesMode = new string[] { csm_Cmb.SelectedItem.ToString(), csm_HKTxt.Text };
+            App_Hotkeys.SwitchLayout = new string[] { swl_Cmb.SelectedItem.ToString(), swl_HKTxt.Text };
+            App_Hotkeys.ShortcutsReminder = new string[] { rm_Cmb.SelectedItem.ToString(), rm_HKTxt.Text };
+            App_Hotkeys.SwitchMergerForeGroundChild = new string[] { smfw_Cmb.SelectedItem.ToString(), smfw_HKTxt.Text };
 
             App_Misc.UseNicksInGame = useNicksCheck.Checked;
             App_Misc.KeepAccounts = keepAccountsCheck.Checked;
@@ -1246,7 +1244,7 @@ namespace Nucleus.Coop
                 resCmb.BackColor = Color.Black;
                 resCmb.ForeColor = Color.White;
                 resCmb.FlatStyle = FlatStyle.Flat;
-                resCmb.TextChanged += SaveSelectedRes;
+                resCmb.SelectedValueChanged += SaveSelectedRes;
                 resCmb.DropDownStyle = ComboBoxStyle.DropDownList;
 
                 Label resLabel = new Label();

@@ -1349,7 +1349,7 @@ namespace Nucleus.Coop
                 resCmb.BackColor = Color.Black;
                 resCmb.ForeColor = Color.White;
                 resCmb.FlatStyle = FlatStyle.Flat;
-                resCmb.TextChanged += SaveSelectedRes;
+                resCmb.SelectedValueChanged += SaveSelectedRes;
                 resCmb.DropDownStyle = ComboBoxStyle.DropDownList;
 
                 Label resLabel = new Label();
