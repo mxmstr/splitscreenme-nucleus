@@ -3564,7 +3564,7 @@ namespace Nucleus.Gaming
                 CleanGameContent.CleanContentFolder(gen);
             }
 
-            if  (!bool.Parse(App_Misc.KeepAccounts))
+            if  (!App_Misc.KeepAccounts)
             {
                 WindowsUsersUtil.DeleteCreatedWindowsUserFolder();
             }

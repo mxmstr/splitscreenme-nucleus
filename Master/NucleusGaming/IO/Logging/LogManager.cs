@@ -213,19 +213,15 @@ namespace Nucleus.Gaming
 
 #if RELEASE
             bool EnableBtn = false;
-            if (App_Misc.DebugLog == "" || App_Misc.DebugLog == "False" &&
-                App_Misc.EnableLogAnswer != "No")
+            if (!App_Misc.DebugLog &&
+                !App_Misc.EnableLogAnswer)
             {
                 DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Click \"Yes\" if you want to enable debug logging. Start the game once again to generate a debug log.\nClick \"No\" to disable this prompt.", "Enable debug log", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    App_Misc.DebugLog =  "True";
+                    App_Misc.DebugLog = true;
                     EnableBtn = true;
-                }
-                else
-                {
-                    App_Misc.EnableLogAnswer = "No";
                 }
             }
 
