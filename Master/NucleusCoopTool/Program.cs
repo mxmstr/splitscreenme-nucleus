@@ -18,15 +18,15 @@ namespace Nucleus.Coop
         {
             Settings_Loader.InitializeSettings();
 
-            if (App_Misc.NucleusMultiInstances == "" || App_Misc.NucleusMultiInstances == "False")
+            if (!App_Misc.NucleusMultiInstances)
             {
-                if (StartChecks.IsAlreadyRunning())
+                if (StartChecks.IsAlreadyRunning())         
                     return;
             }
 
             StartChecks.Check_VCRVersion();
 
-            if (App_Misc.DisablePathCheck == "" || App_Misc.DisablePathCheck == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
+            if (!App_Misc.DisablePathCheck)// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
             {
                 if (!StartChecks.StartCheck(true))
                     ForcedBadPath = true;

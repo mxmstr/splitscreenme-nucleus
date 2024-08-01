@@ -270,10 +270,10 @@ namespace Nucleus.Coop
             connected = Program.Connected;
             Hub.Connected = connected;
 
-            ShowFavoriteOnly = bool.Parse(App_Misc.ShowFavoriteOnly);
+            ShowFavoriteOnly = App_Misc.ShowFavoriteOnly;
             roundedCorners = bool.Parse(themeIni.IniReadValue("Misc", "UseroundedCorners"));
-            disableGameProfiles = bool.Parse(App_Misc.DisableGameProfiles);
-            disableForcedNote = bool.Parse(App_Misc.DisableForcedNote);
+            disableGameProfiles = App_Misc.DisableGameProfiles;
+            disableForcedNote = App_Misc.DisableForcedNote;
          
             customFont = themeIni.IniReadValue("Font", "FontFamily");
             rgb_font = themeIni.IniReadValue("Colors", "Font").Split(',');
@@ -405,11 +405,8 @@ namespace Nucleus.Coop
             profilesList_btn.BackgroundImage = ImageCache.GetImage(theme + "profiles_list.png");
             profileSettings_btn.BackgroundImage = ImageCache.GetImage(theme + "profile_settings.png");
 
-            if (App_Misc.DebugLog == "True")
-            {
-                btn_debuglog.Visible = true;
-            }
-
+            //btn_debuglog.Visible = App_Misc.DebugLog;
+            
             CustomToolTips.SetToolTip(btn_Extract, "Extract a handler from a \".nc\" archive.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btnSearch, "Search and add a game to the game list (its handler must be installed).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_downloadAssets, "Download or update games covers and screenshots.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -2278,7 +2275,7 @@ namespace Nucleus.Coop
 
         private void Log(string logMessage)
         {
-            if (App_Misc.DebugLog == "True")
+            if (App_Misc.DebugLog)
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {

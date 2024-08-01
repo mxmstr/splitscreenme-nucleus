@@ -189,23 +189,23 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         public static void UpdateShortcutsValue()
         {
-            SetFocus = int.Parse(App_GamePadShortcuts.SetFocus.Item1) + int.Parse(App_GamePadShortcuts.SetFocus.Item2);
+            SetFocus = App_GamePadShortcuts.SetFocus[0] + App_GamePadShortcuts.SetFocus[1];
 
-            Close = int.Parse(App_GamePadShortcuts.Close.Item1) + int.Parse(App_GamePadShortcuts.Close.Item2);
+            Close = App_GamePadShortcuts.Close[0] + App_GamePadShortcuts.Close[1];
 
-            StopSession = int.Parse(App_GamePadShortcuts.StopSession.Item1) + int.Parse(App_GamePadShortcuts.StopSession.Item2);
+            StopSession = App_GamePadShortcuts.StopSession[0] + App_GamePadShortcuts.StopSession[1];
 
-            TopMost = int.Parse(App_GamePadShortcuts.TopMost.Item1) + int.Parse(App_GamePadShortcuts.TopMost.Item2);
+            TopMost = App_GamePadShortcuts.TopMost[0] + App_GamePadShortcuts.TopMost[1];
 
-            ResetWindows = int.Parse(App_GamePadShortcuts.ResetWindows.Item1) + int.Parse(App_GamePadShortcuts.ResetWindows.Item2);
+            ResetWindows = App_GamePadShortcuts.ResetWindows[0] + App_GamePadShortcuts.ResetWindows[1];
 
-            Cutscenes = int.Parse(App_GamePadShortcuts.CutscenesMode.Item1) + int.Parse(App_GamePadShortcuts.CutscenesMode.Item2);
+            Cutscenes = App_GamePadShortcuts.CutscenesMode[0] + App_GamePadShortcuts.CutscenesMode[1];
 
-            SwitchLayout = int.Parse(App_GamePadShortcuts.SwitchLayout.Item1) + int.Parse(App_GamePadShortcuts.SwitchLayout.Item2);
+            SwitchLayout = App_GamePadShortcuts.SwitchLayout[0] + App_GamePadShortcuts.SwitchLayout[1];
 
-            LockInputs = int.Parse(App_GamePadShortcuts.LockInputs.Item1) + int.Parse(App_GamePadShortcuts.LockInputs.Item2);
+            LockInputs = App_GamePadShortcuts.LockInputs[0] + App_GamePadShortcuts.LockInputs[1];
 
-            ReleaseCursor = int.Parse(App_GamePadShortcuts.TopMost.Item1) + int.Parse(App_GamePadShortcuts.TopMost.Item2);
+            ReleaseCursor = App_GamePadShortcuts.TopMost[0] + App_GamePadShortcuts.TopMost[1];
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Nucleus.Gaming.Tools.HexEdit
     {
         private static void Log(string logMessage)
         {
-            if (bool.Parse(App_Misc.DebugLog))
+            if (App_Misc.DebugLog)
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {

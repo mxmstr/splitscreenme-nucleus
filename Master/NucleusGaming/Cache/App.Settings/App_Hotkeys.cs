@@ -162,8 +162,6 @@ namespace Nucleus.Gaming.App.Settings
 
         public static bool LoadSettings()
         {
-
-                //Todo: Add check for empty fields and set default values
                 close = Tuple.Create(Globals.ini.IniReadValue("Hotkeys", "Close").Split('+')[0], Globals.ini.IniReadValue("Hotkeys", "Close").Split('+')[1]);
                 stop = Tuple.Create(Globals.ini.IniReadValue("Hotkeys", "Stop").Split('+')[0], Globals.ini.IniReadValue("Hotkeys", "Stop").Split('+')[1]);
                 topMost = Tuple.Create(Globals.ini.IniReadValue("Hotkeys", "TopMost").Split('+')[0], Globals.ini.IniReadValue("Hotkeys", "TopMost").Split('+')[1]);

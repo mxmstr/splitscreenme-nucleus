@@ -304,7 +304,7 @@ namespace Nucleus.Gaming.Tools.Steam
                     handlerInstance.Log("New steam api folder found");
                     prevSteamDllFilePath = Path.GetDirectoryName(nameFile);
 
-                    if (App_Misc.UseNicksInGame == "True" && !string.IsNullOrEmpty(player.Nickname))
+                    if (App_Misc.UseNicksInGame && !string.IsNullOrEmpty(player.Nickname))
                     {
                         if (setupDll)
                         {
@@ -321,7 +321,7 @@ namespace Nucleus.Gaming.Tools.Steam
                             handlerInstance.addedFiles.Add(Path.Combine(instanceSteamSettingsFolder, "account_name.txt"));
                         }
 
-                        if (App_Misc.UseNicksInGame == "True" && Cache.PlayersIdentityCache.SettingsIniNicknamesList[i] != "")
+                        if (App_Misc.UseNicksInGame && Cache.PlayersIdentityCache.SettingsIniNicknamesList[i] != "")
                         {
                             File.WriteAllText(Path.Combine(instanceSteamSettingsFolder, "account_name.txt"), player.Nickname);
                             handlerInstance.Log("Generating account_name.txt with nickname " + player.Nickname);
@@ -813,7 +813,7 @@ namespace Nucleus.Gaming.Tools.Steam
 
             emu.IniWriteValue("SmartSteamEmu", "Language", lang);
 
-            if (App_Misc.UseNicksInGame == "True" && !string.IsNullOrEmpty(player.Nickname))
+            if (App_Misc.UseNicksInGame && !string.IsNullOrEmpty(player.Nickname))
             {
                 emu.IniWriteValue("SmartSteamEmu", "PersonaName", player.Nickname);
             }

@@ -245,32 +245,22 @@ namespace Nucleus.Coop
                 sidField.LostFocus += new EventHandler(UpdateSteamIdsItems);
             }
 
-            splitDiv.Checked = bool.Parse(App_Layouts.SplitDiv);
-            hideDesktop.Checked = bool.Parse(App_Layouts.HideOnly);
-            cts_Mute.Checked = bool.Parse(App_Layouts.Cts_MuteAudioOnly);
-            cts_kar.Checked = bool.Parse(App_Layouts.Cts_KeepAspectRatio);
-            cts_unfocus.Checked = bool.Parse(App_Layouts.Cts_Unfocus);
+            splitDiv.Checked = App_Layouts.SplitDiv;
+            hideDesktop.Checked = App_Layouts.HideOnly;
+            cts_Mute.Checked = App_Layouts.Cts_MuteAudioOnly;
+            cts_kar.Checked = App_Layouts.Cts_KeepAspectRatio;
+            cts_unfocus.Checked = App_Layouts.Cts_Unfocus;
 
-            enable_WMerger.Checked = bool.Parse(App_Layouts.WindowsMerger);
-            losslessHook.Checked = bool.Parse(App_Layouts.LosslessHook);
+            enable_WMerger.Checked = App_Layouts.WindowsMerger;
+            losslessHook.Checked = App_Layouts.LosslessHook;
 
-            if (App_Layouts.HorizontalLines != "")
-            {
-                numUpDownHor.Value = int.Parse(App_Layouts.HorizontalLines);
-            }
+             numUpDownHor.Value = App_Layouts.HorizontalLines;           
+             numUpDownVer.Value = App_Layouts.VerticalLines;
+             numMaxPlyrs.Value =    App_Layouts.MaxPlayers;
+            
 
-            if (App_Layouts.VerticalLines != "")
-            {
-                numUpDownVer.Value = int.Parse(App_Layouts.VerticalLines);
-            }
-
-            if (App_Layouts.MaxPlayers != "")
-            {
-                numMaxPlyrs.Value = int.Parse(App_Layouts.MaxPlayers);
-            }
-
-            disableGameProfiles.Checked = bool.Parse(App_Misc.DisableGameProfiles);
-            gamepadsAssignMethods.Checked = bool.Parse(App_Misc.UseXinputIndex);
+            disableGameProfiles.Checked = App_Misc.DisableGameProfiles;
+            gamepadsAssignMethods.Checked = App_Misc.UseXinputIndex;
             gamepadsAssignMethods.Visible = !disableGameProfiles.Checked;
 
             DevicesFunctions.UseGamepadApiIndex = gamepadsAssignMethods.Checked;
@@ -326,12 +316,12 @@ namespace Nucleus.Coop
             ///epiclangs setting
             cmb_EpicLang.SelectedItem = App_Misc.EpicLang;
 
-            useNicksCheck.Checked = bool.Parse(App_Misc.UseNicksInGame);
+            useNicksCheck.Checked = App_Misc.UseNicksInGame;
 
-            keepAccountsCheck.Checked = bool.Parse(App_Misc.KeepAccounts);
+            keepAccountsCheck.Checked = App_Misc.KeepAccounts;
 
             ///auto scale setting
-            scaleOptionCbx.Checked = bool.Parse(App_Misc.AutoDesktopScaling);
+            scaleOptionCbx.Checked = App_Misc.AutoDesktopScaling;
 
             ///Custom HotKey setting
             lockKey_Cmb.Text = App_Hotkeys.LockInputs;
@@ -401,16 +391,10 @@ namespace Nucleus.Coop
                 smfw_HKTxt.Text = App_Hotkeys.SwitchMergerForeGroundChild.Item2;
             }
 
+            ignoreInputLockReminderCheckbox.Checked = App_Misc.IgnoreInputLockReminder;
+            
 
-            if (App_Misc.IgnoreInputLockReminder != "")
-            {
-                ignoreInputLockReminderCheckbox.Checked = bool.Parse(App_Misc.IgnoreInputLockReminder);
-            }
-
-            if (App_Misc.DebugLog != "")
-            {
-                debugLogCheck.Checked = bool.Parse(App_Misc.DebugLog);
-            }
+            debugLogCheck.Checked = App_Misc.DebugLog;
 
             if (App_Misc.NucleusAccountPassword != "")
             {
@@ -683,30 +667,30 @@ namespace Nucleus.Coop
             App_Hotkeys.ShortcutsReminder = Tuple.Create(rm_Cmb.SelectedItem.ToString(), rm_HKTxt.Text);
             App_Hotkeys.SwitchMergerForeGroundChild = Tuple.Create(smfw_Cmb.SelectedItem.ToString(), smfw_HKTxt.Text);
 
-            App_Misc.UseNicksInGame = useNicksCheck.Checked.ToString();
-            App_Misc.KeepAccounts = keepAccountsCheck.Checked.ToString();
+            App_Misc.UseNicksInGame = useNicksCheck.Checked;
+            App_Misc.KeepAccounts = keepAccountsCheck.Checked;
             App_Misc.Network = cmb_Network.Text.ToString();
-            App_Misc.IgnoreInputLockReminder = ignoreInputLockReminderCheckbox.Checked.ToString();
-            App_Misc.DebugLog = debugLogCheck.Checked.ToString();
+            App_Misc.IgnoreInputLockReminder = ignoreInputLockReminderCheckbox.Checked;
+            App_Misc.DebugLog = debugLogCheck.Checked;
             App_Misc.SteamLang = cmb_Lang.SelectedItem.ToString();
             App_Misc.EpicLang = cmb_EpicLang.SelectedItem.ToString();
 
             App_Misc.NucleusAccountPassword = nucUserPassTxt.Text;
-            App_Misc.AutoDesktopScaling = scaleOptionCbx.Checked.ToString();
+            App_Misc.AutoDesktopScaling = scaleOptionCbx.Checked;
 
-            App_Misc.UseXinputIndex = gamepadsAssignMethods.Checked.ToString();
+            App_Misc.UseXinputIndex = gamepadsAssignMethods.Checked;
 
-            App_Layouts.SplitDiv = splitDiv.Checked.ToString();
-            App_Layouts.HideOnly = hideDesktop.Checked.ToString();
+            App_Layouts.SplitDiv = splitDiv.Checked;
+            App_Layouts.HideOnly = hideDesktop.Checked;
             App_Layouts.SplitDivColor = SplitColors.Text.ToString();
-            App_Layouts.HorizontalLines = numUpDownHor.Value.ToString();
-            App_Layouts.VerticalLines = numUpDownVer.Value.ToString();
-            App_Layouts.MaxPlayers = numMaxPlyrs.Value.ToString();
+            App_Layouts.HorizontalLines = numUpDownHor.Value;
+            App_Layouts.VerticalLines = numUpDownVer.Value;
+            App_Layouts.MaxPlayers = numMaxPlyrs.Value;
 
-            App_Layouts.Cts_MuteAudioOnly = cts_Mute.Checked.ToString();
-            App_Layouts.Cts_KeepAspectRatio = cts_kar.Checked.ToString();
-            App_Layouts.Cts_Unfocus = cts_unfocus.Checked.ToString();
-            App_Layouts.WindowsMerger = enable_WMerger.Checked.ToString();
+            App_Layouts.Cts_MuteAudioOnly = cts_Mute.Checked;
+            App_Layouts.Cts_KeepAspectRatio = cts_kar.Checked;
+            App_Layouts.Cts_Unfocus = cts_unfocus.Checked;
+            App_Layouts.WindowsMerger = enable_WMerger.Checked;
 
             if (setupScreen != null)
             {
@@ -717,11 +701,11 @@ namespace Nucleus.Coop
                 }
             }
 
-            bool disableGameProfileschanged = disableGameProfiles.Checked != bool.Parse(App_Misc.DisableGameProfiles);
+            bool disableGameProfileschanged = disableGameProfiles.Checked != App_Misc.DisableGameProfiles;
 
             if (disableGameProfileschanged)
             {
-                App_Misc.DisableGameProfiles = disableGameProfiles.Checked.ToString();
+                App_Misc.DisableGameProfiles = disableGameProfiles.Checked;
             }
 
             bool needToRestart = false;
@@ -1355,7 +1339,7 @@ namespace Nucleus.Coop
                 //Reload do not cache so we always have fresh screen datas.
                 GetAllScreensResolutions();
                 //Update in case the logmanager prompt updated the value
-                debugLogCheck.Checked = bool.Parse(App_Misc.DebugLog);
+                debugLogCheck.Checked = App_Misc.DebugLog;
             }
 
             mainForm.DisableGameProfiles = disableGameProfiles.Checked;
@@ -1377,7 +1361,7 @@ namespace Nucleus.Coop
         private void LosslessHook_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = sender as CheckBox;
-            App_Layouts.LosslessHook = checkBox.Checked.ToString();
+            App_Layouts.LosslessHook = checkBox.Checked;
         }
 
         private void Screen_panel_Paint(object sender, PaintEventArgs e)

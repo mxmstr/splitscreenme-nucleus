@@ -18,7 +18,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             parent = _parent;
             userGameInfo = _userGameInfo;
             profile = _profile;
-            useGamepadApiIndex = bool.Parse(App_Misc.UseXinputIndex);
+            useGamepadApiIndex = App_Misc.UseXinputIndex;
         }
 
         private static SetupScreenControl parent;

@@ -278,7 +278,7 @@ namespace Nucleus.Gaming.Coop
 
         public void Reset()
         {
-            bool profileDisabled = bool.Parse(App_Misc.DisableGameProfiles);
+            bool profileDisabled = App_Misc.DisableGameProfiles;
 
             setupScreen.CanPlayUpdated(false, false);
 
@@ -611,26 +611,26 @@ namespace Nucleus.Gaming.Coop
 
         public static void UpdateSharedSettings()
         {
-            autoDesktopScaling = bool.Parse(App_Misc.AutoDesktopScaling);
-            useNicknames = bool.Parse(App_Misc.UseNicksInGame);
-            useXinputIndex = bool.Parse(App_Misc.UseXinputIndex);   
+            autoDesktopScaling = App_Misc.AutoDesktopScaling;
+            useNicknames = App_Misc.UseNicksInGame;
+            useXinputIndex = App_Misc.UseXinputIndex;   
             network = App_Misc.Network;
 
             audioCustomSettings = int.Parse(App_Audio.Custom) == 1;
             audioDefaultSettings = audioCustomSettings == false;
 
-            useSplitDiv = bool.Parse(App_Layouts.SplitDiv);
+            useSplitDiv = App_Layouts.SplitDiv;
             splitDivColor = App_Layouts.SplitDivColor;
-            hideDesktopOnly = bool.Parse(App_Layouts.HideOnly);
-            customLayout_Ver = int.Parse(App_Layouts.VerticalLines);
-            customLayout_Hor = int.Parse(App_Layouts.HorizontalLines);
-            customLayout_Max = int.Parse(App_Layouts.MaxPlayers);
-            cts_MuteAudioOnly = bool.Parse(App_Layouts.Cts_MuteAudioOnly);
-            cts_KeepAspectRatio = bool.Parse(App_Layouts.Cts_KeepAspectRatio);
-            cts_Unfocus = bool.Parse(App_Layouts.Cts_Unfocus);
+            hideDesktopOnly = App_Layouts.HideOnly;
+            customLayout_Ver = App_Layouts.VerticalLines;
+            customLayout_Hor = App_Layouts.HorizontalLines;
+            customLayout_Max = App_Layouts.MaxPlayers;
+            cts_MuteAudioOnly = App_Layouts.Cts_MuteAudioOnly;
+            cts_KeepAspectRatio = App_Layouts.Cts_KeepAspectRatio;
+            cts_Unfocus = App_Layouts.Cts_Unfocus;
 
-            enableWindowsMerger = bool.Parse(App_Layouts.WindowsMerger);
-            enableLosslessHook = bool.Parse(App_Layouts.LosslessHook);
+            enableWindowsMerger = App_Layouts.WindowsMerger;
+            enableLosslessHook = App_Layouts.LosslessHook;
             mergerResolution = App_Layouts.WindowsMergerRes;           
         }
 
@@ -849,7 +849,7 @@ namespace Nucleus.Gaming.Coop
         public static void SaveGameProfile(GameProfile profile)
         {
             string path;
-            bool profileDisabled = bool.Parse(App_Misc.DisableGameProfiles);
+            bool profileDisabled = App_Misc.DisableGameProfiles;
 
             if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.Game.MetaInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
             {

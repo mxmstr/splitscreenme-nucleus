@@ -266,13 +266,13 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         public static void UpdateUINavSettings()
         {
-            _Enabled = bool.Parse(App_GamePadNavigation.Enabled);
-            Deadzone = int.Parse(App_GamePadNavigation.Deadzone);
-            Dragdrop = int.Parse(App_GamePadNavigation.DragDrop);
-            RightClick = int.Parse(App_GamePadNavigation.RightClick);
-            LeftClick = int.Parse(App_GamePadNavigation.LeftClick);
-            LockUIControl = Convert.ToInt32(App_GamePadNavigation.TogglekUINavigation.Item1) + Convert.ToInt32(App_GamePadNavigation.TogglekUINavigation.Item2);
-            OpenOsk = Convert.ToInt32(App_GamePadNavigation.OpenOsk.Item1) + Convert.ToInt32(App_GamePadNavigation.OpenOsk.Item2);
+            _Enabled = App_GamePadNavigation.Enabled;
+            Deadzone = App_GamePadNavigation.Deadzone;
+            Dragdrop = App_GamePadNavigation.DragDrop;
+            RightClick = App_GamePadNavigation.RightClick;
+            LeftClick = App_GamePadNavigation.LeftClick;
+            LockUIControl = App_GamePadNavigation.TogglekUINavigation[0] + App_GamePadNavigation.TogglekUINavigation[1];
+            OpenOsk = App_GamePadNavigation.OpenOsk[0] + App_GamePadNavigation.OpenOsk[1];
 
             EnabledRuntime = _Enabled;
         }

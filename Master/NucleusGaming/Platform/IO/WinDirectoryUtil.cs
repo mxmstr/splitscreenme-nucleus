@@ -9,7 +9,7 @@ namespace Nucleus.Gaming.Platform.Windows.IO
     {
         private static void Log(string logMessage)
         {
-            if (App_Misc.DebugLog == "True")
+            if (App_Misc.DebugLog)
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {

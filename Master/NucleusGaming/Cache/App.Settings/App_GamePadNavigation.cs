@@ -19,90 +19,91 @@ namespace Nucleus.Gaming.App.Settings
             }
         }
 
-        private static string enabled;
-        public static string Enabled
+        private static bool enabled;
+        public static bool Enabled
         {
             get => enabled;
             set
             {
-                enabled = value; Globals.ini.IniWriteValue("XUINav", "Enabled", value);
+                enabled = value; Globals.ini.IniWriteValue("XUINav", "Enabled", value.ToString());
             }
         }
 
-        private static string deadzone;
-        public static string Deadzone
+        private static int deadzone;
+        public static int Deadzone
         {
             get => deadzone;
             set
             {
-                deadzone = value; Globals.ini.IniWriteValue("XUINav", "Deadzone", value);
+                deadzone = value; Globals.ini.IniWriteValue("XUINav", "Deadzone", value.ToString());
             }
         }
 
-        private static string dragDrop;
-        public static string DragDrop
+        private static int dragDrop;
+        public static int DragDrop
         {
             get => dragDrop;
             set
             {
                 dragDrop = value;
-                Globals.ini.IniWriteValue("XUINav", "DragDrop", value);
+                Globals.ini.IniWriteValue("XUINav", "DragDrop", value.ToString());
             }
         }
 
-        private static string rightClick;
-        public static string RightClick
+        private static int rightClick;
+        public static int RightClick
         {
             get => rightClick;
             set
             {
                 rightClick = value;
-                Globals.ini.IniWriteValue("XUINav", "RightClick", value);
+                Globals.ini.IniWriteValue("XUINav", "RightClick", value.ToString());
             }
         }
 
-        private static string leftClick;
-        public static string LeftClick
+        private static int leftClick;
+        public static int LeftClick
         {
             get => leftClick;
             set
             {
-                leftClick = value; Globals.ini.IniWriteValue("XUINav", "LeftClick", value);
+                leftClick = value; Globals.ini.IniWriteValue("XUINav", "LeftClick", value.ToString());
             }
         }
 
-        private static Tuple<string, string> togglekUINavigation;
-        public static Tuple<string, string> TogglekUINavigation
+        private static int[] togglekUINavigation;
+        public static int[] TogglekUINavigation
         {
             get => togglekUINavigation;
             set
             {
                 togglekUINavigation = value;
-                Globals.ini.IniWriteValue("XUINav", "LockUIControl", $"{value.Item1}+{value.Item2}");
+                Globals.ini.IniWriteValue("XUINav", "LockUIControl", $"{value[0]} + {value[1]}");
             }
         }
 
-        private static Tuple<string, string> openOsk;
-        public static Tuple<string, string> OpenOsk
+        private static int[] openOsk;
+        public static int[] OpenOsk
         {
             get => openOsk;
             set
             {
                 openOsk = value;
-                Globals.ini.IniWriteValue("XUINav", "OpenOsk", $"{value.Item1}+{value.Item2}");
+                Globals.ini.IniWriteValue("XUINav", "OpenOsk", $"{value[0]} + {value[1]}");
             }
         }
 
         public static bool LoadSettings()
         {
             type = Globals.ini.IniReadValue("XUINav", "Type");
-            enabled = Globals.ini.IniReadValue("XUINav", "Enabled");
-            deadzone = Globals.ini.IniReadValue("XUINav", "Deadzone");
-            dragDrop = Globals.ini.IniReadValue("XUINav", "DragDrop");
-            rightClick = Globals.ini.IniReadValue("XUINav", "RightClick");
-            leftClick = Globals.ini.IniReadValue("XUINav", "LeftClick");
-            togglekUINavigation = Tuple.Create(Globals.ini.IniReadValue("XUINav", "LockUIControl").Split('+')[0], Globals.ini.IniReadValue("XUINav", "LockUIControl").Split('+')[1]);
-            openOsk = Tuple.Create(Globals.ini.IniReadValue("XUINav", "OpenOsk").Split('+')[0], Globals.ini.IniReadValue("XUINav", "OpenOsk").Split('+')[1]);
+            enabled = bool.Parse(Globals.ini.IniReadValue("XUINav", "Enabled"));
+            deadzone = int.Parse(Globals.ini.IniReadValue("XUINav", "Deadzone"));
+            dragDrop = int.Parse(Globals.ini.IniReadValue("XUINav", "DragDrop"));
+            rightClick = int.Parse(Globals.ini.IniReadValue("XUINav", "RightClick"));
+            leftClick = int.Parse(Globals.ini.IniReadValue("XUINav", "LeftClick"));
+            togglekUINavigation = new int[]{ int.Parse(Globals.ini.IniReadValue("XUINav", "LockUIControl").Split('+')[0]), int.Parse(Globals.ini.IniReadValue("XUINav", "LockUIControl").Split('+')[1])};
+
+            openOsk = new int[] { int.Parse(Globals.ini.IniReadValue("XUINav", "OpenOsk").Split('+')[0]), int.Parse(Globals.ini.IniReadValue("XUINav", "OpenOsk").Split('+')[1])};
 
             return true;
         }

@@ -11,7 +11,7 @@ namespace Nucleus.Coop.Tools
     internal class SetBackroundAndCover
     {
         private static MainForm main;
-        private static int blurValue = int.Parse(App_Misc.Blur);
+        private static int blurValue =  App_Misc.Blur;
         private static Color colorTop;
         private static Color colorBottom;
 

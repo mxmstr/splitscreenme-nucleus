@@ -499,7 +499,7 @@ namespace Nucleus.Coop
                 if (LogSize >= 150000)//150ko
                 {
                     File.Delete(logPath);
-                    App_Misc.DebugLog = "False";
+                    App_Misc.DebugLog = false;
                 }
             }
         }

@@ -142,7 +142,7 @@ public class WindowsMerger : System.Windows.Window
             }
         }
 
-        if (bool.Parse(App_Layouts.LosslessHook) && !GameProfile.Ready)
+        if (App_Layouts.LosslessHook && !GameProfile.Ready)
         {
             await InjectLosslessHookAsync();
         }

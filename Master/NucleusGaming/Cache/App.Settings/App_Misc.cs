@@ -8,36 +8,36 @@ namespace Nucleus.Gaming.App.Settings
 {
     public static class App_Misc
     {
-        private static string useNicksInGame;
-        public static string UseNicksInGame
+        private static bool useNicksInGame;
+        public static bool UseNicksInGame
         {
             get => useNicksInGame;
             set
             {
                 useNicksInGame = value;
-                Globals.ini.IniWriteValue("Misc", "UseNicksInGame", value);
+                Globals.ini.IniWriteValue("Misc", "UseNicksInGame", value.ToString());
             }
         }
 
-        private static string debugLog;
-        public static string DebugLog
+        private static bool debugLog;
+        public static bool DebugLog
         {
             get => debugLog;
             set
             {
                 debugLog = value;
-                Globals.ini.IniWriteValue("Misc", "DebugLog", value);
+                Globals.ini.IniWriteValue("Misc", "DebugLog", value.ToString());
             }
         }
 
-        private static string enableLogAnswer;
-        public static string EnableLogAnswer
+        private static bool enableLogAnswer;
+        public static bool EnableLogAnswer
         {
             get => enableLogAnswer;
             set
             {
                 enableLogAnswer = value;
-                Globals.ini.IniWriteValue("Misc", "EnableLogAnswer", value);
+                Globals.ini.IniWriteValue("Misc", "EnableLogAnswer", value.ToString());
             }
         }
 
@@ -74,25 +74,25 @@ namespace Nucleus.Gaming.App.Settings
             }
         }
 
-        private static string keepAccounts;
-        public static string KeepAccounts
+        private static bool keepAccounts;
+        public static bool KeepAccounts
         {
             get => keepAccounts;
             set
             {
                 keepAccounts = value;
-                Globals.ini.IniWriteValue("Misc", "KeepAccounts", value);
+                Globals.ini.IniWriteValue("Misc", "KeepAccounts", value.ToString());
             }
         }
 
-        private static string disableForcedNote;
-        public static string DisableForcedNote
+        private static bool disableForcedNote;
+        public static bool DisableForcedNote
         {
             get => disableForcedNote;
             set
             {
                 disableForcedNote = value;
-                Globals.ini.IniWriteValue("Misc", "DisableForcedNote", value);
+                Globals.ini.IniWriteValue("Misc", "DisableForcedNote", value.ToString());
             }
         }
 
@@ -107,47 +107,47 @@ namespace Nucleus.Gaming.App.Settings
             }
         }
 
-        private static string ignoreInputLockReminder;
-        public static string IgnoreInputLockReminder
+        private static bool ignoreInputLockReminder;
+        public static bool IgnoreInputLockReminder
         {
             get => ignoreInputLockReminder;
             set
             {
                 ignoreInputLockReminder = value;
-                Globals.ini.IniWriteValue("Misc", "IgnoreInputLockReminder", value);
+                Globals.ini.IniWriteValue("Misc", "IgnoreInputLockReminder", value.ToString());
             }
         }
 
-        private static string autoDesktopScaling;
-        public static string AutoDesktopScaling
+        private static bool autoDesktopScaling;
+        public static bool AutoDesktopScaling
         {
             get => autoDesktopScaling;
             set
             {
                 autoDesktopScaling = value;
-                Globals.ini.IniWriteValue("Misc", "AutoDesktopScaling", value);
+                Globals.ini.IniWriteValue("Misc", "AutoDesktopScaling", value.ToString());
             }
         }
 
-        private static string nucleusMultiInstances;
-        public static string NucleusMultiInstances
+        private static bool nucleusMultiInstances;
+        public static bool NucleusMultiInstances
         {
             get => nucleusMultiInstances;
             set
             {
                 nucleusMultiInstances = value;
-                Globals.ini.IniWriteValue("Misc", "NucleusMultiInstances", value);
+                Globals.ini.IniWriteValue("Misc", "NucleusMultiInstances", value.ToString());
             }
         }
 
-        private static string disableGameProfiles;
-        public static string DisableGameProfiles
+        private static bool disableGameProfiles;
+        public static bool DisableGameProfiles
         {
             get => disableGameProfiles;
             set
             {
                 disableGameProfiles = value;
-                Globals.ini.IniWriteValue("Misc", "DisableGameProfiles", value);
+                Globals.ini.IniWriteValue("Misc", "DisableGameProfiles", value.ToString());
             }
         }
 
@@ -227,25 +227,25 @@ namespace Nucleus.Gaming.App.Settings
             }
         }
 
-        private static string showFavoriteOnly;
-        public static string ShowFavoriteOnly
+        private static bool showFavoriteOnly;
+        public static bool ShowFavoriteOnly
         {
             get => showFavoriteOnly;
             set
             {
                 showFavoriteOnly = value;
-                Globals.ini.IniWriteValue("Dev", "ShowFavoriteOnly", value);
+                Globals.ini.IniWriteValue("Dev", "ShowFavoriteOnly", value.ToString());
             }
         }
 
-        private static string disablePathCheck;
-        public static string DisablePathCheck
+        private static bool disablePathCheck;
+        public static bool DisablePathCheck
         {
             get => disablePathCheck;
             set
             {
                 disablePathCheck = value;
-                Globals.ini.IniWriteValue("Dev", "DisablePathCheck", value);
+                Globals.ini.IniWriteValue("Dev", "DisablePathCheck", value.ToString());
             }
         }
 
@@ -260,25 +260,25 @@ namespace Nucleus.Gaming.App.Settings
             }
         }
 
-        private static string useXinputIndex;
-        public static string UseXinputIndex
+        private static bool useXinputIndex;
+        public static bool UseXinputIndex
         {
             get => useXinputIndex;
             set
             {
                 useXinputIndex = value;
-                Globals.ini.IniWriteValue("Dev", "UseXinputIndex", value);
+                Globals.ini.IniWriteValue("Dev", "UseXinputIndex", value.ToString());
             }
         }
 
-        private static string blur;
-        public static string Blur
+        private static int blur;
+        public static int Blur
         {
             get => blur;
             set
             {
                 blur = value;
-                Globals.ini.IniWriteValue("Dev", "Blur", value);
+                Globals.ini.IniWriteValue("Dev", "Blur", value.ToString());
             }
         }
 
@@ -295,19 +295,19 @@ namespace Nucleus.Gaming.App.Settings
 
         public static bool LoadSettings()
         {
-            useNicksInGame = Globals.ini.IniReadValue("Misc", "UseNicksInGame");
-            debugLog = Globals.ini.IniReadValue("Misc", "DebugLog");
-            enableLogAnswer = Globals.ini.IniReadValue("Misc", "EnableLogAnswer");
+            useNicksInGame = bool.Parse(Globals.ini.IniReadValue("Misc", "UseNicksInGame"));
+            debugLog = bool.Parse(Globals.ini.IniReadValue("Misc", "DebugLog"));
+            enableLogAnswer = Globals.ini.IniReadValue("Misc", "EnableLogAnswer") == "" ?  false : bool.Parse(Globals.ini.IniReadValue("Misc", "EnableLogAnswer"));
             steamLang = Globals.ini.IniReadValue("Misc", "SteamLang");
             epicLang = Globals.ini.IniReadValue("Misc", "EpicLang");
             network = Globals.ini.IniReadValue("Misc", "Network");
-            keepAccounts = Globals.ini.IniReadValue("Misc", "KeepAccounts");
-            disableForcedNote = Globals.ini.IniReadValue("Misc", "DisableForcedNote");
+            keepAccounts = bool.Parse(Globals.ini.IniReadValue("Misc", "KeepAccounts"));
+            disableForcedNote = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableForcedNote"));
             nucleusAccountPassword = Globals.ini.IniReadValue("Misc", "NucleusAccountPassword");
-            ignoreInputLockReminder = Globals.ini.IniReadValue("Misc", "IgnoreInputLockReminder");
-            autoDesktopScaling = Globals.ini.IniReadValue("Misc", "AutoDesktopScaling");
-            nucleusMultiInstances = Globals.ini.IniReadValue("Misc", "NucleusMultiInstances");
-            disableGameProfiles = Globals.ini.IniReadValue("Misc", "DisableGameProfiles");
+            ignoreInputLockReminder = bool.Parse(Globals.ini.IniReadValue("Misc", "IgnoreInputLockReminder"));
+            autoDesktopScaling = bool.Parse(Globals.ini.IniReadValue("Misc", "AutoDesktopScaling"));
+            nucleusMultiInstances = bool.Parse(Globals.ini.IniReadValue("Misc", "NucleusMultiInstances"));
+            disableGameProfiles = bool.Parse(Globals.ini.IniReadValue("Misc", "DisableGameProfiles"));
             windowSize = Globals.ini.IniReadValue("Misc", "WindowSize");
             windowLocation = Globals.ini.IniReadValue("Misc", "WindowLocation");
             autoSearchLocation = Globals.ini.IniReadValue("Misc", "AutoSearchLocation");
@@ -317,11 +317,11 @@ namespace Nucleus.Gaming.App.Settings
 
             theme = Globals.ini.IniReadValue("Theme", "Theme");
 
-            showFavoriteOnly = Globals.ini.IniReadValue("Dev", "ShowFavoriteOnly");
-            disablePathCheck = Globals.ini.IniReadValue("Dev", "DisablePathCheck");
+            showFavoriteOnly = bool.Parse(Globals.ini.IniReadValue("Dev", "ShowFavoriteOnly"));
+            disablePathCheck = bool.Parse(Globals.ini.IniReadValue("Dev", "DisablePathCheck"));
             textEditorPath = Globals.ini.IniReadValue("Dev", "TextEditorPath");
-            useXinputIndex = Globals.ini.IniReadValue("Dev", "UseXinputIndex");
-            blur = Globals.ini.IniReadValue("Dev", "Blur");
+            useXinputIndex = bool.Parse(Globals.ini.IniReadValue("Dev", "UseXinputIndex"));
+            blur =  int.Parse(Globals.ini.IniReadValue("Dev", "Blur"));
             osdColor = Globals.ini.IniReadValue("Dev", "OSDColor");
 
             return true;

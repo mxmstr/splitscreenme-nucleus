@@ -89,7 +89,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             BoundsFunctions.Initialize(this, game, profile);
             Draw.Initialize(this, game, profile);
 
-            profileDisabled = bool.Parse(App_Misc.DisableGameProfiles) || game.Game.MetaInfo.DisableProfiles;
+            profileDisabled = App_Misc.DisableGameProfiles || game.Game.MetaInfo.DisableProfiles;
 
             if (game.Game.UseDevReorder || game.Game.CreateSingleDeviceFile)
             {

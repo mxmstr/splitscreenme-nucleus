@@ -67,47 +67,47 @@ namespace Nucleus.Coop.Forms
                 Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
-            switch1.Tag = int.Parse(App_GamePadShortcuts.SetFocus.Item1);
-            slave1.Tag = int.Parse(App_GamePadShortcuts.SetFocus.Item2);
+            switch1.Tag = App_GamePadShortcuts.SetFocus[0];
+            slave1.Tag = App_GamePadShortcuts.SetFocus[1];
 
-            switch2.Tag = int.Parse(App_GamePadShortcuts.Close.Item1);
-            slave2.Tag = int.Parse(App_GamePadShortcuts.Close.Item2);
+            switch2.Tag = App_GamePadShortcuts.Close[0];
+            slave2.Tag = App_GamePadShortcuts.Close[1];
 
-            switch3.Tag = int.Parse(App_GamePadShortcuts.StopSession.Item1);
-            slave3.Tag = int.Parse(App_GamePadShortcuts.StopSession.Item2);
+            switch3.Tag = App_GamePadShortcuts.StopSession[0];
+            slave3.Tag = App_GamePadShortcuts.StopSession[1];
 
-            switch4.Tag = int.Parse(App_GamePadShortcuts.TopMost.Item1);
-            slave4.Tag = int.Parse(App_GamePadShortcuts.TopMost.Item2);
+            switch4.Tag = App_GamePadShortcuts.TopMost[0];
+            slave4.Tag = App_GamePadShortcuts.TopMost[1];
 
-            switch5.Tag = int.Parse(App_GamePadShortcuts.ResetWindows.Item1);
-            slave5.Tag = int.Parse(App_GamePadShortcuts.ResetWindows.Item2);
+            switch5.Tag = App_GamePadShortcuts.ResetWindows[0];
+            slave5.Tag = App_GamePadShortcuts.ResetWindows[1];
 
-            switch6.Tag = int.Parse(App_GamePadShortcuts.CutscenesMode.Item1);
-            slave6.Tag = int.Parse(App_GamePadShortcuts.CutscenesMode.Item2);
+            switch6.Tag = App_GamePadShortcuts.CutscenesMode[0];
+            slave6.Tag = App_GamePadShortcuts.CutscenesMode[1];
 
-            switch7.Tag = int.Parse(App_GamePadShortcuts.SwitchLayout.Item1);
-            slave7.Tag = int.Parse(App_GamePadShortcuts.SwitchLayout.Item2);
+            switch7.Tag = App_GamePadShortcuts.SwitchLayout[0];
+            slave7.Tag = App_GamePadShortcuts.SwitchLayout[1];
 
-            switch8.Tag = int.Parse(App_GamePadShortcuts.LockInputs.Item1);
-            slave8.Tag = int.Parse(App_GamePadShortcuts.LockInputs.Item2);
+            switch8.Tag = App_GamePadShortcuts.LockInputs[0];
+            slave8.Tag = App_GamePadShortcuts.LockInputs[1];
 
-            switch9.Tag = int.Parse(App_GamePadShortcuts.ReleaseCursor.Item1);
-            slave9.Tag = int.Parse(App_GamePadShortcuts.ReleaseCursor.Item2);
+            switch9.Tag = App_GamePadShortcuts.ReleaseCursor[0];
+            slave9.Tag = App_GamePadShortcuts.ReleaseCursor[1];
 
-            switch10.Tag = int.Parse(App_GamePadNavigation.TogglekUINavigation.Item1);
-            slave10.Tag = int.Parse(App_GamePadNavigation.TogglekUINavigation.Item2);
+            switch10.Tag = App_GamePadNavigation.TogglekUINavigation[0];
+            slave10.Tag = App_GamePadNavigation.TogglekUINavigation[1];
 
-            switch11.Tag = int.Parse(App_GamePadNavigation.OpenOsk.Item1);
-            slave11.Tag = int.Parse(App_GamePadNavigation.OpenOsk.Item2);
+            switch11.Tag = App_GamePadNavigation.OpenOsk[0];
+            slave11.Tag = App_GamePadNavigation.OpenOsk[1];
 
 
-            enabled_chk.Checked = bool.Parse(App_GamePadNavigation.Enabled);
+            enabled_chk.Checked = App_GamePadNavigation.Enabled;
             CustomToolTips.SetToolTip(enabled_chk, "Requires admin rights for full controller support.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
-            switch12.Tag = int.Parse(App_GamePadNavigation.DragDrop);
-            switch13.Tag = int.Parse(App_GamePadNavigation.RightClick);
-            switch14.Tag = int.Parse(App_GamePadNavigation.LeftClick);
-            switch15.Text = App_GamePadNavigation.Deadzone;
+            switch12.Tag = App_GamePadNavigation.DragDrop;
+            switch13.Tag = App_GamePadNavigation.RightClick;
+            switch14.Tag = App_GamePadNavigation.LeftClick;
+            switch15.Text = App_GamePadNavigation.Deadzone.ToString();
 
             foreach (RadioButton rb in groupBoxType.Controls)
             {
@@ -446,7 +446,7 @@ namespace Nucleus.Coop.Forms
 
         private void Enabled_chk_CheckedChanged(object sender, EventArgs e)
         {
-            App_GamePadNavigation.Enabled = enabled_chk.Checked.ToString();
+            App_GamePadNavigation.Enabled = enabled_chk.Checked;
             GamepadNavigation.UpdateUINavSettings();
         }
 
@@ -528,28 +528,28 @@ namespace Nucleus.Coop.Forms
 
             #endregion
 
-            App_GamePadShortcuts.SetFocus = Tuple.Create(switch1.Tag.ToString(), slave1.Tag.ToString());
-            App_GamePadShortcuts.Close = Tuple.Create(switch2.Tag.ToString(), slave2.Tag.ToString());
-            App_GamePadShortcuts.StopSession = Tuple.Create(switch3.Tag.ToString(), slave3.Tag.ToString());
-            App_GamePadShortcuts.TopMost = Tuple.Create(switch4.Tag.ToString(), slave4.Tag.ToString());
-            App_GamePadShortcuts.ResetWindows = Tuple.Create(switch5.Tag.ToString(), slave5.Tag.ToString());
-            App_GamePadShortcuts.CutscenesMode = Tuple.Create(switch6.Tag.ToString(), slave6.Tag.ToString());
-            App_GamePadShortcuts.SwitchLayout = Tuple.Create(switch7.Tag.ToString(), slave7.Tag.ToString());
-            App_GamePadShortcuts.LockInputs = Tuple.Create(switch8.Tag.ToString(), slave8.Tag.ToString());
-            App_GamePadShortcuts.ReleaseCursor = Tuple.Create(switch9.Tag.ToString(), slave9.Tag.ToString());
+            App_GamePadShortcuts.SetFocus = new int[]{(int) switch1.Tag, (int)slave1.Tag};
+            App_GamePadShortcuts.Close = new int[] { (int)switch2.Tag, (int)slave2.Tag };
+            App_GamePadShortcuts.StopSession = new int[] { (int)switch3.Tag, (int)slave3.Tag };
+            App_GamePadShortcuts.TopMost = new int[] { (int)switch4.Tag, (int)slave4.Tag };
+            App_GamePadShortcuts.ResetWindows = new int[] { (int)switch5.Tag, (int)slave5.Tag };
+            App_GamePadShortcuts.CutscenesMode = new int[] { (int)switch6.Tag, (int)slave6.Tag };
+            App_GamePadShortcuts.SwitchLayout = new int[] { (int)switch7.Tag, (int)slave7.Tag };
+            App_GamePadShortcuts.LockInputs = new int[] { (int)switch8.Tag, (int)slave8.Tag };
+            App_GamePadShortcuts.ReleaseCursor = new int[] { (int)switch9.Tag, (int)slave9.Tag };
 
-            App_GamePadNavigation.TogglekUINavigation = Tuple.Create(switch10.Tag.ToString(), slave10.Tag.ToString());
-            App_GamePadNavigation.OpenOsk = Tuple.Create(switch11.Tag.ToString(), slave11.Tag.ToString());
-            App_GamePadNavigation.DragDrop = switch12.Tag.ToString();
-            App_GamePadNavigation.RightClick = switch13.Tag.ToString();
-            App_GamePadNavigation.LeftClick = switch14.Tag.ToString();
+            App_GamePadNavigation.TogglekUINavigation = new int[] { (int)switch10.Tag, (int)slave10.Tag };
+            App_GamePadNavigation.OpenOsk = new int[] { (int)switch11.Tag, (int)slave11.Tag };
+            App_GamePadNavigation.DragDrop = int.Parse(switch12.Tag.ToString());
+            App_GamePadNavigation.RightClick = int.Parse(switch13.Tag.ToString());
+            App_GamePadNavigation.LeftClick = int.Parse(switch14.Tag.ToString());
 
             if (switch15.Text == "")
             {
                 switch15.Text = "10000";
             }
 
-            App_GamePadNavigation.Deadzone = switch15.Text;
+            App_GamePadNavigation.Deadzone = int.Parse(switch15.Text);
             App_Misc.GamepadSettingsLocation = Location.X + "X" + Location.Y;
 
             GamepadShortcuts.UpdateShortcutsValue();

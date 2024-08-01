@@ -168,7 +168,7 @@ namespace Nucleus.Coop.Controls
             favoriteOnly.Image = selected ? favorite_Unselected : favorite_Selected;
             mainForm.ShowFavoriteOnly = selected ? false : true;
 
-            App_Misc.ShowFavoriteOnly = mainForm.ShowFavoriteOnly.ToString(); 
+            App_Misc.ShowFavoriteOnly = mainForm.ShowFavoriteOnly; 
             mainForm.RefreshGames();
             mainForm.Invalidate(false);
         }

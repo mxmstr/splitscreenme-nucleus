@@ -152,7 +152,7 @@ namespace Nucleus.Gaming
             userGame = game;
             this.profile = profile;
 
-            isDebug = App_Misc.DebugLog == "True";
+            isDebug = App_Misc.DebugLog;
            
             Network.iniNetworkInterface = GameProfile.Network;
 
@@ -259,7 +259,7 @@ namespace Nucleus.Gaming
 
         public string Play()
         {
-            if (!bool.Parse(App_Misc.IgnoreInputLockReminder))
+            if (!App_Misc.IgnoreInputLockReminder)
             {
                 MessageBox.Show("Some handlers will require you to press the End key to lock input. Remember to unlock input by pressing End again when you finish playing. You can disable this message in the Settings. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information,MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly,false);
             }    
@@ -371,13 +371,13 @@ namespace Nucleus.Gaming
 
             bool hasMerger = false;
 
-            if (GameProfile.EnableWindowsMerger && !gen.MetaInfo.DisableProfiles && !bool.Parse(App_Misc.DisableGameProfiles))
+            if (GameProfile.EnableWindowsMerger && !gen.MetaInfo.DisableProfiles && !App_Misc.DisableGameProfiles)
             {
                 string[] mergerRes = GameProfile.MergerResolution.Split('X');
                 WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
                 hasMerger = true;
             }
-            else if (bool.Parse(App_Layouts.WindowsMerger) && (gen.MetaInfo.DisableProfiles || bool.Parse(App_Misc.DisableGameProfiles)))
+            else if (App_Layouts.WindowsMerger && (gen.MetaInfo.DisableProfiles || App_Misc.DisableGameProfiles))
             {
                 string[] mergerRes = App_Layouts.WindowsMergerRes.Split('X');
                 WindowsMergerThread.StartWindowsMerger(new System.Windows.Size(int.Parse(mergerRes[0]), int.Parse(mergerRes[1])));
@@ -3498,7 +3498,7 @@ namespace Nucleus.Gaming
                     NucleusUsers.TransferNucleusUserAccountProfiles(data);
                 }
 
-                if (!bool.Parse(App_Misc.KeepAccounts))
+                if (!App_Misc.KeepAccounts)
                 {
                     if (gen.LaunchAsDifferentUsers || gen.LaunchAsDifferentUsersAlt)
                     {
@@ -3582,7 +3582,7 @@ namespace Nucleus.Gaming
         {
             try
             {
-                if (App_Misc.DebugLog == "True")
+                if (App_Misc.DebugLog)
                 {
                     using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                     {
