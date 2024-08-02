@@ -5,7 +5,7 @@ using Nucleus.Gaming.App.Settings;
 
 namespace Nucleus.Gaming.Coop.InputManagement
 {
-    public static class RegisterHotkeys
+    public static class HotkeysRegistration
     {
         private static GenericGameInfo currentGameInfo;
         private static IntPtr formHandle;
@@ -39,6 +39,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     mod = 4;
                     break;
             }
+
             return mod;
         }
 

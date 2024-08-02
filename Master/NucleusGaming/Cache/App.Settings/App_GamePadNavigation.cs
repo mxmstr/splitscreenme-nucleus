@@ -78,7 +78,7 @@ namespace Nucleus.Gaming.App.Settings
             set
             {
                 togglekUINavigation = value;
-                Globals.ini.IniWriteValue("XUINav", "LockUIControl", $"{value[0]} + {value[1]}");
+                Globals.ini.IniWriteValue("XUINav", "LockUIControl", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -89,7 +89,7 @@ namespace Nucleus.Gaming.App.Settings
             set
             {
                 openOsk = value;
-                Globals.ini.IniWriteValue("XUINav", "OpenOsk", $"{value[0]} + {value[1]}");
+                Globals.ini.IniWriteValue("XUINav", "OpenOsk", $"{value[0]}+{value[1]}");
             }
         }
 

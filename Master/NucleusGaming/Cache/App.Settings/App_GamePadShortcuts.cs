@@ -8,7 +8,7 @@
             get => close;
             set
             {
-                close = value; Globals.ini.IniWriteValue("XShortcuts", "Close", $"{value[0]} + {value[1]}");
+                close = value; Globals.ini.IniWriteValue("XShortcuts", "Close", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -18,7 +18,7 @@
             get => stop;
             set
             {
-                stop = value; Globals.ini.IniWriteValue("XShortcuts", "Stop", $"{value[0]} + {value[1]}");
+                stop = value; Globals.ini.IniWriteValue("XShortcuts", "Stop", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -28,7 +28,7 @@
             get => topMost;
             set
             {
-                topMost = value; Globals.ini.IniWriteValue("XShortcuts", "TopMost", $"{value[0]} + {value[1]}");
+                topMost = value; Globals.ini.IniWriteValue("XShortcuts", "TopMost", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -38,7 +38,7 @@
             get => setFocus;
             set
             {
-                setFocus = value; Globals.ini.IniWriteValue("XShortcuts", "SetFocus", $"{value[0]} + {value[1]}");
+                setFocus = value; Globals.ini.IniWriteValue("XShortcuts", "SetFocus", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -49,7 +49,7 @@
             set
             {
                 resetWindows = value;
-                Globals.ini.IniWriteValue("XShortcuts", "ResetWindows", $"{value[0]} + {value[1]}");
+                Globals.ini.IniWriteValue("XShortcuts", "ResetWindows", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -60,7 +60,7 @@
             set
             {
                 cutscenes = value;
-                Globals.ini.IniWriteValue("XShortcuts", "Cutscenes", $"{value[0]} + {value[1]}");
+                Globals.ini.IniWriteValue("XShortcuts", "Cutscenes", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -70,7 +70,7 @@
             get => _switch;
             set
             {
-                _switch = value; Globals.ini.IniWriteValue("XShortcuts", "Switch", $"{value[0]} + {value[1]}");
+                _switch = value; Globals.ini.IniWriteValue("XShortcuts", "Switch", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -87,7 +87,7 @@
             set
             {
                 lockInputs = value;
-                Globals.ini.IniWriteValue("XShortcuts", "LockInputs", $"{value[0]} + {value[1]}");
+                Globals.ini.IniWriteValue("XShortcuts", "LockInputs", $"{value[0]}+{value[1]}");
             }
         }
 
@@ -98,7 +98,7 @@
             set
             {
                 releaseCursor = value;
-                Globals.ini.IniWriteValue("XShortcuts", "ReleaseCursor", $"{value[0]} + {value[1]}");
+                Globals.ini.IniWriteValue("XShortcuts", "ReleaseCursor", $"{value[0]}+{value[1]}");
             }
         }
 

@@ -26,7 +26,7 @@ namespace Nucleus.Coop
 
             StartChecks.Check_VCRVersion();
 
-            if (!App_Misc.DisablePathCheck)// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
+            if (!App_Misc.DisablePathCheck)
             {
                 if (!StartChecks.StartCheck(true))
                     ForcedBadPath = true;
@@ -36,7 +36,7 @@ namespace Nucleus.Coop
 
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
-            StartChecks.CheckAppUpdate();//a decommenter
+            StartChecks.CheckAppUpdate();
             StartChecks.CheckDebugLogSize();
 
             // initialize DPIManager BEFORE setting 

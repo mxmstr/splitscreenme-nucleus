@@ -30,14 +30,14 @@ namespace Nucleus.Gaming.App.Settings
             }
         }
 
-        private static bool enableLogAnswer;
-        public static bool EnableLogAnswer
+        private static string enableLogAnswer;
+        public static string EnableLogAnswer
         {
             get => enableLogAnswer;
             set
             {
                 enableLogAnswer = value;
-                Globals.ini.IniWriteValue("Misc", "EnableLogAnswer", value.ToString());
+                Globals.ini.IniWriteValue("Misc", "EnableLogAnswer", value);
             }
         }
 
@@ -297,7 +297,7 @@ namespace Nucleus.Gaming.App.Settings
         {
             useNicksInGame = bool.Parse(Globals.ini.IniReadValue("Misc", "UseNicksInGame"));
             debugLog = bool.Parse(Globals.ini.IniReadValue("Misc", "DebugLog"));
-            enableLogAnswer = Globals.ini.IniReadValue("Misc", "EnableLogAnswer") == "" ?  false : bool.Parse(Globals.ini.IniReadValue("Misc", "EnableLogAnswer"));
+            enableLogAnswer = Globals.ini.IniReadValue("Misc", "EnableLogAnswer");
             steamLang = Globals.ini.IniReadValue("Misc", "SteamLang");
             epicLang = Globals.ini.IniReadValue("Misc", "EpicLang");
             network = Globals.ini.IniReadValue("Misc", "Network");

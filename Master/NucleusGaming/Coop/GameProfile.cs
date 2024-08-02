@@ -158,7 +158,7 @@ namespace Nucleus.Gaming.Coop
             set => title = value;
         }
 
-        private static string mergerResolution = "Automatic";
+        private static string mergerResolution;
         public static string MergerResolution
         {
             get => mergerResolution;
