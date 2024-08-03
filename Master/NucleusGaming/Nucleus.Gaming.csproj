@@ -111,7 +111,7 @@
     <Compile Include="Cache\App.Settings\App_GamePadNavigation.cs" />
     <Compile Include="Cache\App.Settings\App_Hotkeys.cs" />
     <Compile Include="Cache\App.Settings\App_Misc.cs" />
-    <Compile Include="Cache\App.Settings\Settings_Loader.cs" />
+    <Compile Include="Cache\App.Settings\App_Settings_Loader.cs" />
     <Compile Include="Controls\BufferedClientAreaPanel.cs">
       <SubType>Component</SubType>
     </Compile>

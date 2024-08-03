@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Nucleus.Gaming.App.Settings
 {
-    public static class Settings_Loader
+    public static class App_Settings_Loader
     {
         public static bool InitializeSettings()
         {

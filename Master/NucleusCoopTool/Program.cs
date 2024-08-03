@@ -16,7 +16,7 @@ namespace Nucleus.Coop
         [STAThread]
         static void Main()
         {
-            Settings_Loader.InitializeSettings();
+            App_Settings_Loader.InitializeSettings();
 
             if (!App_Misc.NucleusMultiInstances)
             {
