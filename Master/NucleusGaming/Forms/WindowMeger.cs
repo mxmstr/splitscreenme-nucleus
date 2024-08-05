@@ -23,6 +23,7 @@ using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System.Linq;
 using System.Windows.Forms;
 using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.UI;
 
 public static class WindowsMergerThread
 {
@@ -310,22 +311,7 @@ public class WindowsMerger : System.Windows.Window
     {
         gameGUID = GenericGameHandler.Instance.CurrentGameInfo.GUID;
 
-        IDictionary<string, SolidColorBrush> splitColors = new Dictionary<string, SolidColorBrush>
-        {
-                { "Black", System.Windows.Media.Brushes.Black },
-                { "Gray", System.Windows.Media.Brushes.DimGray },
-                { "White", System.Windows.Media.Brushes.White },
-                { "Dark Blue", System.Windows.Media.Brushes.DarkBlue },
-                { "Blue", System.Windows.Media.Brushes.Blue },
-                { "Purple", System.Windows.Media.Brushes.Purple },
-                { "Pink", System.Windows.Media.Brushes.Pink },
-                { "Red", System.Windows.Media.Brushes.Red },
-                { "Orange", System.Windows.Media.Brushes.Orange },
-                { "Yellow", System.Windows.Media.Brushes.Yellow },
-                { "Green", System.Windows.Media.Brushes.Green }
-        };
-
-        foreach (KeyValuePair<string, SolidColorBrush> color in splitColors)
+        foreach (KeyValuePair<string, SolidColorBrush> color in BackgroundColors.ColorsDictionnary)
         {
             if (color.Key != GameProfile.SplitDivColor)
             {

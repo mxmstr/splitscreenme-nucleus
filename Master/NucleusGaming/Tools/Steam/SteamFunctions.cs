@@ -321,7 +321,7 @@ namespace Nucleus.Gaming.Tools.Steam
                             handlerInstance.addedFiles.Add(Path.Combine(instanceSteamSettingsFolder, "account_name.txt"));
                         }
 
-                        if (App_Misc.UseNicksInGame && Cache.PlayersIdentityCache.SettingsIniNicknamesList[i] != "")
+                        if (App_Misc.UseNicksInGame && Cache.PlayersIdentityCache.GetNicknameAt(i) != "")
                         {
                             File.WriteAllText(Path.Combine(instanceSteamSettingsFolder, "account_name.txt"), player.Nickname);
                             handlerInstance.Log("Generating account_name.txt with nickname " + player.Nickname);

@@ -393,7 +393,8 @@ namespace Nucleus.Gaming.Controls
             {
                 var playerDatas = Jprofile["Data"][i];
 
-                sb.Append($"\n");
+                //sb.Append($"\n");
+                sb.Append($"------------------------\n");
                 sb.Append($" -Nickname: {playerDatas["Nickname"]}\n");
                 sb.Append($" -Index: {(int)playerDatas["PlayerID"] + 1}\n");             
                 sb.Append($" -Steam Id: {playerDatas["SteamID"]}\n");
@@ -409,6 +410,7 @@ namespace Nucleus.Gaming.Controls
                 }
 
                 sb.Append($" -Screen Index: {playerDatas["ScreenIndex"]}\n");
+                if(i == Jprofile["Data"].Count() -1)
                 sb.Append($"------------------------");
             }
 

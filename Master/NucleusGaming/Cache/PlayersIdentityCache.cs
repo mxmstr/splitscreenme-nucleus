@@ -11,18 +11,43 @@ namespace Nucleus.Gaming.Cache
      /// </summary>
     public static class PlayersIdentityCache
     {
-       
         private static readonly string nickJsonPath = $"{Globals.GameProfilesFolder}\\Nicknames.json";
-        private static List<string> cachedNicknamesList = new List<string>();
+        private static readonly string sidJsonPath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
 
         public static void LoadPlayersIdentityCache()
         {
-            LoadNicknamesCache();
-            LoadSteamIdsCache();
+            LoadNicknamesFromJson();
+            LoadNicknamesFromSettingsIni();
+
+            LoadSteamIdsFromSettingsIni();
+            LoadSteamIdsFromJson();
         }
 
-        //Nicknames
-        private static void LoadNicknamesCache()
+        #region Nicknames
+
+        private static List<string> jsonNicknamesList = new List<string>();
+
+        public static List<string> NicknamesBackup
+        {
+            get => jsonNicknamesList;
+        }
+
+        private static List<string> iniNicknameList = new List<string>();
+
+        public static List<string> PlayersNickname
+        {
+            get => iniNicknameList;
+        }
+
+        private static void LoadNicknamesFromSettingsIni()
+        {
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
+            {
+                iniNicknameList.Add(Globals.ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)).ToString());
+            }
+        }
+
+        private static void LoadNicknamesFromJson()
         {
             if (File.Exists(nickJsonPath))
             {
@@ -32,20 +57,47 @@ namespace Nucleus.Gaming.Cache
 
                 foreach (JToken nick in JNicks)
                 {
-                   AddNicknameToCache(nick.ToString());
+                    if (!jsonNicknamesList.Contains(nick.ToString()))
+                    {
+                        jsonNicknamesList.Add(nick.ToString());
+                    }
                 }
-            }
-
-            LoadNicknamesFromSettingsIni();
+            }    
         }
 
-        public static void SaveNicknamesCache()
-        {         
+        public static string GetNicknameAt(int index)
+        {
+            if (index > iniNicknameList.Count - 1)
+            {
+                return null;
+            }
+
+            return iniNicknameList[index];
+        }
+
+        public static void SetNicknameAt(int index, string nickname)
+        {
+            if (index > iniNicknameList.Count - 1 || nickname == "" || nickname == null)
+            {
+                return;
+            }
+
+            iniNicknameList[index] = nickname;
+            Globals.ini.IniWriteValue("ControllerMapping", "Player_" + (index + 1), nickname);
+
+            if (!jsonNicknamesList.Contains(nickname))
+            {
+                jsonNicknamesList.Add(nickname);
+            }
+        }
+
+        public static void BackupNicknames()
+        {
             using (FileStream stream = new FileStream(nickJsonPath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    string json = JsonConvert.SerializeObject(GetCachedNicknamesList, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(jsonNicknamesList, Formatting.Indented);
                     writer.Write(json);
                     stream.Flush();
                 }
@@ -54,35 +106,16 @@ namespace Nucleus.Gaming.Cache
             }
         }
 
-        public static List<string> GetCachedNicknamesList
-        {
-            get => cachedNicknamesList;
-        }
+        #endregion
 
-        public static void AddNicknameToCache(string nickname)
-        {
-            if (!cachedNicknamesList.Contains(nickname))
-            {
-                cachedNicknamesList.Add(nickname);
-            }
-        }
-
-        public static List<string> SettingsIniNicknamesList = new List<string>();
-
-        private static void LoadNicknamesFromSettingsIni()
-        {
-            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
-            {
-                SettingsIniNicknamesList.Add(Globals.ini.IniReadValue("ControllerMapping", "Player_" + (i + 1)).ToString());
-            }
-        }
+        #region Steam Ids
 
         //Steam ids
-        private static readonly string sidJsonPath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
-        private static List<string> cachedSteamIdsList = new List<string>();
+        
+        private static List<string> jsonSteamIdList = new List<string>();
 
         //load both json cache and add ini content to cache
-        private static void LoadSteamIdsCache()
+        private static void LoadSteamIdsFromJson()
         {
             if (File.Exists(sidJsonPath))
             {
@@ -92,20 +125,21 @@ namespace Nucleus.Gaming.Cache
 
                 foreach (JToken id in JIds)
                 {
-                    AddSteamIdToCache(id.ToString());
+                    if (!jsonSteamIdList.Contains(id.ToString()))
+                    {
+                        jsonSteamIdList.Add(id.ToString());
+                    }
                 }
-            }
-
-            LoadSteamIdsFromSettingsIni();
+            }       
         }
 
-        public static void SaveSteamIdsCache()
+        public static void BackupSteamIds()
         {
             using (FileStream stream = new FileStream(sidJsonPath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    string json = JsonConvert.SerializeObject(GetCachedSteamIdsList, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(jsonSteamIdList, Formatting.Indented);
                     writer.Write(json);
                     stream.Flush();
                 }
@@ -115,29 +149,53 @@ namespace Nucleus.Gaming.Cache
         }
 
         //list of SteamIds.json
-        public static List<string> GetCachedSteamIdsList
+        public static List<string> SteamIdsBackup
         {
-            get => cachedSteamIdsList;
-        }
-
-        //add new steamids (will be saved in SteamIds.json)
-        public static void AddSteamIdToCache(string steamid)
-        {
-            if (!cachedSteamIdsList.Contains(steamid))
-            {
-                cachedSteamIdsList.Add(steamid);
-            }
+            get => jsonSteamIdList;
         }
 
         //list of settings.ini steam ids
-        public static List<string> SettingsIniSteamIdsList = new List<string>();
+        private static List<string> settingsIniSteamIdsList = new List<string>();
 
         private static void LoadSteamIdsFromSettingsIni()
         {
             for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
-                SettingsIniSteamIdsList.Add(Globals.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());
+                settingsIniSteamIdsList.Add(Globals.ini.IniReadValue("SteamIDs", "Player_" + (i + 1)).ToString());
             }
         }
+
+        public static string GetSteamIdAt(int index)
+        {
+            if (index > settingsIniSteamIdsList.Count - 1)
+            {
+                return "";
+            }
+
+            return settingsIniSteamIdsList[index];
+        }
+
+        public static void SetSteamIdAt(int index, string steamid)
+        {
+            if (index > settingsIniSteamIdsList.Count - 1)
+            {
+                return;
+            }
+
+            if (steamid == null)
+            {
+                steamid = "";
+            }
+
+            settingsIniSteamIdsList[index] = steamid;
+            Globals.ini.IniWriteValue("SteamIDs", "Player_" + (index + 1), steamid);
+
+            if (steamid != "" && steamid != "-1" && !jsonSteamIdList.Contains(steamid))
+            {
+                jsonSteamIdList.Add(steamid);
+            }
+        } 
+        #endregion
+
     }
 }

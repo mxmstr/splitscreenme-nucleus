@@ -20,6 +20,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Numerics;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
@@ -249,17 +250,10 @@ namespace Nucleus.Coop
             coreCountLabel.Text = $"Cores/Threads {Environment.ProcessorCount} (Max Value)";
             coreCountLabel.ForeColor = Color.Yellow;
 
-            SplitColors.Items.Add("Black");
-            SplitColors.Items.Add("Gray");
-            SplitColors.Items.Add("White");
-            SplitColors.Items.Add("Dark Blue");
-            SplitColors.Items.Add("Blue");
-            SplitColors.Items.Add("Purple");
-            SplitColors.Items.Add("Pink");
-            SplitColors.Items.Add("Red");
-            SplitColors.Items.Add("Orange");
-            SplitColors.Items.Add("Yellow");
-            SplitColors.Items.Add("Green");
+            foreach (KeyValuePair<string, System.Windows.Media.SolidColorBrush> opt in BackgroundColors.ColorsDictionnary)
+            {
+                SplitColors.Items.Add(opt.Key);
+            }
 
             foreach (ComboBox pClass in PriorityClasses)
             {
@@ -436,10 +430,10 @@ namespace Nucleus.Coop
             List<ProfilePlayer> playersList = GameProfile.ProfilePlayersList;
 
             steamIdsList.Clear();
-            steamIdsList.AddRange(PlayersIdentityCache.GetCachedSteamIdsList.ToArray());
+            steamIdsList.AddRange(PlayersIdentityCache.SteamIdsBackup.ToArray());
 
             nicksList.Clear();
-            nicksList.AddRange(PlayersIdentityCache.GetCachedNicknamesList);
+            nicksList.AddRange(PlayersIdentityCache.NicknamesBackup);
 
             for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
@@ -467,16 +461,16 @@ namespace Nucleus.Coop
                 else
                 {
                     sidField.Items.Clear();
-                    sidField.Items.AddRange(PlayersIdentityCache.GetCachedSteamIdsList.ToArray());
+                    sidField.Items.AddRange(PlayersIdentityCache.SteamIdsBackup.ToArray());
 
-                    sidField.Text = PlayersIdentityCache.SettingsIniSteamIdsList[i];
+                    sidField.Text = PlayersIdentityCache.GetSteamIdAt(i);
                     sidField.SelectedItem = sidField.Text;
                     sidField.Enabled = false;
 
                     nickField.Items.Clear();
                     nickField.Items.AddRange(nicksList.ToArray());
 
-                    nickField.Text = PlayersIdentityCache.SettingsIniNicknamesList[i];
+                    nickField.Text = PlayersIdentityCache.GetNicknameAt(i);
                     nickField.SelectedItem = nickField.Text;
 
                     nickField.Enabled = false;
@@ -631,11 +625,6 @@ namespace Nucleus.Coop
                 if (nickField.Text != "")
                 {             
                     player.Nickname = nickField.Text;
-
-                    if (PlayersIdentityCache.GetCachedNicknamesList.All(n => n != nickField.Text))
-                    {
-                        PlayersIdentityCache.AddNicknameToCache(nickField.Text);
-                    }
                 }
                 else
                 {
@@ -649,11 +638,6 @@ namespace Nucleus.Coop
                     if (sidField.Text != "")
                     {
                         player.SteamID = long.Parse(sidField.Text.ToString());
-
-                        if (PlayersIdentityCache.GetCachedSteamIdsList.All(n => n == sidField.Text.ToString()) && sidField.Text != "0" && sidField.Text != "-1")
-                        {
-                            PlayersIdentityCache.AddSteamIdToCache(sidField.Text.ToString());
-                        }
                     }
                     else
                     {
@@ -758,8 +742,8 @@ namespace Nucleus.Coop
                 return;
             }
 
-            PlayersIdentityCache.SaveNicknamesCache();
-            PlayersIdentityCache.SaveSteamIdsCache();
+            PlayersIdentityCache.BackupNicknames();
+            PlayersIdentityCache.BackupSteamIds();
 
             ///Set shared GameProfile options
             GameProfile.Title = profileTitle.Text;
@@ -1268,11 +1252,6 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (PlayersIdentityCache.GetCachedNicknamesList.All(n => n != cb.Text))
-            {
-                PlayersIdentityCache.AddNicknameToCache(cb.Text);
-            }
-
             for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 var nickField = controllerNicks[i];
@@ -1290,11 +1269,6 @@ namespace Nucleus.Coop
             if (cb.Text == "")
             {
                 return;
-            }
-
-            if (PlayersIdentityCache.GetCachedSteamIdsList.All(sid => sid != cb.Text))
-            {
-                PlayersIdentityCache.AddSteamIdToCache(cb.Text);
             }
 
             for (int i = 0; i < Globals.NucleusMaxPlayers; i++)

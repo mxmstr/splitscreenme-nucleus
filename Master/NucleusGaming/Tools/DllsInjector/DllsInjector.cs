@@ -42,7 +42,7 @@ namespace Nucleus.Gaming.Tools.DllsInjector
 		            handlerInstance.CurrentGameInfo.HookFocus, // Hook GetForegroundWindow/etc
 		            handlerInstance.CurrentGameInfo.HideCursor,
                     handlerInstance.isDebug,
-                    handlerInstance.nucleusFolderPath, // Primarily for log output
+                    handlerInstance.NucleusFolderPath, // Primarily for log output
 		            handlerInstance.CurrentGameInfo.SetWindowHook, // SetWindow hook (prevents window from moving)
 					handlerInstance.CurrentGameInfo.PreventWindowDeactivation,
                     player.MonitorBounds.Width,

@@ -2,6 +2,7 @@
 using Nucleus;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -66,23 +67,8 @@ public class WPFDiv : System.Windows.Window
     }
 
     private void Setup()
-    {
-        IDictionary<string, SolidColorBrush> splitColors = new Dictionary<string, SolidColorBrush>
-        {
-                { "Black", Brushes.Black },
-                { "Gray", Brushes.DimGray },
-                { "White", Brushes.White },
-                { "Dark Blue", Brushes.DarkBlue },
-                { "Blue", Brushes.Blue },
-                { "Purple", Brushes.Purple },
-                { "Pink", Brushes.Pink },
-                { "Red", Brushes.Red },
-                { "Orange", Brushes.Orange },
-                { "Yellow", Brushes.Yellow },
-                { "Green", Brushes.Green }
-        };
-
-        foreach (KeyValuePair<string, SolidColorBrush> color in splitColors)
+    {     
+        foreach (KeyValuePair<string, SolidColorBrush> color in BackgroundColors.ColorsDictionnary)
         {
             if (color.Key != GameProfile.SplitDivColor)
             {

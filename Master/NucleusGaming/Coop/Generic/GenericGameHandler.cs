@@ -32,7 +32,6 @@ using Nucleus.Gaming.Tools.XInputPlusDll;
 using Nucleus.Gaming.Util;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
-using Nucleus.Interop.User32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -40,20 +39,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
-using System.Windows.Markup;
 using WindowScrape.Constants;
-using WindowScrape.Static;
-using WindowScrape.Types;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Nucleus.Gaming
 {
@@ -65,7 +58,7 @@ namespace Nucleus.Gaming
         private string origExePath;
         public string NucleusEnvironmentRoot => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         public string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        public string nucleusFolderPath;
+        public string NucleusFolderPath => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         public string exePath;
         public string instanceExeFolder;
         public string garch;
@@ -412,8 +405,8 @@ namespace Nucleus.Gaming
                 Log(string.Format("Monitor {0} - Resolution: {1}", x, all[x].MonitorBounds.Width + "x" + all[x].MonitorBounds.Height));
             }
 
-            string nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            nucleusFolderPath = nucleusRootFolder;
+            //string nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+           // nucleusFolderPath = nucleusRootFolder;
 
             string tempDir = GameManager.Instance.GempTempFolder(gen);
             string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
@@ -1481,7 +1474,7 @@ namespace Nucleus.Gaming
 
                 if (gen.UseGoldberg)
                 {
-                    SteamFunctions.UseGoldberg(rootFolder, nucleusRootFolder, linkFolder, i, player, players, setupDll);
+                    SteamFunctions.UseGoldberg(rootFolder, NucleusFolderPath, linkFolder, i, player, players, setupDll);
                 }
 
                 if (gen.UseNemirtingasEpicEmu)
@@ -1648,7 +1641,7 @@ namespace Nucleus.Gaming
                             }
 
                             ProtoInputLauncher.InjectStartup(exePath,
-                                startArgs, 0, nucleusRootFolder, i + 1, gen, player, out uint pid, envPtr,
+                                startArgs, 0, NucleusFolderPath, i + 1, gen, player, out uint pid, envPtr,
                                 (player.IsRawMouse ? (int)player.RawMouseDeviceHandle : -1),
                                 (player.IsRawKeyboard ? (int)player.RawKeyboardDeviceHandle : -1),
                                 (gen.ProtoInput.MultipleProtoControllers ? (player.ProtoController1) : ((player.IsRawMouse || player.IsRawKeyboard) ? 0 : player.GamepadId + 1)),
@@ -1697,7 +1690,7 @@ namespace Nucleus.Gaming
                             Log(string.Format("Launching game located at {0} through StartGameUtil", exePath));
 
                             uint sguOutPID = StartGameUtil.StartGame(exePath, startArgs,
-                                gen.HookInit, gen.HookInitDelay, gen.RenameNotKillMutex, mu, gen.SetWindowHookStart, isDebug, nucleusRootFolder, gen.BlockRawInput, gen.UseNucleusEnvironment, player.Nickname, startupHooksEnabled, gen.CreateSingleDeviceFile, player.RawHID, player.MonitorBounds.Width, player.MonitorBounds.Height, player.MonitorBounds.X
+                                gen.HookInit, gen.HookInitDelay, gen.RenameNotKillMutex, mu, gen.SetWindowHookStart, isDebug, NucleusFolderPath, gen.BlockRawInput, gen.UseNucleusEnvironment, player.Nickname, startupHooksEnabled, gen.CreateSingleDeviceFile, player.RawHID, player.MonitorBounds.Width, player.MonitorBounds.Height, player.MonitorBounds.X
                                 , player.MonitorBounds.Y, DocumentsRoot, useDocs);
 
                             try
@@ -1910,7 +1903,7 @@ namespace Nucleus.Gaming
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_EXE=" + Path.GetFileName(exePath));
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_INST_EXE_FOLDER=" + Path.GetDirectoryName(exePath));
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_INST_FOLDER=" + linkFolder);
-                                        cmd.StandardInput.WriteLine($@"set NUCLEUS_FOLDER=" + nucleusFolderPath);
+                                        cmd.StandardInput.WriteLine($@"set NUCLEUS_FOLDER=" + NucleusFolderPath);
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_ORIG_EXE_FOLDER=" + exeFolder);
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_ORIG_FOLDER=" + exeFolder.Substring(0, (exeFolder.Length - gen.BinariesFolder.Length)));
                                     }
@@ -2036,7 +2029,7 @@ namespace Nucleus.Gaming
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_EXE=" + Path.GetFileName(exePath));
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_INST_EXE_FOLDER=" + Path.GetDirectoryName(exePath));
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_INST_FOLDER=" + linkFolder);
-                                        cmd.StandardInput.WriteLine($@"set NUCLEUS_FOLDER=" + nucleusFolderPath);
+                                        cmd.StandardInput.WriteLine($@"set NUCLEUS_FOLDER=" + NucleusFolderPath);
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_ORIG_EXE_FOLDER=" + exeFolder);
                                         cmd.StandardInput.WriteLine($@"set NUCLEUS_ORIG_FOLDER=" + exeFolder.Substring(0, (exeFolder.Length - gen.BinariesFolder.Length)));
                                     }
@@ -2632,7 +2625,7 @@ namespace Nucleus.Gaming
                         gen.ProtoInput.InjectRuntime_EasyHookStealthMethod,
                         gen.ProtoInput.InjectRuntime_RemoteLoadMethod,
                         (uint)proc.Id,
-                        nucleusFolderPath,
+                        NucleusFolderPath,
                         i + 1,
                         gen,
                         player,

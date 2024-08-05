@@ -1420,7 +1420,7 @@ namespace Nucleus.Gaming.Coop
                 bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
 
                 player.Nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
-                                 PlayersIdentityCache.SettingsIniNicknamesList[playerIndex];
+                                 PlayersIdentityCache.GetNicknameAt(playerIndex);
                 
                 string steamID = "-1";
 
@@ -1428,9 +1428,9 @@ namespace Nucleus.Gaming.Coop
                 {
                     steamID = ProfilePlayersList[playerIndex].SteamID.ToString();
                 }
-                else if (PlayersIdentityCache.SettingsIniSteamIdsList[playerIndex] != "")
+                else if (PlayersIdentityCache.GetSteamIdAt(playerIndex) != "")
                 {
-                    steamID = PlayersIdentityCache.SettingsIniSteamIdsList[playerIndex];
+                    steamID = PlayersIdentityCache.GetSteamIdAt(playerIndex);
                 }
                 
                 player.SteamID = long.Parse(steamID);            
