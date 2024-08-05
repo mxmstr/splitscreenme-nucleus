@@ -250,9 +250,9 @@ namespace Nucleus.Coop
             coreCountLabel.Text = $"Cores/Threads {Environment.ProcessorCount} (Max Value)";
             coreCountLabel.ForeColor = Color.Yellow;
 
-            foreach (KeyValuePair<string, System.Windows.Media.SolidColorBrush> opt in BackgroundColors.ColorsDictionnary)
+            foreach (KeyValuePair<string, System.Windows.Media.SolidColorBrush> color in BackgroundColors.ColorsDictionnary)
             {
-                SplitColors.Items.Add(opt.Key);
+                SplitColors.Items.Add(color.Key);
             }
 
             foreach (ComboBox pClass in PriorityClasses)

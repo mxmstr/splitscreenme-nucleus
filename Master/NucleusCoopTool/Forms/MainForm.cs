@@ -839,13 +839,14 @@ namespace Nucleus.Coop
             if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.Cutscenes_HotkeyID && I_GameHandler != null)
             {
                 GlobalWindowMethods.ToggleCutScenesMode();
+                HotkeyCoolDown();
                 base.WndProc(ref m);
                 return;
             }
 
             if (LockInputRuntime.IsLocked)
             {
-                TriggerOSD(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
+                Globals.MainOSD.Show(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 base.WndProc(ref m);
                 return;
             }     
@@ -854,73 +855,87 @@ namespace Nucleus.Coop
             {
                 RawInputAction(m.LParam);
             }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.TopMost_HotkeyID && I_GameHandler != null)
+            else if (m.Msg == 0x0312)
             {
-                GlobalWindowMethods.ShowHideWindows();
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.StopSession_HotkeyID && I_GameHandler != null)
-            {
-                if (btn_Play.Text == "S T O P")
+                if (I_GameHandler != null)
                 {
-                    Btn_Play_Click(this, null);
-                    TriggerOSD(2000, "Session Ended");
+                    switch (m.WParam.ToInt32())
+                    {
+                        case HotkeysRegistration.TopMost_HotkeyID:
+                            GlobalWindowMethods.ShowHideWindows();
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.StopSession_HotkeyID:
+                            if (btn_Play.Text == "S T O P")
+                            {
+                                Btn_Play_Click(this, null);
+                                Globals.MainOSD.Show(2000, "Session Ended");                               
+                            }
+
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.SetFocus_HotkeyID:
+                            GlobalWindowMethods.ChangeForegroundWindow();
+                            Globals.MainOSD.Show(2000, "Game Windows Unfocused");
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.ResetWindows_HotkeyID:
+                            GlobalWindowMethods.ResetingWindows = true;
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.Switch_HotkeyID:
+                            GlobalWindowMethods.SwitchLayout();
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.KillProcess_HotkeyID:
+                            User32Util.ShowTaskBar();
+                            Close();
+                            break;
+
+                        case HotkeysRegistration.Reminder_HotkeyID:
+                            foreach (ShortcutsReminder reminder in GenericGameHandler.Instance.shortcutsReminders) { reminder.Toggle(7); }
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.MergerFocusSwitch_HotkeyID:
+                            WindowsMerger.Instance?.SwitchChildFocus();
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.Custom_Hotkey_1:
+                            GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_1.Invoke();
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.Custom_Hotkey_2:
+                            GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_2.Invoke();
+                            HotkeyCoolDown();
+                            break;
+
+                        case HotkeysRegistration.Custom_Hotkey_3:
+                            GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_3.Invoke();
+                            HotkeyCoolDown();
+                            break;
+                    }
                 }
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.SetFocus_HotkeyID && I_GameHandler != null)
-            {     
-                GlobalWindowMethods.ChangeForegroundWindow();
-                TriggerOSD(2000, "Game Windows Unfocused");
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.ResetWindows_HotkeyID && I_GameHandler != null)
-            {
-                GlobalWindowMethods.ResetingWindows = true;
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.Switch_HotkeyID && I_GameHandler != null)
-            {
-                GlobalWindowMethods.SwitchLayout();
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.KillProcess_HotkeyID)
-            { 
-                User32Util.ShowTaskBar();
-                Close();
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.Reminder_HotkeyID)
-            {
-                foreach (ShortcutsReminder reminder in GenericGameHandler.Instance.shortcutsReminders)
-                {
-                    reminder.Toggle(7);
-                }
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.MergerFocusSwitch_HotkeyID)
-            {
-                WindowsMerger.Instance?.SwitchChildFocus();
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.Custom_Hotkey_1)
-            {
-                GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_1.Invoke();
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.Custom_Hotkey_2)
-            {
-                GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_2.Invoke();
-            }
-            else if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.Custom_Hotkey_3)
-            {
-                GenericGameHandler.Instance.CurrentGameInfo.OnCustomHotKey_3.Invoke();
             }
 
             base.WndProc(ref m);
         }
 
-        public void TriggerOSD(int timerMS, string text)
+        public void HotkeyCoolDown()
         {
             if (!hotkeysCooldown)
             {
-                hotkeysCooldownTimer.Stop();
-                hotkeysCooldown = true;
-                hotkeysCooldownTimer.Interval = (timerMS); //millisecond
+                hotkeysCooldownTimer.Stop();       
+                hotkeysCooldownTimer.Interval = (800); //millisecond
                 hotkeysCooldownTimer.Start();
-
-                Globals.MainOSD.Show(timerMS, text);
+                hotkeysCooldown = true;
             }
         }
 
@@ -1082,7 +1097,7 @@ namespace Nucleus.Coop
         {
             if (gameManager.User.Games.Count == 0)
             {
-                TriggerOSD(1600, $"Add Game(s) to Your List");
+                Globals.MainOSD.Show(1600, $"Add Game(s) to Your List");
                 return;
             }
 
@@ -2696,7 +2711,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            TriggerOSD(2000, "No Available Log");
+            Globals.MainOSD.Show(2000, "No Available Log");
         }
 
         private void Btn_Extract_MouseEnter(object sender, EventArgs e) => btn_Extract.BackgroundImage = ImageCache.GetImage(theme + "extract_nc_mousehover.png");

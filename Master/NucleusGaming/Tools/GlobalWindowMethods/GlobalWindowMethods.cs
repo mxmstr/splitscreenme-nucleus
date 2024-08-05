@@ -1058,7 +1058,9 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                         data.HWnd.Location = centeredOnly.Location;
                     }
 
-                    p.ProcessData.AudioVolume = VolumeMixer.GetApplicationVolume(p.ProcessData.Process.Id);
+
+                    float? hostPlayerAudioVolume = VolumeMixer.GetApplicationVolume(p.ProcessData.Process.Id);
+                    p.ProcessData.AudioVolume = hostPlayerAudioVolume == null ? 100 : hostPlayerAudioVolume.Value;
                     
                     if(WindowsMerger.Instance != null)
                     {
@@ -1072,9 +1074,12 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                         {
                             Rectangle hiddenWindow = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
                             player.ProcessData.HWnd.Location = hiddenWindowsLoc;
-                            player.ProcessData.HWnd.Size = hiddenWindow.Size;
-                            player.ProcessData.AudioVolume = VolumeMixer.GetApplicationVolume(player.ProcessData.Process.Id);
+                            player.ProcessData.HWnd.Size = hiddenWindow.Size;                
                         }
+
+                        Console.WriteLine(player.PlayerID + " Volume= " + VolumeMixer.GetApplicationVolume(player.ProcessData.Process.Id));
+                        float? otherPlayerAudioVolume = VolumeMixer.GetApplicationVolume(player.ProcessData.Process.Id);
+                        player.ProcessData.AudioVolume = otherPlayerAudioVolume == null ? 100 : otherPlayerAudioVolume.Value;
 
                         VolumeMixer.SetApplicationVolume(player.ProcessData.Process.Id, 0.0f);
                     }
@@ -1088,7 +1093,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                     if (!GameProfile.Cts_MuteAudioOnly)
                     {
                         Rectangle resizeReposition = new Rectangle(p.MonitorBounds.X, p.MonitorBounds.Y, p.MonitorBounds.Width, p.MonitorBounds.Height);
-
                         data.HWnd.Location = resizeReposition.Location;
                         data.HWnd.Size = resizeReposition.Size;
                     }

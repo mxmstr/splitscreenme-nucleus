@@ -20,9 +20,9 @@ namespace Nucleus.Gaming.Coop.InputManagement
         public const int Reminder_HotkeyID = 8;
         public const int MergerFocusSwitch_HotkeyID = 9;
 
-        public static int Custom_Hotkey_1 = 10;
-        public static int Custom_Hotkey_2 = 11;
-        public static int Custom_Hotkey_3 = 12;
+        public const int Custom_Hotkey_1 = 10;
+        public const int Custom_Hotkey_2 = 11;
+        public const int Custom_Hotkey_3 = 12;
 
         private static int GetMod(string modifier)
         {

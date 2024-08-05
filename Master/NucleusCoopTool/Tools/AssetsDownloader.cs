@@ -95,7 +95,7 @@ namespace Nucleus.Coop.Tools
                     main.btn_settings.Enabled = true;
                     dllabel.Visible = false;
                     main.Controls.Remove(dllabel);
-                    main.TriggerOSD(2000, "Download Completed!");
+                    Globals.MainOSD.Show(2000, "Download Completed!");
 
                     if (currentControl != null && main.StepPanel.Visible)
                     {
@@ -185,7 +185,7 @@ namespace Nucleus.Coop.Tools
 
                     if (!error)
                     {
-                        main.TriggerOSD(2000, "Download Completed!");
+                        Globals.MainOSD.Show(2000, "Download Completed!");
                     }
 
                     if (currentControl != null && main.StepPanel.Visible)
