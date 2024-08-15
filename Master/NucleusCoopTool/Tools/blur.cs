@@ -24,7 +24,7 @@ namespace Nucleus.Coop
         public Color bottomColor;
 
         public GaussianBlur(Bitmap image)
-        {
+        { 
             var rct = new Rectangle(0, 0, image.Width, image.Height);
             var source = new int[rct.Width * rct.Height];
             var bits = image.LockBits(rct, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);

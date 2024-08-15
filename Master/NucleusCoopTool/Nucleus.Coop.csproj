@@ -251,12 +251,6 @@
     <Compile Include="Controls\AddGameButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\Caroussel\Cover.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Caroussel\Cover.Designer.cs">
-      <DependentUpon>Cover.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CustomRadioButton.cs">
       <SubType>UserControl</SubType>
     </Compile>

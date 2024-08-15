@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-
 namespace Nucleus.Gaming.DPI
 {
     public static class ThreadDPIContext

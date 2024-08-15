@@ -44,7 +44,7 @@ namespace Nucleus.Gaming.Controls
             InitializeComponent();
 
             Name = "ProfilePanel";
-            Size = new Size(300, 3);
+            Size = new Size(300,1);
             Location = new Point(0, 0);
             Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Visible = false;
@@ -167,11 +167,12 @@ namespace Nucleus.Gaming.Controls
 
         public void Update_ProfilesList()
         {
+            Visible = false;
             Controls.Clear();
 
-            List<SizeF> sizes = new List<SizeF>();
+            List<int> sizes = new List<int>();
 
-            Size = new Size((int)(300 * _scale), (int)(3 * _scale));
+            Size = new Size((int)(300 * _scale), (int)(1 * _scale));
             int offset = 5;
 
             Font font = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
@@ -239,7 +240,7 @@ namespace Nucleus.Gaming.Controls
                 Label profileBtn = new Label
                 {
                     Name = (i + 1).ToString(),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                    //Anchor = AnchorStyles.Left | AnchorStyles.Right,
                     FlatStyle = FlatStyle.Flat,
                     BackgroundImageLayout = ImageLayout.Zoom,
                     Font = font,
@@ -273,28 +274,31 @@ namespace Nucleus.Gaming.Controls
 
                 using (Graphics graphics = Graphics.FromImage(new Bitmap(1, 1)))
                 {
-                    sizes.Add(graphics.MeasureString(profileBtn.Text, profileBtn.Font, Size.Width, StringFormat.GenericDefault));
+                  sizes.Add((int)graphics.MeasureString(profileBtn.Text, profileBtn.Font, Size.Width, StringFormat.GenericDefault).Width + 40);
                 }
 
-                Height += profileBtn.Height + 1;
+                if (i <= 5)
+                {
+                    Height += profileBtn.Height+1;               
+                }
 
                 Controls.Add(profileBtn);
             }
 
-            var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();//Sort profiles titles by Width so the list Width is set to the max value
-            Width = (int)((sortedSizes[0].Width) * _scale) + offset;
+            var sortedSizes = sizes.OrderByDescending(x => x).ToList();//Sort profiles titles by Width so the list Width is set to the max value
+            Width = (int)((sortedSizes[0]) * _scale) + offset;
 
             Location = new Point((parentControl.Right - Width) + 1, parentControl.Top);
 
             try
             {
                 Region?.Dispose();
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -10, Width + 20, Height, 18, 18));
+                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width , Height, 18, 18));
             }
             catch
             {
                 Region?.Dispose();
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -10, Width + 20, Height, 18, 12));
+                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width , Height, 18, 18));
             }
 
             BringToFront();
@@ -303,6 +307,10 @@ namespace Nucleus.Gaming.Controls
             {
                 Controls.Clear();
                 Visible = false;
+            }
+            else
+            {
+                Visible = true;
             }
         }
 

@@ -345,6 +345,7 @@ namespace Nucleus.Gaming
             List<PlayerInfo> players = profile.DevicesList;
 
             Log("Determining which monitors will be used by Nucleus");
+
             foreach (Display dp in ScreensUtil.AllScreensParams())
             {
                 if (players.Any(p => p.Owner.DisplayIndex == dp.DisplayIndex))
@@ -785,8 +786,12 @@ namespace Nucleus.Gaming
                     origRootFolder = rootFolder;
                     instanceExeFolder = linkBinFolder;
 
-                    Log("Trying to unlock all game files.");
-                    StartGameUtil.UnlockGameFiles(rootFolder);
+                    Log("Trying to unlock original game files.");
+                    if (!StartGameUtil.UnlockGameFiles(rootFolder))
+                    {
+                        End(false);
+                        return string.Empty;
+                    }
 
                     if (!string.IsNullOrEmpty(gen.WorkingFolder))
                     {

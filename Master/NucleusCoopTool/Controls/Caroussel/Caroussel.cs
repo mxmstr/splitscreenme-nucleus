@@ -246,7 +246,7 @@ namespace Nucleus.Coop
         private void CoverClick(object sender, EventArgs e)
         {
             var game = sender as BufferedClientAreaPanel;
-            mainForm.List_Games_SelectedChanged(game.Tag,null);
+            //mainForm.List_Games_SelectedChanged(game.Tag,null);
             //if (showcaseBanner1.VerticalScroll.SmallChange > 0)
             //{
             //    int scrolling = showcaseBanner1.HorizontalScroll.SmallChange;

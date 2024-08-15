@@ -18,9 +18,9 @@ namespace Nucleus.Gaming.Cache
         {
             LoadNicknamesFromJson();
             LoadNicknamesFromSettingsIni();
-
-            LoadSteamIdsFromSettingsIni();
+          
             LoadSteamIdsFromJson();
+            LoadSteamIdsFromSettingsIni();
         }
 
         #region Nicknames

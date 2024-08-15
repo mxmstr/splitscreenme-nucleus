@@ -30,7 +30,7 @@ namespace Nucleus.Gaming
             AutoScroll = true;
             DoubleBuffered = true;
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            this.MouseWheel += new MouseEventHandler( Scrolling);
+            this.MouseWheel += new MouseEventHandler(Scrolling);
         }
 
         private void Scrolling(object sender, MouseEventArgs se)

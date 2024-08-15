@@ -851,12 +851,12 @@ namespace Nucleus.Gaming.Coop
             string path;
             bool profileDisabled = App_Misc.DisableGameProfiles;
 
-            if (profilesCount + 1 >= 21 || profileDisabled || GameInfo.Game.MetaInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
+            if (/*profilesCount + 1 >= 21 ||*/ profileDisabled || GameInfo.Game.MetaInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
             {
-                if (!profileDisabled && !GameInfo.Game.MetaInfo.DisableProfiles && GameInfo.Game.MetaInfo.SaveProfile)
-                {
-                    Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
-                }
+                //if (!profileDisabled && !GameInfo.Game.MetaInfo.DisableProfiles && GameInfo.Game.MetaInfo.SaveProfile)
+                //{
+                //    Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
+                //}
 
                 saved = true;
                 return;

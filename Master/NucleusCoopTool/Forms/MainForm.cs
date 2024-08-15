@@ -27,6 +27,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Nucleus.Gaming.DPI;
 
 namespace Nucleus.Coop
 {
@@ -603,6 +604,8 @@ namespace Nucleus.Coop
                 Settings._ctrlr_shorcuts.Text = "Windows 8™ and up only";
                 Settings._ctrlr_shorcuts.Enabled = false;
             }
+
+            ThreadDPIContext.SetThreadDpiAwarenessContext((IntPtr)ThreadDPIContext.DpiAwarenessContext.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
 
             DPIManager.Register(this);
             DPIManager.AddForm(this);

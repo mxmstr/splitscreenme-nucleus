@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.Forms.NucleusMessageBox;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -213,17 +214,30 @@ namespace Nucleus.Gaming.Tools.GameStarter
             return true;
         }
 
-        public static void UnlockGameFiles(string origGamefolder)
+        public static bool UnlockGameFiles(string origGameDir)
         {
-            if (!Directory.Exists(origGamefolder))
+            if (!Directory.Exists(origGameDir))
             {
-                return;
+                NucleusMessageBox.Show("",
+                                           $"Directory not found:\n"+
+                                           $"{origGameDir}", false);
+                return false;
             }
 
-            string[] fileSystemEntries = Directory.GetFileSystemEntries(origGamefolder, "*", SearchOption.AllDirectories);
+            string[] fileSystemEntries = Directory.GetFileSystemEntries(origGameDir, "*", SearchOption.AllDirectories);
 
             foreach (string entry in fileSystemEntries)
             {
+                if(entry.Length > 256)
+                {
+                    NucleusMessageBox.Show("File path is too long!", 
+                                           $"The file path is too long.\n" +
+                                           $"{entry}\n" + 
+                                           $"Limit is 256 characters and the file path is {entry.Length} characters.\n" +
+                                           $"You can try moving your game at the root of your drive to reduce its length.",false);
+                    return false;
+                }
+
                 if(!File.Exists(entry))
                 {
                     continue;
@@ -231,6 +245,8 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
                 File.SetAttributes(entry, FileAttributes.Normal);
             }
+
+            return true;
         }
     }
 }
