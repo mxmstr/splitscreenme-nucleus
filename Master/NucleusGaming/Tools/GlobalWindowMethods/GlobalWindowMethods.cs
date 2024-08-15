@@ -1077,7 +1077,6 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                             player.ProcessData.HWnd.Size = hiddenWindow.Size;                
                         }
 
-                        Console.WriteLine(player.PlayerID + " Volume= " + VolumeMixer.GetApplicationVolume(player.ProcessData.Process.Id));
                         float? otherPlayerAudioVolume = VolumeMixer.GetApplicationVolume(player.ProcessData.Process.Id);
                         player.ProcessData.AudioVolume = otherPlayerAudioVolume == null ? 100 : otherPlayerAudioVolume.Value;
 

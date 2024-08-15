@@ -251,6 +251,12 @@
     <Compile Include="Controls\AddGameButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Caroussel\Cover.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Caroussel\Cover.Designer.cs">
+      <DependentUpon>Cover.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomRadioButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -297,11 +303,11 @@
     <Compile Include="Tools\blur.cs" />
     <Compile Include="Tools\ChangeGameIcon.cs" />
     <Compile Include="Tools\CheckGameRequirements.cs" />
-    <Compile Include="Controls\HubShowcase.cs">
+    <Compile Include="Controls\Caroussel\Caroussel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\HubShowcase.designer.cs">
-      <DependentUpon>HubShowcase.cs</DependentUpon>
+    <Compile Include="Controls\Caroussel\Caroussel.designer.cs">
+      <DependentUpon>Caroussel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
@@ -355,8 +361,8 @@
     <EmbeddedResource Include="Controls\DonationPanel.resx">
       <DependentUpon>DonationPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\HubShowcase.resx">
-      <DependentUpon>HubShowcase.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\Caroussel\Caroussel.resx">
+      <DependentUpon>Caroussel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>

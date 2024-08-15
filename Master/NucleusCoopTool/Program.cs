@@ -1,9 +1,7 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.App.Settings;
-using Nucleus.Gaming.Platform.PCSpecs;
 using Nucleus.Gaming.Windows;
 using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
