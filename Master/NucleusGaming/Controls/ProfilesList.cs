@@ -232,7 +232,7 @@ namespace Nucleus.Gaming.Controls
                     Cursor = Theme_Settings.Hand_Cursor
                 };
 
-                ToolTip notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show handler profile content\nor user notes if available.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                ToolTip notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show handler profile content.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
 
                 offset += previewBtn.Width;

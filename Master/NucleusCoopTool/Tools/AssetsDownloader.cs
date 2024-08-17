@@ -23,13 +23,6 @@ namespace Nucleus.Coop.Tools
         {
             List<UserGameInfo> games = gameManager.User.Games;
 
-            Label dllabel = new Label
-            {
-                BackColor = Color.Transparent,
-                ForeColor = main.ForeColor,
-                AutoSize = true,
-            };
-
             main.mainButtonFrame.Enabled = false;
             main.StepPanel.Enabled = false;
             main.button_UpdateAvailable.Enabled = false;
@@ -37,8 +30,7 @@ namespace Nucleus.Coop.Tools
             main.btn_settings.Enabled = false;
             main.btn_downloadAssets.Enabled = false;
             main.game_listSizer.Enabled = false;
-            main.mainButtonFrame.Controls.Add(dllabel);
-            dllabel.BringToFront();
+
             main.Refresh();
 
             System.Threading.Tasks.Task.Run(() =>
@@ -71,12 +63,7 @@ namespace Nucleus.Coop.Tools
                         continue;
                     }
 
-                    main.Invoke((MethodInvoker)delegate ()
-                    {
-                        dllabel.Text = $"Downloading Assets For {game.GameGuid}";
-                        dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.mainButtonFrame.Height/2 - dllabel.Height/2);
-                    });
-
+                    Globals.MainOSD.Show(80000, $"Downloading Assets For {game.GameGuid}");
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
                     string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
@@ -93,8 +80,7 @@ namespace Nucleus.Coop.Tools
                     main.btn_gameOptions.Enabled = true;
                     main.StepPanel.Enabled = true;
                     main.btn_settings.Enabled = true;
-                    dllabel.Visible = false;
-                    main.Controls.Remove(dllabel);
+
                     Globals.MainOSD.Show(2000, "Download Completed!");
 
                     if (currentControl != null && main.StepPanel.Visible)
@@ -110,13 +96,6 @@ namespace Nucleus.Coop.Tools
 
         public static void DownloadGameAssets(MainForm main, UserGameInfo game, GameControl currentControl)
         {
-            Label dllabel = new Label
-            {
-                BackColor = Color.Transparent,
-                ForeColor = main.ForeColor,
-                AutoSize = true,
-            };
-
             main.mainButtonFrame.Enabled = false;
             main.StepPanel.Enabled = false;
             main.button_UpdateAvailable.Enabled = false;
@@ -124,8 +103,7 @@ namespace Nucleus.Coop.Tools
             main.btn_settings.Enabled = false;
             main.btn_downloadAssets.Enabled = false;
             main.game_listSizer.Enabled = false;
-            main.mainButtonFrame.Controls.Add(dllabel);
-            dllabel.BringToFront();
+
             main.Refresh();
 
             System.Threading.Tasks.Task.Run(() =>
@@ -158,12 +136,7 @@ namespace Nucleus.Coop.Tools
 
                 if (!error)
                 {
-                    main.Invoke((MethodInvoker)delegate ()
-                    {
-                        dllabel.Text = $"Downloading Assets For {game.GameGuid}";
-                        dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, main.mainButtonFrame.Height / 2 - dllabel.Height / 2);
-                    });
-
+                    Globals.MainOSD.Show(80000, $"Downloading Assets For {game.GameGuid}");
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
                     string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
@@ -180,8 +153,6 @@ namespace Nucleus.Coop.Tools
                     main.btn_gameOptions.Enabled = true;
                     main.StepPanel.Enabled = true;
                     main.btn_settings.Enabled = true;
-                    dllabel.Visible = false;
-                    main.Controls.Remove(dllabel);
 
                     if (!error)
                     {
