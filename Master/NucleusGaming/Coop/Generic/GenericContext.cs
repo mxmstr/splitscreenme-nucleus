@@ -4,6 +4,7 @@ using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
 using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
 using Nucleus.Gaming.Tools.Network;
+using Nucleus.Gaming.Tools.Steam;
 using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
@@ -337,6 +338,8 @@ namespace Nucleus.Gaming
         public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
 
         public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
+
+        public string SteamLang => SteamFunctions.GetUserSteamLanguageChoice();
 
         public string UserName => Environment.UserName.Trim();
 

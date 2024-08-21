@@ -2653,9 +2653,9 @@ namespace Nucleus.Coop
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            int edgingHeight = clientAreaPanel.Location.Y;
+            int edgingHeight = clientAreaPanel.Location.Y-3;
             Rectangle topGradient = new Rectangle(0, 0, Width, edgingHeight);
-            Rectangle bottomGradient = new Rectangle(0, Height - edgingHeight, Width, edgingHeight);
+            Rectangle bottomGradient = new Rectangle(0, (Height - edgingHeight)-1, Width, edgingHeight);
 
             Color edgingColorTop;
             Color edgingColorBottom;

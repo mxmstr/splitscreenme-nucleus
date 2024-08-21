@@ -293,14 +293,14 @@ namespace Nucleus.Gaming.Coop
 
         public void StartGameplayTimerThread()
         {
-            Thread backgroundFormThread = new Thread(delegate ()
+            Thread gameplayTimerThread = new Thread(delegate ()
             {
                 SaveGameplayTime();
                 System.Windows.Threading.Dispatcher.Run();
             });
 
-            backgroundFormThread.SetApartmentState(ApartmentState.STA);
-            backgroundFormThread.Start();
+            gameplayTimerThread.SetApartmentState(ApartmentState.STA);
+            gameplayTimerThread.Start();
         }
     }
 }

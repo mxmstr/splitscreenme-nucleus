@@ -389,18 +389,7 @@ namespace Nucleus.Gaming
             }
 
             MetaInfo.LoadGameMetaInfo(GUID);
-
-            OnFinishedSetup += MetaInfo.StartGameplayTimerThread;
-            OnStop += MetaInfo.StopGameplayTimerThread;
-
-            OnFinishedSetup += GamepadNavigation.StopUINavigation;
-            OnStop += GamepadNavigation.StartUINavigation;
-
-            if (CustomHotkeys != null)
-            {
-                OnStop += HotkeysRegistration.UnRegCustomHotkeys;
-            }
-
+           
             if (MetaInfo.CheckUpdate)
             {
                 if (checkUpdate[0])//workaround else handler update is checked before instances setup too,
@@ -522,21 +511,6 @@ namespace Nucleus.Gaming
         public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
 
         public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
-
-        public string GetSteamLanguage()
-        {
-            string result;
-            if (Environment.Is64BitOperatingSystem)
-            {
-                result = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam\steamglobal", "Language", "english");
-            }
-            else
-            {
-                result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "Language", "english");
-            }
-
-            return result;
-        }
-
+      
     }
 }

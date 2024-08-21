@@ -3035,8 +3035,10 @@ namespace Nucleus.Gaming
             }
 
             if (!processingExit)
-            {              
-                GameProfile.SaveGameProfile(profile);               
+            {
+                gen.MetaInfo.StartGameplayTimerThread();
+                GamepadNavigation.StopUINavigation();
+                GameProfile.SaveGameProfile(profile);         
             }
 
             gen.OnFinishedSetup?.Invoke();
@@ -3277,7 +3279,9 @@ namespace Nucleus.Gaming
             }
 
             if (!processingExit)
-            {          
+            {
+                gen.MetaInfo.StartGameplayTimerThread();
+                GamepadNavigation.StopUINavigation();
                 GameProfile.SaveGameProfile(profile);
             }
 
@@ -3350,6 +3354,14 @@ namespace Nucleus.Gaming
             }
 
             Log("----------------- SHUTTING DOWN -----------------");
+
+            gen.MetaInfo.StopGameplayTimerThread();
+            GamepadNavigation.StartUINavigation();
+
+            if (gen.CustomHotkeys != null)
+            {
+                 HotkeysRegistration.UnRegCustomHotkeys();
+            }
 
             GlobalWindowMethods.RefreshBools();
            

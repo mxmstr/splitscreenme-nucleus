@@ -69,6 +69,43 @@ namespace Nucleus.Gaming.Tools.Steam
             public int dwThreadId;
         }
 
+        private static string GetUserSteamClientLanguage()
+        {
+            string result;
+
+            if (Environment.Is64BitOperatingSystem)
+            {
+                result = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam\steamglobal", "Language", "english");
+            }
+            else
+            {
+                result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "Language", "english");
+            }
+
+            return result;
+        }
+
+        public static string GetUserSteamLanguageChoice()
+        {
+            string lang = string.Empty;
+
+            if (App_Misc.SteamLang != "" && App_Misc.SteamLang != "Automatic")
+            {
+                lang = App_Misc.SteamLang.ToLower();
+            }
+            else
+            {
+                lang = GetUserSteamClientLanguage();
+            }
+
+            if(lang == string.Empty)
+            {
+                lang = "english";
+            }
+
+            return lang;
+        }
+
         public static void UseGoldberg(string rootFolder, string nucleusRootFolder, string linkFolder, int i, PlayerInfo player, List<PlayerInfo> players, bool setupDll)
         {
             var handlerInstance = GenericGameHandler.Instance;
@@ -173,21 +210,7 @@ namespace Nucleus.Gaming.Tools.Steam
                 File.WriteAllText(Path.Combine(settingsFolder, "account_name.txt"), "");
                 handlerInstance.addedFiles.Add(Path.Combine(settingsFolder, "account_name.txt"));
 
-                string lang = "english";
-
-                if (App_Misc.SteamLang != "" && App_Misc.SteamLang != "Automatic")
-                {
-                    handlerInstance.CurrentGameInfo.GoldbergLanguage = App_Misc.SteamLang.ToLower();
-                }
-
-                if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
-                {
-                    lang = handlerInstance.CurrentGameInfo.GoldbergLanguage;
-                }
-                else
-                {
-                    lang = handlerInstance.CurrentGameInfo.GetSteamLanguage();
-                }
+                string lang = GetUserSteamLanguageChoice();
 
                 File.WriteAllText(Path.Combine(settingsFolder, "language.txt"), lang);
                 handlerInstance.addedFiles.Add(Path.Combine(settingsFolder, "language.txt"));
@@ -391,20 +414,7 @@ namespace Nucleus.Gaming.Tools.Steam
 
                     if (setupDll)
                     {
-                        string lang = "english";
-
-                        if (App_Misc.SteamLang != "" && App_Misc.SteamLang != "Automatic")
-                        {
-                            handlerInstance.CurrentGameInfo.GoldbergLanguage = App_Misc.SteamLang.ToLower();
-                        }
-                        if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
-                        {
-                            lang = handlerInstance.CurrentGameInfo.GoldbergLanguage;
-                        }
-                        else
-                        {
-                            lang = handlerInstance.CurrentGameInfo.GetSteamLanguage();
-                        }
+                        string lang = GetUserSteamLanguageChoice();
 
                         handlerInstance.Log("Generating language.txt with language set to " + lang);
                         handlerInstance.addedFiles.Add(Path.Combine(instanceSteamSettingsFolder, "language.txt"));
@@ -795,22 +805,8 @@ namespace Nucleus.Gaming.Tools.Steam
                 emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", player.SteamID.ToString());
             }
 
-            string lang = "english";
-
-            if (App_Misc.SteamLang != "" && App_Misc.SteamLang != "Automatic")
-            {
-                handlerInstance.CurrentGameInfo.GoldbergLanguage = App_Misc.SteamLang.ToLower();
-            }
-
-            if (handlerInstance.CurrentGameInfo.GoldbergLanguage?.Length > 0)
-            {
-                lang = handlerInstance.CurrentGameInfo.GoldbergLanguage;
-            }
-            else
-            {
-                lang = handlerInstance.CurrentGameInfo.GetSteamLanguage();
-            }
-
+            string lang = GetUserSteamLanguageChoice();
+           
             emu.IniWriteValue("SmartSteamEmu", "Language", lang);
 
             if (App_Misc.UseNicksInGame && !string.IsNullOrEmpty(player.Nickname))
