@@ -433,9 +433,9 @@ namespace Nucleus.Coop
             // 
             this.btn_Gb_Update.BackColor = System.Drawing.Color.Transparent;
             this.btn_Gb_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Gb_Update.Location = new System.Drawing.Point(402, 343);
+            this.btn_Gb_Update.Location = new System.Drawing.Point(401, 349);
             this.btn_Gb_Update.Name = "btn_Gb_Update";
-            this.btn_Gb_Update.Size = new System.Drawing.Size(257, 27);
+            this.btn_Gb_Update.Size = new System.Drawing.Size(258, 27);
             this.btn_Gb_Update.TabIndex = 169;
             this.btn_Gb_Update.Text = "Goldberg Steam Emulator Updater";
             this.btn_Gb_Update.UseVisualStyleBackColor = false;
@@ -478,9 +478,9 @@ namespace Nucleus.Coop
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ctrlr_shorcutsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(402, 315);
+            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(401, 316);
             this.ctrlr_shorcutsBtn.Name = "ctrlr_shorcutsBtn";
-            this.ctrlr_shorcutsBtn.Size = new System.Drawing.Size(257, 27);
+            this.ctrlr_shorcutsBtn.Size = new System.Drawing.Size(258, 27);
             this.ctrlr_shorcutsBtn.TabIndex = 164;
             this.ctrlr_shorcutsBtn.Text = "Controller Shortcuts Setup";
             this.ctrlr_shorcutsBtn.UseVisualStyleBackColor = false;
@@ -3198,7 +3198,7 @@ namespace Nucleus.Coop
             // smfw_HKTxt
             // 
             this.smfw_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.smfw_HKTxt.Location = new System.Drawing.Point(100, 356);
+            this.smfw_HKTxt.Location = new System.Drawing.Point(100, 357);
             this.smfw_HKTxt.Margin = new System.Windows.Forms.Padding(2);
             this.smfw_HKTxt.MaxLength = 1;
             this.smfw_HKTxt.Name = "smfw_HKTxt";
@@ -3351,12 +3351,12 @@ namespace Nucleus.Coop
             this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(287, 38);
+            this.label28.Location = new System.Drawing.Point(290, 38);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(90, 13);
+            this.label28.Size = new System.Drawing.Size(87, 13);
             this.label28.TabIndex = 157;
-            this.label28.Text = " Vertical Divisions";
+            this.label28.Text = "Vertical Divisions";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label71

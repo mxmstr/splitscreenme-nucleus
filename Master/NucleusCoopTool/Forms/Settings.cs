@@ -381,7 +381,6 @@ namespace Nucleus.Coop
 
             ignoreInputLockReminderCheckbox.Checked = App_Misc.IgnoreInputLockReminder;
             
-
             debugLogCheck.Checked = App_Misc.DebugLog;
 
             if (App_Misc.NucleusAccountPassword != "")

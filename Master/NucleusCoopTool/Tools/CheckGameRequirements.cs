@@ -77,20 +77,25 @@ namespace Nucleus.Coop.Tools
 
         private static void RestartAsAdmin()
         {
-            var proc = new Process
+            try//If user select "no" in the admin prompt
             {
-                StartInfo =
-                {
-                   FileName = Assembly.GetExecutingAssembly().Location,
-                   UseShellExecute = true,
-                   Verb = "runas"
-                }
-            };
+                var proc = new Process 
+                {                   
+                    StartInfo = 
+                    {
+                       FileName = Assembly.GetExecutingAssembly().Location,
+                       UseShellExecute = true,
+                       Verb = "runas"
+                    }
+                };
 
-            proc.Start();
+                proc.Start();
 
-            //admin prompt give enough time
-            Process.GetCurrentProcess().Kill();
+                //admin prompt give enough time
+                Process.GetCurrentProcess().Kill();
+            }
+            catch
+            { }
         }
     }
 }

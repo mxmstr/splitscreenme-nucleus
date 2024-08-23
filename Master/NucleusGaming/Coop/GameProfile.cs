@@ -22,7 +22,7 @@ namespace Nucleus.Gaming.Coop
     {
         private List<UserScreen> screens;
         public List<UserScreen> Screens => screens;
-        
+
         public Dictionary<string, object> Options => options;
         private Dictionary<string, object> options;
         /// <summary>
@@ -122,7 +122,7 @@ namespace Nucleus.Gaming.Coop
             get => enableLosslessHook;
             set => enableLosslessHook = value;
         }
-       
+
         private static bool autoPlay;
         public static bool AutoPlay
         {
@@ -268,7 +268,7 @@ namespace Nucleus.Gaming.Coop
             profilesCount = 0;
 
             string path = GetGameProfilesPath();
-            
+
             if (path != null)
             {
                 profilesPathList = Directory.EnumerateFiles(path).OrderBy(s => s.Length).ToList();
@@ -438,15 +438,15 @@ namespace Nucleus.Gaming.Coop
                 AutoDesktopScaling = (bool)Jprofile["AutoDesktopScaling"]["Enabled"];
                 UseNicknames = (bool)Jprofile["UseNicknames"]["Use"];
                 Cts_KeepAspectRatio = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"];
-                Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];              
+                Cts_MuteAudioOnly = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"];
                 Cts_Unfocus = (bool)Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"];
 
                 Stop_UINav = Jprofile["StopGPUINav"] != null ? (bool)Jprofile["StopGPUINav"]["Enabled"] : false;
 
-                EnableWindowsMerger = Jprofile["EnableWindowsMerger"]!= null ? (bool)Jprofile["EnableWindowsMerger"]["Enabled"] : false;
+                EnableWindowsMerger = Jprofile["EnableWindowsMerger"] != null ? (bool)Jprofile["EnableWindowsMerger"]["Enabled"] : false;
                 EnableLosslessHook = Jprofile["EnableLosslessHook"] != null ? (bool)Jprofile["EnableLosslessHook"]["Enabled"] : false;
                 MergerResolution = Jprofile["MergerResolution"] != null ? (string)Jprofile["MergerResolution"] : "";
-                
+
                 UseXinputIndex = (bool)Jprofile["Use XInput Index"];
                 Network = (string)Jprofile["Network"]["Type"];
                 CustomLayout_Ver = (int)Jprofile["CustomLayout"]["Ver"];
@@ -613,7 +613,7 @@ namespace Nucleus.Gaming.Coop
         {
             autoDesktopScaling = App_Misc.AutoDesktopScaling;
             useNicknames = App_Misc.UseNicksInGame;
-            useXinputIndex = App_Misc.UseXinputIndex;   
+            useXinputIndex = App_Misc.UseXinputIndex;
             network = App_Misc.Network;
 
             audioCustomSettings = int.Parse(App_Audio.Custom) == 1;
@@ -631,7 +631,7 @@ namespace Nucleus.Gaming.Coop
 
             enableWindowsMerger = App_Layouts.WindowsMerger;
             enableLosslessHook = App_Layouts.LosslessHook;
-            mergerResolution = App_Layouts.WindowsMergerRes;           
+            mergerResolution = App_Layouts.WindowsMergerRes;
         }
 
         public static void UpdateGameProfile(GameProfile profile)
@@ -699,11 +699,11 @@ namespace Nucleus.Gaming.Coop
 
 
             JObject JStop_UINav = new JObject(new JProperty("Enabled", stop_UINav));
-       
+
 
             JObject JEnableMerger = new JObject(new JProperty("Enabled", enableWindowsMerger));
             JObject JEnableLosslessHook = new JObject(new JProperty("Enabled", enableLosslessHook));
-           
+
             JObject JAudioInstances = new JObject();
 
             foreach (KeyValuePair<string, string> JaudioDevice in AudioInstances)
@@ -821,8 +821,8 @@ namespace Nucleus.Gaming.Coop
                new JProperty("AudioSettings", JAudioSettings),
                new JProperty("AudioInstances", JAudioInstances),
                new JProperty("CutscenesModeSettings", JCts_Settings),
-               new JProperty("StopGPUINav", JStop_UINav), 
-               new JProperty("EnableWindowsMerger", JEnableMerger),            
+               new JProperty("StopGPUINav", JStop_UINav),
+               new JProperty("EnableWindowsMerger", JEnableMerger),
                new JProperty("MergerResolution", mergerResolution),
                new JProperty("EnableLosslessHook", JEnableLosslessHook),
                new JProperty("AllScreens", JScreens)
@@ -1066,7 +1066,7 @@ namespace Nucleus.Gaming.Coop
                new JProperty("StopGPUINav", JStop_UINav),
                new JProperty("EnableWindowsMerger", JEnableMerger),
                new JProperty("MergerResolution", mergerResolution),
-               new JProperty("EnableLosslessHook", JEnableLosslessHook), 
+               new JProperty("EnableLosslessHook", JEnableLosslessHook),
                new JProperty("AllScreens", JScreens)
 
             );
@@ -1410,41 +1410,36 @@ namespace Nucleus.Gaming.Coop
         }
 
         public static PlayerInfo UpdateProfilePlayerNickAndSID(PlayerInfo player)
-        {                     
-            if (AssignedDevices.Contains(player))
+        {
+            PlayerInfo secondInBounds = DevicesToMerge.Where(pl => pl.EditBounds == player.EditBounds && pl != player).FirstOrDefault();
+
+            int playerIndex = AssignedDevices.FindIndex(pl => pl == player);
+
+            bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
+
+            player.Nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
+                             PlayersIdentityCache.GetNicknameAt(playerIndex);
+
+            string steamID = "-1";
+
+            if (getNameFromProfile)
             {
-                PlayerInfo secondInBounds = DevicesToMerge.Where(pl => pl.EditBounds == player.EditBounds && pl != player).FirstOrDefault();
-       
-                int playerIndex = AssignedDevices.FindIndex(pl => pl == player);
-
-                bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
-
-                player.Nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
-                                 PlayersIdentityCache.GetNicknameAt(playerIndex);
-                
-                string steamID = "-1";
-
-                if (getNameFromProfile)
-                {
-                    steamID = ProfilePlayersList[playerIndex].SteamID.ToString();
-                }
-                else if (PlayersIdentityCache.GetSteamIdAt(playerIndex) != "")
-                {
-                    steamID = PlayersIdentityCache.GetSteamIdAt(playerIndex);
-                }
-                
-                player.SteamID = long.Parse(steamID);            
-
-                if (secondInBounds != null)
-                {
-                    secondInBounds.Nickname = player.Nickname;
-                    secondInBounds.SteamID = player.SteamID;
-                }
-
-                return player;
+                steamID = ProfilePlayersList[playerIndex].SteamID.ToString();
+            }
+            else if (PlayersIdentityCache.GetSteamIdAt(playerIndex) != "")
+            {
+                steamID = PlayersIdentityCache.GetSteamIdAt(playerIndex);
             }
 
-            return null;
+            player.SteamID = long.Parse(steamID);
+
+            if (secondInBounds != null)
+            {
+                secondInBounds.Nickname = player.Nickname;
+                secondInBounds.SteamID = player.SteamID;
+            }
+
+            return player;
         }
 
     }

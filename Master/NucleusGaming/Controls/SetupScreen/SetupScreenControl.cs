@@ -210,11 +210,14 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 Draw.UIDevices(e.Graphics, player);
 
-                PlayerInfo playerToUpdate = GameProfile.UpdateProfilePlayerNickAndSID(player);
-
-                if (playerToUpdate != null && !playerToUpdate.EditBounds.IntersectsWith(BoundsFunctions.ActiveSizer))
+                if (GameProfile.AssignedDevices.Contains(player))
                 {
-                    Draw.PlayerTag(e.Graphics, playerToUpdate);
+                    PlayerInfo playerToUpdate = GameProfile.UpdateProfilePlayerNickAndSID(player);
+
+                    if (playerToUpdate != null && !playerToUpdate.EditBounds.IntersectsWith(BoundsFunctions.ActiveSizer))
+                    {
+                        Draw.PlayerTag(e.Graphics, playerToUpdate);
+                    }
                 }
             }
 

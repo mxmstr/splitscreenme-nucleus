@@ -75,7 +75,6 @@ namespace Nucleus.Coop
                 "openxinput1_3.dll",
                 "ProtoInputHooks32.dll",
                 "ProtoInputHooks64.dll",
-                "ProtoInputHooks64.dll",
                 "ProtoInputHost.exe",
                 "ProtoInputIJ32.exe",
                 "ProtoInputIJ64.exe",
@@ -118,11 +117,6 @@ namespace Nucleus.Coop
             if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\screenshots")))
             {
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\screenshots")));
-            }
-
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\descriptions")))
-            {
-                Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\descriptions")));
             }
         }
 

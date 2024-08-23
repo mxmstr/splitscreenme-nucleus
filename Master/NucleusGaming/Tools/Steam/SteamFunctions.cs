@@ -87,7 +87,7 @@ namespace Nucleus.Gaming.Tools.Steam
 
         public static string GetUserSteamLanguageChoice()
         {
-            string lang = string.Empty;
+            string lang;
 
             if (App_Misc.SteamLang != "" && App_Misc.SteamLang != "Automatic")
             {

@@ -9,6 +9,7 @@ using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
 using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
+using Nucleus.Gaming.Tools.Steam;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -511,6 +512,7 @@ namespace Nucleus.Gaming
         public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
 
         public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
-      
+
+        public string SteamLang => SteamFunctions.GetUserSteamLanguageChoice();
     }
 }
