@@ -204,6 +204,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
       <Private>True</Private>
@@ -268,6 +271,12 @@
     </Compile>
     <Compile Include="Controls\DonationPanel.Designer.cs">
       <DependentUpon>DonationPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tutorial.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tutorial.Designer.cs">
+      <DependentUpon>Tutorial.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Screen_Identifier.cs" />
     <Compile Include="Forms\Settings.cs">
@@ -476,6 +485,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\instructions.gif" />
     <None Include="Resources\Mikou271.jpg" />
     <None Include="Resources\Ilyaki2.jpg" />
     <None Include="Resources\ZeroFox58661.png" />
@@ -668,6 +678,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\audio.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\buttons_dropdown.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\cursor.ico">
@@ -935,6 +948,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\page2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\play.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\players.png">

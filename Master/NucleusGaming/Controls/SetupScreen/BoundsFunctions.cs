@@ -66,7 +66,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             float val2 = (fwidth != 0 ? ((width / fwidth) / ratio) : ((width / fheight) / ratio));
 
             var spb = selectedPlayer.MonitorBounds;
-            return $"[Resolution: {spb.Width} X {spb.Height}  Aspect Ratio: {val1} : {val2}  Top: {spb.Top}  Bottom: {spb.Bottom}  Left: {spb.Left}  Right: {spb.Right}]";
+            return $"Resolution: {spb.Width} X {spb.Height}  Aspect Ratio: {val1} : {val2}  Top: {spb.Top}  Bottom: {spb.Bottom}  Left: {spb.Left}  Right: {spb.Right}";
         }
 
 
@@ -180,9 +180,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
 
             float instHeight = screensArea.Width / 1.77f;
-
-            parent.instructionImg.Location = new Point((int)screensArea.X, (int)screensArea.Y / 4);
-            parent.instructionImg.Size = new Size((int)screensArea.Width, (int)instHeight);
+          
         }
 
         internal static void GetScreenDivisionBounds(UserScreen screen)

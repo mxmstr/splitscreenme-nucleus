@@ -105,7 +105,7 @@ namespace Nucleus.Coop.Controls
                 tick.Width += diff;
                 tick.Height = label.Height;
                 label.Location = new Point(label.Location.X + diff,label.Location.Y); 
-                Location = new Point(Location.X - diff, Location.Y);
+                Location = new Point(Location.X , Location.Y);
             }
 
             Graphics g = e.Graphics;
@@ -144,7 +144,7 @@ namespace Nucleus.Coop.Controls
                 tick.Width += diff;
                 tick.Height = label.Height;
                 label.Location = new Point(label.Location.X + diff, label.Location.Y);
-                Location = new Point(Location.X - diff, Location.Y);
+                Location = new Point(Location.X , Location.Y);
             }
         }
 
@@ -176,7 +176,7 @@ namespace Nucleus.Coop.Controls
             else
             {
                 radioChecked = true;
-                label.ForeColor = Color.FromArgb(200, 20, 255, 50);
+                label.ForeColor = Color.FromArgb(255, 20, 255, 50);
             }
 
             this.OnClick(e);

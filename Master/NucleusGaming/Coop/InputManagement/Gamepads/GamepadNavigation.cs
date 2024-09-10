@@ -56,10 +56,8 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         private static bool _Enabled;
         public static bool Enabled => _Enabled;
         private static bool EnabledRuntime;///Can on/off UI navigation later on runtime
-        private static bool oskVisible;
         private static int DefaultSpeed => 2200;
         private static int SlowDownSpeed = 2200;
-
         public static void StopUINavigation()
         {
             if (_Enabled) 
@@ -118,8 +116,26 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         Thread.Sleep(150);
                     }
 
-                    int rt = GamepadState.GetRightTriggerValue(i) > 0 ? pressed + RT : RT;//return RT + button or RT
-                    int lt = GamepadState.GetLeftTriggerValue(i) > 0 ? pressed + LT : LT;//return LT + button or LT
+
+                    bool isRT = false;
+                    int rt = 0;
+
+                    if (GamepadState.GetRightTriggerValue(i) > 0)
+                    {
+                        isRT = true;
+                        rt = pressed > 0 ? pressed + RT : RT;
+                        pressed = rt;
+                    }
+
+                    bool isLT = false;
+                    int lt = 0;
+
+                    if (GamepadState.GetLeftTriggerValue(i) > 0)
+                    {
+                        isLT = true;
+                        lt = pressed > 0 ? pressed + LT : LT;
+                        pressed = lt;
+                    }
 
                     ///Adjust the cursor speed to the joystick value
                     int MouveLeftSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item1) / SlowDownSpeed));
@@ -198,7 +214,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         SetCursorPos(x, y);
                     }
 
-                    if ((pressed == LeftClick || rt == LeftClick || lt == LeftClick) && prevPressed != pressed)///Left click and release(single click) 
+                    if ((pressed == LeftClick || (isRT && rt == LeftClick) || (isLT && lt == LeftClick)) && prevPressed != pressed)///Left click and release(single click) 
                     {
                         mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0x00A1);///Left Mouse Button Down //dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         Thread.Sleep(200);
@@ -206,7 +222,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         dragging = false;
                     }
 
-                    if ((pressed == RightClick || rt == RightClick || lt == RightClick) && prevPressed != pressed)///Right click and release(single click)
+                    if ((pressed == RightClick || (isRT &&rt == RightClick) || (isLT && lt == RightClick)) && prevPressed != pressed)///Right click and release(single click)
                     {
                         mouse_event(MOUSEEVENTF_RIGHTDOWN, cursor.X, cursor.Y, 0, 0x00A1);///Right Mouse Button Down//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         Thread.Sleep(200);
@@ -214,33 +230,22 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         dragging = false;
                     }
 
-                    if ((pressed == Dragdrop || rt == Dragdrop || lt == Dragdrop) && pressed != prevPressed && !dragging)///Left click //catch/drag  
+                    if ((pressed == Dragdrop || (isRT && rt == Dragdrop) || (isLT && lt == Dragdrop)) && pressed != prevPressed && !dragging)///Left click //catch/drag  
                     {
                         mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0x00A1);//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         dragging = true;
                         Thread.Sleep(200);
                     }
-                    else if ((pressed == Dragdrop || rt == Dragdrop || lt == Dragdrop) && pressed != prevPressed && dragging)///Left click //release 
+                    else if ((pressed == Dragdrop || (isRT && rt == Dragdrop) || (isLT && lt == Dragdrop)) && pressed != prevPressed && dragging)///Left click //release 
                     {
                         mouse_event(MOUSEEVENTF_LEFTUP, cursor.X, cursor.Y, 0, 0x00A1);//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         dragging = false;
                         Thread.Sleep(200);
                     }
-                    else if (pressed == OpenOsk || rt == OpenOsk || lt == OpenOsk)///Open/close Onscreen Might have to focus nc window before opening need more testing
+                    else if (pressed == OpenOsk || (isRT && rt == OpenOsk) || (isLT && lt == OpenOsk))///Open/close Onscreen Might have to focus nc window before opening need more testing
                     {
-
-                        if (!oskVisible)
-                        {
-                            ToggleOsk();
-                            Thread.Sleep(1100);
-                            oskVisible = true;
-                        }
-                        else
-                        {
-                            ToggleOsk();
-                            Thread.Sleep(500);
-                            oskVisible = false;
-                        }
+                        ToggleOsk();
+                        Thread.Sleep(1100);
                     }
 
                     prevPressed = pressed;
@@ -252,16 +257,8 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         private static void ToggleOsk()
         {
-            if (!OnScreenKeyboard.IsOpen())
-            {
-                Globals.MainOSD.Show(1600, $"On Screen Keyboard Opened");
-                OnScreenKeyboard.Show();
-            }
-            else
-            {
-                Globals.MainOSD.Show(1600, $"On Screen Keyboard Closed");
-                OnScreenKeyboard.Hide();
-            }
+            Globals.MainOSD.Show(1600, $"On Screen Keyboard");
+            OnScreenKeyboard.Show();
         }
 
         public static void UpdateUINavSettings()

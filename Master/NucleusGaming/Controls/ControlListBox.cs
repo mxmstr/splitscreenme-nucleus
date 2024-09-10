@@ -1,4 +1,5 @@
 ﻿using Nucleus.Coop;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.UI;
 using SplitTool.Controls;
 using System;
@@ -74,7 +75,6 @@ namespace Nucleus.Gaming
             bool isVerticalVisible = VerticalScroll.Visible;
             int v = isVerticalVisible ? (1 + SystemInformation.VerticalScrollBarWidth) : 0;
 
-
             for (int i = 0; i < Controls.Count; i++)
             {
                 Control con = Controls[i];
@@ -82,7 +82,7 @@ namespace Nucleus.Gaming
 
                 con.Location = new Point(0, totalHeight);
                 totalHeight += con.Height + border;
-
+               
                 con.Invalidate();
             }
 
@@ -91,6 +91,7 @@ namespace Nucleus.Gaming
             HorizontalScroll.Visible = false;
             VerticalScroll.Visible = totalHeight > Height;
             VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
+
             if (VerticalScroll.Visible != isVerticalVisible)
             {
                 UpdateSizes(); // need to update again
@@ -113,7 +114,7 @@ namespace Nucleus.Gaming
                 Control c = e.Control;
 
                 c.ControlAdded += C_ControlAdded;
-                c.Click += c_Click;
+                c.Click += C_Click;
                 c.SizeChanged += C_SizeChanged;
 
                 if (c is IRadioControl)
@@ -135,7 +136,7 @@ namespace Nucleus.Gaming
         {
             Control c = e.Control;
 
-            c.Click += c_Click;
+            c.Click += C_Click;
             c.MouseEnter += c_MouseEnter;
             c.MouseLeave += c_MouseLeave;
         }
@@ -149,7 +150,7 @@ namespace Nucleus.Gaming
         public void Deselect()
         {
             SelectedControl = null;
-            c_Click(this, EventArgs.Empty);
+            C_Click(this, EventArgs.Empty);
         }
 
         private void c_MouseEnter(object sender, EventArgs e)
@@ -174,7 +175,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        private void c_Click(object sender, EventArgs e)
+        private void C_Click(object sender, EventArgs e)
         {
             Control parent = (Control)sender;
 
@@ -197,25 +198,44 @@ namespace Nucleus.Gaming
                     IRadioControl high = (IRadioControl)c;
                     if (parent == c)
                     {
-                        //highlight
+                        // highlight
                         high.RadioSelected();
                     }
                     else
                     {
-                       high.RadioUnselected();
+                        high.RadioUnselected();
                     }
-
-                    c.Invalidate();
                 }
             }
 
             if (parent != null && parent != SelectedControl)
             {
+                if (SelectedControl != null &&
+                    SelectedControl.GetType() != typeof(ComboBox) &&
+                    SelectedControl.GetType() != typeof(TextBox))
+                {
+                    SelectedControl.BackColor = Color.Transparent;
+                }
+
                 if (SelectedChanged != null)
                 {
                     SelectedControl = parent;
                     SelectedChanged(SelectedControl, this);
                 }
+            }
+
+            SelectedControl = parent;
+
+            if(SelectedControl is CoolListControl coolListControl)
+            {
+                if(coolListControl.ImageUrl != null)
+                coolListControl.BackColor = Theme_Settings.SelectedBackColor;
+            }
+
+            if (SelectedControl is GameControl gameControl)
+            {
+                if (!gameControl.FavoriteBox.Visible)
+                    gameControl.BackColor = Theme_Settings.SelectedBackColor;
             }
 
             OnClick(e);

@@ -20,7 +20,6 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (Controllers[index].IsConnected)
             {
                 State state = (State)GetControllerState(index);
-
                 return (int)state.Gamepad.Buttons;
             }
 
@@ -79,18 +78,16 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         {
             Controller controller = Controllers[index];
 
+            State state = new State();
+
             if (controller.IsConnected)
             {
-                var state = controller.GetState();
-
                 XInputGetStateSecret(index, ref state);
-
-                int.TryParse("None", out int noButtonPressed);
-
+               
                 return state;
             }
 
-            return new State();
+            return state;
         }
     }
 }

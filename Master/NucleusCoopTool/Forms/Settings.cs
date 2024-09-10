@@ -687,15 +687,6 @@ namespace Nucleus.Coop
                 needToRestart = true;
             }
 
-            if (GameProfile.IsNewProfile || disableGameProfileschanged)
-            {
-                if (GameProfile.Instance != null)
-                {
-                    GameProfile.Instance.Reset();
-                    ProfileSettings.ProfileRefreshAudioList();
-                }
-            }
-
             if (mainForm.Xinput_S_Setup.Visible)
             {
                 mainForm.Xinput_S_Setup.Visible = false;

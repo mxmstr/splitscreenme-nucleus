@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming;
+﻿using Jint.Parser;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using System;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ namespace SplitTool.Controls
         protected LinkLabel descLabel;
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
+        public object ImageUrl;
 
         protected override CreateParams CreateParams
         {
@@ -53,7 +55,7 @@ namespace SplitTool.Controls
             string customFont = Globals.ThemeConfigFile.IniReadValue("Font", "FontFamily");
 
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            BackColor = Color.FromArgb(60, 0, 0, 0);
+            BackColor = Color.Transparent;
 
             titleLabel = new Label
             {
@@ -70,7 +72,7 @@ namespace SplitTool.Controls
             };
 
             descLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(DescLabelLinkClicked);
-            
+
             Controls.Add(titleLabel);
             Controls.Add(descLabel);
 
@@ -82,7 +84,6 @@ namespace SplitTool.Controls
             var link = sender as LinkLabel;
             Process.Start(link.Tag.ToString());
         }
-       
 
         private void SetDescLabelLinkArea(string value)
         {
@@ -94,16 +95,16 @@ namespace SplitTool.Controls
                                                                       word.StartsWith("telnet:") || word.StartsWith("news:") ||
                                                                       word.StartsWith("wais:") || word.StartsWith("outlook:")).FirstOrDefault();
             if (search != null)
-            {            
+            {
                 descLabel.LinkArea = new LinkArea(value.IndexOf(search), search.Length);
                 descLabel.Tag = search;
             }
-            else 
+            else
             {
                 descLabel.LinkArea = new LinkArea(0, 0);
             }
         }
-       
+
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -130,7 +131,7 @@ namespace SplitTool.Controls
                 }
             }
 
-            VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
+            VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.          
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -139,7 +140,7 @@ namespace SplitTool.Controls
 
             Control c = e.Control;
             c.Click += C_Click;
-            
+
             DPIManager.Update(this);
         }
 
@@ -160,28 +161,9 @@ namespace SplitTool.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(1, 1, Width-1, Height-1, 20, 20));
-            //RectangleF gradientBrushbounds = Region.GetBounds(e.Graphics);
+            Rectangle bounds = new Rectangle(2, 1, Width - 3, Height-1);
 
-            //Color color1 = Color.FromArgb(55, 0, 0, 0);
-            //Color color2 = Color.FromArgb(80, 0, 0, 0);
-            //Color color3 = Color.FromArgb(100, 0, 0, 0);
-            //Color color4 = Color.FromArgb(100, 0, 0, 0);
-            //Color color5 = Color.FromArgb(80, 0, 0, 0);
-            //Color color6 = Color.FromArgb(55, 0, 0, 0);
-
-            //LinearGradientBrush rightFrame_LinearGradientBrush =
-            //    new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color1, 90f);
-
-            //ColorBlend topcblend = new ColorBlend(6);
-            //topcblend.Colors = new Color[6] { color1, color2, color3, color4, color5, color6 };
-            //topcblend.Positions = new float[6] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
-
-            //rightFrame_LinearGradientBrush.InterpolationColors = topcblend;
-
-            //e.Graphics.FillRectangle(rightFrame_LinearGradientBrush, ClientRectangle);
-            //rightFrame_LinearGradientBrush.Dispose();
-            //Region.Dispose();
+            e.Graphics.FillPath(new SolidBrush(Color.FromArgb(60, 0, 0, 0)), FormGraphicsUtil.MakeRoundedRect(bounds, 15, 15, true, true, true, true));     
         }
     }
 }

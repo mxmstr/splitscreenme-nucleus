@@ -263,7 +263,6 @@ namespace Nucleus.Gaming.Coop
 
         private void ListGameProfiles()
         {
-
             profilesPathList.Clear();
             profilesCount = 0;
 
@@ -1409,7 +1408,7 @@ namespace Nucleus.Gaming.Coop
             return nprof;
         }
 
-        public static PlayerInfo UpdateProfilePlayerNickAndSID(PlayerInfo player)
+        public static void UpdateProfilePlayerNickAndSID(PlayerInfo player)
         {
             PlayerInfo secondInBounds = DevicesToMerge.Where(pl => pl.EditBounds == player.EditBounds && pl != player).FirstOrDefault();
 
@@ -1438,8 +1437,6 @@ namespace Nucleus.Gaming.Coop
                 secondInBounds.Nickname = player.Nickname;
                 secondInBounds.SteamID = player.SteamID;
             }
-
-            return player;
         }
 
     }

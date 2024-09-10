@@ -8,35 +8,43 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop.Tools
 {
-    internal class DrawParticles
+    public class DrawParticles
     {
-        private static System.Threading.Timer particlesTimer;
-        private static Control control;
+        private System.Threading.Timer particlesTimer;
+        private Control control;
 
-        private static void particlesTimer_Tick(object state)
+        private void particlesTimer_Tick(object state)
         {
             control.Invalidate();
         }
 
-        private static  RectangleF[] particles = new RectangleF[12];
-        private static int[] alpha = new int[12];
+        private RectangleF[] particles;
+        private  int[] alpha = new int[12];
 
-        public static void Draw(object sender, PaintEventArgs e)
+        public void Draw(object sender, PaintEventArgs e,int particlesMax,int refreshRate,int[] color)
         {
             Random rand = new Random();
 
             Graphics g = e.Graphics;
 
+            if(particles == null)
+            {
+                particles = new RectangleF[particlesMax];
+            }
+
             if (particlesTimer == null)
             {
                  control = sender as Control;
 
-                particlesTimer = new System.Threading.Timer(particlesTimer_Tick, null, 0, 80);
+                particlesTimer = new System.Threading.Timer(particlesTimer_Tick, null, 0, refreshRate);
 
                 for (int i = 0; i < particles.Count(); i++)
                 {
-                    int randX = rand.Next(1, control.Width);
-                    int randY = rand.Next(1, control.Height);
+                    int randMultX = rand.Next(-control.Width / 2, control.Width / 2);
+                    int randMultY = rand.Next(-control.Height / 2, control.Height / 2);
+
+                    int randX = rand.Next(0, control.Width + randMultX);
+                    int randY = rand.Next(0, control.Height + randMultY);
                     int randS = rand.Next(3, 5);
 
                     particles[i] = new RectangleF(randX, randY, randS, randS);
@@ -48,32 +56,35 @@ namespace Nucleus.Coop.Tools
 
             for (int i = 0; i < particles.Count(); i++)
             {
-                particles[i].Width -= 0.3f;
-                particles[i].Height -= 0.3f;
+                particles[i].Width -= 0.1f;
+                particles[i].Height -= 0.1f;
 
                 if (particles[i].X < control.Width / 2)
                 {
-                    particles[i].X -= 0.3f;
+                    particles[i].X -= 0.1f;
                 }
                 else
                 {
-                    particles[i].X += 0.3f;
+                    particles[i].X += 0.1f;
                 }
 
-                particles[i].Y -= 0.3f;
+                particles[i].Y -= 0.1f;
 
                 bool minSize = particles[i].Width < 0.2F;
 
                 if (minSize)
                 {
-                    int randX = rand.Next(1, control.Width);
-                    int randY = rand.Next(1, control.Height);
+                    int randMultX = rand.Next(-control.Width / 2 , control.Width / 2);
+                    int randMultY = rand.Next(-control.Height / 2, control.Height / 2);
+
+                    int randX = rand.Next(0, control.Width  + randMultX);
+                    int randY = rand.Next(0, control.Height + randMultY);
                     int randS = rand.Next(3, 5);
 
                     particles[i] = new RectangleF(randX, randY, randS, randS);
                 }
 
-                SolidBrush brush = new SolidBrush(Color.FromArgb(alpha[i], 255, 255, 255));
+                SolidBrush brush = new SolidBrush(Color.FromArgb(alpha[i], color[0], color[1], color[2]));
 
                 if (particles[i].Width > 1)
                 {

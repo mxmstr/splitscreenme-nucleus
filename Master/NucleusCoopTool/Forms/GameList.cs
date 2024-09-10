@@ -1,13 +1,9 @@
-﻿using Nucleus.Coop.Tools;
-using Nucleus.Gaming;
+﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
-using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
@@ -44,13 +40,15 @@ namespace Nucleus.Coop.Forms
             {
                 GameControl con = new GameControl(game, null, false)
                 {
-                    Width = listGames.Width
+                    ForeColor = Color.White,
+                    Width = listGames.Width,
+                    Image = ImageCache.GetImage(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png")),
                 };
 
-                con.Controls.RemoveByKey("favorite");
-                con.Image = ImageCache.GetImage(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png"));
+                con.HandlerUpdate.Visible = false;
+                con.GameOptions.Visible = false;
+                con.FavoriteBox.Visible = false; 
                 con.Click += Con_Click;
-                con.ForeColor = Color.White;
 
                 listGames.Controls.Add(con);                     
             }
@@ -67,6 +65,5 @@ namespace Nucleus.Coop.Forms
             DialogResult = DialogResult.OK;
             Close();
         }
-
     }
 }

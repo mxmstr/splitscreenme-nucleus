@@ -54,7 +54,7 @@ namespace Nucleus.Coop.Tools
                                 UserGameInfo game = GameManager.Instance.TryAddGame(path, list.Selected);
                                 if (game != null && list.Selected != null)
                                 {
-                                    if (list.Selected.HandlerId != null && list.Selected.HandlerId != "")
+                                    if (list.Selected.HandlerId != null && list.Selected.HandlerId != "" && main.Connected)
                                     {
                                         MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
                                         DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -75,7 +75,7 @@ namespace Nucleus.Coop.Tools
 
                             if (info[0].HandlerId != null && info[0].HandlerId != "")
                             {
-                                if (main.gameContextMenuStrip != null)
+                                if (main.gameContextMenuStrip != null && main.Connected)
                                 {
                                     MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
                                     DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

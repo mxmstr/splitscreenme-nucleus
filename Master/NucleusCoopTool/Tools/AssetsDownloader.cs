@@ -23,16 +23,11 @@ namespace Nucleus.Coop.Tools
         {
             List<UserGameInfo> games = gameManager.User.Games;
 
+            main.rightFrame.Enabled = false;
             main.mainButtonFrame.Enabled = false;
             main.StepPanel.Enabled = false;
-            main.button_UpdateAvailable.Enabled = false;
-            main.btn_gameOptions.Enabled = false;
-            main.btn_settings.Enabled = false;
-            main.btn_downloadAssets.Enabled = false;
             main.game_listSizer.Enabled = false;
-
-            main.Refresh();
-
+            
             System.Threading.Tasks.Task.Run(() =>
             {
                 for (int i = 0; i < games.Count; i++)
@@ -73,13 +68,10 @@ namespace Nucleus.Coop.Tools
 
                 main.Invoke((MethodInvoker)delegate ()
                 {
+                    main.rightFrame.Enabled = true;
                     main.mainButtonFrame.Enabled = true;
-                    main.btn_downloadAssets.Enabled = true;
                     main.game_listSizer.Enabled = true;
-                    main.button_UpdateAvailable.Enabled = true;
-                    main.btn_gameOptions.Enabled = true;
                     main.StepPanel.Enabled = true;
-                    main.btn_settings.Enabled = true;
 
                     Globals.MainOSD.Show(2000, "Download Completed!");
 
@@ -88,7 +80,7 @@ namespace Nucleus.Coop.Tools
                         SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
                     }
 
-                    main.Refresh();
+                    main.mainButtonFrame.Select();
                 });
 
             });
@@ -98,13 +90,7 @@ namespace Nucleus.Coop.Tools
         {
             main.mainButtonFrame.Enabled = false;
             main.StepPanel.Enabled = false;
-            main.button_UpdateAvailable.Enabled = false;
-            main.btn_gameOptions.Enabled = false;
-            main.btn_settings.Enabled = false;
-            main.btn_downloadAssets.Enabled = false;
             main.game_listSizer.Enabled = false;
-
-            main.Refresh();
 
             System.Threading.Tasks.Task.Run(() =>
             {
@@ -146,13 +132,11 @@ namespace Nucleus.Coop.Tools
 
                 main.Invoke((MethodInvoker)delegate ()
                 {
+                    main.rightFrame.Enabled = true;
                     main.mainButtonFrame.Enabled = true;
-                    main.btn_downloadAssets.Enabled = true;
                     main.game_listSizer.Enabled = true;
-                    main.button_UpdateAvailable.Enabled = true;
-                    main.btn_gameOptions.Enabled = true;
                     main.StepPanel.Enabled = true;
-                    main.btn_settings.Enabled = true;
+                    main.rightFrame.Enabled = true;
 
                     if (!error)
                     {
@@ -164,7 +148,7 @@ namespace Nucleus.Coop.Tools
                         SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
                     }
 
-                    main.Refresh();
+                    main.mainButtonFrame.Select();
                 });
 
             });

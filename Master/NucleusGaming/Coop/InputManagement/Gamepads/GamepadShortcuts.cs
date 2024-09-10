@@ -13,7 +13,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
     public static class GamepadShortcuts
     {
-
+        //TODO: Add a button panel so we can shut down Nucleus and the pc with gamepads
         private static int SetFocus;
         private static int Close;
         private static int StopSession;

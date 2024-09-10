@@ -67,7 +67,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
         }
 
-
         public static bool Close()
         {
             // find it
@@ -85,7 +84,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
         {
             return GetIsOpen1709() ?? GetIsOpenLegacy();
         }
-
 
         [DllImport("user32.dll", SetLastError = false)]
         private static extern IntPtr FindWindowEx(IntPtr parent, IntPtr after, string className, string title = null);

@@ -19,9 +19,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         private bool scaled = false;
         public override bool CanProceed => canProceed;
         public override bool CanPlay => false;
-
-        public PictureBox instructionImg;
-
+      
         public ProfilesList ProfilesList;
 
         public ToolTip profileSettings_Tooltip;
@@ -49,23 +47,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.Transparent;
-
-            instructionImg = new PictureBox()///Size\Location  => UpdateScreens() 
-            {
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                BackColor = Color.Black,
-                Image = Resources.instructions,
-                BackgroundImageLayout = ImageLayout.Stretch,
-                Cursor = Theme_Settings.Hand_Cursor,
-                SizeMode = PictureBoxSizeMode.StretchImage,
-                Visible = false
-            };
-
+          
             ProfilesList = new ProfilesList(this);
 
             Controls.Add(ProfilesList);
-            Controls.Add(instructionImg);
-
+            
             DPIManager.Register(this);
             DPIManager.Update(this);
             RemoveFlicker();
@@ -167,6 +153,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             base.OnMouseDown(e);
             BoundsFunctions.OnMouseDown(e);
+            ProfilesList.Visible = false;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -212,11 +199,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (GameProfile.AssignedDevices.Contains(player))
                 {
-                    PlayerInfo playerToUpdate = GameProfile.UpdateProfilePlayerNickAndSID(player);
+                    GameProfile.UpdateProfilePlayerNickAndSID(player);
 
-                    if (playerToUpdate != null && !playerToUpdate.EditBounds.IntersectsWith(BoundsFunctions.ActiveSizer))
+                    if (!player.EditBounds.IntersectsWith(BoundsFunctions.ActiveSizer))
                     {
-                        Draw.PlayerTag(e.Graphics, playerToUpdate);
+                        Draw.PlayerTag(e.Graphics, player);
                     }
                 }
             }

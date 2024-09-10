@@ -144,8 +144,8 @@ namespace Nucleus.Gaming.Controls
 
             if ((selected.Text == "Unload" && selected.ForeColor == Color.Gray) || e == null)
             {
-                Globals.PlayButton.Text = "START";
-                Globals.PlayButton.Enabled = false;
+                Globals.PlayButton.Tag = "START";
+                Globals.PlayButton.Visible = false;
                 return;
             }
 
@@ -289,17 +289,6 @@ namespace Nucleus.Gaming.Controls
             Width = (int)((sortedSizes[0]) * _scale) + offset;
 
             Location = new Point((parentControl.Right - Width) + 1, parentControl.Top);
-
-            try
-            {
-                Region?.Dispose();
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width , Height, 18, 18));
-            }
-            catch
-            {
-                Region?.Dispose();
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width , Height, 18, 18));
-            }
 
             BringToFront();
 
@@ -523,7 +512,8 @@ namespace Nucleus.Gaming.Controls
             topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
 
             lgb.InterpolationColors = topcblend;
-            e.Graphics.FillRectangle(lgb, gradientBrushbounds);
+            e.Graphics.FillPath(lgb, FormGraphicsUtil.MakeRoundedRect(gradientBrushbounds, 10, 10, false, false, false, true));
+
             lgb.Dispose();
         }
 

@@ -138,8 +138,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                             g.DrawRectangles(PositionScreenPen, boundsToDraw);
                         }
                     }
-                    catch
-                    { }
+                    catch (Exception e)
+                    { Console.WriteLine($"{e.Message} \n\n {e.StackTrace}"); };
                 }
 
                 bool intersect = false;
@@ -151,8 +151,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     intersect = interstcWithSwapTypeBound.Length == 0 || s.SwapTypeBounds.Contains(BoundsFunctions.MousePos);
                     minimizedSwapType = new RectangleF(s.SwapTypeBounds.X, s.SwapTypeBounds.Y, s.SwapTypeBounds.Width / 2, s.SwapTypeBounds.Height / 2);
                 }
-                catch
-                { }
+                catch(Exception e)
+                { Console.WriteLine($"{e.Message} \n\n {e.StackTrace}"); };
 
                 if (UseLayoutSelectionBorder)
                 {
@@ -392,8 +392,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public static void PlayerBoundsInfo(Graphics g)
         {
-            g.DrawString(BoundsFunctions.PlayerBoundsInfoText(BoundsFunctions.selectedPlayer), playerTextFont, Brushes.White, parent.Left + 10, parent.Height - 40);
-
+            string playerBoundsInfo = BoundsFunctions.PlayerBoundsInfoText(BoundsFunctions.selectedPlayer);
+            SizeF boundsRect = g.MeasureString(playerBoundsInfo, playerTextFont);
+            Point location = new Point(((parent.Width/2) - (int)boundsRect.Width/2) , ((parent.Bottom - (int)boundsRect.Height)) );  
+            g.DrawString(playerBoundsInfo, playerTextFont, Brushes.White, location.X-3, location.Y - 6 );
+            
             //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnLeft });
             //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnRight });
             //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnTop });

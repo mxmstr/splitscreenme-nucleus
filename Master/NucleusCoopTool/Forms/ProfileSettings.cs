@@ -877,19 +877,17 @@ namespace Nucleus.Coop
                     cmb.Items.AddRange(audioDevices.Keys.ToArray());
 
                     if (GameProfile.IsNewProfile)
-                    {
+                    {                    
                         if (GameProfile.AudioInstances.Any(device => device.Key == cmb.Name))
                         {
                             if (audioDevices.Values.Contains(GameProfile.AudioInstances[cmb.Name]))
                             {
                                 cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == GameProfile.AudioInstances[cmb.Name]).Key;
                             }
-                        }                       
-                        else  if (audioDevices.Values.Contains(App_Audio.Instances_AudioOutput[cmb.Name]))
+                        }
+                        else if (audioDevices.Values.Contains(App_Audio.Instances_AudioOutput[cmb.Name]))
                         {
                             cmb.SelectedItem = audioDevices.FirstOrDefault(x => x.Value == App_Audio.Instances_AudioOutput[cmb.Name]).Key;
-                            
-                            GameProfile.AudioInstances.Add(cmb.Name, App_Audio.Instances_AudioOutput[cmb.Name]);
                         }
                         else
                         {
@@ -1038,7 +1036,7 @@ namespace Nucleus.Coop
             NucleusMessageBox.Show(
                 "Info", 
                 "- Profiles will be saved after all instances have finished setting up correctly.\n\n" +
-                "- To load a profile click the profile list icon in the setup screen and choose the\n" +
+                "- To load a profile click the profile list icon in the game info panel (Right) and choose the\n" +
                 "  profile to load by clicking on it in the list.\n\n" +
                 "- Profile settings can be modified before pressing the play button.\n\n" +
                 "- Some of the profile settings could break hooks, resizing or positioning\n" +

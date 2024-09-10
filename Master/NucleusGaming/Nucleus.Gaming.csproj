@@ -118,6 +118,9 @@
     <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\GameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\HorizontalGameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -329,9 +332,6 @@
     <Compile Include="Forms\WPFDiv.cs" />
     <Compile Include="Forms\WPF_OSD.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Controls\GameControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Platform\IO\WinDirectoryUtil.cs" />
     <Compile Include="Platform\MachineSpecs\MachineSpecs.cs" />
     <Compile Include="Platform\Windows\GetNetFrameworkVersion.cs" />
@@ -449,6 +449,9 @@
     <Compile Include="Util\WindowsUsersUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\GameControl.resx">
+      <DependentUpon>GameControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\HorizontalGameControl.resx">
       <DependentUpon>HorizontalGameControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -496,9 +499,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GameControl.resx">
-      <DependentUpon>GameControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageButton.resx">
       <DependentUpon>ImageButton.cs</DependentUpon>

@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Diagnostics;
@@ -24,11 +25,8 @@ namespace Nucleus.Gaming.Controls
             ForeColor = Color.FromArgb(int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',')[0]),
                                        int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',')[1]), 
                                        int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteFont").Split(',')[2]));
-            
-            BackColor = Color.FromArgb(int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteZoomBackground").Split(',')[0]),
-                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteZoomBackground").Split(',')[1]),
-                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteZoomBackground").Split(',')[2]), 
-                                       int.Parse(Globals.ThemeConfigFile.IniReadValue("Colors", "HandlerNoteZoomBackground").Split(',')[3])); 
+
+            BackColor = Theme_Settings.HandlerNoteBackColor;
 
             close_Btn.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
             close_Btn.BackColor = Color.Transparent;

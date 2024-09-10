@@ -32,7 +32,6 @@ namespace Nucleus.Gaming
         {
             base.Initialize(game, profile);
 
-            string[] rgb_CoollistInitialColor = Globals.ThemeConfigFile.IniReadValue("Colors", "Selection").Split(',');
             toSelect = null;
             Controls.Clear();
 
@@ -82,23 +81,32 @@ namespace Nucleus.Gaming
                     }
 
                     value.TryGetValue("ImageUrl", out object imageUrlObj);
+                    
                     if (imageUrlObj != null)
                     {
                         string imageUrl = imageUrlObj.ToString();
+
                         if (!string.IsNullOrEmpty(imageUrl))
                         {
-                            Image img = Content.LoadImage(imageUrl);
+                            control.ImageUrl = imageUrl;
 
+                            Image img = Content.LoadImage(imageUrl);
+                            
                             PictureBox box = new PictureBox
                             {
                                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                                Size = new Size(140, 80)
+                                Size = new Size(140, 80),
+                                Name = "pictureBox"
                             };
 
                             box.Location = new Point(list.Width - box.Width - 10, 10);
                             box.SizeMode = PictureBoxSizeMode.Zoom;
                             box.Image = img;
                             control.Controls.Add(box);
+                        }
+                        else
+                        {
+                            control.ImageUrl = "dummy";
                         }
                     }
 
