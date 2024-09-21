@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Platform.PCSpecs;
 using System.IO;
 

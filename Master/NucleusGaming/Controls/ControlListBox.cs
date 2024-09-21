@@ -229,13 +229,17 @@ namespace Nucleus.Gaming
             if(SelectedControl is CoolListControl coolListControl)
             {
                 if(coolListControl.ImageUrl != null)
-                coolListControl.BackColor = Theme_Settings.SelectedBackColor;
+                {
+                    coolListControl.BackColor = Theme_Settings.SelectedBackColor;
+                }          
             }
 
             if (SelectedControl is GameControl gameControl)
             {
                 if (!gameControl.FavoriteBox.Visible)
+                {
                     gameControl.BackColor = Theme_Settings.SelectedBackColor;
+                }
             }
 
             OnClick(e);

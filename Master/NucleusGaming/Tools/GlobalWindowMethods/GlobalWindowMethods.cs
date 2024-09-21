@@ -1723,7 +1723,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
                                 if (hWnd != IntPtr.Zero)
                                 {
                                     ShowWindow(hWnd, ShowWindowEnum.Restore);
-                                    User32Interop.SetWindowPos(hWnd, /*HWND_TOP = */new IntPtr(0), 0, 0, 0, 0,
+                                    User32Interop.SetWindowPos(hWnd, new IntPtr(-1), 0, 0, 0, 0,
                                         (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
                                     windowsFound++;
                                 }

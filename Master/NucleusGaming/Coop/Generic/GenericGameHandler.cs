@@ -414,7 +414,11 @@ namespace Nucleus.Gaming
             string rootFolder = exeFolder;
             string workingFolder = exeFolder;
 
-            if (!string.IsNullOrEmpty(gen.BinariesFolder))
+            if (!string.IsNullOrEmpty(gen.BinariesFolder) && !gen.BinariesFolderPathFix)
+            {
+                rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder.ToLower(), "");
+            }
+            else if (!string.IsNullOrEmpty(gen.BinariesFolder) && gen.BinariesFolderPathFix)
             {
                 rootFolder = StringUtil.GetRootFromBinariesFolder(exeFolder, gen.BinariesFolder);
             }
@@ -3444,7 +3448,12 @@ namespace Nucleus.Gaming
             {
                 string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
                 string rootFolder = exeFolder;
-                if (!string.IsNullOrEmpty(gen.BinariesFolder))
+
+                if (!string.IsNullOrEmpty(gen.BinariesFolder) && !gen.BinariesFolderPathFix)
+                {
+                    rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder.ToLower(), "");
+                }
+                else if (!string.IsNullOrEmpty(gen.BinariesFolder) && gen.BinariesFolderPathFix)
                 {
                     rootFolder = StringUtil.GetRootFromBinariesFolder(exeFolder, gen.BinariesFolder);
                 }

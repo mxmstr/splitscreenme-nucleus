@@ -38,16 +38,13 @@ namespace Nucleus.Coop.Forms
 
             foreach (GenericGameInfo game in games)
             {
-                GameControl con = new GameControl(game, null, false)
+                GameControlAlt con = new GameControlAlt(game, null, false)
                 {
                     ForeColor = Color.White,
                     Width = listGames.Width,
                     Image = ImageCache.GetImage(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png")),
                 };
 
-                con.HandlerUpdate.Visible = false;
-                con.GameOptions.Visible = false;
-                con.FavoriteBox.Visible = false; 
                 con.Click += Con_Click;
 
                 listGames.Controls.Add(con);                     
@@ -56,7 +53,7 @@ namespace Nucleus.Coop.Forms
 
         private void Con_Click(object sender, EventArgs e)
         {
-            clicked = ((GameControl)sender).GameInfo;
+            clicked = ((GameControlAlt)sender).GameInfo;
             btnOk.Enabled = true;
         }
 

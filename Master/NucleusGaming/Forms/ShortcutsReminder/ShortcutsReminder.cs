@@ -81,8 +81,7 @@ namespace Nucleus.Coop.Forms
         {
             Invoke((MethodInvoker)delegate ()
             {
-                if (gamepadImg.BackgroundImage != null)
-                    gamepadImg.BackgroundImage.Dispose();
+                gamepadImg.BackgroundImage?.Dispose();
             });
         }
 
@@ -98,8 +97,7 @@ namespace Nucleus.Coop.Forms
         {
             Invoke((MethodInvoker)delegate ()
             {
-                if (kbImg.BackgroundImage != null)
-                    kbImg.BackgroundImage.Dispose();
+                kbImg.BackgroundImage?.Dispose();
             });
         }
 

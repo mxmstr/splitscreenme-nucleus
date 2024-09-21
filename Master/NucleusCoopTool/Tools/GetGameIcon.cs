@@ -19,6 +19,20 @@ namespace Nucleus.Coop.Tools
             UserGameInfo game = (UserGameInfo)state;
             Bitmap bmp;
 
+            if(game.Icon != null)
+            {
+                lock (MainForm.controls)
+                {
+                    if (MainForm.controls.ContainsKey(game))
+                    {
+                        GameControl control = MainForm.controls[game];
+                        control.Image = game.Icon;
+                    }
+                }
+
+                return;
+            }
+
             string iconPath = game.Game.MetaInfo.IconPath;
 
             try

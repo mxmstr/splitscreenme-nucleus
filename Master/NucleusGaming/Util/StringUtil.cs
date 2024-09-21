@@ -160,6 +160,25 @@ namespace Nucleus.Gaming
             return gameExePath;
         }
 
+        public static string ReplaceCaseInsensitive(string str, string toFind, string toReplace)
+        {
+            string lowerOriginal = str.ToLower();
+            string lowerFind = toFind.ToLower();
+            string lowerRep = toReplace.ToLower();
+
+            int start = lowerOriginal.IndexOf(lowerFind);
+            if (start == -1)
+            {
+                return str;
+            }
+
+            string end = str.Remove(start, toFind.Length);
+            end = end.Insert(start, toReplace);
+
+            return end;
+        }
+
+
         public static string InternalGetRelativePath(DirectoryInfo dirInfo, DirectoryInfo rootInfo, string str)
         {
             if (dirInfo == null || dirInfo.FullName == rootInfo.FullName)

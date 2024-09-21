@@ -17,16 +17,19 @@ namespace Nucleus.Gaming.Forms
         internal CustomMessageBox(string title, string message, bool format)
         {
             string[] rgb_MouseOverColor = Globals.ThemeConfigFile.IniReadValue("Colors", "MouseOver").Split(',');
+
             InitializeComponent();
-            
-            Cursor  = Theme_Settings.Default_Cursor;
+
+            Cursor = Theme_Settings.Default_Cursor;
 
             Text = title;
             this.message = format ? FormatText(message) : message;
+
             closeBtn.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
+            closeBtn.Cursor = Theme_Settings.Hand_Cursor;
 
             closeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
-            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             Opacity = 0;//invisible until resized
         }
 
@@ -67,24 +70,26 @@ namespace Nucleus.Gaming.Forms
         {
             float scale = DPIManager.Scale;
             Font font = new Font(Font.FontFamily, Font.Size * scale);
+
             SizeF newSize = e.Graphics.MeasureString(message, font);
 
             if (!sized)
             {
                 Size = new Size((int)newSize.Width + 30, (int)newSize.Height + 30 + closeBtn.Bottom + 5);
-                MaximumSize = Size;             
+                MaximumSize = Size;
                 Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
                 CenterToScreen();
                 Opacity = 1.0F;
+
                 sized = true;
             }
 
             e.Graphics.DrawString(message, font, Brushes.White, 10, closeBtn.Bottom + 5);
         }
 
-        private void closeBtn_Click(object sender, EventArgs e)
+        private void CloseBtn_Click(object sender, EventArgs e)
         {
-            Close();
+            Dispose();
         }
 
         private const int WM_NCLBUTTONDOWN = 0xA1;

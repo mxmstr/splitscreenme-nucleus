@@ -6,6 +6,10 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
     public static class GamepadState
     {
+        //Turn off native Xinput wireless controllers
+        [DllImport("XInput1_4.dll", CharSet = CharSet.Auto, EntryPoint = "#103")]
+        public static extern int FnOff(int i);
+
         [DllImport("xinput1_4.dll", EntryPoint = "#100")]//Enable Menu button on controllers
         public static extern int XInputGetStateSecret
         (
@@ -88,6 +92,11 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             }
 
             return state;
+        }
+
+        public static void TurnOffXInputGamepadByIndex(int i)
+        {
+            FnOff(i);
         }
     }
 }

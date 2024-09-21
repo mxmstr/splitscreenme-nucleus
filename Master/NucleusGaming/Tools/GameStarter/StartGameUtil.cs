@@ -1,4 +1,4 @@
-﻿using Nucleus.Gaming.Forms.NucleusMessageBox;
+﻿using Nucleus.Gaming.Forms;
 using System;
 using System.Diagnostics;
 using System.IO;

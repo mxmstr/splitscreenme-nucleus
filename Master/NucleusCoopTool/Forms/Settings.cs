@@ -43,7 +43,8 @@ namespace Nucleus.Coop
 
         private List<Panel> tabs = new List<Panel>();
         private List<Control> tabsButtons = new List<Control>();
-
+        
+        private Control[] activeControls;
         private ComboBox[] controllerNicks;
         private ComboBox[] steamIds;
 
@@ -57,6 +58,8 @@ namespace Nucleus.Coop
         private Rectangle[] tabBorders;
         private Pen bordersPen;
         private bool shouldSwapNick = true;
+        private bool shouldSwapSID = true;
+        private float _scale;
 
         protected override CreateParams CreateParams
         {
@@ -77,7 +80,7 @@ namespace Nucleus.Coop
             InitializeComponent();
 
             FormBorderStyle = FormBorderStyle.None;
-    
+
             Cursor = Theme_Settings.Default_Cursor;
 
             var borderscolor = Globals.ThemeConfigFile.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
@@ -130,14 +133,14 @@ namespace Nucleus.Coop
 
                 if ((string)c.Tag == "settingsTab" || (string)c.Tag == "playersTab" || (string)c.Tag == "audioTab" || (string)c.Tag == "layoutTab")
                 {
-                    c.Click += new EventHandler(TabsButtons_highlight);
+                    c.Click += TabsButtons_highlight;
                     tabsButtons.Add(c);
                 }
 
                 if (c.Name.Contains("steamid") && c is ComboBox)
                 {
-                    c.KeyPress += new KeyPressEventHandler(this.Num_KeyPress);
-                    c.Click += new System.EventHandler(Steamid_Click);
+                    c.KeyPress += Num_KeyPress;
+                    c.Click += Steamid_Click;
                 }
 
                 if (c is Button)
@@ -174,11 +177,11 @@ namespace Nucleus.Coop
             plus8.ForeColor = ForeColor;
             plus9.ForeColor = ForeColor;
 
-            audioBtnPicture.Click += new EventHandler(AudioBtnPicture_Click);
+            audioBtnPicture.Click += AudioBtnPicture_Click;
 
             audioRefresh.BackColor = Color.Transparent;
 
-            def_sid_comboBox.KeyPress += new KeyPressEventHandler(ReadOnly_KeyPress);
+            def_sid_comboBox.KeyPress += ReadOnly_KeyPress;
             ctrlr_shorcutsBtn.FlatAppearance.BorderSize = 1;
             btn_Gb_Update.FlatAppearance.BorderSize = 1;
 
@@ -206,6 +209,8 @@ namespace Nucleus.Coop
 
             default_sid_list_label.Location = new Point(def_sid_comboBox.Left - default_sid_list_label.Width, ((def_sid_comboBox.Location.Y + def_sid_comboBox.Height / 2) - default_sid_list_label.Height / 2) - 4);
 
+            activeControls = new Control[] { settingsTabBtn, settingsBtnPicture };
+
             audioRefresh.Location = new Point((audioTab.Width / 2) - (audioRefresh.Width / 2), audioRefresh.Location.Y);
 
             def_sid_comboBox.SelectedIndex = 0;
@@ -231,15 +236,16 @@ namespace Nucleus.Coop
             for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 var nickField = controllerNicks[i];
-                nickField.TextChanged += new EventHandler(SwapNickname);
-                nickField.KeyPress += new KeyPressEventHandler(CheckTypingNick);
-                nickField.MouseHover += new EventHandler(CacheNickname);
-                nickField.LostFocus += new EventHandler(UpdateControllerNickItems);
+                nickField.TextChanged += SwapNickname;
+                nickField.KeyPress += CheckTypingNick;
+                nickField.MouseHover += CacheNickname;
+                nickField.LostFocus += UpdateControllerNickItems;
 
                 var sidField = steamIds[i];
-                sidField.TextChanged += new EventHandler(SwapSteamId);
-                sidField.MouseHover += new EventHandler(CacheSteamId);
-                sidField.LostFocus += new EventHandler(UpdateSteamIdsItems);
+                sidField.TextChanged += SwapSteamId;
+                sidField.KeyPress += CheckTypingSID;
+                sidField.MouseHover += CacheSteamId;
+                sidField.LostFocus += UpdateSteamIdsItems;
             }
 
             splitDiv.Checked = App_Layouts.SplitDiv;
@@ -251,10 +257,10 @@ namespace Nucleus.Coop
             enable_WMerger.Checked = App_Layouts.WindowsMerger;
             losslessHook.Checked = App_Layouts.LosslessHook;
 
-             numUpDownHor.Value = App_Layouts.HorizontalLines;           
-             numUpDownVer.Value = App_Layouts.VerticalLines;
-             numMaxPlyrs.Value = App_Layouts.MaxPlayers;
-            
+            numUpDownHor.Value = App_Layouts.HorizontalLines;
+            numUpDownVer.Value = App_Layouts.VerticalLines;
+            numMaxPlyrs.Value = App_Layouts.MaxPlayers;
+
 
             disableGameProfiles.Checked = App_Misc.DisableGameProfiles;
             gamepadsAssignMethods.Checked = App_Misc.UseXinputIndex;
@@ -380,7 +386,7 @@ namespace Nucleus.Coop
             }
 
             ignoreInputLockReminderCheckbox.Checked = App_Misc.IgnoreInputLockReminder;
-            
+
             debugLogCheck.Checked = App_Misc.DebugLog;
 
             if (App_Misc.NucleusAccountPassword != "")
@@ -442,6 +448,8 @@ namespace Nucleus.Coop
                 return;
             }
 
+            _scale = scale;
+
             float newFontSize = Font.Size * scale;
 
             foreach (Control c in ctrls)
@@ -490,21 +498,21 @@ namespace Nucleus.Coop
 
         private void SetToolTips()
         {
-            CustomToolTips.SetToolTip(splitDiv, "May not work for all games", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(hideDesktop, "Will only show the splitscreen division window without adjusting the game windows size and offset.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(disableGameProfiles, "Disables profiles, Nucleus will use the global settings instead.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(splitDiv, "May not work for all games", "splitDiv", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(hideDesktop, "Will only show the splitscreen division window without adjusting the game windows size and offset.", "hideDesktop", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(disableGameProfiles, "Disables profiles, Nucleus will use the global settings instead.", "disableGameProfiles", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(gamepadsAssignMethods, "Can break controller support in some handlers. If enabled profiles\n" +
                                                              "will not save per player gamepad but use XInput indexes instead \n" +
                                                              "(switching modes could prevent some profiles to load properly).\n" +
-                                                             "Note: Nucleus will return to the main screen.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                                                             "Note: Nucleus will return to the main screen.", "gamepadsAssignMethods" , new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(enable_WMerger, "Game windows will be merged to a single window\n" +
                                                        "so Lossless Scaling can be used with Nucleus.\n " +
-                                                       "Note that there's no mutiple monitor support yet.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                                                       "Note that there's no mutiple monitor support yet.", "enable_WMerger", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             CustomToolTips.SetToolTip(losslessHook, "Lossless will not stop upscaling if an other window get the focus, useful\n" +
-                                                    "if game windows requires real focus to receive inputs.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(mergerShortcutLabel, "Each press will set an other child window as foreground window(similar to Alt+Tab).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                                                    "if game windows requires real focus to receive inputs.", "losslessHook", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", "refreshScreenDatasButton", new int[] { 190, 0, 0, 0 },new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(mergerShortcutLabel, "Each press will set an other child window as foreground window(similar to Alt+Tab).", "mergerShortcutLabel", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
         }
 
         private void GetPlayersNickNameAndSteamIds()
@@ -512,15 +520,28 @@ namespace Nucleus.Coop
             for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
             {
                 var sidField = steamIds[i];
-                sidField.Items.AddRange(PlayersIdentityCache.SteamIdsBackup.ToArray());
+             
                 sidField.Text = PlayersIdentityCache.GetSteamIdAt(i);
+                sidField.Items.AddRange(PlayersIdentityCache.PlayersSteamId.Where(sid => sid != "" && sid != sidField.Text).ToArray());
+                sidField.Items.AddRange(PlayersIdentityCache.SteamIdsBackup.ToArray());
                 sidField.SelectedItem = sidField.Text;
 
                 var nickField = controllerNicks[i];
-                nickField.Items.AddRange(PlayersIdentityCache.NicknamesBackup.ToArray());
-                nickField.Items.AddRange(PlayersIdentityCache.PlayersNickname.Where(nic => !nickField.Items.Contains(nic)).ToArray());
+               
+                nickField.Items.AddRange(PlayersIdentityCache.PlayersNickname.ToArray());
+               
+                nickField.Items.AddRange(PlayersIdentityCache.NicknamesBackup.Where(nic => !nickField.Items.Contains(nic)).ToArray());
+
+                for (int j = 0; j < Globals.NucleusMaxPlayers; j++)
+                {
+                    if (!nickField.Items.Contains("Player" + (j + 1)))
+                    {
+                        nickField.Items.Insert(nickField.Items.Count, "Player" + (j + 1));
+                    }
+                }
+
                 nickField.Text = PlayersIdentityCache.GetNicknameAt(i);
-                nickField.SelectedItem = nickField.Text;
+                nickField.SelectedItem = nickField.Text; 
             }
         }
 
@@ -619,7 +640,6 @@ namespace Nucleus.Coop
                 }
             }
 
-
             if (smfw_HKTxt.Text == "")
             {
                 MessageBox.Show("Merger hotkey value can't be empty", "Invalid hotkey value!");
@@ -671,9 +691,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            bool disableGameProfileschanged = disableGameProfiles.Checked != App_Misc.DisableGameProfiles;
-
-            if (disableGameProfileschanged)
+            if (disableGameProfiles.Checked != App_Misc.DisableGameProfiles)
             {
                 App_Misc.DisableGameProfiles = disableGameProfiles.Checked;
             }
@@ -845,39 +863,17 @@ namespace Nucleus.Coop
         {
             Control c = sender as Control;
 
-            for (int i = 0; i < tabsButtons.Count; i++)
+            Panel activeTab = tabs.Where(t => (string)t.Name == (string)c.Tag).FirstOrDefault();
+
+            foreach (var b in tabsButtons)
             {
-                var button = tabsButtons[i];
-
-                if (i < tabs.Count)
+                if (b.Tag == c.Tag && b != c)
                 {
-                    var tab = tabs[i];
-
-                    if (tab.Name != (string)c.Tag)
-                    {
-                        tab.Visible = false;
-                    }
-                    else
-                    {
-                        tab.Visible = true;
-                        tab.BringToFront();
-                    }
-                }
-
-                if (!(button is Button))
-                {
-                    continue;
-                }
-
-                if (button.Tag != c.Tag)
-                {
-                    button.BackColor = Color.Transparent;
-                }
-                else
-                {
-                    button.BackColor = selectionColor;
+                    activeControls = new Control[] { c, b };
                 }
             }
+
+            activeTab.BringToFront();
         }
 
         private void AudioBtnPicture_Click(object sender, EventArgs e)
@@ -1061,7 +1057,15 @@ namespace Nucleus.Coop
         private void Settings_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+
+            var _activeControls = activeControls.OrderBy(c => c is PictureBox).ToArray();
+
+            SolidBrush lineBrush = new SolidBrush(Color.FromArgb(200, selectionColor.R, selectionColor.G, selectionColor.B));
+            Rectangle butt = new Rectangle(_activeControls[0].Left, _activeControls[0].Bottom + 2, _activeControls[1].Right - _activeControls[0].Left, 3);
+
+            g.FillRectangle(lineBrush, butt);
             g.DrawRectangles(bordersPen, tabBorders);
+            lineBrush.Dispose();
         }
 
         private void Btn_Gb_Update_Click(object sender, EventArgs e)
@@ -1092,6 +1096,9 @@ namespace Nucleus.Coop
             {
                 ch.Text = currentNickname;
                 currentNickname = cb.Text;
+                ComboBox checkFroDouble = controllerNicks.Where(tb => tb.Text == cb.Text && tb != cb).FirstOrDefault();
+                if (checkFroDouble != null)
+                    checkFroDouble.Text = "";
             }
         }
 
@@ -1104,13 +1111,14 @@ namespace Nucleus.Coop
         {
             ComboBox cb = sender as ComboBox;
             currentSteamId = cb.Text;
+            shouldSwapSID = true;
         }
 
         private void SwapSteamId(object sender, EventArgs e)
         {
             ComboBox cb = sender as ComboBox;
 
-            if (cb.Text == "")
+            if (cb.Text == "" || !shouldSwapSID)
             {
                 return;
             }
@@ -1121,7 +1129,15 @@ namespace Nucleus.Coop
             {
                 ch.Text = currentSteamId;
                 currentSteamId = cb.Text;
+                ComboBox checkFroDouble = steamIds.Where(tb => tb.Text == cb.Text && tb != cb).FirstOrDefault();
+                if(checkFroDouble != null)
+                   checkFroDouble.Text = "";
             }
+        }
+
+        private void CheckTypingSID(object sender, KeyPressEventArgs e)
+        {
+            shouldSwapSID = false;
         }
 
         private void UpdateControllerNickItems(object sender, EventArgs e)
@@ -1163,7 +1179,7 @@ namespace Nucleus.Coop
         private Dictionary<string, List<string>> AllScreensRes;
         private List<Label> screensLabels;
         private List<Rectangle> screensResControlsRow;
-
+      
         private void GetAllScreensResolutions()
         {
             screen_panel.Visible = false;
@@ -1199,13 +1215,14 @@ namespace Nucleus.Coop
                 resCmb.FlatStyle = FlatStyle.Flat;
                 resCmb.SelectedValueChanged += SaveSelectedRes;
                 resCmb.DropDownStyle = ComboBoxStyle.DropDownList;
+                resCmb.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
                 Label resLabel = new Label();
                 resLabel.AutoSize = true;
                 string cleanName = screen.DeviceName.Substring(screen.DeviceName.LastIndexOf('\\') + 1);
                 resLabel.Text = $"⛶ {cleanName}";
 
-                CustomToolTips.SetToolTip(resLabel, "Click here to identify the screen", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(resLabel, "Click here to identify the screen", "resLabel", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
                 if (screensLabels.Count == 0)
                 {
@@ -1253,11 +1270,13 @@ namespace Nucleus.Coop
                     resCmb.Location = new Point(resLabel.Right + 4, resLabel.Top);
                 }
 
+                
                 resLabel.Location = new Point(resLabel.Left, resCmb.Location.Y + (resCmb.Height / 2 - resLabel.Height / 2));
                 resLabel.Tag = screen.Bounds.Location;
                 resLabel.Click += IdentifyScreen;
 
                 Rectangle border = new Rectangle(resLabel.Location.X, resCmb.Location.Y, resCmb.Right, resCmb.Height - 1);
+                
                 screensResControlsRow.Add(border);
 
                 AllScreensRes.Add(screen.DeviceName, resolutions);
@@ -1327,6 +1346,16 @@ namespace Nucleus.Coop
         {
             refreshScreensData = true;
             GetAllScreensResolutions();
+        }
+
+        public void SetInvisible()
+        {
+            Visible = false;
+        }
+
+        public void SetVisible()
+        {
+            Visible = true;
         }
     }
 }

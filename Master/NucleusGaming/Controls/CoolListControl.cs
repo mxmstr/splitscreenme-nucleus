@@ -1,6 +1,7 @@
 ﻿using Jint.Parser;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.UI;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -17,6 +18,7 @@ namespace SplitTool.Controls
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
         public object ImageUrl;
+        private SolidBrush backBrush;
 
         protected override CreateParams CreateParams
         {
@@ -53,6 +55,7 @@ namespace SplitTool.Controls
             EnableHighlighting = enableHightlighting;
 
             string customFont = Globals.ThemeConfigFile.IniReadValue("Font", "FontFamily");
+            backBrush = new SolidBrush(Color.FromArgb(60,Theme_Settings.BackgroundGradientColor.R, Theme_Settings.BackgroundGradientColor.G, Theme_Settings.BackgroundGradientColor.B));
 
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.Transparent;
@@ -163,7 +166,13 @@ namespace SplitTool.Controls
         {
             Rectangle bounds = new Rectangle(2, 1, Width - 3, Height-1);
 
-            e.Graphics.FillPath(new SolidBrush(Color.FromArgb(60, 0, 0, 0)), FormGraphicsUtil.MakeRoundedRect(bounds, 15, 15, true, true, true, true));     
+            if (bounds.Width == 0 || bounds.Height == 0)
+            {
+                return;
+            }
+
+            GraphicsPath graphicsPath = FormGraphicsUtil.MakeRoundedRect(bounds, 15, 15, true, true, true, true);
+            e.Graphics.FillPath(backBrush, graphicsPath);     
         }
     }
 }

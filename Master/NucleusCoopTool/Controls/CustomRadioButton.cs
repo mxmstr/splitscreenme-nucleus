@@ -84,7 +84,7 @@ namespace Nucleus.Coop.Controls
         {
             tick.Cursor = TickCursor;        
             outline = new Pen(Color.Transparent);
-            CustomToolTips.SetToolTip(tick, radioTooltipText, new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(tick, radioTooltipText, "CustomRadioButton", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             init = true;
         }
@@ -121,7 +121,7 @@ namespace Nucleus.Coop.Controls
                 outline.Color = g.GetNearestColor(Color.FromArgb(255, brush.LinearColors[1]));
                 g.FillEllipse(brush, new Rectangle((tick.Width / 2), 1, (tick.Width / 2), tick.Height-3)); 
                 g.DrawEllipse(outline, new Rectangle((tick.Width / 2), 1, (tick.Width / 2), tick.Height-3));
-                brush.Dispose();    
+                brush.Dispose();
             }
             else
             {
@@ -186,6 +186,11 @@ namespace Nucleus.Coop.Controls
         private void CustomRadioButton_Paint(object sender, PaintEventArgs e)
         {
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
+
+            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            {
+                return;
+            }
 
             Color color = Color.FromArgb(0, 0, 0, 0);
             LinearGradientBrush lgb =

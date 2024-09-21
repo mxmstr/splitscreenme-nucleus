@@ -1,10 +1,10 @@
-﻿using Nucleus.Gaming.Forms.NucleusMessageBox;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System;
 using System.IO;
 using System.Linq;
 using Nucleus.Gaming.Coop.Generic;
+using Nucleus.Gaming.Forms;
 
 namespace Nucleus.Gaming
 {

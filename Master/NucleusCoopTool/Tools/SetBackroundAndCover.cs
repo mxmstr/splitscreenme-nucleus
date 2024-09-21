@@ -11,7 +11,7 @@ namespace Nucleus.Coop.Tools
     internal class SetBackroundAndCover
     {
         private static MainForm main;
-        private static int blurValue =  App_Misc.Blur;
+        private static int blurValue = App_Misc.Blur;
         private static Color colorTop;
         private static Color colorBottom;
 
@@ -28,6 +28,7 @@ namespace Nucleus.Coop.Tools
             colorTop = blur.topColor;
             colorBottom = blur.bottomColor;
 
+            screenshot.Dispose();
             return result;
         }
 
@@ -48,7 +49,7 @@ namespace Nucleus.Coop.Tools
             ///Apply screenshots randomly
             if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")))
             {
-                string[] imgsPath = Directory.GetFiles((Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")));
+                string[] imgsPath = Directory.GetFiles(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"));
 
                 if (imgsPath.Length > 0)
                 {
@@ -61,18 +62,19 @@ namespace Nucleus.Coop.Tools
                 }
                 else
                 {
-                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.defBackground);
+                    Bitmap def = new Bitmap (mainForm.defBackground.Clone() as Bitmap);
+                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(def);
                     mainForm.GameBorderGradientTop = mainForm.BorderGradient;
                     mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
                 }
             }
             else
             {
-                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(mainForm.defBackground);
+                Bitmap def = new Bitmap(mainForm.defBackground.Clone() as Bitmap);
+                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(def);
                 mainForm.GameBorderGradientTop = mainForm.BorderGradient;
                 mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
             }
-         
         }
     }
 }

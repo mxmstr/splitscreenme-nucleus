@@ -1,5 +1,5 @@
 ﻿
-namespace Nucleus.Gaming.Forms.NucleusMessageBox
+namespace Nucleus.Gaming.Forms
 {
     public static class NucleusMessageBox
     {
@@ -7,7 +7,6 @@ namespace Nucleus.Gaming.Forms.NucleusMessageBox
         {
             CustomMessageBox messageBox = new CustomMessageBox(title, message, formating);
             messageBox.ShowDialog();
-            messageBox.BringToFront();
         }
     }
 }

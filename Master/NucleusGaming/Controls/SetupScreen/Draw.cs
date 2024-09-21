@@ -129,30 +129,39 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (s.Type != UserScreenType.Manual && s.Type != UserScreenType.FullScreen)
                 {
-                    try
-                    {
-                        var boundsToDraw = s.SubScreensBounds.Values.Where(sb => !GameProfile.Instance.DevicesList.Any(pl => pl.EditBounds.IntersectsWith(sb))).ToArray();
+                   // try
+                    //{
+                        var boundsToDraw = s.SubScreensBounds?.Values.Where(sb => !GameProfile.Instance.DevicesList.Any(pl => pl.EditBounds.IntersectsWith(sb))).ToArray();
 
                         if (boundsToDraw.Length > 0)
                         {
                             g.DrawRectangles(PositionScreenPen, boundsToDraw);
                         }
-                    }
-                    catch (Exception e)
-                    { Console.WriteLine($"{e.Message} \n\n {e.StackTrace}"); };
+                    //}
+                    //catch (Exception e)
+                    //{ Console.WriteLine($"{e.Message} \n\n {e.StackTrace}"); };
                 }
 
                 bool intersect = false;
                 RectangleF minimizedSwapType = new Rectangle();
 
-                try
+                //try
+                //{
+                if (s.SwapTypeBounds != null && s.SwapTypeBounds != RectangleF.Empty)
                 {
+                    minimizedSwapType = s.SwapTypeBounds;
+
                     var interstcWithSwapTypeBound = GameProfile.Instance.DevicesList.Where(dv => dv.EditBounds.IntersectsWith(s.SwapTypeBounds)).ToArray();
-                    intersect = interstcWithSwapTypeBound.Length == 0 || s.SwapTypeBounds.Contains(BoundsFunctions.MousePos);
-                    minimizedSwapType = new RectangleF(s.SwapTypeBounds.X, s.SwapTypeBounds.Y, s.SwapTypeBounds.Width / 2, s.SwapTypeBounds.Height / 2);
+
+                    if (interstcWithSwapTypeBound.Length > 0)
+                    {
+                        intersect = interstcWithSwapTypeBound.Length == 0 || s.SwapTypeBounds.Contains(BoundsFunctions.MousePos);
+                        minimizedSwapType = new RectangleF(s.SwapTypeBounds.X, s.SwapTypeBounds.Y, s.SwapTypeBounds.Width / 2, s.SwapTypeBounds.Height / 2);
+                    }
                 }
-                catch(Exception e)
-                { Console.WriteLine($"{e.Message} \n\n {e.StackTrace}"); };
+                //}
+                //catch(Exception e)
+                //{ Console.WriteLine($"{e.Message} \n\n {e.StackTrace}"); };
 
                 if (UseLayoutSelectionBorder)
                 {
@@ -322,7 +331,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         virtualfontToScale.Dispose();
                         lgb.Dispose();
                     }
-                }
+                }                
             }
             else
             {
@@ -346,6 +355,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 }
             }
 
+            g.Clip.Dispose();
             fontToScale.Dispose();
         }
 
@@ -394,8 +404,8 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         {
             string playerBoundsInfo = BoundsFunctions.PlayerBoundsInfoText(BoundsFunctions.selectedPlayer);
             SizeF boundsRect = g.MeasureString(playerBoundsInfo, playerTextFont);
-            Point location = new Point(((parent.Width/2) - (int)boundsRect.Width/2) , ((parent.Bottom - (int)boundsRect.Height)) );  
-            g.DrawString(playerBoundsInfo, playerTextFont, Brushes.White, location.X-3, location.Y - 6 );
+            Point location = new Point(((parent.Width / 2) - (int)boundsRect.Width / 2) , ((parent.Bottom - (int)boundsRect.Height)) );  
+            g.DrawString(playerBoundsInfo, playerTextFont, Brushes.White, location.X - 3, location.Y - 6 );
             
             //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnLeft });
             //g.FillRectangles(sizerBrush, new RectangleF[] { BoundsFunctions.sizerBtnRight });
@@ -422,6 +432,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             g.FillRectangle(tagBrush, tagBack);
             g.DrawRectangle(PositionScreenPen, tagBorder);
             g.DrawString(tag, playerTextFont, Brushes.White, tagLocation.X, tagLocation.Y);
+            g.Clip.Dispose();
         }
 
     }

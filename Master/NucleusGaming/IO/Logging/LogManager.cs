@@ -1,5 +1,5 @@
 ﻿using Nucleus.Gaming.App.Settings;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;

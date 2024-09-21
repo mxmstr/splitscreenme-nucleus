@@ -89,11 +89,11 @@ namespace Nucleus.Coop.Controls
                 Image = mainForm.ShowFavoriteOnly ? favorite_Selected : favorite_Unselected,
             };
 
-            favoriteOnly.Click += new EventHandler(FavoriteOnly_Click);
+            favoriteOnly.Click += FavoriteOnly_Click;
             favoriteOnly.MouseEnter += FavoriteOnly_MouseEnter;
             favoriteOnly.MouseLeave += FavoriteOnly_MouseLeave;
 
-            CustomToolTips.SetToolTip(favoriteOnly, "Show favorite game(s) only.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(favoriteOnly, "Show favorite game(s) only.", "favoriteOnly", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             favoriteContainer.Controls.Add(favoriteOnly);
 
@@ -101,7 +101,7 @@ namespace Nucleus.Coop.Controls
             Controls.Add(btn_AddGameLabel);
             Controls.Add(favoriteContainer);
 
-            Click += new EventHandler(mainForm.ClickAnyControl);
+            Click += mainForm.ClickAnyControl;
 
             foreach (Control control in Controls)
             {
@@ -120,16 +120,16 @@ namespace Nucleus.Coop.Controls
 
         public void Update(bool connected)
         {          
-            Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);
-            btn_AddGamePb.Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);
-            btn_AddGameLabel.Click += connected ? new EventHandler(mainForm.InsertWebview) : new EventHandler(RefreshNetStatus);
+            Click += connected ? mainForm.InsertWebview : new EventHandler(RefreshNetStatus);
+            btn_AddGamePb.Click += connected ? mainForm.InsertWebview : new EventHandler(RefreshNetStatus);
+            btn_AddGameLabel.Click += connected ? mainForm.InsertWebview : new EventHandler(RefreshNetStatus);
 
             btn_AddGameLabel.Text = connected ? "Add New Games" : "Offline";
             btn_AddGamePb.BackgroundImage = connected ? ImageCache.GetImage(Globals.ThemeFolder + "add_game.png") : ImageCache.GetImage(Globals.ThemeFolder + "title_no_hub.png");
 
-            CustomToolTips.SetToolTip(this, connected ? "Install new game handlers." : OfflineToolTipText(), new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_AddGamePb, connected ? "Install new game handlers." : OfflineToolTipText(), new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_AddGameLabel, connected ? "Install new game handlers." : OfflineToolTipText(), new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(this, connected ? "Install new game handlers." : OfflineToolTipText(), "btn_AddGame", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_AddGamePb, connected ? "Install new game handlers." : OfflineToolTipText(), "btn_AddGamePb", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_AddGameLabel, connected ? "Install new game handlers." : OfflineToolTipText(), "btn_AddGameLabel", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             btn_AddGameLabel.Location = new Point(btn_AddGamePb.Right + 7, (btn_AddGamePb.Location.Y + btn_AddGamePb.Height / 2) - (btn_AddGameLabel.Height / 2));
             favoriteContainer.Location = new Point((Width - favoriteContainer.Height) - 2, 0);
@@ -152,7 +152,7 @@ namespace Nucleus.Coop.Controls
         {
             return "Nucleus can't reach hub.splitscreen.me." +
                    "\nClick this button to refresh, if the " +
-                   "\nproblem persist, click the FAQ button.";
+                   "\nproblem persist, check our FAQ to learn more.";
         }
 
         private void RefreshNetStatus(object sender, EventArgs e)
@@ -167,7 +167,7 @@ namespace Nucleus.Coop.Controls
             bool selected = favoriteOnly.Image.Equals(favorite_Selected);
 
             favoriteOnly.Image = selected ? favorite_Unselected : favorite_Selected;
-            mainForm.ShowFavoriteOnly = selected ? false : true;
+            mainForm.ShowFavoriteOnly = !selected;
 
             App_Misc.ShowFavoriteOnly = mainForm.ShowFavoriteOnly; 
             mainForm.RefreshGames();
@@ -187,31 +187,9 @@ namespace Nucleus.Coop.Controls
             con.Size = new Size(con.Width -= 3, con.Height -= 3);
             con.Location = new Point(con.Location.X + 1, con.Location.Y + 1);
         }
-
-        private void AddGameButton_Paint(object sender, PaintEventArgs e)
-        {
-            Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
-            Rectangle bounds = new Rectangle(8, 0,Width, Height);
-
-            Color color = selected ? Color.FromArgb(85, 51, 153, 255) : Color.Transparent;
-            LinearGradientBrush lgb =
-            new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);
-
-            ColorBlend topcblend = new ColorBlend(3);
-            topcblend.Colors = new Color[3] { Color.Transparent, color, Color.Transparent };
-            topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
-
-            lgb.InterpolationColors = topcblend;
-            lgb.SetBlendTriangularShape(.5f, 1.0f);
-            e.Graphics.FillRectangle(lgb, bounds);
-            
-            lgb.Dispose();
-        }
-
         private void InitializeComponent()
         {
             this.SuspendLayout();
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AddGameButton_Paint);
             this.ResumeLayout(false);
         }
     }

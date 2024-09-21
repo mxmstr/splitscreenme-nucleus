@@ -36,6 +36,9 @@ namespace Nucleus.Gaming.Controls
 
         private Control parentControl;
         private bool useGradient;
+        private MouseEventArgs eventArgs;
+        private Font titleFont;
+        private Font previewFont;
 
         public ProfilesList(Control parent)
         {
@@ -73,26 +76,32 @@ namespace Nucleus.Gaming.Controls
                                                int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[3]));
             }
 
+            eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
+
             Instance = this;
         }
 
         public void Update_Reload()
         {
-            MouseEventArgs eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
             string name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString();
 
-            Label label = new Label
+            Label dummy = new Label
             {
                 Name = name,
                 Text = $"{PartialTitle} {name}"
             };
 
-            ProfileBtn_CheckedChanged(label, eventArgs);
+            ProfileBtn_CheckedChanged(dummy, eventArgs);
+            ScrollControlIntoView(Controls.Find(name,true).FirstOrDefault());
+
+            dummy.Dispose();
         }
 
         public void Update_Unload()
         {
-            ProfileBtn_CheckedChanged(new Label(), null);
+            Label dummy = new Label();
+            ProfileBtn_CheckedChanged(dummy, null);
+            dummy.Dispose();
         }
 
         public void ProfileBtn_CheckedChanged(object sender, MouseEventArgs e)
@@ -168,6 +177,12 @@ namespace Nucleus.Gaming.Controls
         public void Update_ProfilesList()
         {
             Visible = false;
+
+            foreach (Control control in Controls)
+            {
+                control.Dispose();
+            }
+
             Controls.Clear();
 
             List<int> sizes = new List<int>();
@@ -175,7 +190,11 @@ namespace Nucleus.Gaming.Controls
             Size = new Size((int)(300 * _scale), (int)(1 * _scale));
             int offset = 5;
 
-            Font font = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            if (titleFont == null)
+            {
+                titleFont = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                previewFont = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            }
 
             for (int i = 0; i < GameProfile.profilesPathList.Count + 1; i++)
             {
@@ -213,8 +232,8 @@ namespace Nucleus.Gaming.Controls
                     Cursor = Theme_Settings.Hand_Cursor
                 };
 
-                ToolTip deleteTooltip = CustomToolTips.SetToolTip(deleteBtn, $"Delete handler profile {i + 1}.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                deleteBtn.Click += new EventHandler(DeleteBtn_Click);//Delete profile
+                CustomToolTips.SetToolTip(deleteBtn, $"Delete handler profile {i + 1}.", $"Delete profile{i}.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                deleteBtn.Click += DeleteBtn_Click;//Delete profile
 
                 offset += deleteBtn.Width;
 
@@ -222,7 +241,7 @@ namespace Nucleus.Gaming.Controls
                 {
                     Anchor = AnchorStyles.Right,
                     Size = new Size((int)(13 * _scale), (int)(20 * _scale)),
-                    Font = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0),
+                    Font = previewFont,
                     BackgroundImageLayout = ImageLayout.Zoom,
                     BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "magnifier.png"),
                     BackColor = Color.Transparent,
@@ -232,8 +251,8 @@ namespace Nucleus.Gaming.Controls
                     Cursor = Theme_Settings.Hand_Cursor
                 };
 
-                ToolTip notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show handler profile content.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
+                CustomToolTips.SetToolTip(previewBtn, "Show handler profile content.", $"previewBtn{i}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                previewBtn.Click += Profile_Preview;//view profile event 
 
                 offset += previewBtn.Width;
 
@@ -243,7 +262,7 @@ namespace Nucleus.Gaming.Controls
                     //Anchor = AnchorStyles.Left | AnchorStyles.Right,
                     FlatStyle = FlatStyle.Flat,
                     BackgroundImageLayout = ImageLayout.Zoom,
-                    Font = font,
+                    Font = titleFont,
                     BackColor = Color.Transparent,
                     ForeColor = foreColor,
                     TextAlign = ContentAlignment.MiddleLeft,
@@ -254,9 +273,9 @@ namespace Nucleus.Gaming.Controls
 
                 string profileBtnToolTipText = File.Exists(Application.StartupPath + "\\Profiles Launcher.exe") ? $"Load handler profile {profileBtn.Name}. Right click to export a shortcut to desktop." : $"Load handler profile {profileBtn.Name}.";
 
-                ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, profileBtnToolTipText, new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(profileBtn, profileBtnToolTipText, $"profileBtnToolTipText${i}" ,new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
-                profileBtn.MouseClick += new MouseEventHandler(ProfileBtn_CheckedChanged);
+                profileBtn.MouseClick += ProfileBtn_CheckedChanged;
 
                 if (i != GameProfile.profilesPathList.Count)
                 {
@@ -269,12 +288,13 @@ namespace Nucleus.Gaming.Controls
                 else
                 {
                     profileBtn.ForeColor = Color.Gray;
-                    ToolTip unloadTooltip = CustomToolTips.SetToolTip(profileBtn, "Unload current loaded handler profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    CustomToolTips.SetToolTip(profileBtn, "Unload current loaded handler profile.", $"Unload profile", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
 
                 using (Graphics graphics = Graphics.FromImage(new Bitmap(1, 1)))
                 {
-                  sizes.Add((int)graphics.MeasureString(profileBtn.Text, profileBtn.Font, Size.Width, StringFormat.GenericDefault).Width + 40);
+                   sizes.Add((int)graphics.MeasureString(profileBtn.Text, profileBtn.Font, Size.Width, StringFormat.GenericDefault).Width + 40);
+                   graphics.Dispose();
                 }
 
                 if (i <= 5)
@@ -301,6 +321,7 @@ namespace Nucleus.Gaming.Controls
             {
                 Visible = true;
             }
+
         }
 
         //Show profile config or user notes in handler note "zoomed" textbox
@@ -332,9 +353,9 @@ namespace Nucleus.Gaming.Controls
         {
             StringBuilder sb = new StringBuilder();
 
-            if(Jprofile["Title"].ToString() != "")
+            if (Jprofile["Title"].ToString() != "")
             {
-               sb.Append($"Title: {Jprofile["Title"]}\n\n");
+                sb.Append($"Title: {Jprofile["Title"]}\n\n");
             }
 
             if (Jprofile["Notes"].ToString() != "")
@@ -342,7 +363,7 @@ namespace Nucleus.Gaming.Controls
                 sb.Append($"User Notes:\n");
                 sb.Append($"{Jprofile["Notes"]}\n\n");
             }
-           
+
             sb.Append($"Players Count: {Jprofile["Player(s)"]}\n\n");
             sb.Append($"Gamepads Used: {Jprofile["Controller(s)"]}\n");
             sb.Append($"Keyboard/Mouse Combo Used: {Jprofile["K&M"]}\n\n");
@@ -351,7 +372,7 @@ namespace Nucleus.Gaming.Controls
             sb.Append($"Use Custom Nicknames: {Jprofile["UseNicknames"]["Use"]}\n");
             sb.Append($"Auto Desktop Scaling On: {Jprofile["AutoDesktopScaling"]["Enabled"]}\n\n");
 
-            if(Jprofile["Options"].Count() > 0)
+            if (Jprofile["Options"].Count() > 0)
             {
                 sb.Append($"Choosen Options:\n");
 
@@ -369,9 +390,9 @@ namespace Nucleus.Gaming.Controls
             {
                 sb.Append($"Splitcreen Division Settings:\n");
                 sb.Append($" -Color: {Jprofile["UseSplitDiv"]["Color"]}\n");
-                sb.Append($" -Hide Desktop Only: {Jprofile["UseSplitDiv"]["HideOnly"]}\n\n");           
+                sb.Append($" -Hide Desktop Only: {Jprofile["UseSplitDiv"]["HideOnly"]}\n\n");
             }
-            else 
+            else
             {
                 sb.Append($"Splitcreen Division: Off\n\n");
             }
@@ -393,27 +414,27 @@ namespace Nucleus.Gaming.Controls
                 //sb.Append($"\n");
                 sb.Append($"------------------------\n");
                 sb.Append($" -Nickname: {playerDatas["Nickname"]}\n");
-                sb.Append($" -Index: {(int)playerDatas["PlayerID"] + 1}\n");             
+                sb.Append($" -Index: {(int)playerDatas["PlayerID"] + 1}\n");
                 sb.Append($" -Steam Id: {playerDatas["SteamID"]}\n");
-                
+
                 bool isController = (bool)playerDatas["IsDInput"] || (bool)playerDatas["IsXInput"];
                 if (isController)
                 {
                     sb.Append($" -Device Type: Gamepad\n");
                 }
-                else 
+                else
                 {
                     sb.Append($" -Device Type: Keyboard/Mouse\n");
                 }
 
                 sb.Append($" -Screen Index: {playerDatas["ScreenIndex"]}\n");
-                if(i == Jprofile["Data"].Count() -1)
-                sb.Append($"------------------------");
+                if (i == Jprofile["Data"].Count() - 1)
+                    sb.Append($"------------------------");
             }
 
             string preview = sb.ToString();
-           
-           return preview;
+
+            return preview;
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
@@ -502,6 +523,11 @@ namespace Nucleus.Gaming.Controls
         {
             Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
 
+            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            {
+                return;
+            }
+
             Color color = Color.FromArgb(useGradient ? 100 : 0, backGradient[1], backGradient[2], backGradient[3]);
             Color color2 = Color.FromArgb(useGradient ? 120 : 0, backGradient[1], backGradient[2], backGradient[3]);
             LinearGradientBrush lgb =
@@ -511,10 +537,13 @@ namespace Nucleus.Gaming.Controls
             topcblend.Colors = new Color[3] { Color.Transparent,color, color2};
             topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
 
+            GraphicsPath graphicsPath = FormGraphicsUtil.MakeRoundedRect(gradientBrushbounds, 10, 10, false, false, false, true);
+            
             lgb.InterpolationColors = topcblend;
-            e.Graphics.FillPath(lgb, FormGraphicsUtil.MakeRoundedRect(gradientBrushbounds, 10, 10, false, false, false, true));
+            e.Graphics.FillPath(lgb, graphicsPath);
 
             lgb.Dispose();
+            graphicsPath.Dispose();
         }
 
         public void UpdateSize(float scale)

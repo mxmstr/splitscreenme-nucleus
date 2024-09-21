@@ -218,12 +218,10 @@
     <Compile Include="Coop\InputManagement\Osk.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadShortcuts.cs" />
     <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
-    <Compile Include="Coop\InputManagement\ShortcutsReminderThread.cs" />
     <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
     <Compile Include="Coop\ProfilePlayer.cs" />
     <Compile Include="Coop\GameMetaInfo.cs" />
     <Compile Include="DPI\ThreadDPIContext.cs" />
-    <Compile Include="Forms\ShortcutsReminder\ReminderFormThread.cs" />
     <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -231,6 +229,7 @@
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\NucleusMessageBox\NucleusMessageBox.cs" />
+    <Compile Include="Forms\ShortcutsReminder\ReminderFormThread.cs" />
     <Compile Include="Coop\Generic\ProcessPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -488,14 +487,14 @@
     <EmbeddedResource Include="Controls\JSUserInputControl.resx">
       <DependentUpon>JSUserInputControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NucleusMessageBox\CustomMessageBox.resx">
-      <DependentUpon>CustomMessageBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Coop\Generic\ProcessPicker.resx">
       <DependentUpon>ProcessPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomPrompt.resx">
       <DependentUpon>CustomPrompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NucleusMessageBox\CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>

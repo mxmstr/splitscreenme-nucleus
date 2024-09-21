@@ -401,20 +401,26 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             try
             {
-                if (!splitScreenRunning() && PlayerInfos != null)
+                if (CurrentProfile?.DevicesList != null)
                 {
-                    foreach (PlayerInfo toFlash in CurrentProfile?.DevicesList.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
+                    lock (CurrentProfile?.DevicesList)
                     {
-                        if (toFlash.HIDDeviceID[0] == "MouseHandleZero" && rawBuffer.data.mouse.ulExtraInformation == 161)//dwExtraInfo 0x00A1 == 161 so we can filter out the virtual mouse created by ui navigation
+                        if (!splitScreenRunning() && PlayerInfos != null)
                         {
-                            return;
-                        }
+                            foreach (PlayerInfo toFlash in CurrentProfile?.DevicesList.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
+                            {
+                                if (toFlash.HIDDeviceID[0] == "MouseHandleZero" && rawBuffer.data.mouse.ulExtraInformation == 161)//dwExtraInfo 0x00A1 == 161 so we can filter out the virtual mouse created by ui navigation
+                                {
+                                    return;
+                                }
 
-                        toFlash.FlashIcon();
+                                toFlash.FlashIcon();
+                            }
+                        }
                     }
                 }
             }
-            catch (Exception)
+            catch
             {
                 return;
             }

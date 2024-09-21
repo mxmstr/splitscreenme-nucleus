@@ -289,9 +289,7 @@ namespace Nucleus.Coop.Forms
 
             if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName, frmHandleTitle))
             {
-                GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-                string gameGuid = GameManager.Instance.User.Games.Where(c => c.ExePath.Split('\\').Last().ToLower() == exeName.ToLower()).FirstOrDefault().GameGuid;
-                string gameName = GameManager.Instance.Games.Where(c => c.Value.GUID == gameGuid).FirstOrDefault().Value.GameName;
+                GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });    
                 return;
             }
 

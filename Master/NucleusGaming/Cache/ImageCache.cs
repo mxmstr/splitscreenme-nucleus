@@ -50,6 +50,11 @@ namespace Nucleus.Gaming.Cache
 
         public static void DeleteImageFromCache(string path)
         {
+            if(path == null)
+            {
+                return;
+            }
+
             RemoveFromCache(path);
         }
 
@@ -61,8 +66,9 @@ namespace Nucleus.Gaming.Cache
             }
 
             if (cachedImages.ContainsKey(path))
-            {
+            { 
                 cachedImages.TryRemove(path, out Bitmap bitmap);
+                bitmap?.Dispose();
             }
         }
 

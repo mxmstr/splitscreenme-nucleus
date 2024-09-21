@@ -10,7 +10,6 @@ using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.InputManagement;
 using Nucleus.Gaming.Coop.InputManagement.Gamepads;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Platform.PCSpecs;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
@@ -28,6 +27,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Nucleus.Gaming.DPI;
+using Nucleus.Gaming.Forms;
 
 
 namespace Nucleus.Coop
@@ -41,12 +41,15 @@ namespace Nucleus.Coop
         public readonly IniFile themeIni = Globals.ThemeConfigFile;
         public readonly string theme = Globals.ThemeFolder;
 
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+
         protected string faq_link = "https://www.splitscreen.me/docs/faq";
         protected string api = "https://hub.splitscreen.me/api/v1/";
         private string NucleusEnvironmentRoot => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public string customFont;
-        //public string App_Hotkeys.LockInputs;
         public string[] rgb_font;
         public string[] rgb_MouseOverColor;
         public string[] rgb_MenuStripBackColor;
@@ -63,11 +66,13 @@ namespace Nucleus.Coop
         private Settings settings = null;
         private ProfileSettings profileSettings = null;
         private DonationPanel donationPanel = null;
+        private Tutorial tuto;
 
         private ContentManager content;
         private IGameHandler I_GameHandler;
         public GameManager gameManager;
         public Dictionary<UserGameInfo, GameControl> controls;
+
 
         private PictureBox btn_mainButtonsPanel;
         private GameControl currentControl;
@@ -108,7 +113,7 @@ namespace Nucleus.Coop
         private bool disableForcedNote;
         public bool ShowFavoriteOnly { get; set; }
         private bool enableParticles;
-        
+
         private bool disableGameProfiles;
         public bool DisableGameProfiles
         {
@@ -201,7 +206,7 @@ namespace Nucleus.Coop
         {
             FadeInTimer = new System.Windows.Forms.Timer();
             FadeInTimer.Interval = (50); //millisecond
-            FadeInTimer.Tick += new EventHandler(FadeInTick);
+            FadeInTimer.Tick += FadeInTick;
             FadeInTimer.Start();
         }
 
@@ -224,8 +229,8 @@ namespace Nucleus.Coop
         {
             if (webView != null)
             {
-               if(webView.Downloading)
-                return;
+                if (webView.Downloading)
+                    return;
             }
 
             formClosing = true;
@@ -233,7 +238,7 @@ namespace Nucleus.Coop
 
             FadeOutTimer = new System.Windows.Forms.Timer();
             FadeOutTimer.Interval = (50); //millisecond
-            FadeOutTimer.Tick += new EventHandler(FadeOutTick);
+            FadeOutTimer.Tick += FadeOutTick;
             FadeOutTimer.Start();
         }
 
@@ -268,7 +273,7 @@ namespace Nucleus.Coop
             roundedCorners = bool.Parse(themeIni.IniReadValue("Misc", "UseroundedCorners"));
             disableGameProfiles = App_Misc.DisableGameProfiles;
             disableForcedNote = App_Misc.DisableForcedNote;
-         
+
             customFont = themeIni.IniReadValue("Font", "FontFamily");
             rgb_font = themeIni.IniReadValue("Colors", "Font").Split(',');
             enableParticles = bool.Parse(themeIni.IniReadValue("Misc", "EnableParticles"));
@@ -304,7 +309,7 @@ namespace Nucleus.Coop
                 string[] windowSize = App_Misc.WindowSize.Split('X');
                 Size = new Size(int.Parse(windowSize[0]), int.Parse(windowSize[1]));
             }
-           
+
             Cursor = Theme_Settings.Default_Cursor;
 
             if (roundedCorners)
@@ -343,7 +348,7 @@ namespace Nucleus.Coop
             btn_Play.BackColor = Color.Transparent;
 
             clientAreaPanel.BackgroundImage = ImageCache.GetImage(theme + "background.jpg");
-         
+
             btn_Play.BackgroundImage = ImageCache.GetImage(theme + "play.png");
             btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
             btn_Next.BackgroundImage = ImageCache.GetImage(theme + "arrow_right.png");
@@ -366,15 +371,15 @@ namespace Nucleus.Coop
             profilesList_btn.BackgroundImage = ImageCache.GetImage(theme + "profiles_list.png");
             profileSettings_btn.BackgroundImage = ImageCache.GetImage(theme + "profile_settings.png");
 
-            CustomToolTips.SetToolTip(btn_Extract, "Extract a handler from a \".nc\" archive.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btnSearch, "Search and add a game to the game list (its handler must be installed).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_downloadAssets, "Download or update games covers and screenshots.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_settings, "Global Nucleus Co-op settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(btn_debuglog, "Open Nucleus debug-log.txt file if available, debug log can be disabled in Nucleus settings in the \"Settings\" tab.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(donationBtn, "Nucleus Co-op developers donations links.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(instruction_btn, "How to setup players.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_Extract, "Extract a handler from a \".nc\" archive.", "btn_Extract", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btnSearch, "Search and add a game to the game list (its handler must be installed).", "btnSearch", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_downloadAssets, "Download or update games covers and screenshots.", "btn_downloadAssets", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_settings, "Global Nucleus Co-op settings.", "btn_settings", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_debuglog, "Open Nucleus debug-log.txt file if available, debug log can be disabled in Nucleus settings in the \"Settings\" tab.", "btn_debuglog", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(donationBtn, "Nucleus Co-op developers donations links.", "donationBtn", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(instruction_btn, "How to setup players.", "instruction_btn", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
-            CustomToolTips.SetToolTip(btn_expandNotes, "Expand handler notes.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(btn_expandNotes, "Expand handler notes.", "btn_expandNotes", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             btn_Extract.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btnSearch.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -415,7 +420,7 @@ namespace Nucleus.Coop
 
             btn_mainButtonsPanel = new PictureBox()
             {
-               
+
                 BackgroundImage = ImageCache.GetImage(theme + "buttons_dropdown.png"),
                 Anchor = AnchorStyles.None,
                 BackgroundImageLayout = ImageLayout.Stretch,
@@ -441,7 +446,7 @@ namespace Nucleus.Coop
                     control.Cursor = Theme_Settings.Hand_Cursor;
                 }
 
-                control.Click += new EventHandler(ClickAnyControl);
+                control.Click += ClickAnyControl;
             }
 #if DEBUG
             txt_version.ForeColor = Color.LightSteelBlue;
@@ -470,19 +475,19 @@ namespace Nucleus.Coop
 
             PlayersIdentityCache.LoadPlayersIdentityCache();
 
-            minimizeBtn.Click += new EventHandler(MinimizeButtonClick);
-            maximizeBtn.Click += new EventHandler(MaximizeButtonClick);
-            closeBtn.Click += new EventHandler(CloseButtonClick);
+            minimizeBtn.Click += MinimizeButtonClick;
+            maximizeBtn.Click += MaximizeButtonClick;
+            closeBtn.Click += CloseButtonClick;
 
             defBackground = clientAreaPanel.BackgroundImage as Bitmap;
 
             setupScreen = new SetupScreenControl();
 
-            profileSettings_btn.Click += new EventHandler(ProfileSettings_btn_Click);
-            profilesList_btn.Click += new EventHandler(ProfilesList_btn_Click);
+            profileSettings_btn.Click += ProfileSettings_btn_Click;
+            profilesList_btn.Click += ProfilesList_btn_Click;
 
             setupScreen.OnCanPlayUpdated += StepCanPlay;
-            setupScreen.Click += new EventHandler(ClickAnyControl);
+            setupScreen.Click += ClickAnyControl;
 
             settings = new Settings(this, setupScreen);
             profileSettings = new ProfileSettings(this, setupScreen);
@@ -511,7 +516,7 @@ namespace Nucleus.Coop
             Globals.HandlerNotesZoom = handlerNotesZoom;
 
             hotkeysCooldownTimer = new System.Windows.Forms.Timer();
-            hotkeysCooldownTimer.Tick += new EventHandler(HotkeysCooldownTimerTick);
+            hotkeysCooldownTimer.Tick += HotkeysCooldownTimerTick;
 
             gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
             gameContextMenuStrip.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
@@ -521,7 +526,7 @@ namespace Nucleus.Coop
 
             GetGameIcon.MainForm = this;
 
-            
+
             RefreshGames();
 
             StartPosition = FormStartPosition.Manual;
@@ -584,12 +589,13 @@ namespace Nucleus.Coop
 
         private void ShowMainButtonsPanel(object sender, EventArgs e)
         {
-            mainButtonFrame.Invalidate();
+            mainButtonsPanel.Visible = true;
+
             if (mainButtonsPanelTimer == null)
             {
                 mainButtonsPanelTimer = new System.Windows.Forms.Timer();
                 mainButtonsPanelTimer.Interval = (200);//millisecond
-                mainButtonsPanelTimer.Tick += new EventHandler(ShowMainButtonsPanelTick);
+                mainButtonsPanelTimer.Tick += ShowMainButtonsPanelTick;
             }
 
             mainButtonsPanelTimer.Start();
@@ -597,7 +603,7 @@ namespace Nucleus.Coop
 
         private void ShowMainButtonsPanelTick(object Object, EventArgs EventArgs)
         {
-            if(!mainButtonsPanel.Bounds.Contains(PointToClient(Cursor.Position)))
+            if (!mainButtonsPanel.Bounds.Contains(PointToClient(Cursor.Position)))
             {
                 mainButtonsPanel.Visible = false;
                 mainButtonsPanelTimer.Stop();
@@ -625,8 +631,6 @@ namespace Nucleus.Coop
                 }
             }
 
-            //stepPanelPictureBox.Location = new Point((clientAreaPanel.Width / 2) - stepPanelPictureBox.Width / 2, /*(clientAreaPanel.Height / 2) - */stepPanelPictureBox.Top /*/ 2*/);
-
             gameContextMenuStrip.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             socialLinksMenu.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             scriptAuthorTxt.Font = new Font(customFont, 12 * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
@@ -639,11 +643,36 @@ namespace Nucleus.Coop
 
             logo.Location = new Point(logo.Location.X, mainButtonFrame.Height / 2 - logo.Height / 2);
             txt_version.Location = new Point(logo.Right, logo.Location.Y + logo.Height / 2 - txt_version.Height / 2);
-            InputsTextLabel.Location = new Point(mainButtonFrame.Width / 2 - InputsTextLabel.Width / 2, (mainButtonFrame.Bottom - InputsTextLabel.Height)-3);
+            InputsTextLabel.Location = new Point(mainButtonFrame.Width / 2 - InputsTextLabel.Width / 2, (mainButtonFrame.Bottom - InputsTextLabel.Height) - 3);
 
-            btn_mainButtonsPanel.Location = new Point(mainButtonFrame.Width/2 - btn_mainButtonsPanel.Width/2,4);
+            btn_mainButtonsPanel.Location = new Point(mainButtonFrame.Width / 2 - btn_mainButtonsPanel.Width / 2, 4);
             mainButtonsPanel.Location = new Point(mainButtonFrame.Width / 2 - mainButtonsPanel.Width / 2, 0);
-            btn_mainButtonsPanel.Size = new Size((int)(39*scale), (int)(10 * scale));
+            btn_mainButtonsPanel.Size = new Size((int)(39 * scale), (int)(10 * scale));
+        }
+
+        public void RefreshUI(bool refreshAll)
+        {
+            if (refreshAll)
+            {
+                InputsTextLabel.Text = "";
+                currentGame = null;
+                profilepButtonsPanel.Visible = false;
+                stepButtonsPanel.Visible = false;
+                rightFrame.Visible = false;
+                StepPanel.Visible = false;
+                stepPanelPictureBox.Visible = webView == null;
+                rainbowTimer?.Dispose();
+                rainbowTimerRunning = false;
+                btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
+                clientAreaPanel.BackgroundImage = defBackground;
+            }
+
+            DevicesFunctions.gamepadTimer?.Dispose();
+            RefreshGames();
+
+            mainButtonFrame.Focus();
+
+            stepPanelPictureBox.Refresh();
         }
 
         public void InsertWebview(object sender, EventArgs e)
@@ -670,15 +699,15 @@ namespace Nucleus.Coop
             }
 
             webView = new HubWebView(this);
+
             webView.Disposed += WebviewDisposed;
             clientAreaPanel.Controls.Add(webView);
-
-            RefreshUI(true);
 
             webView.Size = clientAreaPanel.Size;
             webView.Location = game_listSizer.Location;
             btn_AddGame.Selected = true;
 
+            RefreshUI(true);
             Invalidate(false);
         }
 
@@ -690,7 +719,7 @@ namespace Nucleus.Coop
             }
 
             if (webView.Downloading)
-            { 
+            {
                 return;
             }
 
@@ -700,7 +729,7 @@ namespace Nucleus.Coop
                 {
                     return;
                 }
-            }        
+            }
 
             clientAreaPanel.Controls.Remove(webView);
             webView.Dispose();
@@ -708,12 +737,13 @@ namespace Nucleus.Coop
 
             btn_AddGame.Selected = false;
 
+            Invalidate(false);
+
             if (sender is HubWebView)
             {
-                stepPanelPictureBox.Visible = true;    
+                stepPanelPictureBox.Visible = true;
+                stepPanelPictureBox.Refresh();
             }
-
-           Invalidate(false);          
         }
 
         protected override void OnShown(EventArgs e)
@@ -722,9 +752,9 @@ namespace Nucleus.Coop
 
             WebStatusTimer = new System.Windows.Forms.Timer();
             WebStatusTimer.Interval = (2000);
-            WebStatusTimer.Tick += new EventHandler(WebStatusTimerTick);
+            WebStatusTimer.Tick += WebStatusTimerTick;
             WebStatusTimer.Start();
-            DPIManager.ForceUpdate();        
+            DPIManager.ForceUpdate();
         }
 
         private void WebStatusTimerTick(object Object, EventArgs EventArgs)
@@ -846,7 +876,7 @@ namespace Nucleus.Coop
                 Globals.MainOSD.Show(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 base.WndProc(ref m);
                 return;
-            }     
+            }
 
             if (m.Msg == 0x00FF)//WM_INPUT
             {
@@ -867,7 +897,7 @@ namespace Nucleus.Coop
                             if ((string)btn_Play.Tag == "S T O P")
                             {
                                 Btn_Play_Click(this, null);
-                                Globals.MainOSD.Show(2000, "Session Ended");                               
+                                Globals.MainOSD.Show(2000, "Session Ended");
                             }
 
                             HotkeyCoolDown();
@@ -929,7 +959,7 @@ namespace Nucleus.Coop
         {
             if (!hotkeysCooldown)
             {
-                hotkeysCooldownTimer.Stop();       
+                hotkeysCooldownTimer.Stop();
                 hotkeysCooldownTimer.Interval = (800); //millisecond
                 hotkeysCooldownTimer.Start();
                 hotkeysCooldown = true;
@@ -950,8 +980,14 @@ namespace Nucleus.Coop
             {
                 foreach (KeyValuePair<UserGameInfo, GameControl> con in controls)
                 {
-                    con.Value?.IsUpdateAvailableTimer?.Dispose();
-                    con.Value?.Dispose();                  
+
+                    foreach (Control ch in con.Value.Controls)
+                    {
+                        ch.Font.Dispose();
+                        ch.Dispose();
+                    }
+
+                    con.Value?.Dispose();
                 }
 
                 list_Games.Controls.Clear();
@@ -1004,9 +1040,15 @@ namespace Nucleus.Coop
                     btn_AddGame.Anchor = AnchorStyles.Top | AnchorStyles.Left;
                     btn_AddGame.Location = new Point(0, 0);
                     list_Games.Top = btn_AddGame.Bottom;
-                }               
+                }
 
                 list_Games.Visible = true;
+            }
+
+
+            if (currentControl != null)
+            {
+                list_Games.ScrollControlIntoView(currentControl);
             }
 
             GameManager.Instance.SaveUserProfile();
@@ -1033,7 +1075,7 @@ namespace Nucleus.Coop
                 Width = game_listSizer.Width,
             };
 
-            con.Click += new EventHandler(WebviewDisposed);
+            con.Click += WebviewDisposed;
             con.HandlerUpdate.Click += Button_UpdateAvailable_Click;
             con.GameOptions.Click += GameOptions_Click;
 
@@ -1062,32 +1104,9 @@ namespace Nucleus.Coop
 
                 controls.Add(game, con);
                 list_Games.Controls.Add(con);
-               
+
                 ThreadPool.QueueUserWorkItem(GetGameIcon.GetIcon, game);
             }
-        }
-
-        public void RefreshUI(bool refreshAll)
-        {
-            if (refreshAll)
-            {
-                InputsTextLabel.Text = "";
-                currentGame = null;
-                profilepButtonsPanel.Visible = false;
-                stepButtonsPanel.Visible = false;
-                rightFrame.Visible = false;
-                StepPanel.Visible = false;
-                stepPanelPictureBox.Visible = webView == null;
-                rainbowTimer?.Dispose();
-                rainbowTimerRunning = false;
-                btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
-                clientAreaPanel.BackgroundImage = defBackground;
-            }
-
-            DevicesFunctions.gamepadTimer?.Dispose();
-            RefreshGames();
-
-            mainButtonFrame.Focus();
         }
 
         private void Btn_downloadAssets_Click(object sender, EventArgs e)
@@ -1117,6 +1136,7 @@ namespace Nucleus.Coop
                     if (r < 200 && b < 200) { r += 3; b += 3; };
                     if (b >= 200 && r >= 200)
                         loop = true;
+
                     HandlerNoteTitle.Font = new Font(HandlerNoteTitle.Font.FontFamily, HandlerNoteTitle.Font.Size, FontStyle.Bold);
                 }
                 else
@@ -1158,17 +1178,18 @@ namespace Nucleus.Coop
                 return;
             }
 
+            currentGame = currentControl.GameInfo;
+
+            SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
+
+            saveProfileRadioBtn.RadioChecked = currentGame.MetaInfo.SaveProfile;
+
             coverFrame.BackColor = Color.Transparent;
 
             profilepButtonsPanel.Visible = false;
             stepPanelPictureBox.Visible = false;
             profileSettings.Visible = false;
             handlerNotesZoom.Visible = false;
-
-            currentGame = currentGameInfo.Game;
-            saveProfileRadioBtn.RadioChecked = currentGame.MetaInfo.SaveProfile;
-
-            SetBackroundAndCover.ApplyBackgroundAndCover(this, currentGame.GUID);
 
             lastPlayedAtValue.Text = currentGame.MetaInfo.LastPlayedAt;
             lastPlayedAtValue.Location = new Point(lastPlayedAt.Right, lastPlayedAt.Location.Y);
@@ -1188,11 +1209,20 @@ namespace Nucleus.Coop
 
             if (!rainbowTimerRunning)
             {
-                rainbowTimer = new System.Windows.Forms.Timer();
-                rainbowTimer.Interval = (25); //millisecond                   
-                rainbowTimer.Tick += new EventHandler(RainbowTimerTick);
+                if (rainbowTimer == null)
+                {
+                    rainbowTimer = new System.Windows.Forms.Timer();
+                    rainbowTimer.Interval = (25); //millisecond                   
+                    rainbowTimer.Tick += RainbowTimerTick;
+                }
+
                 rainbowTimer.Start();
                 rainbowTimerRunning = true;
+            }
+
+            foreach (Control icon in icons_Container.Controls)
+            {
+                icon.Dispose();
             }
 
             icons_Container.Controls.Clear();
@@ -1230,8 +1260,8 @@ namespace Nucleus.Coop
                     setupScreen.ProfilesList.Visible = showList;
                 }
 
-                CustomToolTips.SetToolTip(profilesList_btn, $"{currentGameInfo.Game.GameName} profiles list.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                CustomToolTips.SetToolTip(profileSettings_btn, $"Profile settings.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(profilesList_btn, $"{currentGameInfo.Game.GameName} profiles list.", "profilesList_btn", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(profileSettings_btn, $"Profile settings.", "profileSettings_btn", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
                 profilesList_btn.Visible = showList;
 
@@ -1279,17 +1309,17 @@ namespace Nucleus.Coop
         => btn_Play.Visible = true;
 
         private void StepCanPlay(UserControl obj, bool canProceed, bool autoProceed)
-        {         
+        {
             if (canProceed || autoProceed)
             {
-                saveProfileRadioBtn.Visible = !GameProfile.Loaded && !currentGameInfo.Game.MetaInfo.DisableProfiles && !disableGameProfiles;              
+                saveProfileRadioBtn.Visible = !GameProfile.Loaded && !currentGameInfo.Game.MetaInfo.DisableProfiles && !disableGameProfiles;
             }
             else
             {
                 saveProfileRadioBtn.Visible = false;
             }
 
-            saveProfileRadioBtn.Location = GameProfile.profilesPathList.Count > 0 ? new Point(profilesList_btn.Right + 5, saveProfileRadioBtn.Location.Y) : new Point(profileSettings_btn.Right + 5, saveProfileRadioBtn.Location.Y);           
+            saveProfileRadioBtn.Location = GameProfile.profilesPathList.Count > 0 ? new Point(profilesList_btn.Right + 5, saveProfileRadioBtn.Location.Y) : new Point(profileSettings_btn.Right + 5, saveProfileRadioBtn.Location.Y);
 
             if (btn_Prev.Enabled)
             {
@@ -1358,6 +1388,21 @@ namespace Nucleus.Coop
             }
         }
 
+        private void Btn_Prev_Click(object sender, EventArgs e)
+        {
+            currentStepIndex--;
+
+            if (currentStepIndex < 0)
+            {
+                currentStepIndex = 0;
+                return;
+            }
+
+            GameProfile.Ready = false;
+
+            GoToStep(currentStepIndex);
+        }
+
         private void BtnNext_Click(object sender, EventArgs e) => GoToStep(currentStepIndex + 1);
 
         private void KillCurrentStep()
@@ -1369,11 +1414,11 @@ namespace Nucleus.Coop
         }
 
         private void GoToStep(int step)
-        {           
+        {
             btn_Prev.Enabled = step > 0;
-            
+
             if (step >= stepsList.Count)
-            {                
+            {
                 return;
             }
 
@@ -1442,9 +1487,54 @@ namespace Nucleus.Coop
             StepPanel.Refresh();
             mainButtonFrame.Refresh();
             rightFrame.Refresh();
-            
-            Invalidate(false);
+
+            Invalidate(false);//Update top/bottom border colors
         }
+
+        private void Btn_Play_Click(object sender, EventArgs e)
+        {
+            if ((string)btn_Play.Tag == "S T O P")
+            {
+                I_GameHandlerEndFunc("Stop button clicked", true);
+                GameProfile.Instance.Reset();
+                DevicesFunctions.gamepadTimer = new System.Threading.Timer(DevicesFunctions.GamepadTimer_Tick, null, 0, 500);
+                return;
+            }
+
+            DevicesFunctions.gamepadTimer.Dispose();
+
+            currentStep?.Ended();
+
+            btn_Play.Tag = "S T O P";
+
+            btn_Prev.Enabled = false;
+
+            //reload the handler here so it can be edited/updated until play button get clicked
+            gameManager.AddScript(Path.GetFileNameWithoutExtension(currentGame.JsFileName), new bool[] { false, currentGame.UpdateAvailable });
+
+            currentGame = gameManager.GetGame(currentGameInfo.ExePath);
+            currentGameInfo.InitializeDefault(currentGame, currentGameInfo.ExePath);
+            I_GameHandler = gameManager.MakeHandler(currentGame);
+            I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile), I_GameHandler);
+            I_GameHandler.Ended += Handler_Ended;
+
+            if (profileSettings.Visible)
+            {
+                profileSettings.Visible = false;
+            }
+
+            HotkeysRegistration.RegHotkeys(this.Handle);
+
+            if (currentGame.CustomHotkeys != null)
+            {
+                HotkeysRegistration.RegCustomHotkeys(currentGame);
+            }
+
+            WindowState = FormWindowState.Minimized;
+
+            RefreshUI(true);
+        }
+
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
@@ -1476,50 +1566,6 @@ namespace Nucleus.Coop
             }
             catch { }
         }
-  
-        private void Btn_Play_Click(object sender, EventArgs e)
-        {
-            if ((string)btn_Play.Tag == "S T O P")
-            {
-                I_GameHandlerEndFunc("Stop button clicked", true);
-                GameProfile.Instance.Reset();
-                DevicesFunctions.gamepadTimer = new System.Threading.Timer(DevicesFunctions.GamepadTimer_Tick, null, 0, 500);
-                return;
-            }
-          
-            DevicesFunctions.gamepadTimer.Dispose();
-
-            currentStep?.Ended();
-
-            btn_Play.Tag = "S T O P";
-
-            btn_Prev.Enabled = false;
-
-            //reload the handler here so it can be edited/updated until play button get clicked
-            gameManager.AddScript(Path.GetFileNameWithoutExtension(currentGame.JsFileName), new bool[] { false, currentGame.UpdateAvailable });
-
-            currentGame = gameManager.GetGame(currentGameInfo.ExePath);
-            currentGameInfo.InitializeDefault(currentGame, currentGameInfo.ExePath);
-            I_GameHandler = gameManager.MakeHandler(currentGame);   
-            I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile), I_GameHandler);
-            I_GameHandler.Ended += Handler_Ended;
-
-            if (profileSettings.Visible)
-            {
-                profileSettings.Visible = false;
-            }
-
-            HotkeysRegistration.RegHotkeys(this.Handle);
-
-            if (currentGame.CustomHotkeys != null)
-            {
-                HotkeysRegistration.RegCustomHotkeys(currentGame);
-            }
-
-            WindowState = FormWindowState.Minimized;
-
-            RefreshUI(true);
-        }
 
         private void Handler_Ended()
         {
@@ -1546,26 +1592,15 @@ namespace Nucleus.Coop
             }
         }
 
-        private void Btn_Prev_Click(object sender, EventArgs e)
-        {          
-            currentStepIndex--;
-
-            if (currentStepIndex < 0)
-            {
-                currentStepIndex = 0;
-                return;
-            }
-
-            GameProfile.Ready = false;
-           
-            GoToStep(currentStepIndex);          
+        private void DisposeTutorial()
+        {
+            Controls.Remove(tuto);
+            tuto.Dispose();
+            tuto = null;
         }
 
-        private void BtnSearch_Click(object sender, EventArgs e) => SearchGame.Search(this, null, null);
-
-        private void DetailsToolStripMenuItem_Click(object sender, EventArgs e) => GetGameDetails.GetDetails(menuCurrentGameInfo);
-
-        private void RemoveGameMenuItem_Click(object sender, EventArgs e) => RemoveGame.Remove(this, menuCurrentGameInfo, false);
+        private void SocialLinksMenu_Opened(object sender, EventArgs e) => socialLinksMenu.Region =
+                     Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20));
 
         private void GameContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -2018,7 +2053,7 @@ namespace Nucleus.Coop
                             }
                             else
                             {
-                                gameContextMenuStrip.Items["disableHandlerUpdateMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");                              
+                                gameContextMenuStrip.Items["disableHandlerUpdateMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
                             }
                         }
 
@@ -2069,6 +2104,12 @@ namespace Nucleus.Coop
             if (currentControl != null)
                 menuCurrentControl = currentControl;
         }
+
+        private void BtnSearch_Click(object sender, EventArgs e) => SearchGame.Search(this, null, null);
+
+        private void DetailsToolStripMenuItem_Click(object sender, EventArgs e) => GetGameDetails.GetDetails(menuCurrentGameInfo);
+
+        private void RemoveGameMenuItem_Click(object sender, EventArgs e) => RemoveGame.Remove(this, menuCurrentGameInfo, false);
 
         private void OpenBackupFolderSubmenuItem_Click(object sender, EventArgs e)
         {
@@ -2233,38 +2274,6 @@ namespace Nucleus.Coop
             }
         }
 
-        public static Control FindControlAtPoint(Control container, Point pos)
-        {
-            Control child;
-            foreach (Control c in container.Controls)
-            {
-                if (c.Visible && c.Bounds.Contains(pos))
-                {
-                    child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
-                    if (child == null)
-                    {
-                        return c;
-                    }
-                    else
-                    {
-                        return child;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public static Control FindControlAtCursor(MainForm form)
-        {
-            Point pos = Cursor.Position;
-            if (form.Bounds.Contains(pos))
-            {
-                return FindControlAtPoint(form, form.PointToClient(pos));
-            }
-
-            return null;
-        }
 
         private void OpenHandlerMenuItem_Click(object sender, EventArgs e)
         => OpenHandler.OpenRawHandler(menuCurrentGameInfo);
@@ -2350,19 +2359,12 @@ namespace Nucleus.Coop
                     downloadPrompt = new DownloadPrompt(handler, this, null, true);
                     downloadPrompt.ShowDialog();
 
-                    RefreshUI(false);
+                    gameControl.GameInfo = GameManager.Instance.GameInfos.Where(g => g.Value.GUID == gameControl.GameInfo.GUID).FirstOrDefault().Value;
 
-                    if (currentControl != null)
-                    {
-                        if (currentControl.GameInfo.GUID == gameInfo.GUID)
-                        {
-                            GameControl con = controls.Where(c => c.Value.GameInfo.GUID == gameInfo.GUID).FirstOrDefault().Value;
-                            con.RadioSelected();
-                            List_Games_SelectedChanged(con, null);                    
-                            list_Games.ScrollControlIntoView(con);
-                        }
+                    gameControl.RadioSelected();
 
-                    }
+                    List_Games_SelectedChanged(gameControl, null);
+                    list_Games.ScrollControlIntoView(gameControl);
                 }
             }
         }
@@ -2404,7 +2406,7 @@ namespace Nucleus.Coop
             {
                 profileSettings.BringToFront();
             }
-           
+
             if (sender != donationBtn)
             {
                 if (donationPanel != null)
@@ -2415,7 +2417,7 @@ namespace Nucleus.Coop
                 }
             }
 
-            if(sender != instruction_btn && tuto != null)
+            if (sender != instruction_btn && tuto != null)
             {
                 DisposeTutorial();
             }
@@ -2426,31 +2428,6 @@ namespace Nucleus.Coop
         private void Link_faq_Click(object sender, EventArgs e) => Process.Start(faq_link);
 
         private void ScriptAuthorTxt_LinkClicked(object sender, LinkClickedEventArgs e) => Process.Start(e.LinkText);
-
-        private void CloseBtn_MouseEnter(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close_mousehover.png");
-
-        private void CloseBtn_MouseLeave(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
-
-        private void MaximizeBtn_MouseEnter(object sender, EventArgs e) => maximizeBtn.BackgroundImage = maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed_mousehover.png") : ImageCache.GetImage(theme + "title_maximize_mousehover.png");
-
-        private void MaximizeBtn_MouseLeave(object sender, EventArgs e) => maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed.png") : ImageCache.GetImage(theme + "title_maximize.png");
-
-        private void MinimizeBtn_MouseLeave(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
-
-        private void MinimizeBtn_MouseEnter(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize_mousehover.png");
-
-        private void Btn_settings_MouseEnter(object sender, EventArgs e) { if (profileSettings.Visible) { return; } btn_settings.BackgroundImage = ImageCache.GetImage(theme + "title_settings_mousehover.png"); }
-
-        private void Btn_settings_MouseLeave(object sender, EventArgs e) => btn_settings.BackgroundImage = ImageCache.GetImage(theme + "title_settings.png");
-
-        private void Btn_downloadAssets_MouseEnter(object sender, EventArgs e) => btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets_mousehover.png");
-
-        private void Btn_downloadAssets_MouseLeave(object sender, EventArgs e) => btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets.png");
-
-        private void Instruction_btn_MouseEnter(object sender, EventArgs e) => instruction_btn.BackgroundImage = ImageCache.GetImage(theme + "instruction_opened.png");
-
-        private void Instruction_btn_MouseLeave(object sender, EventArgs e) => instruction_btn.BackgroundImage = ImageCache.GetImage(theme + "instruction_closed.png");
-
 
         private void Btn_magnifier_Click(object sender, EventArgs e)
         {
@@ -2494,7 +2471,7 @@ namespace Nucleus.Coop
 
             if (!settings.Visible)
             {
-                settings.Visible = true;
+                settings.SetVisible();
                 settings.BringToFront();
             }
             else
@@ -2530,7 +2507,7 @@ namespace Nucleus.Coop
             {
                 ProfilesList.Instance.Locked = true;
                 ProfileSettings.UpdateProfileSettingsUiValues();
-                profileSettings.Visible = true;
+                profileSettings.SetVisible();
                 profileSettings.BringToFront();
             }
             else
@@ -2548,60 +2525,7 @@ namespace Nucleus.Coop
             maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed.png") : ImageCache.GetImage(theme + "title_maximize.png");
         }
 
-        private void MainForm_ClientSizeChanged(object sender, EventArgs e)
-        {
-            Invalidate(false);
 
-            if (roundedCorners)
-            {
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
-                    clientAreaPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 0, 0));
-                }
-                else
-                {
-                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-                    clientAreaPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 20, 20));
-                }
-            }
-
-            maximizeBtn.BackgroundImage = maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed.png") : ImageCache.GetImage(theme + "title_maximize.png");
-
-            if (setupScreen != null && I_GameHandler == null)
-            {
-                GameProfile.Instance?.Reset();
-
-                if (stepsList != null)
-                {
-                    GoToStep(0);
-                }
-
-                if (ProfilesList.Instance != null)
-                {
-                    ProfilesList.Instance.Locked = false;
-                }
-            }
-        }
-
-        private void MainForm_ResizeBegin(object sender, EventArgs e)
-        {
-            clientAreaPanel.Visible = false;
-            Opacity = 0.6D;
-        }
-
-        private void MainForm_ResizeEnd(object sender, EventArgs e)
-        {
-            clientAreaPanel.Visible = true;
-
-            game_listSizer.Refresh();
-            StepPanel.Refresh();
-            mainButtonFrame.Refresh();
-            rightFrame.Refresh();
-            stepPanelPictureBox.Refresh();
-            Opacity = 1.0D;
-            Refresh();
-        }
 
         private void CloseButtonClick(object sender, EventArgs e)
         => FadeOut();
@@ -2616,104 +2540,13 @@ namespace Nucleus.Coop
             else
             {
                 menuCurrentGameInfo.Game.MetaInfo.KeepSymLink = true;
-                gameContextMenuStrip.Items["deleteContentFolderMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");              
+                gameContextMenuStrip.Items["deleteContentFolderMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
             }
 
             GameManager.Instance.SaveUserProfile();
         }
 
-        private void SaveNucleusWindowPosAndLoc()
-        {
-            if (Location.X == -32000 || Width == 0)
-            {
-                return;
-            }
 
-            App_Misc.WindowSize =  Width + "X" + Height;
-            App_Misc.WindowLocation = Location.X + "X" + Location.Y;
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) => SaveNucleusWindowPosAndLoc();
-
-        private const int WM_NCLBUTTONDOWN = 0xA1;
-        private const int HT_CAPTION = 0x2;
-
-        private void MainButtonFrame_MouseDown(object sender, MouseEventArgs e)
-        {
-            ClickAnyControl(mainButtonFrame, null);
-
-            if (e.Button == MouseButtons.Left)
-            {
-                User32Interop.ReleaseCapture();
-                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
-                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
-            }
-
-            if (settings.Visible)
-            {
-                settings.BringToFront();
-            }
-
-            if (profileSettings.Visible)
-            {
-                profileSettings.BringToFront();
-            }
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            int edgingHeight = clientAreaPanel.Location.Y-3;
-            Rectangle topGradient = new Rectangle(0, 0, Width, edgingHeight);
-            Rectangle bottomGradient = new Rectangle(0, (Height - edgingHeight)-1, Width, edgingHeight);
-
-            Color edgingColorTop;
-            Color edgingColorBottom;
-
-            if (!mainButtonFrame.Enabled)
-            {
-                edgingColorTop = Color.Red;
-                edgingColorBottom = Color.Red;
-            }
-            else if (webView != null)
-            {
-                edgingColorTop = Color.FromArgb(255, 0, 98, 190);
-                edgingColorBottom = Color.FromArgb(255, 0, 98, 190);
-            }
-            else if (StepPanel.Visible)
-            {
-                edgingColorTop = GameBorderGradientTop;
-                edgingColorBottom = GameBorderGradientBottom;
-            }
-            else
-            {
-                edgingColorTop = BorderGradient;
-                edgingColorBottom = BorderGradient;
-            }
-
-            LinearGradientBrush topLinearGradientBrush = new LinearGradientBrush(topGradient, Color.Transparent, edgingColorTop, 0F);
-            LinearGradientBrush bottomLinearGradientBrush = new LinearGradientBrush(bottomGradient, Color.Transparent, edgingColorBottom, 0F);
-
-            ColorBlend topcblend = new ColorBlend(3);
-            topcblend.Colors = new Color[3] { Color.Transparent, edgingColorTop, Color.Transparent };
-            topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
-
-            topLinearGradientBrush.InterpolationColors = topcblend;
-
-            ColorBlend bottomcblend = new ColorBlend(3);
-            bottomcblend.Colors = new Color[3] { Color.Transparent, edgingColorBottom, Color.Transparent };
-            bottomcblend.Positions = new float[3] { 0f, 0.5f, 1f };
-
-            bottomLinearGradientBrush.InterpolationColors = bottomcblend;
-
-            Rectangle fill = new Rectangle(0, 0, Width, Height);
-
-            e.Graphics.FillRectangle(borderBrush, fill);
-            e.Graphics.FillRectangle(topLinearGradientBrush, topGradient);
-            e.Graphics.FillRectangle(bottomLinearGradientBrush, bottomGradient);
-
-            topLinearGradientBrush.Dispose();
-            bottomLinearGradientBrush.Dispose();
-        }
 
         private void Btn_debuglog_Click(object sender, EventArgs e)
         {
@@ -2725,18 +2558,6 @@ namespace Nucleus.Coop
 
             Globals.MainOSD.Show(2000, "No Available Log");
         }
-
-        private void Btn_Extract_MouseEnter(object sender, EventArgs e) => btn_Extract.BackgroundImage = ImageCache.GetImage(theme + "extract_nc_mousehover.png");
-
-        private void Btn_Extract_MouseLeave(object sender, EventArgs e) => btn_Extract.BackgroundImage = ImageCache.GetImage(theme + "extract_nc.png");
-
-        private void BtnSearch_MouseEnter(object sender, EventArgs e) => btnSearch.BackgroundImage = ImageCache.GetImage(theme + "search_game_mousehover.png");
-
-        private void BtnSearch_MouseLeave(object sender, EventArgs e) => btnSearch.BackgroundImage = ImageCache.GetImage(theme + "search_game.png");
-
-        private void Btn_debuglog_MouseEnter(object sender, EventArgs e) => btn_debuglog.BackgroundImage = ImageCache.GetImage(theme + "log_mousehover.png");
-
-        private void Btn_debuglog_MouseLeave(object sender, EventArgs e) => btn_debuglog.BackgroundImage = ImageCache.GetImage(theme + "log.png");
 
         private void DonationBtn_Click(object sender, EventArgs e)
         {
@@ -2757,15 +2578,12 @@ namespace Nucleus.Coop
             }
         }
 
-        private void MainForm_Deactivate(object sender, EventArgs e)
-        {
-            txt_version.Focus();
-        }
+
 
         private void DisableProfilesMenuItem_Click(object sender, EventArgs e)
         {
             profilepButtonsPanel.Visible = false;
-            
+
             if (menuCurrentGameInfo.Game.MetaInfo.DisableProfiles)
             {
                 menuCurrentGameInfo.Game.MetaInfo.DisableProfiles = false;
@@ -2785,8 +2603,8 @@ namespace Nucleus.Coop
 
                     profilesList_btn.Visible = showList;
                     profileSettings_btn.Visible = true;
-                               
-                    CustomToolTips.SetToolTip(profilesList_btn, $"{currentGameInfo.Game.GameName} profiles list.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+
+                    CustomToolTips.SetToolTip(profilesList_btn, $"{currentGameInfo.Game.GameName} profiles list.", "profilesList_btn", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
                     if (stepsList != null)
                     {
@@ -2798,13 +2616,13 @@ namespace Nucleus.Coop
             {
                 menuCurrentGameInfo.Game.MetaInfo.DisableProfiles = true;
                 gameContextMenuStrip.Items["disableProfilesMenuItem"].Image = ImageCache.GetImage(theme + "unlocked.png");
-                               
+
                 if (menuCurrentGameInfo == currentGameInfo)
                 {
                     GameProfile.Instance.InitializeDefault(currentControl.GameInfo, setupScreen);
                     setupScreen.ProfilesList.Visible = false;
                     profilesList_btn.Visible = false;
-                    profileSettings_btn.Visible = false;                   
+                    profileSettings_btn.Visible = false;
                 }
 
                 if (stepsList != null)
@@ -2813,11 +2631,11 @@ namespace Nucleus.Coop
                 }
             }
 
-            if(stepButtonsPanel.Visible)
+            if (stepButtonsPanel.Visible)
             {
                 profilepButtonsPanel.Visible = true;
             }
-                            
+
             GameManager.Instance.SaveUserProfile();
         }
 
@@ -2934,6 +2752,244 @@ namespace Nucleus.Coop
 
         private void ScpToolkitToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/nefarius/ScpToolkit/releases");
 
+        private void SaveProfileRadioBtn_Click(object sender, EventArgs e)
+        {
+            CustomRadioButton radio = (CustomRadioButton)sender;
+            currentGame.MetaInfo.SaveProfile = radio.RadioChecked;
+        }
+
+        private void Instruction_btn_Click(object sender, EventArgs e)
+        {
+            if (tuto == null)
+            {
+                tuto = new Tutorial();
+                tuto.Size = new Size(this.Width - 200, this.Height - 113);
+                tuto.Location = new Point(Width / 2 - tuto.Width / 2, Height / 2 - tuto.Height / 2);
+                tuto.Click += ClickAnyControl;
+                Controls.Add(tuto);
+                tuto.BringToFront();
+            }
+            else
+            {
+                DisposeTutorial();
+            }
+
+            Update();
+        }
+
+        private void CoverMenuItem_Click(object sender, EventArgs e)
+        {
+            string coverPath = Path.Combine(Application.StartupPath, $"gui\\covers");
+
+            if (File.Exists($"{coverPath}\\{menuCurrentGameInfo.GameGuid}.jpeg"))
+            {
+                Process.Start($"{coverPath}\\{menuCurrentGameInfo.GameGuid}.jpeg");
+                Process.Start(coverPath);
+            }
+        }
+
+        private void ScreenshotsMenuItem_Click(object sender, EventArgs e)
+        {
+            string screenshotsPath = Path.Combine(Application.StartupPath, $"gui\\screenshots\\{menuCurrentGameInfo.GameGuid}");
+            if (Directory.Exists(screenshotsPath))
+            {
+                Process.Start(screenshotsPath);
+            }
+        }
+
+        private void DisableHandlerUpdateMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Invoke((MethodInvoker)delegate ()
+            {
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    bool update = false;
+
+                    if (menuCurrentGameInfo.Game.MetaInfo.CheckUpdate)
+                    {
+                        menuCurrentGameInfo.Game.MetaInfo.CheckUpdate = update;
+                        menuCurrentGameInfo.Game.UpdateAvailable = update;
+                        gameContextMenuStrip.Items["disableHandlerUpdateMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
+                    }
+                    else
+                    {
+                        menuCurrentGameInfo.Game.MetaInfo.CheckUpdate = true;
+                        update = menuCurrentGameInfo.Game.Hub.CheckUpdateAvailable();
+                        menuCurrentGameInfo.Game.UpdateAvailable = update;
+                        gameContextMenuStrip.Items["disableHandlerUpdateMenuItem"].Image = ImageCache.GetImage(theme + "unlocked.png");
+                    }
+                });
+            });
+        }
+
+        private void CloseBtn_MouseEnter(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close_mousehover.png");
+
+        private void CloseBtn_MouseLeave(object sender, EventArgs e) => closeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_close.png");
+
+        private void MaximizeBtn_MouseEnter(object sender, EventArgs e) => maximizeBtn.BackgroundImage = maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed_mousehover.png") : ImageCache.GetImage(theme + "title_maximize_mousehover.png");
+
+        private void MaximizeBtn_MouseLeave(object sender, EventArgs e) => maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed.png") : ImageCache.GetImage(theme + "title_maximize.png");
+
+        private void MinimizeBtn_MouseLeave(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize.png");
+
+        private void MinimizeBtn_MouseEnter(object sender, EventArgs e) => minimizeBtn.BackgroundImage = ImageCache.GetImage(theme + "title_minimize_mousehover.png");
+
+        private void Btn_settings_MouseEnter(object sender, EventArgs e) { if (profileSettings.Visible) { return; } btn_settings.BackgroundImage = ImageCache.GetImage(theme + "title_settings_mousehover.png"); }
+
+        private void Btn_settings_MouseLeave(object sender, EventArgs e) => btn_settings.BackgroundImage = ImageCache.GetImage(theme + "title_settings.png");
+
+        private void Btn_downloadAssets_MouseEnter(object sender, EventArgs e) => btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets_mousehover.png");
+
+        private void Btn_downloadAssets_MouseLeave(object sender, EventArgs e) => btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets.png");
+
+        private void Instruction_btn_MouseEnter(object sender, EventArgs e) => instruction_btn.BackgroundImage = ImageCache.GetImage(theme + "instruction_opened.png");
+
+        private void Instruction_btn_MouseLeave(object sender, EventArgs e) => instruction_btn.BackgroundImage = ImageCache.GetImage(theme + "instruction_closed.png");
+
+        private void Btn_Extract_MouseEnter(object sender, EventArgs e) => btn_Extract.BackgroundImage = ImageCache.GetImage(theme + "extract_nc_mousehover.png");
+
+        private void Btn_Extract_MouseLeave(object sender, EventArgs e) => btn_Extract.BackgroundImage = ImageCache.GetImage(theme + "extract_nc.png");
+
+        private void BtnSearch_MouseEnter(object sender, EventArgs e) => btnSearch.BackgroundImage = ImageCache.GetImage(theme + "search_game_mousehover.png");
+
+        private void BtnSearch_MouseLeave(object sender, EventArgs e) => btnSearch.BackgroundImage = ImageCache.GetImage(theme + "search_game.png");
+
+        private void Btn_debuglog_MouseEnter(object sender, EventArgs e) => btn_debuglog.BackgroundImage = ImageCache.GetImage(theme + "log_mousehover.png");
+
+        private void Btn_debuglog_MouseLeave(object sender, EventArgs e) => btn_debuglog.BackgroundImage = ImageCache.GetImage(theme + "log.png");
+
+        public static Control FindControlAtPoint(Control container, Point pos)
+        {
+            Control child;
+            foreach (Control c in container.Controls)
+            {
+                if (c.Visible && c.Bounds.Contains(pos))
+                {
+                    child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
+                    if (child == null)
+                    {
+                        return c;
+                    }
+                    else
+                    {
+                        return child;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static Control FindControlAtCursor(MainForm form)
+        {
+            Point pos = Cursor.Position;
+            if (form.Bounds.Contains(pos))
+            {
+                return FindControlAtPoint(form, form.PointToClient(pos));
+            }
+
+            return null;
+        }
+
+        private void Btn_ZoomIn(object sender, EventArgs e)
+        {
+            Control con = sender as Control;
+            con.Size = new Size(con.Width += 3, con.Height += 3);
+            con.Location = new Point(con.Location.X - 1, con.Location.Y - 1);
+        }
+
+        private void Btn_ZoomOut(object sender, EventArgs e)
+        {
+            Control con = sender as Control;
+            con.Size = new Size(con.Width -= 3, con.Height -= 3);
+            con.Location = new Point(con.Location.X + 1, con.Location.Y + 1);
+        }
+
+        private DrawParticles btnPlayParticles;
+
+        private void CoverFrame_Paint(object sender, PaintEventArgs e)
+        {
+            if (enableParticles)
+            {
+                if (btnPlayParticles == null)
+                {
+                    btnPlayParticles = new DrawParticles();
+                }
+
+                if (btn_Play.Visible)
+                {
+                    btnPlayParticles.Draw(sender, btn_Play, e, 4, 140, new int[] { 100, 255, 100 });
+                }
+            }
+
+            coverFrame.BackColor = btn_Play.Visible ? Color.FromArgb(100, 0, 0, 0) : Color.Transparent;
+        }
+
+        private DrawParticles panelParticles;
+        private void StepPanelPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (enableParticles)
+            {
+                if (panelParticles == null)
+                {
+                    panelParticles = new DrawParticles();
+                }
+
+                if (stepPanelPictureBox.Visible)
+                    panelParticles.Draw(sender, sender as Control, e, 6, 100, new int[] { 255, 255, 255 });
+            }
+        }
+
+        private Pen inputTextOutlinePen;
+        private SolidBrush inputTextFillBrush;
+
+        private void MainButtonFrame_Paint(object sender, PaintEventArgs e)
+        {
+            InputsTextLabel.Location = new Point(mainButtonFrame.Width / 2 - InputsTextLabel.Width / 2, (mainButtonFrame.Bottom - InputsTextLabel.Height) - 5);
+
+            if (inputTextOutlinePen == null)
+            {
+                inputTextOutlinePen = new Pen(Color.FromArgb(180, 100, 100, 100));
+                inputTextFillBrush = new SolidBrush(Color.FromArgb(20, 20, 20, 20));
+            }
+
+            if (InputsTextLabel.Text != "")
+            {
+                Rectangle inputTextBack = new Rectangle(InputsTextLabel.Location.X - 5, InputsTextLabel.Location.Y - 3, InputsTextLabel.Width + 10, InputsTextLabel.Height + 6);
+                Rectangle inputTextBackOutline = new Rectangle(InputsTextLabel.Location.X - 6, InputsTextLabel.Location.Y - 4, InputsTextLabel.Width + 12, InputsTextLabel.Height + 8);
+
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                GraphicsPath outlineGp = FormGraphicsUtil.MakeRoundedRect(inputTextBackOutline, 10, 10, true, true, true, true);
+                GraphicsPath backGp = FormGraphicsUtil.MakeRoundedRect(inputTextBack, 10, 10, false, false, false, true);
+
+                e.Graphics.DrawPath(inputTextOutlinePen, outlineGp);
+                e.Graphics.FillPath(inputTextFillBrush, backGp);
+
+                outlineGp.Dispose();
+                backGp.Dispose();
+            }
+        }
+
+        private void StepPanel_Paint(object sender, PaintEventArgs e)
+        {
+            if (GameProfile.Instance == null)
+            {
+                InputsTextLabel.Text = "";
+                return;
+            }
+
+            var prevText = InputsTextLabel.Text;
+            var inputText = InputsText.GetInputText(this);
+
+            if (prevText != inputText.Item1)
+            {
+                InputsTextLabel.Text = inputText.Item1;
+                InputsTextLabel.ForeColor = inputText.Item2;
+                mainButtonFrame.Invalidate(false);
+            }
+        }
+
         private void ClientAreaPanel_Paint(object sender, PaintEventArgs e)
         {
             if (backGradient.A == 0)
@@ -2942,6 +2998,11 @@ namespace Nucleus.Coop
             }
 
             Rectangle gradientBrushbounds = new Rectangle(0, 0, mainButtonFrame.Width, Height);
+
+            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            {
+                return;
+            }
 
             Color color1 = Color.FromArgb(230, backGradient.R, backGradient.G, backGradient.B);
             Color color2 = Color.FromArgb(195, backGradient.R, backGradient.G, backGradient.B);
@@ -2965,9 +3026,6 @@ namespace Nucleus.Coop
             e.Graphics.FillRectangle(ClientAreaPanel_LinearGradientBrush, clientAreaPanel.ClientRectangle);
             ClientAreaPanel_LinearGradientBrush.Dispose();
         }
-     
-        private void SocialLinksMenu_Opened(object sender, EventArgs e) =>
-        socialLinksMenu.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20));
 
         private void Game_listSizer_Paint(object sender, PaintEventArgs e)
         {
@@ -2977,6 +3035,11 @@ namespace Nucleus.Coop
             }
 
             Rectangle gradientBrushbounds = new Rectangle(0, 0, game_listSizer.Width / 2, game_listSizer.Height);
+
+            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            {
+                return;
+            }
 
             Color color1 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
             Color color2 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
@@ -3004,6 +3067,11 @@ namespace Nucleus.Coop
 
             Rectangle gradientBrushbounds = new Rectangle(0, 0, rightFrame.Width / 2, rightFrame.Height);
 
+            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            {
+                return;
+            }
+
             Color color1 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
             Color color2 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
             Color color3 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
@@ -3021,178 +3089,156 @@ namespace Nucleus.Coop
             e.Graphics.FillRectangle(rightFrame_LinearGradientBrush, rightFrame.ClientRectangle);
             rightFrame_LinearGradientBrush.Dispose();
         }
-       
-        private void SaveProfileRadioBtn_Click(object sender, EventArgs e)
-        {
-            CustomRadioButton radio = (CustomRadioButton)sender;
-            currentGame.MetaInfo.SaveProfile = radio.RadioChecked;
-        }
 
-        private Tutorial tuto;
-
-        private void Instruction_btn_Click(object sender, EventArgs e)
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if(tuto == null)
+            int edgingHeight = clientAreaPanel.Location.Y - 3;
+            Rectangle topGradient = new Rectangle(0, 0, Width, edgingHeight);
+            Rectangle bottomGradient = new Rectangle(0, (Height - edgingHeight) - 1, Width, edgingHeight);
+
+            Color edgingColorTop;
+            Color edgingColorBottom;
+
+            if (!mainButtonFrame.Enabled)
             {
-                tuto = new Tutorial();
-                tuto.Size = new Size(this.Width -200,this.Height - 113);
-                tuto.Location = new Point(Width / 2 - tuto.Width / 2, Height / 2 - tuto.Height / 2);
-                tuto.Click += ClickAnyControl;
-                Controls.Add(tuto);
-                tuto.BringToFront();
+                edgingColorTop = Color.Red;
+                edgingColorBottom = Color.Red;
             }
-            else 
+            else if (webView != null)
             {
-                DisposeTutorial();
+                edgingColorTop = Color.FromArgb(255, 0, 98, 190);
+                edgingColorBottom = Color.FromArgb(255, 0, 98, 190);
+            }
+            else if (StepPanel.Visible)
+            {
+                edgingColorTop = GameBorderGradientTop;
+                edgingColorBottom = GameBorderGradientBottom;
+            }
+            else
+            {
+                edgingColorTop = BorderGradient;
+                edgingColorBottom = BorderGradient;
             }
 
-            Update();
+            LinearGradientBrush topLinearGradientBrush = new LinearGradientBrush(topGradient, Color.Transparent, edgingColorTop, 0F);
+            LinearGradientBrush bottomLinearGradientBrush = new LinearGradientBrush(bottomGradient, Color.Transparent, edgingColorBottom, 0F);
+
+            ColorBlend topcblend = new ColorBlend(3);
+            topcblend.Colors = new Color[3] { Color.Transparent, edgingColorTop, Color.Transparent };
+            topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
+
+            topLinearGradientBrush.InterpolationColors = topcblend;
+
+            ColorBlend bottomcblend = new ColorBlend(3);
+            bottomcblend.Colors = new Color[3] { Color.Transparent, edgingColorBottom, Color.Transparent };
+            bottomcblend.Positions = new float[3] { 0f, 0.5f, 1f };
+
+            bottomLinearGradientBrush.InterpolationColors = bottomcblend;
+
+            Rectangle fill = new Rectangle(0, 0, Width, Height);
+
+            e.Graphics.FillRectangle(borderBrush, fill);
+            e.Graphics.FillRectangle(topLinearGradientBrush, topGradient);
+            e.Graphics.FillRectangle(bottomLinearGradientBrush, bottomGradient);
+
+            topLinearGradientBrush.Dispose();
+            bottomLinearGradientBrush.Dispose();
         }
 
-        private void DisposeTutorial()
+        private void MainForm_ClientSizeChanged(object sender, EventArgs e)
         {
-            Controls.Remove(tuto);
-            tuto.Dispose();
-            tuto = null;
-        }
+            Invalidate(false);
 
-        private void Btn_ZoomIn(object sender, EventArgs e)
-        {
-            Control con = sender as Control;
-            con.Size = new Size(con.Width += 3, con.Height += 3);
-            con.Location = new Point(con.Location.X - 1, con.Location.Y - 1);
-        }
-
-        private void Btn_ZoomOut(object sender, EventArgs e)
-        {
-            Control con = sender as Control;
-            con.Size = new Size(con.Width -= 3, con.Height -= 3);
-            con.Location = new Point(con.Location.X + 1, con.Location.Y + 1);
-        }
-
-        private void StepPanel_Paint(object sender, PaintEventArgs e)
-        {
-            if (GameProfile.Instance == null)
+            if (roundedCorners)
             {
-                InputsTextLabel.Text = "";
+                if (WindowState == FormWindowState.Maximized)
+                {
+                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
+                    clientAreaPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 0, 0));
+                }
+                else
+                {
+                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                    clientAreaPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 20, 20));
+                }
+            }
+
+            maximizeBtn.BackgroundImage = maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed.png") : ImageCache.GetImage(theme + "title_maximize.png");
+
+            if (setupScreen != null && I_GameHandler == null)
+            {
+                GameProfile.Instance?.Reset();
+
+                if (stepsList != null)
+                {
+                    GoToStep(0);
+                }
+
+                if (ProfilesList.Instance != null)
+                {
+                    ProfilesList.Instance.Locked = false;
+                }
+            }
+        }
+
+        private void MainForm_ResizeBegin(object sender, EventArgs e)
+        {
+            clientAreaPanel.Visible = false;
+            Opacity = 0.6D;
+        }
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            clientAreaPanel.Visible = true;
+
+            game_listSizer.Refresh();
+            StepPanel.Refresh();
+            mainButtonFrame.Refresh();
+            rightFrame.Refresh();
+            stepPanelPictureBox.Refresh();
+
+            Opacity = 1.0D;
+            Refresh();
+        }
+
+        private void MainForm_Deactivate(object sender, EventArgs e)
+        {
+            txt_version.Focus();
+        }
+
+        private void SaveNucleusWindowPosAndLoc()
+        {
+            if (Location.X == -32000 || Width == 0)
+            {
                 return;
             }
 
-            var inputText = InputsText.GetInputText(this);
-
-            InputsTextLabel.Text = inputText.Item1;
-            InputsTextLabel.ForeColor = inputText.Item2;
-            InputsTextLabel.Location = new Point(mainButtonFrame.Width/2 - InputsTextLabel.Width/2, (mainButtonFrame.Bottom - InputsTextLabel.Height) - 5);
-
-            mainButtonFrame.Invalidate(false);
+            App_Misc.WindowSize = Width + "X" + Height;
+            App_Misc.WindowLocation = Location.X + "X" + Location.Y;
         }
 
-        private void CoverMenuItem_Click(object sender, EventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) => SaveNucleusWindowPosAndLoc();
+
+        private void MainButtonFrame_MouseDown(object sender, MouseEventArgs e)
         {
-            string coverPath = Path.Combine(Application.StartupPath, $"gui\\covers");
+            ClickAnyControl(mainButtonFrame, null);
 
-            if (File.Exists($"{coverPath}\\{menuCurrentGameInfo.GameGuid}.jpeg"))
+            if (e.Button == MouseButtons.Left)
             {
-                Process.Start($"{coverPath}\\{menuCurrentGameInfo.GameGuid}.jpeg");
-                Process.Start(coverPath);         
-            }
-        }
-
-        private void ScreenshotsMenuItem_Click(object sender, EventArgs e)
-        {
-            string screenshotsPath = Path.Combine(Application.StartupPath, $"gui\\screenshots\\{menuCurrentGameInfo.GameGuid}");
-            if (Directory.Exists(screenshotsPath))
-            {
-                Process.Start(screenshotsPath);
-            }
-        }
-
-        private void DisableHandlerUpdateMenuItem_Click(object sender, EventArgs e)
-        {
-            System.Threading.Tasks.Task.Run(() =>
-            {
-                this.Invoke((MethodInvoker)delegate ()
-                {
-                    bool update = false;
-
-                    if (menuCurrentGameInfo.Game.MetaInfo.CheckUpdate)
-                    {
-                        menuCurrentGameInfo.Game.MetaInfo.CheckUpdate = false;
-                        menuCurrentGameInfo.Game.UpdateAvailable = false;
-                        gameContextMenuStrip.Items["disableHandlerUpdateMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
-                    }
-                    else
-                    {
-                        menuCurrentGameInfo.Game.MetaInfo.CheckUpdate = true;
-                        update = menuCurrentGameInfo.Game.Hub.CheckUpdateAvailable();
-                        menuCurrentGameInfo.Game.UpdateAvailable = update;
-                        gameContextMenuStrip.Items["disableHandlerUpdateMenuItem"].Image = ImageCache.GetImage(theme + "unlocked.png");
-                    }
-
-                });
-            });
-        }
-
-        private DrawParticles btnPlayParticles;
-
-        private void CoverFrame_Paint(object sender, PaintEventArgs e)
-        {
-            if (enableParticles)
-            {
-                if (btnPlayParticles == null)
-                {
-                    btnPlayParticles = new DrawParticles();
-                }
-
-                if (btn_Play.Visible)
-                {
-                    btnPlayParticles.Draw(sender, e, 4, 80, new int[] { 100, 255, 100 });
-                }                
+                User32Interop.ReleaseCapture();
+                IntPtr nucHwnd = User32Interop.FindWindow(null, Text);
+                User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
 
-            coverFrame.BackColor = btn_Play.Visible ? Color.FromArgb(100, 0, 0, 0) : Color.Transparent;
-        }
-
-        private DrawParticles panelParticles;
-        private void StepPanelPictureBox_Paint(object sender, PaintEventArgs e)
-        {
-            if (enableParticles)
+            if (settings.Visible)
             {
-                if (panelParticles == null)
-                {
-                    panelParticles = new DrawParticles();
-
-                }
-                if (stepPanelPictureBox.Visible)
-                    panelParticles.Draw(sender, e, 12, 50,new int[] {255,255,255});
-            }
-        }
-
-        private Pen inputTextOutlinePen;
-        private SolidBrush inputTextFillBrush;
-
-        private void MainButtonFrame_Paint(object sender, PaintEventArgs e)
-        {
-            if(inputTextOutlinePen == null)
-            {
-                inputTextOutlinePen = new Pen(Color.FromArgb(180, 100, 100, 100));
-                inputTextFillBrush = new SolidBrush(Color.FromArgb(20, 20, 20, 20));
+                settings.BringToFront();
             }
 
-            Rectangle inputTextBack = new Rectangle(InputsTextLabel.Location.X - 5, InputsTextLabel.Location.Y - 3, InputsTextLabel.Width + 10, InputsTextLabel.Height + 6);
-            Rectangle inputTextBackOutline = new Rectangle(InputsTextLabel.Location.X - 6, InputsTextLabel.Location.Y - 4, InputsTextLabel.Width + 12, InputsTextLabel.Height + 8);
-            
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
-            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-            if (InputsTextLabel.Text != "")
+            if (profileSettings.Visible)
             {
-                e.Graphics.DrawPath(inputTextOutlinePen, FormGraphicsUtil.MakeRoundedRect(inputTextBackOutline, 10, 10, true, true, true, true));
-                e.Graphics.FillPath(inputTextFillBrush, FormGraphicsUtil.MakeRoundedRect(inputTextBack, 10, 10, true, true, true, true));              
+                profileSettings.BringToFront();
             }
-
-            mainButtonsPanel.Visible = mainButtonsPanel.Bounds.Contains(PointToClient(Cursor.Position));
         }
     }
 }

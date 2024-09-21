@@ -492,22 +492,26 @@ namespace Nucleus.Gaming
                                 for (int i = 0; i < user.Games.Count; i++)
                                 {
                                     bool exist = File.Exists(user.Games[i].ExePath);
+
                                     if (!exist && user.Games[i] != null)
                                     {
                                         user.Games.RemoveAt(i);
-                                        i--;
+                                        if(i > 0) { i--; }                                       
                                     }
 
-                                    //Check for handler update here so we check only for added games
-                                    if (user.Games[i].Game.MetaInfo.CheckUpdate)
+                                    if (user.Games[i].Game != null)
                                     {
-                                        var game = user.Games[i].Game;
-
-                                        System.Threading.Tasks.Task.Run(() =>
+                                        //Check for handler update here so we check only for added games
+                                        if (user.Games[i].Game.MetaInfo.CheckUpdate)
                                         {
-                                            game.UpdateAvailable = game.Hub.CheckUpdateAvailable();
-                                        });                                      
-                                    }                       
+                                            var game = user.Games[i].Game;
+
+                                            System.Threading.Tasks.Task.Run(() =>
+                                            {
+                                                game.UpdateAvailable = game.Hub.CheckUpdateAvailable();
+                                            });
+                                        }
+                                    }
                                 }
                             }
 

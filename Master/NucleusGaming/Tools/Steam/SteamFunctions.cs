@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Util;
 using System;
 using System.Collections.Generic;

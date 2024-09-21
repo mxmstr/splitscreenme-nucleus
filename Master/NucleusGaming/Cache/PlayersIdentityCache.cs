@@ -18,7 +18,7 @@ namespace Nucleus.Gaming.Cache
         {
             LoadNicknamesFromJson();
             LoadNicknamesFromSettingsIni();
-          
+
             LoadSteamIdsFromJson();
             LoadSteamIdsFromSettingsIni();
         }
@@ -62,7 +62,7 @@ namespace Nucleus.Gaming.Cache
                         jsonNicknamesList.Add(nick.ToString());
                     }
                 }
-            }    
+            }
         }
 
         public static string GetNicknameAt(int index)
@@ -85,7 +85,15 @@ namespace Nucleus.Gaming.Cache
             iniNicknameList[index] = nickname;
             Globals.ini.IniWriteValue("ControllerMapping", "Player_" + (index + 1), nickname);
 
-            if (!jsonNicknamesList.Contains(nickname))
+            if (!nickname.StartsWith("Player") && !jsonNicknamesList.Contains(nickname))
+            {
+                jsonNicknamesList.Add(nickname);
+            }
+        }
+
+        public static void AddNicknameToCache(string nickname)
+        {
+            if (!nickname.StartsWith("Player") && !jsonNicknamesList.Contains(nickname))
             {
                 jsonNicknamesList.Add(nickname);
             }
@@ -111,7 +119,7 @@ namespace Nucleus.Gaming.Cache
         #region Steam Ids
 
         //Steam ids
-        
+
         private static List<string> jsonSteamIdList = new List<string>();
 
         //load both json cache and add ini content to cache
@@ -130,7 +138,7 @@ namespace Nucleus.Gaming.Cache
                         jsonSteamIdList.Add(id.ToString());
                     }
                 }
-            }       
+            }
         }
 
         public static void BackupSteamIds()
@@ -156,6 +164,11 @@ namespace Nucleus.Gaming.Cache
 
         //list of settings.ini steam ids
         private static List<string> settingsIniSteamIdsList = new List<string>();
+
+        public static List<string> PlayersSteamId
+        {
+            get => settingsIniSteamIdsList;
+        }
 
         private static void LoadSteamIdsFromSettingsIni()
         {
@@ -194,7 +207,15 @@ namespace Nucleus.Gaming.Cache
             {
                 jsonSteamIdList.Add(steamid);
             }
-        } 
+        }
+
+        public static void AddSteamIdToCache(string steamid)
+        {
+            if (steamid != "" && steamid != "-1" && !jsonSteamIdList.Contains(steamid))
+            {
+                jsonSteamIdList.Add(steamid);
+            }
+        }
         #endregion
 
     }

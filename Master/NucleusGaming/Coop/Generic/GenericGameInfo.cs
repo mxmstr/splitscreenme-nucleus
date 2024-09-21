@@ -2,10 +2,8 @@
 using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
-using Nucleus.Gaming.Coop.InputManagement;
-using Nucleus.Gaming.Coop.InputManagement.Gamepads;
 using Nucleus.Gaming.Coop.ProtoInput;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
+using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
 using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
@@ -63,6 +61,7 @@ namespace Nucleus.Gaming
 
         public string StartArguments;
         public string BinariesFolder;
+        public bool BinariesFolderPathFix;
 
         public bool FakeFocus;
         public int FakeFocusInterval = 1000;//TODO: high CPU usage with low value?

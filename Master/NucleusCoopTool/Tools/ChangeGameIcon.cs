@@ -1,6 +1,10 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Nucleus.Gaming.Cache;
+using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+
 
 namespace Nucleus.Coop.Tools
 {
@@ -23,8 +27,31 @@ namespace Nucleus.Coop.Tools
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
+                    //string prevImage = userGameInfo.Game.MetaInfo.IconPath;
                     userGameInfo.Game.MetaInfo.IconPath = dlg.FileName;
-                    main.RefreshGames();
+
+                    lock (main.controls)
+                    {
+                        if (main.controls.ContainsKey(userGameInfo))
+                        {
+                            GameControl control = main.controls[userGameInfo];
+
+                            if (userGameInfo.Game.MetaInfo.IconPath.EndsWith(".exe"))
+                            { 
+                                Icon icon = Shell32.GetIcon(userGameInfo.Game.MetaInfo.IconPath, false);
+                                userGameInfo.Icon = icon.ToBitmap();
+                                control.Image = userGameInfo.Icon;
+                                icon.Dispose();
+                            }
+                            else
+                            {
+                                userGameInfo.Icon = ImageCache.GetImage(userGameInfo.Game.MetaInfo.IconPath);
+                                control.Image = userGameInfo.Icon;
+                            }
+                        }
+                    }
+
+                   //ImageCache.DeleteImageFromCache(prevImage);
                 }
             }
 

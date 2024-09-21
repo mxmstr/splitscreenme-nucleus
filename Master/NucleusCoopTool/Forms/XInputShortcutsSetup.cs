@@ -19,7 +19,6 @@ namespace Nucleus.Coop.Forms
 {
     public partial class XInputShortcutsSetup : Form, IDynamicSized
     {
-        //private IniFile ini = Globals.ini;
         private Bitmap controllerTop;
         private Bitmap controllerFront;
         private PictureBox activeControl;
@@ -54,7 +53,7 @@ namespace Nucleus.Coop.Forms
             controllerFront = Nucleus.Coop.Properties.Resources.xboxControllerFront;
             Close.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
 
-            CustomToolTips.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready.", "enabled_chk", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             brush = new SolidBrush(Color.FromArgb(120, 0, 255, 60));
             switch15.KeyPress += new KeyPressEventHandler(this.Num_KeyPress);
@@ -99,7 +98,7 @@ namespace Nucleus.Coop.Forms
 
 
             enabled_chk.Checked = App_GamePadNavigation.Enabled;
-            CustomToolTips.SetToolTip(enabled_chk, "Requires admin rights for full controller support.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(enabled_chk, "Requires admin rights for full controller support.", "enabled_chk", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             switch12.Tag = App_GamePadNavigation.DragDrop;
             switch13.Tag = App_GamePadNavigation.RightClick;
@@ -140,7 +139,7 @@ namespace Nucleus.Coop.Forms
                 if (c.Name == "switch15")
                 {
                     c.KeyPress += new KeyPressEventHandler(Num_KeyPress);
-                    CustomToolTips.SetToolTip(c, "If the cursor move without touching the\r\nleft stick set a higher value(steps of +1000).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    CustomToolTips.SetToolTip(c, "If the cursor move without touching the\r\nleft stick set a higher value(steps of +1000).", "switch15", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
             }
 

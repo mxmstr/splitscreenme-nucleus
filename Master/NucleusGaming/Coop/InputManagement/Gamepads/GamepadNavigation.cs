@@ -90,7 +90,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             int steps = 1;///How much pixels the cursor will move
             int scrollStep = 1;
             ///Deadzone => Joystick value from where the cursor will start moving
-            int pollRate = 10;///How often the thread will sleep
+            int pollRate = 15;///How often the thread will sleep
             int prevPressed = 0;///previous Xinput button state 
             bool dragging = false;
             EnabledRuntime = _Enabled;

@@ -210,11 +210,11 @@ namespace Nucleus.Coop.Forms
                     }
                
                     webView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += IsDefaultDownloadDialogOpenChanged;
-                    webView.CoreWebView2.DOMContentLoaded += new EventHandler<CoreWebView2DOMContentLoadedEventArgs>(DOMContentLoaded);
-                    webView.CoreWebView2.DownloadStarting += new EventHandler<CoreWebView2DownloadStartingEventArgs>(DownloadStarting);
-                    webView.CoreWebView2.NewWindowRequested += new EventHandler<CoreWebView2NewWindowRequestedEventArgs>(NewWindowRequested);
-                    webView.CoreWebView2.WebMessageReceived += new EventHandler<CoreWebView2WebMessageReceivedEventArgs>(WebMessageReceived);
-                    webView.CoreWebView2.ProcessFailed += new EventHandler<CoreWebView2ProcessFailedEventArgs>(ProcessFailed);
+                    webView.CoreWebView2.DOMContentLoaded += DOMContentLoaded;
+                    webView.CoreWebView2.DownloadStarting += DownloadStarting;
+                    webView.CoreWebView2.NewWindowRequested += NewWindowRequested;
+                    webView.CoreWebView2.WebMessageReceived += WebMessageReceived;
+                    webView.CoreWebView2.ProcessFailed += ProcessFailed;
                     webView.CoreWebView2.Profile.PreferredColorScheme = CoreWebView2PreferredColorScheme.Dark;
                 
                     BringToFront();
@@ -281,7 +281,7 @@ namespace Nucleus.Coop.Forms
                 Downloading = true;
                 downloadStateTimer = new System.Windows.Forms.Timer();
                 downloadStateTimer.Interval = (150);
-                downloadStateTimer.Tick += new EventHandler(DownloadStateTimerTick);
+                downloadStateTimer.Tick += DownloadStateTimerTick;
                 downloadStateTimer.Start();
 
                 e.ResultFilePath = downloadPath;
