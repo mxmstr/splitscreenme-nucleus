@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using System.Windows.Media;
 using WindowScrape.Static;
 
@@ -77,7 +78,7 @@ public class WPF_OSD : Window
         Visibility = Visibility.Hidden;
         AddChild(Value);
 
-        timer.Tick += new EventHandler(TimerTick);
+        timer.Tick += TimerTick;
     }
 
     private void Resize(string text)
@@ -90,67 +91,72 @@ public class WPF_OSD : Window
 
     public void Show(int timing, string text)
     {
-        this.Dispatcher.Invoke(new Action(() =>
+        try
         {
-            if (!initialized)
+            this.Dispatcher.Invoke(new Action(() =>
             {
-                //Set Value.Foreground here else the winforms designer breaks
-                Value.Foreground = new SolidColorBrush(Color.FromArgb(255, byte.Parse(osdColor[0]), byte.Parse(osdColor[1]), byte.Parse(osdColor[2])));
-                Value.BorderBrush = Value.Foreground;
-                Visibility = Visibility.Visible;
-                initialized = true;
-            };
+                if (!initialized)
+                {
+                    //Set Value.Foreground here else the winforms designer breaks
+                    Value.Foreground = new SolidColorBrush(Color.FromArgb(255, byte.Parse(osdColor[0]), byte.Parse(osdColor[1]), byte.Parse(osdColor[2])));
+                    Value.BorderBrush = Value.Foreground;
+                    Visibility = Visibility.Visible;
+                    initialized = true;
+                };
 
-            if (GenericGameHandler.Instance != null)
-            {
-                if (childs.Count == 0 && this.GetType() != typeof(WPF_OSD_Child) && !GenericGameHandler.Instance.hasEnded)//so it's the main osd
+                if (GenericGameHandler.Instance != null)
                 {
-                    CreateChilds(timing, text);
-                }
-                else
-                {
-                    foreach (WPF_OSD_Child osd in childs)
+                    if (childs.Count == 0 && this.GetType() != typeof(WPF_OSD_Child) && !GenericGameHandler.Instance.hasEnded)//so it's the main osd
                     {
-                        osd.Dispatcher.Invoke(new Action(() =>
+                        CreateChilds(timing, text);
+                    }
+                    else
+                    {
+                        foreach (WPF_OSD_Child osd in childs)
                         {
-                            osd.Show(timing, text);
-                        }));
+                            osd.Dispatcher.Invoke(new Action(() =>
+                            {
+                                osd.Show(timing, text);
+                            }));
+                        }
                     }
                 }
-            }
 
-            if (!hideMain)//main is hidden or it's a child
-            {
-                //pretty much all window parameters will mess with the game windows
-                //(mostly bringing the taskbar on top and focus stealing) so using tricky ways here.
-                Resize(text);
-                timer.Interval = timing; //millisecond
-
-                Show();
-
-                IntPtr hwnd = User32Interop.FindWindow(null, Title);
-
-                while (hwnd == IntPtr.Zero)
+                if (!hideMain)//main is hidden or it's a child
                 {
-                    hwnd = User32Interop.FindWindow(null, Title);
+                    //pretty much all window parameters will mess with the game windows
+                    //(mostly bringing the taskbar on top and focus stealing) so using tricky ways here.
+                    Resize(text);
+                    timer.Interval = timing; //millisecond
+
+                    Show();
+
+                    var hwnd = new WindowInteropHelper(this).Handle;
+                    //IntPtr hwnd = User32Interop.FindWindow(null, Title);
+
+                    //while (hwnd == IntPtr.Zero)
+                    //{
+                    //    hwnd = User32Interop.FindWindow(null, Title);
+                    //}
+
+                    if (!setStyle)
+                    {
+                        //hide the window from Alt + Tab
+                        SetWindowLong(hwnd, GWL_EX_STYLE, (GetWindowLong(hwnd, GWL_EX_STYLE) | WS_EX_TOOLWINDOW) & ~WS_EX_APPWINDOW);
+                        setStyle = true;
+                    }
+
+                    WindowState = WindowState.Maximized;//only way found to properly center the osd between dpi scaling factors
+                    Topmost = true;
+                    HwndInterface.MakeTop(hwnd);
+                    Opacity = 1.0D;
                 }
 
-                if (!setStyle)
-                {
-                    //hide the window from Alt + Tab
-                    SetWindowLong(hwnd, GWL_EX_STYLE, (GetWindowLong(hwnd, GWL_EX_STYLE) | WS_EX_TOOLWINDOW) & ~WS_EX_APPWINDOW);
-                    setStyle = true;
-                }
-
-                WindowState = WindowState.Maximized;//only way found to properly center the osd between dpi scaling factors
-                Topmost = true;
-                HwndInterface.MakeTop(hwnd);
-                Opacity = 1.0D;
-            }
-
-            timer.Start();//keep it for the main osd even if it's kind of
-                          //disabled so we can handle the childs and re-enable it automatically afterward
-        }));
+                timer.Start();//keep it for the main osd even if it's kind of
+                              //disabled so we can handle the childs and re-enable it automatically afterward
+            }));
+        }
+        catch { }
     }
 
     private void TimerTick(object Object, EventArgs EventArgs)

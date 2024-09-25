@@ -85,7 +85,6 @@ namespace Nucleus.Coop
 
             Cursor = Theme_Settings.Default_Cursor;
 
-
             var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Theme_Settings.SelectedBackColor;
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
@@ -413,7 +412,7 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(WindowsSetupTiming_TextBox, "Speedup windows resizing and positioning (1000ms is fine in most cases).\n" +
                                                                   "Could break hooks or xinputplus for some games.", "WindowsSetupTiming_TextBox_PRST", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(pauseBetweenInstanceLaunch_TxtBox, "Time to wait before starting the next game instance.\n" +
-                                                                         "Could break positioning/resizing for some games.", "auseBetweenInstanceLaunch_TxtBox_PRST", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                                                                         "Could break positioning/resizing for some games.", "pauseBetweenInstanceLaunch_TxtBox_PRST", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(splitDiv, "May not work for all games.", "splitDiv_PRST", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(hideDesktop, "Will only show the splitscreen division window without adjusting the game windows size and offset.", "hideDesktop_PRST", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(refreshScreenDatasButton, "Refresh screens info.", "refreshScreenDatasButton_PRST", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -616,6 +615,8 @@ namespace Nucleus.Coop
 
         private void CloseBtnPicture_Click(object sender, EventArgs e)///Set GameProfile values
         {
+            NucleusMessageBox.MessageBox?.Dispose();
+            
             if (!Directory.Exists(Globals.GameProfilesFolder))
             {
                 Directory.CreateDirectory(Globals.GameProfilesFolder);

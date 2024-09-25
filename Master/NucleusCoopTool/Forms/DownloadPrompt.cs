@@ -65,7 +65,7 @@ namespace Nucleus.Coop.Forms
 
                 SuspendLayout();
 
-                BackgroundImage = ImageCache.GetImage(mainForm.theme + "other_backgrounds.jpg");
+                BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
 
                 if (zipFileName == null)
                 {

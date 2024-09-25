@@ -266,12 +266,6 @@
     <Compile Include="Controls\HubWebView.Designer.cs">
       <DependentUpon>HubWebView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DonationPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\DonationPanel.Designer.cs">
-      <DependentUpon>DonationPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Tutorial.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -360,9 +354,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\CustomRadioButton.resx">
       <DependentUpon>CustomRadioButton.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\DonationPanel.resx">
-      <DependentUpon>DonationPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Caroussel\Caroussel.resx">
       <DependentUpon>Caroussel.cs</DependentUpon>
@@ -486,15 +477,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\instructions.gif" />
-    <None Include="Resources\Mikou271.jpg" />
-    <None Include="Resources\Ilyaki2.jpg" />
-    <None Include="Resources\ZeroFox58661.png" />
-    <None Include="Resources\Mikou27.jpg" />
-    <None Include="Resources\Ilyaki1.jpg" />
-    <None Include="Resources\Ilyaki.jpg" />
-    <None Include="Resources\ZeroFox5866.png" />
     <None Include="Resources\log1.png" />
-    <None Include="Resources\magnifier.png" />
     <None Include="Resources\search_game.png" />
     <None Include="Resources\xboxControllerFront.png" />
     <None Include="Resources\xboxControllerTop.png" />
@@ -504,8 +487,6 @@
     <None Include="Resources\settings.png" />
     <None Include="Resources\maximize_button.png" />
     <None Include="Resources\minimize_button.png" />
-    <None Include="Resources\reddit11.png" />
-    <None Include="Resources\toolbox3.png" />
     <Content Include="copyoutput\openxinput1_3.dll" />
     <AdditionalFiles Include="copyoutput\utils\backup\dummy.txt" />
     <Content Include="copyoutput\utils\Credits.txt" />
@@ -1065,10 +1046,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="icon.ico" />
-    <None Include="Resources\DownloadArts_button1.png" />
-    <None Include="Resources\faq1.png" />
-    <None Include="Resources\calculator1.png" />
-    <None Include="Resources\discord5.png" />
     <None Include="Resources\close_button.png" />
     <None Include="Resources\extract_nc.png" />
     <Content Include="Resources\icon.ico" />

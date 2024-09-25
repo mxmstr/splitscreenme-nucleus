@@ -6,6 +6,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO.MemoryMappedFiles;
+using System.Management.Instrumentation;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
@@ -118,6 +119,13 @@ namespace Nucleus.Gaming.Coop
                 lastDrawnTimer.Start();
                 lastDrawnTimer.Interval = MILLISECONDS_BETWEEN_DRAW;
                 lastDrawnTimer.Tick += (o, e) => { readyToDraw = true; };
+                Disposed += ReleaseHDC;
+            }
+
+
+            private void ReleaseHDC(object sender, EventArgs e)
+            {
+                g?.ReleaseHdc(h);
             }
 
             protected override void OnPaintBackground(PaintEventArgs e)
@@ -353,7 +361,7 @@ namespace Nucleus.Gaming.Coop
         }
 
         public void End()
-        {
+        {          
             KillCursor();
         }
     }

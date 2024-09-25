@@ -31,7 +31,7 @@ namespace Nucleus.Coop.Forms
 
             InitializeComponent();
 
-            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             btnOk.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); ;
 
             GameManager manager = GameManager.Instance;

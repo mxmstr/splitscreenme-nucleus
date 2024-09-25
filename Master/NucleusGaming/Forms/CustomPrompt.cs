@@ -14,7 +14,7 @@ namespace Nucleus.Gaming.Forms
         public CustomPrompt(string message, string prevAnswer, int i)
         {
             string theme = Globals.ThemeFolder;
-            BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             InitializeComponent();
             lbl_Desc.Text = message;
             SetDescLabelLinkArea(message);
@@ -22,7 +22,7 @@ namespace Nucleus.Gaming.Forms
 
             lbl_Desc.LinkColor = Color.Orange;
             lbl_Desc.ActiveLinkColor = Color.DimGray;
-            lbl_Desc.LinkClicked += new LinkLabelLinkClickedEventHandler(DescLabelLinkClicked);
+            lbl_Desc.LinkClicked += DescLabelLinkClicked;
 
             txt_UserInput.Text = prevAnswer;
 

@@ -1029,7 +1029,6 @@ namespace Nucleus.Coop
             // 
             this.donationBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.donationBtn.BackColor = System.Drawing.Color.Transparent;
-            this.donationBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("donationBtn.BackgroundImage")));
             this.donationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.donationBtn.FlatAppearance.BorderSize = 0;
             this.donationBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;

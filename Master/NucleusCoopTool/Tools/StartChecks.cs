@@ -2,6 +2,7 @@
 using Nucleus.Gaming;
 using Nucleus.Gaming.App.Settings;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -119,7 +120,7 @@ namespace Nucleus.Coop
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\screenshots")));
             }
         }
-
+        
         public static void CheckUserEnvironment()
         {
             System.Threading.Tasks.Task.Run(() =>
@@ -494,6 +495,46 @@ namespace Nucleus.Coop
                 {
                     File.Delete(logPath);
                     App_Misc.DebugLog = false;
+                }
+            }
+        }
+
+        public static void CleanLogs()
+        {
+            string logsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "content");
+
+            IEnumerable<string> logs = Directory.EnumerateFiles(logsDirectory).Where(l => Path.GetExtension(l) == ".log");
+
+            foreach (string log in logs)
+            {
+                if (File.Exists(log))
+                {
+                    DateTime now = DateTime.Now;
+                    DateTime creation = File.GetLastWriteTime(log);
+                   
+                    if (now.Month == creation.Month)
+                    {
+                        if (now.Day >= creation.Day + 7)
+                        {
+                            File.Delete(log);
+                            continue;
+                        }
+                    }
+
+                    if (now.Month > creation.Month)
+                    {
+                        File.Delete(log);
+                        continue;
+                    }
+
+                    if (now.Month < creation.Month)//new year since last update
+                    {
+                        if ((now.Day >= 7 && now.Month == 1) || now.Month > 1)
+                        {
+                            File.Delete(log);
+                            continue;
+                        }
+                    }
                 }
             }
         }

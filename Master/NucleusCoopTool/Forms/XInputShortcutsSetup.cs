@@ -3,7 +3,6 @@ using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.InputManagement.Gamepads;
-using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using SharpDX.XInput;
@@ -60,7 +59,7 @@ namespace Nucleus.Coop.Forms
 
             if (roundedcorners)
             {
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 20, 20);
             }
 
             switch1.Tag = App_GamePadShortcuts.SetFocus[0];

@@ -18,8 +18,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
     {
         private static RawInputProcessor rawInputProcessor = null;
 
-        
-
         private readonly Func<bool> splitScreenRunning;
 
         private List<Window> Windows => RawInputManager.windows;

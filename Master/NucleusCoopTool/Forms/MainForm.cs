@@ -23,7 +23,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Nucleus.Gaming.DPI;
@@ -40,7 +39,6 @@ namespace Nucleus.Coop
         public readonly string version = "v" + Globals.Version;
         public readonly IniFile themeIni = Globals.ThemeConfigFile;
         public readonly string theme = Globals.ThemeFolder;
-
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
@@ -65,7 +63,6 @@ namespace Nucleus.Coop
         public XInputShortcutsSetup Xinput_S_Setup;
         private Settings settings = null;
         private ProfileSettings profileSettings = null;
-        private DonationPanel donationPanel = null;
         private Tutorial tuto;
 
         private ContentManager content;
@@ -314,8 +311,8 @@ namespace Nucleus.Coop
 
             if (roundedCorners)
             {
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-                clientAreaPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 20, 20));
+                FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 20, 20);
+                FormGraphicsUtil.CreateRoundedControlRegion(clientAreaPanel, 0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 20, 20);
             }
 
             Font = new Font(customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
@@ -376,7 +373,7 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(btn_downloadAssets, "Download or update games covers and screenshots.", "btn_downloadAssets", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_settings, "Global Nucleus Co-op settings.", "btn_settings", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(btn_debuglog, "Open Nucleus debug-log.txt file if available, debug log can be disabled in Nucleus settings in the \"Settings\" tab.", "btn_debuglog", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-            CustomToolTips.SetToolTip(donationBtn, "Nucleus Co-op developers donations links.", "donationBtn", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(donationBtn, "Nucleus Co-op Patreon.", "donationBtn", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(instruction_btn, "How to setup players.", "instruction_btn", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             CustomToolTips.SetToolTip(btn_expandNotes, "Expand handler notes.", "btn_expandNotes", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -519,13 +516,12 @@ namespace Nucleus.Coop
             hotkeysCooldownTimer.Tick += HotkeysCooldownTimerTick;
 
             gameContextMenuStrip.Renderer = new CustomToolStripRenderer.MyRenderer();
-            gameContextMenuStrip.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
+            gameContextMenuStrip.BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
 
             socialLinksMenu.Renderer = new CustomToolStripRenderer.MyRenderer();
-            socialLinksMenu.BackgroundImage = ImageCache.GetImage(theme + "other_backgrounds.jpg");
+            socialLinksMenu.BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
 
             GetGameIcon.MainForm = this;
-
 
             RefreshGames();
 
@@ -1599,8 +1595,10 @@ namespace Nucleus.Coop
             tuto = null;
         }
 
-        private void SocialLinksMenu_Opened(object sender, EventArgs e) => socialLinksMenu.Region =
-                     Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20));
+        private void SocialLinksMenu_Opened(object sender, EventArgs e)
+        {
+            FormGraphicsUtil.CreateRoundedControlRegion(socialLinksMenu, 2, 2, socialLinksMenu.Width - 1, socialLinksMenu.Height, 20, 20);
+        }
 
         private void GameContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -1773,8 +1771,8 @@ namespace Nucleus.Coop
                                                     nucPrefix = "Nucleus: ";
                                                 }
 
-                                                (gameContextMenuStrip.Items["openUserProfConfigMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items["deleteUserProfConfigMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["openUserProfConfigMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, UserProfileOpenSubmenuItem_Click);
+                                                (gameContextMenuStrip.Items["deleteUserProfConfigMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, UserProfileDeleteSubmenuItem_Click);
                                             }
                                         }
                                     }
@@ -1819,8 +1817,8 @@ namespace Nucleus.Coop
                                                     nucPrefix = "Nucleus: ";
                                                 }
 
-                                                (gameContextMenuStrip.Items["openUserProfSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items["deleteUserProfSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, new EventHandler(UserProfileDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["openUserProfSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, UserProfileOpenSubmenuItem_Click);
+                                                (gameContextMenuStrip.Items["deleteUserProfSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Path.GetFileName(profilePath.TrimEnd('\\')), null, UserProfileDeleteSubmenuItem_Click);
                                             }
                                         }
                                     }
@@ -1865,8 +1863,8 @@ namespace Nucleus.Coop
                                                     nucPrefix = "Nucleus: ";
                                                 }
 
-                                                (gameContextMenuStrip.Items["openDocumentConfMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items["deleteDocumentConfMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["openDocumentConfMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, DocOpenSubmenuItem_Click);
+                                                (gameContextMenuStrip.Items["deleteDocumentConfMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, DocDeleteSubmenuItem_Click);
                                             }
                                         }
                                     }
@@ -1911,8 +1909,8 @@ namespace Nucleus.Coop
                                                     nucPrefix = "Nucleus: ";
                                                 }
 
-                                                (gameContextMenuStrip.Items["openDocumentSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocOpenSubmenuItem_Click));
-                                                (gameContextMenuStrip.Items["deleteDocumentSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, new EventHandler(DocDeleteSubmenuItem_Click));
+                                                (gameContextMenuStrip.Items["openDocumentSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, DocOpenSubmenuItem_Click);
+                                                (gameContextMenuStrip.Items["deleteDocumentSaveMenuItem"] as ToolStripMenuItem).DropDownItems.Add(nucPrefix + Directory.GetParent(profilePath).Name, null, DocDeleteSubmenuItem_Click);
                                             }
                                         }
                                     }
@@ -1950,8 +1948,8 @@ namespace Nucleus.Coop
                                 {
                                     string path = playerBackup;
                                     string playerName = playerBackup.Split('\\').Last();
-                                    (gameContextMenuStrip.Items["openBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Add(playerName, null, new EventHandler(OpenBackupFolderSubmenuItem_Click));
-                                    (gameContextMenuStrip.Items["deleteBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Add(playerName, null, new EventHandler(DeleteBackupFolderSubmenuItem_Click));
+                                    (gameContextMenuStrip.Items["openBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Add(playerName, null, OpenBackupFolderSubmenuItem_Click);
+                                    (gameContextMenuStrip.Items["deleteBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Add(playerName, null, DeleteBackupFolderSubmenuItem_Click);
                                 }
 
                                 backupFolderExist = true;
@@ -2097,7 +2095,9 @@ namespace Nucleus.Coop
         }
 
         private void GameContextMenuStrip_Opened(object sender, EventArgs e)
-        => gameContextMenuStrip.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(2, 2, gameContextMenuStrip.Width - 1, gameContextMenuStrip.Height, 20, 20));
+        {
+            FormGraphicsUtil.CreateRoundedControlRegion(gameContextMenuStrip, 2, 2, gameContextMenuStrip.Width - 1, gameContextMenuStrip.Height, 20, 20);
+        }
 
         private void GameContextMenuStrip_Closing(object sender, ToolStripDropDownClosingEventArgs e)
         {
@@ -2407,16 +2407,6 @@ namespace Nucleus.Coop
                 profileSettings.BringToFront();
             }
 
-            if (sender != donationBtn)
-            {
-                if (donationPanel != null)
-                {
-                    clientAreaPanel.Controls.Remove(donationPanel);
-                    donationPanel.Dispose();
-                    donationPanel = null;
-                }
-            }
-
             if (sender != instruction_btn && tuto != null)
             {
                 DisposeTutorial();
@@ -2525,8 +2515,6 @@ namespace Nucleus.Coop
             maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed.png") : ImageCache.GetImage(theme + "title_maximize.png");
         }
 
-
-
         private void CloseButtonClick(object sender, EventArgs e)
         => FadeOut();
 
@@ -2546,8 +2534,6 @@ namespace Nucleus.Coop
             GameManager.Instance.SaveUserProfile();
         }
 
-
-
         private void Btn_debuglog_Click(object sender, EventArgs e)
         {
             if (File.Exists(Path.Combine(Application.StartupPath, "debug-log.txt")))
@@ -2559,26 +2545,7 @@ namespace Nucleus.Coop
             Globals.MainOSD.Show(2000, "No Available Log");
         }
 
-        private void DonationBtn_Click(object sender, EventArgs e)
-        {
-            if (donationPanel == null)
-            {
-                donationPanel = new DonationPanel();
-                donationPanel.Visible = false;
-                clientAreaPanel.Controls.Add(donationPanel);
-                donationPanel.Location = new Point(donationBtn.Left - donationPanel.Width, donationBtn.Bottom + 5);
-                donationPanel.BringToFront();
-                donationPanel.Visible = true;
-            }
-            else
-            {
-                clientAreaPanel.Controls.Remove(donationPanel);
-                donationPanel.Dispose();
-                donationPanel = null;
-            }
-        }
-
-
+        private void DonationBtn_Click(object sender, EventArgs e) => Process.Start("https://www.patreon.com/nucleus_coop");
 
         private void DisableProfilesMenuItem_Click(object sender, EventArgs e)
         {
@@ -2763,10 +2730,12 @@ namespace Nucleus.Coop
             if (tuto == null)
             {
                 tuto = new Tutorial();
+                Controls.Add(tuto);
+
                 tuto.Size = new Size(this.Width - 200, this.Height - 113);
                 tuto.Location = new Point(Width / 2 - tuto.Width / 2, Height / 2 - tuto.Height / 2);
                 tuto.Click += ClickAnyControl;
-                Controls.Add(tuto);
+                
                 tuto.BringToFront();
             }
             else
@@ -2783,7 +2752,7 @@ namespace Nucleus.Coop
 
             if (File.Exists($"{coverPath}\\{menuCurrentGameInfo.GameGuid}.jpeg"))
             {
-                Process.Start($"{coverPath}\\{menuCurrentGameInfo.GameGuid}.jpeg");
+                //Process.Start($"{coverPath}\\{menuCurrentGameInfo.GameGuid}.jpeg");
                 Process.Start(coverPath);
             }
         }
@@ -3153,13 +3122,13 @@ namespace Nucleus.Coop
             {
                 if (WindowState == FormWindowState.Maximized)
                 {
-                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 0, 0));
-                    clientAreaPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 0, 0));
+                    FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 0, 0);
+                    FormGraphicsUtil.CreateRoundedControlRegion(clientAreaPanel,0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 0, 0); 
                 }
                 else
                 {
-                    Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-                    clientAreaPanel.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 20, 20));
+                    FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 20, 20);
+                    FormGraphicsUtil.CreateRoundedControlRegion(clientAreaPanel, 0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 20, 20);
                 }
             }
 

@@ -222,7 +222,6 @@ namespace Nucleus.Coop
 
                 outlinePen = new Pen(Color.FromArgb(15, 255, 255, 255));
                 fillBrush = new SolidBrush(Color.FromArgb(50, 20, 20, 20));
-                //MouseMove += Mouse_Move;
 
                 this.Disposed += DisposeTimer;
 
@@ -306,18 +305,6 @@ namespace Nucleus.Coop
 
             ResumeLayout();
         }
-
-        //private void Mouse_Move(object sender, MouseEventArgs e)
-        //{
-        //    if(new Rectangle(0,0,HandlerUpdate.Left, Height).Contains(e.Location))
-        //    {
-        //        Cursor= Theme_Settings.Hand_Cursor;
-        //    }
-        //    else
-        //    {
-        //        Cursor = Theme_Settings.Default_Cursor;
-        //    }            
-        //}
 
         private void DisposeTimer(object sender , EventArgs e)
         {

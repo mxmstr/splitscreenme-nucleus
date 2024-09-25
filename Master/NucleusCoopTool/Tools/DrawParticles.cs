@@ -17,7 +17,7 @@ namespace Nucleus.Coop.Tools
 
         private void particlesTimer_Tick(object state)
         {
-            if (!handlerControl.Visible)
+            if (!handlerControl.Visible || handlerControl.IsDisposed || senderControl.IsDisposed)
             {
                 particlesTimer.Dispose();
                 particlesTimer = null;
@@ -117,7 +117,6 @@ namespace Nucleus.Coop.Tools
                 {
                     e.Graphics.FillEllipse(particlesBrush, particles[i]);
                 }
-
             }
         }
 

@@ -33,7 +33,7 @@ namespace Nucleus.Gaming.Coop.Generic
             float ratio = ((float)Height / (float)Width);
             Height = (int)((float)Height / (float)ratio);
             pplistBox.Font = new Font("Franklin Gothic", pplistBox.Font.Size * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 20, 20);
         }
     }
 

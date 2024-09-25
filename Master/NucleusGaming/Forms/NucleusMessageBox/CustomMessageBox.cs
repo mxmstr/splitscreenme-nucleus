@@ -9,12 +9,13 @@ using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Forms
 {
-    internal partial class CustomMessageBox : Form
+    public partial class CustomMessageBox : Form
     {
         private string message;
         private bool sized;
+        private Font font;
 
-        internal CustomMessageBox(string title, string message, bool format)
+        public CustomMessageBox(string title, string message, bool format)
         {
             string[] rgb_MouseOverColor = Globals.ThemeConfigFile.IniReadValue("Colors", "MouseOver").Split(',');
 
@@ -68,28 +69,33 @@ namespace Nucleus.Gaming.Forms
 
         private void CustomMessaBox_Paint(object sender, PaintEventArgs e)
         {
-            float scale = DPIManager.Scale;
-            Font font = new Font(Font.FontFamily, Font.Size * scale);
+            Graphics g = e.Graphics;
 
-            SizeF newSize = e.Graphics.MeasureString(message, font);
+            float scale = DPIManager.Scale;
+            font = new Font(Font.FontFamily, Font.Size * scale);
+            
+            SizeF newSize = g.MeasureString(message, font);
 
             if (!sized)
             {
                 Size = new Size((int)newSize.Width + 30, (int)newSize.Height + 30 + closeBtn.Bottom + 5);
                 MaximumSize = Size;
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+
+                FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 20, 20);
+
                 CenterToScreen();
                 Opacity = 1.0F;
 
                 sized = true;
             }
 
-            e.Graphics.DrawString(message, font, Brushes.White, 10, closeBtn.Bottom + 5);
+            g.DrawString(message, font, Brushes.White, 10, closeBtn.Bottom + 5);
+            g.Dispose();
         }
 
         private void CloseBtn_Click(object sender, EventArgs e)
         {
-            Dispose();
+            Close();
         }
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
@@ -104,6 +110,5 @@ namespace Nucleus.Gaming.Forms
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
         }
-
     }
 }

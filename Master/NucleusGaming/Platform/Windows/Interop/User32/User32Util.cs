@@ -63,8 +63,11 @@ namespace Nucleus.Gaming.Windows
         {
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             IntPtr desktop = g.GetHdc();
+
             int LogicalScreenHeight = Gdi32Interop.GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
             int PhysicalScreenHeight = Gdi32Interop.GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
+            
+            g.ReleaseHdc(desktop);
 
             float ScreenScalingFactor = PhysicalScreenHeight / (float)LogicalScreenHeight;
 

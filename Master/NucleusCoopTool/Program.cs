@@ -36,7 +36,7 @@ namespace Nucleus.Coop
             StartChecks.CheckUserEnvironment();
             StartChecks.CheckAppUpdate();
             StartChecks.CheckDebugLogSize();
-
+            StartChecks.CleanLogs();
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware
             DPIManager.PreInitialize();

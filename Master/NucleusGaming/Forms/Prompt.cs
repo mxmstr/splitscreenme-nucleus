@@ -18,13 +18,13 @@ namespace Nucleus.Gaming.Forms
         {
             onpaint = false;
             InitializeComponent();
-            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             lbl_Msg.Text = message;
 
             lbl_Msg.LinkColor = Color.Orange;
             lbl_Msg.ActiveLinkColor = Color.DimGray;
             SetDescLabelLinkArea(message);
-            lbl_Msg.LinkClicked += new LinkLabelLinkClickedEventHandler(DescLabelLinkClicked);
+            lbl_Msg.LinkClicked += DescLabelLinkClicked;
 
             hasOpenFileDialog = false;
 
@@ -38,13 +38,13 @@ namespace Nucleus.Gaming.Forms
         public Prompt(string message, bool onpaint)
         {
             InitializeComponent();
-            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             lbl_Msg.Text = message;
             SetDescLabelLinkArea(message);
 
             lbl_Msg.LinkColor = Color.Orange;
             lbl_Msg.ActiveLinkColor = Color.DimGray;
-            lbl_Msg.LinkClicked += new LinkLabelLinkClickedEventHandler(DescLabelLinkClicked);
+            lbl_Msg.LinkClicked += DescLabelLinkClicked;
 
             hasOpenFileDialog = false;
 
@@ -59,13 +59,13 @@ namespace Nucleus.Gaming.Forms
         {
             onpaint = false;
             InitializeComponent();
-            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             lbl_Msg.Text = message;
             SetDescLabelLinkArea(message);
 
             lbl_Msg.LinkColor = Color.Orange;
             lbl_Msg.ActiveLinkColor = Color.DimGray;
-            lbl_Msg.LinkClicked += new LinkLabelLinkClickedEventHandler(DescLabelLinkClicked);
+            lbl_Msg.LinkClicked += DescLabelLinkClicked;
 
             hasOpenFileDialog = isOFD;
             exeName = launcherFileName;

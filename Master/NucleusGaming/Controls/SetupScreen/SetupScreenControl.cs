@@ -1,10 +1,7 @@
 ﻿using Nucleus.Gaming.App.Settings;
-using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Properties;
 using Nucleus.Gaming.UI;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 

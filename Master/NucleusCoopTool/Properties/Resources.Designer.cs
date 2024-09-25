@@ -83,16 +83,6 @@ namespace Nucleus.Coop.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Ilyaki {
-            get {
-                object obj = ResourceManager.GetObject("Ilyaki", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap instructions {
             get {
                 object obj = ResourceManager.GetObject("instructions", resourceCulture);
@@ -106,26 +96,6 @@ namespace Nucleus.Coop.Properties {
         internal static System.Drawing.Bitmap log1 {
             get {
                 object obj = ResourceManager.GetObject("log1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap magnifier {
-            get {
-                object obj = ResourceManager.GetObject("magnifier", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Mikou27 {
-            get {
-                object obj = ResourceManager.GetObject("Mikou27", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -166,16 +136,6 @@ namespace Nucleus.Coop.Properties {
         internal static System.Drawing.Bitmap xboxControllerTop {
             get {
                 object obj = ResourceManager.GetObject("xboxControllerTop", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ZeroFox5866 {
-            get {
-                object obj = ResourceManager.GetObject("ZeroFox5866", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

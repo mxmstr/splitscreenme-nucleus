@@ -87,7 +87,7 @@ namespace Nucleus.Coop
             fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
             ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
 
-            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
 
             btn_addSelection.BackColor = main.buttonsBackColor;

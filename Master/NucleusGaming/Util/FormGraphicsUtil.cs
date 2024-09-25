@@ -1,11 +1,44 @@
-﻿using System.Drawing;
+﻿using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 
 namespace Nucleus.Gaming
 {
     public static class FormGraphicsUtil
     {
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+           int nLeftRect,     // x-coordinate of upper-left corner
+           int nTopRect,      // y-coordinate of upper-left corner
+           int nRightRect,    // x-coordinate of lower-right corner
+           int nBottomRect,   // y-coordinate of lower-right corner
+           int nWidthEllipse, // width of ellipse
+           int nHeightEllipse // height of ellipse
+        );
+
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool DeleteObject([In] IntPtr hObject);
+
+
+        public static void CreateRoundedControlRegion(Control control, 
+           int nLeftRect,     // x-coordinate of upper-left corner
+           int nTopRect,      // y-coordinate of upper-left corner
+           int nRightRect,    // x-coordinate of lower-right corner
+           int nBottomRect,   // y-coordinate of lower-right corner
+           int nWidthEllipse, // width of ellipse
+           int nHeightEllipse)
+        {
+            IntPtr rIntPtr = CreateRoundRectRgn(nLeftRect, nTopRect, nRightRect, nBottomRect, nWidthEllipse, nHeightEllipse);
+            control.Region = Region.FromHrgn(rIntPtr);
+            DeleteObject(rIntPtr);
+        }
+
         public static Bitmap BuildCharToBitmap(Size size, int fontSize, Color color, string str, int rectBorder = 0, int reduce = 0)
         {
             using (Font font = new Font("Arial", fontSize))

@@ -11,7 +11,7 @@ namespace Nucleus.Gaming
         public TextMessageBox()
         {
             InitializeComponent();
-            BackgroundImage = new Bitmap(Globals.ThemeFolder + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
         }
 
         private void button1_Click(object sender, EventArgs e)
