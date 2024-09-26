@@ -273,8 +273,6 @@ namespace Nucleus.Gaming.Controls
 
                 string profileBtnToolTipText = File.Exists(Application.StartupPath + "\\Profiles Launcher.exe") ? $"Load handler profile {profileBtn.Name}. Right click to export a shortcut to desktop." : $"Load handler profile {profileBtn.Name}.";
 
-                CustomToolTips.SetToolTip(profileBtn, profileBtnToolTipText, $"profileBtnToolTipText${i}" ,new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-
                 profileBtn.MouseClick += ProfileBtn_CheckedChanged;
 
                 if (i != GameProfile.profilesPathList.Count)
@@ -284,6 +282,7 @@ namespace Nucleus.Gaming.Controls
                     previewBtn.Location = new Point(deleteBtn.Left - previewBtn.Width, deleteBtn.Location.Y);
                     profileBtn.Controls.Add(deleteBtn);
                     profileBtn.Controls.Add(previewBtn);
+                    CustomToolTips.SetToolTip(profileBtn, profileBtnToolTipText, $"profileBtnToolTipText${i}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
                 else
                 {

@@ -552,7 +552,7 @@ namespace Nucleus.Coop
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 0);
             this.list_Games.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.list_Games.Size = new System.Drawing.Size(230, 582);
+            this.list_Games.Size = new System.Drawing.Size(230, 571);
             this.list_Games.TabIndex = 2;
             this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.List_Games_SelectedChanged);
             // 

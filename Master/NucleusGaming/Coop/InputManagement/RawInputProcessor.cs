@@ -399,22 +399,16 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             try
             {
-                if (CurrentProfile?.DevicesList != null)
+                if (!splitScreenRunning() && PlayerInfos != null)
                 {
-                    lock (CurrentProfile?.DevicesList)
+                    foreach (PlayerInfo toFlash in CurrentProfile?.DevicesList.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
                     {
-                        if (!splitScreenRunning() && PlayerInfos != null)
+                        if (toFlash.HIDDeviceID[0] == "MouseHandleZero" && rawBuffer.data.mouse.ulExtraInformation == 161)//dwExtraInfo 0x00A1 == 161 so we can filter out the virtual mouse created by ui navigation
                         {
-                            foreach (PlayerInfo toFlash in CurrentProfile?.DevicesList.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
-                            {
-                                if (toFlash.HIDDeviceID[0] == "MouseHandleZero" && rawBuffer.data.mouse.ulExtraInformation == 161)//dwExtraInfo 0x00A1 == 161 so we can filter out the virtual mouse created by ui navigation
-                                {
-                                    return;
-                                }
-
-                                toFlash.FlashIcon();
-                            }
+                            return;
                         }
+
+                        toFlash.FlashIcon();
                     }
                 }
             }

@@ -80,6 +80,7 @@ namespace Nucleus.Coop.Tools
                         SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
                     }
 
+                    main.Invalidate(false);
                     main.mainButtonFrame.Select();
                 });
 
@@ -148,6 +149,7 @@ namespace Nucleus.Coop.Tools
                         SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
                     }
 
+                    main.Invalidate(false);
                     main.mainButtonFrame.Select();
                 });
 

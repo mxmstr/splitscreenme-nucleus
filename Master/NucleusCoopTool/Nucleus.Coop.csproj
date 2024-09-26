@@ -476,7 +476,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\instructions.gif" />
     <None Include="Resources\log1.png" />
     <None Include="Resources\search_game.png" />
     <None Include="Resources\xboxControllerFront.png" />
@@ -1043,6 +1042,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\xinput_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\tuto\tuto.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="icon.ico" />

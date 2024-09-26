@@ -41,7 +41,7 @@ namespace Nucleus.Coop.Forms
             shortContainer.Cursor = Theme_Settings.Default_Cursor;
             enabled_chk.Cursor = Theme_Settings.Hand_Cursor;
 
-            refreshTimer.Tick += new EventHandler(RefreshTimerTick);
+            refreshTimer.Tick += RefreshTimerTick;
             refreshTimer.Interval = 500;
             refreshTimer.Start();
 
@@ -55,7 +55,7 @@ namespace Nucleus.Coop.Forms
             CustomToolTips.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready.", "enabled_chk", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             brush = new SolidBrush(Color.FromArgb(120, 0, 255, 60));
-            switch15.KeyPress += new KeyPressEventHandler(this.Num_KeyPress);
+            switch15.KeyPress += Num_KeyPress;
 
             if (roundedcorners)
             {
@@ -118,7 +118,7 @@ namespace Nucleus.Coop.Forms
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-                    pictureBox.MouseClick += new MouseEventHandler(SetActiveControl);
+                    pictureBox.MouseClick += SetActiveControl;
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
                     pictureBox.Cursor = Theme_Settings.Hand_Cursor;
                 }
@@ -130,14 +130,14 @@ namespace Nucleus.Coop.Forms
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-                    pictureBox.MouseClick += new MouseEventHandler(SetActiveControl);
+                    pictureBox.MouseClick += SetActiveControl;
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
                     pictureBox.Cursor = Theme_Settings.Hand_Cursor;
                 }
 
                 if (c.Name == "switch15")
                 {
-                    c.KeyPress += new KeyPressEventHandler(Num_KeyPress);
+                    c.KeyPress += Num_KeyPress;
                     CustomToolTips.SetToolTip(c, "If the cursor move without touching the\r\nleft stick set a higher value(steps of +1000).", "switch15", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
             }
