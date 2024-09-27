@@ -18,7 +18,7 @@ If you want to suggest a new feature or report a bug for any of our _other_ proj
 
 ## Security Note
 If you identify a security issue in the code of Nucleus Coop, please do not post a public issue identifying the security threat. This potentially highlights the issue for malicious users to take advantage of the vulnerability. 
-Instead, please ping @Administrators, @Moderators, or @Developers in the support channel of the Nucleus Coop [Discord server](https://discord.com/invite/a9ssM5pxTW), and only share the details once a secure channel of communication has been established.
+Instead, please ping @Administrators, @Moderators, or @Developers in the support channel of the Nucleus Coop [Discord server](https://discord.com/invite/qnbZtpECYg), and only share the details once a secure channel of communication has been established.
 
 Alternatively you can [create a repository security advisory](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/creating-a-repository-security-advisory)
 
