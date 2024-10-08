@@ -9,7 +9,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 {
     public class SetupScreenControl : UserInputControl, IDynamicSized
     {
-        private static SetupScreenControl _setupScreen;
+        public static SetupScreenControl Instance;
 
         internal bool profileDisabled;
         internal bool canProceed;
@@ -28,7 +28,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public SetupScreenControl()
         {
-            _setupScreen = this;
+            Instance = this;
             Initialize();
         }
 
@@ -97,7 +97,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public static void InvalidateFlash()
         {
-            _setupScreen?.Invalidate(false);
+            Instance?.Invalidate(false);
         }
 
         protected override void Dispose(bool disposing)
@@ -168,8 +168,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-
-            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
 
             if (BoundsFunctions.selectedPlayer?.MonitorBounds != Rectangle.Empty &&
                 BoundsFunctions.selectedPlayer?.MonitorBounds != null)

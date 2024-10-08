@@ -10,7 +10,7 @@ namespace Nucleus.Coop.Tools
 {
     internal class SetBackroundAndCover
     {
-        private static MainForm main;
+        private static MainForm mainForm;
         private static int blurValue = App_Misc.Blur;
         private static Color colorTop;
         private static Color colorBottom;
@@ -19,27 +19,27 @@ namespace Nucleus.Coop.Tools
         {
             if (screenshot == null)
             {
-                return main.defBackground;
+                return mainForm.defBackground;
             }
 
-            var blur = new GaussianBlur(screenshot);
+            GaussianBlur blur = new GaussianBlur(screenshot);
 
-            Bitmap result = blur.Process(blurValue);
             colorTop = blur.topColor;
             colorBottom = blur.bottomColor;
 
             screenshot.Dispose();
-            return result;
+
+            return blur.Process(blurValue);
         }
 
-        public static void ApplyBackgroundAndCover(MainForm mainForm, string gameGuid)
+        public static void ApplyBackgroundAndCover(string gameGuid)
         {
-            main = mainForm;
+            mainForm = MainForm.Instance;
 
             ///Apply covers
             if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
             {
-                mainForm.cover.BackgroundImage = (Bitmap)Image.FromFile(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                mainForm.cover.BackgroundImage = new Bitmap(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
             }
             else
             {
@@ -56,13 +56,13 @@ namespace Nucleus.Coop.Tools
                     Random rNum = new Random();
                     int RandomIndex = rNum.Next(0, imgsPath.Length);
 
-                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur((Bitmap)Image.FromFile(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg")));
+                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg")));
                     mainForm.GameBorderGradientTop = colorTop;
                     mainForm.GameBorderGradientBottom = colorBottom;
                 }
                 else
                 {
-                    Bitmap def = new Bitmap (mainForm.defBackground.Clone() as Bitmap);
+                    Bitmap def = new Bitmap ((Bitmap)mainForm.defBackground.Clone());
                     mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(def);
                     mainForm.GameBorderGradientTop = mainForm.BorderGradient;
                     mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
@@ -70,7 +70,7 @@ namespace Nucleus.Coop.Tools
             }
             else
             {
-                Bitmap def = new Bitmap(mainForm.defBackground.Clone() as Bitmap);
+                Bitmap def = new Bitmap((Bitmap)mainForm.defBackground.Clone());
                 mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(def);
                 mainForm.GameBorderGradientTop = mainForm.BorderGradient;
                 mainForm.GameBorderGradientBottom = mainForm.BorderGradient;

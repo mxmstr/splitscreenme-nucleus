@@ -1,6 +1,4 @@
-﻿using Nucleus.Coop.Properties;
-using Nucleus.Gaming;
-using Nucleus.Gaming.UI;
+﻿using Nucleus.Gaming.UI;
 using System;
 using System.Drawing;
 using System.IO;
@@ -33,7 +31,7 @@ namespace Nucleus.Coop.Controls
 
         private void InitContainer(PictureBox pb)
         {
-            pb.Image = Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "gui\\tuto\\tuto.gif"));
+            pb.Image = Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), "gui\\tutorial\\tutorial.gif"));
             pb.Cursor = Theme_Settings.Hand_Cursor;
         }
 

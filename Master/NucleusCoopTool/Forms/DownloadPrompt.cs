@@ -50,16 +50,17 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        public DownloadPrompt(Handler handler, MainForm mf, string zipFileName)
+        public DownloadPrompt(Handler handler, string zipFileName)
         {
-            fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "DownloadPromptFontSize"));
+            MainForm mainForm = MainForm.Instance;
+            fontSize = float.Parse(mainForm.themeIni.IniReadValue("Font", "DownloadPromptFontSize"));
 
             try
             {
                 InitializeComponent();
 
                 Handler = handler;
-                mainForm = mf;
+                mainForm = MainForm.Instance;
 
                 lbl_Handler.Text = zipFile;
 
@@ -89,7 +90,7 @@ namespace Nucleus.Coop.Forms
 
                 foreach (Control control in ctrls)
                 {
-                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    control.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 ResumeLayout();
@@ -101,7 +102,7 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        public DownloadPrompt(Handler handler, MainForm mf, string zipFileName, bool overwriteWithoutAsking) : this(handler, mf, zipFileName)
+        public DownloadPrompt(Handler handler, string zipFileName, bool overwriteWithoutAsking) : this(handler, zipFileName)
         {
             this.overwriteWithoutAsking = overwriteWithoutAsking;
         }
@@ -301,7 +302,7 @@ namespace Nucleus.Coop.Forms
             if (dialogResult == DialogResult.Yes)
             {
                 GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-                SearchGame.Search(mainForm, exeName, genericGameInfo);
+                SearchGame.Search(exeName, genericGameInfo);
             }
         }
     }

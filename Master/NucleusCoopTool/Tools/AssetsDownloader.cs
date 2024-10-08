@@ -18,16 +18,18 @@ namespace Nucleus.Coop.Tools
     static class AssetsDownloader
     {
         private static int maxScreenshotsToDownload;
-
-        public static void DownloadAllGamesAssets(MainForm main, GameManager gameManager, GameControl currentControl)
+        
+        public static void DownloadAllGamesAssets(GameControl currentControl)
         {
-            List<UserGameInfo> games = gameManager.User.Games;
+            List<UserGameInfo> games = GameManager.Instance.User.Games;
+            var mainForm = MainForm.Instance;
 
-            main.rightFrame.Enabled = false;
-            main.mainButtonFrame.Enabled = false;
-            main.StepPanel.Enabled = false;
-            main.game_listSizer.Enabled = false;
-            
+            mainForm.rightFrame.Enabled = false;
+            mainForm.mainButtonFrame.Enabled = false;
+            mainForm.StepPanel.Enabled = false;
+            mainForm.game_listSizer.Enabled = false;
+            mainForm.Invalidate(false);
+
             System.Threading.Tasks.Task.Run(() =>
             {
                 for (int i = 0; i < games.Count; i++)
@@ -66,32 +68,35 @@ namespace Nucleus.Coop.Tools
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }
 
-                main.Invoke((MethodInvoker)delegate ()
+                mainForm.Invoke((MethodInvoker)delegate ()
                 {
-                    main.rightFrame.Enabled = true;
-                    main.mainButtonFrame.Enabled = true;
-                    main.game_listSizer.Enabled = true;
-                    main.StepPanel.Enabled = true;
+                    mainForm.rightFrame.Enabled = true;
+                    mainForm.mainButtonFrame.Enabled = true;
+                    mainForm.game_listSizer.Enabled = true;
+                    mainForm.StepPanel.Enabled = true;
 
                     Globals.MainOSD.Show(2000, "Download Completed!");
 
-                    if (currentControl != null && main.StepPanel.Visible)
+                    if (currentControl != null && mainForm.StepPanel.Visible)
                     {
-                        SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
+                        SetBackroundAndCover.ApplyBackgroundAndCover(currentControl.UserGameInfo.GameGuid);
                     }
 
-                    main.Invalidate(false);
-                    main.mainButtonFrame.Select();
+                    mainForm.Invalidate(false);
+                    mainForm.mainButtonFrame.Select();
                 });
 
             });
         }
 
-        public static void DownloadGameAssets(MainForm main, UserGameInfo game, GameControl currentControl)
+        public static void DownloadGameAssets(UserGameInfo game, GameControl currentControl)
         {
-            main.mainButtonFrame.Enabled = false;
-            main.StepPanel.Enabled = false;
-            main.game_listSizer.Enabled = false;
+            MainForm mainForm = MainForm.Instance;
+
+            mainForm.mainButtonFrame.Enabled = false;
+            mainForm.StepPanel.Enabled = false;
+            mainForm.game_listSizer.Enabled = false;
+            mainForm.Invalidate(false);
 
             System.Threading.Tasks.Task.Run(() =>
             {
@@ -131,26 +136,26 @@ namespace Nucleus.Coop.Tools
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }
 
-                main.Invoke((MethodInvoker)delegate ()
+                mainForm.Invoke((MethodInvoker)delegate ()
                 {
-                    main.rightFrame.Enabled = true;
-                    main.mainButtonFrame.Enabled = true;
-                    main.game_listSizer.Enabled = true;
-                    main.StepPanel.Enabled = true;
-                    main.rightFrame.Enabled = true;
+                    mainForm.rightFrame.Enabled = true;
+                    mainForm.mainButtonFrame.Enabled = true;
+                    mainForm.game_listSizer.Enabled = true;
+                    mainForm.StepPanel.Enabled = true;
+                    mainForm.rightFrame.Enabled = true;
 
                     if (!error)
                     {
                         Globals.MainOSD.Show(2000, "Download Completed!");
                     }
 
-                    if (currentControl != null && main.StepPanel.Visible)
+                    if (currentControl != null && mainForm.StepPanel.Visible)
                     {
-                        SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
+                        SetBackroundAndCover.ApplyBackgroundAndCover(currentControl.UserGameInfo.GameGuid);
                     }
 
-                    main.Invalidate(false);
-                    main.mainButtonFrame.Select();
+                    mainForm.Invalidate(false);
+                    mainForm.mainButtonFrame.Select();
                 });
 
             });

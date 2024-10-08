@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Forms
 {
@@ -9,20 +10,25 @@ namespace Nucleus.Gaming.Forms
 
         public static void Show(string title, string message, bool formating)
         {
-            if(MessageBox != null)
+            MessageBox?.Invoke((MethodInvoker)delegate ()
             {
-                MessageBox.BringToFront();
-                return;
-            }
+                MessageBox.Close();
+            });
 
-            CustomMessageBox messageBox = new CustomMessageBox(title, message, formating);
-            messageBox.Disposed += MessageBox_Disposed;
-            messageBox.Show();
-            MessageBox = messageBox;
+            MessageBox = new CustomMessageBox(title, message, formating);
+            MessageBox.FormClosed += MessageBox_Dispose;
+            
+            MessageBox.ShowDialog();      
+            MessageBox?.BringToFront();
         }
 
-        private static void MessageBox_Disposed(object sender, EventArgs e)
+        private static void MessageBox_Dispose(object sender, EventArgs e)
         {
+            MessageBox?.Invoke((MethodInvoker)delegate ()
+            {
+                MessageBox.Dispose();
+            });
+
             MessageBox = null;
         }
     }

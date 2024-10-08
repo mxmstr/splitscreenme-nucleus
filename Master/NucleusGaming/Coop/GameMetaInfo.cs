@@ -114,15 +114,15 @@ namespace Nucleus.Gaming.Coop
 
                     if (hasMetaInfo)
                     {
-                        totalPlayTime = (string)JMetaInfo[gameGuid]["TotalPlayTime"] != null ? (string)JMetaInfo[gameGuid]["TotalPlayTime"] : null;
-                        lastPlayedAt = (string)JMetaInfo[gameGuid]["LastPlayedAt"] != null ? (string)JMetaInfo[gameGuid]["LastPlayedAt"] : null;
-                        iconPath = (string)JMetaInfo[gameGuid]["IconPath"] != null ? (string)JMetaInfo[gameGuid]["IconPath"] : null;
-                        saveProfile = JMetaInfo[gameGuid]["SaveProfile"] != null ? (bool)JMetaInfo[gameGuid]["SaveProfile"] : true;
-                        disableProfiles = JMetaInfo[gameGuid]["DisableProfiles"] != null ? (bool)JMetaInfo[gameGuid]["DisableProfiles"] : false;
-                        keepSymLink = JMetaInfo[gameGuid]["KeepSymLink"] != null ? (bool)JMetaInfo[gameGuid]["KeepSymLink"] : false;
-                        favorite = JMetaInfo[gameGuid]["Favorite"] != null ? (bool)JMetaInfo[gameGuid]["Favorite"] : false;
-                        firstLaunch = JMetaInfo[gameGuid]["FirstLaunch"] != null ? (bool)JMetaInfo[gameGuid]["FirstLaunch"] : true;
-                        checkUpdate = JMetaInfo[gameGuid]["CheckUpdate"] != null ? (bool)JMetaInfo[gameGuid]["CheckUpdate"] : true;
+                        totalPlayTime = (string)JMetaInfo[gameGuid]["TotalPlayTime"] ?? null;
+                        lastPlayedAt = (string)JMetaInfo[gameGuid]["LastPlayedAt"] ?? null;
+                        iconPath = (string)JMetaInfo[gameGuid]["IconPath"] ?? null;
+                        saveProfile = JMetaInfo[gameGuid]["SaveProfile"] == null || (bool)JMetaInfo[gameGuid]["SaveProfile"];
+                        disableProfiles = JMetaInfo[gameGuid]["DisableProfiles"] != null && (bool)JMetaInfo[gameGuid]["DisableProfiles"];
+                        keepSymLink = JMetaInfo[gameGuid]["KeepSymLink"] != null && (bool)JMetaInfo[gameGuid]["KeepSymLink"];
+                        favorite = JMetaInfo[gameGuid]["Favorite"] != null && (bool)JMetaInfo[gameGuid]["Favorite"];
+                        firstLaunch = JMetaInfo[gameGuid]["FirstLaunch"] == null || (bool)JMetaInfo[gameGuid]["FirstLaunch"];
+                        checkUpdate = JMetaInfo[gameGuid]["CheckUpdate"] == null || (bool)JMetaInfo[gameGuid]["CheckUpdate"];
                         return;
                     }
 

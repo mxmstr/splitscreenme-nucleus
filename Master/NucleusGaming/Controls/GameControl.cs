@@ -70,8 +70,6 @@ namespace Nucleus.Coop
         private Size minSize;
         private Point maxLoc;
         private Point minLoc;
-        private Pen outlinePen;
-        private SolidBrush fillBrush;
 
         protected override CreateParams CreateParams
         {
@@ -220,9 +218,6 @@ namespace Nucleus.Coop
                 HandlerUpdate.MouseEnter += ZoomInPicture;
                 HandlerUpdate.MouseLeave += ZoomOutPicture;
 
-                outlinePen = new Pen(Color.FromArgb(15, 255, 255, 255));
-                fillBrush = new SolidBrush(Color.FromArgb(50, 20, 20, 20));
-
                 this.Disposed += DisposeTimer;
 
                 if (GameInfo != null)
@@ -329,14 +324,7 @@ namespace Nucleus.Coop
 
                 this.Invoke((MethodInvoker)delegate ()
                 {
-                    if (GameInfo.UpdateAvailable && GameInfo.MetaInfo.CheckUpdate)
-                    {
-                        updateAvailable = true;
-                    }
-                    else
-                    {
-                        updateAvailable = false;
-                    }
+                    updateAvailable = GameInfo.UpdateAvailable && GameInfo.MetaInfo.CheckUpdate;
                 });
             }
             catch
@@ -480,9 +468,7 @@ namespace Nucleus.Coop
             lgb.InterpolationColors = topcblend;
             lgb.SetBlendTriangularShape(.5f, 1.0f);
             e.Graphics.FillRectangle(lgb, bounds);
-
             lgb.Dispose();
-
 
             Size oulineRect = HandlerUpdate.Visible ? maxSize : minSize;
 
@@ -499,12 +485,17 @@ namespace Nucleus.Coop
 
             GraphicsPath backGp = FormGraphicsUtil.MakeRoundedRect(inputTextBack, 10, 10, true, false, false, true);
             GraphicsPath outlineGp = FormGraphicsUtil.MakeRoundedRect(inputTextBackOutline, 10, 10, true, false, false, true);
+            
+            SolidBrush fillBrush = new SolidBrush(Color.FromArgb(50, 20, 20, 20));
+            Pen outlinePen = new Pen(Color.FromArgb(15, 255, 255, 255));
 
             e.Graphics.FillPath(fillBrush, backGp);
-            e.Graphics.DrawPath(outlinePen, outlineGp);
-
+            fillBrush.Dispose();
             backGp.Dispose();
-            outlineGp.Dispose();
+
+            e.Graphics.DrawPath(outlinePen, outlineGp);
+            outlinePen.Dispose();
+            outlineGp.Dispose();    
         }
        
     }

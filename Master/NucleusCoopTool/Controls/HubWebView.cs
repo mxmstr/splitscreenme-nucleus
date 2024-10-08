@@ -45,9 +45,9 @@ namespace Nucleus.Coop.Forms
         private List<JObject> installedHandlers = new List<JObject>();
         public bool Downloading { get; private set; }
 
-        public HubWebView(MainForm mainForm)
+        public HubWebView()
         {
-            this.mainForm = mainForm;
+            mainForm = MainForm.Instance;
 
             InitializeComponent();
 
@@ -443,7 +443,7 @@ namespace Nucleus.Coop.Forms
         private void AddGameToList(string frmHandleTitle, string exeName)
         {
             GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
-            SearchGame.Search(mainForm, exeName, genericGameInfo);
+            SearchGame.Search(exeName, genericGameInfo);
             HideModal();
             closeBtn.PerformClick();
         }

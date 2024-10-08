@@ -12,7 +12,6 @@ namespace Nucleus.Coop.Tools
     {
         private System.Threading.Timer particlesTimer;
         private Control senderControl;
-        private SolidBrush particlesBrush;
         private Control handlerControl;
 
         private void particlesTimer_Tick(object state)
@@ -108,15 +107,14 @@ namespace Nucleus.Coop.Tools
                     particles[i] = new RectangleF(randX, randY, randS, randS);
                 }
 
-                if (particlesBrush == null)
-                {
-                    particlesBrush = new SolidBrush(Color.FromArgb(alpha[i], color[0], color[1], color[2]));
-                }
+                SolidBrush particlesBrush = new SolidBrush(Color.FromArgb(alpha[i], color[0], color[1], color[2]));
 
                 if (particles[i].Width > 1)
                 {
                     e.Graphics.FillEllipse(particlesBrush, particles[i]);
                 }
+
+                particlesBrush.Dispose();
             }
         }
 

@@ -33,7 +33,6 @@ namespace Nucleus.Gaming.Coop
         public static GameProfile Instance;
 
         public static GenericGameInfo Game;
-        private static SetupScreenControl setupScreen = null;
 
         public static int TotalAssignedPlayers;//K&m player will count as one only if 2 devices(keyboard & mouse) do share the same bounds.
 
@@ -278,7 +277,7 @@ namespace Nucleus.Gaming.Coop
         {
             bool profileDisabled = App_Misc.DisableGameProfiles;
 
-            setupScreen.CanPlayUpdated(false, false);
+            SetupScreenControl.Instance.CanPlayUpdated(false, false);
 
             ProfilePlayersList.Clear();
             AllScreens.Clear();
@@ -352,11 +351,10 @@ namespace Nucleus.Gaming.Coop
             }
         }
 
-        public void InitializeDefault(GenericGameInfo game, SetupScreenControl pc)
+        public void InitializeDefault(GenericGameInfo game)
         {
             Instance = this;
             Game = game;
-            setupScreen = pc;
 
             Reset();
 
@@ -1141,11 +1139,11 @@ namespace Nucleus.Gaming.Coop
                     scr.Item1.PlayerOnScreen++;
                     TotalAssignedPlayers++;
 
-                    setupScreen.Invalidate();
+                    SetupScreenControl.Instance?.Invalidate();
 
                     if (TotalAssignedPlayers == TotalProfilePlayers && Ready && AutoPlay && !Updating)
                     {
-                        setupScreen.CanPlayUpdated(true, true);
+                        SetupScreenControl.Instance?.CanPlayUpdated(true, true);
                         Globals.PlayButton.PerformClick();
                         Ready = false;
                         return;
@@ -1157,7 +1155,7 @@ namespace Nucleus.Gaming.Coop
             {
                 if (Ready && (!AutoPlay || Updating))
                 {
-                    setupScreen.CanPlayUpdated(true, true);
+                    SetupScreenControl.Instance?.CanPlayUpdated(true, true);
                     Updating = false;
                     return;
                 }

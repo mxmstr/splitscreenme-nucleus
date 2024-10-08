@@ -31,8 +31,7 @@ namespace Nucleus.Coop
     public partial class ProfileSettings : BaseForm, IDynamicSized
     {
 
-        private MainForm mainForm = null;
-        private SetupScreenControl setupScreen = null;
+        private MainForm mainForm;
         private static ProfileSettings profileSettings;
 
         private string currentNickname;
@@ -41,7 +40,6 @@ namespace Nucleus.Coop
         private List<Panel> tabs = new List<Panel>();
         private List<Control> tabsButtons = new List<Control>();
         private List<Control> ctrls = new List<Control>();
-
 
         private ComboBox[] controllerNicks;
         private ComboBox[] steamIds;
@@ -74,18 +72,17 @@ namespace Nucleus.Coop
             }
         }
 
-        public ProfileSettings(MainForm mf, SetupScreenControl pc)
+        public ProfileSettings()
         {
-            fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "SettingsFontSize"));
+            mainForm = MainForm.Instance;
+            fontSize = float.Parse(mainForm.themeIni.IniReadValue("Font", "SettingsFontSize"));
             profileSettings = this;
-            mainForm = mf;
-            setupScreen = pc;
 
             InitializeComponent();
 
             Cursor = Theme_Settings.Default_Cursor;
 
-            var borderscolor = mf.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
+            var borderscolor = mainForm.themeIni.IniReadValue("Colors", "ProfileSettingsBorder").Split(',');
             selectionColor = Theme_Settings.SelectedBackColor;
             bordersPen = new Pen(Color.FromArgb(int.Parse(borderscolor[0]), int.Parse(borderscolor[1]), int.Parse(borderscolor[2])));
 
@@ -98,18 +95,18 @@ namespace Nucleus.Coop
                 if (c is CheckBox || c is Label || c is RadioButton)
                 {
                     if (c.Name != "audioWarningLabel" && c.Name != "warningLabel" && c.Name != "modeLabel")
-                        c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        c.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c is ComboBox || c is TextBox || c is GroupBox)
                 {
                     if (c.Name != "notes_text" && c.Name != "profileTitle")
-                        c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        c.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c is CustomNumericUpDown)
                 {
-                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    c.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c.Name != "sharedTab" && c.Name != "playersTab" && c.Name != "audioTab" &&
@@ -135,8 +132,9 @@ namespace Nucleus.Coop
                 {
                     Button isButton = c as Button;
                     isButton.FlatAppearance.BorderSize = 0;
-                    isButton.FlatAppearance.MouseOverBackColor = selectionColor;
+                    isButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
                 }
+
 
                 if (c.Name.Contains("pauseBetweenInstanceLaunch_TxtBox") || c.Name.Contains("WindowsSetupTiming_TextBox"))
                 {
@@ -150,24 +148,24 @@ namespace Nucleus.Coop
                 }
             }
 
-            ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
+            ForeColor = Color.FromArgb(int.Parse(mainForm.rgb_font[0]), int.Parse(mainForm.rgb_font[1]), int.Parse(mainForm.rgb_font[2]));
 
-            audioBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "audio.png");
-            playersBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "players.png");
-            sharedBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "shared.png");
-            processorBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "processor.png");
-            layoutBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "layout.png");
-            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "title_close.png");
-            audioRefresh.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
-            profile_info_btn.BackgroundImage = ImageCache.GetImage(mf.theme + "profile_info.png");
-            btnNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
-            btnProcessorNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
-            refreshScreenDatasButton.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
+            audioBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "audio.png");
+            playersBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "players.png");
+            sharedBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "shared.png");
+            processorBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "processor.png");
+            layoutBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "layout.png");
+            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
+            audioRefresh.BackgroundImage = ImageCache.GetImage(mainForm.theme + "refresh.png");
+            profile_info_btn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "profile_info.png");
+            btnNext.BackgroundImage = ImageCache.GetImage(mainForm.theme + "page1.png");
+            btnProcessorNext.BackgroundImage = ImageCache.GetImage(mainForm.theme + "page1.png");
+            refreshScreenDatasButton.BackgroundImage = ImageCache.GetImage(mainForm.theme + "refresh.png");
 
             audioBtnPicture.Click += AudioTabBtn_Click;
 
-            btnNext.BackColor = mf.buttonsBackColor;
-            btnProcessorNext.BackColor = mf.buttonsBackColor;
+            btnNext.BackColor = mainForm.buttonsBackColor;
+            btnProcessorNext.BackColor = mainForm.buttonsBackColor;
 
             audioRefresh.BackColor = Color.Transparent;
 
@@ -347,11 +345,6 @@ namespace Nucleus.Coop
 
             DPIManager.Register(this);
             DPIManager.Update(this);
-        }
-
-        public ProfileSettings()
-        {
-            DPIManager.Unregister(this);
         }
 
         public new void UpdateSize(float scale)

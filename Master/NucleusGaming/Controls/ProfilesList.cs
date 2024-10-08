@@ -259,7 +259,6 @@ namespace Nucleus.Gaming.Controls
                 Label profileBtn = new Label
                 {
                     Name = (i + 1).ToString(),
-                    //Anchor = AnchorStyles.Left | AnchorStyles.Right,
                     FlatStyle = FlatStyle.Flat,
                     BackgroundImageLayout = ImageLayout.Zoom,
                     Font = titleFont,

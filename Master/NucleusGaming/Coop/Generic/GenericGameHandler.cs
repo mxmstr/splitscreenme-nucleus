@@ -99,7 +99,7 @@ namespace Nucleus.Gaming
         private GenericGameInfo gen;
         public GenericGameInfo CurrentGameInfo => gen;
         public GenericContext context;
-        private static GenericGameHandler instance;
+        
         private UserGameInfo userGame;
         public ProcessData prevProcessData;
         public Process launchProc;
@@ -108,6 +108,8 @@ namespace Nucleus.Gaming
         public Thread FakeFocus => WindowFakeFocus.fakeFocus;
 
         public event Action Ended;
+
+        private static GenericGameHandler instance;
         public static GenericGameHandler Instance => instance;
 
         public Dictionary<string, string> jsData;
@@ -384,7 +386,7 @@ namespace Nucleus.Gaming
                 {
                     if (!hasMerger)
                     {
-                        if ((GameProfile.UseSplitDiv == true && gen.SplitDivCompatibility == true) || gen.HideDesktop)
+                        if ((GameProfile.UseSplitDiv && gen.SplitDivCompatibility) || gen.HideDesktop)
                         {
                             WPFDivFormThread.StartBackgroundForm(gen, dp);
                         }
@@ -405,9 +407,6 @@ namespace Nucleus.Gaming
             {
                 Log(string.Format("Monitor {0} - Resolution: {1}", x, all[x].MonitorBounds.Width + "x" + all[x].MonitorBounds.Height));
             }
-
-            //string nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-           // nucleusFolderPath = nucleusRootFolder;
 
             string tempDir = GameManager.Instance.GempTempFolder(gen);
             string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
@@ -3580,7 +3579,7 @@ namespace Nucleus.Gaming
 
             if (!gen.KeepSymLinkOnExit && !CurrentGameInfo.MetaInfo.KeepSymLink)
             {
-                CleanGameContent.CleanContentFolder(gen);
+                CleanGameContent.CleanContentFolder(gen,false);
             }
 
             if  (!App_Misc.KeepAccounts)

@@ -11,11 +11,13 @@ namespace Nucleus.Coop
 
     public static class InputIcons
     {
-        public static Control[] SetInputsIcons(MainForm main, GenericGameInfo game)
-        {     
+        public static Control[] SetInputsIcons(GenericGameInfo game)
+        {
+            MainForm mainForm = MainForm.Instance;
+
             List<PictureBox> icons = new List<PictureBox>();
 
-            Size iconsSize = new Size(main.icons_Container.Height + 5, main.icons_Container.Height - 2);
+            Size iconsSize = new Size(mainForm.icons_Container.Height + 5, mainForm.icons_Container.Height - 2);
 
             if ((game.Hook.XInputEnabled && !game.Hook.XInputReroute && !game.ProtoInput.DinputDeviceHook) || game.ProtoInput.XinputHook)
             {

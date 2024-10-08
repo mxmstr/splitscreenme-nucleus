@@ -10,8 +10,10 @@ namespace Nucleus.Coop.Tools
 {
     internal class ChangeGameIcon
     {
-        public static void ChangeIcon(MainForm main, UserGameInfo userGameInfo)
+        public static void ChangeIcon(UserGameInfo userGameInfo)
         {
+            MainForm mainForm = MainForm.Instance;
+
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Open Image";
@@ -30,11 +32,11 @@ namespace Nucleus.Coop.Tools
                     //string prevImage = userGameInfo.Game.MetaInfo.IconPath;
                     userGameInfo.Game.MetaInfo.IconPath = dlg.FileName;
 
-                    lock (main.controls)
+                    lock (mainForm.controls)
                     {
-                        if (main.controls.ContainsKey(userGameInfo))
+                        if (mainForm.controls.ContainsKey(userGameInfo))
                         {
-                            GameControl control = main.controls[userGameInfo];
+                            GameControl control = mainForm.controls[userGameInfo];
 
                             if (userGameInfo.Game.MetaInfo.IconPath.EndsWith(".exe"))
                             { 

@@ -197,8 +197,9 @@ namespace Nucleus.Gaming
             // search for the same exe on the user profile
             if (Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
             {
-                DialogResult dialogResult = MessageBox.Show("This game's executable is already in your library. Do you wish to add it anyway?\n\nExecutable Path: " + exePath, "Already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (dialogResult == DialogResult.No)
+                DialogResult dialogResult = MessageBox.Show("This game's executable is already in your library. \nRemove the game from your library if you need to re-add it.\n" + exePath, "Already exists", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                
+                if (dialogResult == DialogResult.OK)
                 {
                     return null;
                 }
@@ -462,7 +463,7 @@ namespace Nucleus.Gaming
             }
 
             string userProfile = GetUserProfilePath();
-            asyncSaveUser(userProfile);
+            AsyncSaveUser(userProfile);
         }
 
         private void LoadUser()
@@ -490,17 +491,27 @@ namespace Nucleus.Gaming
                             {
                                 // delete invalid games
                                 for (int i = 0; i < user.Games.Count; i++)
-                                {
-                                    bool exist = File.Exists(user.Games[i].ExePath);
-
-                                    if (!exist && user.Games[i] != null)
+                                {                                
+                                    if (user.Games[i].Game == null)//no .js file(deleted manually)
                                     {
                                         user.Games.RemoveAt(i);
-                                        if(i > 0) { i--; }                                       
+                                        if (i > 0) 
+                                        {
+                                            i--;
+                                        } 
                                     }
 
                                     if (user.Games[i].Game != null)
                                     {
+                                        bool exist = File.Exists(user.Games[i].ExePath);
+
+                                        if (!exist)
+                                        {
+                                            CleanGamesAssets(user.Games[i].GameGuid);
+                                            user.Games.RemoveAt(i);
+                                            if (i > 0) { i--; }
+                                        }
+
                                         //Check for handler update here so we check only for added games
                                         if (user.Games[i].Game.MetaInfo.CheckUpdate)
                                         {
@@ -515,24 +526,25 @@ namespace Nucleus.Gaming
                                 }
                             }
 
+                            CleanGamesAssets(null);
                             user.Games = user.Games.OrderBy(g => g.GameGuid).ToList();
                         }
 
-                        saveUser(userProfile);
+                        SaveUser(userProfile);
                     }
                 }
                 catch
                 {
-                    makeDefaultUserFile();
+                    MakeDefaultUserFile();
                 }
             }
             else
             {
-                makeDefaultUserFile();
+                MakeDefaultUserFile();
             }
         }
 
-        private void makeDefaultUserFile()
+        private void MakeDefaultUserFile()
         {
             user = new UserProfile();
             user.InitializeDefault();
@@ -544,20 +556,20 @@ namespace Nucleus.Gaming
                 Directory.CreateDirectory(split);
             }
 
-            saveUser(userProfile);
+            SaveUser(userProfile);
         }
 
-        private void asyncSaveUser(string path)
+        private void AsyncSaveUser(string path)
         {
             if (!IsSaving)
             {
                 isSaving = true;
                 //LogManager.Log("> Saving user profile....");
-                ThreadPool.QueueUserWorkItem(saveUser, path);
+                ThreadPool.QueueUserWorkItem(SaveUser, path);
             }
         }
 
-        private void saveUser(object p)
+        private void SaveUser(object p)
         {
             lock (saving)
             {
@@ -630,8 +642,62 @@ namespace Nucleus.Gaming
                     MessageBox.Show(ex.InnerException + ": " + ex.Message, "Error with handler " + f.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     continue;
                 }
+            }          
+        }
 
+        private void CleanGamesAssets(string gameGuid)
+        {           
+            try//Try just in case a file is opened in explorer
+            {
+                if (gameGuid != null)
+                {
+                    if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg")))
+                    {
+                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                    }
+
+                    if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}")))
+                    {
+                        Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"), true);
+                    }
+
+                    if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions")))
+                    {
+                        Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions"), true);
+                    }
+
+                    return;
+                }
+
+                //Delete games assets for manually removed handlers (no available game guid to use)
+                //We search for existing screenshot directories and cover file and compare with the actual user games.
+                //If dirs or files with no corresponding user game are found, we delete them.
+
+                List<string> scDirToDelete = Directory.GetDirectories(Path.Combine(Application.StartupPath, $"gui\\screenshots")).
+                    Where(sc => user.Games.All(v => !sc.Contains(v.GameGuid))).ToList();
+
+                foreach (var scDirectory in scDirToDelete)
+                {
+                    if (Directory.Exists(scDirectory))
+                    {
+                        Directory.Delete(scDirectory, true);
+                        //Console.WriteLine(scDirectory);
+                    }
+                }
+
+                List<string> coversToDelete = Directory.GetFiles(Path.Combine(Application.StartupPath, $"gui\\covers")).
+                   Where(sc => user.Games.All(v => !sc.Contains(v.GameGuid))).ToList();
+
+                foreach (var coverFile in coversToDelete)
+                {
+                    if (File.Exists(coverFile))
+                    {
+                        File.Delete(coverFile);
+                        //Console.WriteLine(coverFile);
+                    }
+                }
             }
+            catch {}
         }
 
         public string AutoSearchGameInstallPath(GenericGameInfo genericGameInfo)

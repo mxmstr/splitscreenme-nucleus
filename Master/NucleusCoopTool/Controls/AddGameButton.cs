@@ -33,9 +33,10 @@ namespace Nucleus.Coop.Controls
             }
         }
 
-        public AddGameButton(MainForm mainform, int width, int height)
+        public AddGameButton(int width, int height)
         {
-            mainForm = mainform;
+            mainForm = MainForm.Instance;
+
             InitializeComponent();
 
             favorite_Unselected = ImageCache.GetImage(Globals.ThemeFolder + "favorite_unselected.png");

@@ -119,6 +119,15 @@ namespace Nucleus.Coop
             {
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\screenshots")));
             }
+
+            try
+            {
+                if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions")))//Not used anymore
+                {
+                    Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions"), true);
+                }
+            }
+            catch { }
         }
         
         public static void CheckUserEnvironment()
@@ -502,6 +511,11 @@ namespace Nucleus.Coop
         public static void CleanLogs()
         {
             string logsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "content");
+
+            if(!Directory.Exists(logsDirectory))
+            {
+                return;
+            }
 
             IEnumerable<string> logs = Directory.EnumerateFiles(logsDirectory).Where(l => Path.GetExtension(l) == ".log");
 

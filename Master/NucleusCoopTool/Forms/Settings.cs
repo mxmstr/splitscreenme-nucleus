@@ -34,8 +34,7 @@ namespace Nucleus.Coop
 
     public partial class Settings : Form, IDynamicSized
     {
-        private MainForm mainForm = null;
-        private SetupScreenControl setupScreen;
+        private MainForm mainForm;
 
         private string prevTheme;
         private string currentNickname;
@@ -71,11 +70,10 @@ namespace Nucleus.Coop
             }
         }
 
-        public Settings(MainForm mf, SetupScreenControl pc)
+        public Settings()
         {
             fontSize = float.Parse(Globals.ThemeConfigFile.IniReadValue("Font", "SettingsFontSize"));
-            mainForm = mf;
-            setupScreen = pc;
+            mainForm = MainForm.Instance;
 
             InitializeComponent();
 
@@ -104,18 +102,18 @@ namespace Nucleus.Coop
                 {
                     if (c.Name != "audioWarningLabel" && c.Name != "warningLabel")
                     {
-                        c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        c.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
                 }
 
                 if (c is ComboBox || c is TextBox || c is GroupBox)
                 {
-                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    c.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c is CustomNumericUpDown)
                 {
-                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    c.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 if (c.Name != "settingsTab" && c.Name != "playersTab" && c.Name != "audioTab" &&
@@ -147,25 +145,25 @@ namespace Nucleus.Coop
                 {
                     Button isButton = c as Button;
                     isButton.FlatAppearance.BorderSize = 0;
-                    isButton.FlatAppearance.MouseOverBackColor = selectionColor;
+                    isButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
                 }
 
                 if (c.Parent.Name == "hotkeyBox")
                 {
-                    c.Font = new Font(mf.customFont, fontSize, FontStyle.Bold, GraphicsUnit.Pixel, 0);
+                    c.Font = new Font(mainForm.customFont, fontSize, FontStyle.Bold, GraphicsUnit.Pixel, 0);
                 }
             }
 
-            ForeColor = Color.FromArgb(int.Parse(mf.rgb_font[0]), int.Parse(mf.rgb_font[1]), int.Parse(mf.rgb_font[2]));
+            ForeColor = Color.FromArgb(int.Parse(mainForm.rgb_font[0]), int.Parse(mainForm.rgb_font[1]), int.Parse(mainForm.rgb_font[2]));
 
-            audioBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "audio.png");
-            playersBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "players.png");
-            settingsBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "shared.png");
-            layoutBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "layout.png");
-            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mf.theme + "title_close.png");
-            audioRefresh.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
-            btnNext.BackgroundImage = ImageCache.GetImage(mf.theme + "page1.png");
-            refreshScreenDatasButton.BackgroundImage = ImageCache.GetImage(mf.theme + "refresh.png");
+            audioBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "audio.png");
+            playersBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "players.png");
+            settingsBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "shared.png");
+            layoutBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "layout.png");
+            closeBtnPicture.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
+            audioRefresh.BackgroundImage = ImageCache.GetImage(mainForm.theme + "refresh.png");
+            btnNext.BackgroundImage = ImageCache.GetImage(mainForm.theme + "page1.png");
+            refreshScreenDatasButton.BackgroundImage = ImageCache.GetImage(mainForm.theme + "refresh.png");
 
             plus1.ForeColor = ForeColor;
             plus2.ForeColor = ForeColor;
@@ -203,7 +201,7 @@ namespace Nucleus.Coop
             page1.BringToFront();
 
             btnNext.Parent = playersTab;
-            btnNext.BackColor = mf.buttonsBackColor;
+            btnNext.BackColor = mainForm.buttonsBackColor;
             btnNext.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btnNext.Location = new Point(page1.Right - btnNext.Width, (page1.Top - btnNext.Height) - 5);
 
@@ -299,7 +297,7 @@ namespace Nucleus.Coop
                     _path[last]
                 });
 
-                string[] themeName = mf.theme.Split('\\');
+                string[] themeName = mainForm.theme.Split('\\');
                 if (_path[last] != themeName[themeName.Length - 2])
                 {
                     continue;
@@ -435,11 +433,6 @@ namespace Nucleus.Coop
             DPIManager.Update(this);
         }
 
-        public Settings()
-        {
-            DPIManager.Unregister(this);
-        }
-
         public void UpdateSize(float scale)
         {
             if (IsDisposed)
@@ -504,7 +497,7 @@ namespace Nucleus.Coop
             CustomToolTips.SetToolTip(gamepadsAssignMethods, "Can break controller support in some handlers. If enabled profiles\n" +
                                                              "will not save per player gamepad but use XInput indexes instead \n" +
                                                              "(switching modes could prevent some profiles to load properly).\n" +
-                                                             "Note: Nucleus will return to the main screen.", "gamepadsAssignMethods" , new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                                                             "Note: Nucleus will return to home screen.", "gamepadsAssignMethods" , new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
             CustomToolTips.SetToolTip(enable_WMerger, "Game windows will be merged to a single window\n" +
                                                        "so Lossless Scaling can be used with Nucleus.\n " +
                                                        "Note that there's no mutiple monitor support yet.", "enable_WMerger", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
@@ -682,7 +675,7 @@ namespace Nucleus.Coop
             App_Layouts.Cts_Unfocus = cts_unfocus.Checked;
             App_Layouts.WindowsMerger = enable_WMerger.Checked;
 
-            if (setupScreen != null)
+            if (SetupScreenControl.Instance != null)
             {
                 if (DevicesFunctions.UseGamepadApiIndex != gamepadsAssignMethods.Checked)
                 {

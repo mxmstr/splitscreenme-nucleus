@@ -6,9 +6,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Windows.Controls.Primitives;
-using System.Windows.Forms;
-using System.Windows.Media.Media3D;
 
 namespace Nucleus.Gaming.Controls.SetupScreen
 {
@@ -33,6 +30,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         private static Bitmap players16;
         private static Bitmap customLayout;
         private static Bitmap manualLayout;
+        private static Bitmap clickCursor;
 
         private static bool controllerIdentification;
 
@@ -78,6 +76,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             UseLayoutSelectionBorder = bool.Parse(themeIni.IniReadValue("Misc", "UseLayoutSelectionBorder"));
             UseSetupScreenImage = bool.Parse(themeIni.IniReadValue("Misc", "UseSetupScreenImage"));
 
+            clickCursor = ImageCache.GetImage(theme + "click.png");
             xinputPic = ImageCache.GetImage(theme + "xinput.png");
             dinputPic = ImageCache.GetImage(theme + "dinput.png");
             keyboardPic = ImageCache.GetImage(theme + "keyboard.png");
@@ -127,86 +126,85 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             {
                 UserScreen s = screens[i];
 
+                if (s == null)
+                {
+                    continue;
+                }
+
                 if (s.Type != UserScreenType.Manual && s.Type != UserScreenType.FullScreen)
                 {
-                   // try
-                    //{
-                        var boundsToDraw = s.SubScreensBounds?.Values.Where(sb => !GameProfile.Instance.DevicesList.Any(pl => pl.EditBounds.IntersectsWith(sb))).ToArray();
+                    var boundsToDraw = s.SubScreensBounds?.Values.Where(sb => !GameProfile.Instance.DevicesList.Any(pl => pl.EditBounds.IntersectsWith(sb))).ToArray();
 
-                        if (boundsToDraw.Length > 0)
-                        {
-                            g.DrawRectangles(PositionScreenPen, boundsToDraw);
-                        }
-                    //}
-                    //catch (Exception e)
-                    //{ Console.WriteLine($"{e.Message} \n\n {e.StackTrace}"); };
-                }
-
-                bool intersect = false;
-                RectangleF minimizedSwapType = new Rectangle();
-
-                //try
-                //{
-                if (s.SwapTypeBounds != null && s.SwapTypeBounds != RectangleF.Empty)
-                {
-                    minimizedSwapType = s.SwapTypeBounds;
-
-                    var interstcWithSwapTypeBound = GameProfile.Instance.DevicesList.Where(dv => dv.EditBounds.IntersectsWith(s.SwapTypeBounds)).ToArray();
-
-                    if (interstcWithSwapTypeBound.Length > 0)
+                    if (boundsToDraw.Length > 0)
                     {
-                        intersect = interstcWithSwapTypeBound.Length == 0 || s.SwapTypeBounds.Contains(BoundsFunctions.MousePos);
-                        minimizedSwapType = new RectangleF(s.SwapTypeBounds.X, s.SwapTypeBounds.Y, s.SwapTypeBounds.Width / 2, s.SwapTypeBounds.Height / 2);
+                        g.DrawRectangles(PositionScreenPen, boundsToDraw);
                     }
                 }
-                //}
-                //catch(Exception e)
-                //{ Console.WriteLine($"{e.Message} \n\n {e.StackTrace}"); };
 
-                if (UseLayoutSelectionBorder)
+                if (s.SwapTypeBounds != null && s.SwapTypeBounds != RectangleF.Empty)
                 {
-                    g.DrawRectangles(PositionScreenPen, new RectangleF[] { intersect ? s.SwapTypeBounds : minimizedSwapType });
-                }
+                    RectangleF minimizedSwapType = s.SwapTypeBounds;
 
-                if (UseSetupScreenImage)
-                {
-                    g.DrawImage(screenimg, s.UIBounds);
-                }
+                    var interstcWithSwapTypeBound = GameProfile.Instance.DevicesList.Where(dv => dv.EditBounds.IntersectsWith(minimizedSwapType)).ToArray();
 
-                switch (s.Type)
-                {
-                    case UserScreenType.FullScreen:
-                        g.DrawImage(fullscreen, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                    case UserScreenType.DualHorizontal:
-                        g.DrawImage(horizontal2, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                    case UserScreenType.DualVertical:
-                        g.DrawImage(vertical2, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                    case UserScreenType.FourPlayers:
-                        g.DrawImage(players4, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                    case UserScreenType.SixPlayers:
-                        g.DrawImage(players6, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                    case UserScreenType.EightPlayers:
-                        g.DrawImage(players8, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                    case UserScreenType.SixteenPlayers:
-                        g.DrawImage(players16, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                    case UserScreenType.Custom:
-                        g.DrawImage(customLayout, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                    case UserScreenType.Manual:
-                        g.DrawImage(manualLayout, intersect ? s.SwapTypeBounds : minimizedSwapType);
-                        break;
-                }
+                    if (interstcWithSwapTypeBound.Length > 0 && !s.SwapTypeBounds.Contains(BoundsFunctions.MousePos))
+                    {
+                        minimizedSwapType = new RectangleF(s.SwapTypeBounds.X, s.SwapTypeBounds.Y, s.SwapTypeBounds.Width / 2, s.SwapTypeBounds.Height / 2);
+                    }
 
-                if (UseSetupScreenBorder)
-                {
-                    g.DrawRectangles(PositionScreenPen, new RectangleF[] { s.UIBounds });
+                    if (UseLayoutSelectionBorder)
+                    {
+                        g.DrawRectangles(PositionScreenPen, new RectangleF[] {minimizedSwapType });
+                    }       
+
+                    if (UseSetupScreenImage)
+                    {
+                        g.DrawImage(screenimg, s.UIBounds);
+                    }
+
+                    switch (s.Type)
+                    {
+                        case UserScreenType.FullScreen:
+                            g.DrawImage(fullscreen, minimizedSwapType);
+                            break;
+                        case UserScreenType.DualHorizontal:
+                            g.DrawImage(horizontal2, minimizedSwapType);
+                            break;
+                        case UserScreenType.DualVertical:
+                            g.DrawImage(vertical2, minimizedSwapType);
+                            break;
+                        case UserScreenType.FourPlayers:
+                            g.DrawImage(players4, minimizedSwapType);
+                            break;
+                        case UserScreenType.SixPlayers:
+                            g.DrawImage(players6, minimizedSwapType);
+                            break;
+                        case UserScreenType.EightPlayers:
+                            g.DrawImage(players8, minimizedSwapType);
+                            break;
+                        case UserScreenType.SixteenPlayers:
+                            g.DrawImage(players16, minimizedSwapType);
+                            break;
+                        case UserScreenType.Custom:
+                            g.DrawImage(customLayout, minimizedSwapType);
+                            break;
+                        case UserScreenType.Manual:
+                            g.DrawImage(manualLayout, minimizedSwapType);
+                            break;
+                    }
+
+                    if (UseSetupScreenBorder)
+                    {
+                        g.DrawRectangles(PositionScreenPen, new RectangleF[] { s.UIBounds });
+                    }
+
+                    if (parent.UserGameInfo.Game.MetaInfo.FirstLaunch &&
+                        s.Type == UserScreenType.FullScreen &&
+                        interstcWithSwapTypeBound.Length == 0 && 
+                        BoundsFunctions.ShowSwapTypeTip)
+                    {
+                        g.DrawImage(clickCursor, new RectangleF((minimizedSwapType.Left + (minimizedSwapType.Width / 2)) + (minimizedSwapType.Width / 8.2f), (minimizedSwapType.Top + (minimizedSwapType.Height / 2)) - (minimizedSwapType.Width / 8.2f), (minimizedSwapType.Width * 8 ) / 2.5f, (minimizedSwapType.Width) / 2.5f));
+                    }
                 }
             }
         }

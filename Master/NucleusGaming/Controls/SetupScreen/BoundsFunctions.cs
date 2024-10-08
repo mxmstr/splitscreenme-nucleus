@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Controls.SetupScreen
@@ -42,7 +43,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
         internal static Rectangle destMonitorBounds;
 
         internal static bool dragging = false;
-
+        internal static bool ShowSwapTypeTip = true;
 
         internal static string PlayerBoundsInfoText(PlayerInfo selectedPlayer)
         {
@@ -393,6 +394,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                             }
                         }
 
+                        ShowSwapTypeTip = false;
                         DevicesFunctions.UpdateDevices();
                         parent.Invalidate(false);
                         return;
@@ -885,16 +887,40 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     sizer = RectangleF.Empty;
                 }
 
-                if (parent.Cursor != Theme_Settings.Default_Cursor)
+                bool isInSwapBounds = IsCursorInSwapBounds();
+
+                if (isInSwapBounds)
+                {
+                    parent.Cursor = Theme_Settings.Hand_Cursor;
+                }
+                else if (parent.Cursor != Theme_Settings.Default_Cursor && !isInSwapBounds)
                 {
                     parent.Cursor = Theme_Settings.Default_Cursor;
                 }
             }
         }
 
+        internal static bool IsCursorInSwapBounds()
+        {
+            var cursorInSwapType = screens?.Where(scr => scr.SwapTypeBounds.Contains(MousePos)).FirstOrDefault();
+            
+            if (cursorInSwapType != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
 
         internal static void SetCursor(Point cursorLoc)
         {
+            if (IsCursorInSwapBounds() || sizerBtnCenter.Contains(MousePos))
+            {
+                parent.Cursor = Theme_Settings.Hand_Cursor;
+                return;
+            }
+
             if (sizerBtnLeft.Contains(cursorLoc) || sizerBtnRight.Contains(cursorLoc))
             {
                 parent.Cursor = Cursors.SizeWE;
@@ -903,7 +929,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             {
                 parent.Cursor = Cursors.SizeNS;
             }
-            else
+            else 
             {
                 parent.Cursor = Theme_Settings.Default_Cursor;
             }

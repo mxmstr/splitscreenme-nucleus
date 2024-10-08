@@ -5,6 +5,7 @@ using Nucleus.Gaming.Coop;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Nucleus.Coop.Tools
 {
@@ -19,13 +20,11 @@ namespace Nucleus.Coop.Tools
             defaultForeColor = Color.FromArgb(int.Parse(rgb_font[0]), int.Parse(rgb_font[1]), int.Parse(rgb_font[2]));
         }
 
-        public static (string, Color) GetInputText(MainForm main)
+        public static (string, Color) GetInputText(bool profileDisabled)
         {
             Color color = defaultForeColor;
 
             string msg = string.Empty;
-
-            if(main.currentStepIndex == 0)
 
             if(GameProfile.Instance.DevicesList.Count == 0)
             {
@@ -62,9 +61,9 @@ namespace Nucleus.Coop.Tools
                 }
                 else if (!GameProfile.Game.SupportsMultipleKeyboardsAndMice && !GameProfile.Game.SupportsKeyboard)
                 {
-                    if (DevicesFunctions.UseGamepadApiIndex || main.DisableGameProfiles)
+                    if (DevicesFunctions.UseGamepadApiIndex || profileDisabled)
                     {
-                        msg = $"Drop Gamepads {screenText}.";
+                        msg = $"Drop The Gamepads {screenText}.";
                     }
                     else
                     {
@@ -73,13 +72,13 @@ namespace Nucleus.Coop.Tools
                 }
                 else
                 {
-                    if (DevicesFunctions.UseGamepadApiIndex || main.DisableGameProfiles)
+                    if (DevicesFunctions.UseGamepadApiIndex || profileDisabled)
                     {
-                        msg = $"Drop Gamepads Or Keyboard\\Mouse {screenText}.";
+                        msg = $"Drop The Gamepads Or Keyboard\\Mouse {screenText}.";
                     }
                     else
                     {
-                        msg = $"Press A Button On Each Gamepad And Drop Devices {screenText}.";
+                        msg = $"Press A Button On Each Gamepad And Drop The Devices {screenText}.";
                     }
                 }
             }

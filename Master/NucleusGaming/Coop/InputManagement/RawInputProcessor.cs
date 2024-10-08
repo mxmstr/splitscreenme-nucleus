@@ -24,7 +24,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
         public static GenericGameInfo CurrentGameInfo { get; set; } = null;
         public static GameProfile CurrentProfile { get; set; } = null;
-        private List<PlayerInfo> PlayerInfos => CurrentProfile?.DevicesList;
 
         //leftMiddleRight: left=1, middle=2, right=3, xbutton1=4, xbutton2=5
         private readonly Dictionary<RawInputButtonFlags, (MouseEvents msg, uint wParam, ushort leftMiddleRight, bool isButtonDown, int VKey)> _buttonFlagToMouseEvents = new Dictionary<RawInputButtonFlags, (MouseEvents, uint, ushort, bool, int)>()
@@ -85,6 +84,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
         {
             rawInputProcessor.StartInternal();
         }
+
         private void StartInternal()
         {
             mouseHandleWindows.Clear();
@@ -399,7 +399,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             try
             {
-                if (!splitScreenRunning() && PlayerInfos != null)
+                if (!splitScreenRunning() && CurrentProfile?.DevicesList != null)
                 {
                     foreach (PlayerInfo toFlash in CurrentProfile?.DevicesList.Where(x => x != null && (x.IsKeyboardPlayer && !x.IsRawKeyboard && !x.IsRawMouse) || ((type == HeaderDwType.RIM_TYPEMOUSE && x.RawMouseDeviceHandle.Equals(hDevice)) || (type == HeaderDwType.RIM_TYPEKEYBOARD && x.RawKeyboardDeviceHandle.Equals(hDevice)))).ToArray())
                     {

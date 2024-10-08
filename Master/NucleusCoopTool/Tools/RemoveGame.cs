@@ -11,8 +11,9 @@ namespace Nucleus.Coop.Tools
 {
     internal class RemoveGame
     {
-        public static void Remove(MainForm main, UserGameInfo currentGameInfo, bool dontConfirm)
+        public static void Remove(UserGameInfo currentGameInfo, bool dontConfirm)
         {
+            MainForm mainForm = MainForm.Instance;
             GameManager gameManager = GameManager.Instance;
 
             string userProfile = gameManager.GetUserProfilePath();
@@ -50,7 +51,7 @@ namespace Nucleus.Coop.Tools
                                     }
                                     catch (IOException)
                                     {
-                                        main.cover.BackgroundImage.Dispose();
+                                        mainForm.cover.BackgroundImage.Dispose();
                                         File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));                                  
                                     }
                                 }
@@ -63,34 +64,21 @@ namespace Nucleus.Coop.Tools
                                     }
                                     catch (Exception)
                                     {
-                                        main.clientAreaPanel.BackgroundImage.Dispose();
+                                        mainForm.clientAreaPanel.BackgroundImage.Dispose();
                                         Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"), true);
                                     }
                                 }
 
-                                if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt")))
-                                {
-                                    try
-                                    {
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
-                                    }
-                                    catch (Exception)
-                                    {
-                                        main.scriptAuthorTxt.Text = null;
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
-                                    }
-                                }
-
-                                //if (main.iconsIni.IniReadValue("GameIcons", gameGuid) != "")
+                                //if (mainForm.iconsIni.IniReadValue("GameIcons", gameGuid) != "")
                                 //{
                                 //    string[] iniContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
                                 //    List<string> newContent = new List<string>();
 
                                 //    for (int index = 0; index < iniContent.Length; index++)
                                 //    {
-                                //        if (iniContent[index].Contains(gameGuid + "=" + main.iconsIni.IniReadValue("GameIcons", gameGuid)))
+                                //        if (iniContent[index].Contains(gameGuid + "=" + mainForm.iconsIni.IniReadValue("GameIcons", gameGuid)))
                                 //        {
-                                //            string fullPath = gameGuid + "=" + main.iconsIni.IniReadValue("GameIcons", gameGuid).ToString();
+                                //            string fullPath = gameGuid + "=" + mainForm.iconsIni.IniReadValue("GameIcons", gameGuid).ToString();
                                 //            iniContent[index] = string.Empty;
                                 //        }
 
@@ -103,11 +91,11 @@ namespace Nucleus.Coop.Tools
                                 //    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
                                 //}
 
-                                main.RefreshUI(true);
+                                mainForm.RefreshUI(true);
                                 return;
                             }
 
-                            main.RefreshUI(false);
+                            mainForm.RefreshUI(false);
                         }
                     }
                 }

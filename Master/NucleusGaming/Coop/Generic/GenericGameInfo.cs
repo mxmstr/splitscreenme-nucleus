@@ -367,21 +367,31 @@ namespace Nucleus.Gaming
 
             try
             {
-                engine.Execute(js);
+                engine.Execute(js); 
             }
             catch (Exception ex)
             {
                 System.Threading.Tasks.Task.Run(() =>
                 {
                     string[] lineSplit = ex.Message.Split(':');
-                    string splited = lineSplit[0];
+                    string splited = lineSplit?[0];
                     string[] getNum = splited.Split(' ');
-                    int numLine = Convert.ToInt32(getNum[1]);
+
+                    bool lineIsNum = int.TryParse(getNum?[1], out int numLine);
+
+                    string details = ex.Message;
+
+                    if (lineIsNum)
+                    {
+                        int num = int.Parse(getNum?[1]);
+                        details = $"Error at line {num/2} {lineSplit?[1]}";
+                    }
+
                     string error = $"There is an error in the game handler {fileName}.\n" +
                     $"\nThe game this handler is for will not appear in the list. If the issue has been fixed,\n" +
                     $"please try re-adding the game.\n\nCommon errors include:\n- A syntax error (such as a \',\' \';\' or \']\' missing)\n" +
                     $"- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format\n(for example: methods using Context must be within the Game.Play function)" +
-                    $"\n\n{1} {2} \nError at line {numLine / 2}";
+                    $"\n\n{details}";
 
                     NucleusMessageBox.Show("Error in handler", error, false);
 
@@ -389,7 +399,7 @@ namespace Nucleus.Gaming
             }
 
             MetaInfo.LoadGameMetaInfo(GUID);
-           
+
             if (MetaInfo.CheckUpdate)
             {
                 if (checkUpdate[0])//workaround else handler update is checked before instances setup too,

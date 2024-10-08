@@ -13,19 +13,21 @@ namespace Nucleus.Coop.Tools
 {
     public static class GetGameIcon
     {
-        public static MainForm MainForm;
+
         public static void GetIcon(object state)
         {
+            MainForm mainForm = MainForm.Instance;
+
             UserGameInfo game = (UserGameInfo)state;
             Bitmap bmp;
 
             if(game.Icon != null)
             {
-                lock (MainForm.controls)
-                {
-                    if (MainForm.controls.ContainsKey(game))
+                lock (mainForm.controls)
+                {   
+                    if (mainForm.controls.ContainsKey(game))
                     {
-                        GameControl control = MainForm.controls[game];
+                        GameControl control = mainForm.controls[game];
                         control.Image = game.Icon;
                     }
                 }
@@ -69,11 +71,11 @@ namespace Nucleus.Coop.Tools
 
             game.Icon = bmp;
 
-            lock (MainForm.controls)
+            lock (mainForm.controls)
             {
-                if (MainForm.controls.ContainsKey(game))
+                if (mainForm.controls.ContainsKey(game))
                 {
-                    GameControl control = MainForm.controls[game];
+                    GameControl control = mainForm.controls[game];
                     control.Image = game.Icon;
                 }
             }

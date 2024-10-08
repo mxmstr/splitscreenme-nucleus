@@ -807,7 +807,7 @@ namespace Nucleus.Coop
             this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Play.ForeColor = System.Drawing.Color.Lime;
-            this.btn_Play.Location = new System.Drawing.Point(23, 43);
+            this.btn_Play.Location = new System.Drawing.Point(25, 43);
             this.btn_Play.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Play.Name = "btn_Play";
             this.btn_Play.Size = new System.Drawing.Size(106, 106);

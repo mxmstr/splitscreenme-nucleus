@@ -22,8 +22,9 @@ namespace Nucleus.Gaming.Forms
             InitializeComponent();
 
             Cursor = Theme_Settings.Default_Cursor;
-
+            TopMost = true;
             Text = title;
+
             this.message = format ? FormatText(message) : message;
 
             closeBtn.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");

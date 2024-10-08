@@ -34,7 +34,7 @@ namespace Nucleus.Coop
         private List<Control> ctrls = new List<Control>();
         private bool searching;
         private bool closed;
-        private MainForm main;
+        private MainForm mainForm;
         private float fontSize;
 
         private Cursor hand_Cursor;
@@ -65,7 +65,7 @@ namespace Nucleus.Coop
         {
             //for (int x = 0; x < disksBox.Items.Count; x++)
             //{
-            //    main.ini.IniWriteValue("SearchPaths", (x + 1).ToString(), disksBox.Items[x].ToString());
+            //    mainForm.ini.IniWriteValue("SearchPaths", (x + 1).ToString(), disksBox.Items[x].ToString());
             //}
 
             txt_Stage.Visible = false;
@@ -75,40 +75,40 @@ namespace Nucleus.Coop
             this.Visible = false;
         }
 
-        public SearchDisksForm(MainForm main)
+        public SearchDisksForm(MainForm mainForm)
         {
-            this.main = main;
+            this.mainForm = mainForm;
 
             InitializeComponent();
 
             default_Cursor = Theme_Settings.Default_Cursor;
             hand_Cursor = Theme_Settings.Hand_Cursor;
 
-            fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
-            ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
+            fontSize = float.Parse(mainForm.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
+            ForeColor = Color.FromArgb(int.Parse(mainForm.rgb_font[0]), int.Parse(mainForm.rgb_font[1]), int.Parse(mainForm.rgb_font[2]));
 
             BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
-            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
+            closeBtn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
 
-            btn_addSelection.BackColor = main.buttonsBackColor;
-            btn_customPath.BackColor = main.buttonsBackColor;
-            btnSearch.BackColor = main.buttonsBackColor;
-            btn_delPath.BackColor = main.buttonsBackColor;
-            btn_selectAll.BackColor = main.buttonsBackColor;
-            btn_deselectAll.BackColor = main.buttonsBackColor;
+            btn_addSelection.BackColor = mainForm.buttonsBackColor;
+            btn_customPath.BackColor = mainForm.buttonsBackColor;
+            btnSearch.BackColor = mainForm.buttonsBackColor;
+            btn_delPath.BackColor = mainForm.buttonsBackColor;
+            btn_selectAll.BackColor = mainForm.buttonsBackColor;
+            btn_deselectAll.BackColor = mainForm.buttonsBackColor;
 
-            btn_addSelection.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btn_customPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btnSearch.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btn_delPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btn_selectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btn_deselectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+            btn_addSelection.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btn_customPath.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btnSearch.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btn_delPath.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btn_selectAll.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btn_deselectAll.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
 
             controlscollect();
 
             foreach (Control control in ctrls)
             {
-                control.Font = new Font(main.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                control.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
                 if (control.Name != "panel1")
                 {
@@ -124,14 +124,14 @@ namespace Nucleus.Coop
 
             for (int x = 1; x <= 100; x++)
             {
-                //if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
+                //if (mainForm.ini.IniReadValue("SearchPaths", x.ToString()) == "")
                 //{
                 //    continue;
                 //}
                 //else
                 //{
-                //    //paths.Add(main.ini.IniReadValue("SearchPaths", x.ToString()));
-                //    //disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
+                //    //paths.Add(mainForm.ini.IniReadValue("SearchPaths", x.ToString()));
+                //    //disksBox.Items.Add(mainForm.ini.IniReadValue("SearchPaths", x.ToString()), true);
                 //}
             }
 
@@ -200,12 +200,12 @@ namespace Nucleus.Coop
             {
                 if (c.GetType() == typeof(CheckedListBox))
                 {
-                    c.Font = new Font(main.customFont, c.Font.Size, FontStyle.Regular, GraphicsUnit.Point, 0);
+                    c.Font = new Font(mainForm.customFont, c.Font.Size, FontStyle.Regular, GraphicsUnit.Point, 0);
                 }
 
                 if (c.GetType() == typeof(TextBox))
                 {
-                    c.Font = new Font(main.customFont, textBoxFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                    c.Font = new Font(mainForm.customFont, textBoxFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                 }
             }
 
@@ -564,7 +564,7 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < paths.Count; i++)
                 {
-                    //main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), paths[i]);
+                    //mainForm.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), paths[i]);
                     if (disksBox.Items.Contains(paths[i]))
                     {
                         continue;
@@ -612,14 +612,14 @@ namespace Nucleus.Coop
                     //UserGameInfo uinfo = GameManager.Instance.TryAddGame(gameToAdd);
                     //if (uinfo != null)
                     //{
-                    //    main.NewUserGame(uinfo);
+                    //    mainForm.NewUserGame(uinfo);
                     //    numAdded++;
                     //}
 
                 }
 
                 MessageBox.Show(string.Format("{0}/{1} selected games added!", numAdded, checkboxFoundGames.CheckedItems.Count), "Games added");
-                main.RefreshGames();
+                mainForm.RefreshGames();
             }
 
             btnSearch.Enabled = true;
@@ -658,12 +658,12 @@ namespace Nucleus.Coop
                     {
                         if (disksBox.CheckedItems.Contains(disksBox.Items[i]))
                         {
-                            //main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), disksBox.Items[i].ToString());
+                            //mainForm.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), disksBox.Items[i].ToString());
                         }
                         else
                         {
                             pathsToRemove.Add(disksBox.Items[i].ToString());
-                            //main.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), "");
+                            //mainForm.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), "");
                         }
                     }
                 }
@@ -695,12 +695,12 @@ namespace Nucleus.Coop
 
         private void closeBtn_MouseEnter(object sender, EventArgs e)
         {
-            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close_mousehover.png");
+            closeBtn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close_mousehover.png");
         }
 
         private void closeBtn_MouseLeave(object sender, EventArgs e)
         {
-            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
+            closeBtn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
         }
 
         private const int WM_NCLBUTTONDOWN = 0xA1;

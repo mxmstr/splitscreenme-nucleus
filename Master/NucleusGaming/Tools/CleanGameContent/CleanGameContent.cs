@@ -5,76 +5,91 @@ using System.IO;
 using System.Linq;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Forms;
+using System.Management.Instrumentation;
+using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
     public static class CleanGameContent
     {
-        public static void CleanContentFolder(GenericGameInfo currentGameInfo)
+
+        public static void CleanContentFolder(GenericGameInfo currentGameInfo, bool askBefore)
+        {
+            string path = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);
+            bool contentExist = Directory.Exists(path);
+
+            if (askBefore)
+            {
+                if (contentExist)
+                {
+                    DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete '" + path + "' and all its contents?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        CleanContentFolder(currentGameInfo,path);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No data in content folder to delete.");
+                }
+            }
+            else
+            {
+                if(contentExist)
+                CleanContentFolder(currentGameInfo,path);
+            }
+        }
+
+        private static void CleanContentFolder(GenericGameInfo currentGameInfo, string path)
         {
             System.Threading.Tasks.Task.Run(() =>
             {
-                string path = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);
-
-                if (Directory.Exists(path))
+                try
                 {
-                    string[] instances = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
+                    KillRemainingGameProcess(currentGameInfo);
+                    Directory.Delete(path, true);
+                }
+                catch
+                {
+                    LogManager.Log("Nucleus will try to unlock one or more files in order to cleanup game content.");
 
                     try
                     {
-                        KillRemainingGameProcess(currentGameInfo);
+                        string[] instances = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
 
                         foreach (string instance in instances)
                         {
                             if (Directory.Exists(instance))
                             {
+                                string[] subs = Directory.GetFileSystemEntries(instance, "*", SearchOption.AllDirectories);
+
+                                foreach (string locked in subs)
+                                {
+                                    File.SetAttributes(locked, FileAttributes.Normal);
+                                }
+
                                 Directory.Delete(instance, true);
+                                LogManager.Log("Game content cleaned.");
                             }
                         }
+
+                        Directory.Delete(path, true);
                     }
                     catch
                     {
-                        LogManager.Log("Nucleus will try to unlock one or more files in order to cleanup game content.");
+                        LogManager.Log("Game content cleanup failed. One or more files can't be unlocked by Nucleus.");
 
-                        try
+                        System.Threading.Tasks.Task.Run(() =>
                         {
-                            foreach (string instance in instances)
-                            {
-                                bool exists = Directory.Exists(instance);
-
-                                if (exists)
-                                {
-                                    string[] subs = Directory.GetFileSystemEntries(instance, "*", SearchOption.AllDirectories);
-
-                                    foreach (string locked in subs)
-                                    {
-                                        File.SetAttributes(locked, FileAttributes.Normal);
-                                    }
-                                }
-
-                                if (exists)
-                                {
-                                    Directory.Delete(instance, true);
-                                    LogManager.Log("Game content cleaned.");
-                                }
-                            }
-                        }
-                        catch
-                        {
-                            LogManager.Log("Game content cleanup failed. One or more files can't be unlocked by Nucleus.");
-
-                            System.Threading.Tasks.Task.Run(() =>
-                            {
-                                NucleusMessageBox.Show("Risk of crash!",
-                                    $"One or more files from {path} are locked\n" +
-                                    $"by the system or used by an other program \n" +
-                                    $"and Nucleus failed to unlock them.You can try\n" +
-                                    $"to delete/unlock the file(s) manually or restart\n" +
-                                    $" your computer to unlock the file(s) because it\n" +
-                                    $"could lead to a crash on game startup.\n" +
-                                    $" You can ignore this message and risk a crash or unexpected behaviors.", false);
-                            });
-                        }
+                            NucleusMessageBox.Show("Risk of crash!",
+                                $"One or more files from {path} are locked\n" +
+                                $"by the system or used by an other program \n" +
+                                $"and Nucleus failed to unlock them.You can try\n" +
+                                $"to delete/unlock the file(s) manually or restart\n" +
+                                $" your computer to unlock the file(s) because it\n" +
+                                $"could lead to a crash on game startup.\n" +
+                                $" You can ignore this message and risk a crash or unexpected behaviors.", false);
+                        });
                     }
                 }
             });
