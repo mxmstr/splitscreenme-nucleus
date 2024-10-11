@@ -80,12 +80,6 @@ namespace Nucleus.Gaming
             LoadUser();
         }
 
-        public void UpdateCurrentGameProfile(GameProfile newProfile)
-        {
-            currentProfile = newProfile;
-            RawInputProcessor.CurrentProfile = newProfile;
-        }
-
         /// <summary>
         /// Tests if there's any game with the named exe
         /// </summary>

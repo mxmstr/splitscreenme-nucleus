@@ -32,7 +32,8 @@ namespace Nucleus.Coop
         {
             base.Initialize(game, profile);
             this.game = game;
-            Controls.Clear();
+
+            foreach (Control c in Controls) {c.Dispose();}
 
             int wid = 200;
 
@@ -214,7 +215,7 @@ namespace Nucleus.Coop
 
                     int border = 10;
 
-                    box.TextChanged += new System.EventHandler(this.box_TextChanged);
+                    box.TextChanged += box_TextChanged;
                     box.Width = (int)(wid * _scale);
                     box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;

@@ -18,7 +18,7 @@ namespace SplitTool.Controls
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
         public object ImageUrl;
-        private SolidBrush backBrush;
+        private Color backBrushColor;
 
         protected override CreateParams CreateParams
         {
@@ -55,29 +55,32 @@ namespace SplitTool.Controls
             EnableHighlighting = enableHightlighting;
 
             string customFont = Globals.ThemeConfigFile.IniReadValue("Font", "FontFamily");
-            backBrush = new SolidBrush(Color.FromArgb(60,Theme_Settings.BackgroundGradientColor.R, Theme_Settings.BackgroundGradientColor.G, Theme_Settings.BackgroundGradientColor.B));
+            backBrushColor = Color.FromArgb(60,Theme_Settings.BackgroundGradientColor.R, Theme_Settings.BackgroundGradientColor.G, Theme_Settings.BackgroundGradientColor.B);
 
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.Transparent;
+            Font font = new Font(customFont, 10.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
 
             titleLabel = new Label
             {
-                Font = new Font(customFont, 10.0f, FontStyle.Bold, GraphicsUnit.Point, 0),
+                Font = font,
                 BackColor = Color.Transparent
             };
 
             descLabel = new LinkLabel
             {
-                Font = new Font(customFont, 10.0f, FontStyle.Regular, GraphicsUnit.Point, 0),
+                Font = font,
                 BackColor = Color.Transparent,
                 LinkColor = Color.Orange,
                 ActiveLinkColor = Color.DimGray
             };
 
-            descLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(DescLabelLinkClicked);
+            descLabel.LinkClicked += DescLabelLinkClicked;
 
             Controls.Add(titleLabel);
             Controls.Add(descLabel);
+
+            font.Dispose();
 
             DPIManager.Register(this);
         }
@@ -172,7 +175,13 @@ namespace SplitTool.Controls
             }
 
             GraphicsPath graphicsPath = FormGraphicsUtil.MakeRoundedRect(bounds, 15, 15, true, true, true, true);
-            e.Graphics.FillPath(backBrush, graphicsPath);     
+            SolidBrush brush = new SolidBrush(backBrushColor);
+
+            e.Graphics.FillPath(brush, graphicsPath);
+
+            graphicsPath.Dispose();
+            brush.Dispose();
+            
         }
     }
 }

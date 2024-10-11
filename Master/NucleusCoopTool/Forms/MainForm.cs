@@ -68,7 +68,6 @@ namespace Nucleus.Coop
 
         private ContentManager content;
         private IGameHandler I_GameHandler;
-        private GameManager gameManager;
         public Dictionary<UserGameInfo, GameControl> controls;
 
         private PictureBox btn_mainButtonsPanel;
@@ -78,7 +77,6 @@ namespace Nucleus.Coop
         private UserGameInfo currentGameInfo;
         private UserGameInfo menuCurrentGameInfo;
         private GenericGameInfo currentGame;
-        private GameProfile currentProfile;
 
         private UserInputControl currentStep;
         private SetupScreenControl setupScreen;
@@ -98,6 +96,7 @@ namespace Nucleus.Coop
 
         public Bitmap defBackground;
 
+        private Point defCoverLoc;
         public bool restartRequired = false;
 
         private bool formClosing;
@@ -140,7 +139,7 @@ namespace Nucleus.Coop
 
                     System.Threading.Tasks.Task.Run(() =>
                     {
-                        foreach (KeyValuePair<string, GenericGameInfo> game in gameManager.Games)
+                        foreach (KeyValuePair<string, GenericGameInfo> game in GameManager.Instance.Games)
                         {
                             game.Value.UpdateAvailable = game.Value.Hub.IsUpdateAvailable(true);
                         }
@@ -257,8 +256,15 @@ namespace Nucleus.Coop
             }
         }
 
-        public MainForm()
+        private string[] startArgs;
+        
+        public MainForm(string[] args)
         {
+            if(args.Length != 0)
+            {
+                startArgs = args;
+            }
+
             FadeIn();
 
             Instance = this;
@@ -492,13 +498,11 @@ namespace Nucleus.Coop
             setupScreen.Paint += SetupScreen_Paint;
 
             controls = new Dictionary<UserGameInfo, GameControl>();
-            gameManager = new GameManager();
+            GameManager gameManager = new GameManager();
+
             optionsControl = new PlayerOptionsControl();
-            jsControl = new JSUserInputControl();
-
             optionsControl.OnCanPlayUpdated += StepCanPlay;
-            jsControl.OnCanPlayUpdated += StepCanPlay;
-
+           
             Xinput_S_Setup = new XInputShortcutsSetup();
 
             handlerNotesZoom = new HandlerNotesZoom
@@ -642,6 +646,8 @@ namespace Nucleus.Coop
             btn_mainButtonsPanel.Location = new Point(mainButtonFrame.Width / 2 - btn_mainButtonsPanel.Width / 2, 4);
             mainButtonsPanel.Location = new Point(mainButtonFrame.Width / 2 - mainButtonsPanel.Width / 2, 0);
             btn_mainButtonsPanel.Size = new Size((int)(39 * scale), (int)(10 * scale));
+
+            defCoverLoc = cover.Location;
         }
 
         public void RefreshUI(bool refreshAll)
@@ -748,6 +754,14 @@ namespace Nucleus.Coop
             WebStatusTimer.Tick += WebStatusTimerTick;
             WebStatusTimer.Start();
             DPIManager.ForceUpdate();
+
+            if (startArgs != null)
+            {
+                GameControl con = controls?.Where(g => g.Value.GameInfo.GUID == startArgs[0]).FirstOrDefault().Value;
+
+                if(con != null)
+                List_Games_SelectedChanged(con, null);
+            }
         }
 
         private void WebStatusTimerTick(object Object, EventArgs EventArgs)
@@ -977,7 +991,7 @@ namespace Nucleus.Coop
                 list_Games.Controls.Clear();
                 controls.Clear();
 
-                List<UserGameInfo> games = gameManager.User.Games;
+                List<UserGameInfo> games = GameManager.Instance.User.Games;
 
                 if (games.Count == 0)
                 {
@@ -1094,7 +1108,7 @@ namespace Nucleus.Coop
 
         private void Btn_downloadAssets_Click(object sender, EventArgs e)
         {
-            if (gameManager.User.Games.Count == 0)
+            if (GameManager.Instance.User.Games.Count == 0)
             {
                 Globals.MainOSD.Show(1600, $"Add Game(s) to Your List");
                 return;
@@ -1215,19 +1229,23 @@ namespace Nucleus.Coop
 
             StepPanel.Visible = true;
 
-            currentProfile = new GameProfile();
+            GameProfile newProfile = new GameProfile();
 
             GameProfile.GameInfo = currentGameInfo;
 
             stepsList = new List<UserInputControl> { setupScreen, optionsControl };
+
+            jsControl?.Dispose();
+
+            jsControl = new JSUserInputControl();
+            jsControl.OnCanPlayUpdated += StepCanPlay;
 
             for (int i = 0; i < currentGame.CustomSteps.Count; i++)
             {
                 stepsList.Add(jsControl);
             }
 
-            currentProfile.InitializeDefault(currentGame);
-            gameManager.UpdateCurrentGameProfile(currentProfile);
+            newProfile.InitializeDefault(currentGame);
 
             if (!disableGameProfiles && !currentGame.MetaInfo.DisableProfiles)
             {
@@ -1248,31 +1266,31 @@ namespace Nucleus.Coop
                 profilesList_btn.Visible = showList;
 
                 ProfilesList.Instance.Locked = false;
+
+                SetCoverLocation(true);
             }
             else
             {
                 profileSettings_btn.Visible = false;
                 setupScreen.ProfilesList.Visible = false;
                 profilesList_btn.Visible = false;
+                SetCoverLocation(false);
             }
 
             if (currentGame.Description?.Length > 0)
             {
                 scriptAuthorTxt.Text = currentGame.Description;
                 scriptAuthorTxtSizer.Visible = true;
+
+                if (currentGame.MetaInfo.FirstLaunch && !disableForcedNote)
+                {
+                    Btn_magnifier_Click(null, null);
+                }
             }
             else
             {
                 scriptAuthorTxtSizer.Visible = false;
                 scriptAuthorTxt.Text = "";
-            }
-
-            if (currentGame.MetaInfo.FirstLaunch && currentGame.Description != null && !disableForcedNote)
-            {
-                Btn_magnifier_Click(null, null);
-            }
-            else
-            {
                 handlerNotesZoom.Visible = false;
             }
 
@@ -1439,7 +1457,7 @@ namespace Nucleus.Coop
                     currentStep.Size = StepPanel.Size;
                     currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
                     currentStep = stepsList[stepsList.Count - 1];
-                    currentStep.Initialize(currentGameInfo, currentProfile);
+                    currentStep.Initialize(currentGameInfo, GameProfile.Instance);
 
                     StepPanel.Controls.Add(currentStep);
 
@@ -1458,7 +1476,7 @@ namespace Nucleus.Coop
             currentStep = stepsList[step];
             currentStep.Size = StepPanel.Size;
             currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-            currentStep.Initialize(currentGameInfo, currentProfile);
+            currentStep.Initialize(currentGameInfo, GameProfile.Instance);
 
             StepPanel.Controls.Add(currentStep);
 
@@ -1491,12 +1509,12 @@ namespace Nucleus.Coop
             btn_Prev.Enabled = false;
 
             //reload the handler here so it can be edited/updated until play button get clicked
-            gameManager.AddScript(Path.GetFileNameWithoutExtension(currentGameInfo.Game.JsFileName), new bool[] { false, currentGameInfo.Game.UpdateAvailable });
+            GameManager.Instance.AddScript(Path.GetFileNameWithoutExtension(currentGameInfo.Game.JsFileName), new bool[] { false, currentGameInfo.Game.UpdateAvailable });
 
-            currentGame = gameManager.GetGame(currentGameInfo.ExePath);
+            currentGame = GameManager.Instance.GetGame(currentGameInfo.ExePath);
             currentGameInfo.InitializeDefault(currentGameInfo.Game, currentGameInfo.ExePath);
-            I_GameHandler = gameManager.MakeHandler(currentGameInfo.Game);
-            I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile), I_GameHandler);
+            I_GameHandler = GameManager.Instance.MakeHandler(currentGameInfo.Game);
+            I_GameHandler.Initialize(currentGameInfo, GameProfile.CleanClone(GameProfile.Instance), I_GameHandler);
             I_GameHandler.Ended += Handler_Ended;
 
             if (profileSettings.Visible)
@@ -2522,7 +2540,7 @@ namespace Nucleus.Coop
 
         private void DisableProfilesMenuItem_Click(object sender, EventArgs e)
         {
-            profilepButtonsPanel.Visible = false;
+            //profilepButtonsPanel.Visible = false;
 
             if (menuCurrentGameInfo.Game.MetaInfo.DisableProfiles)
             {
@@ -2530,7 +2548,7 @@ namespace Nucleus.Coop
                 gameContextMenuStrip.Items["disableProfilesMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
 
                 if (menuCurrentGameInfo == currentGameInfo)
-                {
+                {                
                     GameProfile.Instance.InitializeDefault(currentControl.GameInfo);
                     ProfilesList.Instance.Update_ProfilesList();
 
@@ -2550,6 +2568,9 @@ namespace Nucleus.Coop
                     {
                         GoToStep(0);
                     }
+
+                    SetCoverLocation(true);
+                    rightFrame.Refresh();
                 }
             }
             else
@@ -2559,16 +2580,18 @@ namespace Nucleus.Coop
 
                 if (menuCurrentGameInfo == currentGameInfo)
                 {
-                    GameProfile.Instance.InitializeDefault(currentControl.GameInfo);
+                    GameProfile.Instance.InitializeDefault(currentControl.GameInfo);               
                     setupScreen.ProfilesList.Visible = false;
                     profilesList_btn.Visible = false;
                     profileSettings_btn.Visible = false;
+                    SetCoverLocation(false);
+                    rightFrame.Refresh();
                 }
 
                 if (stepsList != null)
                 {
                     GoToStep(0);
-                }
+                }             
             }
 
             if (stepButtonsPanel.Visible)
@@ -2577,6 +2600,18 @@ namespace Nucleus.Coop
             }
 
             GameManager.Instance.SaveUserProfile();
+        }
+
+        private void SetCoverLocation(bool profileEnabled)
+        {
+            if(profileEnabled)
+            {
+                cover.Location = defCoverLoc;
+                return;
+            }
+
+            cover.BringToFront();
+            cover.Location = new Point(cover.Location.X, profilepButtonsPanel.Bottom - 5);
         }
 
         private void FAQToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start(faq_link);

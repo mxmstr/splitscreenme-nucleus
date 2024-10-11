@@ -1,15 +1,28 @@
 ﻿using Nucleus.Coop;
+using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.UI;
 using SplitTool.Controls;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
     public class ControlListBox : UserControl
     {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleparams = base.CreateParams;
+                handleparams.ExStyle = 0x02000000;
+                return handleparams;
+            }
+        }
+
         private int totalHeight;
         private int border = 1;
 
@@ -29,12 +42,13 @@ namespace Nucleus.Gaming
             HorizontalScroll.Maximum = 0;
             VerticalScroll.Visible = false;
             AutoScroll = true;
-            DoubleBuffered = true;
+            //DoubleBuffered = true;
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            this.MouseWheel += new MouseEventHandler(Scrolling);
+            this.MouseWheel += Scrolling;
         }
 
-        private void Scrolling(object sender, MouseEventArgs se)
+
+        private void Scrolling(object sender, MouseEventArgs e)
         {
 
         }
@@ -128,7 +142,7 @@ namespace Nucleus.Gaming
                 c.Location = new Point(0, totalHeight);
                 totalHeight += s.Height + border;
             }
-
+      
             UpdateSizes();
         }
 

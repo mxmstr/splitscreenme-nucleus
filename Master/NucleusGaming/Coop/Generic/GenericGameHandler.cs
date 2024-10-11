@@ -284,6 +284,7 @@ namespace Nucleus.Gaming
             }
 
             garch = "x86";
+
             if (MachineSpecs.GetMachineArch(userGame.ExePath) == true)
             {
                 gameIs64 = true;

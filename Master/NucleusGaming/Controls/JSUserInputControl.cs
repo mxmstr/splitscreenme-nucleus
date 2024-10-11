@@ -33,7 +33,8 @@ namespace Nucleus.Gaming
             base.Initialize(game, profile);
 
             toSelect = null;
-            Controls.Clear();
+
+            foreach(Control c in Controls){ c.Dispose();}
 
             // grab the CustomStep and extract what we have to show from it
             GameOption option = CustomStep.Option;
@@ -90,7 +91,7 @@ namespace Nucleus.Gaming
                         {
                             control.ImageUrl = imageUrl;
 
-                            Image img = Content.LoadImage(imageUrl);
+                            //Image img = Content.LoadImage(imageUrl);
                             
                             PictureBox box = new PictureBox
                             {
@@ -101,7 +102,7 @@ namespace Nucleus.Gaming
 
                             box.Location = new Point(list.Width - box.Width - 10, 10);
                             box.SizeMode = PictureBoxSizeMode.Zoom;
-                            box.Image = img;
+                            box.Image = Content.LoadImage(imageUrl);
                             control.Controls.Add(box);
                         }
                         else
@@ -134,7 +135,7 @@ namespace Nucleus.Gaming
             }
 
             toSelect.BackColor = Color.DodgerBlue;
-            toSelect.Title = toSelect.Title + " " + "(Auto Selected)";
+            toSelect.Title = $"{toSelect.Title} (Auto Selection)";
             Control_OnSelected(toSelect);
         }
 

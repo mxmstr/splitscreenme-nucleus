@@ -12,7 +12,7 @@ namespace Nucleus.Coop
         public static bool ForcedBadPath;
 
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             App_Settings_Loader.InitializeSettings();
 
@@ -45,7 +45,7 @@ namespace Nucleus.Coop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainForm form = new MainForm();
+            MainForm form = new MainForm(args);
             DPIManager.AddForm(form);
             DPIManager.ForceUpdate();
             Application.Run(form);

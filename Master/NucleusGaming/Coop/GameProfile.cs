@@ -358,6 +358,8 @@ namespace Nucleus.Gaming.Coop
 
             Reset();
 
+            RawInputProcessor.CurrentProfile = this;
+
             if (deviceList == null)
             {
                 deviceList = new List<PlayerInfo>();

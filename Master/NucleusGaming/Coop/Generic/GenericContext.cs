@@ -275,7 +275,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public bool StartProcess(string path)
+        public bool StartProcess(string path, string args, bool asAdmin)
         {
             if (File.Exists(path))
             {
@@ -283,6 +283,12 @@ namespace Nucleus.Gaming
                 sc.UseShellExecute = true;
                 sc.WorkingDirectory = Path.GetDirectoryName(path);
                 sc.ErrorDialog = true;
+                sc.Arguments = args;
+
+                if (asAdmin)
+                {
+                    sc.Verb = "runas";
+                }
 
                 Process.Start(sc);
             }
@@ -1023,6 +1029,7 @@ namespace Nucleus.Gaming
                 }
             }
         }
+
         private static int GCD(int a, int b)
         {
             return b == 0 ? Math.Abs(a) : GCD(b, a % b);
@@ -1669,6 +1676,7 @@ namespace Nucleus.Gaming
                         break;
                     }
                 }
+
                 if (toContinue)
                 {
                     continue;
