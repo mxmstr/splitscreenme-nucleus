@@ -139,6 +139,12 @@
     <Compile Include="Controls\TransparentRichTextBox.Designer.cs">
       <DependentUpon>TransparentRichTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\D2D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\D2D.Designer.cs">
+      <DependentUpon>D2D.cs</DependentUpon>
+    </Compile>
     <Compile Include="Coop\Generic\Handler.cs" />
     <Compile Include="Cache\HubCache.cs" />
     <Compile Include="Cache\ImageCache.cs" />
