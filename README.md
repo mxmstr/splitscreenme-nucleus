@@ -70,6 +70,7 @@ Additional credits to all original developers of the third party utilities Nucle
 - wizark952 (dinput8 blocker)
 - Nemirtingas ([Epic\Galaxy Emulator](https://gitlab.com/Nemirtingas) & [OpenXinput](https://github.com/Nemirtingas/OpenXinput))
 - Josivan88 (SplitCalculator)
-
+- darkreader (Dark Reader extension) https://github.com/darkreader/darkreader?tab=readme-ov-file
+  
 Special thanks to the SplitScreenDreams discord community, this wouldn't have been possible without all your contributions.
 
