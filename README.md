@@ -38,16 +38,9 @@ Note that Nucleus does not add multiplayer or co-op to single player games, the 
 2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
 
 # Prerequisites:
-- .NET Framework 4.7.2 or higher
+- .NET Framework 4.7.2 or higher: [Microsoft direct download link](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net472-web-installer).
   
-Microsoft direct download link :
-https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net472-web-installer
-  
-- Microsoft Visual C++ 2015-2019 Redistributable (both x86 and x64)
-
-Microsoft direct download links :
-https://aka.ms/vs/17/release/vc_redist.x86.exe
-https://aka.ms/vs/17/release/vc_redist.x64.exe
+- Microsoft Visual C++ 2015-2019 Redistributable (both x86 and x64): [Microsoft direct download x86](https://aka.ms/vs/17/release/vc_redist.x86.exe), [Microsoft direct download x64](https://aka.ms/vs/17/release/vc_redist.x64.exe).
 
 # How can you contribute?
 If you would like to learn all about contributing to this project, whether it's bug reporting or working on the codebase, check out the [Nucleus Coop Contributing Guide](CONTRIBUTING.md)!
