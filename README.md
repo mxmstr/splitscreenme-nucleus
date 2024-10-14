@@ -3,7 +3,7 @@
 ![v2 3 0](https://github.com/user-attachments/assets/db89456a-714a-4bf6-ac78-53c3fa1d023c)
 
 <div align="center">
-    <img width="200" src="https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/NucleusCoop1.png" alt="nucleuscoop">
+    <img width="150" src="https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/NucleusCoop1.png" alt="nucleuscoop">
     </br>
 </div>
 
