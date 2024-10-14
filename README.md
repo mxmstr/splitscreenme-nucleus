@@ -9,15 +9,15 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 
 - New overhauled and customizable user interface with support for themes, game covers and screenshots.
 - Full support for different monitor scales, UI scaling issues at more than 100% desktop scale are finally fixed (and all other issues/bugs related to it).
-- New player and input order processing (left to right).
+- New player and input order processing.
 - New player nickname assignation.
-- New optional splitscreen divisions setting (visually  similar to native splitscreen games).
-- Massive increase to the amount of compatible games, 500+ as of now.
-- Much more game handlers customization.
+- New optional splitscreen divisions setting (visually similar to native splitscreen games).
+- Massive increase to the amount of compatible games, 650+ as of now.
+- A lot more options for game handlers customization.
 - Many quality of life improvements and ton of bug fixes.
 - And so much more!
 
-View the full list of features/changes and changelog in the Readme.txt inside Nucleus. Download latest [Nucleus Co-op here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
+View the full list of features/changes and changelog in the Readme.txt inside Nucleus Co-op or in the releases page. Download latest [Nucleus Co-op here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 
 # Disclaimer
 Nucleus Co-op was originally created by Lucas Assis.
@@ -29,7 +29,7 @@ Nucleus Co-op was originally created by Lucas Assis.
 - Join the official Nucleus Co-op Discord server: https://discord.gg/QDUt8HpCvr
 
 # How does Nucleus Co-op work?
-Nucleus Co-op symlinks and opens multiple instances of the same game files (sometimes mutex killing is required for that, among other methods) that will only answer to one specific gamepad (we do this via Nucleus Co-op custom xinput libraries or xinput plus dlls) and connects those instances via LAN or online multiplayer emulation (Goldberg, Nemirtingas emulators etc.), all while making sure the game windows have focus so they can be playable at the same time with multiple controllers or that the instances are playable even in the background. Nucleus then resizes, removes borders and repositions the game windows so you can have synthetic split-screen to play locally with your friends!
+Nucleus Co-op symlinks and opens multiple instances of the same game files (sometimes mutex killing is required for that, among other methods) that will only answer to one specific gamepad (we do this via Nucleus Co-op custom xinput libraries or xinput plus dlls) and connects those instances via LAN or online multiplayer emulation (Goldberg, Nemirtingas emulators etc.), all while making sure the game windows have focus so they can be playable at the same time with multiple controllers or that the instances are playable even in the background. Nucleus Co-op then resizes, removes borders and repositions the game windows so you can have synthetic split-screen to play locally with your friends!
 
 Note that Nucleus does not add multiplayer or co-op to single player games, the game needs to already have some form of online or LAN multiplayer, or another way to connect the instances, like via mods for example.
 
@@ -68,7 +68,7 @@ Additional credits to all original developers of the third party utilities Nucle
 - wizark952 (dinput8 blocker)
 - Nemirtingas ([Epic\Galaxy Emulator](https://gitlab.com/Nemirtingas) & [OpenXinput](https://github.com/Nemirtingas/OpenXinput))
 - Josivan88 (SplitCalculator)
-- darkreader (Dark Reader extension) https://github.com/darkreader/darkreader?tab=readme-ov-file
+- darkreader ([Dark Reader extension](https://github.com/darkreader/darkreader?tab=readme-ov-file)) 
   
 Special thanks to the SplitScreenDreams discord community, this wouldn't have been possible without all your contributions.
 
