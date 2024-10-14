@@ -2,6 +2,15 @@
 
 ![v2 3 0](https://github.com/user-attachments/assets/db89456a-714a-4bf6-ac78-53c3fa1d023c)
 
+<div align="center">
+    <img width="200" src="https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/NucleusCoop1.png" alt="nucleuscoop">
+    </br>
+</div>
+
+<div align="center">
+    <a href="https://discord.gg/QDUt8HpCvr"><img src="https://img.shields.io/discord/142649962839277568.svg?style=for-the-badge" alt="Discord server" /></a>
+    <a href="https://patreon.com/nucleus_coop"><img src="https://img.shields.io/badge/sponsor-Patreon-blue?style=for-the-badge" alt="patreon" /></a>
+</div>
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
 
