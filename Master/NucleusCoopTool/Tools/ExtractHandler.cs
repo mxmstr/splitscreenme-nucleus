@@ -5,7 +5,7 @@ namespace Nucleus.Coop.Tools
 {
     internal class ExtractHandler
     {
-        public static void Extract(MainForm main)
+        public static void Extract()
         {
             OpenFileDialog ofd = new OpenFileDialog
             {
@@ -18,7 +18,7 @@ namespace Nucleus.Coop.Tools
             DialogResult result = ofd.ShowDialog();
             if (result == DialogResult.OK)
             {
-                DownloadPrompt downloadPrompt = new DownloadPrompt(null, main, ofd.FileName);
+                DownloadPrompt downloadPrompt = new DownloadPrompt(null, ofd.FileName);
                 downloadPrompt.ShowDialog();
             }
         }

@@ -1,19 +1,19 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.IO;
 using System.Windows.Forms;
-using Nucleus.Gaming.Cache;
 
 namespace Nucleus.Coop.Tools
 {
     internal class RemoveGame
     {
-        public static void Remove(MainForm main, UserGameInfo currentGameInfo, bool dontConfirm)
+        public static void Remove(UserGameInfo currentGameInfo, bool dontConfirm)
         {
+            MainForm mainForm = MainForm.Instance;
             GameManager gameManager = GameManager.Instance;
 
             string userProfile = gameManager.GetUserProfilePath();
@@ -27,7 +27,6 @@ namespace Nucleus.Coop.Tools
                 for (int i = 0; i < games.Count; i++)
                 {
                     string gameGuid = jObject["Games"][i]["GameGuid"].ToString();
-                    string profiles = jObject["Games"][i]["Profiles"].ToString();
                     string exePath = jObject["Games"][i]["ExePath"].ToString();
 
                     if (gameGuid == currentGameInfo.GameGuid && exePath == currentGameInfo.ExePath)
@@ -40,7 +39,7 @@ namespace Nucleus.Coop.Tools
                             jObject["Games"][i].Remove();
                             string output = JsonConvert.SerializeObject(jObject, Formatting.Indented);
                             File.WriteAllText(userProfile, output);
-                            
+
 
                             if (!dontConfirm)
                             {
@@ -48,14 +47,12 @@ namespace Nucleus.Coop.Tools
                                 {
                                     try
                                     {
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                                        //ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));                              
                                     }
                                     catch (IOException)
                                     {
-                                        main.coverImg.Dispose();
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
-                                        //ImageCache.DeleteImageFromCache(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));
+                                        mainForm.cover.BackgroundImage.Dispose();
+                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\covers\\{gameGuid}.jpeg"));                                  
                                     }
                                 }
 
@@ -67,52 +64,39 @@ namespace Nucleus.Coop.Tools
                                     }
                                     catch (Exception)
                                     {
-                                        main.screenshotImg.Dispose();
+                                        mainForm.clientAreaPanel.BackgroundImage.Dispose();
                                         Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}"), true);
                                     }
                                 }
 
-                                if (File.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt")))
-                                {
-                                    try
-                                    {
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
-                                    }
-                                    catch (Exception)
-                                    {
-                                        main.scriptAuthorTxt.Text = null;
-                                        File.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions\\{gameGuid}.txt"));
-                                    }
-                                }
+                                //if (mainForm.iconsIni.IniReadValue("GameIcons", gameGuid) != "")
+                                //{
+                                //    string[] iniContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
+                                //    List<string> newContent = new List<string>();
 
-                                if (main.iconsIni.IniReadValue("GameIcons", gameGuid) != "")
-                                {
-                                    string[] iniContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"));
-                                    List<string> newContent = new List<string>();
+                                //    for (int index = 0; index < iniContent.Length; index++)
+                                //    {
+                                //        if (iniContent[index].Contains(gameGuid + "=" + mainForm.iconsIni.IniReadValue("GameIcons", gameGuid)))
+                                //        {
+                                //            string fullPath = gameGuid + "=" + mainForm.iconsIni.IniReadValue("GameIcons", gameGuid).ToString();
+                                //            iniContent[index] = string.Empty;
+                                //        }
 
-                                    for (int index = 0; index < iniContent.Length; index++)
-                                    {
-                                        if (iniContent[index].Contains(gameGuid + "=" + main.iconsIni.IniReadValue("GameIcons", gameGuid)))
-                                        {
-                                            string fullPath = gameGuid + "=" + main.iconsIni.IniReadValue("GameIcons", gameGuid).ToString();
-                                            iniContent[index] = string.Empty;
-                                        }
+                                //        if (iniContent[index] != string.Empty)
+                                //        {
+                                //            newContent.Add(iniContent[index]);
+                                //        }
+                                //    }
 
-                                        if (iniContent[index] != string.Empty)
-                                        {
-                                            newContent.Add(iniContent[index]);
-                                        }
-                                    }
+                                //    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);
+                                //}
 
-                                    File.WriteAllLines(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\icons.ini"), newContent);                              
-                                }
-
-                                main.RefreshUI(true);
+                                mainForm.RefreshUI(true);
                                 return;
                             }
 
-                            main.RefreshUI(false);
-                        }                      
+                            mainForm.RefreshUI(false);
+                        }
                     }
                 }
             }

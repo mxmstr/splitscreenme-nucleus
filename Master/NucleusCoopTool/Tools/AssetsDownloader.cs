@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Nucleus.Coop.Forms;
+using Newtonsoft.Json.Linq;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -13,33 +13,22 @@ using System.Windows.Forms;
 namespace Nucleus.Coop.Tools
 {
     /// <summary>
-    /// Download game covers, screenshots and descriptions from igdb through the hub api
+    /// Download game cover, screenshots and description from igdb through the hub api
     /// </summary>
-    class AssetsDownloader
+    static class AssetsDownloader
     {
-        private int maxScreenshotsToDownload;
-
-        public void DownloadGameAssets(MainForm main, GameManager gameManager, ScriptDownloader scriptDownloader, GameControl currentControl)
+        private static int maxScreenshotsToDownload;
+        
+        public static void DownloadAllGamesAssets(GameControl currentControl)
         {
-            List<UserGameInfo> games = gameManager.User.Games;
+            List<UserGameInfo> games = GameManager.Instance.User.Games;
+            var mainForm = MainForm.Instance;
 
-            Label dllabel = new Label
-            {
-                BackColor = Color.Transparent,
-                ForeColor = main.ForeColor,
-                AutoSize = true,
-            };
-
-            main.mainButtonFrame.Enabled = false;
-            main.StepPanel.Enabled = false;
-            main.button_UpdateAvailable.Enabled = false;
-            main.btn_gameOptions.Enabled = false;
-            main.btn_settings.Enabled = false;
-            main.btn_downloadAssets.Enabled = false;
-            main.game_listSizer.Enabled = false;
-            main.mainButtonFrame.Controls.Add(dllabel);
-            dllabel.BringToFront(); 
-            main.Refresh();
+            mainForm.rightFrame.Enabled = false;
+            mainForm.mainButtonFrame.Enabled = false;
+            mainForm.StepPanel.Enabled = false;
+            mainForm.game_listSizer.Enabled = false;
+            mainForm.Invalidate(false);
 
             System.Threading.Tasks.Task.Run(() =>
             {
@@ -59,52 +48,120 @@ namespace Nucleus.Coop.Tools
                         continue;
                     }
 
-                    Handler handler = scriptDownloader.GetHandler(id);
+                    if (id == "")
+                    {
+                        continue;
+                    }
+
+                    Handler handler = HubCache.SearchById(id);
 
                     if (handler == null)
                     {
                         continue;
                     }
 
-                    main.Invoke((MethodInvoker)delegate ()
-                    {
-                        dllabel.Text = $"Downloading Assets For {game.GameGuid}";
-                        dllabel.Location = new Point(main.Width / 2 - dllabel.Width / 2, 12);
-                    });
-
+                    Globals.MainOSD.Show(80000, $"Downloading Assets For {game.GameGuid}");
                     string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
-                    string screenshotsUri = game.Game.ScreenshotsUri;
+                    string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
 
-                    DownloadDescriptions(handler.GameDescription, game.GameGuid);
                     DownloadCovers(coverUri, game.GameGuid);
                     DownloadScreenshots(screenshotsUri, game.GameGuid);
                 }
 
-                main.Invoke((Action)delegate ()
+                mainForm.Invoke((MethodInvoker)delegate ()
                 {
-                    main.mainButtonFrame.Enabled = true;
-                    main.btn_downloadAssets.Enabled = true;
-                    main.game_listSizer.Enabled = true;
-                    main.button_UpdateAvailable.Enabled = true;
-                    main.btn_gameOptions.Enabled = true;
-                    main.StepPanel.Enabled = true;
-                    main.btn_settings.Enabled = true;
-                    dllabel.Visible = false;
-                    main.Controls.Remove(dllabel);
-                    main.TriggerOSD(2000, "Download Completed!");
-                   
-                    if (currentControl != null && main.StepPanel.Visible)
+                    mainForm.rightFrame.Enabled = true;
+                    mainForm.mainButtonFrame.Enabled = true;
+                    mainForm.game_listSizer.Enabled = true;
+                    mainForm.StepPanel.Enabled = true;
+
+                    Globals.MainOSD.Show(2000, "Download Completed!");
+
+                    if (currentControl != null && mainForm.StepPanel.Visible)
                     {
-                        SetBackroundAndCover.ApplyBackgroundAndCover(main, currentControl.UserGameInfo.GameGuid);
+                        SetBackroundAndCover.ApplyBackgroundAndCover(currentControl.UserGameInfo.GameGuid);
                     }
 
-                    main.Refresh();
+                    mainForm.Invalidate(false);
+                    mainForm.mainButtonFrame.Select();
                 });
 
             });
         }
 
-        public void DownloadCovers(string urls, string gameGuid)
+        public static void DownloadGameAssets(UserGameInfo game, GameControl currentControl)
+        {
+            MainForm mainForm = MainForm.Instance;
+
+            mainForm.mainButtonFrame.Enabled = false;
+            mainForm.StepPanel.Enabled = false;
+            mainForm.game_listSizer.Enabled = false;
+            mainForm.Invalidate(false);
+
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                bool error = false;
+
+                if (game.Game == null)
+                {
+                    error = true;
+                }
+
+                var id = game.Game.HandlerId;
+
+                if (id == null)
+                {
+                    error = true;
+                }
+
+                if (id == "")
+                {
+                    error = true;
+                }
+
+                Handler handler = HubCache.SearchById(id);
+
+                if (handler == null)
+                {
+                    error = true;
+                }
+
+                if (!error)
+                {
+                    Globals.MainOSD.Show(80000, $"Downloading Assets For {game.GameGuid}");
+                    string coverUri = $@"https://images.igdb.com/igdb/image/upload/t_cover_big/{handler.GameCover}.jpg";
+                    string screenshotsUri = HubCache.GetScreenshotsUri(handler.Id);
+
+                    DownloadCovers(coverUri, game.GameGuid);
+                    DownloadScreenshots(screenshotsUri, game.GameGuid);
+                }
+
+                mainForm.Invoke((MethodInvoker)delegate ()
+                {
+                    mainForm.rightFrame.Enabled = true;
+                    mainForm.mainButtonFrame.Enabled = true;
+                    mainForm.game_listSizer.Enabled = true;
+                    mainForm.StepPanel.Enabled = true;
+                    mainForm.rightFrame.Enabled = true;
+
+                    if (!error)
+                    {
+                        Globals.MainOSD.Show(2000, "Download Completed!");
+                    }
+
+                    if (currentControl != null && mainForm.StepPanel.Visible)
+                    {
+                        SetBackroundAndCover.ApplyBackgroundAndCover(currentControl.UserGameInfo.GameGuid);
+                    }
+
+                    mainForm.Invalidate(false);
+                    mainForm.mainButtonFrame.Select();
+                });
+
+            });
+        }
+
+        public static void DownloadCovers(string urls, string gameGuid)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\covers")))
             {
@@ -121,8 +178,8 @@ namespace Nucleus.Coop.Tools
                     ServicePointManager.DefaultConnectionLimit = 9999;
 
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urls);
-                    request.UserAgent = "request";        
-               
+                    request.UserAgent = "request";
+
                     using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     using (Stream stream = response.GetResponseStream())
                     using (Image newImage = Image.FromStream(stream))
@@ -135,7 +192,7 @@ namespace Nucleus.Coop.Tools
             { }
         }
 
-        public void DownloadScreenshots(string json, string gameName)
+        public static void DownloadScreenshots(string json, string gameName)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots")))
             {
@@ -144,22 +201,23 @@ namespace Nucleus.Coop.Tools
 
             try
             {
-                dynamic jsonData = JsonConvert.DeserializeObject<dynamic>(json);
+                JObject jsonData = JsonConvert.DeserializeObject(json) as JObject;
+                JArray array = jsonData["screenshots"] as JArray;
 
-                if (jsonData.screenshots.Count < 5)// <= if there is less than 5 screenshots available in the igdb's database
+                if (array.Count < 5)// <= if there is less than 5 screenshots available in the igdb's database
                 {
-                    maxScreenshotsToDownload = jsonData.screenshots.Count;
+                    maxScreenshotsToDownload = array.Count;
                 }
                 else
                 {
                     maxScreenshotsToDownload = 5;
                 }
 
-                for (int i = 0; i < maxScreenshotsToDownload; i++)//jsonData.screenshots.Count; i++) <= we don't want to download all screenshots available in the igdb's database
+                for (int i = 0; i < maxScreenshotsToDownload; i++)// <= we don't want to download all screenshots available in the igdb's database
                 {
                     if (!File.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameName}\\{i}_{gameName}.jpeg")))
                     {
-                        string url = $"https:{jsonData.screenshots[i].url}".Replace("t_thumb", "t_original");
+                        string url = $"https:{array[i]["url"]}".Replace("t_thumb", "t_original");
 
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -187,7 +245,7 @@ namespace Nucleus.Coop.Tools
             { }
         }
 
-        public void DownloadDescriptions(string desc, string gameGuid)
+        public static void SaveDescriptions(string desc, string gameGuid)
         {
             if (!Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions")))
             {

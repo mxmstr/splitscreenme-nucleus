@@ -95,10 +95,12 @@ namespace WindowScrape.Static
         {
             return SetWindowPos(hwnd, IntPtr.Zero, 0, 0, w, h, (uint)(PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOZORDER));
         }
+
         public static bool MakeTop(IntPtr hWnd)
         {
             return SetWindowPos(hWnd, HWND_TOP, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
         }
+
         public static bool SetHwndSizeTopMost(IntPtr hWnd, int w, int h)
         {
             return SetWindowPos(hWnd, new IntPtr(-1), 0, 0, w, h, (uint)PositioningFlags.SWP_NOMOVE);
@@ -174,6 +176,7 @@ namespace WindowScrape.Static
         {
             SendMessage(hwnd, (uint)WM.BN_CLICKED, IntPtr.Zero, IntPtr.Zero);
         }
+
         public static Point GetTitleBarSize(IntPtr hwnd)
         {
             GetClientRect(hwnd, out RECT rcClient);
@@ -184,6 +187,7 @@ namespace WindowScrape.Static
                 X = (rcWind.Right - rcWind.Left) - rcClient.Right,
                 Y = (rcWind.Bottom - rcWind.Top) - rcClient.Bottom
             };
+
             return ptDiff;
         }
 
@@ -253,7 +257,7 @@ namespace WindowScrape.Static
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
 
 
         [DllImport("user32.dll")]

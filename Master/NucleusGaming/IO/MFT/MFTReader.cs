@@ -432,7 +432,7 @@ namespace Nucleus.Gaming
         {
             #region MFTReader Testing
             List<DriveInfo> drives = DriveInfo.GetDrives().ToList();
-           
+
             string filePath = null;
             string[] splitName = fileName.Split('.');
             string[] extensions = new string[] { "." + splitName[splitName.Length - 1] };

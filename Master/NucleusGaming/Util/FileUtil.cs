@@ -120,13 +120,15 @@ namespace Nucleus.Gaming
             }
         }
 
-        public static void CopyCustomUtils(GenericGameHandler genericGameHandler, GenericGameInfo gen, int i, string linkFolder, bool setupDll)
+        public static void CopyCustomUtils(int i, string linkFolder, bool setupDll)
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             if (setupDll)
             {
-                genericGameHandler.Log("Copying custom files/folders");
+                handlerInstance.Log("Copying custom files/folders");
                 string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\User");
-                foreach (string customUtil in gen.CopyCustomUtils)
+                foreach (string customUtil in handlerInstance.CurrentGameInfo.CopyCustomUtils)
                 {
                     int numParams = customUtil.Count(x => x == '|') + 1;
                     string[] splitParams = customUtil.Split('|');
@@ -160,7 +162,7 @@ namespace Nucleus.Gaming
                             Directory.CreateDirectory(System.IO.Path.Combine(destination_dir, dir.Substring(source_dir.Length + 1)));
                         }
 
-                        genericGameHandler.Log("Copying user folder " + utilPath + " and all its contents to " + "Instance" + i + "\\" + utilPath);
+                        handlerInstance.Log("Copying user folder " + utilPath + " and all its contents to " + "Instance" + i + "\\" + utilPath);
                         foreach (string file_name in System.IO.Directory.GetFiles(source_dir, "*", SearchOption.AllDirectories))
                         {
                             File.Copy(file_name, System.IO.Path.Combine(destination_dir, file_name.Substring(source_dir.Length + 1)));
@@ -168,13 +170,14 @@ namespace Nucleus.Gaming
                     }
                     else //file
                     {
-                        FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)));
+                        FileCheck(Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)));
 
-                        genericGameHandler.Log("Copying " + utilName + " to " + "Instance" + i + "\\" + utilPath);
+                        handlerInstance.Log("Copying " + utilName + " to " + "Instance" + i + "\\" + utilPath);
                         File.Copy(Path.Combine(utilFolder, utilName), Path.Combine(linkFolder.TrimEnd('\\') + '\\' + utilPath, Path.GetFileName(utilName)), true);
                     }
                 }
-                genericGameHandler.Log("Copying custom files complete");
+
+                handlerInstance.Log("Copying custom files complete");
             }
         }
 
@@ -189,9 +192,11 @@ namespace Nucleus.Gaming
             return "";
         }
 
-        public static void DeleteFiles(GenericGameHandler genericGameHandler, GenericGameInfo gen, string linkFolder, int i)
+        public static void DeleteFiles(string linkFolder, int i)
         {
-            foreach (string deleteLine in gen.DeleteFiles)
+            var handlerInstance = GenericGameHandler.Instance;
+
+            foreach (string deleteLine in handlerInstance.CurrentGameInfo.DeleteFiles)
             {
                 string[] deleteSplit = deleteLine.Split('|');
                 int indexOffset = 1;
@@ -208,7 +213,7 @@ namespace Nucleus.Gaming
 
                 if (File.Exists(fullFilePath))
                 {
-                    if (!gen.IgnoreDeleteFilesPrompt)
+                    if (!handlerInstance.CurrentGameInfo.IgnoreDeleteFilesPrompt)
                     {
                         DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete '" + fullFilePath + "'?", "Nucleus - Delete Files In Config Path", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (dialogResult != DialogResult.Yes)
@@ -216,19 +221,21 @@ namespace Nucleus.Gaming
                             continue;
                         }
                     }
-                    genericGameHandler.Log(string.Format("Deleting file {0}", Path.GetFileName(fullFilePath), Path.Combine(linkFolder, deleteSplit[2 - indexOffset])));
+                    handlerInstance.Log(string.Format("Deleting file {0}", Path.GetFileName(fullFilePath), Path.Combine(linkFolder, deleteSplit[2 - indexOffset])));
                     File.Delete(fullFilePath);
                 }
                 else
                 {
-                    genericGameHandler.Log("ERROR - Could not find file: " + fullFilePath + " to delete");
+                    handlerInstance.Log("ERROR - Could not find file: " + fullFilePath + " to delete");
                 }
             }
         }
 
-        public static void RenameOrMoveFiles(GenericGameHandler genericGameHandler, GenericGameInfo gen, string linkFolder, int i)
+        public static void RenameOrMoveFiles(string linkFolder, int i)
         {
-            foreach (string renameLine in gen.RenameAndOrMoveFiles)
+            var handlerInstance = GenericGameHandler.Instance;
+
+            foreach (string renameLine in handlerInstance.CurrentGameInfo.RenameAndOrMoveFiles)
             {
                 string[] renameSplit = renameLine.Split('|');
                 int indexOffset = 1;
@@ -242,7 +249,7 @@ namespace Nucleus.Gaming
                 }
                 else if (renameSplit.Length <= 1)
                 {
-                    genericGameHandler.Log("Invalid # of parameters provided for: " + renameLine + ", skipping renaming and or moving");
+                    handlerInstance.Log("Invalid # of parameters provided for: " + renameLine + ", skipping renaming and or moving");
                     continue;
                 }
 
@@ -250,7 +257,7 @@ namespace Nucleus.Gaming
 
                 if (File.Exists(fullFilePath))
                 {
-                    genericGameHandler.Log(string.Format("Renaming and/or moving {0} to {1}", Path.GetFileName(fullFilePath), Path.Combine(linkFolder, renameSplit[2 - indexOffset])));
+                    handlerInstance.Log(string.Format("Renaming and/or moving {0} to {1}", Path.GetFileName(fullFilePath), Path.Combine(linkFolder, renameSplit[2 - indexOffset])));
                     if (!Directory.Exists(Path.GetDirectoryName(Path.Combine(linkFolder, renameSplit[2 - indexOffset]))))
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(linkFolder, renameSplit[2 - indexOffset])));
@@ -259,16 +266,18 @@ namespace Nucleus.Gaming
                 }
                 else
                 {
-                    genericGameHandler.Log("ERROR - Could not find file: " + fullFilePath + " to rename and/or move");
+                    handlerInstance.Log("ERROR - Could not find file: " + fullFilePath + " to rename and/or move");
                 }
             }
         }
 
-        public static void FileCheck(GenericGameHandler genericGameHandler, GenericGameInfo gen, string file)
+        public static void FileCheck(string file)
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             if (File.Exists(file))
             {
-                if (!gen.SymlinkGame && !gen.HardlinkGame && !gen.HardcopyGame)
+                if (!handlerInstance.CurrentGameInfo.SymlinkGame && !handlerInstance.CurrentGameInfo.HardlinkGame && !handlerInstance.CurrentGameInfo.HardcopyGame)
                 {
                     string fileBackup = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_NUCLEUS_BACKUP" + Path.GetExtension(file));
                     if (!File.Exists(fileBackup))
@@ -276,8 +285,8 @@ namespace Nucleus.Gaming
                         try
                         {
                             File.Move(file, fileBackup);
-                            genericGameHandler.backupFiles.Add(fileBackup);
-                            genericGameHandler.Log($"Backing up file {Path.GetFileName(file)} as {Path.GetFileName(fileBackup)}");
+                            handlerInstance.backupFiles.Add(fileBackup);
+                            handlerInstance.Log($"Backing up file {Path.GetFileName(file)} as {Path.GetFileName(fileBackup)}");
                         }
                         catch
                         { }
@@ -285,29 +294,32 @@ namespace Nucleus.Gaming
                 }
                 else
                 {
-                    genericGameHandler.Log($"Deleting {Path.GetFileName(file)}");
+                    handlerInstance.Log($"Deleting {Path.GetFileName(file)}");
                     File.Delete(file);
                 }
             }
             else
             {
-                genericGameHandler.Log($"{Path.GetFileName(file)} doesn't exist, will be deleted upon ending session");
-                genericGameHandler.addedFiles.Add(file);
+                handlerInstance.Log($"{Path.GetFileName(file)} doesn't exist, will be deleted upon ending session");
+                handlerInstance.addedFiles.Add(file);
             }
         }
 
-        public static void CleanOriginalgGameFolder(GenericGameHandler genericGameHandler)
+        public static void CleanOriginalgGameFolder()
         {
-            genericGameHandler.Log("Deleting any files Nucleus added to original game folder");
-            foreach (string addedFilePath in genericGameHandler.addedFiles)
+            var handlerInstance = GenericGameHandler.Instance;
+
+            handlerInstance.Log("Deleting any files Nucleus added to original game folder");
+            foreach (string addedFilePath in handlerInstance.addedFiles)
             {
                 File.Delete(addedFilePath);
             }
 
             Thread.Sleep(500);
 
-            genericGameHandler.Log("Restoring any backed up files");
-            foreach (string backupFilePath in genericGameHandler.backupFiles)
+            handlerInstance.Log("Restoring any backed up files");
+
+            foreach (string backupFilePath in handlerInstance.backupFiles)
             {
                 try
                 {

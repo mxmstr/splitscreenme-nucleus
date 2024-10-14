@@ -1,6 +1,12 @@
-﻿using Nucleus.Gaming;
+﻿using Jint.Parser;
+using Nucleus.Gaming;
+using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.UI;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SplitTool.Controls
@@ -8,9 +14,11 @@ namespace SplitTool.Controls
     public class CoolListControl : UserControl, IDynamicSized
     {
         private Label titleLabel;
-        protected Label descLabel;
+        protected LinkLabel descLabel;
         protected int defaultHeight = 72;
         protected int expandedHeight = 156;
+        public object ImageUrl;
+        private Color backBrushColor;
 
         protected override CreateParams CreateParams
         {
@@ -31,7 +39,11 @@ namespace SplitTool.Controls
         public string Details
         {
             get => descLabel.Text;
-            set => descLabel.Text = value;
+            set
+            {
+                descLabel.Text = value;
+                SetDescLabelLinkArea(value);
+            }
         }
 
         public bool EnableHighlighting { get; private set; }
@@ -42,26 +54,61 @@ namespace SplitTool.Controls
         {
             EnableHighlighting = enableHightlighting;
 
-            string customFont = Globals.ThemeIni.IniReadValue("Font", "FontFamily");
+            string customFont = Globals.ThemeConfigFile.IniReadValue("Font", "FontFamily");
+            backBrushColor = Color.FromArgb(60,Theme_Settings.BackgroundGradientColor.R, Theme_Settings.BackgroundGradientColor.G, Theme_Settings.BackgroundGradientColor.B);
 
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             BackColor = Color.Transparent;
+            Font font = new Font(customFont, 10.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
 
             titleLabel = new Label
             {
-                Font = new Font(customFont, 10.0f, FontStyle.Bold, GraphicsUnit.Point, 0),
+                Font = font,
                 BackColor = Color.Transparent
             };
 
-            descLabel = new Label
+            descLabel = new LinkLabel
             {
-                Font = new Font(customFont, 9.25f, FontStyle.Regular, GraphicsUnit.Point, 0),
-                BackColor = Color.Transparent
+                Font = font,
+                BackColor = Color.Transparent,
+                LinkColor = Color.Orange,
+                ActiveLinkColor = Color.DimGray
             };
+
+            descLabel.LinkClicked += DescLabelLinkClicked;
 
             Controls.Add(titleLabel);
             Controls.Add(descLabel);
+
+            font.Dispose();
+
             DPIManager.Register(this);
+        }
+
+        private void DescLabelLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var link = sender as LinkLabel;
+            Process.Start(link.Tag.ToString());
+        }
+
+        private void SetDescLabelLinkArea(string value)
+        {
+            var wordList = value.Split(' ').ToList();
+            var search = wordList.Where(word => word.StartsWith("http:") || word.StartsWith("file:") ||
+                                                                      word.StartsWith("mailto:") || word.StartsWith("ftp:") ||
+                                                                      word.StartsWith("https:") || word.StartsWith("gopher:") ||
+                                                                      word.StartsWith("nntp:") || word.StartsWith("prospero:") ||
+                                                                      word.StartsWith("telnet:") || word.StartsWith("news:") ||
+                                                                      word.StartsWith("wais:") || word.StartsWith("outlook:")).FirstOrDefault();
+            if (search != null)
+            {
+                descLabel.LinkArea = new LinkArea(value.IndexOf(search), search.Length);
+                descLabel.Tag = search;
+            }
+            else
+            {
+                descLabel.LinkArea = new LinkArea(0, 0);
+            }
         }
 
         public void UpdateSize(float scale)
@@ -88,10 +135,9 @@ namespace SplitTool.Controls
                     Height = picture.Height + 20;
                     picture.BackColor = Color.Transparent;
                 }
-
             }
 
-            VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.
+            VerticalScroll.Value = 0;//avoid weird glitchs if scrolled before maximizing the main window.          
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -101,55 +147,13 @@ namespace SplitTool.Controls
             Control c = e.Control;
             c.Click += C_Click;
 
-            //if (EnableHighlighting)
-            //{
-            //    c.MouseEnter += C_MouseEnter;
-            //    c.MouseLeave += C_MouseLeave;
-            //}                
             DPIManager.Update(this);
         }
-
-        //private void C_MouseEnter(object sender, EventArgs e)
-        //{
-        //    OnMouseEnter(e);
-        //}
-
-        //private void C_MouseLeave(object sender, EventArgs e)
-        //{
-        //    OnMouseLeave(e);
-        //}
 
         private void C_Click(object sender, EventArgs e)
         {
             OnClick(e);
         }
-
-        //protected override void OnLostFocus(EventArgs e)
-        //{
-        //    base.OnLostFocus(e);
-        //}
-
-        //protected override void OnMouseEnter(EventArgs e)
-        //{
-        //    base.OnMouseEnter(e);
-        //    if (!ContainsFocus)
-        //    {
-        //        //BackColor = SelectionColor;
-        //        //titleLabel.BackColor = SelectionColor;
-        //        //descLabel.BackColor = SelectionColor;
-        //    }
-        //}
-
-        //protected override void OnMouseLeave(EventArgs e)
-        //{
-        //    base.OnMouseLeave(e);
-        //    if (!ContainsFocus)
-        //    {
-        //        //BackColor = userOverBackColor;
-        //        //titleLabel.BackColor = userOverBackColor;
-        //        //descLabel.BackColor = userOverBackColor;
-        //    }
-        //}
 
         protected override void OnClick(EventArgs e)
         {
@@ -161,5 +165,23 @@ namespace SplitTool.Controls
             }
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Rectangle bounds = new Rectangle(2, 1, Width - 3, Height-1);
+
+            if (bounds.Width == 0 || bounds.Height == 0)
+            {
+                return;
+            }
+
+            GraphicsPath graphicsPath = FormGraphicsUtil.MakeRoundedRect(bounds, 15, 15, true, true, true, true);
+            SolidBrush brush = new SolidBrush(backBrushColor);
+
+            e.Graphics.FillPath(brush, graphicsPath);
+
+            graphicsPath.Dispose();
+            brush.Dispose();
+            
+        }
     }
 }

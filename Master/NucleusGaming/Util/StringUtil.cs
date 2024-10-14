@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace Nucleus.Gaming
 {
@@ -125,6 +127,39 @@ namespace Nucleus.Gaming
             return result;
         }
 
+        public static string GetRootFromBinariesFolder(string gameExePath, string binariesToRemove)
+        {
+            string[] exeSubStrings = gameExePath.Split('\\');
+            string binariesStart = binariesToRemove.Split('\\')[0].ToLower();
+
+            string end = string.Empty;
+
+            for (int i = 0; i < exeSubStrings.Count(); i++)
+            {
+                string sub = exeSubStrings[i].ToLower();
+
+                if (sub == binariesStart)
+                {
+                    break;
+                }
+
+                if (i < exeSubStrings.Count() - 1)
+                {
+                    end += sub + "\\";
+                    continue;
+                }
+
+                end += sub;
+            }
+
+            if(end != string.Empty)
+            {
+                return end;
+            }
+
+            return gameExePath;
+        }
+
         public static string ReplaceCaseInsensitive(string str, string toFind, string toReplace)
         {
             string lowerOriginal = str.ToLower();
@@ -143,7 +178,8 @@ namespace Nucleus.Gaming
             return end;
         }
 
-        public static string internalGetRelativePath(DirectoryInfo dirInfo, DirectoryInfo rootInfo, string str)
+
+        public static string InternalGetRelativePath(DirectoryInfo dirInfo, DirectoryInfo rootInfo, string str)
         {
             if (dirInfo == null || dirInfo.FullName == rootInfo.FullName)
             {
@@ -160,7 +196,7 @@ namespace Nucleus.Gaming
             }
 
             dirInfo = dirInfo.Parent;
-            return internalGetRelativePath(dirInfo, rootInfo, str);
+            return InternalGetRelativePath(dirInfo, rootInfo, str);
         }
     }
 }

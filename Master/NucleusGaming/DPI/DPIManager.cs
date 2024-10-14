@@ -38,6 +38,7 @@ namespace Nucleus.Gaming
             {
                 ReleaseDC(desktopWnd, dc);
             }
+
             return dpi; /// 96f;
         }
 
@@ -87,8 +88,11 @@ namespace Nucleus.Gaming
         {
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             IntPtr desktop = g.GetHdc();
+           
             int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCapEnum.DeviceCap.VERTRES);
             int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCapEnum.DeviceCap.DESKTOPVERTRES);
+
+            g.ReleaseHdc(desktop);
 
             float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
 

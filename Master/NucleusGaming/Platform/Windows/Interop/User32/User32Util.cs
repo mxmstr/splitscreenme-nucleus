@@ -47,9 +47,9 @@ namespace Nucleus.Gaming.Windows
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
             public string DeviceKey;
         }
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
-
 
         public enum DeviceCap
         {
@@ -63,8 +63,11 @@ namespace Nucleus.Gaming.Windows
         {
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             IntPtr desktop = g.GetHdc();
+
             int LogicalScreenHeight = Gdi32Interop.GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
             int PhysicalScreenHeight = Gdi32Interop.GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
+            
+            g.ReleaseHdc(desktop);
 
             float ScreenScalingFactor = PhysicalScreenHeight / (float)LogicalScreenHeight;
 

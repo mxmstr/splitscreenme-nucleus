@@ -1,17 +1,10 @@
-﻿using Nucleus.Gaming.Coop;
-using Nucleus.Gaming;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Forms;
 using Nucleus.Gaming.Platform.PCSpecs;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
+using System.IO;
 
 namespace Nucleus.Coop.Tools
 {
@@ -31,7 +24,6 @@ namespace Nucleus.Coop.Tools
                 for (int i = 0; i < games.Count; i++)
                 {
                     string gameGuid = jObject["Games"][i]["GameGuid"].ToString();
-                    string profiles = jObject["Games"][i]["Profiles"].ToString();
                     string exePath = jObject["Games"][i]["ExePath"].ToString();
 
                     if (gameGuid == currentGameInfo.GameGuid && exePath == currentGameInfo.ExePath)

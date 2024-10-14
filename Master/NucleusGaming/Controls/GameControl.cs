@@ -2,37 +2,74 @@
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.UI;
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Security.Policy;
 using System.Windows.Forms;
-using static Nucleus.Gaming.Coop.Generic.Hub;
 
 namespace Nucleus.Coop
 {
+    public class GameControlAlt : GameControl, IDynamicSized, IRadioControl
+    {
+        public GameControlAlt(GenericGameInfo game, UserGameInfo userGame, bool favorite) : base(game, userGame, favorite)
+        {
+            GameInfo = game;
+
+            HandlerUpdate.Visible = false;
+            GameOptions.Visible = false;
+            FavoriteBox.Visible = false;
+            IsUpdateAvailableTimer = null;
+        }
+
+        protected override void OnPaint(PaintEventArgs e) {}
+    }
+
     public class GameControl : UserControl, IDynamicSized, IRadioControl
     {
-        private readonly IniFile ini = Globals.ini;
-        public GenericGameInfo GameInfo { get; private set; }
+        public GenericGameInfo GameInfo { get; set; }
         public UserGameInfo UserGameInfo { get; private set; }
         private PictureBox picture;
         private PictureBox playerIcon;
-        private PictureBox favoriteBox;
+        public PictureBox FavoriteBox;
         private Label title;
         private Label players;
-        
+        public PictureBox HandlerUpdate;
+        public PictureBox GameOptions;
+
         private Color radioSelectedBackColor;
-        private Color userOverBackColor;
-        private Color userLeaveBackColor;
+        private Color defaultForeColor;
+
         public bool favorite;
+        private bool _updateAvailable;
+        private bool updateAvailable
+        {
+            get => _updateAvailable;
+            set
+            {
+                if (_updateAvailable != value)
+                {
+                    _updateAvailable = value;
+                    title.ForeColor = value ? Color.FromArgb(255, 196, 145, 18) : defaultForeColor;
+                    HandlerUpdate.Visible = value;
+                    Invalidate();
+                }
+            }
+        }
+       
         public string TitleText { get; set; }
         public string PlayerText { get; set; }
+
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
-        private System.Threading.Timer isUpdateAvailableTimer;
+        public System.Threading.Timer IsUpdateAvailableTimer;
+
+        private Size maxSize;
+        private Size minSize;
+        private Point maxLoc;
+        private Point minLoc;
 
         protected override CreateParams CreateParams
         {
@@ -49,32 +86,26 @@ namespace Nucleus.Coop
             try
             {
                 this.favorite = favorite;
-                IniFile theme = Globals.ThemeIni;
+                IniFile theme = Globals.ThemeConfigFile;
 
-                string themePath = Globals.Theme;
+                string themePath = Globals.ThemeFolder;
                 string[] rgb_SelectionColor = theme.IniReadValue("Colors", "Selection").Split(',');
                 string[] rgb_MouseOverColor = theme.IniReadValue("Colors", "MouseOver").Split(',');
                 string customFont = theme.IniReadValue("Font", "FontFamily");
 
-                radioSelectedBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
-                userOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
-                userLeaveBackColor = Color.FromArgb(int.Parse(rgb_SelectionColor[0]), int.Parse(rgb_SelectionColor[1]), int.Parse(rgb_SelectionColor[2]), int.Parse(rgb_SelectionColor[3]));
+                defaultForeColor = Color.FromArgb(255, int.Parse(theme.IniReadValue("Colors", "Font").Split(',')[0]), int.Parse(theme.IniReadValue("Colors", "Font").Split(',')[0]), int.Parse(theme.IniReadValue("Colors", "Font").Split(',')[0]));
+                radioSelectedBackColor = Theme_Settings.SelectedBackColor;
                 favorite_Unselected = ImageCache.GetImage(themePath + "favorite_unselected.png");
                 favorite_Selected = ImageCache.GetImage(themePath + "favorite_selected.png");
 
-                SuspendLayout();
                 AutoScaleDimensions = new SizeF(96F, 96F);
                 AutoScaleMode = AutoScaleMode.Dpi;
                 AutoSize = false;
-                Name = "GameControl";
                 Size = new Size(209, 42);
+                Cursor = Theme_Settings.Hand_Cursor;
 
                 GameInfo = game;
                 UserGameInfo = userGame;
-
-                Cursor default_Cursor = new Cursor(themePath + "cursor.ico");
-                Cursor = default_Cursor;
-                Cursor hand_Cursor = new Cursor(themePath + "cursor_hand.ico");
 
                 picture = new PictureBox
                 {
@@ -88,32 +119,30 @@ namespace Nucleus.Coop
                     Image = ImageCache.GetImage(themePath + "players.png")
                 };
 
-                CustomToolTips.SetToolTip(playerIcon, "Number of players.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-
                 title = new Label
                 {
                     AutoSize = true,
-                    Font = new Font(customFont, 8, FontStyle.Bold, GraphicsUnit.Point, 0),
+                    Font = new Font(customFont, 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0),  
                 };
 
                 players = new Label
                 {
                     AutoSize = true,
-                    Font = new Font(customFont, 7, FontStyle.Regular, GraphicsUnit.Point, 0)
+                    Font = new Font(customFont, 7, FontStyle.Bold, GraphicsUnit.Point, 0)
                 };
 
                 if (game == null)
                 {
                     title.Text = "No games";
-                    players.Text = string.Empty;
                     title.Font = new Font(customFont, 9, FontStyle.Bold, GraphicsUnit.Point, 0);
+                    Visible = false;
                 }
                 else
                 {
                     title.Text = GameInfo.GameName;
                     if (GameInfo.MaxPlayers > 2)
                     {
-                        players.Text = "2-" + GameInfo.MaxPlayers;
+                        players.Text = "2 - " + GameInfo.MaxPlayers;
                     }
                     else
                     {
@@ -121,33 +150,84 @@ namespace Nucleus.Coop
                     }
                 }
 
-                favoriteBox = new PictureBox
+                FavoriteBox = new PictureBox
                 {
                     Name = "favorite",
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     BackColor = Color.Transparent,
-                    Cursor = hand_Cursor
+                    //Cursor = Theme_Settings.Hand_Cursor,
+                    Tag = "no_parent_click"
                 };
 
-                favoriteBox.Image = favorite ? favorite_Selected : favorite_Unselected;
-                favoriteBox.Click += new EventHandler(FavoriteBox_Click);
+                GameOptions = new PictureBox
+                {
+                    Name = "gameOptions",
+                    BackColor = BackColor = Color.Transparent,
+                    BackgroundImage = ImageCache.GetImage(themePath + "game_options.png"),
+                    BackgroundImageLayout = ImageLayout.Stretch,
+                    //Cursor = Theme_Settings.Hand_Cursor,
+                    Tag = "no_parent_click"
+                };
+
+                HandlerUpdate = new PictureBox
+                {
+                    Name = "updateButton",
+                    BackColor = Color.Transparent,
+                    BackgroundImage = ImageCache.GetImage(themePath + "update.png"),
+                    BackgroundImageLayout = ImageLayout.Stretch,
+                    //Cursor = Theme_Settings.Hand_Cursor,
+                    Visible = false,
+                    Tag = "no_parent_click"
+                };
+
+                FavoriteBox.Image = favorite ? favorite_Selected : favorite_Unselected;
+                FavoriteBox.Click += new EventHandler(FavoriteBox_Click);
+
                 title.BackColor = Color.Transparent;
+
                 TitleText = title.Text;
+
                 PlayerText = players.Text;
-                BackColor = Color.Transparent;
+
                 players.BackColor = Color.Transparent;
                 playerIcon.BackColor = Color.Transparent;
 
-                ResumeLayout();
+                BackColor = Color.Transparent;
 
                 Controls.Add(picture);
                 Controls.Add(title);
                 Controls.Add(players);
+                Controls.Add(GameOptions);
+                Controls.Add(HandlerUpdate);
 
                 if (title.Text != "No games")
                 {
                     Controls.Add(playerIcon);
-                    Controls.Add(favoriteBox);
+                    Controls.Add(FavoriteBox);
+                }
+
+                MouseEnter += ZoomInPicture;
+                MouseLeave += ZoomOutPicture;
+
+                FavoriteBox.MouseEnter += ZoomInPicture;
+                FavoriteBox.MouseLeave += ZoomOutPicture;
+
+                GameOptions.MouseEnter += ZoomInPicture;
+                GameOptions.MouseLeave += ZoomOutPicture;
+
+                HandlerUpdate.MouseEnter += ZoomInPicture;
+                HandlerUpdate.MouseLeave += ZoomOutPicture;
+
+                this.Disposed += DisposeTimer;
+
+                if (GameInfo != null)
+                {
+                    CustomToolTips.SetToolTip(FavoriteBox, "Add or remove this game from your favorites.", $"FavoriteBox_{GameInfo.GUID}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    CustomToolTips.SetToolTip(GameOptions, "Game options menu.", $"GameOptions_{GameInfo.GUID}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    CustomToolTips.SetToolTip(HandlerUpdate, "Update game handler.", $"HandlerUpdate{GameInfo.GUID}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    CustomToolTips.SetToolTip(playerIcon, "Number of supported players.", $"playerIcon{GameInfo.GUID}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    ///Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
+                    IsUpdateAvailableTimer = new System.Threading.Timer(IsUpdateAvailable_Tick, this, 1500, 1550);
                 }
 
                 DPIManager.Register(this);
@@ -156,9 +236,6 @@ namespace Nucleus.Coop
             {
                 System.Windows.MessageBox.Show("ERROR - " + ex.Message + "\n\nSTACKTRACE: " + ex.StackTrace);
             }
-
-            ///Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
-            isUpdateAvailableTimer = new System.Threading.Timer(IsUpdateAvailable_Tick, null, 2600, 5200);
         }
         ~GameControl()
         {
@@ -181,20 +258,17 @@ namespace Nucleus.Coop
             picture.Size = new Size((int)((margin - border) * scale), (int)((margin - border) * scale));
             picture.Location = new Point(border, border);
 
-            Size plabelSize = TextRenderer.MeasureText(PlayerText, players.Font);
-
             title.Text = TitleText;
             players.Text = PlayerText;
 
             title.AutoSize = true;
             title.MaximumSize = new Size((int)(209 * scale) - picture.Width - (border * 2), 0);
 
-            players.Size = plabelSize;
-            playerIcon.Size = new Size(players.Size.Height, players.Size.Height);
+            playerIcon.Size = new Size(players.Size.Height + 2, players.Size.Height + 2 );
 
             title.Location = new Point(picture.Right + border, picture.Location.Y);
-            playerIcon.Location = new Point(picture.Right + border, title.Bottom);
-            players.Location = new Point(picture.Right + border + playerIcon.Width, playerIcon.Bottom - players.Height);
+            playerIcon.Location = new Point(title.Location.X + 2, title.Bottom + 3);
+            players.Location = new Point(playerIcon.Right + 2, playerIcon.Bottom - players.Height);
 
             if (picture.Height < playerIcon.Bottom)//more than one title row
             {
@@ -206,76 +280,138 @@ namespace Nucleus.Coop
                 Height = picture.Bottom + border;//adjust the control Height
             }
 
-            favoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
+            FavoriteBox.Size = new Size(playerIcon.Width, playerIcon.Width);
+
             float favoriteX = (209 * scale) - (playerIcon.Width + 5);
-            float favoriteY = Height - (favoriteBox.Height + 5);
-            favoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
+            float favoriteY = Height - (FavoriteBox.Height + 5);
+            FavoriteBox.Location = new Point((int)favoriteX, (int)favoriteY);
+
+            GameOptions.Size = FavoriteBox.Size;
+            GameOptions.Location = new Point(FavoriteBox.Left - (GameOptions.Width + 5), FavoriteBox.Location.Y);
+
+            HandlerUpdate.Size = FavoriteBox.Size; 
+            HandlerUpdate.Location = new Point(GameOptions.Left - (HandlerUpdate.Width + 5), FavoriteBox.Location.Y);
+
+            maxSize = new Size((FavoriteBox.Right - HandlerUpdate.Location.X) + 3, FavoriteBox.Height);
+            minSize = new Size((FavoriteBox.Right - GameOptions.Location.X) + 3, FavoriteBox.Height);
+
+            maxLoc = new Point(HandlerUpdate.Location.X,FavoriteBox.Top);
+            minLoc = new Point(GameOptions.Location.X, FavoriteBox.Top);
 
             ResumeLayout();
         }
 
-        private void IsUpdateAvailable_Tick(object state)
+        private void DisposeTimer(object sender , EventArgs e)
         {
-            Control topLevel = TopLevelControl;
-
-            if (topLevel != null)
-            {
-                if (topLevel.IsHandleCreated && GameInfo != null)
-                {
-                    if (GameInfo.UpdateAvailable)
-                    {
-                        title.ForeColor = Color.PaleGreen;
-
-                        topLevel?.Invoke((MethodInvoker)delegate ()
-                        {
-                            CustomToolTips.SetToolTip(this, "There is an update available for this handler,\nright click and select \"Update Handler\" \nto quickly download the latest version.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                        });
-                    }
-                }
-            }
+            IsUpdateAvailableTimer?.Dispose();
         }
 
+        private void IsUpdateAvailable_Tick(object state)
+        {
+            try
+            {
+                Control topLevel = TopLevelControl;
+
+                if (topLevel == null)
+                {
+                    return;
+                }
+
+                if (!topLevel.IsHandleCreated)
+                {
+                    return;
+                }
+
+                this.Invoke((MethodInvoker)delegate ()
+                {
+                    updateAvailable = GameInfo.UpdateAvailable && GameInfo.MetaInfo.CheckUpdate;
+                });
+            }
+            catch
+            {
+                IsUpdateAvailableTimer?.Dispose();
+                Console.WriteLine("GameControl was Disposed!");
+            }
+        }
+        
         protected override void OnControlAdded(ControlEventArgs e)
         {
             base.OnControlAdded(e);
+
             Control c = e.Control;
-            c.Click += C_Click;
+
+            if ((string)c.Tag != "no_parent_click")
+            {
+                c.Click += C_Click;
+            }
+            
             c.MouseEnter += C_MouseEnter;
             c.MouseLeave += C_MouseLeave;
+
             DPIManager.Update(this);
         }
 
         private void FavoriteBox_Click(object sender, EventArgs e)
         {
-            bool selected = favoriteBox.Image.Equals(favorite_Selected);
+            MouseEventArgs arg = e as MouseEventArgs;
 
-            if (selected)
+            if (arg.Button == MouseButtons.Right)
             {
-                favoriteBox.Image = favorite_Unselected;
-                UserGameInfo.Favorite = false;
+                return;
             }
-            else
-            {
-                favoriteBox.Image = favorite_Selected;
-                UserGameInfo.Favorite = true;
-            }
+            
+            bool selected = FavoriteBox.Image.Equals(favorite_Selected);
+            FavoriteBox.Image = selected ? favorite_Unselected : favorite_Selected;
+            UserGameInfo.Game.MetaInfo.Favorite = !selected;
 
             GameManager.Instance.SaveUserProfile();
         }
 
         private void C_MouseEnter(object sender, EventArgs e)
         {
-            OnMouseEnter(e);
+            Control c = sender as Control;
+
+            if ((string)c.Tag != "no_parent_click")
+            {
+                OnMouseEnter(e);
+            }
+            else
+            {
+                c.Size = new Size(c.Width += 3, c.Height += 3);
+                c.Location = new Point(c.Location.X - 1, c.Location.Y - 1);
+            }
         }
 
         private void C_MouseLeave(object sender, EventArgs e)
         {
-            OnMouseLeave(e);
+            Control c = sender as Control;
+
+            if ((string)c.Tag != "no_parent_click")
+            {
+                OnMouseLeave(e);
+            }
+            else
+            {
+                c.Size = new Size(c.Width -= 3, c.Height -= 3);
+                c.Location = new Point(c.Location.X + 1, c.Location.Y + 1);
+            }
+        }
+
+        private void ZoomInPicture(object sender, EventArgs e)
+        {       
+            picture.Size = new Size(picture.Width += 3, picture.Height += 3);
+            picture.Location = new Point(picture.Location.X - 1, picture.Location.Y - 1);
+        }
+
+        private void ZoomOutPicture(object sender, EventArgs e)
+        {
+            picture.Size = new Size(picture.Width -= 3, picture.Height -= 3);
+            picture.Location = new Point(picture.Location.X + 1, picture.Location.Y + 1);
         }
 
         private void C_Click(object sender, EventArgs e)
-        {
-            OnClick(e);
+        {          
+            OnClick(e);            
         }
 
         public Image Image
@@ -293,31 +429,74 @@ namespace Nucleus.Coop
 
         public void RadioSelected()
         {
-            BackColor = radioSelectedBackColor;
             isSelected = true;
         }
 
         public void RadioUnselected()
         {
-            BackColor = BackColor = Color.Transparent;
             isSelected = false;
         }
 
         public void UserOver()
         {
-            BackColor = userOverBackColor;
         }
 
         public void UserLeave()
         {
-            if (isSelected)
-            {
-                BackColor = userLeaveBackColor;
-            }
-            else
-            {
-                BackColor = Color.Transparent;
-            }
         }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height / 3);
+
+            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            {
+                return;
+            }
+
+            Rectangle bounds = new Rectangle(0, 0, Width, Height);
+
+            Color color = isSelected ? radioSelectedBackColor : Color.Transparent;
+
+            LinearGradientBrush lgb =
+            new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 57f);
+
+            ColorBlend topcblend = new ColorBlend(3);
+            topcblend.Colors = new Color[3] { color, color, Color.Transparent };
+            topcblend.Positions = new float[3] { 0f, 0.5f, 1.0f };
+
+            lgb.InterpolationColors = topcblend;
+            lgb.SetBlendTriangularShape(.5f, 1.0f);
+            e.Graphics.FillRectangle(lgb, bounds);
+            lgb.Dispose();
+
+            Size oulineRect = HandlerUpdate.Visible ? maxSize : minSize;
+
+            int locX = HandlerUpdate.Visible ? maxLoc.X - 5 : minLoc.X - 5;
+            int locY = maxLoc.Y - 3;
+            int width = oulineRect.Width + 6;
+            int height = oulineRect.Height + 6;
+
+            Rectangle inputTextBack = new Rectangle(locX, locY, width, height);
+            Rectangle inputTextBackOutline = new Rectangle(locX, locY, width, height);
+
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+
+            GraphicsPath backGp = FormGraphicsUtil.MakeRoundedRect(inputTextBack, 10, 10, true, false, false, true);
+            GraphicsPath outlineGp = FormGraphicsUtil.MakeRoundedRect(inputTextBackOutline, 10, 10, true, false, false, true);
+            
+            SolidBrush fillBrush = new SolidBrush(Color.FromArgb(50, 20, 20, 20));
+            Pen outlinePen = new Pen(Color.FromArgb(15, 255, 255, 255));
+
+            e.Graphics.FillPath(fillBrush, backGp);
+            fillBrush.Dispose();
+            backGp.Dispose();
+
+            e.Graphics.DrawPath(outlinePen, outlineGp);
+            outlinePen.Dispose();
+            outlineGp.Dispose();    
+        }
+       
     }
 }

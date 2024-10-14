@@ -23,8 +23,6 @@ namespace Nucleus.Coop.Forms
             }
             base.Dispose(disposing);
         }
-        
-		private readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 		
         #region Windows Form Designer generated code
 

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -71,7 +67,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
             }
         }
 
-
         public static bool Close()
         {
             // find it
@@ -89,7 +84,6 @@ namespace Nucleus.Gaming.Coop.InputManagement
         {
             return GetIsOpen1709() ?? GetIsOpenLegacy();
         }
-
 
         [DllImport("user32.dll", SetLastError = false)]
         private static extern IntPtr FindWindowEx(IntPtr parent, IntPtr after, string className, string title = null);

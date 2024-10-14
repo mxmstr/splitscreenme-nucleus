@@ -3,6 +3,7 @@ using Nucleus.Gaming.Cache;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop.Forms
@@ -22,39 +23,37 @@ namespace Nucleus.Coop.Forms
         private GenericGameInfo clicked;
 
         public GenericGameInfo Selected => clicked;
-
         protected override Size DefaultSize => new Size(440, 710);
 
         public GameList(List<GenericGameInfo> games)
         {
-            string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "MouseOver").Split(',');
+            string[] rgb_MouseOverColor = Globals.ThemeConfigFile.IniReadValue("Colors", "MouseOver").Split(',');
 
             InitializeComponent();
 
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             btnOk.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3])); ;
-            
+
             GameManager manager = GameManager.Instance;
 
             foreach (GenericGameInfo game in games)
             {
-                GameControl con = new GameControl(game, null, false)
+                GameControlAlt con = new GameControlAlt(game, null, false)
                 {
-                    Width = listGames.Width
+                    ForeColor = Color.White,
+                    Width = listGames.Width,
+                    Image = ImageCache.GetImage(Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons\\default.png")),
                 };
 
-                con.Controls.RemoveByKey("favorite");
                 con.Click += Con_Click;
-                con.ForeColor = Color.White;
-               
-                listGames.Controls.Add(con);
+
+                listGames.Controls.Add(con);                     
             }
- 
         }
 
         private void Con_Click(object sender, EventArgs e)
         {
-            clicked = ((GameControl)sender).GameInfo;
+            clicked = ((GameControlAlt)sender).GameInfo;
             btnOk.Enabled = true;
         }
 
@@ -63,6 +62,5 @@ namespace Nucleus.Coop.Forms
             DialogResult = DialogResult.OK;
             Close();
         }
-
     }
 }

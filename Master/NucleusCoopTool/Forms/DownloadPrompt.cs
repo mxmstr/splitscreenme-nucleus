@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -25,9 +26,8 @@ namespace Nucleus.Coop.Forms
         private int entriesDone = 0;
         private float fontSize;
         private bool overwriteWithoutAsking = false;
-        private readonly IniFile prompt = Globals.ini;
         private MainForm mainForm;
-        public bool gameExeNoUpdate;
+        //public bool gameExeNoUpdate;
         public string game;
 
         private void controlscollect()
@@ -50,22 +50,23 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        public DownloadPrompt(Handler handler, MainForm mf, string zipFileName)
+        public DownloadPrompt(Handler handler, string zipFileName)
         {
-            fontSize = float.Parse(mf.themeIni.IniReadValue("Font", "DownloadPromptFontSize"));
+            MainForm mainForm = MainForm.Instance;
+            fontSize = float.Parse(mainForm.themeIni.IniReadValue("Font", "DownloadPromptFontSize"));
 
             try
             {
                 InitializeComponent();
 
                 Handler = handler;
-                mainForm = mf;
+                mainForm = MainForm.Instance;
 
                 lbl_Handler.Text = zipFile;
 
                 SuspendLayout();
 
-                BackgroundImage = ImageCache.GetImage(mainForm.theme + "other_backgrounds.jpg");
+                BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
 
                 if (zipFileName == null)
                 {
@@ -89,7 +90,7 @@ namespace Nucleus.Coop.Forms
 
                 foreach (Control control in ctrls)
                 {
-                    control.Font = new Font(mf.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                    control.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                 }
 
                 ResumeLayout();
@@ -101,7 +102,7 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        public DownloadPrompt(Handler handler, MainForm mf, string zipFileName, bool overwriteWithoutAsking) : this(handler, mf, zipFileName)
+        public DownloadPrompt(Handler handler, string zipFileName, bool overwriteWithoutAsking) : this(handler, zipFileName)
         {
             this.overwriteWithoutAsking = overwriteWithoutAsking;
         }
@@ -116,7 +117,8 @@ namespace Nucleus.Coop.Forms
                     new System.Uri($@"https://hub.splitscreen.me/cdn/storage/packages/{Handler.CurrentPackage}/original/handler-{Handler.Id}-v{Handler.CurrentVersion}.nc?download=true"),
                     // Param2 = Path to save
                     Path.Combine(scriptFolder, zipFile)
-                ); ;
+                );
+                
                 wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
             }
         }
@@ -186,6 +188,7 @@ namespace Nucleus.Coop.Forms
                     {
                         handlerFolders.Add(ze.FileName.TrimEnd('/'));
                     }
+
                     ze.Extract(scriptTempFolder, ExtractExistingFileAction.OverwriteSilently);
                 }
                 else
@@ -224,7 +227,7 @@ namespace Nucleus.Coop.Forms
 
             if (File.Exists(Path.Combine(scriptFolder, frmHandleTitle + ".js")))
             {
-                DialogResult ovdialogResult = overwriteWithoutAsking ? DialogResult.Yes : MessageBox.Show("An existing handler with the name " + (frmHandleTitle + ".js") + " already exists. Do you wish to overwrite it?", "Handler already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult ovdialogResult = overwriteWithoutAsking ? DialogResult.Yes : MessageBox.Show("A handler with the name " + (frmHandleTitle + ".js") + " already exists. Do you wish to overwrite it?", "Handler already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (ovdialogResult != DialogResult.Yes)
                 {
                     zip.Dispose();
@@ -245,6 +248,7 @@ namespace Nucleus.Coop.Forms
             {
                 File.Delete(Path.Combine(scriptFolder, frmHandleTitle + ".js"));
             }
+
             File.Move(Path.Combine(scriptTempFolder, "handler.js"), Path.Combine(scriptFolder, frmHandleTitle + ".js"));
 
             if (handlerFolders.Count > 0)
@@ -283,23 +287,22 @@ namespace Nucleus.Coop.Forms
             label1.Text = "Finished!";
 
             File.Delete(Path.Combine(scriptFolder, zipFile));
-            if (!gameExeNoUpdate)
-            {
-                DialogResult dialogResult = MessageBox.Show(
-                    "Downloading and extraction of " + frmHandleTitle +
-                    " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it.",
-                    "Download finished! Add to Nucleus?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                if (dialogResult == DialogResult.Yes)
-                {
-                    GameManager.Instance.AddScript(frmHandleTitle);
-                    SearchGame.Search(mainForm ,exeName);
-                }
-            }
-            else
+            if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName, frmHandleTitle))
             {
-                GameManager.Instance.AddScript(frmHandleTitle);
-                gameExeNoUpdate = false;
+                GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });    
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show(
+                "Downloading and extraction of " + frmHandleTitle +
+                " handler is complete. Would you like to add this game to Nucleus now? You will need to select the game executable to add it.",
+                "Download finished! Add to Nucleus?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                GenericGameInfo genericGameInfo = GameManager.Instance.AddScript(frmHandleTitle, new bool[] { false, false });
+                SearchGame.Search(exeName, genericGameInfo);
             }
         }
     }

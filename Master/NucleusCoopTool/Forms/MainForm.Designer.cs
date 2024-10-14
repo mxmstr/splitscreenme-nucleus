@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using Nucleus.Coop.Controls;
+using Nucleus.Gaming.Controls;
+using System.Drawing;
 using System.Windows.Forms;
 
 
@@ -38,337 +40,108 @@ namespace Nucleus.Coop
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.linkLabel4 = new System.Windows.Forms.Label();
-            this.linkLabel3 = new System.Windows.Forms.Label();
-            this.linkLabel2 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.Label();
-            this.logo = new System.Windows.Forms.PictureBox();
-            this.btn_thirdPartytools = new System.Windows.Forms.Button();
-            this.btn_dlFromHub = new System.Windows.Forms.Button();
-            this.btn_settings = new System.Windows.Forms.Button();
-            this.btn_SplitCalculator = new System.Windows.Forms.Button();
-            this.btn_reddit = new System.Windows.Forms.Button();
-            this.btn_noHub = new System.Windows.Forms.Button();
-            this.btn_faq = new System.Windows.Forms.Button();
-            this.btn_downloadAssets = new System.Windows.Forms.Button();
-            this.btn_Discord = new System.Windows.Forms.Button();
             this.gameContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.nullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scriptNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDataFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openOrigExePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteUserProfileConfigPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openUserProfileSavePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteUserProfileSavePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDocumentConfigPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteDocumentConfigPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDocumentSavePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteDocumentSavePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.changeIconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteContentFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.keepInstancesFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updateHandlerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btn_Links = new System.Windows.Forms.Button();
-            this.third_party_tools_container = new System.Windows.Forms.Panel();
+            this.gameNameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.notesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detailsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openHandlerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDataFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openOrigExePathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.openUserProfConfigMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteUserProfConfigMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openUserProfSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteUserProfSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDocumentConfMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteDocumentConfMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDocumentSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteDocumentSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openBackupFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteBackupFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.keepInstancesFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableProfilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableHandlerUpdateMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.removeGameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteContentFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.changeIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gameAssetsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.coverMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.screenshotsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.socialLinksMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.fAQMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.discordMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redditMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.splitCalculatorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.thirdPartyToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.xOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dS4WindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hidHideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scpToolkitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clientAreaPanel = new BufferedClientAreaPanel();
             this.StepPanel = new BufferedClientAreaPanel();
             this.game_listSizer = new BufferedClientAreaPanel();
             this.list_Games = new Nucleus.Gaming.ControlListBox();
             this.rightFrame = new BufferedClientAreaPanel();
-            this.btn_Steam = new System.Windows.Forms.Button();
+            this.profilepButtonsPanel = new BufferedClientAreaPanel();
+            this.profileSettings_btn = new System.Windows.Forms.Button();
+            this.profilesList_btn = new System.Windows.Forms.Button();
+            this.saveProfileRadioBtn = new Nucleus.Coop.Controls.CustomRadioButton();
+            this.infoPanel = new BufferedClientAreaPanel();
+            this.playTimeValue = new System.Windows.Forms.Label();
+            this.lastPlayedAtValue = new System.Windows.Forms.Label();
+            this.lastPlayedAt = new System.Windows.Forms.Label();
+            this.playTime = new System.Windows.Forms.Label();
             this.icons_Container = new BufferedFlowLayoutPanel();
-            this.btn_gameOptions = new System.Windows.Forms.Button();
             this.scriptAuthorTxtSizer = new BufferedClientAreaPanel();
-            this.btn_textSwitcher = new System.Windows.Forms.PictureBox();
-            this.scriptAuthorTxt = new System.Windows.Forms.RichTextBox();
-            this.btn_magnifier = new System.Windows.Forms.PictureBox();
+            this.btn_expandNotes = new System.Windows.Forms.PictureBox();
+            this.scriptAuthorTxt = new Nucleus.Gaming.Controls.TransparentRichTextBox();
             this.HandlerNoteTitle = new System.Windows.Forms.Label();
             this.cover = new BufferedClientAreaPanel();
             this.coverFrame = new BufferedClientAreaPanel();
-            this.button_UpdateAvailable = new System.Windows.Forms.Button();
+            this.btn_Play = new System.Windows.Forms.Button();
             this.mainButtonFrame = new BufferedClientAreaPanel();
+            this.mainButtonsPanel = new BufferedClientAreaPanel();
+            this.btn_downloadAssets = new System.Windows.Forms.Button();
             this.btn_debuglog = new System.Windows.Forms.Button();
-            this.linksPanel = new BufferedClientAreaPanel();
+            this.btn_Extract = new System.Windows.Forms.Button();
+            this.instruction_btn = new System.Windows.Forms.Button();
+            this.btn_settings = new System.Windows.Forms.Button();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.InputsTextLabel = new System.Windows.Forms.Label();
+            this.stepButtonsPanel = new BufferedClientAreaPanel();
+            this.btn_Prev = new System.Windows.Forms.Button();
+            this.btn_Next = new System.Windows.Forms.Button();
+            this.donationBtn = new System.Windows.Forms.Button();
             this.closeBtn = new System.Windows.Forms.Button();
+            this.btn_Links = new System.Windows.Forms.Button();
             this.maximizeBtn = new System.Windows.Forms.Button();
-            this.btn_AutoSearch = new System.Windows.Forms.Button();
             this.minimizeBtn = new System.Windows.Forms.Button();
             this.txt_version = new System.Windows.Forms.Label();
-            this.btn_Download = new System.Windows.Forms.Button();
-            this.btn_Extract = new System.Windows.Forms.Button();
-            this.label_StepTitle = new System.Windows.Forms.Label();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btn_Prev = new System.Windows.Forms.Button();
-            this.btn_Play = new System.Windows.Forms.Button();
-            this.btn_Next = new System.Windows.Forms.Button();
+            this.logo = new System.Windows.Forms.PictureBox();
             this.stepPanelPictureBox = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.gameContextMenuStrip.SuspendLayout();
-            this.third_party_tools_container.SuspendLayout();
+            this.socialLinksMenu.SuspendLayout();
             this.clientAreaPanel.SuspendLayout();
             this.game_listSizer.SuspendLayout();
             this.rightFrame.SuspendLayout();
+            this.profilepButtonsPanel.SuspendLayout();
+            this.infoPanel.SuspendLayout();
             this.scriptAuthorTxtSizer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btn_textSwitcher)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btn_magnifier)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btn_expandNotes)).BeginInit();
             this.cover.SuspendLayout();
             this.coverFrame.SuspendLayout();
             this.mainButtonFrame.SuspendLayout();
-            this.linksPanel.SuspendLayout();
+            this.mainButtonsPanel.SuspendLayout();
+            this.stepButtonsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stepPanelPictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // linkLabel4
-            // 
-            this.linkLabel4.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel4.Cursor = System.Windows.Forms.Cursors.Default;
-            this.linkLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel4.ForeColor = System.Drawing.Color.Aqua;
-            this.linkLabel4.Location = new System.Drawing.Point(86, 21);
-            this.linkLabel4.Name = "linkLabel4";
-            this.linkLabel4.Size = new System.Drawing.Size(67, 15);
-            this.linkLabel4.TabIndex = 3;
-            this.linkLabel4.TabStop = true;
-            this.linkLabel4.Text = "ScpToolkit ";
-            this.linkLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel4.Click += new System.EventHandler(this.LinkLabel4_LinkClicked);
-            // 
-            // linkLabel3
-            // 
-            this.linkLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel3.ForeColor = System.Drawing.Color.Aqua;
-            this.linkLabel3.Location = new System.Drawing.Point(86, 0);
-            this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(67, 15);
-            this.linkLabel3.TabIndex = 2;
-            this.linkLabel3.TabStop = true;
-            this.linkLabel3.Text = "HidHide";
-            this.linkLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel3.Click += new System.EventHandler(this.LinkLabel3_LinkClicked);
-            // 
-            // linkLabel2
-            // 
-            this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel2.ForeColor = System.Drawing.Color.Aqua;
-            this.linkLabel2.Location = new System.Drawing.Point(0, 20);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(90, 15);
-            this.linkLabel2.TabIndex = 1;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "DS4Windows";
-            this.linkLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel2.Click += new System.EventHandler(this.LinkLabel2_LinkClicked);
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.ForeColor = System.Drawing.Color.Aqua;
-            this.linkLabel1.Location = new System.Drawing.Point(0, 0);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(90, 15);
-            this.linkLabel1.TabIndex = 0;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "XOutput";
-            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel1.Click += new System.EventHandler(this.LinkLabel1_LinkClicked);
-            // 
-            // logo
-            // 
-            this.logo.BackColor = System.Drawing.Color.Transparent;
-            this.logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.logo.Location = new System.Drawing.Point(5, 5);
-            this.logo.Margin = new System.Windows.Forms.Padding(0);
-            this.logo.Name = "logo";
-            this.logo.Size = new System.Drawing.Size(150, 26);
-            this.logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.logo.TabIndex = 24;
-            this.logo.TabStop = false;
-            this.logo.DoubleClick += new System.EventHandler(this.Logo_Click);
-            // 
-            // btn_thirdPartytools
-            // 
-            this.btn_thirdPartytools.BackColor = System.Drawing.Color.Transparent;
-            this.btn_thirdPartytools.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_thirdPartytools.BackgroundImage")));
-            this.btn_thirdPartytools.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_thirdPartytools.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_thirdPartytools.FlatAppearance.BorderSize = 0;
-            this.btn_thirdPartytools.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_thirdPartytools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_thirdPartytools.ForeColor = System.Drawing.Color.White;
-            this.btn_thirdPartytools.Location = new System.Drawing.Point(124, 6);
-            this.btn_thirdPartytools.Name = "btn_thirdPartytools";
-            this.btn_thirdPartytools.Size = new System.Drawing.Size(20, 20);
-            this.btn_thirdPartytools.TabIndex = 37;
-            this.btn_thirdPartytools.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_thirdPartytools.UseVisualStyleBackColor = false;
-            this.btn_thirdPartytools.Click += new System.EventHandler(this.Btn_thirdPartytools_Click);
-            this.btn_thirdPartytools.MouseEnter += new System.EventHandler(this.Btn_thirdPartytools_MouseEnter);
-            this.btn_thirdPartytools.MouseLeave += new System.EventHandler(this.Btn_thirdPartytools_MouseLeave);
-            // 
-            // btn_dlFromHub
-            // 
-            this.btn_dlFromHub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_dlFromHub.BackColor = System.Drawing.Color.Transparent;
-            this.btn_dlFromHub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_dlFromHub.FlatAppearance.BorderSize = 0;
-            this.btn_dlFromHub.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_dlFromHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_dlFromHub.ForeColor = System.Drawing.Color.Transparent;
-            this.btn_dlFromHub.Location = new System.Drawing.Point(434, 37);
-            this.btn_dlFromHub.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_dlFromHub.Name = "btn_dlFromHub";
-            this.btn_dlFromHub.Size = new System.Drawing.Size(131, 25);
-            this.btn_dlFromHub.TabIndex = 42;
-            this.btn_dlFromHub.Text = "Splitscreen.Me Hub ";
-            this.btn_dlFromHub.UseVisualStyleBackColor = false;
-            this.btn_dlFromHub.Click += new System.EventHandler(this.Button1_Click_2);
-            // 
-            // btn_settings
-            // 
-            this.btn_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_settings.BackColor = System.Drawing.Color.Transparent;
-            this.btn_settings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_settings.BackgroundImage")));
-            this.btn_settings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_settings.FlatAppearance.BorderSize = 0;
-            this.btn_settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_settings.Location = new System.Drawing.Point(1012, 6);
-            this.btn_settings.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_settings.Name = "btn_settings";
-            this.btn_settings.Size = new System.Drawing.Size(20, 20);
-            this.btn_settings.TabIndex = 16;
-            this.btn_settings.UseVisualStyleBackColor = false;
-            this.btn_settings.Click += new System.EventHandler(this.SettingsBtn_Click);
-            this.btn_settings.MouseEnter += new System.EventHandler(this.Btn_settings_MouseEnter);
-            this.btn_settings.MouseLeave += new System.EventHandler(this.Btn_settings_MouseLeave);
-            // 
-            // btn_SplitCalculator
-            // 
-            this.btn_SplitCalculator.BackColor = System.Drawing.Color.Transparent;
-            this.btn_SplitCalculator.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_SplitCalculator.BackgroundImage")));
-            this.btn_SplitCalculator.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_SplitCalculator.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_SplitCalculator.FlatAppearance.BorderSize = 0;
-            this.btn_SplitCalculator.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_SplitCalculator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SplitCalculator.ForeColor = System.Drawing.Color.White;
-            this.btn_SplitCalculator.Location = new System.Drawing.Point(98, 4);
-            this.btn_SplitCalculator.Name = "btn_SplitCalculator";
-            this.btn_SplitCalculator.Size = new System.Drawing.Size(20, 20);
-            this.btn_SplitCalculator.TabIndex = 38;
-            this.btn_SplitCalculator.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_SplitCalculator.UseVisualStyleBackColor = false;
-            this.btn_SplitCalculator.Click += new System.EventHandler(this.Btn_SplitCalculator_Click);
-            this.btn_SplitCalculator.MouseEnter += new System.EventHandler(this.Btn_SplitCalculator_MouseEnter);
-            this.btn_SplitCalculator.MouseLeave += new System.EventHandler(this.Btn_SplitCalculator_MouseLeave);
-            // 
-            // btn_reddit
-            // 
-            this.btn_reddit.BackColor = System.Drawing.Color.Transparent;
-            this.btn_reddit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_reddit.BackgroundImage")));
-            this.btn_reddit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_reddit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_reddit.FlatAppearance.BorderSize = 0;
-            this.btn_reddit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_reddit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_reddit.ForeColor = System.Drawing.Color.White;
-            this.btn_reddit.Location = new System.Drawing.Point(35, 2);
-            this.btn_reddit.Name = "btn_reddit";
-            this.btn_reddit.Size = new System.Drawing.Size(25, 22);
-            this.btn_reddit.TabIndex = 40;
-            this.btn_reddit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_reddit.UseVisualStyleBackColor = false;
-            this.btn_reddit.Click += new System.EventHandler(this.Button2_Click);
-            this.btn_reddit.MouseEnter += new System.EventHandler(this.Btn_reddit_MouseEnter);
-            this.btn_reddit.MouseLeave += new System.EventHandler(this.Btn_reddit_MouseLeave);
-            // 
-            // btn_noHub
-            // 
-            this.btn_noHub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_noHub.BackColor = System.Drawing.Color.Transparent;
-            this.btn_noHub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_noHub.BackgroundImage")));
-            this.btn_noHub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_noHub.FlatAppearance.BorderSize = 0;
-            this.btn_noHub.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_noHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_noHub.ForeColor = System.Drawing.Color.Transparent;
-            this.btn_noHub.Location = new System.Drawing.Point(932, 5);
-            this.btn_noHub.Name = "btn_noHub";
-            this.btn_noHub.Size = new System.Drawing.Size(26, 25);
-            this.btn_noHub.TabIndex = 41;
-            this.btn_noHub.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_noHub.UseVisualStyleBackColor = false;
-            this.btn_noHub.Visible = false;
-            this.btn_noHub.Click += new System.EventHandler(this.Btn_noHub_Click);
-            // 
-            // btn_faq
-            // 
-            this.btn_faq.BackColor = System.Drawing.Color.Transparent;
-            this.btn_faq.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_faq.BackgroundImage")));
-            this.btn_faq.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_faq.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_faq.FlatAppearance.BorderSize = 0;
-            this.btn_faq.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_faq.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_faq.ForeColor = System.Drawing.Color.White;
-            this.btn_faq.Location = new System.Drawing.Point(4, 2);
-            this.btn_faq.Name = "btn_faq";
-            this.btn_faq.Size = new System.Drawing.Size(25, 23);
-            this.btn_faq.TabIndex = 36;
-            this.btn_faq.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_faq.UseVisualStyleBackColor = false;
-            this.btn_faq.Click += new System.EventHandler(this.Link_faq_Click);
-            this.btn_faq.MouseEnter += new System.EventHandler(this.Btn_faq_MouseEnter);
-            this.btn_faq.MouseLeave += new System.EventHandler(this.Btn_faq_MouseLeave);
-            // 
-            // btn_downloadAssets
-            // 
-            this.btn_downloadAssets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_downloadAssets.BackColor = System.Drawing.Color.Transparent;
-            this.btn_downloadAssets.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_downloadAssets.BackgroundImage")));
-            this.btn_downloadAssets.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_downloadAssets.FlatAppearance.BorderSize = 0;
-            this.btn_downloadAssets.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_downloadAssets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_downloadAssets.Location = new System.Drawing.Point(987, 6);
-            this.btn_downloadAssets.Name = "btn_downloadAssets";
-            this.btn_downloadAssets.Size = new System.Drawing.Size(20, 20);
-            this.btn_downloadAssets.TabIndex = 23;
-            this.btn_downloadAssets.Text = " ";
-            this.btn_downloadAssets.UseVisualStyleBackColor = false;
-            this.btn_downloadAssets.Click += new System.EventHandler(this.Btn_downloadAssets_Click);
-            this.btn_downloadAssets.MouseEnter += new System.EventHandler(this.Btn_downloadAssets_MouseEnter);
-            this.btn_downloadAssets.MouseLeave += new System.EventHandler(this.Btn_downloadAssets_MouseLeave);
-            // 
-            // btn_Discord
-            // 
-            this.btn_Discord.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Discord.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_Discord.BackgroundImage")));
-            this.btn_Discord.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Discord.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Discord.FlatAppearance.BorderSize = 0;
-            this.btn_Discord.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_Discord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Discord.ForeColor = System.Drawing.Color.White;
-            this.btn_Discord.Location = new System.Drawing.Point(67, 3);
-            this.btn_Discord.Name = "btn_Discord";
-            this.btn_Discord.Size = new System.Drawing.Size(25, 20);
-            this.btn_Discord.TabIndex = 39;
-            this.btn_Discord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_Discord.UseVisualStyleBackColor = false;
-            this.btn_Discord.Click += new System.EventHandler(this.Button1_Click);
-            this.btn_Discord.MouseEnter += new System.EventHandler(this.Btn_Discord_MouseEnter);
-            this.btn_Discord.MouseLeave += new System.EventHandler(this.Btn_Discord_MouseLeave);
             // 
             // gameContextMenuStrip
             // 
@@ -376,216 +149,341 @@ namespace Nucleus.Coop
             this.gameContextMenuStrip.DropShadowEnabled = false;
             this.gameContextMenuStrip.ImageScalingSize = new System.Drawing.Size(15, 15);
             this.gameContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.nullToolStripMenuItem,
-            this.scriptNotesToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.detailsToolStripMenuItem,
-            this.openScriptToolStripMenuItem,
-            this.openDataFolderToolStripMenuItem,
-            this.openOrigExePathToolStripMenuItem,
-            this.toolStripMenuItem2,
-            this.openToolStripMenuItem,
-            this.deleteUserProfileConfigPathToolStripMenuItem,
-            this.openUserProfileSavePathToolStripMenuItem,
-            this.deleteUserProfileSavePathToolStripMenuItem,
-            this.openDocumentConfigPathToolStripMenuItem,
-            this.deleteDocumentConfigPathToolStripMenuItem,
-            this.openDocumentSavePathToolStripMenuItem,
-            this.deleteDocumentSavePathToolStripMenuItem,
-            this.toolStripMenuItem3,
-            this.changeIconToolStripMenuItem,
-            this.deleteContentFolderToolStripMenuItem,
-            this.deleteToolStripMenuItem,
-            this.keepInstancesFolderToolStripMenuItem,
-            this.updateHandlerToolStripMenuItem});
+            this.gameNameMenuItem,
+            this.menuSeparator1,
+            this.notesMenuItem,
+            this.detailsMenuItem,
+            this.openHandlerMenuItem,
+            this.openDataFolderMenuItem,
+            this.openOrigExePathMenuItem,
+            this.menuSeparator2,
+            this.openUserProfConfigMenuItem,
+            this.deleteUserProfConfigMenuItem,
+            this.openUserProfSaveMenuItem,
+            this.deleteUserProfSaveMenuItem,
+            this.openDocumentConfMenuItem,
+            this.deleteDocumentConfMenuItem,
+            this.openDocumentSaveMenuItem,
+            this.deleteDocumentSaveMenuItem,
+            this.openBackupFolderMenuItem,
+            this.deleteBackupFolderMenuItem,
+            this.toolStripSeparator3,
+            this.keepInstancesFolderMenuItem,
+            this.disableProfilesMenuItem,
+            this.disableHandlerUpdateMenuItem,
+            this.toolStripSeparator4,
+            this.removeGameMenuItem,
+            this.deleteContentFolderMenuItem,
+            this.menuSeparator3,
+            this.changeIconMenuItem,
+            this.gameAssetsMenuItem});
             this.gameContextMenuStrip.Name = "gameContextMenuStrip";
             this.gameContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.gameContextMenuStrip.Size = new System.Drawing.Size(236, 440);
+            this.gameContextMenuStrip.Size = new System.Drawing.Size(235, 540);
+            this.gameContextMenuStrip.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.GameContextMenuStrip_Closing);
             this.gameContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.GameContextMenuStrip_Opening);
             this.gameContextMenuStrip.Opened += new System.EventHandler(this.GameContextMenuStrip_Opened);
             // 
-            // nullToolStripMenuItem
+            // gameNameMenuItem
             // 
-            this.nullToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
-            this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.nullToolStripMenuItem.Text = "null";
+            this.gameNameMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.gameNameMenuItem.Name = "gameNameMenuItem";
+            this.gameNameMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.gameNameMenuItem.Text = "null";
             // 
-            // scriptNotesToolStripMenuItem
+            // menuSeparator1
             // 
-            this.scriptNotesToolStripMenuItem.Name = "scriptNotesToolStripMenuItem";
-            this.scriptNotesToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.scriptNotesToolStripMenuItem.Text = "Handler Author\'s Notes";
-            this.scriptNotesToolStripMenuItem.Visible = false;
-            this.scriptNotesToolStripMenuItem.Click += new System.EventHandler(this.ScriptNotesToolStripMenuItem_Click);
+            this.menuSeparator1.Name = "menuSeparator1";
+            this.menuSeparator1.Size = new System.Drawing.Size(231, 6);
             // 
-            // toolStripMenuItem1
+            // notesMenuItem
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(232, 6);
+            this.notesMenuItem.Name = "notesMenuItem";
+            this.notesMenuItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.notesMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.notesMenuItem.Text = "Handler Author\'s Notes";
+            this.notesMenuItem.Visible = false;
+            this.notesMenuItem.Click += new System.EventHandler(this.NotesMenuItem_Click);
             // 
-            // detailsToolStripMenuItem
+            // detailsMenuItem
             // 
-            this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
-            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.detailsToolStripMenuItem.Text = "Nucleus Game Details";
-            this.detailsToolStripMenuItem.Click += new System.EventHandler(this.DetailsToolStripMenuItem_Click);
+            this.detailsMenuItem.Name = "detailsMenuItem";
+            this.detailsMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.detailsMenuItem.Text = "Nucleus Game Details";
+            this.detailsMenuItem.Click += new System.EventHandler(this.DetailsToolStripMenuItem_Click);
             // 
-            // openScriptToolStripMenuItem
+            // openHandlerMenuItem
             // 
-            this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openScriptToolStripMenuItem.Text = "Open Game Handler";
-            this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.OpenScriptToolStripMenuItem_Click);
+            this.openHandlerMenuItem.Name = "openHandlerMenuItem";
+            this.openHandlerMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openHandlerMenuItem.Text = "Open Game Handler";
+            this.openHandlerMenuItem.Click += new System.EventHandler(this.OpenHandlerMenuItem_Click);
             // 
-            // openDataFolderToolStripMenuItem
+            // openDataFolderMenuItem
             // 
-            this.openDataFolderToolStripMenuItem.Name = "openDataFolderToolStripMenuItem";
-            this.openDataFolderToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openDataFolderToolStripMenuItem.Text = "Open Nucleus Content Folder";
-            this.openDataFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenDataFolderToolStripMenuItem_Click);
+            this.openDataFolderMenuItem.Name = "openDataFolderMenuItem";
+            this.openDataFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openDataFolderMenuItem.Text = "Open Nucleus Content Folder";
+            this.openDataFolderMenuItem.Click += new System.EventHandler(this.OpenDataFolderMenuItem_Click);
             // 
-            // openOrigExePathToolStripMenuItem
+            // openOrigExePathMenuItem
             // 
-            this.openOrigExePathToolStripMenuItem.Name = "openOrigExePathToolStripMenuItem";
-            this.openOrigExePathToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openOrigExePathToolStripMenuItem.Text = "Open Original Exe Path";
-            this.openOrigExePathToolStripMenuItem.Click += new System.EventHandler(this.OpenOrigExePathToolStripMenuItem_Click);
+            this.openOrigExePathMenuItem.Name = "openOrigExePathMenuItem";
+            this.openOrigExePathMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openOrigExePathMenuItem.Text = "Open Original Exe Path";
+            this.openOrigExePathMenuItem.Click += new System.EventHandler(this.OpenOrigExePathMenuItem_Click);
             // 
-            // toolStripMenuItem2
+            // menuSeparator2
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(232, 6);
+            this.menuSeparator2.Name = "menuSeparator2";
+            this.menuSeparator2.Size = new System.Drawing.Size(231, 6);
             // 
-            // openToolStripMenuItem
+            // openUserProfConfigMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openToolStripMenuItem.Text = "Open UserProfile Config Path";
-            this.openToolStripMenuItem.Visible = false;
+            this.openUserProfConfigMenuItem.Name = "openUserProfConfigMenuItem";
+            this.openUserProfConfigMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openUserProfConfigMenuItem.Text = "Open UserProfile Config Path";
+            this.openUserProfConfigMenuItem.Visible = false;
             // 
-            // deleteUserProfileConfigPathToolStripMenuItem
+            // deleteUserProfConfigMenuItem
             // 
-            this.deleteUserProfileConfigPathToolStripMenuItem.Name = "deleteUserProfileConfigPathToolStripMenuItem";
-            this.deleteUserProfileConfigPathToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.deleteUserProfileConfigPathToolStripMenuItem.Text = "Delete UserProfile Config Path";
-            this.deleteUserProfileConfigPathToolStripMenuItem.Visible = false;
+            this.deleteUserProfConfigMenuItem.Name = "deleteUserProfConfigMenuItem";
+            this.deleteUserProfConfigMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteUserProfConfigMenuItem.Text = "Delete UserProfile Config Path";
+            this.deleteUserProfConfigMenuItem.Visible = false;
             // 
-            // openUserProfileSavePathToolStripMenuItem
+            // openUserProfSaveMenuItem
             // 
-            this.openUserProfileSavePathToolStripMenuItem.Name = "openUserProfileSavePathToolStripMenuItem";
-            this.openUserProfileSavePathToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openUserProfileSavePathToolStripMenuItem.Text = "Open UserProfile Save Path";
-            this.openUserProfileSavePathToolStripMenuItem.Visible = false;
+            this.openUserProfSaveMenuItem.Name = "openUserProfSaveMenuItem";
+            this.openUserProfSaveMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openUserProfSaveMenuItem.Text = "Open UserProfile Save Path";
+            this.openUserProfSaveMenuItem.Visible = false;
             // 
-            // deleteUserProfileSavePathToolStripMenuItem
+            // deleteUserProfSaveMenuItem
             // 
-            this.deleteUserProfileSavePathToolStripMenuItem.Name = "deleteUserProfileSavePathToolStripMenuItem";
-            this.deleteUserProfileSavePathToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.deleteUserProfileSavePathToolStripMenuItem.Text = "Delete UserProfile Save Path";
-            this.deleteUserProfileSavePathToolStripMenuItem.Visible = false;
+            this.deleteUserProfSaveMenuItem.Name = "deleteUserProfSaveMenuItem";
+            this.deleteUserProfSaveMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteUserProfSaveMenuItem.Text = "Delete UserProfile Save Path";
+            this.deleteUserProfSaveMenuItem.Visible = false;
             // 
-            // openDocumentConfigPathToolStripMenuItem
+            // openDocumentConfMenuItem
             // 
-            this.openDocumentConfigPathToolStripMenuItem.Name = "openDocumentConfigPathToolStripMenuItem";
-            this.openDocumentConfigPathToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openDocumentConfigPathToolStripMenuItem.Text = "Open Document Config Path";
-            this.openDocumentConfigPathToolStripMenuItem.Visible = false;
+            this.openDocumentConfMenuItem.Name = "openDocumentConfMenuItem";
+            this.openDocumentConfMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openDocumentConfMenuItem.Text = "Open Document Config Path";
+            this.openDocumentConfMenuItem.Visible = false;
             // 
-            // deleteDocumentConfigPathToolStripMenuItem
+            // deleteDocumentConfMenuItem
             // 
-            this.deleteDocumentConfigPathToolStripMenuItem.Name = "deleteDocumentConfigPathToolStripMenuItem";
-            this.deleteDocumentConfigPathToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.deleteDocumentConfigPathToolStripMenuItem.Text = "Delete Document Config Path";
-            this.deleteDocumentConfigPathToolStripMenuItem.Visible = false;
+            this.deleteDocumentConfMenuItem.Name = "deleteDocumentConfMenuItem";
+            this.deleteDocumentConfMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteDocumentConfMenuItem.Text = "Delete Document Config Path";
+            this.deleteDocumentConfMenuItem.Visible = false;
             // 
-            // openDocumentSavePathToolStripMenuItem
+            // openDocumentSaveMenuItem
             // 
-            this.openDocumentSavePathToolStripMenuItem.Name = "openDocumentSavePathToolStripMenuItem";
-            this.openDocumentSavePathToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.openDocumentSavePathToolStripMenuItem.Text = "Open Document Save Path";
-            this.openDocumentSavePathToolStripMenuItem.Visible = false;
+            this.openDocumentSaveMenuItem.Name = "openDocumentSaveMenuItem";
+            this.openDocumentSaveMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openDocumentSaveMenuItem.Text = "Open Document Save Path";
+            this.openDocumentSaveMenuItem.Visible = false;
             // 
-            // deleteDocumentSavePathToolStripMenuItem
+            // deleteDocumentSaveMenuItem
             // 
-            this.deleteDocumentSavePathToolStripMenuItem.Name = "deleteDocumentSavePathToolStripMenuItem";
-            this.deleteDocumentSavePathToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.deleteDocumentSavePathToolStripMenuItem.Text = "Delete Document Save Path";
-            this.deleteDocumentSavePathToolStripMenuItem.Visible = false;
+            this.deleteDocumentSaveMenuItem.Name = "deleteDocumentSaveMenuItem";
+            this.deleteDocumentSaveMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteDocumentSaveMenuItem.Text = "Delete Document Save Path";
+            this.deleteDocumentSaveMenuItem.Visible = false;
             // 
-            // toolStripMenuItem3
+            // openBackupFolderMenuItem
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(232, 6);
+            this.openBackupFolderMenuItem.Name = "openBackupFolderMenuItem";
+            this.openBackupFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.openBackupFolderMenuItem.Text = "Open Backup Folder";
             // 
-            // changeIconToolStripMenuItem
+            // deleteBackupFolderMenuItem
             // 
-            this.changeIconToolStripMenuItem.Name = "changeIconToolStripMenuItem";
-            this.changeIconToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.changeIconToolStripMenuItem.Text = "Change Game Icon";
-            this.changeIconToolStripMenuItem.Click += new System.EventHandler(this.ChangeIconToolStripMenuItem_Click);
+            this.deleteBackupFolderMenuItem.Name = "deleteBackupFolderMenuItem";
+            this.deleteBackupFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteBackupFolderMenuItem.Text = "Delete Backup Folder";
             // 
-            // deleteContentFolderToolStripMenuItem
+            // toolStripSeparator3
             // 
-            this.deleteContentFolderToolStripMenuItem.Name = "deleteContentFolderToolStripMenuItem";
-            this.deleteContentFolderToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.deleteContentFolderToolStripMenuItem.Text = "Delete Nucleus Content Folder";
-            this.deleteContentFolderToolStripMenuItem.Click += new System.EventHandler(this.DeleteContentFolderToolStripMenuItem_Click);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(231, 6);
             // 
-            // deleteToolStripMenuItem
+            // keepInstancesFolderMenuItem
             // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.deleteToolStripMenuItem.Text = "Remove Game from List";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
+            this.keepInstancesFolderMenuItem.Name = "keepInstancesFolderMenuItem";
+            this.keepInstancesFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.keepInstancesFolderMenuItem.Text = "Keep Instances Content Folder";
+            this.keepInstancesFolderMenuItem.Click += new System.EventHandler(this.KeepInstancesFolderMenuItem_Click);
             // 
-            // keepInstancesFolderToolStripMenuItem
+            // disableProfilesMenuItem
             // 
-            this.keepInstancesFolderToolStripMenuItem.Name = "keepInstancesFolderToolStripMenuItem";
-            this.keepInstancesFolderToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.keepInstancesFolderToolStripMenuItem.Text = "Keep instances content folder";
-            this.keepInstancesFolderToolStripMenuItem.Click += new System.EventHandler(this.KeepInstancesFolderToolStripMenuItem_Click);
+            this.disableProfilesMenuItem.Name = "disableProfilesMenuItem";
+            this.disableProfilesMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.disableProfilesMenuItem.Text = "Disable Profile";
+            this.disableProfilesMenuItem.Click += new System.EventHandler(this.DisableProfilesMenuItem_Click);
             // 
-            // updateHandlerToolStripMenuItem
+            // disableHandlerUpdateMenuItem
             // 
-            this.updateHandlerToolStripMenuItem.BackColor = System.Drawing.Color.PaleGreen;
-            this.updateHandlerToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.updateHandlerToolStripMenuItem.Name = "updateHandlerToolStripMenuItem";
-            this.updateHandlerToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.updateHandlerToolStripMenuItem.Text = "Update Handler";
-            this.updateHandlerToolStripMenuItem.Click += new System.EventHandler(this.UpdateHandlerToolStripMenuItem_Click);
+            this.disableHandlerUpdateMenuItem.Name = "disableHandlerUpdateMenuItem";
+            this.disableHandlerUpdateMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.disableHandlerUpdateMenuItem.Text = "Disable Handler Update";
+            this.disableHandlerUpdateMenuItem.Click += new System.EventHandler(this.DisableHandlerUpdateMenuItem_Click);
             // 
-            // btn_Links
+            // toolStripSeparator4
             // 
-            this.btn_Links.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Links.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Links.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_Links.BackgroundImage")));
-            this.btn_Links.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Links.FlatAppearance.BorderSize = 0;
-            this.btn_Links.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_Links.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_Links.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Links.Location = new System.Drawing.Point(963, 7);
-            this.btn_Links.Name = "btn_Links";
-            this.btn_Links.Size = new System.Drawing.Size(20, 20);
-            this.btn_Links.TabIndex = 42;
-            this.btn_Links.UseVisualStyleBackColor = false;
-            this.btn_Links.Click += new System.EventHandler(this.Btn_Links_Click);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(231, 6);
             // 
-            // third_party_tools_container
+            // removeGameMenuItem
             // 
-            this.third_party_tools_container.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.third_party_tools_container.BackColor = System.Drawing.Color.Black;
-            this.third_party_tools_container.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.third_party_tools_container.Controls.Add(this.linkLabel4);
-            this.third_party_tools_container.Controls.Add(this.linkLabel3);
-            this.third_party_tools_container.Controls.Add(this.linkLabel2);
-            this.third_party_tools_container.Controls.Add(this.linkLabel1);
-            this.third_party_tools_container.Location = new System.Drawing.Point(810, 33);
-            this.third_party_tools_container.Name = "third_party_tools_container";
-            this.third_party_tools_container.Size = new System.Drawing.Size(149, 36);
-            this.third_party_tools_container.TabIndex = 0;
-            this.third_party_tools_container.Visible = false;
+            this.removeGameMenuItem.Name = "removeGameMenuItem";
+            this.removeGameMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.removeGameMenuItem.Text = "Remove Game From List";
+            this.removeGameMenuItem.Click += new System.EventHandler(this.RemoveGameMenuItem_Click);
+            // 
+            // deleteContentFolderMenuItem
+            // 
+            this.deleteContentFolderMenuItem.Name = "deleteContentFolderMenuItem";
+            this.deleteContentFolderMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.deleteContentFolderMenuItem.Text = "Delete Game Content Folder";
+            this.deleteContentFolderMenuItem.Click += new System.EventHandler(this.DeleteContentFolderMenuItem_Click);
+            // 
+            // menuSeparator3
+            // 
+            this.menuSeparator3.Name = "menuSeparator3";
+            this.menuSeparator3.Size = new System.Drawing.Size(231, 6);
+            // 
+            // changeIconMenuItem
+            // 
+            this.changeIconMenuItem.Name = "changeIconMenuItem";
+            this.changeIconMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.changeIconMenuItem.Text = "Change Game Icon";
+            this.changeIconMenuItem.Click += new System.EventHandler(this.ChangeIconMenuItem_Click);
+            // 
+            // gameAssetsMenuItem
+            // 
+            this.gameAssetsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.coverMenuItem,
+            this.screenshotsMenuItem});
+            this.gameAssetsMenuItem.Name = "gameAssetsMenuItem";
+            this.gameAssetsMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.gameAssetsMenuItem.Text = "Game Assets";
+            // 
+            // coverMenuItem
+            // 
+            this.coverMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.coverMenuItem.Name = "coverMenuItem";
+            this.coverMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.coverMenuItem.Text = "Open Cover Folder";
+            this.coverMenuItem.Click += new System.EventHandler(this.CoverMenuItem_Click);
+            // 
+            // screenshotsMenuItem
+            // 
+            this.screenshotsMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.screenshotsMenuItem.Name = "screenshotsMenuItem";
+            this.screenshotsMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.screenshotsMenuItem.Text = "Open Screenshots Folder";
+            this.screenshotsMenuItem.Click += new System.EventHandler(this.ScreenshotsMenuItem_Click);
+            // 
+            // socialLinksMenu
+            // 
+            this.socialLinksMenu.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.socialLinksMenu.DropShadowEnabled = false;
+            this.socialLinksMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fAQMenuItem,
+            this.discordMenuItem,
+            this.redditMenuItem,
+            this.toolStripSeparator1,
+            this.splitCalculatorMenuItem,
+            this.toolStripSeparator2,
+            this.thirdPartyToolsToolStripMenuItem});
+            this.socialLinksMenu.Name = "socialLinksMenu";
+            this.socialLinksMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.socialLinksMenu.ShowImageMargin = false;
+            this.socialLinksMenu.Size = new System.Drawing.Size(137, 126);
+            this.socialLinksMenu.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.SocialLinksMenu_Closing);
+            this.socialLinksMenu.Opening += new System.ComponentModel.CancelEventHandler(this.SocialLinksMenu_Opening);
+            this.socialLinksMenu.Opened += new System.EventHandler(this.SocialLinksMenu_Opened);
+            // 
+            // fAQMenuItem
+            // 
+            this.fAQMenuItem.Name = "fAQMenuItem";
+            this.fAQMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.fAQMenuItem.Text = "FAQ";
+            this.fAQMenuItem.Click += new System.EventHandler(this.FAQToolStripMenuItem_Click);
+            // 
+            // discordMenuItem
+            // 
+            this.discordMenuItem.Name = "discordMenuItem";
+            this.discordMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.discordMenuItem.Text = "Discord";
+            this.discordMenuItem.Click += new System.EventHandler(this.DiscordToolStripMenuItem_Click);
+            // 
+            // redditMenuItem
+            // 
+            this.redditMenuItem.Name = "redditMenuItem";
+            this.redditMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.redditMenuItem.Text = "Reddit";
+            this.redditMenuItem.Click += new System.EventHandler(this.RedditToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
+            // 
+            // splitCalculatorMenuItem
+            // 
+            this.splitCalculatorMenuItem.Name = "splitCalculatorMenuItem";
+            this.splitCalculatorMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.splitCalculatorMenuItem.Text = "SplitCalculator";
+            this.splitCalculatorMenuItem.Click += new System.EventHandler(this.SplitCalculatorToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(133, 6);
+            // 
+            // thirdPartyToolsToolStripMenuItem
+            // 
+            this.thirdPartyToolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.xOutputToolStripMenuItem,
+            this.dS4WindowsToolStripMenuItem,
+            this.hidHideToolStripMenuItem,
+            this.scpToolkitToolStripMenuItem});
+            this.thirdPartyToolsToolStripMenuItem.Name = "thirdPartyToolsToolStripMenuItem";
+            this.thirdPartyToolsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.thirdPartyToolsToolStripMenuItem.Text = "Third Party Tools";
+            // 
+            // xOutputToolStripMenuItem
+            // 
+            this.xOutputToolStripMenuItem.Name = "xOutputToolStripMenuItem";
+            this.xOutputToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.xOutputToolStripMenuItem.Text = "XOutput";
+            this.xOutputToolStripMenuItem.Click += new System.EventHandler(this.XOutputToolStripMenuItem_Click);
+            // 
+            // dS4WindowsToolStripMenuItem
+            // 
+            this.dS4WindowsToolStripMenuItem.Name = "dS4WindowsToolStripMenuItem";
+            this.dS4WindowsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.dS4WindowsToolStripMenuItem.Text = "DS4Windows";
+            this.dS4WindowsToolStripMenuItem.Click += new System.EventHandler(this.DS4WindowsToolStripMenuItem_Click);
+            // 
+            // hidHideToolStripMenuItem
+            // 
+            this.hidHideToolStripMenuItem.Name = "hidHideToolStripMenuItem";
+            this.hidHideToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.hidHideToolStripMenuItem.Text = "HidHide";
+            this.hidHideToolStripMenuItem.Click += new System.EventHandler(this.HidHideToolStripMenuItem_Click);
+            // 
+            // scpToolkitToolStripMenuItem
+            // 
+            this.scpToolkitToolStripMenuItem.Name = "scpToolkitToolStripMenuItem";
+            this.scpToolkitToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.scpToolkitToolStripMenuItem.Text = "ScpToolkit";
+            this.scpToolkitToolStripMenuItem.Click += new System.EventHandler(this.ScpToolkitToolStripMenuItem_Click);
             // 
             // clientAreaPanel
             // 
@@ -602,8 +500,9 @@ namespace Nucleus.Coop
             this.clientAreaPanel.Location = new System.Drawing.Point(5, 5);
             this.clientAreaPanel.Margin = new System.Windows.Forms.Padding(0);
             this.clientAreaPanel.Name = "clientAreaPanel";
-            this.clientAreaPanel.Size = new System.Drawing.Size(1110, 631);
+            this.clientAreaPanel.Size = new System.Drawing.Size(1166, 655);
             this.clientAreaPanel.TabIndex = 34;
+            this.clientAreaPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.ClientAreaPanel_Paint);
             // 
             // StepPanel
             // 
@@ -615,12 +514,13 @@ namespace Nucleus.Coop
             this.StepPanel.BackColor = System.Drawing.Color.Transparent;
             this.StepPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.StepPanel.Cursor = System.Windows.Forms.Cursors.Default;
-            this.StepPanel.Location = new System.Drawing.Point(209, 72);
+            this.StepPanel.Location = new System.Drawing.Point(209, 58);
             this.StepPanel.Margin = new System.Windows.Forms.Padding(0);
             this.StepPanel.Name = "StepPanel";
-            this.StepPanel.Size = new System.Drawing.Size(707, 559);
+            this.StepPanel.Size = new System.Drawing.Size(771, 597);
             this.StepPanel.TabIndex = 0;
             this.StepPanel.Visible = false;
+            this.StepPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.StepPanel_Paint);
             // 
             // game_listSizer
             // 
@@ -629,11 +529,12 @@ namespace Nucleus.Coop
             this.game_listSizer.BackColor = System.Drawing.Color.Transparent;
             this.game_listSizer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.game_listSizer.Controls.Add(this.list_Games);
-            this.game_listSizer.Location = new System.Drawing.Point(0, 72);
+            this.game_listSizer.Location = new System.Drawing.Point(0, 58);
             this.game_listSizer.Margin = new System.Windows.Forms.Padding(0);
             this.game_listSizer.Name = "game_listSizer";
-            this.game_listSizer.Size = new System.Drawing.Size(209, 559);
+            this.game_listSizer.Size = new System.Drawing.Size(209, 597);
             this.game_listSizer.TabIndex = 35;
+            this.game_listSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.Game_listSizer_Paint);
             // 
             // list_Games
             // 
@@ -651,7 +552,7 @@ namespace Nucleus.Coop
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 0);
             this.list_Games.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.list_Games.Size = new System.Drawing.Size(230, 559);
+            this.list_Games.Size = new System.Drawing.Size(230, 571);
             this.list_Games.TabIndex = 2;
             this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.List_Games_SelectedChanged);
             // 
@@ -661,92 +562,185 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rightFrame.BackColor = System.Drawing.Color.Transparent;
             this.rightFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.rightFrame.Controls.Add(this.btn_Steam);
+            this.rightFrame.Controls.Add(this.profilepButtonsPanel);
+            this.rightFrame.Controls.Add(this.infoPanel);
             this.rightFrame.Controls.Add(this.icons_Container);
-            this.rightFrame.Controls.Add(this.btn_gameOptions);
             this.rightFrame.Controls.Add(this.scriptAuthorTxtSizer);
             this.rightFrame.Controls.Add(this.cover);
-            this.rightFrame.Location = new System.Drawing.Point(916, 72);
+            this.rightFrame.Location = new System.Drawing.Point(980, 58);
             this.rightFrame.Margin = new System.Windows.Forms.Padding(0);
             this.rightFrame.Name = "rightFrame";
-            this.rightFrame.Size = new System.Drawing.Size(194, 562);
+            this.rightFrame.Size = new System.Drawing.Size(186, 597);
             this.rightFrame.TabIndex = 34;
             this.rightFrame.Visible = false;
+            this.rightFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.RightFrame_Paint);
             // 
-            // btn_Steam
+            // profilepButtonsPanel
             // 
-            this.btn_Steam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Steam.FlatAppearance.BorderSize = 0;
-            this.btn_Steam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Steam.ForeColor = System.Drawing.SystemColors.Control;
-            this.btn_Steam.Location = new System.Drawing.Point(12, 522);
-            this.btn_Steam.Name = "btn_Steam";
-            this.btn_Steam.Size = new System.Drawing.Size(171, 25);
-            this.btn_Steam.TabIndex = 102;
-            this.btn_Steam.Text = "Start Steam Client";
-            this.btn_Steam.UseVisualStyleBackColor = true;
-            this.btn_Steam.Visible = false;
-            this.btn_Steam.Click += new System.EventHandler(this.Btn_Steam_Click);
+            this.profilepButtonsPanel.Controls.Add(this.profileSettings_btn);
+            this.profilepButtonsPanel.Controls.Add(this.profilesList_btn);
+            this.profilepButtonsPanel.Controls.Add(this.saveProfileRadioBtn);
+            this.profilepButtonsPanel.Location = new System.Drawing.Point(8, 82);
+            this.profilepButtonsPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.profilepButtonsPanel.Name = "profilepButtonsPanel";
+            this.profilepButtonsPanel.Size = new System.Drawing.Size(175, 24);
+            this.profilepButtonsPanel.TabIndex = 103;
+            this.profilepButtonsPanel.Visible = false;
+            // 
+            // profileSettings_btn
+            // 
+            this.profileSettings_btn.BackColor = System.Drawing.Color.Transparent;
+            this.profileSettings_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.profileSettings_btn.FlatAppearance.BorderSize = 0;
+            this.profileSettings_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.profileSettings_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.profileSettings_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.profileSettings_btn.ForeColor = System.Drawing.Color.White;
+            this.profileSettings_btn.Location = new System.Drawing.Point(1, 1);
+            this.profileSettings_btn.Margin = new System.Windows.Forms.Padding(2);
+            this.profileSettings_btn.Name = "profileSettings_btn";
+            this.profileSettings_btn.Size = new System.Drawing.Size(21, 21);
+            this.profileSettings_btn.TabIndex = 1;
+            this.profileSettings_btn.UseVisualStyleBackColor = false;
+            // 
+            // profilesList_btn
+            // 
+            this.profilesList_btn.BackColor = System.Drawing.Color.Transparent;
+            this.profilesList_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.profilesList_btn.FlatAppearance.BorderSize = 0;
+            this.profilesList_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.profilesList_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.profilesList_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.profilesList_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profilesList_btn.Location = new System.Drawing.Point(25, 1);
+            this.profilesList_btn.Margin = new System.Windows.Forms.Padding(2);
+            this.profilesList_btn.Name = "profilesList_btn";
+            this.profilesList_btn.Size = new System.Drawing.Size(21, 21);
+            this.profilesList_btn.TabIndex = 3;
+            this.profilesList_btn.UseVisualStyleBackColor = false;
+            // 
+            // saveProfileRadioBtn
+            // 
+            this.saveProfileRadioBtn.AutoSize = true;
+            this.saveProfileRadioBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.saveProfileRadioBtn.BackColor = System.Drawing.Color.Transparent;
+            this.saveProfileRadioBtn.Location = new System.Drawing.Point(51, 4);
+            this.saveProfileRadioBtn.Margin = new System.Windows.Forms.Padding(1);
+            this.saveProfileRadioBtn.Name = "saveProfileRadioBtn";
+            this.saveProfileRadioBtn.RadioBackColor = System.Drawing.Color.Transparent;
+            this.saveProfileRadioBtn.RadioChecked = true;
+            this.saveProfileRadioBtn.RadioText = "Save Profile";
+            this.saveProfileRadioBtn.RadioTooltipText = " If turned off the current setup will not be saved to a new profile.";
+            this.saveProfileRadioBtn.Size = new System.Drawing.Size(109, 16);
+            this.saveProfileRadioBtn.TabIndex = 105;
+            this.saveProfileRadioBtn.TextColor = System.Drawing.Color.White;
+            this.saveProfileRadioBtn.Click += new System.EventHandler(this.SaveProfileRadioBtn_Click);
+            // 
+            // infoPanel
+            // 
+            this.infoPanel.Controls.Add(this.playTimeValue);
+            this.infoPanel.Controls.Add(this.lastPlayedAtValue);
+            this.infoPanel.Controls.Add(this.lastPlayedAt);
+            this.infoPanel.Controls.Add(this.playTime);
+            this.infoPanel.Location = new System.Drawing.Point(2, 32);
+            this.infoPanel.Name = "infoPanel";
+            this.infoPanel.Size = new System.Drawing.Size(172, 44);
+            this.infoPanel.TabIndex = 39;
+            // 
+            // playTimeValue
+            // 
+            this.playTimeValue.AutoSize = true;
+            this.playTimeValue.BackColor = System.Drawing.Color.Transparent;
+            this.playTimeValue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playTimeValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playTimeValue.ForeColor = System.Drawing.Color.Silver;
+            this.playTimeValue.Location = new System.Drawing.Point(83, 19);
+            this.playTimeValue.Name = "playTimeValue";
+            this.playTimeValue.Size = new System.Drawing.Size(0, 16);
+            this.playTimeValue.TabIndex = 40;
+            this.playTimeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lastPlayedAtValue
+            // 
+            this.lastPlayedAtValue.AutoSize = true;
+            this.lastPlayedAtValue.BackColor = System.Drawing.Color.Transparent;
+            this.lastPlayedAtValue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lastPlayedAtValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lastPlayedAtValue.ForeColor = System.Drawing.Color.Silver;
+            this.lastPlayedAtValue.Location = new System.Drawing.Point(93, 3);
+            this.lastPlayedAtValue.Name = "lastPlayedAtValue";
+            this.lastPlayedAtValue.Size = new System.Drawing.Size(0, 16);
+            this.lastPlayedAtValue.TabIndex = 39;
+            this.lastPlayedAtValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lastPlayedAt
+            // 
+            this.lastPlayedAt.AutoSize = true;
+            this.lastPlayedAt.BackColor = System.Drawing.Color.Transparent;
+            this.lastPlayedAt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lastPlayedAt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lastPlayedAt.ForeColor = System.Drawing.Color.White;
+            this.lastPlayedAt.Location = new System.Drawing.Point(3, 3);
+            this.lastPlayedAt.Name = "lastPlayedAt";
+            this.lastPlayedAt.Size = new System.Drawing.Size(81, 16);
+            this.lastPlayedAt.TabIndex = 37;
+            this.lastPlayedAt.Text = "Last Played:";
+            this.lastPlayedAt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // playTime
+            // 
+            this.playTime.AutoSize = true;
+            this.playTime.BackColor = System.Drawing.Color.Transparent;
+            this.playTime.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playTime.ForeColor = System.Drawing.Color.White;
+            this.playTime.Location = new System.Drawing.Point(3, 23);
+            this.playTime.Name = "playTime";
+            this.playTime.Size = new System.Drawing.Size(71, 16);
+            this.playTime.TabIndex = 38;
+            this.playTime.Text = "Play Time:";
+            this.playTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // icons_Container
             // 
             this.icons_Container.AutoSize = true;
-            this.icons_Container.Location = new System.Drawing.Point(5, 3);
+            this.icons_Container.Location = new System.Drawing.Point(4, 6);
             this.icons_Container.Name = "icons_Container";
             this.icons_Container.Size = new System.Drawing.Size(44, 19);
             this.icons_Container.TabIndex = 32;
             // 
-            // btn_gameOptions
-            // 
-            this.btn_gameOptions.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btn_gameOptions.BackColor = System.Drawing.Color.Transparent;
-            this.btn_gameOptions.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_gameOptions.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btn_gameOptions.FlatAppearance.BorderSize = 0;
-            this.btn_gameOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_gameOptions.Location = new System.Drawing.Point(168, 3);
-            this.btn_gameOptions.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_gameOptions.Name = "btn_gameOptions";
-            this.btn_gameOptions.Size = new System.Drawing.Size(20, 20);
-            this.btn_gameOptions.TabIndex = 21;
-            this.btn_gameOptions.UseVisualStyleBackColor = false;
-            this.btn_gameOptions.Click += new System.EventHandler(this.GameOptions_Click);
-            // 
             // scriptAuthorTxtSizer
             // 
-            this.scriptAuthorTxtSizer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.scriptAuthorTxtSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptAuthorTxtSizer.BackColor = System.Drawing.Color.Transparent;
             this.scriptAuthorTxtSizer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.scriptAuthorTxtSizer.Controls.Add(this.btn_textSwitcher);
+            this.scriptAuthorTxtSizer.Controls.Add(this.btn_expandNotes);
             this.scriptAuthorTxtSizer.Controls.Add(this.scriptAuthorTxt);
-            this.scriptAuthorTxtSizer.Controls.Add(this.btn_magnifier);
             this.scriptAuthorTxtSizer.Controls.Add(this.HandlerNoteTitle);
-            this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(12, 283);
+            this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(8, 323);
             this.scriptAuthorTxtSizer.Margin = new System.Windows.Forms.Padding(5);
-            this.scriptAuthorTxtSizer.MaximumSize = new System.Drawing.Size(172, 232);
             this.scriptAuthorTxtSizer.Name = "scriptAuthorTxtSizer";
-            this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(171, 232);
+            this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(171, 248);
             this.scriptAuthorTxtSizer.TabIndex = 31;
             // 
-            // btn_textSwitcher
+            // btn_expandNotes
             // 
-            this.btn_textSwitcher.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_textSwitcher.BackColor = System.Drawing.Color.Transparent;
-            this.btn_textSwitcher.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_textSwitcher.Location = new System.Drawing.Point(149, 1);
-            this.btn_textSwitcher.Name = "btn_textSwitcher";
-            this.btn_textSwitcher.Size = new System.Drawing.Size(20, 20);
-            this.btn_textSwitcher.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btn_textSwitcher.TabIndex = 44;
-            this.btn_textSwitcher.TabStop = false;
-            this.btn_textSwitcher.Visible = false;
-            this.btn_textSwitcher.Click += new System.EventHandler(this.Btn_textSwitcher_Click);
+            this.btn_expandNotes.BackColor = System.Drawing.Color.Transparent;
+            this.btn_expandNotes.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_expandNotes.Location = new System.Drawing.Point(151, 0);
+            this.btn_expandNotes.Name = "btn_expandNotes";
+            this.btn_expandNotes.Size = new System.Drawing.Size(20, 20);
+            this.btn_expandNotes.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btn_expandNotes.TabIndex = 43;
+            this.btn_expandNotes.TabStop = false;
+            this.btn_expandNotes.Click += new System.EventHandler(this.Btn_magnifier_Click);
             // 
             // scriptAuthorTxt
             // 
-            this.scriptAuthorTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.scriptAuthorTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptAuthorTxt.BackColor = System.Drawing.Color.Black;
             this.scriptAuthorTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -754,28 +748,16 @@ namespace Nucleus.Coop
             this.scriptAuthorTxt.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.scriptAuthorTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.scriptAuthorTxt.ForeColor = System.Drawing.Color.White;
-            this.scriptAuthorTxt.Location = new System.Drawing.Point(0, 23);
+            this.scriptAuthorTxt.Location = new System.Drawing.Point(0, 22);
             this.scriptAuthorTxt.Margin = new System.Windows.Forms.Padding(0);
-            this.scriptAuthorTxt.MaximumSize = new System.Drawing.Size(189, 191);
+            this.scriptAuthorTxt.MinimumSize = new System.Drawing.Size(188, 192);
             this.scriptAuthorTxt.Name = "scriptAuthorTxt";
             this.scriptAuthorTxt.ReadOnly = true;
             this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 191);
+            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 226);
             this.scriptAuthorTxt.TabIndex = 13;
             this.scriptAuthorTxt.Text = "";
             this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.ScriptAuthorTxt_LinkClicked);
-            // 
-            // btn_magnifier
-            // 
-            this.btn_magnifier.BackColor = System.Drawing.Color.Transparent;
-            this.btn_magnifier.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_magnifier.Location = new System.Drawing.Point(2, 1);
-            this.btn_magnifier.Name = "btn_magnifier";
-            this.btn_magnifier.Size = new System.Drawing.Size(20, 20);
-            this.btn_magnifier.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btn_magnifier.TabIndex = 43;
-            this.btn_magnifier.TabStop = false;
-            this.btn_magnifier.Click += new System.EventHandler(this.Btn_magnifier_Click);
             // 
             // HandlerNoteTitle
             // 
@@ -798,45 +780,42 @@ namespace Nucleus.Coop
             this.cover.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.cover.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.cover.Controls.Add(this.coverFrame);
-            this.cover.Location = new System.Drawing.Point(11, 43);
+            this.cover.Location = new System.Drawing.Point(16, 116);
             this.cover.Name = "cover";
-            this.cover.Size = new System.Drawing.Size(172, 229);
+            this.cover.Size = new System.Drawing.Size(154, 195);
             this.cover.TabIndex = 27;
             // 
             // coverFrame
             // 
-            this.coverFrame.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.coverFrame.BackColor = System.Drawing.Color.Transparent;
             this.coverFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.coverFrame.Controls.Add(this.button_UpdateAvailable);
+            this.coverFrame.Controls.Add(this.btn_Play);
+            this.coverFrame.Dock = System.Windows.Forms.DockStyle.Fill;
             this.coverFrame.Location = new System.Drawing.Point(0, 0);
             this.coverFrame.Margin = new System.Windows.Forms.Padding(0);
             this.coverFrame.Name = "coverFrame";
-            this.coverFrame.Size = new System.Drawing.Size(170, 227);
+            this.coverFrame.Size = new System.Drawing.Size(152, 193);
             this.coverFrame.TabIndex = 26;
-            this.coverFrame.Visible = false;
+            this.coverFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.CoverFrame_Paint);
             // 
-            // button_UpdateAvailable
+            // btn_Play
             // 
-            this.button_UpdateAvailable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.button_UpdateAvailable.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button_UpdateAvailable.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.button_UpdateAvailable.FlatAppearance.BorderSize = 0;
-            this.button_UpdateAvailable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_UpdateAvailable.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_UpdateAvailable.ForeColor = System.Drawing.Color.Yellow;
-            this.button_UpdateAvailable.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_UpdateAvailable.Location = new System.Drawing.Point(0, 204);
-            this.button_UpdateAvailable.Margin = new System.Windows.Forms.Padding(2);
-            this.button_UpdateAvailable.Name = "button_UpdateAvailable";
-            this.button_UpdateAvailable.Size = new System.Drawing.Size(172, 25);
-            this.button_UpdateAvailable.TabIndex = 23;
-            this.button_UpdateAvailable.Text = "New Handler Available!";
-            this.button_UpdateAvailable.UseVisualStyleBackColor = false;
-            this.button_UpdateAvailable.Visible = false;
-            this.button_UpdateAvailable.Click += new System.EventHandler(this.Button_UpdateAvailable_Click);
+            this.btn_Play.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Play.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_Play.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btn_Play.FlatAppearance.BorderSize = 0;
+            this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Play.ForeColor = System.Drawing.Color.Lime;
+            this.btn_Play.Location = new System.Drawing.Point(25, 43);
+            this.btn_Play.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Play.Name = "btn_Play";
+            this.btn_Play.Size = new System.Drawing.Size(106, 106);
+            this.btn_Play.TabIndex = 4;
+            this.btn_Play.Tag = "START";
+            this.btn_Play.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Play.UseVisualStyleBackColor = false;
+            this.btn_Play.Click += new System.EventHandler(this.Btn_Play_Click);
             // 
             // mainButtonFrame
             // 
@@ -844,64 +823,223 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainButtonFrame.BackColor = System.Drawing.Color.Transparent;
             this.mainButtonFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.mainButtonFrame.Controls.Add(this.btn_debuglog);
-            this.mainButtonFrame.Controls.Add(this.third_party_tools_container);
-            this.mainButtonFrame.Controls.Add(this.linksPanel);
+            this.mainButtonFrame.Controls.Add(this.mainButtonsPanel);
+            this.mainButtonFrame.Controls.Add(this.InputsTextLabel);
+            this.mainButtonFrame.Controls.Add(this.stepButtonsPanel);
+            this.mainButtonFrame.Controls.Add(this.donationBtn);
             this.mainButtonFrame.Controls.Add(this.closeBtn);
             this.mainButtonFrame.Controls.Add(this.btn_Links);
             this.mainButtonFrame.Controls.Add(this.maximizeBtn);
-            this.mainButtonFrame.Controls.Add(this.btn_AutoSearch);
-            this.mainButtonFrame.Controls.Add(this.btn_noHub);
             this.mainButtonFrame.Controls.Add(this.minimizeBtn);
             this.mainButtonFrame.Controls.Add(this.txt_version);
-            this.mainButtonFrame.Controls.Add(this.btn_dlFromHub);
-            this.mainButtonFrame.Controls.Add(this.btn_Download);
-            this.mainButtonFrame.Controls.Add(this.btn_settings);
-            this.mainButtonFrame.Controls.Add(this.btn_Extract);
-            this.mainButtonFrame.Controls.Add(this.label_StepTitle);
-            this.mainButtonFrame.Controls.Add(this.btn_downloadAssets);
             this.mainButtonFrame.Controls.Add(this.logo);
-            this.mainButtonFrame.Controls.Add(this.btnSearch);
-            this.mainButtonFrame.Controls.Add(this.btn_Prev);
-            this.mainButtonFrame.Controls.Add(this.btn_Play);
-            this.mainButtonFrame.Controls.Add(this.btn_Next);
             this.mainButtonFrame.Location = new System.Drawing.Point(0, 0);
             this.mainButtonFrame.Margin = new System.Windows.Forms.Padding(0);
             this.mainButtonFrame.Name = "mainButtonFrame";
-            this.mainButtonFrame.Size = new System.Drawing.Size(1110, 72);
+            this.mainButtonFrame.Size = new System.Drawing.Size(1166, 58);
             this.mainButtonFrame.TabIndex = 0;
+            this.mainButtonFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.MainButtonFrame_Paint);
             this.mainButtonFrame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainButtonFrame_MouseDown);
+            // 
+            // mainButtonsPanel
+            // 
+            this.mainButtonsPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mainButtonsPanel.Controls.Add(this.btn_downloadAssets);
+            this.mainButtonsPanel.Controls.Add(this.btn_debuglog);
+            this.mainButtonsPanel.Controls.Add(this.btn_Extract);
+            this.mainButtonsPanel.Controls.Add(this.instruction_btn);
+            this.mainButtonsPanel.Controls.Add(this.btn_settings);
+            this.mainButtonsPanel.Controls.Add(this.btnSearch);
+            this.mainButtonsPanel.Location = new System.Drawing.Point(469, 4);
+            this.mainButtonsPanel.Name = "mainButtonsPanel";
+            this.mainButtonsPanel.Size = new System.Drawing.Size(209, 30);
+            this.mainButtonsPanel.TabIndex = 105;
+            this.mainButtonsPanel.Visible = false;
+            // 
+            // btn_downloadAssets
+            // 
+            this.btn_downloadAssets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_downloadAssets.BackColor = System.Drawing.Color.Transparent;
+            this.btn_downloadAssets.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_downloadAssets.BackgroundImage")));
+            this.btn_downloadAssets.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_downloadAssets.FlatAppearance.BorderSize = 0;
+            this.btn_downloadAssets.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_downloadAssets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_downloadAssets.Location = new System.Drawing.Point(72, 1);
+            this.btn_downloadAssets.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_downloadAssets.Name = "btn_downloadAssets";
+            this.btn_downloadAssets.Size = new System.Drawing.Size(30, 30);
+            this.btn_downloadAssets.TabIndex = 23;
+            this.btn_downloadAssets.Text = " ";
+            this.btn_downloadAssets.UseVisualStyleBackColor = false;
+            this.btn_downloadAssets.Click += new System.EventHandler(this.Btn_downloadAssets_Click);
+            this.btn_downloadAssets.MouseEnter += new System.EventHandler(this.Btn_downloadAssets_MouseEnter);
+            this.btn_downloadAssets.MouseLeave += new System.EventHandler(this.Btn_downloadAssets_MouseLeave);
             // 
             // btn_debuglog
             // 
-            this.btn_debuglog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_debuglog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_debuglog.BackgroundImage = global::Nucleus.Coop.Properties.Resources.log1;
             this.btn_debuglog.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_debuglog.FlatAppearance.BorderSize = 0;
             this.btn_debuglog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_debuglog.ForeColor = System.Drawing.SystemColors.Control;
-            this.btn_debuglog.Location = new System.Drawing.Point(147, 37);
+            this.btn_debuglog.Location = new System.Drawing.Point(106, 1);
+            this.btn_debuglog.Margin = new System.Windows.Forms.Padding(2);
             this.btn_debuglog.Name = "btn_debuglog";
-            this.btn_debuglog.Size = new System.Drawing.Size(119, 25);
+            this.btn_debuglog.Size = new System.Drawing.Size(30, 30);
             this.btn_debuglog.TabIndex = 101;
-            this.btn_debuglog.Text = "Open Debug Log";
             this.btn_debuglog.UseVisualStyleBackColor = false;
-            this.btn_debuglog.Visible = false;
             this.btn_debuglog.Click += new System.EventHandler(this.Btn_debuglog_Click);
+            this.btn_debuglog.MouseEnter += new System.EventHandler(this.Btn_debuglog_MouseEnter);
+            this.btn_debuglog.MouseLeave += new System.EventHandler(this.Btn_debuglog_MouseLeave);
             // 
-            // linksPanel
+            // btn_Extract
             // 
-            this.linksPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.linksPanel.BackColor = System.Drawing.Color.Black;
-            this.linksPanel.Controls.Add(this.btn_faq);
-            this.linksPanel.Controls.Add(this.btn_reddit);
-            this.linksPanel.Controls.Add(this.btn_Discord);
-            this.linksPanel.Controls.Add(this.btn_SplitCalculator);
-            this.linksPanel.Controls.Add(this.btn_thirdPartytools);
-            this.linksPanel.Location = new System.Drawing.Point(809, 4);
-            this.linksPanel.Name = "linksPanel";
-            this.linksPanel.Size = new System.Drawing.Size(150, 30);
-            this.linksPanel.TabIndex = 0;
-            this.linksPanel.Visible = false;
+            this.btn_Extract.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_Extract.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Extract.BackgroundImage = global::Nucleus.Coop.Properties.Resources.extract_nc;
+            this.btn_Extract.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_Extract.FlatAppearance.BorderSize = 0;
+            this.btn_Extract.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Extract.ForeColor = System.Drawing.Color.White;
+            this.btn_Extract.Location = new System.Drawing.Point(3, 1);
+            this.btn_Extract.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Extract.Name = "btn_Extract";
+            this.btn_Extract.Size = new System.Drawing.Size(30, 30);
+            this.btn_Extract.TabIndex = 100;
+            this.btn_Extract.UseVisualStyleBackColor = false;
+            this.btn_Extract.Click += new System.EventHandler(this.Btn_Extract_Click);
+            this.btn_Extract.MouseEnter += new System.EventHandler(this.Btn_Extract_MouseEnter);
+            this.btn_Extract.MouseLeave += new System.EventHandler(this.Btn_Extract_MouseLeave);
+            // 
+            // instruction_btn
+            // 
+            this.instruction_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.instruction_btn.BackColor = System.Drawing.Color.Transparent;
+            this.instruction_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.instruction_btn.FlatAppearance.BorderSize = 0;
+            this.instruction_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.instruction_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.instruction_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.instruction_btn.ForeColor = System.Drawing.Color.White;
+            this.instruction_btn.Location = new System.Drawing.Point(174, 1);
+            this.instruction_btn.Margin = new System.Windows.Forms.Padding(2);
+            this.instruction_btn.Name = "instruction_btn";
+            this.instruction_btn.Size = new System.Drawing.Size(30, 30);
+            this.instruction_btn.TabIndex = 2;
+            this.instruction_btn.UseVisualStyleBackColor = false;
+            this.instruction_btn.Click += new System.EventHandler(this.Instruction_btn_Click);
+            this.instruction_btn.MouseEnter += new System.EventHandler(this.Instruction_btn_MouseEnter);
+            this.instruction_btn.MouseLeave += new System.EventHandler(this.Instruction_btn_MouseLeave);
+            // 
+            // btn_settings
+            // 
+            this.btn_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_settings.BackColor = System.Drawing.Color.Transparent;
+            this.btn_settings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_settings.BackgroundImage")));
+            this.btn_settings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_settings.FlatAppearance.BorderSize = 0;
+            this.btn_settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_settings.Location = new System.Drawing.Point(140, 1);
+            this.btn_settings.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_settings.Name = "btn_settings";
+            this.btn_settings.Size = new System.Drawing.Size(30, 30);
+            this.btn_settings.TabIndex = 16;
+            this.btn_settings.UseVisualStyleBackColor = false;
+            this.btn_settings.Click += new System.EventHandler(this.SettingsBtn_Click);
+            this.btn_settings.MouseEnter += new System.EventHandler(this.Btn_settings_MouseEnter);
+            this.btn_settings.MouseLeave += new System.EventHandler(this.Btn_settings_MouseLeave);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSearch.BackColor = System.Drawing.Color.Transparent;
+            this.btnSearch.BackgroundImage = global::Nucleus.Coop.Properties.Resources.search_game;
+            this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearch.FlatAppearance.BorderSize = 0;
+            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearch.ForeColor = System.Drawing.Color.White;
+            this.btnSearch.Location = new System.Drawing.Point(38, 1);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(30, 30);
+            this.btnSearch.TabIndex = 7;
+            this.btnSearch.UseVisualStyleBackColor = false;
+            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
+            this.btnSearch.MouseEnter += new System.EventHandler(this.BtnSearch_MouseEnter);
+            this.btnSearch.MouseLeave += new System.EventHandler(this.BtnSearch_MouseLeave);
+            // 
+            // InputsTextLabel
+            // 
+            this.InputsTextLabel.AutoSize = true;
+            this.InputsTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InputsTextLabel.Location = new System.Drawing.Point(209, 35);
+            this.InputsTextLabel.Name = "InputsTextLabel";
+            this.InputsTextLabel.Size = new System.Drawing.Size(0, 15);
+            this.InputsTextLabel.TabIndex = 104;
+            this.InputsTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // stepButtonsPanel
+            // 
+            this.stepButtonsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.stepButtonsPanel.BackColor = System.Drawing.Color.Transparent;
+            this.stepButtonsPanel.Controls.Add(this.btn_Prev);
+            this.stepButtonsPanel.Controls.Add(this.btn_Next);
+            this.stepButtonsPanel.Location = new System.Drawing.Point(910, 28);
+            this.stepButtonsPanel.Name = "stepButtonsPanel";
+            this.stepButtonsPanel.Size = new System.Drawing.Size(70, 30);
+            this.stepButtonsPanel.TabIndex = 40;
+            this.stepButtonsPanel.Visible = false;
+            // 
+            // btn_Prev
+            // 
+            this.btn_Prev.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Prev.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_Prev.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btn_Prev.FlatAppearance.BorderSize = 0;
+            this.btn_Prev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Prev.Location = new System.Drawing.Point(2, 0);
+            this.btn_Prev.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Prev.Name = "btn_Prev";
+            this.btn_Prev.Size = new System.Drawing.Size(30, 30);
+            this.btn_Prev.TabIndex = 9;
+            this.btn_Prev.UseVisualStyleBackColor = false;
+            this.btn_Prev.Click += new System.EventHandler(this.Btn_Prev_Click);
+            // 
+            // btn_Next
+            // 
+            this.btn_Next.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Next.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Next.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_Next.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btn_Next.FlatAppearance.BorderSize = 0;
+            this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Next.Location = new System.Drawing.Point(43, 0);
+            this.btn_Next.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Next.Name = "btn_Next";
+            this.btn_Next.Size = new System.Drawing.Size(30, 30);
+            this.btn_Next.TabIndex = 11;
+            this.btn_Next.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.btn_Next.UseVisualStyleBackColor = false;
+            this.btn_Next.Click += new System.EventHandler(this.BtnNext_Click);
+            // 
+            // donationBtn
+            // 
+            this.donationBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.donationBtn.BackColor = System.Drawing.Color.Transparent;
+            this.donationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.donationBtn.FlatAppearance.BorderSize = 0;
+            this.donationBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.donationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.donationBtn.Location = new System.Drawing.Point(1068, 6);
+            this.donationBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.donationBtn.Name = "donationBtn";
+            this.donationBtn.Size = new System.Drawing.Size(20, 20);
+            this.donationBtn.TabIndex = 102;
+            this.donationBtn.UseVisualStyleBackColor = false;
+            this.donationBtn.Click += new System.EventHandler(this.DonationBtn_Click);
             // 
             // closeBtn
             // 
@@ -912,7 +1050,7 @@ namespace Nucleus.Coop
             this.closeBtn.FlatAppearance.BorderSize = 0;
             this.closeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeBtn.Location = new System.Drawing.Point(1084, 6);
+            this.closeBtn.Location = new System.Drawing.Point(1140, 6);
             this.closeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.closeBtn.Name = "closeBtn";
             this.closeBtn.Size = new System.Drawing.Size(20, 20);
@@ -920,6 +1058,24 @@ namespace Nucleus.Coop
             this.closeBtn.UseVisualStyleBackColor = false;
             this.closeBtn.MouseEnter += new System.EventHandler(this.CloseBtn_MouseEnter);
             this.closeBtn.MouseLeave += new System.EventHandler(this.CloseBtn_MouseLeave);
+            // 
+            // btn_Links
+            // 
+            this.btn_Links.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Links.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Links.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_Links.BackgroundImage")));
+            this.btn_Links.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_Links.FlatAppearance.BorderSize = 0;
+            this.btn_Links.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_Links.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_Links.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Links.Location = new System.Drawing.Point(1040, 8);
+            this.btn_Links.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Links.Name = "btn_Links";
+            this.btn_Links.Size = new System.Drawing.Size(20, 20);
+            this.btn_Links.TabIndex = 42;
+            this.btn_Links.UseVisualStyleBackColor = false;
+            this.btn_Links.Click += new System.EventHandler(this.Btn_Links_Click);
             // 
             // maximizeBtn
             // 
@@ -930,7 +1086,7 @@ namespace Nucleus.Coop
             this.maximizeBtn.FlatAppearance.BorderSize = 0;
             this.maximizeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.maximizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.maximizeBtn.Location = new System.Drawing.Point(1060, 6);
+            this.maximizeBtn.Location = new System.Drawing.Point(1116, 6);
             this.maximizeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.maximizeBtn.Name = "maximizeBtn";
             this.maximizeBtn.Size = new System.Drawing.Size(20, 20);
@@ -938,23 +1094,6 @@ namespace Nucleus.Coop
             this.maximizeBtn.UseVisualStyleBackColor = false;
             this.maximizeBtn.MouseEnter += new System.EventHandler(this.MaximizeBtn_MouseEnter);
             this.maximizeBtn.MouseLeave += new System.EventHandler(this.MaximizeBtn_MouseLeave);
-            // 
-            // btn_AutoSearch
-            // 
-            this.btn_AutoSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_AutoSearch.BackColor = System.Drawing.Color.Transparent;
-            this.btn_AutoSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_AutoSearch.FlatAppearance.BorderSize = 0;
-            this.btn_AutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_AutoSearch.ForeColor = System.Drawing.Color.White;
-            this.btn_AutoSearch.Location = new System.Drawing.Point(795, 37);
-            this.btn_AutoSearch.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_AutoSearch.Name = "btn_AutoSearch";
-            this.btn_AutoSearch.Size = new System.Drawing.Size(121, 25);
-            this.btn_AutoSearch.TabIndex = 10;
-            this.btn_AutoSearch.Text = "Auto Search Game";
-            this.btn_AutoSearch.UseVisualStyleBackColor = false;
-            this.btn_AutoSearch.Click += new System.EventHandler(this.BtnAutoSearch_Click);
             // 
             // minimizeBtn
             // 
@@ -965,7 +1104,7 @@ namespace Nucleus.Coop
             this.minimizeBtn.FlatAppearance.BorderSize = 0;
             this.minimizeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.minimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.minimizeBtn.Location = new System.Drawing.Point(1036, 6);
+            this.minimizeBtn.Location = new System.Drawing.Point(1092, 6);
             this.minimizeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.minimizeBtn.Name = "minimizeBtn";
             this.minimizeBtn.Size = new System.Drawing.Size(20, 20);
@@ -981,151 +1120,40 @@ namespace Nucleus.Coop
             this.txt_version.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.txt_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_version.ForeColor = System.Drawing.Color.White;
-            this.txt_version.Location = new System.Drawing.Point(153, 12);
+            this.txt_version.Location = new System.Drawing.Point(157, 23);
             this.txt_version.Margin = new System.Windows.Forms.Padding(0);
             this.txt_version.Name = "txt_version";
             this.txt_version.Size = new System.Drawing.Size(28, 13);
             this.txt_version.TabIndex = 35;
             this.txt_version.Text = "vxxx";
-            this.txt_version.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.txt_version.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // btn_Download
+            // logo
             // 
-            this.btn_Download.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Download.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Download.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Download.FlatAppearance.BorderSize = 0;
-            this.btn_Download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Download.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Download.ForeColor = System.Drawing.Color.White;
-            this.btn_Download.Location = new System.Drawing.Point(271, 37);
-            this.btn_Download.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_Download.Name = "btn_Download";
-            this.btn_Download.Size = new System.Drawing.Size(159, 25);
-            this.btn_Download.TabIndex = 22;
-            this.btn_Download.Text = " Download Game Handler";
-            this.btn_Download.UseVisualStyleBackColor = false;
-            this.btn_Download.Click += new System.EventHandler(this.Btn_Download_Click);
-            // 
-            // btn_Extract
-            // 
-            this.btn_Extract.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Extract.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Extract.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Extract.FlatAppearance.BorderSize = 0;
-            this.btn_Extract.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Extract.ForeColor = System.Drawing.Color.White;
-            this.btn_Extract.Location = new System.Drawing.Point(570, 37);
-            this.btn_Extract.Name = "btn_Extract";
-            this.btn_Extract.Size = new System.Drawing.Size(110, 25);
-            this.btn_Extract.TabIndex = 100;
-            this.btn_Extract.Text = "Extract Handler";
-            this.btn_Extract.UseVisualStyleBackColor = false;
-            this.btn_Extract.Click += new System.EventHandler(this.Btn_Extract_Click);
-            // 
-            // label_StepTitle
-            // 
-            this.label_StepTitle.AutoSize = true;
-            this.label_StepTitle.BackColor = System.Drawing.Color.Transparent;
-            this.label_StepTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.label_StepTitle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label_StepTitle.Location = new System.Drawing.Point(11, 37);
-            this.label_StepTitle.Margin = new System.Windows.Forms.Padding(0);
-            this.label_StepTitle.Name = "label_StepTitle";
-            this.label_StepTitle.Size = new System.Drawing.Size(86, 15);
-            this.label_StepTitle.TabIndex = 3;
-            this.label_StepTitle.Text = "Select a game";
-            this.label_StepTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label_StepTitle.Visible = false;
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearch.BackColor = System.Drawing.Color.Transparent;
-            this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearch.FlatAppearance.BorderSize = 0;
-            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(685, 37);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(106, 25);
-            this.btnSearch.TabIndex = 7;
-            this.btnSearch.Text = "Search Game";
-            this.btnSearch.UseVisualStyleBackColor = false;
-            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
-            // 
-            // btn_Prev
-            // 
-            this.btn_Prev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Prev.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Prev.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Prev.Enabled = false;
-            this.btn_Prev.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btn_Prev.FlatAppearance.BorderSize = 0;
-            this.btn_Prev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Prev.Location = new System.Drawing.Point(949, 38);
-            this.btn_Prev.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_Prev.Name = "btn_Prev";
-            this.btn_Prev.Size = new System.Drawing.Size(25, 25);
-            this.btn_Prev.TabIndex = 9;
-            this.btn_Prev.UseVisualStyleBackColor = false;
-            this.btn_Prev.Visible = false;
-            this.btn_Prev.Click += new System.EventHandler(this.Btn_Prev_Click);
-            // 
-            // btn_Play
-            // 
-            this.btn_Play.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Play.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Play.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Play.Enabled = false;
-            this.btn_Play.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btn_Play.FlatAppearance.BorderSize = 0;
-            this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Play.ForeColor = System.Drawing.Color.Lime;
-            this.btn_Play.Location = new System.Drawing.Point(978, 38);
-            this.btn_Play.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_Play.Name = "btn_Play";
-            this.btn_Play.Size = new System.Drawing.Size(100, 25);
-            this.btn_Play.TabIndex = 4;
-            this.btn_Play.Text = "PLAY";
-            this.btn_Play.UseVisualStyleBackColor = false;
-            this.btn_Play.Visible = false;
-            this.btn_Play.Click += new System.EventHandler(this.Btn_Play_Click);
-            // 
-            // btn_Next
-            // 
-            this.btn_Next.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Next.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Next.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_Next.Enabled = false;
-            this.btn_Next.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btn_Next.FlatAppearance.BorderSize = 0;
-            this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Next.Location = new System.Drawing.Point(1082, 38);
-            this.btn_Next.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_Next.Name = "btn_Next";
-            this.btn_Next.Size = new System.Drawing.Size(25, 25);
-            this.btn_Next.TabIndex = 11;
-            this.btn_Next.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.btn_Next.UseVisualStyleBackColor = false;
-            this.btn_Next.Visible = false;
-            this.btn_Next.Click += new System.EventHandler(this.BtnNext_Click);
+            this.logo.BackColor = System.Drawing.Color.Transparent;
+            this.logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.logo.Location = new System.Drawing.Point(10, 17);
+            this.logo.Margin = new System.Windows.Forms.Padding(0);
+            this.logo.Name = "logo";
+            this.logo.Size = new System.Drawing.Size(145, 25);
+            this.logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.logo.TabIndex = 24;
+            this.logo.TabStop = false;
+            this.logo.DoubleClick += new System.EventHandler(this.Logo_Click);
             // 
             // stepPanelPictureBox
             // 
             this.stepPanelPictureBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.stepPanelPictureBox.BackColor = System.Drawing.Color.Transparent;
             this.stepPanelPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.stepPanelPictureBox.Location = new System.Drawing.Point(392, 175);
+            this.stepPanelPictureBox.Location = new System.Drawing.Point(420, 187);
             this.stepPanelPictureBox.Margin = new System.Windows.Forms.Padding(0);
             this.stepPanelPictureBox.Name = "stepPanelPictureBox";
             this.stepPanelPictureBox.Size = new System.Drawing.Size(532, 306);
             this.stepPanelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.stepPanelPictureBox.TabIndex = 15;
             this.stepPanelPictureBox.TabStop = false;
-            this.stepPanelPictureBox.DoubleClick += new System.EventHandler(this.StepPanelPictureBox_DoubleClick);
+            this.stepPanelPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.StepPanelPictureBox_Paint);
             // 
             // MainForm
             // 
@@ -1134,7 +1162,7 @@ namespace Nucleus.Coop
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1120, 640);
+            this.ClientSize = new System.Drawing.Size(1176, 664);
             this.ControlBox = false;
             this.Controls.Add(this.clientAreaPanel);
             this.DoubleBuffered = true;
@@ -1143,31 +1171,36 @@ namespace Nucleus.Coop
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1120, 640);
+            this.MinimumSize = new System.Drawing.Size(1176, 664);
             this.Name = "MainForm";
             this.Opacity = 0D;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Nucleus Co-op";
+            this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.ClientSizeChanged += new System.EventHandler(this.MainForm_ClientSizeChanged);
-            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.gameContextMenuStrip.ResumeLayout(false);
-            this.third_party_tools_container.ResumeLayout(false);
+            this.socialLinksMenu.ResumeLayout(false);
             this.clientAreaPanel.ResumeLayout(false);
             this.game_listSizer.ResumeLayout(false);
             this.rightFrame.ResumeLayout(false);
             this.rightFrame.PerformLayout();
+            this.profilepButtonsPanel.ResumeLayout(false);
+            this.profilepButtonsPanel.PerformLayout();
+            this.infoPanel.ResumeLayout(false);
+            this.infoPanel.PerformLayout();
             this.scriptAuthorTxtSizer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.btn_textSwitcher)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btn_magnifier)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btn_expandNotes)).EndInit();
             this.cover.ResumeLayout(false);
             this.coverFrame.ResumeLayout(false);
             this.mainButtonFrame.ResumeLayout(false);
             this.mainButtonFrame.PerformLayout();
-            this.linksPanel.ResumeLayout(false);
+            this.mainButtonsPanel.ResumeLayout(false);
+            this.stepButtonsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stepPanelPictureBox)).EndInit();
             this.ResumeLayout(false);
 
@@ -1175,76 +1208,90 @@ namespace Nucleus.Coop
 
         #endregion
         private Gaming.ControlListBox list_Games;
-        private System.Windows.Forms.Label label_StepTitle;
         private System.Windows.Forms.Button btn_Play;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btn_Prev;
-        private System.Windows.Forms.Button btn_AutoSearch;
         private System.Windows.Forms.Button btn_Next;
         private System.Windows.Forms.ToolTip toolTip1;
         public System.Windows.Forms.ContextMenuStrip gameContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem nullToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openScriptToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openDataFolderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem changeIconToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem scriptNotesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openOrigExePathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteContentFolderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteUserProfileConfigPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openUserProfileSavePathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteUserProfileSavePathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.Button btn_Download;
-        private System.Windows.Forms.ToolStripMenuItem openDocumentConfigPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteDocumentConfigPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openDocumentSavePathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteDocumentSavePathToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gameNameMenuItem;
+        private System.Windows.Forms.ToolStripSeparator menuSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem detailsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeGameMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openHandlerMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openDataFolderMenuItem;
+        private System.Windows.Forms.ToolStripSeparator menuSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem changeIconMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem notesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openOrigExePathMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteContentFolderMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openUserProfConfigMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteUserProfConfigMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openUserProfSaveMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteUserProfSaveMenuItem;
+        private System.Windows.Forms.ToolStripSeparator menuSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem openDocumentConfMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteDocumentConfMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openDocumentSaveMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteDocumentSaveMenuItem;
 		private System.Windows.Forms.PictureBox stepPanelPictureBox;
         private Button minimizeBtn;
         private Button maximizeBtn;
         private PictureBox logo;
         private BufferedClientAreaPanel scriptAuthorTxtSizer;
-        private BufferedClientAreaPanel rightFrame;
         private Label txt_version;
-        private Button btn_faq;
-        private Button btn_thirdPartytools;
-        private Panel third_party_tools_container;
-        private Label linkLabel3;
-        private Label linkLabel2;
-        private Label linkLabel1;
         private Button btn_Extract;
-        private Button btn_SplitCalculator;
-        private Label linkLabel4;
-        private Button btn_Discord;
-        private Button btn_reddit;
         public BufferedClientAreaPanel clientAreaPanel;
-        private Button btn_dlFromHub;
-        private BufferedClientAreaPanel linksPanel;
         private Button btn_Links;
         private Label HandlerNoteTitle;
-        private PictureBox btn_magnifier;
-        private ToolStripMenuItem updateHandlerToolStripMenuItem;
+        private PictureBox btn_expandNotes;
         public BufferedFlowLayoutPanel icons_Container;
         private Button closeBtn;
         public Button btn_settings;
-        private ToolStripMenuItem keepInstancesFolderToolStripMenuItem;
-        public PictureBox btn_textSwitcher;
+        private ToolStripMenuItem keepInstancesFolderMenuItem;
         public BufferedClientAreaPanel coverFrame;
         public BufferedClientAreaPanel cover;
         public BufferedClientAreaPanel StepPanel;
-        public Button btn_gameOptions;
-        public Button button_UpdateAvailable;
         public BufferedClientAreaPanel game_listSizer;
         public BufferedClientAreaPanel mainButtonFrame;
         public Button btn_downloadAssets;
-        public RichTextBox scriptAuthorTxt;
-        private Button btn_noHub;
+        public TransparentRichTextBox scriptAuthorTxt;
         public Button btn_debuglog;
-        public Button btn_Steam;
+        private Button donationBtn;
+        private Label playTime;
+        private Label lastPlayedAt;
+        private BufferedClientAreaPanel infoPanel;
+        private BufferedClientAreaPanel stepButtonsPanel;
+        private ToolStripMenuItem disableProfilesMenuItem;
+        private ToolStripMenuItem openBackupFolderMenuItem;
+        private ToolStripMenuItem deleteBackupFolderMenuItem;
+        private Label lastPlayedAtValue;
+        private Label playTimeValue;
+        private ContextMenuStrip socialLinksMenu;
+        private ToolStripMenuItem fAQMenuItem;
+        private ToolStripMenuItem redditMenuItem;
+        private ToolStripMenuItem discordMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem splitCalculatorMenuItem;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem thirdPartyToolsToolStripMenuItem;
+        private ToolStripMenuItem xOutputToolStripMenuItem;
+        private ToolStripMenuItem dS4WindowsToolStripMenuItem;
+        private ToolStripMenuItem hidHideToolStripMenuItem;
+        private ToolStripMenuItem scpToolkitToolStripMenuItem;
+        private BufferedClientAreaPanel profilepButtonsPanel;
+        private Button instruction_btn;
+        private Button profileSettings_btn;
+        private Button profilesList_btn;
+        private CustomRadioButton saveProfileRadioBtn;
+        private Label InputsTextLabel;
+        private ToolStripMenuItem gameAssetsMenuItem;
+        private ToolStripMenuItem coverMenuItem;
+        private ToolStripMenuItem screenshotsMenuItem;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripMenuItem disableHandlerUpdateMenuItem;
+        private BufferedClientAreaPanel mainButtonsPanel;
+        public BufferedClientAreaPanel rightFrame;
     }
 }

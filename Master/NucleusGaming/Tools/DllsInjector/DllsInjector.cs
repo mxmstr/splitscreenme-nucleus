@@ -11,11 +11,13 @@ namespace Nucleus.Gaming.Tools.DllsInjector
     public static class DllsInjector
     {
 
-        public static void InjectDLLs(GenericGameHandler genericGameHandler, GenericGameInfo gen, Process proc, Window window, PlayerInfo player)
+        public static void InjectDLLs(Process proc, Window window, PlayerInfo player)
         {
-            genericGameHandler.Log("Injecting hooks DLL");
+            var handlerInstance = GenericGameHandler.Instance;
 
-            GlobalWindowMethods.GlobalWindowMethods.WaitForProcWindowHandleNotZero(genericGameHandler, proc);
+            handlerInstance.Log("Injecting hooks DLL");
+
+            GlobalWindowMethods.GlobalWindowMethods.WaitForProcWindowHandleNotZero(proc);
 
             bool is64 = EasyHook.RemoteHooking.IsX64Process(proc.Id);
             string currDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location); //Directory.GetCurrentDirectory();
@@ -37,12 +39,12 @@ namespace Nucleus.Gaming.Tools.DllsInjector
 		            "Nucleus.Hook32.dll", // lib path x86. Inject32/64 will decide which one to use, so pass in both
 		            "Nucleus.Hook64.dll", // lib path x64
 		            proc.NucleusGetMainWindowHandle(), // Game hWnd
-		            gen.HookFocus, // Hook GetForegroundWindow/etc
-		            gen.HideCursor,
-                    genericGameHandler.isDebug,
-                    genericGameHandler.nucleusFolderPath, // Primarily for log output
-		            gen.SetWindowHook, // SetWindow hook (prevents window from moving)
-					gen.PreventWindowDeactivation,
+		            handlerInstance.CurrentGameInfo.HookFocus, // Hook GetForegroundWindow/etc
+		            handlerInstance.CurrentGameInfo.HideCursor,
+                    handlerInstance.isDebug,
+                    handlerInstance.NucleusFolderPath, // Primarily for log output
+		            handlerInstance.CurrentGameInfo.SetWindowHook, // SetWindow hook (prevents window from moving)
+					handlerInstance.CurrentGameInfo.PreventWindowDeactivation,
                     player.MonitorBounds.Width,
                     player.MonitorBounds.Height,
                     player.MonitorBounds.X,
@@ -50,21 +52,21 @@ namespace Nucleus.Gaming.Tools.DllsInjector
                     (player.IsRawMouse || player.IsRawKeyboard) ? 0 : (player.GamepadId+1),
 
                     //These options are enabled by default, but if the game isn't using these features the hooks are unwanted
-					gen.SupportsMultipleKeyboardsAndMice && gen.HookSetCursorPos,
-                    gen.SupportsMultipleKeyboardsAndMice && gen.HookGetCursorPos,
-                    gen.SupportsMultipleKeyboardsAndMice && gen.HookGetKeyState,
-                    gen.SupportsMultipleKeyboardsAndMice && gen.HookGetAsyncKeyState,
-                    gen.SupportsMultipleKeyboardsAndMice && gen.HookGetKeyboardState,
-                    gen.SupportsMultipleKeyboardsAndMice && gen.HookFilterRawInput,
-                    gen.SupportsMultipleKeyboardsAndMice && gen.HookFilterMouseMessages,
-                    gen.SupportsMultipleKeyboardsAndMice && gen.HookUseLegacyInput,
-                    !gen.HookDontUpdateLegacyInMouseMsg,
-                    gen.SupportsMultipleKeyboardsAndMice && gen.HookMouseVisibility,
-                    gen.HookReRegisterRawInput,
-                    gen.HookReRegisterRawInputMouse,
-                    gen.HookReRegisterRawInputKeyboard,
-                    gen.InjectHookXinput,
-                    gen.InjectDinputToXinputTranslation,
+					handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookSetCursorPos,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookGetCursorPos,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookGetKeyState,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookGetAsyncKeyState,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookGetKeyboardState,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookFilterRawInput,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookFilterMouseMessages,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookUseLegacyInput,
+                    !handlerInstance.CurrentGameInfo.HookDontUpdateLegacyInMouseMsg,
+                    handlerInstance.CurrentGameInfo.SupportsMultipleKeyboardsAndMice && handlerInstance.CurrentGameInfo.HookMouseVisibility,
+                    handlerInstance.CurrentGameInfo.HookReRegisterRawInput,
+                    handlerInstance.CurrentGameInfo.HookReRegisterRawInputMouse,
+                    handlerInstance.CurrentGameInfo.HookReRegisterRawInputKeyboard,
+                    handlerInstance.CurrentGameInfo.InjectHookXinput,
+                    handlerInstance.CurrentGameInfo.InjectDinputToXinputTranslation,
 
                     windowNull ? "" : (window.HookPipe?.pipeNameWrite ?? ""),
                     windowNull ? "" : (window.HookPipe?.pipeNameRead ?? ""),
@@ -94,7 +96,7 @@ namespace Nucleus.Gaming.Tools.DllsInjector
             }
             catch (Exception ex)
             {
-                genericGameHandler.Log(string.Format("ERROR - {0}", ex.Message));
+                handlerInstance.Log(string.Format("ERROR - {0}", ex.Message));
             }
         }
     }

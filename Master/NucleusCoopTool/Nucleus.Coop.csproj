@@ -11,10 +11,14 @@
     <AssemblyName>NucleusCoop</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -59,6 +63,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -71,6 +76,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|AnyCPU'">
     <OutputPath>bin\TestDebug\</OutputPath>
@@ -79,6 +85,7 @@
     <LangVersion>7.3</LangVersion>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
@@ -90,14 +97,35 @@
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|Win32'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|Win32'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|Win32'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.2210.55, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2210.55\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.2210.55, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2210.55\lib\net45\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.2210.55, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2210.55\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
       <Private>True</Private>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
@@ -220,9 +248,28 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
+    <Compile Include="Controls\AddGameButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\CustomRadioButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomRadioButton.Designer.cs">
+      <DependentUpon>CustomRadioButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HubWebView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HubWebView.Designer.cs">
+      <DependentUpon>HubWebView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tutorial.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tutorial.Designer.cs">
+      <DependentUpon>Tutorial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Screen_Identifier.cs" />
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -241,18 +288,20 @@
     <Compile Include="Forms\XInputShortcutsSetup.Designer.cs">
       <DependentUpon>XInputShortcutsSetup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\AssetsDownloader.cs" />
     <Compile Include="Tools\blur.cs" />
     <Compile Include="Tools\ChangeGameIcon.cs" />
     <Compile Include="Tools\CheckGameRequirements.cs" />
-    <Compile Include="Controls\BufferedClientAreaPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\HubShowcase.cs">
+    <Compile Include="Controls\Caroussel\Caroussel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\HubShowcase.designer.cs">
-      <DependentUpon>HubShowcase.cs</DependentUpon>
+    <Compile Include="Controls\Caroussel\Caroussel.designer.cs">
+      <DependentUpon>Caroussel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
@@ -269,26 +318,11 @@
     <Compile Include="Forms\GameList.Designer.cs">
       <DependentUpon>GameList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Handler.cs" />
-    <Compile Include="Forms\HandlerInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\HandlerInfo.Designer.cs">
-      <DependentUpon>HandlerInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ListViewColumnSorter.cs" />
-    <Compile Include="Forms\ListViewExtensions.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ScriptDownloader.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ScriptDownloader.Designer.cs">
-      <DependentUpon>ScriptDownloader.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchDisksForm.cs">
       <SubType>Form</SubType>
@@ -299,13 +333,12 @@
     <Compile Include="Controls\InputIcons.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Tools\DrawParticles.cs" />
     <Compile Include="Tools\ExtractHandler.cs" />
+    <Compile Include="Tools\GetCoverMainColor.cs" />
     <Compile Include="Tools\GetGameDetails.cs" />
+    <Compile Include="Tools\GetGameIcon.cs" />
+    <Compile Include="Tools\InputsText.cs" />
     <Compile Include="Tools\OpenDebugLog.cs" />
     <Compile Include="Tools\OpenGameContentFolder.cs" />
     <Compile Include="Tools\OpenHandler.cs" />
@@ -314,9 +347,14 @@
     <Compile Include="Tools\SetBackroundAndCover.cs" />
     <Compile Include="Tools\StartChecks.cs" />
     <Compile Include="Tools\CustomToolStripRenderer.cs" />
-    <Compile Include="Tools\StartSteamClient.cs" />
-    <EmbeddedResource Include="Controls\HubShowcase.resx">
-      <DependentUpon>HubShowcase.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\AddGameButton.resx">
+      <DependentUpon>AddGameButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CustomRadioButton.resx">
+      <DependentUpon>CustomRadioButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Caroussel\Caroussel.resx">
+      <DependentUpon>Caroussel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
@@ -325,24 +363,24 @@
     <EmbeddedResource Include="Forms\DownloadPrompt.resx">
       <DependentUpon>DownloadPrompt.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HubWebView.resx">
+      <DependentUpon>HubWebView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProfileSettings.resx">
       <DependentUpon>ProfileSettings.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\HandlerInfo.resx">
-      <DependentUpon>HandlerInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ScriptDownloader.resx">
-      <DependentUpon>ScriptDownloader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchDisksForm.resx">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
@@ -350,6 +388,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\XInputShortcutsSetup.resx">
       <DependentUpon>XInputShortcutsSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -384,14 +423,9 @@
     <None Include="copyoutput\utils\XInputPlus\x86\xinput1_3.dl_" />
     <None Include="copyoutput\utils\XInputPlus\XInputPlus.ini" />
     <None Include="copyoutput\utils\XInputPlus\XInputPlus_Default.ini" />
-    <None Include="gui\icons\icons.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="gui\theme\classic\theme.ini" />
     <None Include="gui\theme\default\theme.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="gui\theme\macstyle\theme.ini" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -444,20 +478,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\xinput.ico" />
-    <None Include="Resources\XInput.png" />
+    <None Include="Resources\log1.png" />
+    <None Include="Resources\search_game.png" />
     <None Include="Resources\xboxControllerFront.png" />
     <None Include="Resources\xboxControllerTop.png" />
     <None Include="Resources\linksArrowOpen.png" />
     <None Include="Resources\linksArrow.png" />
     <None Include="Resources\logo.png" />
-    <None Include="Resources\instructions.gif" />
     <None Include="Resources\settings.png" />
     <None Include="Resources\maximize_button.png" />
     <None Include="Resources\minimize_button.png" />
-    <None Include="Resources\reddit11.png" />
-    <None Include="Resources\toolbox3.png" />
-    <None Include="Resources\players.png" />
     <Content Include="copyoutput\openxinput1_3.dll" />
     <AdditionalFiles Include="copyoutput\utils\backup\dummy.txt" />
     <Content Include="copyoutput\utils\Credits.txt" />
@@ -596,157 +626,6 @@
     <Content Include="gui\icons\default.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\classic\16players.png" />
-    <Content Include="gui\theme\classic\2horizontal.png" />
-    <Content Include="gui\theme\classic\2vertical.png" />
-    <Content Include="gui\theme\classic\4players.png" />
-    <Content Include="gui\theme\classic\6players.png" />
-    <Content Include="gui\theme\classic\8players.png" />
-    <Content Include="gui\theme\classic\arrow_left.png" />
-    <Content Include="gui\theme\classic\arrow_left_mousehover.png" />
-    <Content Include="gui\theme\classic\arrow_right.png" />
-    <Content Include="gui\theme\classic\arrow_right_mousehover.png" />
-    <Content Include="gui\theme\classic\audio.png" />
-    <Content Include="gui\theme\classic\background.jpg" />
-    <Content Include="gui\theme\classic\button_click.wav" />
-    <Content Include="gui\theme\classic\cover_layer.png" />
-    <Content Include="gui\theme\classic\credits.png" />
-    <Content Include="gui\theme\classic\credits_mousehover.png" />
-    <Content Include="gui\theme\classic\cursor.ico" />
-    <Content Include="gui\theme\classic\cursor_hand.ico" />
-    <Content Include="gui\theme\classic\customLayout.png" />
-    <Content Include="gui\theme\classic\dinput.png" />
-    <Content Include="gui\theme\classic\dinput_icon.png" />
-    <Content Include="gui\theme\classic\discord.png" />
-    <Content Include="gui\theme\classic\discord_mousehover.png" />
-    <Content Include="gui\theme\classic\faq.png" />
-    <Content Include="gui\theme\classic\faq_mousehover.png" />
-    <Content Include="gui\theme\classic\favorite_selected.png" />
-    <Content Include="gui\theme\classic\favorite_unselected.png" />
-    <Content Include="gui\theme\classic\fullscreen.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\b1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\classic\gamepads\Playstation\b2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\classic\gamepads\Playstation\b3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\classic\gamepads\Playstation\b4.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\dd.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\dl.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\dn.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\dr.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\du.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\h.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\lb.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\ls.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\lsc.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\lse.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\lsn.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\lsnsew.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\lss.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\lsw.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\lt.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rb.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rs.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rsc.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rse.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rsn.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rsnsew.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rss.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rsw.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\rt.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\select.png" />
-    <Content Include="gui\theme\classic\gamepads\Playstation\start.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\b1.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\b2.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\b3.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\b4.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\dd.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\dl.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\dn.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\dr.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\du.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\h.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\lb.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\ls.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\lsc.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\lse.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\lsn.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\lsnsew.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\lss.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\lsw.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\lt.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rb.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rs.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rsc.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rse.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rsn.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rsnsew.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rss.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rsw.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\rt.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\select.png" />
-    <Content Include="gui\theme\classic\gamepads\Xbox\start.png" />
-    <Content Include="gui\theme\classic\game_options.png" />
-    <Content Include="gui\theme\classic\info.png" />
-    <Content Include="gui\theme\classic\instruction_closed.png" />
-    <Content Include="gui\theme\classic\instruction_opened.png" />
-    <Content Include="gui\theme\classic\keyboard.png" />
-    <Content Include="gui\theme\classic\keyboard_icon.png" />
-    <Content Include="gui\theme\classic\layout.png" />
-    <Content Include="gui\theme\classic\locked.png" />
-    <Content Include="gui\theme\classic\logo.png" />
-    <Content Include="gui\theme\classic\magnifier.png" />
-    <Content Include="gui\theme\classic\magnifier_close.png" />
-    <Content Include="gui\theme\classic\manualLayout.png" />
-    <Content Include="gui\theme\classic\no_cover.png" />
-    <Content Include="gui\theme\classic\other_backgrounds.jpg" />
-    <Content Include="gui\theme\classic\page1.png" />
-    <Content Include="gui\theme\classic\page2.png" />
-    <Content Include="gui\theme\classic\players.png" />
-    <Content Include="gui\theme\classic\processor.png" />
-    <Content Include="gui\theme\classic\profiles_list.png" />
-    <Content Include="gui\theme\classic\profiles_list_opened.png" />
-    <Content Include="gui\theme\classic\profile_info.png" />
-    <Content Include="gui\theme\classic\profile_info_mousehover.png" />
-    <Content Include="gui\theme\classic\profile_settings.png" />
-    <Content Include="gui\theme\classic\proto_keyboard.png" />
-    <Content Include="gui\theme\classic\proto_mouse.png" />
-    <Content Include="gui\theme\classic\reddit.png" />
-    <Content Include="gui\theme\classic\reddit_mousehover.png" />
-    <Content Include="gui\theme\classic\refresh.png" />
-    <Content Include="gui\theme\classic\screen.png" />
-    <Content Include="gui\theme\classic\shared.png" />
-    <Content Include="gui\theme\classic\showcase-background.png" />
-    <Content Include="gui\theme\classic\showcase_cover_layer.png" />
-    <Content Include="gui\theme\classic\splitcalculator.png" />
-    <Content Include="gui\theme\classic\splitcalculator_mousehover.png" />
-    <Content Include="gui\theme\classic\text_switcher.png" />
-    <Content Include="gui\theme\classic\thirdpartytools.png" />
-    <Content Include="gui\theme\classic\thirdpartytools_mousehover.png" />
-    <Content Include="gui\theme\classic\title_close.png" />
-    <Content Include="gui\theme\classic\title_close_mousehover.png" />
-    <Content Include="gui\theme\classic\title_download_assets.png" />
-    <Content Include="gui\theme\classic\title_download_assets_mousehover.png" />
-    <Content Include="gui\theme\classic\title_dropdown_closed.png" />
-    <Content Include="gui\theme\classic\title_dropdown_opened.png" />
-    <Content Include="gui\theme\classic\title_logo.png" />
-    <Content Include="gui\theme\classic\title_maximize.png" />
-    <Content Include="gui\theme\classic\title_maximize_mousehover.png" />
-    <Content Include="gui\theme\classic\title_minimize.png" />
-    <Content Include="gui\theme\classic\title_minimize_mousehover.png" />
-    <Content Include="gui\theme\classic\title_no_hub.png" />
-    <Content Include="gui\theme\classic\title_settings.png" />
-    <Content Include="gui\theme\classic\title_settings_mousehover.png" />
-    <Content Include="gui\theme\classic\unlocked.png" />
-    <Content Include="gui\theme\classic\virtual_keyboard.png" />
-    <Content Include="gui\theme\classic\virtual_mouse.png" />
-    <Content Include="gui\theme\classic\xinput.png" />
-    <Content Include="gui\theme\classic\xinput_background.jpg" />
-    <Content Include="gui\theme\classic\xinput_icon.png" />
     <Content Include="gui\theme\default\16players.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -765,6 +644,9 @@
     <Content Include="gui\theme\default\8players.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\add_game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\arrow_left.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -780,16 +662,28 @@
     <Content Include="gui\theme\default\audio.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\credits.png">
+    <Content Include="gui\theme\default\buttons_dropdown.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\credits_mousehover.png">
+    <Content Include="gui\theme\default\click.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\cursor.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\cursor_hand.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\donation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\expand_Notes.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\extract_nc.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\extract_nc_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\favorite_selected.png">
@@ -799,9 +693,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\background.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\button_click.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\cover_layer.png">
@@ -814,18 +705,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\dinput_icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\discord.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\discord_mousehover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\faq.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\faq_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\fullscreen.png">
@@ -1014,13 +893,10 @@
     <Content Include="gui\theme\default\game_options.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\info.png">
+    <Content Include="gui\theme\default\home.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\instruction_closed.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\instruction_opened .png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\instruction_opened.png">
@@ -1038,6 +914,12 @@
     <Content Include="gui\theme\default\locked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\log.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\log_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\magnifier.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1053,10 +935,10 @@
     <Content Include="gui\theme\default\page2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\players.png">
+    <Content Include="gui\theme\default\play.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\profiles_list_opened.png">
+    <Content Include="gui\theme\default\players.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\profile_info.png">
@@ -1080,12 +962,6 @@
     <Content Include="gui\theme\default\proto_mouse.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\reddit.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\reddit_mousehover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="gui\theme\default\refresh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1101,28 +977,13 @@
     <Content Include="gui\theme\default\other_backgrounds.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\search_game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\search_game_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\shared.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\showcase-background.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\showcase_cover_layer.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\splitcalculator.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\splitcalculator_mousehover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\text_switcher.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\thirdpartytools.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\thirdpartytools_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\title_close.png">
@@ -1167,13 +1028,16 @@
     <Content Include="gui\theme\default\title_settings_mousehover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\title_windowed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gui\theme\default\title_windowed_mousehover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\unlocked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\default\virtual_keyboard.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="gui\theme\default\virtual_mouse.png">
+    <Content Include="gui\theme\default\update.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="gui\theme\default\xinput_background.jpg">
@@ -1185,161 +1049,12 @@
     <Content Include="gui\theme\default\xinput_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gui\theme\macstyle\16players.png" />
-    <Content Include="gui\theme\macstyle\2horizontal.png" />
-    <Content Include="gui\theme\macstyle\2vertical.png" />
-    <Content Include="gui\theme\macstyle\4players.png" />
-    <Content Include="gui\theme\macstyle\6players.png" />
-    <Content Include="gui\theme\macstyle\8players.png" />
-    <Content Include="gui\theme\macstyle\arrow_left.png" />
-    <Content Include="gui\theme\macstyle\arrow_left_mousehover.png" />
-    <Content Include="gui\theme\macstyle\arrow_right.png" />
-    <Content Include="gui\theme\macstyle\arrow_right_mousehover.png" />
-    <Content Include="gui\theme\macstyle\audio.png" />
-    <Content Include="gui\theme\macstyle\background.jpg" />
-    <Content Include="gui\theme\macstyle\button_click.wav" />
-    <Content Include="gui\theme\macstyle\cover_layer.png" />
-    <Content Include="gui\theme\macstyle\credits.png" />
-    <Content Include="gui\theme\macstyle\credits_mousehover.png" />
-    <Content Include="gui\theme\macstyle\cursor.ico" />
-    <Content Include="gui\theme\macstyle\cursor_hand.ico" />
-    <Content Include="gui\theme\macstyle\customLayout.png" />
-    <Content Include="gui\theme\macstyle\dinput.png" />
-    <Content Include="gui\theme\macstyle\dinput_icon.png" />
-    <Content Include="gui\theme\macstyle\discord.png" />
-    <Content Include="gui\theme\macstyle\discord_mousehover.png" />
-    <Content Include="gui\theme\macstyle\faq.png" />
-    <Content Include="gui\theme\macstyle\faq_mousehover.png" />
-    <Content Include="gui\theme\macstyle\favorite_selected.png" />
-    <Content Include="gui\theme\macstyle\favorite_unselected.png" />
-    <Content Include="gui\theme\macstyle\fullscreen.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\b1.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\b2.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\b3.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\b4.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\dd.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\dl.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\dn.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\dr.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\du.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\h.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\lb.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\ls.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\lsc.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\lse.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\lsn.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\lsnsew.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\lss.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\lsw.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\lt.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rb.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rs.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rsc.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rse.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rsn.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rsnsew.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rss.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rsw.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\rt.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\select.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Playstation\start.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\b1.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\b2.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\b3.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\b4.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\dd.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\dl.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\dn.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\dr.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\du.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\h.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\lb.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\ls.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\lsc.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\lse.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\lsn.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\lsnsew.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\lss.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\lsw.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\lt.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rb.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rs.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rsc.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rse.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rsn.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rsnsew.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rss.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rsw.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\rt.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\select.png" />
-    <Content Include="gui\theme\macstyle\gamepads\Xbox\start.png" />
-    <Content Include="gui\theme\macstyle\game_options.png" />
-    <Content Include="gui\theme\macstyle\info.png" />
-    <Content Include="gui\theme\macstyle\instruction_closed.png" />
-    <Content Include="gui\theme\macstyle\instruction_opened.png" />
-    <Content Include="gui\theme\macstyle\keyboard.png" />
-    <Content Include="gui\theme\macstyle\keyboard_icon.png" />
-    <Content Include="gui\theme\macstyle\layout.png" />
-    <Content Include="gui\theme\macstyle\locked.png" />
-    <Content Include="gui\theme\macstyle\logo.png" />
-    <Content Include="gui\theme\macstyle\magnifier.png" />
-    <Content Include="gui\theme\macstyle\magnifier_close.png" />
-    <Content Include="gui\theme\macstyle\manualLayout.png" />
-    <Content Include="gui\theme\macstyle\no_cover.png" />
-    <Content Include="gui\theme\macstyle\other_backgrounds.jpg" />
-    <Content Include="gui\theme\macstyle\page1.png" />
-    <Content Include="gui\theme\macstyle\page2.png" />
-    <Content Include="gui\theme\macstyle\players.png" />
-    <Content Include="gui\theme\macstyle\processor.png" />
-    <Content Include="gui\theme\macstyle\profiles_list.png" />
-    <Content Include="gui\theme\macstyle\profiles_list_opened.png" />
-    <Content Include="gui\theme\macstyle\profile_info.png" />
-    <Content Include="gui\theme\macstyle\profile_info_mousehover.png" />
-    <Content Include="gui\theme\macstyle\profile_settings.png" />
-    <Content Include="gui\theme\macstyle\proto_keyboard.png" />
-    <Content Include="gui\theme\macstyle\proto_mouse.png" />
-    <Content Include="gui\theme\macstyle\reddit.png" />
-    <Content Include="gui\theme\macstyle\reddit_mousehover.png" />
-    <Content Include="gui\theme\macstyle\refresh.png" />
-    <Content Include="gui\theme\macstyle\screen.png" />
-    <Content Include="gui\theme\macstyle\shared.png" />
-    <Content Include="gui\theme\macstyle\showcase-background.png" />
-    <Content Include="gui\theme\macstyle\showcase_cover_layer.png" />
-    <Content Include="gui\theme\macstyle\splitcalculator.png" />
-    <Content Include="gui\theme\macstyle\splitcalculator_mousehover.png" />
-    <Content Include="gui\theme\macstyle\text_switcher.png" />
-    <Content Include="gui\theme\macstyle\thirdpartytools.png" />
-    <Content Include="gui\theme\macstyle\thirdpartytools_mousehover.png" />
-    <Content Include="gui\theme\macstyle\title_close.png" />
-    <Content Include="gui\theme\macstyle\title_close_mousehover.png" />
-    <Content Include="gui\theme\macstyle\title_download_assets.png" />
-    <Content Include="gui\theme\macstyle\title_download_assets_mousehover.png" />
-    <Content Include="gui\theme\macstyle\title_dropdown_closed.png" />
-    <Content Include="gui\theme\macstyle\title_dropdown_opened.png" />
-    <Content Include="gui\theme\macstyle\title_logo.png" />
-    <Content Include="gui\theme\macstyle\title_maximize.png" />
-    <Content Include="gui\theme\macstyle\title_maximize_mousehover.png" />
-    <Content Include="gui\theme\macstyle\title_minimize.png" />
-    <Content Include="gui\theme\macstyle\title_minimize_mousehover.png" />
-    <Content Include="gui\theme\macstyle\title_no_hub.png" />
-    <Content Include="gui\theme\macstyle\title_settings.png" />
-    <Content Include="gui\theme\macstyle\title_settings_mousehover.png" />
-    <Content Include="gui\theme\macstyle\unlocked.png" />
-    <Content Include="gui\theme\macstyle\virtual_keyboard.png" />
-    <Content Include="gui\theme\macstyle\virtual_mouse.png" />
-    <Content Include="gui\theme\macstyle\xinput.png" />
-    <Content Include="gui\theme\macstyle\xinput_background.jpg" />
-    <Content Include="gui\theme\macstyle\xinput_icon.png" />
+    <Content Include="gui\tutorial\tutorial.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="icon.ico" />
-    <None Include="Resources\DownloadArts_button1.png" />
-    <None Include="Resources\faq1.png" />
-    <None Include="Resources\calculator1.png" />
-    <None Include="Resources\discord5.png" />
     <None Include="Resources\close_button.png" />
-    <None Include="Resources\hform_Background.jpg" />
-    <None Include="Resources\hform.gif" />
-    <EmbeddedResource Include="Resources\cursor.png" />
-    <Content Include="Resources\cursor.ico" />
+    <None Include="Resources\extract_nc.png" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -1357,7 +1072,8 @@ copy $(SolutionDir)ThirdParty\easyhook\*.dll $(TargetPath)\..
 copy $(SolutionDir)ThirdParty\easyhook\*.exe $(TargetPath)\..
 xcopy $(SolutionDir)ThirdParty\AutoHotkey.Interop\x64\*.dll $(TargetDir)x64\
 xcopy $(SolutionDir)ThirdParty\AutoHotkey.Interop\x86\*.dll $(TargetDir)x86\
-xcopy $(ProjectDir)copyoutput $(TargetPath)\.. /s/h/e/k/f/c/Y</PostBuildEvent>
+xcopy $(ProjectDir)copyoutput $(TargetPath)\.. /s/h/e/k/f/c/Y
+RD /S /Q "$(TargetDir)runtimes\"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
@@ -1369,7 +1085,9 @@ xcopy $(ProjectDir)copyoutput $(TargetPath)\.. /s/h/e/k/f/c/Y</PostBuildEvent>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.2210.55\build\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.2210.55\build\Microsoft.Web.WebView2.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.Web.WebView2.1.0.2210.55\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.2210.55\build\Microsoft.Web.WebView2.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

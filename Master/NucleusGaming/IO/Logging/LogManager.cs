@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Forms.NucleusMessageBox;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +12,6 @@ namespace Nucleus.Gaming
     public class LogManager
     {
         public static readonly long MaxSize = 1024 * 1024 * 1024; // 1mb
-
-        private static readonly IniFile ini = Globals.ini;
 
         private static LogManager instance;
         public static LogManager Instance
@@ -131,7 +130,7 @@ namespace Nucleus.Gaming
             string error = $"{version}\n\nNucleus has crashed unexpectedly. An attempt to clean up will be made.\n\n[Type]\n\n{ex.GetType().Name}\n\n[Message]\n\n{ex.Message}\n{help}\n\n[Stacktrace]\n\n{ex.StackTrace}";
 #endif
 
-            NucleusMessageBox.Show("Something went wrong :(", error, false);
+            NucleusMessageBox.Show("Something went wrong :(", error, true);
 
             Log("Attempting shut-down procedures in order to clean-up");
 
@@ -212,21 +211,22 @@ namespace Nucleus.Gaming
 
             Log("High-level error log generated at content/" + file);
 
-            #if RELEASE
+#if RELEASE
             bool EnableBtn = false;
-            if (ini.IniReadValue("Misc", "DebugLog") == "" || ini.IniReadValue("Misc", "DebugLog") == "False" &&
-                ini.IniReadValue("Misc", "EnableLogAnswer") != "No")
+
+            if (!App_Misc.DebugLog &&
+                App_Misc.EnableLogAnswer == "")
             {
                 DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Click \"Yes\" if you want to enable debug logging. Start the game once again to generate a debug log.\nClick \"No\" to disable this prompt.", "Enable debug log", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    ini.IniWriteValue("Misc", "DebugLog", "True");
+                    App_Misc.DebugLog = true;
                     EnableBtn = true;
                 }
                 else
                 {
-                    ini.IniWriteValue("Misc", "EnableLogAnswer", "No");
+                    App_Misc.EnableLogAnswer = "No";
                 }
             }
 
@@ -237,7 +237,7 @@ namespace Nucleus.Gaming
                     Globals.Btn_debuglog.Visible = true;
                 });
             }
-            #endif
+#endif
         }
 
         public static void Log(string str, object par1)

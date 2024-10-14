@@ -1,22 +1,20 @@
 ﻿using Nucleus.Gaming.Cache;
 using Nucleus.Gaming;
-using System;
-using System.Collections.Generic;
+using Nucleus.Gaming.Coop;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Nucleus.Gaming.Coop;
+
 
 namespace Nucleus.Coop.Tools
 {
     internal class ChangeGameIcon
     {
-        public static void ChangeIcon(MainForm main,UserGameInfo userGameInfo,IniFile iconsIni) 
+        public static void ChangeIcon(UserGameInfo userGameInfo)
         {
-            using (System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog())
+            MainForm mainForm = MainForm.Instance;
+
+            using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Open Image";
                 dlg.Filter = "All Images Files (*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.tiff;*.tif;*.ico;*.exe)|*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.tiff;*.tif;*.ico;*.exe" +
@@ -26,27 +24,36 @@ namespace Nucleus.Coop.Tools
                             "|TIF Tagged Imaged File Format (*.tif *.tiff)|*.tif;*.tiff" +
                             "|Icon (*.ico)|*.ico" +
                             "|Executable (*.exe)|*.exe";
+
                 dlg.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory() + "\\gui\\icons");
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    if (dlg.FileName.EndsWith(".exe"))
+                    //string prevImage = userGameInfo.Game.MetaInfo.IconPath;
+                    userGameInfo.Game.MetaInfo.IconPath = dlg.FileName;
+
+                    lock (mainForm.controls)
                     {
-                        Icon icon = Shell32.GetIcon(dlg.FileName, false);
+                        if (mainForm.controls.ContainsKey(userGameInfo))
+                        {
+                            GameControl control = mainForm.controls[userGameInfo];
 
-                        Bitmap bmp = icon.ToBitmap();
-                        icon.Dispose();
-                        userGameInfo.Icon = bmp;
+                            if (userGameInfo.Game.MetaInfo.IconPath.EndsWith(".exe"))
+                            { 
+                                Icon icon = Shell32.GetIcon(userGameInfo.Game.MetaInfo.IconPath, false);
+                                userGameInfo.Icon = icon.ToBitmap();
+                                control.Image = userGameInfo.Icon;
+                                icon.Dispose();
+                            }
+                            else
+                            {
+                                userGameInfo.Icon = ImageCache.GetImage(userGameInfo.Game.MetaInfo.IconPath);
+                                control.Image = userGameInfo.Icon;
+                            }
+                        }
                     }
-                    else
-                    {
-                        userGameInfo.Icon = ImageCache.GetImage(dlg.FileName);
-                    }
 
-                    iconsIni.IniWriteValue("GameIcons", userGameInfo.Game.GameName, dlg.FileName);
-
-                    main.GetIcon(userGameInfo);
-                    main.RefreshGames();
+                   //ImageCache.DeleteImageFromCache(prevImage);
                 }
             }
 

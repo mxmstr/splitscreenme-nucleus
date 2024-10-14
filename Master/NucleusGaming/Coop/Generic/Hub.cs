@@ -8,17 +8,15 @@ namespace Nucleus.Gaming.Coop.Generic
 {
     public class Hub
     {
-        private static int webExceptionCount = 0;
         private bool updateAvailable = false;
 
         private static bool connected;
         public static bool Connected
         {
-            get => connected; 
+            get => connected;
             set
             {
                 connected = value;
-                webExceptionCount = 0;
             }
         }
 
@@ -26,7 +24,6 @@ namespace Nucleus.Gaming.Coop.Generic
         {
             if (!connected)
             {
-                webExceptionCount = 0;
                 return false;
             }
 
@@ -62,7 +59,7 @@ namespace Nucleus.Gaming.Coop.Generic
 
             string id = Handler.Id;
             int newVersion = -1;
-         
+
             string resp = Get("https://hub.splitscreen.me/api/v1/" + "handler/" + id);
 
             if (resp == null)
@@ -93,37 +90,12 @@ namespace Nucleus.Gaming.Coop.Generic
             }
 
             newVersion = int.TryParse(array[0]["currentVersion"].ToString(), out int _v) ? _v : -1;
-         
+
             return newVersion > Handler.Version;
         }
 
-        public string GetScreenshotsUri()
-        {
-            webExceptionCount = 0;
-
-            string id = Handler.Id;
-
-            if (id == null)
-            {
-                return null;
-            }
-            else if (id == "{}")
-            {
-                return null;
-            }
-
-            string resp = Get($@"https://hub.splitscreen.me/api/v1/screenshots/{id}");
-
-            return resp;
-        }
-       
         public string Get(string uri)
         {
-            if (webExceptionCount >= 3)
-            {               
-                return null;
-            }
-
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
@@ -145,7 +117,6 @@ namespace Nucleus.Gaming.Coop.Generic
             }
             catch (Exception)
             {
-                webExceptionCount++;
                 return null;
             }
         }

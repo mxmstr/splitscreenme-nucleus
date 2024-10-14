@@ -8,22 +8,25 @@ namespace Nucleus.Gaming.Tools.DevReorder
 {
     public static class DevReorder
     {
-        public static void UseDevReorder(GenericGameHandler genericGameHandler, GenericGameInfo gen, string garch, PlayerInfo player, List<PlayerInfo> players, int i, bool setupDll)
+        public static void UseDevReorder(PlayerInfo player, int i, bool setupDll)
         {
-            genericGameHandler.Log("Setting up Devreorder");
+            var handlerInstance = GenericGameHandler.Instance;
+
+            handlerInstance.Log("Setting up Devreorder");
+
             string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\devreorder");
 
             if (setupDll)
             {
-                string ogFile = Path.Combine(genericGameHandler.instanceExeFolder, "dinput8.dll");
-                FileUtil.FileCheck(genericGameHandler, gen, ogFile);
-                genericGameHandler.Log("Copying dinput8.dll");
-                File.Copy(Path.Combine(utilFolder, garch + "\\dinput8.dll"), Path.Combine(genericGameHandler.instanceExeFolder, "dinput8.dll"), true);
+                string ogFile = Path.Combine(handlerInstance.instanceExeFolder, "dinput8.dll");
+                FileUtil.FileCheck(ogFile);
+                handlerInstance.Log("Copying dinput8.dll");
+                File.Copy(Path.Combine(utilFolder, handlerInstance.garch + "\\dinput8.dll"), Path.Combine(handlerInstance.instanceExeFolder, "dinput8.dll"), true);
             }
 
             if (setupDll)
             {
-                genericGameHandler.addedFiles.Add(Path.Combine(genericGameHandler.instanceExeFolder, "devreorder.ini"));
+                handlerInstance.addedFiles.Add(Path.Combine(handlerInstance.instanceExeFolder, "devreorder.ini"));
             }
 
             List<string> iniConfig = new List<string>();
@@ -32,16 +35,16 @@ namespace Nucleus.Gaming.Tools.DevReorder
             iniConfig.Add(string.Empty);
             iniConfig.Add("[hidden]");
 
-            for (int p = 0; p < players.Count; p++)
+            for (int p = 0; p < handlerInstance.profile.DevicesList.Count; p++)
             {
                 if (p != i)
                 {
-                    iniConfig.Add("{" + players[p].GamepadGuid + "}");
+                    iniConfig.Add("{" + handlerInstance.profile.DevicesList[p].GamepadGuid + "}");
                 }
             }
-            genericGameHandler.Log("Writing devreorder.ini with the only visible gamepad guid: " + player.GamepadGuid);
-            File.WriteAllLines(Path.Combine(genericGameHandler.instanceExeFolder, "devreorder.ini"), iniConfig.ToArray());
-            genericGameHandler.Log("devreorder setup complete");
+            handlerInstance.Log("Writing devreorder.ini with the only visible gamepad guid: " + player.GamepadGuid);
+            File.WriteAllLines(Path.Combine(handlerInstance.instanceExeFolder, "devreorder.ini"), iniConfig.ToArray());
+            handlerInstance.Log("devreorder setup complete");
         }
     }
 }

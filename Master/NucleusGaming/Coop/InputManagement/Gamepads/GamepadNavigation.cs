@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Nucleus.Gaming.App.Settings;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
     public static class GamepadNavigation
     {
-        private static IniFile ini = Globals.ini;
-
         [DllImport("user32.dll")]
         public static extern bool GetCursorPos(out POINT lpPoint);
 
@@ -59,8 +55,32 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         private static bool _Enabled;
         public static bool Enabled => _Enabled;
-        public static bool EnabledRuntime;///Can on/off UI navigation later on runtime
-        private static bool oskVisible;
+        private static bool EnabledRuntime;///Can on/off UI navigation later on runtime
+        private static int DefaultSpeed => 2200;
+        private static int SlowDownSpeed = 2200;
+        public static void StopUINavigation()
+        {
+            if (_Enabled) 
+            EnabledRuntime = false;
+        }
+
+        public static void StartUINavigation()
+        {
+            if (_Enabled)
+                EnabledRuntime = true;
+        }
+
+        public static void SetCursorSpeed()
+        {
+            if (SlowDownSpeed != DefaultSpeed * 3)
+            {
+                SlowDownSpeed *= 3;
+            }
+            else
+            {
+                SlowDownSpeed = DefaultSpeed;
+            }
+        }
 
         public static void GamepadNavigationUpdate()
         {
@@ -70,7 +90,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             int steps = 1;///How much pixels the cursor will move
             int scrollStep = 1;
             ///Deadzone => Joystick value from where the cursor will start moving
-            int pollRate = 10;///How often the thread will sleep
+            int pollRate = 15;///How often the thread will sleep
             int prevPressed = 0;///previous Xinput button state 
             bool dragging = false;
             EnabledRuntime = _Enabled;
@@ -89,14 +109,39 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                     y = cursor.Y;
 
                     int pressed = GamepadState.GetPressedButtons(i);/// Current pressed Xinput button
-                    int rt = GamepadState.GetRightTriggerValue(i) > 0 ? pressed + RT : RT;//return RT + button or RT
-                    int lt = GamepadState.GetLeftTriggerValue(i) > 0 ? pressed + LT : LT;//return LT + button or LT
+
+                    if (pressed == 128 && prevPressed != pressed)//R3/R right thumb stick click.
+                    {
+                        SetCursorSpeed();
+                        Thread.Sleep(150);
+                    }
+
+
+                    bool isRT = false;
+                    int rt = 0;
+
+                    if (GamepadState.GetRightTriggerValue(i) > 0)
+                    {
+                        isRT = true;
+                        rt = pressed > 0 ? pressed + RT : RT;
+                        pressed = rt;
+                    }
+
+                    bool isLT = false;
+                    int lt = 0;
+
+                    if (GamepadState.GetLeftTriggerValue(i) > 0)
+                    {
+                        isLT = true;
+                        lt = pressed > 0 ? pressed + LT : LT;
+                        pressed = lt;
+                    }
 
                     ///Adjust the cursor speed to the joystick value
-                    int MouveLeftSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item1) / 2000));
-                    int MouveRightSpeed = ((GamepadState.GetLeftStickValue(i).Item1) / 2000);
-                    int MouveUpSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item2) / 2000));
-                    int MouveDownSpeed = ((GamepadState.GetLeftStickValue(i).Item2) / 2000);
+                    int MouveLeftSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item1) / SlowDownSpeed));
+                    int MouveRightSpeed = ((GamepadState.GetLeftStickValue(i).Item1) / SlowDownSpeed);
+                    int MouveUpSpeed = (Math.Abs((GamepadState.GetLeftStickValue(i).Item2) / SlowDownSpeed));
+                    int MouveDownSpeed = ((GamepadState.GetLeftStickValue(i).Item2) / SlowDownSpeed);
 
                     ///Check if the right joystick values are out of the deadzone and allow to move the cursor or not
                     bool canMouveLeft = GamepadState.GetLeftStickValue(i).Item1 <= -Deadzone;
@@ -136,7 +181,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
                     if (canScrollUp)
                     {
-                        mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollUpSpeed, 0x00A1);///Mouse wheel Up //dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
+                        mouse_event(MOUSEEVENTF_WHEEL, cursor.X, cursor.Y, scrollStep * ScrollUpSpeed, 0x00A1);///Mouse wheel Up //dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here                      
                     }
                     else if (canScrollDown)
                     {
@@ -169,7 +214,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         SetCursorPos(x, y);
                     }
 
-                    if ((pressed == LeftClick || rt == LeftClick || lt == LeftClick) && prevPressed != pressed)///Left click and release(single click) 
+                    if ((pressed == LeftClick || (isRT && rt == LeftClick) || (isLT && lt == LeftClick)) && prevPressed != pressed)///Left click and release(single click) 
                     {
                         mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0x00A1);///Left Mouse Button Down //dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         Thread.Sleep(200);
@@ -177,7 +222,7 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         dragging = false;
                     }
 
-                    if ((pressed == RightClick || rt == RightClick || lt == RightClick) && prevPressed != pressed)///Right click and release(single click)
+                    if ((pressed == RightClick || (isRT &&rt == RightClick) || (isLT && lt == RightClick)) && prevPressed != pressed)///Right click and release(single click)
                     {
                         mouse_event(MOUSEEVENTF_RIGHTDOWN, cursor.X, cursor.Y, 0, 0x00A1);///Right Mouse Button Down//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         Thread.Sleep(200);
@@ -185,33 +230,22 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         dragging = false;
                     }
 
-                    if ((pressed == Dragdrop || rt == Dragdrop || lt == Dragdrop) && pressed != prevPressed && !dragging)///Left click //catch/drag  
+                    if ((pressed == Dragdrop || (isRT && rt == Dragdrop) || (isLT && lt == Dragdrop)) && pressed != prevPressed && !dragging)///Left click //catch/drag  
                     {
                         mouse_event(MOUSEEVENTF_LEFTDOWN, cursor.X, cursor.Y, 0, 0x00A1);//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         dragging = true;
                         Thread.Sleep(200);
                     }
-                    else if ((pressed == Dragdrop || rt == Dragdrop || lt == Dragdrop) && pressed != prevPressed && dragging)///Left click //release 
+                    else if ((pressed == Dragdrop || (isRT && rt == Dragdrop) || (isLT && lt == Dragdrop)) && pressed != prevPressed && dragging)///Left click //release 
                     {
                         mouse_event(MOUSEEVENTF_LEFTUP, cursor.X, cursor.Y, 0, 0x00A1);//dwExtraInfo 0x00A1 == 161 so can filter out the virtual mouse created here
                         dragging = false;
                         Thread.Sleep(200);
                     }
-                    else if (pressed == OpenOsk || rt == OpenOsk || lt == OpenOsk)///Open/close Onscreen Might have to focus nc window before opening need more testing
+                    else if (pressed == OpenOsk || (isRT && rt == OpenOsk) || (isLT && lt == OpenOsk))///Open/close Onscreen Might have to focus nc window before opening need more testing
                     {
-
-                        if (!oskVisible)
-                        {
-                            ToggleOsk();
-                            Thread.Sleep(1100);
-                            oskVisible = true;
-                        }
-                        else
-                        {
-                            ToggleOsk();
-                            Thread.Sleep(500);
-                            oskVisible = false;
-                        }
+                        ToggleOsk();
+                        Thread.Sleep(1100);
                     }
 
                     prevPressed = pressed;
@@ -223,45 +257,19 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
         private static void ToggleOsk()
         {
-            if (!OnScreenKeyboard.IsOpen())
-            {
-                Globals.MainOSD.Show(1600, $"On Screen Keyboard Opened");
-                OnScreenKeyboard.Show();
-            }
-            else
-            {
-                Globals.MainOSD.Show(1600, $"On Screen Keyboard Closed");
-                OnScreenKeyboard.Hide();
-            }
+            Globals.MainOSD.Show(1600, $"On Screen Keyboard");
+            OnScreenKeyboard.Show();
         }
 
         public static void UpdateUINavSettings()
         {
-            _Enabled = bool.Parse(ini.IniReadValue("XUINav", "Enabled"));
-            Deadzone = int.Parse(ini.IniReadValue("XUINav", "Deadzone"));
-            Dragdrop = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
-            RightClick = int.Parse(ini.IniReadValue("XUINav", "RightClick"));
-            LeftClick = int.Parse(ini.IniReadValue("XUINav", "LeftClick"));
-
-            if (ini.IniReadValue("XUINav", "LockUIControl").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XUINav", "LockUIControl").Split('+');
-                LockUIControl = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XUINav", "LockUIControl", "");
-            }
-
-            if (ini.IniReadValue("XUINav", "OpenOsk").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XUINav", "OpenOsk").Split('+');
-                OpenOsk = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XUINav", "OpenOsk", "");
-            }
+            _Enabled = App_GamePadNavigation.Enabled;
+            Deadzone = App_GamePadNavigation.Deadzone;
+            Dragdrop = App_GamePadNavigation.DragDrop;
+            RightClick = App_GamePadNavigation.RightClick;
+            LeftClick = App_GamePadNavigation.LeftClick;
+            LockUIControl = App_GamePadNavigation.TogglekUINavigation[0] + App_GamePadNavigation.TogglekUINavigation[1];
+            OpenOsk = App_GamePadNavigation.OpenOsk[0] + App_GamePadNavigation.OpenOsk[1];
 
             EnabledRuntime = _Enabled;
         }

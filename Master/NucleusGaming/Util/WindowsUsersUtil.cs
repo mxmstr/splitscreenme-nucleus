@@ -94,13 +94,13 @@ namespace Nucleus.Gaming.Util
             return oPrincipalContext;
         }
 
-
-        public static void CreateWindowsUser(GenericGameHandler genericGameHandler, GenericGameInfo gen, List<PlayerInfo> players, PlayerInfo player, int i)
+        public static void CreateWindowsUser(PlayerInfo player, int i)
         {
+            var handlerInstance = GenericGameHandler.Instance;
 
             if (i == 0)
             {
-                genericGameHandler.Log("Searching for administrators local group");
+                handlerInstance.Log("Searching for administrators local group");
                 ArrayList localGroups = WindowsUsersUtil.GetUserGroups(Environment.UserName);
 
                 if (localGroups != null && localGroups?.Count > 0)
@@ -108,7 +108,7 @@ namespace Nucleus.Gaming.Util
                     if (localGroups.Contains("Administrators"))
                     {
                         adminLocalGroup = "Administrators";
-                        genericGameHandler.Log("Found local group " + adminLocalGroup + " for current user");
+                        handlerInstance.Log("Found local group " + adminLocalGroup + " for current user");
                     }
                     else
                     {
@@ -116,7 +116,7 @@ namespace Nucleus.Gaming.Util
                         {
                             if (localGroup.ToLower().StartsWith("admin"))
                             {
-                                genericGameHandler.Log("Found local group " + localGroup + " for current user");
+                                handlerInstance.Log("Found local group " + localGroup + " for current user");
                                 adminLocalGroup = localGroup;
                                 break;
                             }
@@ -124,17 +124,17 @@ namespace Nucleus.Gaming.Util
                         if (adminLocalGroup == null)
                         {
                             adminLocalGroup = localGroups[0].ToString();
-                            genericGameHandler.Log("Unable to find an admin local group for current user, using " + adminLocalGroup);
+                            handlerInstance.Log("Unable to find an admin local group for current user, using " + adminLocalGroup);
                         }
                     }
                 }
                 else
                 {
-                    genericGameHandler.Log("Unable to find any user groups, defaulting user group to Administrators");
+                    handlerInstance.Log("Unable to find any user groups, defaulting user group to Administrators");
                     adminLocalGroup = "Administrators";
                 }
 
-                genericGameHandler.Log("Checking if sufficient Nucleus user accounts already exist");
+                handlerInstance.Log("Checking if sufficient Nucleus user accounts already exist");
                 string createUserBatPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\LaunchUsers\\create_users.bat");
 
                 if (File.Exists(createUserBatPath))
@@ -144,7 +144,7 @@ namespace Nucleus.Gaming.Util
 
                 bool createNeeded = false;
                 bool echoLineUsed = false;
-                for (int pc = 1; pc <= genericGameHandler.numPlayers; pc++)
+                for (int pc = 1; pc <= handlerInstance.numPlayers; pc++)
                 {
                     bool UserExists = false;
                     using (PrincipalContext princ = new PrincipalContext(ContextType.Machine))
@@ -157,7 +157,7 @@ namespace Nucleus.Gaming.Util
                         UserExists = (up != null);
                     }
 
-                    genericGameHandler.Log($"nucleusplayer{pc} exists: {UserExists}");
+                    handlerInstance.Log($"nucleusplayer{pc} exists: {UserExists}");
                     if (!UserExists)
                     {
                         createNeeded = true;
@@ -168,14 +168,14 @@ namespace Nucleus.Gaming.Util
                                 sw.WriteLine(@"@echo off");
                                 echoLineUsed = true;
                             }
-                            sw.WriteLine($@"net user nucleusplayer{pc} {genericGameHandler.nucleusUserAccountsPassword} /add && net user nucleusplayer{pc} {genericGameHandler.nucleusUserAccountsPassword} && net localgroup " + adminLocalGroup + $" nucleusplayer{pc} /add");
+                            sw.WriteLine($@"net user nucleusplayer{pc} {handlerInstance.nucleusUserAccountsPassword} /add && net user nucleusplayer{pc} {handlerInstance.nucleusUserAccountsPassword} && net localgroup " + adminLocalGroup + $" nucleusplayer{pc} /add");
                         }
                     }
                 }
 
                 if (createNeeded)
                 {
-                    genericGameHandler.Log("Some users need to be created; creating user accounts");
+                    handlerInstance.Log("Some users need to be created; creating user accounts");
                     Process user = new Process();
                     user.StartInfo.FileName = createUserBatPath;
                     user.StartInfo.Verb = "runas";
@@ -190,61 +190,61 @@ namespace Nucleus.Gaming.Util
                     File.Delete(createUserBatPath);
                 }
 
-                for (int pc = 1; pc <= genericGameHandler.numPlayers; pc++)
+                for (int pc = 1; pc <= handlerInstance.numPlayers; pc++)
                 {
-                    players[pc - 1].SID = GetUserSID($"nucleusplayer{pc}");
-                    players[pc - 1].UserProfile = $"nucleusplayer{pc}";
+                    GameProfile.Instance.DevicesList[pc - 1].SID = GetUserSID($"nucleusplayer{pc}");
+                    GameProfile.Instance.DevicesList[pc - 1].UserProfile = $"nucleusplayer{pc}";
                 }
             }
 
             ProcessUtil.STARTUPINFO startup = new ProcessUtil.STARTUPINFO();
             startup.cb = Marshal.SizeOf(startup);
 
-            bool success = ProcessUtil.CreateProcessWithLogonW($"nucleusplayer{i + 1}", Environment.UserDomainName, genericGameHandler.nucleusUserAccountsPassword, ProcessUtil.LogonFlags.LOGON_WITH_PROFILE, "cmd.exe", null, ProcessUtil.ProcessCreationFlags.CREATE_UNICODE_ENVIRONMENT, 0, null, ref startup, out ProcessUtil.PROCESS_INFORMATION processInformation);
-            genericGameHandler.Log("Launcing intermediary program (cmd)");
+            bool success = ProcessUtil.CreateProcessWithLogonW($"nucleusplayer{i + 1}", Environment.UserDomainName, handlerInstance.nucleusUserAccountsPassword, ProcessUtil.LogonFlags.LOGON_WITH_PROFILE, "cmd.exe", null, ProcessUtil.ProcessCreationFlags.CREATE_UNICODE_ENVIRONMENT, 0, null, ref startup, out ProcessUtil.PROCESS_INFORMATION processInformation);
+            handlerInstance.Log("Launcing intermediary program (cmd)");
 
             if (!success)
             {
                 int error = Marshal.GetLastWin32Error();
-                genericGameHandler.Log(string.Format("ERROR {0} - CreateProcessWithLogonW failed", error));
+                handlerInstance.Log(string.Format("ERROR {0} - CreateProcessWithLogonW failed", error));
             }
 
-            genericGameHandler.launchProc = Process.GetProcessById(processInformation.dwProcessId);
+            handlerInstance.launchProc = Process.GetProcessById(processInformation.dwProcessId);
 
-            if (gen.TransferNucleusUserAccountProfiles)
+            if (handlerInstance.CurrentGameInfo.TransferNucleusUserAccountProfiles)
             {
                 Thread.Sleep(1000);
-                genericGameHandler.Log("Transfer Nucleus user account profiles is enabled");
+                handlerInstance.Log("Transfer Nucleus user account profiles is enabled");
 
                 List<string> SourcePath = new List<string>();
-                string OrigSourcePath = genericGameHandler.NucleusEnvironmentRoot + $@"\NucleusCoop\UserAccounts\{player.UserProfile}";
+                string OrigSourcePath = handlerInstance.NucleusEnvironmentRoot + $@"\NucleusCoop\UserAccounts\{player.UserProfile}";
                 SourcePath.Add(OrigSourcePath);
 
-                if (gen.CopyEnvFoldersToNucleusAccounts?.Length > 0)
+                if (handlerInstance.CurrentGameInfo.CopyEnvFoldersToNucleusAccounts?.Length > 0)
                 {
-                    foreach (string folder in gen.CopyEnvFoldersToNucleusAccounts)
+                    foreach (string folder in handlerInstance.CurrentGameInfo.CopyEnvFoldersToNucleusAccounts)
                     {
-                        SourcePath.Add(genericGameHandler.NucleusEnvironmentRoot + "\\" + folder);
+                        SourcePath.Add(handlerInstance.NucleusEnvironmentRoot + "\\" + folder);
                     }
                 }
 
-                string DestinationPath = $@"{Path.GetDirectoryName(genericGameHandler.NucleusEnvironmentRoot)}\{player.UserProfile}";
+                string DestinationPath = $@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{player.UserProfile}";
                 try
                 {
                     foreach (string folder in SourcePath)
                     {
                         if (folder != OrigSourcePath)
                         {
-                            DestinationPath = $@"{Path.GetDirectoryName(genericGameHandler.NucleusEnvironmentRoot)}\{player.UserProfile}" + folder.Substring(genericGameHandler.NucleusEnvironmentRoot.Length);
+                            DestinationPath = $@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{player.UserProfile}" + folder.Substring(handlerInstance.NucleusEnvironmentRoot.Length);
                         }
                         else
                         {
-                            DestinationPath = $@"{Path.GetDirectoryName(genericGameHandler.NucleusEnvironmentRoot)}\{player.UserProfile}";
+                            DestinationPath = $@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{player.UserProfile}";
                         }
 
                         if (Directory.Exists(folder))
                         {
-                            genericGameHandler.Log("Copying " + folder + " to " + DestinationPath);
+                            handlerInstance.Log("Copying " + folder + " to " + DestinationPath);
                             Directory.CreateDirectory(DestinationPath);
 
                             string cmd = "xcopy \"" + folder + "\" \"" + DestinationPath + "\" /E/H/C/I/Y/R";
@@ -254,28 +254,29 @@ namespace Nucleus.Gaming.Util
                             {
                                 Thread.Sleep(25);
                             }
-                            genericGameHandler.Log($"Command: {cmd}, exit code: {exitCode}");
+                            handlerInstance.Log($"Command: {cmd}, exit code: {exitCode}");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    genericGameHandler.Log("ERROR - " + ex.Message);
+                    handlerInstance.Log("ERROR - " + ex.Message);
                 }
             }
-
         }
 
-        public static void DeleteCreatedWindowsUser(GenericGameHandler genericGameHandler)
+        public static void DeleteCreatedWindowsUser()
         {
-            genericGameHandler.Log("Deleting temporary user accounts");
+            var handlerInstance = GenericGameHandler.Instance;
 
-            foreach (string folder in genericGameHandler.folderUsers)
+            handlerInstance.Log("Deleting temporary user accounts");
+
+            foreach (string folder in handlerInstance.folderUsers)
             {
-                string username = folder.Substring(Path.GetDirectoryName(genericGameHandler.NucleusEnvironmentRoot).Length + 1);
+                string username = folder.Substring(Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot).Length + 1);
                 if (username.StartsWith("nucleusplayer"))
                 {
-                    genericGameHandler.nucUsers.Add(username);
+                    handlerInstance.nucUsers.Add(username);
                     try
                     {
                         PrincipalContext principalContext = new PrincipalContext(ContextType.Machine);
@@ -283,7 +284,7 @@ namespace Nucleus.Gaming.Util
                         if (userPrincipal != null)
                         {
                             SecurityIdentifier userSid = userPrincipal.Sid;
-                            genericGameHandler.nucSIDs.Add(userSid.ToString());
+                            handlerInstance.nucSIDs.Add(userSid.ToString());
                             DeleteProfile(userSid.ToString(), null, null);
                             userPrincipal.Delete();
                             string keyName = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList";
@@ -324,7 +325,7 @@ namespace Nucleus.Gaming.Util
             {
                 sw.WriteLine("@echo off");
 
-                foreach (string nucUser in genericGameHandler.nucUsers)
+                foreach (string nucUser in handlerInstance.nucUsers)
                 {
                     sw.WriteLine($"net user {nucUser} /delete");
                 }
@@ -343,11 +344,12 @@ namespace Nucleus.Gaming.Util
             }
         }
 
-        public static void DeleteCreatedWindowsUserFolder(GenericGameHandler genericGameHandler)
+        public static void DeleteCreatedWindowsUserFolder()
         {
-            foreach (string nucUser in genericGameHandler.nucUsers)
+            var handlerInstance = GenericGameHandler.Instance;
+            foreach (string nucUser in handlerInstance.nucUsers)
             {
-                DeleteProfileFolder($@"{Path.GetDirectoryName(genericGameHandler.NucleusEnvironmentRoot)}\{nucUser}");
+                DeleteProfileFolder($@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{nucUser}");
             }
         }
     }

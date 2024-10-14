@@ -7,90 +7,92 @@ namespace Nucleus.Gaming.Forms
     {
         public static string[] customValue;
 
-        public static void CustomUserGeneralPrompts(GenericGameHandler genericGameHandler, GenericGameInfo gen, GenericContext context, PlayerInfo player)
+        public static void CustomUserGeneralPrompts(PlayerInfo player)
         {
-            if (context.CustomUserGeneralValues == null || context.CustomUserGeneralValues?.Length < 1)
+            var handlerInstance = GenericGameHandler.Instance;
+
+            if (handlerInstance.context.CustomUserGeneralValues == null || handlerInstance.context.CustomUserGeneralValues?.Length < 1)
             {
-                context.CustomUserGeneralValues = new string[gen.CustomUserGeneralPrompts.Length];
+                handlerInstance.context.CustomUserGeneralValues = new string[handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts.Length];
             }
             if (customValue == null || customValue?.Length < 1)
             {
-                customValue = new string[gen.CustomUserGeneralPrompts.Length];
+                customValue = new string[handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts.Length];
             }
 
-            for (int c = 0; c < context.CustomUserGeneralValues.Length; c++)
+            for (int c = 0; c < handlerInstance.context.CustomUserGeneralValues.Length; c++)
             {
-                context.CustomUserGeneralValues[c] = null;
+                handlerInstance.context.CustomUserGeneralValues[c] = null;
             }
 
-            string valueFile = Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(gen.JsFileName) + "\\custom_gen_values.txt");
+            string valueFile = Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.JsFileName) + "\\custom_gen_values.txt");
 
             int counter = 0;
-            if (gen.SaveCustomUserGeneralValues || gen.SaveAndEditCustomUserGeneralValues || player.PlayerID > 0)
+            if (handlerInstance.CurrentGameInfo.SaveCustomUserGeneralValues || handlerInstance.CurrentGameInfo.SaveAndEditCustomUserGeneralValues || player.PlayerID > 0)
             {
-                genericGameHandler.Log("Handler uses custom general values");
+                handlerInstance.Log("Handler uses custom general values");
                 if (File.Exists(valueFile))
                 {
-                    genericGameHandler.Log("custom_gen_values.txt already exists for this handler, setting values accordingly");
+                    handlerInstance.Log("custom_gen_values.txt already exists for this handler, setting values accordingly");
 
                     string line;
 
                     StreamReader file = new StreamReader(valueFile);
                     while ((line = file.ReadLine()) != null)
                     {
-                        genericGameHandler.Log(string.Format("Custom value {0}: {1}", counter, line));
+                        handlerInstance.Log(string.Format("Custom value {0}: {1}", counter, line));
                         customValue[counter] = line;
-                        context.CustomUserGeneralValues[counter] = line;
+                        handlerInstance.context.CustomUserGeneralValues[counter] = line;
                         counter++;
                     }
 
                     file.Close();
 
-                    if (counter != gen.CustomUserGeneralPrompts.Length)
+                    if (counter != handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts.Length)
                     {
-                        genericGameHandler.Log("Number of lines in file do not match number of prompts. Overwriting file");
+                        handlerInstance.Log("Number of lines in file do not match number of prompts. Overwriting file");
                     }
                 }
                 else if (player.PlayerID == 0)
                 {
-                    genericGameHandler.Log("custom_gen_values.txt does not exist. Creating new file at " + valueFile);
+                    handlerInstance.Log("custom_gen_values.txt does not exist. Creating new file at " + valueFile);
                 }
             }
-            else if (File.Exists(valueFile) && player.PlayerID == 0 && !gen.SaveCustomUserGeneralValues && !gen.SaveAndEditCustomUserGeneralValues)
+            else if (File.Exists(valueFile) && player.PlayerID == 0 && !handlerInstance.CurrentGameInfo.SaveCustomUserGeneralValues && !handlerInstance.CurrentGameInfo.SaveAndEditCustomUserGeneralValues)
             {
-                genericGameHandler.Log("Deleting value file");
+                handlerInstance.Log("Deleting value file");
                 File.Delete(valueFile);
             }
 
-            if (player.PlayerID == 0 && (!File.Exists(valueFile) || !gen.SaveCustomUserGeneralValues || gen.SaveAndEditCustomUserGeneralValues || (File.Exists(valueFile) && counter != gen.CustomUserGeneralPrompts.Length)))
+            if (player.PlayerID == 0 && (!File.Exists(valueFile) || !handlerInstance.CurrentGameInfo.SaveCustomUserGeneralValues || handlerInstance.CurrentGameInfo.SaveAndEditCustomUserGeneralValues || (File.Exists(valueFile) && counter != handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts.Length)))
             {
 
-                if (player.PlayerID == 0 && ((File.Exists(valueFile) && !gen.SaveAndEditCustomUserGeneralValues && !gen.SaveCustomUserGeneralValues) || (File.Exists(valueFile) && counter != gen.CustomUserGeneralPrompts.Length)))
+                if (player.PlayerID == 0 && ((File.Exists(valueFile) && !handlerInstance.CurrentGameInfo.SaveAndEditCustomUserGeneralValues && !handlerInstance.CurrentGameInfo.SaveCustomUserGeneralValues) || (File.Exists(valueFile) && counter != handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts.Length)))
                 {
-                    genericGameHandler.Log("Deleting value file");
+                    handlerInstance.Log("Deleting value file");
                     File.Delete(valueFile);
                 }
 
-                if (!Directory.Exists(Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(gen.JsFileName))))
+                if (!Directory.Exists(Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.JsFileName))))
                 {
-                    Directory.CreateDirectory(Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(gen.JsFileName)));
+                    Directory.CreateDirectory(Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.JsFileName)));
                 }
 
                 bool containsValue = false;
-                for (int d = 0; d < gen.CustomUserGeneralPrompts.Length; d++)
+                for (int d = 0; d < handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts.Length; d++)
                 {
-                    genericGameHandler.Log(string.Format("Prompt {0}/{1}: {2}", (d + 1), gen.CustomUserGeneralPrompts.Length, gen.CustomUserGeneralPrompts[d]));
+                    handlerInstance.Log(string.Format("Prompt {0}/{1}: {2}", (d + 1), handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts.Length, handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts[d]));
                     string prevAnswer = "";
                     if (d < customValue.Length && File.Exists(valueFile))
                     {
                         prevAnswer = customValue[d];
                     }
-                    Forms.CustomPrompt prompt = new Forms.CustomPrompt(gen.CustomUserGeneralPrompts[d], prevAnswer, d);
+                    Forms.CustomPrompt prompt = new Forms.CustomPrompt(handlerInstance.CurrentGameInfo.CustomUserGeneralPrompts[d], prevAnswer, d);
                     prompt.ShowDialog();
                     if (customValue[d]?.Length > 0)
                     {
-                        context.CustomUserGeneralValues[d] = customValue[d];
-                        genericGameHandler.Log("User entered: " + customValue[d]);
+                        handlerInstance.context.CustomUserGeneralValues[d] = customValue[d];
+                        handlerInstance.Log("User entered: " + customValue[d]);
                         if (!containsValue)
                         {
                             containsValue = true;
@@ -98,8 +100,8 @@ namespace Nucleus.Gaming.Forms
                     }
                     else
                     {
-                        genericGameHandler.Log("User did not enter a value for this prompt");
-                        context.CustomUserGeneralValues[d] = null;
+                        handlerInstance.Log("User did not enter a value for this prompt");
+                        handlerInstance.context.CustomUserGeneralValues[d] = null;
                     }
                 }
 
@@ -117,57 +119,59 @@ namespace Nucleus.Gaming.Forms
 
         }
 
-        public static void CustomUserPlayerPrompts(GenericGameHandler genericGameHandler, GenericGameInfo gen, GenericContext context, PlayerInfo player)
+        public static void CustomUserPlayerPrompts(PlayerInfo player)
         {
-            if (context.CustomUserPlayerValues == null || context.CustomUserPlayerValues?.Length < 1)
+            var handlerInstance = GenericGameHandler.Instance;
+
+            if (handlerInstance.context.CustomUserPlayerValues == null || handlerInstance.context.CustomUserPlayerValues?.Length < 1)
             {
-                context.CustomUserPlayerValues = new string[gen.CustomUserPlayerPrompts.Length];
+                handlerInstance.context.CustomUserPlayerValues = new string[handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts.Length];
             }
             if (customValue == null || customValue?.Length < 1)
             {
-                customValue = new string[gen.CustomUserPlayerPrompts.Length];
+                customValue = new string[handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts.Length];
             }
 
-            string valueFile = Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(gen.JsFileName) + "\\" + player.Nickname + "\\custom_plyr_values.txt");
+            string valueFile = Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.JsFileName) + "\\" + player.Nickname + "\\custom_plyr_values.txt");
 
             int counter = 0;
-            if (gen.SaveCustomUserPlayerValues || gen.SaveAndEditCustomUserPlayerValues)
+            if (handlerInstance.CurrentGameInfo.SaveCustomUserPlayerValues || handlerInstance.CurrentGameInfo.SaveAndEditCustomUserPlayerValues)
             {
-                genericGameHandler.Log("Handler uses custom player values");
+                handlerInstance.Log("Handler uses custom player values");
                 if (File.Exists(valueFile))
                 {
-                    genericGameHandler.Log("custom_plyr_values.txt already exists for this player, setting values accordingly");
+                    handlerInstance.Log("custom_plyr_values.txt already exists for this player, setting values accordingly");
 
                     string line;
 
                     StreamReader file = new StreamReader(valueFile);
                     while ((line = file.ReadLine()) != null)
                     {
-                        genericGameHandler.Log(string.Format("Custom value {0}: {1}", counter, line));
+                        handlerInstance.Log(string.Format("Custom value {0}: {1}", counter, line));
                         customValue[counter] = line;
-                        context.CustomUserPlayerValues[counter] = line;
+                        handlerInstance.context.CustomUserPlayerValues[counter] = line;
                         counter++;
                     }
 
                     file.Close();
 
-                    if (counter != gen.CustomUserPlayerPrompts.Length)
+                    if (counter != handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts.Length)
                     {
-                        genericGameHandler.Log("Number of lines in file do not match number of prompts. Overwriting file");
+                        handlerInstance.Log("Number of lines in file do not match number of prompts. Overwriting file");
                     }
                 }
                 else
                 {
-                    genericGameHandler.Log("custom_plyr_values.txt does not exist for player " + player.Nickname + ". Creating new file at " + valueFile);
+                    handlerInstance.Log("custom_plyr_values.txt does not exist for player " + player.Nickname + ". Creating new file at " + valueFile);
                 }
             }
 
-            if (!File.Exists(valueFile) || !gen.SaveCustomUserPlayerValues || gen.SaveAndEditCustomUserPlayerValues || (File.Exists(valueFile) && counter != gen.CustomUserPlayerPrompts.Length))
+            if (!File.Exists(valueFile) || !handlerInstance.CurrentGameInfo.SaveCustomUserPlayerValues || handlerInstance.CurrentGameInfo.SaveAndEditCustomUserPlayerValues || (File.Exists(valueFile) && counter != handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts.Length))
             {
 
-                if ((File.Exists(valueFile) && !gen.SaveAndEditCustomUserPlayerValues && !gen.SaveCustomUserPlayerValues) || (File.Exists(valueFile) && counter != gen.CustomUserPlayerPrompts.Length))
+                if ((File.Exists(valueFile) && !handlerInstance.CurrentGameInfo.SaveAndEditCustomUserPlayerValues && !handlerInstance.CurrentGameInfo.SaveCustomUserPlayerValues) || (File.Exists(valueFile) && counter != handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts.Length))
                 {
-                    genericGameHandler.Log("Deleting value file");
+                    handlerInstance.Log("Deleting value file");
                     File.Delete(valueFile);
                 }
 
@@ -176,18 +180,18 @@ namespace Nucleus.Gaming.Forms
                     Directory.CreateDirectory(Path.GetDirectoryName(valueFile));
                 }
 
-                for (int d = 0; d < gen.CustomUserPlayerPrompts.Length; d++)
+                for (int d = 0; d < handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts.Length; d++)
                 {
-                    genericGameHandler.Log(string.Format("Prompt {0}/{1}: {2}", (d + 1), gen.CustomUserPlayerPrompts.Length, gen.CustomUserPlayerPrompts[d]));
+                    handlerInstance.Log(string.Format("Prompt {0}/{1}: {2}", (d + 1), handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts.Length, handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts[d]));
                     string prevAnswer = "";
                     if (d < customValue.Length && File.Exists(valueFile))
                     {
                         prevAnswer = customValue[d];
                     }
-                    Forms.CustomPrompt prompt = new Forms.CustomPrompt(gen.CustomUserPlayerPrompts[d], prevAnswer, d);
+                    Forms.CustomPrompt prompt = new Forms.CustomPrompt(handlerInstance.CurrentGameInfo.CustomUserPlayerPrompts[d], prevAnswer, d);
                     prompt.ShowDialog();
-                    context.CustomUserPlayerValues[d] = customValue[d];
-                    genericGameHandler.Log("User entered: " + customValue[d]);
+                    handlerInstance.context.CustomUserPlayerValues[d] = customValue[d];
+                    handlerInstance.Log("User entered: " + customValue[d]);
                 }
 
                 using (StreamWriter outputFile = new StreamWriter(valueFile))
@@ -200,57 +204,58 @@ namespace Nucleus.Gaming.Forms
             }
         }
 
-        public static void CustomUserInstancePrompts(GenericGameHandler genericGameHandler, GenericGameInfo gen, GenericContext context, PlayerInfo player)
+        public static void CustomUserInstancePrompts(PlayerInfo player)
         {
+            var handlerInstance = GenericGameHandler.Instance;
 
-            if (context.CustomUserInstanceValues == null || context.CustomUserInstanceValues?.Length < 1)
+            if (handlerInstance.context.CustomUserInstanceValues == null || handlerInstance.context.CustomUserInstanceValues?.Length < 1)
             {
-                context.CustomUserInstanceValues = new string[gen.CustomUserInstancePrompts.Length];
+                handlerInstance.context.CustomUserInstanceValues = new string[handlerInstance.CurrentGameInfo.CustomUserInstancePrompts.Length];
             }
             if (customValue == null || customValue?.Length < 1)
             {
-                customValue = new string[gen.CustomUserInstancePrompts.Length];
+                customValue = new string[handlerInstance.CurrentGameInfo.CustomUserInstancePrompts.Length];
             }
 
-            string valueFile = Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(gen.JsFileName) + "\\instance " + player.PlayerID + "\\custom_inst_values.txt");
+            string valueFile = Path.Combine(GameManager.Instance.GetJsScriptsPath(), Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.JsFileName) + "\\instance " + player.PlayerID + "\\custom_inst_values.txt");
 
             int counter = 0;
-            if (gen.SaveCustomUserInstanceValues || gen.SaveAndEditCustomUserInstanceValues)
+            if (handlerInstance.CurrentGameInfo.SaveCustomUserInstanceValues || handlerInstance.CurrentGameInfo.SaveAndEditCustomUserInstanceValues)
             {
-                genericGameHandler.Log("Handler uses custom instance values");
+                handlerInstance.Log("Handler uses custom instance values");
                 if (File.Exists(valueFile))
                 {
-                    genericGameHandler.Log("custom_inst_values.txt already exists for this player, setting values accordingly");
+                    handlerInstance.Log("custom_inst_values.txt already exists for this player, setting values accordingly");
 
                     string line;
 
                     StreamReader file = new StreamReader(valueFile);
                     while ((line = file.ReadLine()) != null)
                     {
-                        genericGameHandler.Log(string.Format("Custom value {0}: {1}", counter, line));
+                        handlerInstance.Log(string.Format("Custom value {0}: {1}", counter, line));
                         customValue[counter] = line;
-                        context.CustomUserInstanceValues[counter] = line;
+                        handlerInstance.context.CustomUserInstanceValues[counter] = line;
                         counter++;
                     }
 
                     file.Close();
 
-                    if (counter != gen.CustomUserInstancePrompts.Length)
+                    if (counter != handlerInstance.CurrentGameInfo.CustomUserInstancePrompts.Length)
                     {
-                        genericGameHandler.Log("Number of lines in file do not match number of prompts. Overwriting file");
+                        handlerInstance.Log("Number of lines in file do not match number of prompts. Overwriting file");
                     }
                 }
                 else
                 {
-                    genericGameHandler.Log("custom_inst_values.txt does not exist for player " + player.Nickname + ". Creating new file at " + valueFile);
+                    handlerInstance.Log("custom_inst_values.txt does not exist for player " + player.Nickname + ". Creating new file at " + valueFile);
                 }
             }
 
-            if (!File.Exists(valueFile) || !gen.SaveCustomUserInstanceValues || gen.SaveAndEditCustomUserInstanceValues || (File.Exists(valueFile) && counter != gen.CustomUserInstancePrompts.Length))
+            if (!File.Exists(valueFile) || !handlerInstance.CurrentGameInfo.SaveCustomUserInstanceValues || handlerInstance.CurrentGameInfo.SaveAndEditCustomUserInstanceValues || (File.Exists(valueFile) && counter != handlerInstance.CurrentGameInfo.CustomUserInstancePrompts.Length))
             {
-                if ((File.Exists(valueFile) && !gen.SaveAndEditCustomUserInstanceValues && !gen.SaveCustomUserInstanceValues) || (File.Exists(valueFile) && counter != gen.CustomUserInstancePrompts.Length))
+                if ((File.Exists(valueFile) && !handlerInstance.CurrentGameInfo.SaveAndEditCustomUserInstanceValues && !handlerInstance.CurrentGameInfo.SaveCustomUserInstanceValues) || (File.Exists(valueFile) && counter != handlerInstance.CurrentGameInfo.CustomUserInstancePrompts.Length))
                 {
-                    genericGameHandler.Log("Deleting value file");
+                    handlerInstance.Log("Deleting value file");
                     File.Delete(valueFile);
                 }
 
@@ -259,18 +264,18 @@ namespace Nucleus.Gaming.Forms
                     Directory.CreateDirectory(Path.GetDirectoryName(valueFile));
                 }
 
-                for (int d = 0; d < gen.CustomUserInstancePrompts.Length; d++)
+                for (int d = 0; d < handlerInstance.CurrentGameInfo.CustomUserInstancePrompts.Length; d++)
                 {
-                    genericGameHandler.Log(string.Format("Prompt {0}/{1}: {2}", (d + 1), gen.CustomUserInstancePrompts.Length, gen.CustomUserInstancePrompts[d]));
+                    handlerInstance.Log(string.Format("Prompt {0}/{1}: {2}", (d + 1), handlerInstance.CurrentGameInfo.CustomUserInstancePrompts.Length, handlerInstance.CurrentGameInfo.CustomUserInstancePrompts[d]));
                     string prevAnswer = "";
                     if (d < customValue.Length && File.Exists(valueFile))
                     {
                         prevAnswer = customValue[d];
                     }
-                    Forms.CustomPrompt prompt = new Forms.CustomPrompt(gen.CustomUserInstancePrompts[d], prevAnswer, d);
+                    Forms.CustomPrompt prompt = new Forms.CustomPrompt(handlerInstance.CurrentGameInfo.CustomUserInstancePrompts[d], prevAnswer, d);
                     prompt.ShowDialog();
-                    context.CustomUserInstanceValues[d] = customValue[d];
-                    genericGameHandler.Log("User entered: " + customValue[d]);
+                    handlerInstance.context.CustomUserInstanceValues[d] = customValue[d];
+                    handlerInstance.Log("User entered: " + customValue[d]);
                 }
 
                 using (StreamWriter outputFile = new StreamWriter(valueFile))

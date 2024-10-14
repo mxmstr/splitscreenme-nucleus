@@ -1,21 +1,19 @@
 ﻿
-using Nucleus.Gaming;
 using Nucleus;
-using Nucleus.Gaming.Cache;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System;
-using System.Windows.Forms;
-using System.Threading;
 
 public static class WPFDivFormThread
 {
-    public static void StartBackgroundForm(GenericGameInfo gen,Display dp)
+    public static void StartBackgroundForm(GenericGameInfo gen, Display dp)
     {
         Thread backgroundFormThread = new Thread(delegate ()
         {
@@ -36,6 +34,7 @@ public class WPFDiv : System.Windows.Window
     private string gameGUID;
     private float alpha = 1.0F;
     private bool fullApha = true;
+
     private int imgIndex = 0;
     private ImageBrush backBrush;
 
@@ -48,15 +47,15 @@ public class WPFDiv : System.Windows.Window
         Topmost = false;
 
         Name = $"SplitForm{screen.DisplayIndex}";
-
+        Title = Name;
         WindowStartupLocation = WindowStartupLocation.Manual;
-     
+
         Left = screen.Bounds.Left;
         Top = screen.Bounds.Top;
 
         Width = screen.Bounds.Width;
         Height = screen.Bounds.Height;
-        
+
         backBrush = new ImageBrush();
 
         gameGUID = game.GUID;
@@ -68,23 +67,8 @@ public class WPFDiv : System.Windows.Window
     }
 
     private void Setup()
-    {
-        IDictionary<string, SolidColorBrush> splitColors = new Dictionary<string, SolidColorBrush>
-        {
-                { "Black", Brushes.Black },
-                { "Gray", Brushes.DimGray },
-                { "White", Brushes.White },
-                { "Dark Blue", Brushes.DarkBlue },
-                { "Blue", Brushes.Blue },
-                { "Purple", Brushes.Purple },
-                { "Pink", Brushes.Pink },
-                { "Red", Brushes.Red },
-                { "Orange", Brushes.Orange },
-                { "Yellow", Brushes.Yellow },
-                { "Green", Brushes.Green }
-        };
-
-        foreach (KeyValuePair<string, SolidColorBrush> color in splitColors)
+    {     
+        foreach (KeyValuePair<string, SolidColorBrush> color in BackgroundColors.ColorsDictionnary)
         {
             if (color.Key != GameProfile.SplitDivColor)
             {
@@ -106,15 +90,22 @@ public class WPFDiv : System.Windows.Window
             {
                 string[] imgsPath = Directory.GetFiles((System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, $@"gui\screenshots\{gameGUID}")));
 
-                backBrush.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, $@"gui\screenshots\{gameGUID}\{imgIndex}_{gameGUID}.jpeg"), UriKind.Absolute));
-                Background = backBrush;
-                imgIndex++;
-            }
+                if (imgsPath.Length > 0)
+                {
+                    backBrush.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, $@"gui\screenshots\{gameGUID}\{imgIndex}_{gameGUID}.jpeg"), UriKind.Absolute));
+                    Background = backBrush;
 
-            fading = new System.Windows.Forms.Timer();
-            fading.Tick += new EventHandler(FadingTick);
-            fading.Interval = 50;
-            fading.Start();
+                    if (imgsPath.Length >= 2)
+                    {
+                        imgIndex++;
+
+                        fading = new System.Windows.Forms.Timer();
+                        fading.Tick += new EventHandler(FadingTick);
+                        fading.Interval = 50;
+                        fading.Start();
+                    }
+                }
+            }
         }
     }
 
@@ -141,7 +132,7 @@ public class WPFDiv : System.Windows.Window
 
                 imgIndex++;
 
-                if (imgIndex == imgsPath.Length)
+                if (imgIndex >= imgsPath.Length)
                 {
                     imgIndex = 0;
                 }
@@ -160,7 +151,11 @@ public class WPFDiv : System.Windows.Window
 
     private void SetupFinished()
     {
-        fading.Dispose();
+        if (fading != null)
+        {
+            fading.Dispose();
+        }
+
         this.Dispatcher.Invoke(new Action(() => { Background = userColor; }));
     }
 }

@@ -1,8 +1,11 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading;
@@ -13,6 +16,7 @@ namespace Nucleus.Coop
     internal static class StartChecks
     {
         static bool isRunning = false;
+        private static string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         private static void ExportRegistry(string strKey, string filepath)
         {
@@ -51,42 +55,41 @@ namespace Nucleus.Coop
 
         public static void CheckFilesIntegrity()
         {
-            string[] ncFiles = { 
+            string[] ncFiles = {
                 "Ionic.Zip.Reduced.dll",
-                "EasyHook.dll", 
-                "EasyHook32.dll", 
+                "EasyHook.dll",
+                "EasyHook32.dll",
                 "EasyHook32Svc.exe",
-                "EasyHook64.dll", 
-                "EasyHook64Svc.exe", 
-                "EasyHookSvc.exe", 
-                "Jint.dll", 
-                "NAudio.dll", 
-                "Newtonsoft.Json.dll", 
-                "Nucleus.Gaming.dll", 
-                "Nucleus.Hook32.dll", 
-                "Nucleus.Hook64.dll", 
-                "Nucleus.IJx64.exe", 
-                "Nucleus.IJx86.exe", 
-                "Nucleus.SHook32.dll", 
-                "Nucleus.SHook64.dll", 
-                "openxinput1_3.dll", 
-                "ProtoInputHooks32.dll", 
-                "ProtoInputHooks64.dll", 
-                "ProtoInputHooks64.dll", 
-                "ProtoInputHost.exe", 
-                "ProtoInputIJ32.exe", 
-                "ProtoInputIJ64.exe", 
-                "ProtoInputIJP32.dll", 
-                "ProtoInputIJP64.dll", 
-                "ProtoInputLoader32.dll", 
-                "ProtoInputLoader64.dll", 
+                "EasyHook64.dll",
+                "EasyHook64Svc.exe",
+                "EasyHookSvc.exe",
+                "Jint.dll",
+                "NAudio.dll",
+                "Newtonsoft.Json.dll",
+                "Nucleus.Gaming.dll",
+                "Nucleus.Hook32.dll",
+                "Nucleus.Hook64.dll",
+                "Nucleus.IJx64.exe",
+                "Nucleus.IJx86.exe",
+                "Nucleus.SHook32.dll",
+                "Nucleus.SHook64.dll",
+                "openxinput1_3.dll",
+                "ProtoInputHooks32.dll",
+                "ProtoInputHooks64.dll",
+                "ProtoInputHost.exe",
+                "ProtoInputIJ32.exe",
+                "ProtoInputIJ64.exe",
+                "ProtoInputIJP32.dll",
+                "ProtoInputIJP64.dll",
+                "ProtoInputLoader32.dll",
+                "ProtoInputLoader64.dll",
                 "ProtoInputUtilDynamic32.dll",
                 "ProtoInputUtilDynamic64.dll",
-                "SharpDX.DirectInput.dll", 
-                "SharpDX.dll", 
+                "SharpDX.DirectInput.dll",
+                "SharpDX.dll",
                 "SharpDX.XInput.dll",
-                "StartGame.exe", 
-                "WindowScrape.dll" 
+                "StartGame.exe",
+                "WindowScrape.dll"
             };
 
             foreach (string file in ncFiles)
@@ -117,12 +120,16 @@ namespace Nucleus.Coop
                 Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\screenshots")));
             }
 
-            if (!Directory.Exists(Path.Combine(Application.StartupPath, @"gui\descriptions")))
+            try
             {
-                Directory.CreateDirectory((Path.Combine(Application.StartupPath, @"gui\descriptions")));
+                if (Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\descriptions")))//Not used anymore
+                {
+                    Directory.Delete(Path.Combine(Application.StartupPath, $"gui\\descriptions"), true);
+                }
             }
+            catch { }
         }
-
+        
         public static void CheckUserEnvironment()
         {
             System.Threading.Tasks.Task.Run(() =>
@@ -189,7 +196,7 @@ namespace Nucleus.Coop
                             currentEnvPathBackup.Dispose();
 
                             File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp\User Shell Folders.reg"));
-                            Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));                           
+                            Directory.Delete(Path.Combine(Application.StartupPath, @"utils\backup\Temp"));
                             //Console.WriteLine("Registry backup is up-to-date");
                         }
                         else
@@ -225,9 +232,26 @@ namespace Nucleus.Coop
                                exePath.StartsWith(@"C:\Users\".ToLower()) ||
                                exePath.StartsWith(@"C:\Windows\".ToLower());
 
+
+            bool OnDriveEnabled = DocumentsRoot.Contains("OneDrive");
+
+            if (OnDriveEnabled)
+            {
+                string message = "Using OneDrive as default documents path will break most handlers because Nucleus can't access its storage." +
+                                 "To change your documents path log out from the OneDrive app and right click your Documents folder in file explorer, go to properties, " +
+                                 "select path or location and set it to the default Windows."; /*one when done delete \"User Shell Folders.reg\" from \"utils\\backup\" if the file exists.";*/
+
+                MessageBox.Show(message, "OneDrive must be disabled", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                if(File.Exists(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg")))
+                {
+                    File.Delete(Path.Combine(Application.StartupPath, @"utils\backup\User Shell Folders.reg"));
+                }
+
+            }
+
             if (problematic)
             {
-
                 string message = "Nucleus Co-Op should not be installed here.\n\n" +
                                 "Do NOT install in any of these folders:\n" +
                                 "- A folder containing any game files\n" +
@@ -236,6 +260,7 @@ namespace Nucleus.Coop
                                 "- Any folder with security settings like C:\\Windows\n" +
                                 "\n" +
                                 "A good place is C:\\Nucleus\\NucleusCoop.exe";
+
                 if (warningMessage)
                 {
                     MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -252,28 +277,184 @@ namespace Nucleus.Coop
 
         public static void Check_VCRVersion()
         {
-            const string subkeyX86 = @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86";
-            const string subkeyX64 = @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64";
-            bool validVCRx86;
-            bool validVCRx64;
+            string downloadPath = Application.StartupPath + @"\Temp";
+            string x86FileName = "vc_redist.x86.exe";
+            string x64FileName = "vc_redist.x64.exe";
 
-            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkeyX86))
+            try
             {
-                validVCRx86 = (int)ndpKey.GetValue("Bld") >= 31103;
+                const string subkeyX86 = @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86";
+                const string subkeyX64 = @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64";
+
+                bool validVCRx86;
+                bool validVCRx64;
+
+                using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkeyX86))
+                {
+                    validVCRx86 = (int)ndpKey.GetValue("Bld") >= 31103;
+                }
+
+                using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkeyX64))
+                {
+                    validVCRx64 = (int)ndpKey.GetValue("Bld") >= 31103;
+                }
+
+                DeleteMVCFile(Path.Combine(downloadPath, x86FileName));
+                DeleteMVCFile(Path.Combine(downloadPath, x64FileName));
+                DeleteMVCDownloadFolder(downloadPath);
+
+                if (!validVCRx86)//!validVCRx86
+                {
+                    DialogResult dialogResultX86 = MessageBox.Show("Please install Microsoft Visual C++ 2015 - 2022 Redistributable (both x86 and x64)\n" +
+                                   "Do you want to download and install Microsoft Visual C++ 2015 - 2022 Redistributable x86 version now.", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (dialogResultX86 == DialogResult.Yes)
+                    {
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                        ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                        ServicePointManager.DefaultConnectionLimit = 9999;
+
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://aka.ms/vs/17/release/vc_redist.x86.exe");
+                        request.Timeout = 4000;
+                        request.UserAgent = "request";
+
+                        if (!Directory.Exists(downloadPath))
+                        {
+                            Directory.CreateDirectory(downloadPath);
+                        }
+
+                        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                        using (Stream stream = response.GetResponseStream())
+                        {
+                            using (var fileStream = new FileStream(Path.Combine(downloadPath, x86FileName), FileMode.Create, FileAccess.Write))
+                            {
+                                stream.CopyTo(fileStream);
+                            }
+                        }
+
+                        while (!File.Exists(Path.Combine(downloadPath, x86FileName)))
+                        {
+                            //Console.WriteLine("File not created yet");
+                        }
+
+                        ProcessStartInfo vcX86Installer = new ProcessStartInfo(Path.Combine(downloadPath, x86FileName));
+                        vcX86Installer.UseShellExecute = true;
+                        Process.Start(vcX86Installer);
+
+                        while (Process.GetProcessesByName("vc_redist.x86").Length > 0)
+                        {
+                            //Console.WriteLine("Installer is running");
+                        }
+
+                        DeleteMVCFile(Path.Combine(downloadPath, x86FileName));
+                        DeleteMVCFile(Path.Combine(downloadPath, x64FileName));
+                        DeleteMVCDownloadFolder(downloadPath);
+                    }
+                    else
+                    {
+                        Process.GetCurrentProcess().Kill();
+                    }
+                }
+
+                //check if file exist here in case installation process is aborted by user 
+                DeleteMVCFile(Path.Combine(downloadPath, x86FileName));
+                DeleteMVCFile(Path.Combine(downloadPath, x64FileName));
+                DeleteMVCDownloadFolder(downloadPath);
+
+                if (!validVCRx64)//!validVCRx64
+                {
+                    DialogResult dialogResultX64 = MessageBox.Show("Do you want to download and install Microsoft Visual C++ 2015 - 2022 Redistributable x64 version now.", "Microsoft Visual C++ 2015 - 2022 Redistributable x64", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (dialogResultX64 == DialogResult.Yes)
+                    {
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                        ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                        ServicePointManager.DefaultConnectionLimit = 9999;
+
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://aka.ms/vs/17/release/vc_redist.x64.exe");
+                        request.Timeout = 4000;
+                        request.UserAgent = "request";
+
+                        if (!Directory.Exists(downloadPath))
+                        {
+                            Directory.CreateDirectory(downloadPath);
+                        }
+
+                        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                        using (Stream stream = response.GetResponseStream())
+                        {
+                            using (var fileStream = new FileStream(Path.Combine(downloadPath, x64FileName), FileMode.Create, FileAccess.Write))
+                            {
+                                stream.CopyTo(fileStream);
+                            }
+                        }
+
+                        while (!File.Exists(Path.Combine(downloadPath, x64FileName)))
+                        {
+                            //Console.WriteLine("File not created yet");
+                        }
+
+                        ProcessStartInfo vcX64Installer = new ProcessStartInfo(Path.Combine(downloadPath, x64FileName));
+                        vcX64Installer.UseShellExecute = true;
+                        Process.Start(vcX64Installer);
+
+                        while (Process.GetProcessesByName("vc_redist.x64").Length > 0)
+                        {
+                            //Console.WriteLine("Installer is running");
+                        }
+
+                        DeleteMVCFile(Path.Combine(downloadPath, x86FileName));
+                        DeleteMVCFile(Path.Combine(downloadPath, x64FileName));
+                        DeleteMVCDownloadFolder(downloadPath);
+                    }
+                    else
+                    {
+                        Process.GetCurrentProcess().Kill();
+                    }
+
+                    //check if file exist here in case installation process is aborted by user 
+                    DeleteMVCFile(Path.Combine(downloadPath, x86FileName));
+                    DeleteMVCFile(Path.Combine(downloadPath, x64FileName));
+                    DeleteMVCDownloadFolder(downloadPath);
+                }
             }
-
-            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkeyX64))
+            catch (Exception ex)
             {
-                validVCRx64 = (int)ndpKey.GetValue("Bld") >= 31103;
+                string mvcInstallerWarning = string.Empty;
+                if (Process.GetProcessesByName("vc_redist.x64").Length > 0 || Process.GetProcessesByName("vc_redist.x86").Length > 0)
+                {
+                    mvcInstallerWarning = "Close Microsoft Visual C++ 2015 - 2022 Redistributable installer and try again.\n\n";
+                }
+
+                DeleteMVCFile(Path.Combine(downloadPath, x86FileName));
+                DeleteMVCFile(Path.Combine(downloadPath, x64FileName));
+                DeleteMVCDownloadFolder(downloadPath);
+
+                MessageBox.Show("Something went wrong during Microsoft Visual C++ 2015 - 2022 Redistributable sanity checks.\n\n"
+                    + mvcInstallerWarning
+                    + ex.Message, "Microsoft Visual C++ sanity checks failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
 
-            bool matchRequirements = validVCRx86 && validVCRx64;
+        private static void DeleteMVCFile(string file)
+        {
+            string processName = file.Split('\\').Last().Replace(".exe", "");
 
-            if (!matchRequirements)
+            if (File.Exists(file) && Process.GetProcessesByName(processName).Length == 0)
             {
-                MessageBox.Show("Please install Microsoft Visual C++ 2015 - 2022 Redistributable (both x86 and x64)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Process.Start("https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170");
-                Process.GetCurrentProcess().Kill();
+                File.Delete(file);
+            }
+        }
+
+        private static void DeleteMVCDownloadFolder(string folder)
+        {
+            if (Directory.Exists(folder) &&
+                !File.Exists(Path.Combine(folder, "vc_redist.x86.exe")) &&
+                !File.Exists(Path.Combine(folder, "vc_redist.x64.exe")))
+            {
+                Directory.Delete(folder);
             }
         }
 
@@ -307,9 +488,9 @@ namespace Nucleus.Coop
                 Process.Start(Path.Combine(Application.StartupPath, "Updater.exe"));
         }
 
-        public static void CheckDebugLogSize(IniFile ini)
+        public static void CheckDebugLogSize()
         {
-            string logPath = Path.Combine(Application.StartupPath, "debug-log.txt");
+           string logPath = Path.Combine(Application.StartupPath, "debug-log.txt");
 
             if (File.Exists(logPath))
             {
@@ -322,7 +503,52 @@ namespace Nucleus.Coop
                 if (LogSize >= 150000)//150ko
                 {
                     File.Delete(logPath);
-                    ini.IniWriteValue("Misc", "DebugLog", "False");
+                    App_Misc.DebugLog = false;
+                }
+            }
+        }
+
+        public static void CleanLogs()
+        {
+            string logsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "content");
+
+            if(!Directory.Exists(logsDirectory))
+            {
+                return;
+            }
+
+            IEnumerable<string> logs = Directory.EnumerateFiles(logsDirectory).Where(l => Path.GetExtension(l) == ".log");
+
+            foreach (string log in logs)
+            {
+                if (File.Exists(log))
+                {
+                    DateTime now = DateTime.Now;
+                    DateTime creation = File.GetLastWriteTime(log);
+                   
+                    if (now.Month == creation.Month)
+                    {
+                        if (now.Day >= creation.Day + 7)
+                        {
+                            File.Delete(log);
+                            continue;
+                        }
+                    }
+
+                    if (now.Month > creation.Month)
+                    {
+                        File.Delete(log);
+                        continue;
+                    }
+
+                    if (now.Month < creation.Month)//new year since last update
+                    {
+                        if ((now.Day >= 7 && now.Month == 1) || now.Month > 1)
+                        {
+                            File.Delete(log);
+                            continue;
+                        }
+                    }
                 }
             }
         }

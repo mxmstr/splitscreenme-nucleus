@@ -1,5 +1,4 @@
 ﻿using Nucleus.Gaming.Coop.InputManagement.Enums;
-using Nucleus.Gaming.Coop.InputManagement.Logging;
 using Nucleus.Gaming.Coop.InputManagement.Structs;
 using System;
 using System.Runtime.InteropServices;
@@ -78,7 +77,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
 
             //hWnd zero for all windows (the mouse pointers are in this loop!)
             while ((bRet = WinApi.GetMessage(out MSG msg, IntPtr.Zero, 0, 0)) != 0)
-            {               
+            {
                 if (bRet == -1)
                 {
                     if (sqErr++ > 10)

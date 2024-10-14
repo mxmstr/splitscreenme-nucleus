@@ -1,23 +1,5 @@
-﻿using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using System;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using Nucleus.Gaming.Windows.Interop;
-using WindowScrape.Constants;
-using System.Runtime.InteropServices;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.Win32;
-using System.Text;
-using System.Runtime.ExceptionServices;
-using System.Reflection;
-using Nucleus.Coop.Forms;
-using Nucleus.Gaming.Coop.ProtoInput;
-using Nucleus.Gaming;
+﻿using System.Windows.Forms;
+
 namespace Nucleus.Coop
 {
     partial class SearchDisksForm
@@ -178,6 +160,8 @@ namespace Nucleus.Coop
             this.disksBox.Name = "disksBox";
             this.disksBox.Size = new System.Drawing.Size(220, 236);
             this.disksBox.TabIndex = 0;
+            this.disksBox.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.DisksBox_ControlAdded);
+            this.disksBox.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.DisksBox_ControlRemoved);
             // 
             // txt_Path
             // 
@@ -263,7 +247,7 @@ namespace Nucleus.Coop
             this.btn_delPath.Name = "btn_delPath";
             this.btn_delPath.Size = new System.Drawing.Size(220, 30);
             this.btn_delPath.TabIndex = 12;
-            this.btn_delPath.Text = "Delete Selected";
+            this.btn_delPath.Text = "Delete Unselected";
             this.btn_delPath.UseVisualStyleBackColor = false;
             this.btn_delPath.Click += new System.EventHandler(this.Btn_delPath_Click);
             // 

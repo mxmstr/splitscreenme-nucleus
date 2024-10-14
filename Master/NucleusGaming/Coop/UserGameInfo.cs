@@ -8,12 +8,9 @@ namespace Nucleus.Gaming.Coop
     public class UserGameInfo
     {
         private GenericGameInfo game;
-        private List<GameProfile> profiles;
         private string exePath;
         private string gameGuid = "";
-        private bool favorite = false;
-        private bool keepSymLink;
-
+            
         [JsonIgnore]
         public GenericGameInfo Game
         {
@@ -40,35 +37,16 @@ namespace Nucleus.Gaming.Coop
             set => gameGuid = value;
         }
 
-
-        public List<GameProfile> Profiles
-        {
-            get => profiles;
-            set => profiles = value;
-        }
-
         public string ExePath
         {
             get => exePath;
             set => exePath = value;
-        }
-
-        public bool Favorite
-        {
-            get => favorite;
-            set => favorite = value;
-        }
-
-        public bool KeepSymLink
-        {
-            get => keepSymLink;
-            set => keepSymLink = value;
-        }
-
+        }     
+   
         public UserGameInfo()
         {
 
-        }
+        }       
 
         /// <summary>
         /// If the game exists
@@ -84,7 +62,6 @@ namespace Nucleus.Gaming.Coop
             this.game = game;
             gameGuid = game.GUID;
             this.exePath = exePath.Replace("I", "i");
-            profiles = new List<GameProfile>();
         }
     }
 }

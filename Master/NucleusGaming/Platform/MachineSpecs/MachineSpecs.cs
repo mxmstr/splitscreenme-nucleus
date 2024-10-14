@@ -9,34 +9,41 @@ namespace Nucleus.Gaming.Platform.PCSpecs
 {
     public static class MachineSpecs
     {
-        public static string GetPCspecs(GenericGameHandler genericGameHandler)
+        public static string GetPCspecs()
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             string pcSpecs = "PC Info - ";
             var name = (from x in new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
                         select x.GetPropertyValue("Caption")).FirstOrDefault();
 
             pcSpecs += name != null ? "OS: " + name.ToString() + ", " : "Windows OS: Unknown, ";
 
+            pcSpecs += $".NET Framework Version: {GetNETFrameworkVersion()}"; 
+
+            if (handlerInstance != null)
+            {
+                handlerInstance.Log(pcSpecs);
+            }
+
+            return pcSpecs;
+        }
+
+        public static string GetNETFrameworkVersion()
+        {
             const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 
             using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
             {
                 if (ndpKey != null && ndpKey.GetValue("Release") != null)
                 {
-                    pcSpecs += $".NET Framework Version: {GetNetFrameworkVersion.CheckFor45PlusVersion((int)ndpKey.GetValue("Release"))}";
+                    return GetNetFrameworkVersion.CheckFor45PlusVersion((int)ndpKey.GetValue("Release"));
                 }
                 else
                 {
-                    pcSpecs += $".NET Framework Version: {Environment.Version}";
+                    return Environment.Version.ToString();
                 }
             }
-
-            if (genericGameHandler != null)
-            {
-                genericGameHandler.Log(pcSpecs);
-            }
-
-            return pcSpecs;
         }
 
         public enum MachineType : ushort
@@ -101,6 +108,43 @@ namespace Nucleus.Gaming.Platform.PCSpecs
                 default:
                     return null;
             }
+        }
+
+        public static bool Is21H2Update()
+        {
+            var buildNumber = GetWindowsBuildNumber();
+
+            // Check for Windows 10/11 21H2 version
+            if (buildNumber >= 19044)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        static int GetWindowsBuildNumber()
+        {
+            try
+            {
+                using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+                {
+                    if (key != null)
+                    {
+                        var buildNumber = key.GetValue("CurrentBuildNumber") as string;
+                        if (int.TryParse(buildNumber, out int result))
+                        {
+                            return result;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while getting the build number: " + ex.Message);
+            }
+
+            return 0;
         }
     }
 }

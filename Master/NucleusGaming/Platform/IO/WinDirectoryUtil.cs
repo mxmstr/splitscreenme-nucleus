@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Platform.Windows.Interop;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Platform.Windows.Interop;
 using System;
 using System.IO;
 
@@ -6,11 +7,9 @@ namespace Nucleus.Gaming.Platform.Windows.IO
 {
     public static class WinDirectoryUtil
     {
-        private static readonly IniFile ini = Globals.ini;
-
         private static void Log(string logMessage)
         {
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (App_Misc.DebugLog)
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {

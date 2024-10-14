@@ -13,10 +13,6 @@ namespace Nucleus.Gaming
         private bool canProceed;
         private bool canPlay;
 
-        private Font nameFont;
-        private Font detailsFont;
-        private Color _BackColor;
-
         public CustomStep CustomStep;
         public ContentManager Content;
 
@@ -36,19 +32,14 @@ namespace Nucleus.Gaming
         {
             base.Initialize(game, profile);
 
-            string[] rgb_CoollistInitialColor = Globals.ThemeIni.IniReadValue("Colors", "Selection").Split(',');
-            _BackColor = Color.FromArgb(int.Parse(rgb_CoollistInitialColor[0]), int.Parse(rgb_CoollistInitialColor[1]), int.Parse(rgb_CoollistInitialColor[2]), int.Parse(rgb_CoollistInitialColor[3]));
             toSelect = null;
-            Controls.Clear();
+
+            foreach(Control c in Controls){ c.Dispose();}
 
             // grab the CustomStep and extract what we have to show from it
             GameOption option = CustomStep.Option;
 
-            if (option.List == null)
-            {
-
-            }
-            else
+            if (option.List != null)
             {
                 ControlListBox list = new ControlListBox
                 {
@@ -71,7 +62,6 @@ namespace Nucleus.Gaming
                     CoolListControl control = new CoolListControl(true)
                     {
                         Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right,
-                        //BackColor = _BackColor,
                         Size = new Size(list.Width, 120),
                         Data = val
                     };
@@ -92,22 +82,32 @@ namespace Nucleus.Gaming
                     }
 
                     value.TryGetValue("ImageUrl", out object imageUrlObj);
+                    
                     if (imageUrlObj != null)
                     {
                         string imageUrl = imageUrlObj.ToString();
+
                         if (!string.IsNullOrEmpty(imageUrl))
                         {
-                            Image img = Content.LoadImage(imageUrl);
+                            control.ImageUrl = imageUrl;
 
+                            //Image img = Content.LoadImage(imageUrl);
+                            
                             PictureBox box = new PictureBox
                             {
                                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                                Size = new Size(140, 80)
+                                Size = new Size(140, 80),
+                                Name = "pictureBox"
                             };
+
                             box.Location = new Point(list.Width - box.Width - 10, 10);
                             box.SizeMode = PictureBoxSizeMode.Zoom;
-                            box.Image = img;
+                            box.Image = Content.LoadImage(imageUrl);
                             control.Controls.Add(box);
+                        }
+                        else
+                        {
+                            control.ImageUrl = "dummy";
                         }
                     }
 
@@ -135,7 +135,7 @@ namespace Nucleus.Gaming
             }
 
             toSelect.BackColor = Color.DodgerBlue;
-            toSelect.Title = toSelect.Title + " " + "(Auto Selected)";
+            toSelect.Title = $"{toSelect.Title} (Auto Selection)";
             Control_OnSelected(toSelect);
         }
 
@@ -146,7 +146,7 @@ namespace Nucleus.Gaming
                 CoolListControl c = obj as CoolListControl;
                 profile.Options[CustomStep.Option.Key] = c.Data;
             }
-            else 
+            else
             {
                 profile.Options[CustomStep.Option.Key] = obj;
             }

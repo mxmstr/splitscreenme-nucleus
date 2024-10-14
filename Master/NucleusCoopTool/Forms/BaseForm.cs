@@ -11,7 +11,6 @@ namespace Nucleus.Coop
     /// </summary>
     public class BaseForm : Form, IDynamicSized
     {
-        public readonly IniFile ini = Globals.ini;
         public BaseForm()
         {
             Name = "BaseForm";

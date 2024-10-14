@@ -1,13 +1,15 @@
-﻿using Newtonsoft.Json;
-using Nucleus.Gaming;
+﻿using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
 using Nucleus.Gaming.Coop.InputManagement.Gamepads;
-using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using SharpDX.XInput;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Forms;
@@ -16,14 +18,12 @@ namespace Nucleus.Coop.Forms
 {
     public partial class XInputShortcutsSetup : Form, IDynamicSized
     {
-        private IniFile ini = Globals.ini;
         private Bitmap controllerTop;
         private Bitmap controllerFront;
         private PictureBox activeControl;
         private Timer refreshTimer = new Timer();
         private float scale;
-        private Cursor default_Cursor;
-        private Cursor hand_Cursor;
+        
         private SolidBrush brush;
         public static new bool Enabled;
         private string gamepadType;
@@ -33,165 +33,76 @@ namespace Nucleus.Coop.Forms
         public XInputShortcutsSetup()
         {
             InitializeComponent();
-            bool roundedcorners = bool.Parse(Globals.ThemeIni.IniReadValue("Misc", "UseRoundedCorners"));
-            gamepadType = ini.IniReadValue("XUINav", "Type");
+            bool roundedcorners = bool.Parse(Globals.ThemeConfigFile.IniReadValue("Misc", "UseRoundedCorners"));
+            gamepadType = App_GamePadNavigation.Type;
 
-            default_Cursor = new Cursor(Globals.Theme + "cursor.ico");
-            hand_Cursor = new Cursor(Globals.Theme + "cursor_hand.ico");
-            Cursor.Current = default_Cursor;
-            Cursor = default_Cursor;
-            shortContainer.Cursor = default_Cursor;
-            enabled_chk.Cursor = hand_Cursor;
+            Cursor = Theme_Settings.Default_Cursor;
 
-            refreshTimer.Tick += new EventHandler(RefreshTimerTick);
+            shortContainer.Cursor = Theme_Settings.Default_Cursor;
+            enabled_chk.Cursor = Theme_Settings.Hand_Cursor;
+
+            refreshTimer.Tick += RefreshTimerTick;
             refreshTimer.Interval = 500;
             refreshTimer.Start();
 
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "xinput_background.jpg");
+            BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "xinput_background.jpg");
             BackgroundImageLayout = ImageLayout.Stretch;
 
             controllerTop = Nucleus.Coop.Properties.Resources.xboxControllerTop;
             controllerFront = Nucleus.Coop.Properties.Resources.xboxControllerFront;
-            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
+            Close.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
 
-            CustomToolTips.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+            CustomToolTips.SetToolTip(enabled_chk, "Automatically locked when all instances are set and ready.", "enabled_chk", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
             brush = new SolidBrush(Color.FromArgb(120, 0, 255, 60));
-            switch15.KeyPress += new KeyPressEventHandler(this.num_KeyPress);
+            switch15.KeyPress += Num_KeyPress;
 
             if (roundedcorners)
             {
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 20, 20);
             }
 
-            if (ini.IniReadValue("XShortcuts", "SetFocus").Contains('+'))
-            {
-                string[] SetFocus = ini.IniReadValue("XShortcuts", "SetFocus").Split('+');
-                switch1.Tag = int.Parse(SetFocus[0]);
-                slave1.Tag = int.Parse(SetFocus[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "SetFocus", "");
-            }
+            switch1.Tag = App_GamePadShortcuts.SetFocus[0];
+            slave1.Tag = App_GamePadShortcuts.SetFocus[1];
 
-            if (ini.IniReadValue("XShortcuts", "Close").Contains('+'))
-            {
-                string[] Close = ini.IniReadValue("XShortcuts", "Close").Split('+');
-                switch2.Tag = int.Parse(Close[0]);
-                slave2.Tag = int.Parse(Close[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Close", "");
-            }
+            switch2.Tag = App_GamePadShortcuts.Close[0];
+            slave2.Tag = App_GamePadShortcuts.Close[1];
 
-            if (ini.IniReadValue("XShortcuts", "Stop").Contains('+'))
-            {
-                string[] Stop = ini.IniReadValue("XShortcuts", "Stop").Split('+');
-                switch3.Tag = int.Parse(Stop[0]);
-                slave3.Tag = int.Parse(Stop[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Stop", "");
-            }
+            switch3.Tag = App_GamePadShortcuts.StopSession[0];
+            slave3.Tag = App_GamePadShortcuts.StopSession[1];
 
-            if (ini.IniReadValue("XShortcuts", "TopMost").Contains('+'))
-            {
-                string[] TopMost = ini.IniReadValue("XShortcuts", "TopMost").Split('+');
-                switch4.Tag = int.Parse(TopMost[0]);
-                slave4.Tag = int.Parse(TopMost[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "TopMost", "");
-            }
+            switch4.Tag = App_GamePadShortcuts.TopMost[0];
+            slave4.Tag = App_GamePadShortcuts.TopMost[1];
 
-            if (ini.IniReadValue("XShortcuts", "ResetWindows").Contains('+'))
-            {
-                string[] ResetWindows = ini.IniReadValue("XShortcuts", "ResetWindows").Split('+');
-                switch5.Tag = int.Parse(ResetWindows[0]);
-                slave5.Tag = int.Parse(ResetWindows[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "ResetWindows", "");
-            }
+            switch5.Tag = App_GamePadShortcuts.ResetWindows[0];
+            slave5.Tag = App_GamePadShortcuts.ResetWindows[1];
 
-            if (ini.IniReadValue("XShortcuts", "Cutscenes").Contains('+'))
-            {
-                string[] Cutscenes = ini.IniReadValue("XShortcuts", "Cutscenes").Split('+');
-                switch6.Tag = int.Parse(Cutscenes[0]);
-                slave6.Tag = int.Parse(Cutscenes[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Cutscenes", "");
-            }
+            switch6.Tag = App_GamePadShortcuts.CutscenesMode[0];
+            slave6.Tag = App_GamePadShortcuts.CutscenesMode[1];
 
-            if (ini.IniReadValue("XShortcuts", "Switch").Contains('+'))
-            {
-                string[] Switch = ini.IniReadValue("XShortcuts", "Switch").Split('+');
-                switch7.Tag = int.Parse(Switch[0]);
-                slave7.Tag = int.Parse(Switch[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Switch", "");
-            }
+            switch7.Tag = App_GamePadShortcuts.SwitchLayout[0];
+            slave7.Tag = App_GamePadShortcuts.SwitchLayout[1];
 
-            if (ini.IniReadValue("XShortcuts", "LockInputs").Contains('+'))
-            {
-                string[] LockInputs = ini.IniReadValue("XShortcuts", "LockInputs").Split('+');
-                switch8.Tag = int.Parse(LockInputs[0]);
-                slave8.Tag = int.Parse(LockInputs[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            switch8.Tag = App_GamePadShortcuts.LockInputs[0];
+            slave8.Tag = App_GamePadShortcuts.LockInputs[1];
 
-            if (ini.IniReadValue("XShortcuts", "ReleaseCursor").Contains('+'))
-            {
-                string[] ReleaseCursor = ini.IniReadValue("XShortcuts", "ReleaseCursor").Split('+');
-                switch9.Tag = int.Parse(ReleaseCursor[0]);
-                slave9.Tag = int.Parse(ReleaseCursor[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            switch9.Tag = App_GamePadShortcuts.ReleaseCursor[0];
+            slave9.Tag = App_GamePadShortcuts.ReleaseCursor[1];
 
-            if (ini.IniReadValue("XUINav", "LockUIControl").Contains('+'))
-            {
-                string[] LockUIControl = ini.IniReadValue("XUINav", "LockUIControl").Split('+');
-                switch10.Tag = int.Parse(LockUIControl[0]);
-                slave10.Tag = int.Parse(LockUIControl[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            switch10.Tag = App_GamePadNavigation.TogglekUINavigation[0];
+            slave10.Tag = App_GamePadNavigation.TogglekUINavigation[1];
 
-            if (ini.IniReadValue("XUINav", "LockUIControl").Contains('+'))
-            {
-                string[] OpenOsk = ini.IniReadValue("XUINav", "OpenOsk").Split('+');
-                switch11.Tag = int.Parse(OpenOsk[0]);
-                slave11.Tag = int.Parse(OpenOsk[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            switch11.Tag = App_GamePadNavigation.OpenOsk[0];
+            slave11.Tag = App_GamePadNavigation.OpenOsk[1];
 
-            enabled_chk.Checked = bool.Parse(ini.IniReadValue("XUINav", "Enabled")); 
-            CustomToolTips.SetToolTip(enabled_chk, "Requires admin rights for full controller support.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
 
-            switch12.Tag = int.Parse(ini.IniReadValue("XUINav", "DragDrop"));
-            switch13.Tag = int.Parse(ini.IniReadValue("XUINav", "RightClick"));
-            switch14.Tag = int.Parse(ini.IniReadValue("XUINav", "LeftClick"));
-            switch15.Text = ini.IniReadValue("XUINav", "Deadzone");
+            enabled_chk.Checked = App_GamePadNavigation.Enabled;
+            CustomToolTips.SetToolTip(enabled_chk, "Requires admin rights for full controller support.", "enabled_chk", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+
+            switch12.Tag = App_GamePadNavigation.DragDrop;
+            switch13.Tag = App_GamePadNavigation.RightClick;
+            switch14.Tag = App_GamePadNavigation.LeftClick;
+            switch15.Text = App_GamePadNavigation.Deadzone.ToString();
 
             foreach (RadioButton rb in groupBoxType.Controls)
             {
@@ -203,44 +114,53 @@ namespace Nucleus.Coop.Forms
 
             foreach (Control c in shortContainer.Controls)
             {
-                if (c.GetType() == typeof(PictureBox))
+                if (c is PictureBox)
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-                    pictureBox.MouseClick += new MouseEventHandler(SetActiveControl);
+                    pictureBox.MouseClick += SetActiveControl;
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
-                    pictureBox.Cursor = hand_Cursor;
+                    pictureBox.Cursor = Theme_Settings.Hand_Cursor;
                 }
             }
 
             foreach (Control c in UINavContainer.Controls)
             {
-                if (c.GetType() == typeof(PictureBox))
+                if (c is PictureBox)
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-                    pictureBox.MouseClick += new MouseEventHandler(SetActiveControl);
+                    pictureBox.MouseClick += SetActiveControl;
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
-                    pictureBox.Cursor = hand_Cursor;
+                    pictureBox.Cursor = Theme_Settings.Hand_Cursor;
                 }
 
                 if (c.Name == "switch15")
                 {
-                    c.KeyPress += new KeyPressEventHandler(num_KeyPress);
-                    CustomToolTips.SetToolTip(c, "If the cursor move without touching the\r\nleft stick set a higher value(steps of +1000).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                    c.KeyPress += Num_KeyPress;
+                    CustomToolTips.SetToolTip(c, "If the cursor move without touching the\r\nleft stick set a higher value(steps of +1000).", "switch15", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
             }
 
-            Rectangle area = Screen.PrimaryScreen.Bounds;
+            reminderPict.BackgroundImage = GamepadButtons.Image(1024, gamepadType);//Guide
 
-            if (ini.IniReadValue("Misc", "GamepadSettingsLocation") != "")
+            Rectangle area = Screen.PrimaryScreen.Bounds;
+            if (App_Misc.GamepadSettingsLocation != "")
             {
-                string[] windowLocation = ini.IniReadValue("Misc", "GamepadSettingsLocation").Split('X');
-                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+                string[] windowLocation = App_Misc.GamepadSettingsLocation.Split('X');
+
+                if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
+                {
+                    CenterToScreen();
+                }
+                else
+                {
+                    Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+                }
             }
             else
             {
-                StartPosition = FormStartPosition.CenterScreen;
+                CenterToScreen();
             }
 
             DPIManager.Register(this);
@@ -257,15 +177,11 @@ namespace Nucleus.Coop.Forms
 
             this.scale = scale;
 
-            SuspendLayout();
-
-            //if (scale > 1.0F)
-            // {
             float newFontSize = 7.25F * scale;
 
             foreach (Control c in shortContainer.Controls)
             {
-                if (c.GetType() == typeof(Label))
+                if (c is Label)
                 {
                     if (c.Text != ("+"))
                     {
@@ -278,12 +194,13 @@ namespace Nucleus.Coop.Forms
             {
                 if (scale > 1.0F)
                 {
-                    if (c.GetType() == typeof(TextBox))
+                    if (c is TextBox)
                     {
                         c.Font = new Font(c.Font.FontFamily, newFontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
                     }
                 }
-                if (c.GetType() == typeof(Label))
+
+                if (c is Label)
                 {
                     if (c.Text != ("+"))
                     {
@@ -291,9 +208,6 @@ namespace Nucleus.Coop.Forms
                     }
                 }
             }
-            // }
-
-            ResumeLayout();
         }
 
         private void RefreshTimerTick(Object Object, EventArgs EventArgs)
@@ -302,7 +216,7 @@ namespace Nucleus.Coop.Forms
                 gamepadTopFront.Invalidate();
         }
 
-        private void gamepadTopFront_Paint(object sender, PaintEventArgs e)
+        private void GamepadTopFront_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             float factor = 1.5F;
@@ -498,8 +412,8 @@ namespace Nucleus.Coop.Forms
                 }
             }
         }
-       
-        private void num_KeyPress(object sender, KeyPressEventArgs e)
+
+        private void Num_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
@@ -509,7 +423,7 @@ namespace Nucleus.Coop.Forms
 
         private void SetActiveControl(object sender, EventArgs e)
         {
-            if (sender.GetType() != typeof(PictureBox))
+            if (!(sender is PictureBox))
             {
                 return;
             }
@@ -525,30 +439,29 @@ namespace Nucleus.Coop.Forms
             activeControl = pb;
         }
 
-        private void enabled_chk_CheckedChanged(object sender, EventArgs e)
+        private void Enabled_chk_CheckedChanged(object sender, EventArgs e)
         {
-            ini.IniWriteValue("XUINav", "Enabled", enabled_chk.Checked.ToString());
+            App_GamePadNavigation.Enabled = enabled_chk.Checked;
             GamepadNavigation.UpdateUINavSettings();
         }
 
         private void radioButtonXbox_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;
-            if(radio.Checked)
+            if (radio.Checked)
             {
-                ini.IniWriteValue("XUINav", "Type", radio.Tag.ToString());
+                App_GamePadNavigation.Type = radio.Tag.ToString();
                 gamepadType = radio.Tag.ToString();
                 UpdateGamepadType();
             }
-
         }
 
-        private void radioButtonPs_CheckedChanged(object sender, EventArgs e)
+        private void RadioButtonPs_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;
             if (radio.Checked)
             {
-                ini.IniWriteValue("XUINav","Type", radio.Tag.ToString());
+                App_GamePadNavigation.Type = radio.Tag.ToString();
                 gamepadType = radio.Tag.ToString();
                 UpdateGamepadType();
             }
@@ -558,7 +471,7 @@ namespace Nucleus.Coop.Forms
         {
             foreach (Control c in shortContainer.Controls)
             {
-                if (c.GetType() == typeof(PictureBox))
+                if (c is PictureBox)
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
@@ -567,39 +480,72 @@ namespace Nucleus.Coop.Forms
 
             foreach (Control c in UINavContainer.Controls)
             {
-                if (c.GetType() == typeof(PictureBox))
+                if (c is PictureBox)
                 {
                     PictureBox pictureBox = (PictureBox)c;
                     pictureBox.BackgroundImage = GamepadButtons.Image((int)pictureBox.Tag, gamepadType);
                 }
             }
+
+            reminderPict.BackgroundImage = GamepadButtons.Image(1024, gamepadType);//Guide
         }
 
         private void Close_Click(object sender, EventArgs e)
         {
-            ini.IniWriteValue("XShortcuts", "SetFocus", switch1.Tag.ToString() + "+" + slave1.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Close", switch2.Tag.ToString() + "+" + slave2.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Stop", switch3.Tag.ToString() + "+" + slave3.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "TopMost", switch4.Tag.ToString() + "+" + slave4.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "ResetWindows", switch5.Tag.ToString() + "+" + slave5.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Cutscenes", switch6.Tag.ToString() + "+" + slave6.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "Switch", switch7.Tag.ToString() + "+" + slave7.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "LockInputs", switch8.Tag.ToString() + "+" + slave8.Tag.ToString());
-            ini.IniWriteValue("XShortcuts", "ReleaseCursor", switch9.Tag.ToString() + "+" + slave9.Tag.ToString());
+            #region take a picture of the controller shortcuts
 
-            ini.IniWriteValue("XUINav", "LockUIControl", switch10.Tag.ToString() + "+" + slave10.Tag.ToString());
-            ini.IniWriteValue("XUINav", "OpenOsk", switch11.Tag.ToString() + "+" + slave11.Tag.ToString());
-            ini.IniWriteValue("XUINav", "DragDrop", switch12.Tag.ToString());
-            ini.IniWriteValue("XUINav", "RightClick", switch13.Tag.ToString());
-            ini.IniWriteValue("XUINav", "LeftClick", switch14.Tag.ToString());
+            Color defColor = shortContainer.BackColor;
+
+            try
+            {
+                shortContainer.BackColor = Color.Black;
+                Graphics g = shortContainer.CreateGraphics();
+                Bitmap bmp = new Bitmap(shortContainer.Width, shortContainer.Height);
+                shortContainer.DrawToBitmap(bmp, new Rectangle(0, 0, shortContainer.Width, shortContainer.Height));
+
+                string savePath = Path.Combine(Application.StartupPath, $@"gui\shortcuts");
+
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+
+                bmp.Save(Path.Combine(savePath, "XShortcutsReminder.jpeg"), ImageFormat.Jpeg);
+                bmp.Dispose();
+                g.Dispose();
+
+                shortContainer.BackColor = defColor;
+            }
+            catch
+            {
+                shortContainer.BackColor = defColor;
+            }
+
+            #endregion
+
+            App_GamePadShortcuts.SetFocus = new int[]{(int) switch1.Tag, (int)slave1.Tag};
+            App_GamePadShortcuts.Close = new int[] { (int)switch2.Tag, (int)slave2.Tag };
+            App_GamePadShortcuts.StopSession = new int[] { (int)switch3.Tag, (int)slave3.Tag };
+            App_GamePadShortcuts.TopMost = new int[] { (int)switch4.Tag, (int)slave4.Tag };
+            App_GamePadShortcuts.ResetWindows = new int[] { (int)switch5.Tag, (int)slave5.Tag };
+            App_GamePadShortcuts.CutscenesMode = new int[] { (int)switch6.Tag, (int)slave6.Tag };
+            App_GamePadShortcuts.SwitchLayout = new int[] { (int)switch7.Tag, (int)slave7.Tag };
+            App_GamePadShortcuts.LockInputs = new int[] { (int)switch8.Tag, (int)slave8.Tag };
+            App_GamePadShortcuts.ReleaseCursor = new int[] { (int)switch9.Tag, (int)slave9.Tag };
+
+            App_GamePadNavigation.TogglekUINavigation = new int[] { (int)switch10.Tag, (int)slave10.Tag };
+            App_GamePadNavigation.OpenOsk = new int[] { (int)switch11.Tag, (int)slave11.Tag };
+            App_GamePadNavigation.DragDrop = int.Parse(switch12.Tag.ToString());
+            App_GamePadNavigation.RightClick = int.Parse(switch13.Tag.ToString());
+            App_GamePadNavigation.LeftClick = int.Parse(switch14.Tag.ToString());
 
             if (switch15.Text == "")
             {
                 switch15.Text = "10000";
             }
 
-            ini.IniWriteValue("XUINav", "Deadzone", switch15.Text);
-            ini.IniWriteValue("Misc", "GamepadSettingsLocation", Location.X + "X" + Location.Y);
+            App_GamePadNavigation.Deadzone = int.Parse(switch15.Text);
+            App_Misc.GamepadSettingsLocation = Location.X + "X" + Location.Y;
 
             GamepadShortcuts.UpdateShortcutsValue();
             GamepadNavigation.UpdateUINavSettings();
@@ -609,12 +555,12 @@ namespace Nucleus.Coop.Forms
 
         private void Close_MouseEnter(object sender, EventArgs e)
         {
-            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close_mousehover.png");
+            Close.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close_mousehover.png");
         }
 
         private void Close_MouseLeave(object sender, EventArgs e)
         {
-            Close.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
+            Close.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -630,7 +576,7 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        private void gamepadTopFront_MouseDown(object sender, MouseEventArgs e)
+        private void GamepadTopFront_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -639,7 +585,5 @@ namespace Nucleus.Coop.Forms
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
             }
         }
-
-        
     }
 }

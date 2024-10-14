@@ -332,7 +332,7 @@ namespace Nucleus.Gaming.Coop.ProtoInput
 
         public static void NotifyInputLockChange()
         {
-            bool freezeExternal = !LockInput.IsLocked;
+            bool freezeExternal = !LockInputRuntime.IsLocked;
 
             foreach (uint instanceHandle in trackedInstanceHandles)
             {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Nucleus;
 using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Windows;
 using System;
 using System.Collections;
@@ -82,8 +83,6 @@ namespace StartGame
         private static string nucleusFolderPath;
 
         private static uint pOutPID = 0;
-
-        private static readonly IniFile ini = new Nucleus.Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         [DllImport("EasyHook64.dll", CharSet = CharSet.Ansi)]
         private static extern int RhCreateAndInject(
@@ -241,7 +240,7 @@ namespace StartGame
 
         static void Log(string logMessage)
         {
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (App_Misc.DebugLog)
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {
@@ -365,7 +364,6 @@ namespace StartGame
                         {
                             if (gameProc.GetMainModuleFileName().ToLower() == path.ToLower())
                             {
-
                                 Log("Process with this path is already running! Skipping creating a new process");
                                 pOutPID = (uint)gameProc.Id;
                                 alreadyExists = true;
@@ -402,7 +400,7 @@ namespace StartGame
                             {
                             0, // Tier 0 : start up hook
 							path, // EXE path
-							args, // Command line arguments. TODO: these args should be converted to base64 to prevent any special characters e.g. " breaking the injargs
+							args, // Command line arguments. //TODO: these args should be converted to base64 to prevent any special characters e.g. " breaking the injargs
 							pCreationFlags, // Process creation flags
 							0, // InInjectionOptions (EasyHook)
 							Path.Combine(currDir, "Nucleus.SHook32.dll"), // lib path 32

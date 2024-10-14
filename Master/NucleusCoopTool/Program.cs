@@ -1,43 +1,42 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Windows;
 using System;
-using System.IO;
-using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
     static class Program
-    {
-        private static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
-        public static bool connected;
-        public static bool forcedBadPath;
+    {      
+        public static bool Connected;
+        public static bool ForcedBadPath;
 
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            if (!bool.Parse(ini.IniReadValue("Misc", "NucleusMultiInstances")))
+            App_Settings_Loader.InitializeSettings();
+
+            if (!App_Misc.NucleusMultiInstances)
             {
-                if (StartChecks.IsAlreadyRunning())
+                if (StartChecks.IsAlreadyRunning())         
                     return;
             }
-    
+
             StartChecks.Check_VCRVersion();
-         
-            if (ini.IniReadValue("Dev", "DisablePathCheck") == "" || ini.IniReadValue("Dev", "DisablePathCheck") == "False")// Add "DisablePathCheck=True" under [Dev] in Settings.ini to disable unsafe path check.
+
+            if (!App_Misc.DisablePathCheck)
             {
                 if (!StartChecks.StartCheck(true))
-                    forcedBadPath = true;
+                    ForcedBadPath = true;
             }
 
-            connected = StartChecks.CheckHubResponse();
+            Connected = StartChecks.CheckHubResponse();
 
             StartChecks.CheckFilesIntegrity();
             StartChecks.CheckUserEnvironment();
-            StartChecks.CheckAppUpdate();//a decommenter
-            StartChecks.CheckDebugLogSize(ini);
-
+            StartChecks.CheckAppUpdate();
+            StartChecks.CheckDebugLogSize();
+            StartChecks.CleanLogs();
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware
             DPIManager.PreInitialize();
@@ -46,10 +45,11 @@ namespace Nucleus.Coop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainForm form = new MainForm();
+            MainForm form = new MainForm(args);
             DPIManager.AddForm(form);
             DPIManager.ForceUpdate();
             Application.Run(form);
+
         }
     }
 }

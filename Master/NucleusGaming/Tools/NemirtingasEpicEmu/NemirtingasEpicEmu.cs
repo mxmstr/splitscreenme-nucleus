@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,13 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
 {
     public static class NemirtingasEpicEmu
     {
-        public static void UseNemirtingasEpicEmu(GenericGameHandler genericGameHandler, GenericGameInfo gen, string rootFolder, string linkFolder, int i, PlayerInfo player, bool setupDll)
+        public static void UseNemirtingasEpicEmu(string rootFolder, string linkFolder, int i, PlayerInfo player, bool setupDll)
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             if (setupDll)
             {
-                genericGameHandler.Log("Starting Nemirtingas Epic Emu setup");
+                handlerInstance.Log("Starting Nemirtingas Epic Emu setup");
                 string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\NemirtingasEpicEmu");
                 string x86dll = "EOSSDK-Win32-Shipping.dll";
                 string x64dll = "EOSSDK-Win64-Shipping.dll";
@@ -23,25 +26,25 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
                 string dllFolder = string.Empty;
                 string instanceDllFolder = string.Empty;
 
-                genericGameHandler.Log("Generating emulator settings folder");
+                handlerInstance.Log("Generating emulator settings folder");
                 try
                 {
-                    if (!Directory.Exists(Path.Combine(genericGameHandler.instanceExeFolder, "nepice_settings")))
+                    if (!Directory.Exists(Path.Combine(handlerInstance.instanceExeFolder, "nepice_settings")))
                     {
-                        Directory.CreateDirectory((Path.Combine(genericGameHandler.instanceExeFolder, "nepice_settings")));
-                        genericGameHandler.Log("Emulator settings folder generated");
+                        Directory.CreateDirectory((Path.Combine(handlerInstance.instanceExeFolder, "nepice_settings")));
+                        handlerInstance.Log("Emulator settings folder generated");
                     }
                 }
                 catch (Exception)
                 {
-                    genericGameHandler.Log("Nucleus is unable to generate the required emulator settings folder");
+                    handlerInstance.Log("Nucleus is unable to generate the required emulator settings folder");
                 }
 
                 try
                 {
                     JObject emuSettings;
 
-                    if (gen.AltEpicEmuArgs)
+                    if (handlerInstance.CurrentGameInfo.AltEpicEmuArgs)
                     {
                         emuSettings = new JObject(
                         new JProperty("enable_overlay", false),
@@ -71,11 +74,11 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
                         );
                     }
 
-                    string jsonPath = Path.Combine(genericGameHandler.instanceExeFolder, "nepice_settings\\NemirtingasEpicEmu.json");
+                    string jsonPath = Path.Combine(handlerInstance.instanceExeFolder, "nepice_settings\\NemirtingasEpicEmu.json");
 
-                    string oldjsonPath = Path.Combine(genericGameHandler.instanceExeFolder, "NemirtingasEpicEmu.json");//for older eos emu version
+                    string oldjsonPath = Path.Combine(handlerInstance.instanceExeFolder, "NemirtingasEpicEmu.json");//for older eos emu version
 
-                    genericGameHandler.Log("Writing emulator settings NemirtingasEpicEmu.json");
+                    handlerInstance.Log("Writing emulator settings NemirtingasEpicEmu.json");
 
                     File.WriteAllText(jsonPath, emuSettings.ToString());
 
@@ -83,19 +86,19 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
 
                     if (setupDll)
                     {
-                        genericGameHandler.addedFiles.Add(jsonPath);
-                        genericGameHandler.addedFiles.Add(oldjsonPath);
+                        handlerInstance.addedFiles.Add(jsonPath);
+                        handlerInstance.addedFiles.Add(oldjsonPath);
                     }
                 }
                 catch (Exception)
                 {
-                    genericGameHandler.Log("Nucleus is unable to write the required NemirtingasEpicEmu.json file");
+                    handlerInstance.Log("Nucleus is unable to write the required NemirtingasEpicEmu.json file");
                 }
 
                 string[] steamDllFiles = Directory.GetFiles(rootFolder, "EOSSDK-Win*.dll", SearchOption.AllDirectories);
                 foreach (string nameFile in steamDllFiles)
                 {
-                    genericGameHandler.Log("Found " + nameFile);
+                    handlerInstance.Log("Found " + nameFile);
                     dllrootFolder = Path.GetDirectoryName(nameFile);
 
                     string tempRootFolder = rootFolder;
@@ -110,45 +113,45 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
                     if (nameFile.EndsWith(x64dll, true, null))
                     {
 
-                        FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(instanceDllFolder, x64dll));
+                        FileUtil.FileCheck(Path.Combine(instanceDllFolder, x64dll));
                         try
                         {
-                            genericGameHandler.Log("Placing Epic Emu " + x64dll + " in instance dll folder " + instanceDllFolder);
+                            handlerInstance.Log("Placing Epic Emu " + x64dll + " in instance dll folder " + instanceDllFolder);
                             File.Copy(Path.Combine(utilFolder, "x64\\" + x64dll), Path.Combine(instanceDllFolder, x64dll), true);
                         }
                         catch (Exception ex)
                         {
-                            genericGameHandler.Log("ERROR - " + ex.Message);
-                            genericGameHandler.Log("Using alternative copy method for " + x64dll);
+                            handlerInstance.Log("ERROR - " + ex.Message);
+                            handlerInstance.Log("Using alternative copy method for " + x64dll);
                             CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, "x64\\" + x64dll) + "\" \"" + Path.Combine(instanceDllFolder, x64dll) + "\"");
                         }
                     }
 
                     if (nameFile.EndsWith(x86dll, true, null))
                     {
-                        FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(instanceDllFolder, x86dll));
+                        FileUtil.FileCheck(Path.Combine(instanceDllFolder, x86dll));
 
                         try
                         {
-                            genericGameHandler.Log("Placing Epic Emu " + x86dll + " in instance steam dll folder " + instanceDllFolder);
+                            handlerInstance.Log("Placing Epic Emu " + x86dll + " in instance steam dll folder " + instanceDllFolder);
                             File.Copy(Path.Combine(utilFolder, "x86\\" + x86dll), Path.Combine(instanceDllFolder, x86dll), true);
                         }
                         catch (Exception ex)
                         {
-                            genericGameHandler.Log("ERROR - " + ex.Message);
-                            genericGameHandler.Log("Using alternative copy method for " + x86dll);
+                            handlerInstance.Log("ERROR - " + ex.Message);
+                            handlerInstance.Log("Using alternative copy method for " + x86dll);
                             CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, "x86\\" + x86dll) + "\" \"" + Path.Combine(instanceDllFolder, x86dll) + "\"");
                         }
                     }
                 }
             }
 
-            genericGameHandler.Log("Epic Emu setup complete");
+            handlerInstance.Log("Epic Emu setup complete");
         }
 
         public static string GetEpicLanguage()
         {
-            string epicLanguage = Globals.ini.IniReadValue("Misc", "EpicLang");
+            string epicLanguage = App_Misc.EpicLang;
             string EpicLang = "";
 
             IDictionary<string, string> epiclangs = new Dictionary<string, string>

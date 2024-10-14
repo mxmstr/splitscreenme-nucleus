@@ -31,7 +31,6 @@ namespace Nucleus.Coop
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
-            this.btn_credits = new System.Windows.Forms.Button();
             this.closeBtnPicture = new System.Windows.Forms.PictureBox();
             this.layoutBtnPicture = new System.Windows.Forms.PictureBox();
             this.settingsBtnPicture = new System.Windows.Forms.PictureBox();
@@ -41,10 +40,8 @@ namespace Nucleus.Coop
             this.audioTabBtn = new System.Windows.Forms.Button();
             this.playersTabBtn = new System.Windows.Forms.Button();
             this.settingsTabBtn = new System.Windows.Forms.Button();
-            this.settingsTab = new BufferedClientAreaPanel();
-            this.btn_SteamExePath = new System.Windows.Forms.Button();
+            this.settingsTab = new System.Windows.Forms.Panel();
             this.btn_Gb_Update = new System.Windows.Forms.Button();
-            this.showUIInfoMsg = new System.Windows.Forms.CheckBox();
             this.disableGameProfiles = new System.Windows.Forms.CheckBox();
             this.keepAccountsCheck = new System.Windows.Forms.CheckBox();
             this.ctrlr_shorcutsBtn = new System.Windows.Forms.Button();
@@ -52,51 +49,53 @@ namespace Nucleus.Coop
             this.password_Label = new System.Windows.Forms.Label();
             this.themeLabel = new System.Windows.Forms.Label();
             this.themeCbx = new System.Windows.Forms.ComboBox();
-            this.clickSoundChkB = new System.Windows.Forms.CheckBox();
             this.cmb_EpicLang = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.ignoreInputLockReminderCheckbox = new System.Windows.Forms.CheckBox();
-            this.statusCheck = new System.Windows.Forms.CheckBox();
             this.cmb_Lang = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.debugLogCheck = new System.Windows.Forms.CheckBox();
             this.hotkeyBox = new System.Windows.Forms.GroupBox();
+            this.rm_Cmb = new System.Windows.Forms.ComboBox();
+            this.plus8 = new System.Windows.Forms.Label();
+            this.hkLabel2 = new System.Windows.Forms.Label();
+            this.rm_HKTxt = new System.Windows.Forms.TextBox();
             this.hkLabel4 = new System.Windows.Forms.Label();
             this.hkLabel3 = new System.Windows.Forms.Label();
-            this.swl_comboBox = new System.Windows.Forms.ComboBox();
+            this.swl_Cmb = new System.Windows.Forms.ComboBox();
             this.plus7 = new System.Windows.Forms.Label();
             this.hkLabel7 = new System.Windows.Forms.Label();
-            this.swl_textBox = new System.Windows.Forms.TextBox();
-            this.csm_comboBox = new System.Windows.Forms.ComboBox();
+            this.swl_HKTxt = new System.Windows.Forms.TextBox();
+            this.csm_Cmb = new System.Windows.Forms.ComboBox();
             this.hkLabel = new System.Windows.Forms.Label();
             this.plus6 = new System.Windows.Forms.Label();
-            this.csm_textBox = new System.Windows.Forms.TextBox();
+            this.csm_HKTxt = new System.Windows.Forms.TextBox();
             this.hkLabel8 = new System.Windows.Forms.Label();
-            this.r1 = new System.Windows.Forms.ComboBox();
+            this.rw_Cmb = new System.Windows.Forms.ComboBox();
             this.plus5 = new System.Windows.Forms.Label();
             this.hkLabel1 = new System.Windows.Forms.Label();
-            this.settingsFocusCmb = new System.Windows.Forms.ComboBox();
+            this.tu_Cmb = new System.Windows.Forms.ComboBox();
             this.plus1 = new System.Windows.Forms.Label();
             this.hkLabel5 = new System.Windows.Forms.Label();
-            this.r2 = new System.Windows.Forms.TextBox();
+            this.rw_HKTxt = new System.Windows.Forms.TextBox();
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.hkLabel6 = new System.Windows.Forms.Label();
-            this.settingsFocusHKTxt = new System.Windows.Forms.TextBox();
-            this.comboBox_lockKey = new System.Windows.Forms.ComboBox();
-            this.settingsTopCmb = new System.Windows.Forms.ComboBox();
-            this.settingsStopCmb = new System.Windows.Forms.ComboBox();
-            this.settingsTopTxt = new System.Windows.Forms.TextBox();
-            this.settingsStopTxt = new System.Windows.Forms.TextBox();
-            this.settingsCloseCmb = new System.Windows.Forms.ComboBox();
+            this.tu_HKTxt = new System.Windows.Forms.TextBox();
+            this.lockKey_Cmb = new System.Windows.Forms.ComboBox();
+            this.ttm_Cmb = new System.Windows.Forms.ComboBox();
+            this.ss_Cmb = new System.Windows.Forms.ComboBox();
+            this.ttm_HKTxt = new System.Windows.Forms.TextBox();
+            this.ss_HKTxt = new System.Windows.Forms.TextBox();
+            this.cn_Cmb = new System.Windows.Forms.ComboBox();
             this.plus4 = new System.Windows.Forms.Label();
             this.plus3 = new System.Windows.Forms.Label();
             this.plus2 = new System.Windows.Forms.Label();
-            this.settingsCloseHKTxt = new System.Windows.Forms.TextBox();
+            this.cn_HKTxt = new System.Windows.Forms.TextBox();
             this.scaleOptionCbx = new System.Windows.Forms.CheckBox();
             this.useNicksCheck = new System.Windows.Forms.CheckBox();
             this.cmb_Network = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
-            this.playersTab = new BufferedClientAreaPanel();
+            this.playersTab = new System.Windows.Forms.Panel();
             this.gamepadsAssignMethods = new System.Windows.Forms.CheckBox();
             this.btnNext = new System.Windows.Forms.Button();
             this.def_sid_comboBox = new System.Windows.Forms.ComboBox();
@@ -211,7 +210,7 @@ namespace Nucleus.Coop
             this.label35 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.player28N = new System.Windows.Forms.ComboBox();
-            this.audioTab = new BufferedClientAreaPanel();
+            this.audioTab = new System.Windows.Forms.Panel();
             this.audioWarningLabel = new System.Windows.Forms.Label();
             this.audioDefaultDevice = new System.Windows.Forms.Label();
             this.audioCustomSettingsBox = new System.Windows.Forms.GroupBox();
@@ -234,15 +233,23 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioDefaultSettingsRadio = new System.Windows.Forms.RadioButton();
             this.audioRefresh = new System.Windows.Forms.Button();
-            this.layoutTab = new BufferedClientAreaPanel();
-            this.cts_bringToFront = new System.Windows.Forms.CheckBox();
+            this.layoutTab = new System.Windows.Forms.Panel();
+            this.smfw_Cmb = new System.Windows.Forms.ComboBox();
+            this.plus9 = new System.Windows.Forms.Label();
+            this.mergerShortcutLabel = new System.Windows.Forms.Label();
+            this.smfw_HKTxt = new System.Windows.Forms.TextBox();
+            this.refreshScreenDatasButton = new System.Windows.Forms.Button();
+            this.mergerResSelectorLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.mergerSettingsLabel = new System.Windows.Forms.Label();
+            this.losslessHook = new System.Windows.Forms.CheckBox();
+            this.selectedRes = new System.Windows.Forms.TextBox();
+            this.screen_panel = new System.Windows.Forms.Panel();
+            this.enable_WMerger = new System.Windows.Forms.CheckBox();
             this.hideDesktop = new System.Windows.Forms.CheckBox();
-            this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
-            this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.label29 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             this.label71 = new System.Windows.Forms.Label();
             this.cts_Panel = new System.Windows.Forms.Panel();
             this.cts_unfocus = new System.Windows.Forms.CheckBox();
@@ -252,6 +259,9 @@ namespace Nucleus.Coop
             this.splitDiv = new System.Windows.Forms.CheckBox();
             this.label49 = new System.Windows.Forms.Label();
             this.layoutSizer = new System.Windows.Forms.Panel();
+            this.numMaxPlyrs = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.numUpDownVer = new Nucleus.Gaming.Controls.CustomNumericUpDown();
+            this.numUpDownHor = new Nucleus.Gaming.Controls.CustomNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutBtnPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBtnPicture)).BeginInit();
@@ -268,38 +278,18 @@ namespace Nucleus.Coop
             this.cts_Panel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btn_credits
-            // 
-            this.btn_credits.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btn_credits.BackColor = System.Drawing.Color.Transparent;
-            this.btn_credits.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_credits.FlatAppearance.BorderSize = 0;
-            this.btn_credits.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_credits.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_credits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_credits.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_credits.Location = new System.Drawing.Point(629, 2);
-            this.btn_credits.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_credits.Name = "btn_credits";
-            this.btn_credits.Size = new System.Drawing.Size(19, 19);
-            this.btn_credits.TabIndex = 301;
-            this.btn_credits.UseVisualStyleBackColor = false;
-            this.btn_credits.Click += new System.EventHandler(this.btn_credits_Click);
-            this.btn_credits.MouseEnter += new System.EventHandler(this.btn_credits_MouseEnter);
-            this.btn_credits.MouseLeave += new System.EventHandler(this.btn_credits_MouseLeave);
-            // 
             // closeBtnPicture
             // 
             this.closeBtnPicture.BackColor = System.Drawing.Color.Transparent;
             this.closeBtnPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.closeBtnPicture.Location = new System.Drawing.Point(654, 1);
+            this.closeBtnPicture.Location = new System.Drawing.Point(652, 3);
             this.closeBtnPicture.Name = "closeBtnPicture";
             this.closeBtnPicture.Size = new System.Drawing.Size(19, 19);
             this.closeBtnPicture.TabIndex = 298;
             this.closeBtnPicture.TabStop = false;
-            this.closeBtnPicture.Click += new System.EventHandler(this.closeBtnPicture_Click);
-            this.closeBtnPicture.MouseEnter += new System.EventHandler(this.closeBtnPicture_MouseEnter);
-            this.closeBtnPicture.MouseLeave += new System.EventHandler(this.closeBtnPicture_MouseLeave);
+            this.closeBtnPicture.Click += new System.EventHandler(this.CloseBtnPicture_Click);
+            this.closeBtnPicture.MouseEnter += new System.EventHandler(this.CloseBtnPicture_MouseEnter);
+            this.closeBtnPicture.MouseLeave += new System.EventHandler(this.CloseBtnPicture_MouseLeave);
             // 
             // layoutBtnPicture
             // 
@@ -376,7 +366,7 @@ namespace Nucleus.Coop
             this.audioTabBtn.Text = "Audio";
             this.audioTabBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.audioTabBtn.UseVisualStyleBackColor = false;
-            this.audioTabBtn.Click += new System.EventHandler(this.audioBtnPicture_Click);
+            this.audioTabBtn.Click += new System.EventHandler(this.AudioBtnPicture_Click);
             // 
             // playersTabBtn
             // 
@@ -415,9 +405,7 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.settingsTab.Controls.Add(this.btn_SteamExePath);
             this.settingsTab.Controls.Add(this.btn_Gb_Update);
-            this.settingsTab.Controls.Add(this.showUIInfoMsg);
             this.settingsTab.Controls.Add(this.disableGameProfiles);
             this.settingsTab.Controls.Add(this.keepAccountsCheck);
             this.settingsTab.Controls.Add(this.ctrlr_shorcutsBtn);
@@ -425,11 +413,9 @@ namespace Nucleus.Coop
             this.settingsTab.Controls.Add(this.password_Label);
             this.settingsTab.Controls.Add(this.themeLabel);
             this.settingsTab.Controls.Add(this.themeCbx);
-            this.settingsTab.Controls.Add(this.clickSoundChkB);
             this.settingsTab.Controls.Add(this.cmb_EpicLang);
             this.settingsTab.Controls.Add(this.label1);
             this.settingsTab.Controls.Add(this.ignoreInputLockReminderCheckbox);
-            this.settingsTab.Controls.Add(this.statusCheck);
             this.settingsTab.Controls.Add(this.cmb_Lang);
             this.settingsTab.Controls.Add(this.label2);
             this.settingsTab.Controls.Add(this.debugLogCheck);
@@ -443,47 +429,17 @@ namespace Nucleus.Coop
             this.settingsTab.Size = new System.Drawing.Size(674, 391);
             this.settingsTab.TabIndex = 42;
             // 
-            // btn_SteamExePath
-            // 
-            this.btn_SteamExePath.BackColor = System.Drawing.Color.Transparent;
-            this.btn_SteamExePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SteamExePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.btn_SteamExePath.Location = new System.Drawing.Point(374, 362);
-            this.btn_SteamExePath.Name = "btn_SteamExePath";
-            this.btn_SteamExePath.Size = new System.Drawing.Size(257, 27);
-            this.btn_SteamExePath.TabIndex = 171;
-            this.btn_SteamExePath.Text = "Select Steam Client Executable Path";
-            this.btn_SteamExePath.UseVisualStyleBackColor = false;
-            this.btn_SteamExePath.Visible = false;
-            this.btn_SteamExePath.Click += new System.EventHandler(this.btn_SteamExePath_Click);
-            // 
             // btn_Gb_Update
             // 
             this.btn_Gb_Update.BackColor = System.Drawing.Color.Transparent;
             this.btn_Gb_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Gb_Update.Location = new System.Drawing.Point(374, 334);
+            this.btn_Gb_Update.Location = new System.Drawing.Point(401, 349);
             this.btn_Gb_Update.Name = "btn_Gb_Update";
-            this.btn_Gb_Update.Size = new System.Drawing.Size(257, 27);
+            this.btn_Gb_Update.Size = new System.Drawing.Size(258, 27);
             this.btn_Gb_Update.TabIndex = 169;
             this.btn_Gb_Update.Text = "Goldberg Steam Emulator Updater";
             this.btn_Gb_Update.UseVisualStyleBackColor = false;
-            this.btn_Gb_Update.Click += new System.EventHandler(this.btn_Gb_Update_Click);
-            // 
-            // showUIInfoMsg
-            // 
-            this.showUIInfoMsg.AutoSize = true;
-            this.showUIInfoMsg.BackColor = System.Drawing.Color.Transparent;
-            this.showUIInfoMsg.Checked = true;
-            this.showUIInfoMsg.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showUIInfoMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showUIInfoMsg.Location = new System.Drawing.Point(371, 4);
-            this.showUIInfoMsg.Margin = new System.Windows.Forms.Padding(2);
-            this.showUIInfoMsg.Name = "showUIInfoMsg";
-            this.showUIInfoMsg.Size = new System.Drawing.Size(259, 19);
-            this.showUIInfoMsg.TabIndex = 168;
-            this.showUIInfoMsg.Tag = "";
-            this.showUIInfoMsg.Text = "Show UI Info Messages (Restart Required)";
-            this.showUIInfoMsg.UseVisualStyleBackColor = false;
+            this.btn_Gb_Update.Click += new System.EventHandler(this.Btn_Gb_Update_Click);
             // 
             // disableGameProfiles
             // 
@@ -492,7 +448,7 @@ namespace Nucleus.Coop
             this.disableGameProfiles.Checked = true;
             this.disableGameProfiles.CheckState = System.Windows.Forms.CheckState.Checked;
             this.disableGameProfiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.disableGameProfiles.Location = new System.Drawing.Point(14, 343);
+            this.disableGameProfiles.Location = new System.Drawing.Point(14, 316);
             this.disableGameProfiles.Margin = new System.Windows.Forms.Padding(2);
             this.disableGameProfiles.Name = "disableGameProfiles";
             this.disableGameProfiles.Size = new System.Drawing.Size(129, 17);
@@ -500,21 +456,20 @@ namespace Nucleus.Coop
             this.disableGameProfiles.Tag = "";
             this.disableGameProfiles.Text = "Disable Game Profiles";
             this.disableGameProfiles.UseVisualStyleBackColor = false;
-            this.disableGameProfiles.CheckedChanged += new System.EventHandler(this.disableGameProfiles_CheckedChanged);
             // 
             // keepAccountsCheck
             // 
             this.keepAccountsCheck.AutoSize = true;
             this.keepAccountsCheck.BackColor = System.Drawing.Color.Transparent;
             this.keepAccountsCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.keepAccountsCheck.Location = new System.Drawing.Point(14, 301);
+            this.keepAccountsCheck.Location = new System.Drawing.Point(14, 274);
             this.keepAccountsCheck.Margin = new System.Windows.Forms.Padding(2);
             this.keepAccountsCheck.Name = "keepAccountsCheck";
             this.keepAccountsCheck.Size = new System.Drawing.Size(166, 17);
             this.keepAccountsCheck.TabIndex = 166;
             this.keepAccountsCheck.Text = "Keep Nucleus User Accounts";
             this.keepAccountsCheck.UseVisualStyleBackColor = false;
-            this.keepAccountsCheck.Click += new System.EventHandler(this.keepAccountsCheck_Click);
+            this.keepAccountsCheck.Click += new System.EventHandler(this.KeepAccountsCheck_Click);
             // 
             // ctrlr_shorcutsBtn
             // 
@@ -523,19 +478,19 @@ namespace Nucleus.Coop
             this.ctrlr_shorcutsBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ctrlr_shorcutsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ctrlr_shorcutsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(374, 306);
+            this.ctrlr_shorcutsBtn.Location = new System.Drawing.Point(401, 316);
             this.ctrlr_shorcutsBtn.Name = "ctrlr_shorcutsBtn";
-            this.ctrlr_shorcutsBtn.Size = new System.Drawing.Size(257, 27);
+            this.ctrlr_shorcutsBtn.Size = new System.Drawing.Size(258, 27);
             this.ctrlr_shorcutsBtn.TabIndex = 164;
             this.ctrlr_shorcutsBtn.Text = "Controller Shortcuts Setup";
             this.ctrlr_shorcutsBtn.UseVisualStyleBackColor = false;
-            this.ctrlr_shorcutsBtn.Click += new System.EventHandler(this.ctrlr_shorcuts_Click);
+            this.ctrlr_shorcutsBtn.Click += new System.EventHandler(this.Ctrlr_shorcuts_Click);
             // 
             // nucUserPassTxt
             // 
             this.nucUserPassTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nucUserPassTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nucUserPassTxt.Location = new System.Drawing.Point(374, 48);
+            this.nucUserPassTxt.Location = new System.Drawing.Point(402, 31);
             this.nucUserPassTxt.Margin = new System.Windows.Forms.Padding(2);
             this.nucUserPassTxt.MaxLength = 127;
             this.nucUserPassTxt.Name = "nucUserPassTxt";
@@ -550,7 +505,7 @@ namespace Nucleus.Coop
             this.password_Label.AutoSize = true;
             this.password_Label.BackColor = System.Drawing.Color.Transparent;
             this.password_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.password_Label.Location = new System.Drawing.Point(371, 29);
+            this.password_Label.Location = new System.Drawing.Point(399, 12);
             this.password_Label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.password_Label.Name = "password_Label";
             this.password_Label.Size = new System.Drawing.Size(138, 15);
@@ -562,7 +517,7 @@ namespace Nucleus.Coop
             // 
             this.themeLabel.AutoSize = true;
             this.themeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.themeLabel.Location = new System.Drawing.Point(12, 97);
+            this.themeLabel.Location = new System.Drawing.Point(12, 105);
             this.themeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.themeLabel.Name = "themeLabel";
             this.themeLabel.Size = new System.Drawing.Size(46, 15);
@@ -576,26 +531,12 @@ namespace Nucleus.Coop
             this.themeCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.themeCbx.FormattingEnabled = true;
             this.themeCbx.ItemHeight = 15;
-            this.themeCbx.Location = new System.Drawing.Point(14, 116);
+            this.themeCbx.Location = new System.Drawing.Point(14, 124);
             this.themeCbx.Margin = new System.Windows.Forms.Padding(0);
             this.themeCbx.MaxDropDownItems = 10;
             this.themeCbx.Name = "themeCbx";
             this.themeCbx.Size = new System.Drawing.Size(142, 23);
             this.themeCbx.TabIndex = 162;
-            // 
-            // clickSoundChkB
-            // 
-            this.clickSoundChkB.AutoSize = true;
-            this.clickSoundChkB.BackColor = System.Drawing.Color.Transparent;
-            this.clickSoundChkB.Checked = true;
-            this.clickSoundChkB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.clickSoundChkB.Location = new System.Drawing.Point(14, 278);
-            this.clickSoundChkB.Margin = new System.Windows.Forms.Padding(2);
-            this.clickSoundChkB.Name = "clickSoundChkB";
-            this.clickSoundChkB.Size = new System.Drawing.Size(133, 19);
-            this.clickSoundChkB.TabIndex = 160;
-            this.clickSoundChkB.Text = "Enable Click Sound";
-            this.clickSoundChkB.UseVisualStyleBackColor = false;
             // 
             // cmb_EpicLang
             // 
@@ -629,7 +570,7 @@ namespace Nucleus.Coop
             "Thai",
             "Turkish",
             "Ukrainian"});
-            this.cmb_EpicLang.Location = new System.Drawing.Point(14, 70);
+            this.cmb_EpicLang.Location = new System.Drawing.Point(14, 78);
             this.cmb_EpicLang.Margin = new System.Windows.Forms.Padding(0);
             this.cmb_EpicLang.MaxDropDownItems = 10;
             this.cmb_EpicLang.Name = "cmb_EpicLang";
@@ -641,7 +582,7 @@ namespace Nucleus.Coop
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(11, 51);
+            this.label1.Location = new System.Drawing.Point(11, 59);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(116, 15);
@@ -653,25 +594,13 @@ namespace Nucleus.Coop
             // 
             this.ignoreInputLockReminderCheckbox.AutoSize = true;
             this.ignoreInputLockReminderCheckbox.BackColor = System.Drawing.Color.Transparent;
-            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(14, 255);
+            this.ignoreInputLockReminderCheckbox.Location = new System.Drawing.Point(14, 250);
             this.ignoreInputLockReminderCheckbox.Margin = new System.Windows.Forms.Padding(2);
             this.ignoreInputLockReminderCheckbox.Name = "ignoreInputLockReminderCheckbox";
             this.ignoreInputLockReminderCheckbox.Size = new System.Drawing.Size(178, 19);
             this.ignoreInputLockReminderCheckbox.TabIndex = 157;
             this.ignoreInputLockReminderCheckbox.Text = "Ignore Input Lock Reminder";
             this.ignoreInputLockReminderCheckbox.UseVisualStyleBackColor = false;
-            // 
-            // statusCheck
-            // 
-            this.statusCheck.AutoSize = true;
-            this.statusCheck.BackColor = System.Drawing.Color.Transparent;
-            this.statusCheck.Location = new System.Drawing.Point(14, 232);
-            this.statusCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.statusCheck.Name = "statusCheck";
-            this.statusCheck.Size = new System.Drawing.Size(225, 19);
-            this.statusCheck.TabIndex = 156;
-            this.statusCheck.Text = "Show Status Window (Experimental)";
-            this.statusCheck.UseVisualStyleBackColor = false;
             // 
             // cmb_Lang
             // 
@@ -708,7 +637,7 @@ namespace Nucleus.Coop
             "Thai",
             "Turkish",
             "Ukrainian"});
-            this.cmb_Lang.Location = new System.Drawing.Point(15, 23);
+            this.cmb_Lang.Location = new System.Drawing.Point(15, 31);
             this.cmb_Lang.Margin = new System.Windows.Forms.Padding(0);
             this.cmb_Lang.MaxDropDownItems = 10;
             this.cmb_Lang.Name = "cmb_Lang";
@@ -720,7 +649,7 @@ namespace Nucleus.Coop
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 4);
+            this.label2.Location = new System.Drawing.Point(12, 12);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(102, 15);
@@ -732,7 +661,7 @@ namespace Nucleus.Coop
             // 
             this.debugLogCheck.AutoSize = true;
             this.debugLogCheck.BackColor = System.Drawing.Color.Transparent;
-            this.debugLogCheck.Location = new System.Drawing.Point(14, 209);
+            this.debugLogCheck.Location = new System.Drawing.Point(14, 228);
             this.debugLogCheck.Margin = new System.Windows.Forms.Padding(2);
             this.debugLogCheck.Name = "debugLogCheck";
             this.debugLogCheck.Size = new System.Drawing.Size(129, 19);
@@ -744,49 +673,104 @@ namespace Nucleus.Coop
             // 
             this.hotkeyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.hotkeyBox.BackColor = System.Drawing.Color.Transparent;
+            this.hotkeyBox.Controls.Add(this.rm_Cmb);
+            this.hotkeyBox.Controls.Add(this.plus8);
+            this.hotkeyBox.Controls.Add(this.hkLabel2);
+            this.hotkeyBox.Controls.Add(this.rm_HKTxt);
             this.hotkeyBox.Controls.Add(this.hkLabel4);
             this.hotkeyBox.Controls.Add(this.hkLabel3);
-            this.hotkeyBox.Controls.Add(this.swl_comboBox);
+            this.hotkeyBox.Controls.Add(this.swl_Cmb);
             this.hotkeyBox.Controls.Add(this.plus7);
             this.hotkeyBox.Controls.Add(this.hkLabel7);
-            this.hotkeyBox.Controls.Add(this.swl_textBox);
-            this.hotkeyBox.Controls.Add(this.csm_comboBox);
+            this.hotkeyBox.Controls.Add(this.swl_HKTxt);
+            this.hotkeyBox.Controls.Add(this.csm_Cmb);
             this.hotkeyBox.Controls.Add(this.hkLabel);
             this.hotkeyBox.Controls.Add(this.plus6);
-            this.hotkeyBox.Controls.Add(this.csm_textBox);
+            this.hotkeyBox.Controls.Add(this.csm_HKTxt);
             this.hotkeyBox.Controls.Add(this.hkLabel8);
-            this.hotkeyBox.Controls.Add(this.r1);
+            this.hotkeyBox.Controls.Add(this.rw_Cmb);
             this.hotkeyBox.Controls.Add(this.plus5);
             this.hotkeyBox.Controls.Add(this.hkLabel1);
-            this.hotkeyBox.Controls.Add(this.settingsFocusCmb);
+            this.hotkeyBox.Controls.Add(this.tu_Cmb);
             this.hotkeyBox.Controls.Add(this.plus1);
             this.hotkeyBox.Controls.Add(this.hkLabel5);
-            this.hotkeyBox.Controls.Add(this.r2);
+            this.hotkeyBox.Controls.Add(this.rw_HKTxt);
             this.hotkeyBox.Controls.Add(this.hotkeysLabel);
             this.hotkeyBox.Controls.Add(this.hkLabel6);
-            this.hotkeyBox.Controls.Add(this.settingsFocusHKTxt);
-            this.hotkeyBox.Controls.Add(this.comboBox_lockKey);
-            this.hotkeyBox.Controls.Add(this.settingsTopCmb);
-            this.hotkeyBox.Controls.Add(this.settingsStopCmb);
-            this.hotkeyBox.Controls.Add(this.settingsTopTxt);
-            this.hotkeyBox.Controls.Add(this.settingsStopTxt);
-            this.hotkeyBox.Controls.Add(this.settingsCloseCmb);
+            this.hotkeyBox.Controls.Add(this.tu_HKTxt);
+            this.hotkeyBox.Controls.Add(this.lockKey_Cmb);
+            this.hotkeyBox.Controls.Add(this.ttm_Cmb);
+            this.hotkeyBox.Controls.Add(this.ss_Cmb);
+            this.hotkeyBox.Controls.Add(this.ttm_HKTxt);
+            this.hotkeyBox.Controls.Add(this.ss_HKTxt);
+            this.hotkeyBox.Controls.Add(this.cn_Cmb);
             this.hotkeyBox.Controls.Add(this.plus4);
             this.hotkeyBox.Controls.Add(this.plus3);
             this.hotkeyBox.Controls.Add(this.plus2);
-            this.hotkeyBox.Controls.Add(this.settingsCloseHKTxt);
+            this.hotkeyBox.Controls.Add(this.cn_HKTxt);
             this.hotkeyBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hotkeyBox.Location = new System.Drawing.Point(373, 73);
+            this.hotkeyBox.Location = new System.Drawing.Point(401, 56);
             this.hotkeyBox.Margin = new System.Windows.Forms.Padding(2);
             this.hotkeyBox.Name = "hotkeyBox";
             this.hotkeyBox.Padding = new System.Windows.Forms.Padding(2);
-            this.hotkeyBox.Size = new System.Drawing.Size(257, 230);
+            this.hotkeyBox.Size = new System.Drawing.Size(257, 254);
             this.hotkeyBox.TabIndex = 152;
             this.hotkeyBox.TabStop = false;
             // 
+            // rm_Cmb
+            // 
+            this.rm_Cmb.BackColor = System.Drawing.Color.White;
+            this.rm_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rm_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rm_Cmb.FormattingEnabled = true;
+            this.rm_Cmb.Items.AddRange(new object[] {
+            "Ctrl",
+            "Alt",
+            "Shift"});
+            this.rm_Cmb.Location = new System.Drawing.Point(119, 197);
+            this.rm_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.rm_Cmb.Name = "rm_Cmb";
+            this.rm_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.rm_Cmb.TabIndex = 98;
+            // 
+            // plus8
+            // 
+            this.plus8.AutoSize = true;
+            this.plus8.ForeColor = System.Drawing.Color.Black;
+            this.plus8.Location = new System.Drawing.Point(189, 202);
+            this.plus8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus8.Name = "plus8";
+            this.plus8.Size = new System.Drawing.Size(14, 15);
+            this.plus8.TabIndex = 101;
+            this.plus8.Text = "+";
+            this.plus8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // hkLabel2
+            // 
+            this.hkLabel2.AutoSize = true;
+            this.hkLabel2.Location = new System.Drawing.Point(0, 199);
+            this.hkLabel2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.hkLabel2.Name = "hkLabel2";
+            this.hkLabel2.Size = new System.Drawing.Size(114, 15);
+            this.hkLabel2.TabIndex = 100;
+            this.hkLabel2.Text = "Hotkeys Reminder :";
+            this.hkLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // rm_HKTxt
+            // 
+            this.rm_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.rm_HKTxt.Location = new System.Drawing.Point(205, 198);
+            this.rm_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.rm_HKTxt.MaxLength = 1;
+            this.rm_HKTxt.Name = "rm_HKTxt";
+            this.rm_HKTxt.ShortcutsEnabled = false;
+            this.rm_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.rm_HKTxt.TabIndex = 99;
+            this.rm_HKTxt.Tag = "HotKeyTextBox";
+            this.rm_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // hkLabel4
             // 
-            this.hkLabel4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.hkLabel4.AutoSize = true;
             this.hkLabel4.Location = new System.Drawing.Point(9, 102);
             this.hkLabel4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -798,7 +782,6 @@ namespace Nucleus.Coop
             // 
             // hkLabel3
             // 
-            this.hkLabel3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.hkLabel3.AutoSize = true;
             this.hkLabel3.Location = new System.Drawing.Point(29, 78);
             this.hkLabel3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -808,26 +791,24 @@ namespace Nucleus.Coop
             this.hkLabel3.Text = "Stop Session :";
             this.hkLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // swl_comboBox
+            // swl_Cmb
             // 
-            this.swl_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.swl_comboBox.BackColor = System.Drawing.Color.White;
-            this.swl_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.swl_comboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.swl_comboBox.FormattingEnabled = true;
-            this.swl_comboBox.Items.AddRange(new object[] {
+            this.swl_Cmb.BackColor = System.Drawing.Color.White;
+            this.swl_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.swl_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.swl_Cmb.FormattingEnabled = true;
+            this.swl_Cmb.Items.AddRange(new object[] {
             "Ctrl",
             "Alt",
             "Shift"});
-            this.swl_comboBox.Location = new System.Drawing.Point(119, 172);
-            this.swl_comboBox.Margin = new System.Windows.Forms.Padding(2);
-            this.swl_comboBox.Name = "swl_comboBox";
-            this.swl_comboBox.Size = new System.Drawing.Size(67, 23);
-            this.swl_comboBox.TabIndex = 94;
+            this.swl_Cmb.Location = new System.Drawing.Point(119, 172);
+            this.swl_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.swl_Cmb.Name = "swl_Cmb";
+            this.swl_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.swl_Cmb.TabIndex = 94;
             // 
             // plus7
             // 
-            this.plus7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus7.AutoSize = true;
             this.plus7.ForeColor = System.Drawing.Color.Black;
             this.plus7.Location = new System.Drawing.Point(189, 177);
@@ -840,7 +821,6 @@ namespace Nucleus.Coop
             // 
             // hkLabel7
             // 
-            this.hkLabel7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.hkLabel7.AutoSize = true;
             this.hkLabel7.Location = new System.Drawing.Point(20, 174);
             this.hkLabel7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -850,39 +830,37 @@ namespace Nucleus.Coop
             this.hkLabel7.Text = "Switch Layouts :";
             this.hkLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // swl_textBox
+            // swl_HKTxt
             // 
-            this.swl_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.swl_textBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.swl_textBox.Location = new System.Drawing.Point(205, 173);
-            this.swl_textBox.Margin = new System.Windows.Forms.Padding(2);
-            this.swl_textBox.MaxLength = 1;
-            this.swl_textBox.Name = "swl_textBox";
-            this.swl_textBox.ShortcutsEnabled = false;
-            this.swl_textBox.Size = new System.Drawing.Size(36, 21);
-            this.swl_textBox.TabIndex = 95;
-            this.swl_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.swl_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.swl_HKTxt.Location = new System.Drawing.Point(205, 173);
+            this.swl_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.swl_HKTxt.MaxLength = 1;
+            this.swl_HKTxt.Name = "swl_HKTxt";
+            this.swl_HKTxt.ShortcutsEnabled = false;
+            this.swl_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.swl_HKTxt.TabIndex = 95;
+            this.swl_HKTxt.Tag = "HotKeyTextBox";
+            this.swl_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // csm_comboBox
+            // csm_Cmb
             // 
-            this.csm_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.csm_comboBox.BackColor = System.Drawing.Color.White;
-            this.csm_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.csm_comboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.csm_comboBox.FormattingEnabled = true;
-            this.csm_comboBox.Items.AddRange(new object[] {
+            this.csm_Cmb.BackColor = System.Drawing.Color.White;
+            this.csm_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.csm_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.csm_Cmb.FormattingEnabled = true;
+            this.csm_Cmb.Items.AddRange(new object[] {
             "Ctrl",
             "Alt",
             "Shift"});
-            this.csm_comboBox.Location = new System.Drawing.Point(119, 148);
-            this.csm_comboBox.Margin = new System.Windows.Forms.Padding(2);
-            this.csm_comboBox.Name = "csm_comboBox";
-            this.csm_comboBox.Size = new System.Drawing.Size(67, 23);
-            this.csm_comboBox.TabIndex = 90;
+            this.csm_Cmb.Location = new System.Drawing.Point(119, 148);
+            this.csm_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.csm_Cmb.Name = "csm_Cmb";
+            this.csm_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.csm_Cmb.TabIndex = 90;
             // 
             // hkLabel
             // 
-            this.hkLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.hkLabel.AutoSize = true;
             this.hkLabel.Location = new System.Drawing.Point(22, 54);
             this.hkLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -894,7 +872,6 @@ namespace Nucleus.Coop
             // 
             // plus6
             // 
-            this.plus6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus6.AutoSize = true;
             this.plus6.ForeColor = System.Drawing.Color.Black;
             this.plus6.Location = new System.Drawing.Point(189, 153);
@@ -905,24 +882,23 @@ namespace Nucleus.Coop
             this.plus6.Text = "+";
             this.plus6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // csm_textBox
+            // csm_HKTxt
             // 
-            this.csm_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.csm_textBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.csm_textBox.Location = new System.Drawing.Point(205, 149);
-            this.csm_textBox.Margin = new System.Windows.Forms.Padding(2);
-            this.csm_textBox.MaxLength = 1;
-            this.csm_textBox.Name = "csm_textBox";
-            this.csm_textBox.ShortcutsEnabled = false;
-            this.csm_textBox.Size = new System.Drawing.Size(36, 21);
-            this.csm_textBox.TabIndex = 91;
-            this.csm_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.csm_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.csm_HKTxt.Location = new System.Drawing.Point(205, 149);
+            this.csm_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.csm_HKTxt.MaxLength = 1;
+            this.csm_HKTxt.Name = "csm_HKTxt";
+            this.csm_HKTxt.ShortcutsEnabled = false;
+            this.csm_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.csm_HKTxt.TabIndex = 91;
+            this.csm_HKTxt.Tag = "HotKeyTextBox";
+            this.csm_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // hkLabel8
             // 
-            this.hkLabel8.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.hkLabel8.AutoSize = true;
-            this.hkLabel8.Location = new System.Drawing.Point(22, 198);
+            this.hkLabel8.Location = new System.Drawing.Point(22, 224);
             this.hkLabel8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.hkLabel8.Name = "hkLabel8";
             this.hkLabel8.Size = new System.Drawing.Size(92, 15);
@@ -930,26 +906,24 @@ namespace Nucleus.Coop
             this.hkLabel8.Text = "Lock Input Key :";
             this.hkLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // r1
+            // rw_Cmb
             // 
-            this.r1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.r1.BackColor = System.Drawing.Color.White;
-            this.r1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.r1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.r1.FormattingEnabled = true;
-            this.r1.Items.AddRange(new object[] {
+            this.rw_Cmb.BackColor = System.Drawing.Color.White;
+            this.rw_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rw_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rw_Cmb.FormattingEnabled = true;
+            this.rw_Cmb.Items.AddRange(new object[] {
             "Ctrl",
             "Alt",
             "Shift"});
-            this.r1.Location = new System.Drawing.Point(119, 124);
-            this.r1.Margin = new System.Windows.Forms.Padding(2);
-            this.r1.Name = "r1";
-            this.r1.Size = new System.Drawing.Size(67, 23);
-            this.r1.TabIndex = 86;
+            this.rw_Cmb.Location = new System.Drawing.Point(119, 124);
+            this.rw_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.rw_Cmb.Name = "rw_Cmb";
+            this.rw_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.rw_Cmb.TabIndex = 86;
             // 
             // plus5
             // 
-            this.plus5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus5.AutoSize = true;
             this.plus5.ForeColor = System.Drawing.Color.Black;
             this.plus5.Location = new System.Drawing.Point(189, 127);
@@ -962,7 +936,6 @@ namespace Nucleus.Coop
             // 
             // hkLabel1
             // 
-            this.hkLabel1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.hkLabel1.AutoSize = true;
             this.hkLabel1.Location = new System.Drawing.Point(15, 30);
             this.hkLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -972,26 +945,24 @@ namespace Nucleus.Coop
             this.hkLabel1.Text = "Toggle Unfocus :";
             this.hkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // settingsFocusCmb
+            // tu_Cmb
             // 
-            this.settingsFocusCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsFocusCmb.BackColor = System.Drawing.Color.White;
-            this.settingsFocusCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.settingsFocusCmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsFocusCmb.FormattingEnabled = true;
-            this.settingsFocusCmb.Items.AddRange(new object[] {
+            this.tu_Cmb.BackColor = System.Drawing.Color.White;
+            this.tu_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tu_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.tu_Cmb.FormattingEnabled = true;
+            this.tu_Cmb.Items.AddRange(new object[] {
             "Ctrl",
             "Alt",
             "Shift"});
-            this.settingsFocusCmb.Location = new System.Drawing.Point(119, 28);
-            this.settingsFocusCmb.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsFocusCmb.Name = "settingsFocusCmb";
-            this.settingsFocusCmb.Size = new System.Drawing.Size(67, 23);
-            this.settingsFocusCmb.TabIndex = 31;
+            this.tu_Cmb.Location = new System.Drawing.Point(119, 28);
+            this.tu_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.tu_Cmb.Name = "tu_Cmb";
+            this.tu_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.tu_Cmb.TabIndex = 31;
             // 
             // plus1
             // 
-            this.plus1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus1.AutoSize = true;
             this.plus1.ForeColor = System.Drawing.Color.Black;
             this.plus1.Location = new System.Drawing.Point(189, 31);
@@ -1004,7 +975,6 @@ namespace Nucleus.Coop
             // 
             // hkLabel5
             // 
-            this.hkLabel5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.hkLabel5.AutoSize = true;
             this.hkLabel5.Location = new System.Drawing.Point(16, 127);
             this.hkLabel5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -1014,18 +984,18 @@ namespace Nucleus.Coop
             this.hkLabel5.Text = "Reset Windows :";
             this.hkLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // r2
+            // rw_HKTxt
             // 
-            this.r2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.r2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.r2.Location = new System.Drawing.Point(205, 125);
-            this.r2.Margin = new System.Windows.Forms.Padding(2);
-            this.r2.MaxLength = 1;
-            this.r2.Name = "r2";
-            this.r2.ShortcutsEnabled = false;
-            this.r2.Size = new System.Drawing.Size(36, 21);
-            this.r2.TabIndex = 87;
-            this.r2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.rw_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.rw_HKTxt.Location = new System.Drawing.Point(205, 125);
+            this.rw_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.rw_HKTxt.MaxLength = 1;
+            this.rw_HKTxt.Name = "rw_HKTxt";
+            this.rw_HKTxt.ShortcutsEnabled = false;
+            this.rw_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.rw_HKTxt.TabIndex = 87;
+            this.rw_HKTxt.Tag = "HotKeyTextBox";
+            this.rw_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // hotkeysLabel
             // 
@@ -1041,7 +1011,6 @@ namespace Nucleus.Coop
             // 
             // hkLabel6
             // 
-            this.hkLabel6.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.hkLabel6.AutoSize = true;
             this.hkLabel6.Location = new System.Drawing.Point(9, 150);
             this.hkLabel6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -1051,28 +1020,26 @@ namespace Nucleus.Coop
             this.hkLabel6.Text = "Cutscenes Mode :";
             this.hkLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // settingsFocusHKTxt
+            // tu_HKTxt
             // 
-            this.settingsFocusHKTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsFocusHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsFocusHKTxt.Location = new System.Drawing.Point(205, 29);
-            this.settingsFocusHKTxt.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsFocusHKTxt.MaxLength = 1;
-            this.settingsFocusHKTxt.Name = "settingsFocusHKTxt";
-            this.settingsFocusHKTxt.ShortcutsEnabled = false;
-            this.settingsFocusHKTxt.Size = new System.Drawing.Size(36, 21);
-            this.settingsFocusHKTxt.TabIndex = 32;
-            this.settingsFocusHKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.settingsFocusHKTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.settingsFocusHKTxt_KeyPress);
+            this.tu_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tu_HKTxt.Location = new System.Drawing.Point(205, 29);
+            this.tu_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.tu_HKTxt.MaxLength = 1;
+            this.tu_HKTxt.Name = "tu_HKTxt";
+            this.tu_HKTxt.ShortcutsEnabled = false;
+            this.tu_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.tu_HKTxt.TabIndex = 32;
+            this.tu_HKTxt.Tag = "HotKeyTextBox";
+            this.tu_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // comboBox_lockKey
+            // lockKey_Cmb
             // 
-            this.comboBox_lockKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox_lockKey.BackColor = System.Drawing.Color.White;
-            this.comboBox_lockKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_lockKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox_lockKey.FormattingEnabled = true;
-            this.comboBox_lockKey.Items.AddRange(new object[] {
+            this.lockKey_Cmb.BackColor = System.Drawing.Color.White;
+            this.lockKey_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.lockKey_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lockKey_Cmb.FormattingEnabled = true;
+            this.lockKey_Cmb.Items.AddRange(new object[] {
             "End",
             "Home",
             "Delete",
@@ -1101,94 +1068,88 @@ namespace Nucleus.Coop
             "Numpad 7",
             "Numpad 8",
             "Numpad 9"});
-            this.comboBox_lockKey.Location = new System.Drawing.Point(119, 196);
-            this.comboBox_lockKey.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox_lockKey.Name = "comboBox_lockKey";
-            this.comboBox_lockKey.Size = new System.Drawing.Size(123, 23);
-            this.comboBox_lockKey.TabIndex = 30;
+            this.lockKey_Cmb.Location = new System.Drawing.Point(119, 222);
+            this.lockKey_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.lockKey_Cmb.Name = "lockKey_Cmb";
+            this.lockKey_Cmb.Size = new System.Drawing.Size(123, 23);
+            this.lockKey_Cmb.TabIndex = 30;
             // 
-            // settingsTopCmb
+            // ttm_Cmb
             // 
-            this.settingsTopCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsTopCmb.BackColor = System.Drawing.Color.White;
-            this.settingsTopCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.settingsTopCmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsTopCmb.FormattingEnabled = true;
-            this.settingsTopCmb.Items.AddRange(new object[] {
+            this.ttm_Cmb.BackColor = System.Drawing.Color.White;
+            this.ttm_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ttm_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ttm_Cmb.FormattingEnabled = true;
+            this.ttm_Cmb.Items.AddRange(new object[] {
             "Ctrl",
             "Alt",
             "Shift"});
-            this.settingsTopCmb.Location = new System.Drawing.Point(119, 100);
-            this.settingsTopCmb.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsTopCmb.Name = "settingsTopCmb";
-            this.settingsTopCmb.Size = new System.Drawing.Size(67, 23);
-            this.settingsTopCmb.TabIndex = 5;
+            this.ttm_Cmb.Location = new System.Drawing.Point(119, 100);
+            this.ttm_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.ttm_Cmb.Name = "ttm_Cmb";
+            this.ttm_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.ttm_Cmb.TabIndex = 5;
             // 
-            // settingsStopCmb
+            // ss_Cmb
             // 
-            this.settingsStopCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsStopCmb.BackColor = System.Drawing.Color.White;
-            this.settingsStopCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.settingsStopCmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsStopCmb.FormattingEnabled = true;
-            this.settingsStopCmb.Items.AddRange(new object[] {
+            this.ss_Cmb.BackColor = System.Drawing.Color.White;
+            this.ss_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ss_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ss_Cmb.FormattingEnabled = true;
+            this.ss_Cmb.Items.AddRange(new object[] {
             "Ctrl",
             "Alt",
             "Shift"});
-            this.settingsStopCmb.Location = new System.Drawing.Point(119, 76);
-            this.settingsStopCmb.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsStopCmb.Name = "settingsStopCmb";
-            this.settingsStopCmb.Size = new System.Drawing.Size(67, 23);
-            this.settingsStopCmb.TabIndex = 3;
+            this.ss_Cmb.Location = new System.Drawing.Point(119, 76);
+            this.ss_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.ss_Cmb.Name = "ss_Cmb";
+            this.ss_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.ss_Cmb.TabIndex = 3;
             // 
-            // settingsTopTxt
+            // ttm_HKTxt
             // 
-            this.settingsTopTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsTopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsTopTxt.Location = new System.Drawing.Point(205, 101);
-            this.settingsTopTxt.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsTopTxt.MaxLength = 1;
-            this.settingsTopTxt.Name = "settingsTopTxt";
-            this.settingsTopTxt.ShortcutsEnabled = false;
-            this.settingsTopTxt.Size = new System.Drawing.Size(36, 21);
-            this.settingsTopTxt.TabIndex = 6;
-            this.settingsTopTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.settingsTopTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.settingsTopTxt_KeyPress);
+            this.ttm_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.ttm_HKTxt.Location = new System.Drawing.Point(205, 101);
+            this.ttm_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.ttm_HKTxt.MaxLength = 1;
+            this.ttm_HKTxt.Name = "ttm_HKTxt";
+            this.ttm_HKTxt.ShortcutsEnabled = false;
+            this.ttm_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.ttm_HKTxt.TabIndex = 6;
+            this.ttm_HKTxt.Tag = "HotKeyTextBox";
+            this.ttm_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // settingsStopTxt
+            // ss_HKTxt
             // 
-            this.settingsStopTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsStopTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsStopTxt.Location = new System.Drawing.Point(205, 77);
-            this.settingsStopTxt.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsStopTxt.MaxLength = 1;
-            this.settingsStopTxt.Name = "settingsStopTxt";
-            this.settingsStopTxt.ShortcutsEnabled = false;
-            this.settingsStopTxt.Size = new System.Drawing.Size(36, 21);
-            this.settingsStopTxt.TabIndex = 4;
-            this.settingsStopTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.settingsStopTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.settingsStopTxt_KeyPress);
+            this.ss_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.ss_HKTxt.Location = new System.Drawing.Point(205, 77);
+            this.ss_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.ss_HKTxt.MaxLength = 1;
+            this.ss_HKTxt.Name = "ss_HKTxt";
+            this.ss_HKTxt.ShortcutsEnabled = false;
+            this.ss_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.ss_HKTxt.TabIndex = 4;
+            this.ss_HKTxt.Tag = "HotKeyTextBox";
+            this.ss_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // settingsCloseCmb
+            // cn_Cmb
             // 
-            this.settingsCloseCmb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsCloseCmb.BackColor = System.Drawing.Color.White;
-            this.settingsCloseCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.settingsCloseCmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsCloseCmb.FormattingEnabled = true;
-            this.settingsCloseCmb.Items.AddRange(new object[] {
+            this.cn_Cmb.BackColor = System.Drawing.Color.White;
+            this.cn_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cn_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cn_Cmb.FormattingEnabled = true;
+            this.cn_Cmb.Items.AddRange(new object[] {
             "Ctrl",
             "Alt",
             "Shift"});
-            this.settingsCloseCmb.Location = new System.Drawing.Point(119, 52);
-            this.settingsCloseCmb.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsCloseCmb.Name = "settingsCloseCmb";
-            this.settingsCloseCmb.Size = new System.Drawing.Size(67, 23);
-            this.settingsCloseCmb.TabIndex = 1;
+            this.cn_Cmb.Location = new System.Drawing.Point(119, 52);
+            this.cn_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.cn_Cmb.Name = "cn_Cmb";
+            this.cn_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.cn_Cmb.TabIndex = 1;
             // 
             // plus4
             // 
-            this.plus4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus4.AutoSize = true;
             this.plus4.ForeColor = System.Drawing.Color.Black;
             this.plus4.Location = new System.Drawing.Point(189, 103);
@@ -1201,7 +1162,6 @@ namespace Nucleus.Coop
             // 
             // plus3
             // 
-            this.plus3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus3.AutoSize = true;
             this.plus3.ForeColor = System.Drawing.Color.Black;
             this.plus3.Location = new System.Drawing.Point(189, 78);
@@ -1214,7 +1174,6 @@ namespace Nucleus.Coop
             // 
             // plus2
             // 
-            this.plus2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plus2.AutoSize = true;
             this.plus2.ForeColor = System.Drawing.Color.Black;
             this.plus2.Location = new System.Drawing.Point(189, 55);
@@ -1225,20 +1184,18 @@ namespace Nucleus.Coop
             this.plus2.Text = "+";
             this.plus2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // settingsCloseHKTxt
+            // cn_HKTxt
             // 
-            this.settingsCloseHKTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsCloseHKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.settingsCloseHKTxt.Location = new System.Drawing.Point(205, 53);
-            this.settingsCloseHKTxt.Margin = new System.Windows.Forms.Padding(2);
-            this.settingsCloseHKTxt.MaxLength = 1;
-            this.settingsCloseHKTxt.Name = "settingsCloseHKTxt";
-            this.settingsCloseHKTxt.ShortcutsEnabled = false;
-            this.settingsCloseHKTxt.Size = new System.Drawing.Size(36, 21);
-            this.settingsCloseHKTxt.TabIndex = 2;
-            this.settingsCloseHKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.settingsCloseHKTxt.TextChanged += new System.EventHandler(this.settingsCloseHKTxt_TextChanged);
-            this.settingsCloseHKTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.settingsCloseHKTxt_KeyPress);
+            this.cn_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.cn_HKTxt.Location = new System.Drawing.Point(205, 53);
+            this.cn_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.cn_HKTxt.MaxLength = 1;
+            this.cn_HKTxt.Name = "cn_HKTxt";
+            this.cn_HKTxt.ShortcutsEnabled = false;
+            this.cn_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.cn_HKTxt.TabIndex = 2;
+            this.cn_HKTxt.Tag = "HotKeyTextBox";
+            this.cn_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // scaleOptionCbx
             // 
@@ -1247,7 +1204,7 @@ namespace Nucleus.Coop
             this.scaleOptionCbx.Checked = true;
             this.scaleOptionCbx.CheckState = System.Windows.Forms.CheckState.Checked;
             this.scaleOptionCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scaleOptionCbx.Location = new System.Drawing.Point(14, 322);
+            this.scaleOptionCbx.Location = new System.Drawing.Point(14, 295);
             this.scaleOptionCbx.Margin = new System.Windows.Forms.Padding(2);
             this.scaleOptionCbx.Name = "scaleOptionCbx";
             this.scaleOptionCbx.Size = new System.Drawing.Size(185, 17);
@@ -1260,7 +1217,7 @@ namespace Nucleus.Coop
             this.useNicksCheck.AutoSize = true;
             this.useNicksCheck.BackColor = System.Drawing.Color.Transparent;
             this.useNicksCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.useNicksCheck.Location = new System.Drawing.Point(14, 188);
+            this.useNicksCheck.Location = new System.Drawing.Point(14, 206);
             this.useNicksCheck.Margin = new System.Windows.Forms.Padding(2);
             this.useNicksCheck.Name = "useNicksCheck";
             this.useNicksCheck.Size = new System.Drawing.Size(164, 19);
@@ -1270,21 +1227,22 @@ namespace Nucleus.Coop
             // 
             // cmb_Network
             // 
+            this.cmb_Network.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_Network.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_Network.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmb_Network.Location = new System.Drawing.Point(15, 162);
+            this.cmb_Network.Location = new System.Drawing.Point(15, 170);
             this.cmb_Network.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cmb_Network.Name = "cmb_Network";
             this.cmb_Network.Size = new System.Drawing.Size(198, 21);
             this.cmb_Network.TabIndex = 136;
-            this.cmb_Network.DropDown += new System.EventHandler(this.cmb_Network_DropDown);
-            this.cmb_Network.DropDownClosed += new System.EventHandler(this.cmb_Network_DropDownClosed);
+            this.cmb_Network.DropDown += new System.EventHandler(this.Cmb_Network_DropDown);
+            this.cmb_Network.DropDownClosed += new System.EventHandler(this.Cmb_Network_DropDownClosed);
             // 
             // label32
             // 
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label32.Location = new System.Drawing.Point(12, 143);
+            this.label32.Location = new System.Drawing.Point(12, 151);
             this.label32.Margin = new System.Windows.Forms.Padding(0);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(52, 15);
@@ -1331,7 +1289,7 @@ namespace Nucleus.Coop
             this.btnNext.Size = new System.Drawing.Size(38, 22);
             this.btnNext.TabIndex = 294;
             this.btnNext.UseVisualStyleBackColor = false;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            this.btnNext.Click += new System.EventHandler(this.BtnNext_Click);
             // 
             // def_sid_comboBox
             // 
@@ -3126,7 +3084,7 @@ namespace Nucleus.Coop
             this.audioCustomSettingsRadio.TabIndex = 19;
             this.audioCustomSettingsRadio.Text = "Custom settings";
             this.audioCustomSettingsRadio.UseVisualStyleBackColor = false;
-            this.audioCustomSettingsRadio.CheckedChanged += new System.EventHandler(this.audioCustomSettingsRadio_CheckedChanged);
+            this.audioCustomSettingsRadio.CheckedChanged += new System.EventHandler(this.AudioCustomSettingsRadio_CheckedChanged);
             // 
             // audioDefaultSettingsRadio
             // 
@@ -3160,7 +3118,7 @@ namespace Nucleus.Coop
             this.audioRefresh.Size = new System.Drawing.Size(26, 23);
             this.audioRefresh.TabIndex = 23;
             this.audioRefresh.UseVisualStyleBackColor = false;
-            this.audioRefresh.Click += new System.EventHandler(this.audioRefresh_Click);
+            this.audioRefresh.Click += new System.EventHandler(this.AudioRefresh_Click);
             // 
             // layoutTab
             // 
@@ -3168,7 +3126,18 @@ namespace Nucleus.Coop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutTab.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.layoutTab.Controls.Add(this.cts_bringToFront);
+            this.layoutTab.Controls.Add(this.smfw_Cmb);
+            this.layoutTab.Controls.Add(this.plus9);
+            this.layoutTab.Controls.Add(this.mergerShortcutLabel);
+            this.layoutTab.Controls.Add(this.smfw_HKTxt);
+            this.layoutTab.Controls.Add(this.refreshScreenDatasButton);
+            this.layoutTab.Controls.Add(this.mergerResSelectorLabel);
+            this.layoutTab.Controls.Add(this.label4);
+            this.layoutTab.Controls.Add(this.mergerSettingsLabel);
+            this.layoutTab.Controls.Add(this.losslessHook);
+            this.layoutTab.Controls.Add(this.selectedRes);
+            this.layoutTab.Controls.Add(this.screen_panel);
+            this.layoutTab.Controls.Add(this.enable_WMerger);
             this.layoutTab.Controls.Add(this.hideDesktop);
             this.layoutTab.Controls.Add(this.numMaxPlyrs);
             this.layoutTab.Controls.Add(this.numUpDownVer);
@@ -3182,63 +3151,167 @@ namespace Nucleus.Coop
             this.layoutTab.Controls.Add(this.splitDiv);
             this.layoutTab.Controls.Add(this.label49);
             this.layoutTab.Controls.Add(this.layoutSizer);
-            this.layoutTab.Location = new System.Drawing.Point(0, 42);
+            this.layoutTab.Location = new System.Drawing.Point(0, 25);
             this.layoutTab.Name = "layoutTab";
             this.layoutTab.Size = new System.Drawing.Size(674, 391);
             this.layoutTab.TabIndex = 300;
             // 
-            // cts_bringToFront
+            // smfw_Cmb
             // 
-            this.cts_bringToFront.AutoSize = true;
-            this.cts_bringToFront.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.cts_bringToFront.Enabled = false;
-            this.cts_bringToFront.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cts_bringToFront.Location = new System.Drawing.Point(18, 334);
-            this.cts_bringToFront.Margin = new System.Windows.Forms.Padding(0);
-            this.cts_bringToFront.Name = "cts_bringToFront";
-            this.cts_bringToFront.Size = new System.Drawing.Size(168, 17);
-            this.cts_bringToFront.TabIndex = 166;
-            this.cts_bringToFront.Text = "Bring Back Windows To Front";
-            this.cts_bringToFront.UseVisualStyleBackColor = true;
-            this.cts_bringToFront.Visible = false;
+            this.smfw_Cmb.BackColor = System.Drawing.Color.White;
+            this.smfw_Cmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.smfw_Cmb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.smfw_Cmb.FormattingEnabled = true;
+            this.smfw_Cmb.Items.AddRange(new object[] {
+            "Ctrl",
+            "Alt",
+            "Shift"});
+            this.smfw_Cmb.Location = new System.Drawing.Point(14, 355);
+            this.smfw_Cmb.Margin = new System.Windows.Forms.Padding(2);
+            this.smfw_Cmb.Name = "smfw_Cmb";
+            this.smfw_Cmb.Size = new System.Drawing.Size(67, 23);
+            this.smfw_Cmb.TabIndex = 174;
+            // 
+            // plus9
+            // 
+            this.plus9.AutoSize = true;
+            this.plus9.ForeColor = System.Drawing.Color.Black;
+            this.plus9.Location = new System.Drawing.Point(84, 360);
+            this.plus9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.plus9.Name = "plus9";
+            this.plus9.Size = new System.Drawing.Size(14, 15);
+            this.plus9.TabIndex = 177;
+            this.plus9.Text = "+";
+            this.plus9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mergerShortcutLabel
+            // 
+            this.mergerShortcutLabel.AutoSize = true;
+            this.mergerShortcutLabel.Location = new System.Drawing.Point(12, 337);
+            this.mergerShortcutLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.mergerShortcutLabel.Name = "mergerShortcutLabel";
+            this.mergerShortcutLabel.Size = new System.Drawing.Size(204, 15);
+            this.mergerShortcutLabel.TabIndex = 176;
+            this.mergerShortcutLabel.Text = "Change Childs Foreground Window:";
+            this.mergerShortcutLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // smfw_HKTxt
+            // 
+            this.smfw_HKTxt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.smfw_HKTxt.Location = new System.Drawing.Point(100, 357);
+            this.smfw_HKTxt.Margin = new System.Windows.Forms.Padding(2);
+            this.smfw_HKTxt.MaxLength = 1;
+            this.smfw_HKTxt.Name = "smfw_HKTxt";
+            this.smfw_HKTxt.ShortcutsEnabled = false;
+            this.smfw_HKTxt.Size = new System.Drawing.Size(36, 21);
+            this.smfw_HKTxt.TabIndex = 175;
+            this.smfw_HKTxt.Tag = "HotKeyTextBox";
+            this.smfw_HKTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // refreshScreenDatasButton
+            // 
+            this.refreshScreenDatasButton.BackColor = System.Drawing.Color.Transparent;
+            this.refreshScreenDatasButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.refreshScreenDatasButton.FlatAppearance.BorderSize = 0;
+            this.refreshScreenDatasButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.refreshScreenDatasButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.refreshScreenDatasButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refreshScreenDatasButton.Location = new System.Drawing.Point(461, 217);
+            this.refreshScreenDatasButton.Name = "refreshScreenDatasButton";
+            this.refreshScreenDatasButton.Size = new System.Drawing.Size(18, 18);
+            this.refreshScreenDatasButton.TabIndex = 173;
+            this.refreshScreenDatasButton.UseVisualStyleBackColor = false;
+            this.refreshScreenDatasButton.Click += new System.EventHandler(this.RefreshScreenDatasButton_Click);
+            // 
+            // mergerResSelectorLabel
+            // 
+            this.mergerResSelectorLabel.AutoSize = true;
+            this.mergerResSelectorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mergerResSelectorLabel.Location = new System.Drawing.Point(280, 220);
+            this.mergerResSelectorLabel.Name = "mergerResSelectorLabel";
+            this.mergerResSelectorLabel.Size = new System.Drawing.Size(176, 13);
+            this.mergerResSelectorLabel.TabIndex = 172;
+            this.mergerResSelectorLabel.Text = "Select Windows Merger Resolution ";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(12, 261);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(99, 13);
+            this.label4.TabIndex = 171;
+            this.label4.Text = "Window Resolution";
+            // 
+            // mergerSettingsLabel
+            // 
+            this.mergerSettingsLabel.AutoSize = true;
+            this.mergerSettingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mergerSettingsLabel.Location = new System.Drawing.Point(12, 216);
+            this.mergerSettingsLabel.Name = "mergerSettingsLabel";
+            this.mergerSettingsLabel.Size = new System.Drawing.Size(128, 13);
+            this.mergerSettingsLabel.TabIndex = 170;
+            this.mergerSettingsLabel.Text = "Windows Merger Settings";
+            // 
+            // losslessHook
+            // 
+            this.losslessHook.AutoSize = true;
+            this.losslessHook.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.losslessHook.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.losslessHook.Location = new System.Drawing.Point(15, 308);
+            this.losslessHook.Margin = new System.Windows.Forms.Padding(0);
+            this.losslessHook.Name = "losslessHook";
+            this.losslessHook.Size = new System.Drawing.Size(131, 17);
+            this.losslessHook.TabIndex = 169;
+            this.losslessHook.Text = "Enable Lossless Hook";
+            this.losslessHook.UseVisualStyleBackColor = true;
+            this.losslessHook.CheckedChanged += new System.EventHandler(this.LosslessHook_CheckedChanged);
+            // 
+            // selectedRes
+            // 
+            this.selectedRes.BackColor = System.Drawing.SystemColors.MenuText;
+            this.selectedRes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.selectedRes.ForeColor = System.Drawing.SystemColors.Menu;
+            this.selectedRes.Location = new System.Drawing.Point(14, 279);
+            this.selectedRes.Name = "selectedRes";
+            this.selectedRes.ReadOnly = true;
+            this.selectedRes.ShortcutsEnabled = false;
+            this.selectedRes.Size = new System.Drawing.Size(99, 21);
+            this.selectedRes.TabIndex = 168;
+            // 
+            // screen_panel
+            // 
+            this.screen_panel.Location = new System.Drawing.Point(283, 237);
+            this.screen_panel.Name = "screen_panel";
+            this.screen_panel.Size = new System.Drawing.Size(378, 148);
+            this.screen_panel.TabIndex = 167;
+            this.screen_panel.Paint += new System.Windows.Forms.PaintEventHandler(this.Screen_panel_Paint);
+            // 
+            // enable_WMerger
+            // 
+            this.enable_WMerger.AutoSize = true;
+            this.enable_WMerger.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.enable_WMerger.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enable_WMerger.Location = new System.Drawing.Point(15, 238);
+            this.enable_WMerger.Margin = new System.Windows.Forms.Padding(0);
+            this.enable_WMerger.Name = "enable_WMerger";
+            this.enable_WMerger.Size = new System.Drawing.Size(142, 17);
+            this.enable_WMerger.TabIndex = 166;
+            this.enable_WMerger.Text = "Enable Windows Merger";
+            this.enable_WMerger.UseVisualStyleBackColor = true;
             // 
             // hideDesktop
             // 
             this.hideDesktop.AutoSize = true;
             this.hideDesktop.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.hideDesktop.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hideDesktop.Location = new System.Drawing.Point(16, 131);
+            this.hideDesktop.Location = new System.Drawing.Point(16, 38);
             this.hideDesktop.Margin = new System.Windows.Forms.Padding(0);
             this.hideDesktop.Name = "hideDesktop";
             this.hideDesktop.Size = new System.Drawing.Size(115, 17);
             this.hideDesktop.TabIndex = 162;
             this.hideDesktop.Text = "Hide Desktop Only";
             this.hideDesktop.UseVisualStyleBackColor = true;
-            // 
-            // numMaxPlyrs
-            // 
-            this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
-            this.numMaxPlyrs.Enabled = false;
-            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numMaxPlyrs.Location = new System.Drawing.Point(300, 249);
-            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
-            this.numMaxPlyrs.Name = "numMaxPlyrs";
-            this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
-            this.numMaxPlyrs.TabIndex = 161;
-            this.numMaxPlyrs.Value = 0;
-            // 
-            // numUpDownVer
-            // 
-            this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownVer.Location = new System.Drawing.Point(298, 151);
-            this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownVer.Name = "numUpDownVer";
-            this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownVer.TabIndex = 159;
-            this.numUpDownVer.Value = 0;
             // 
             // label29
             // 
@@ -3247,7 +3320,7 @@ namespace Nucleus.Coop
             this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label29.Location = new System.Drawing.Point(290, 226);
+            this.label29.Location = new System.Drawing.Point(290, 132);
             this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(64, 13);
@@ -3263,7 +3336,7 @@ namespace Nucleus.Coop
             this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label27.Location = new System.Drawing.Point(290, 179);
+            this.label27.Location = new System.Drawing.Point(290, 85);
             this.label27.Margin = new System.Windows.Forms.Padding(0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(99, 13);
@@ -3278,31 +3351,19 @@ namespace Nucleus.Coop
             this.label28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label28.Location = new System.Drawing.Point(287, 132);
+            this.label28.Location = new System.Drawing.Point(290, 38);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(90, 13);
+            this.label28.Size = new System.Drawing.Size(87, 13);
             this.label28.TabIndex = 157;
-            this.label28.Text = " Vertical Divisions";
+            this.label28.Text = "Vertical Divisions";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // numUpDownHor
-            // 
-            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
-            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numUpDownHor.Location = new System.Drawing.Point(299, 198);
-            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
-            this.numUpDownHor.Name = "numUpDownHor";
-            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
-            this.numUpDownHor.TabIndex = 160;
-            this.numUpDownHor.Value = 0;
             // 
             // label71
             // 
             this.label71.AutoSize = true;
-            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(13, 213);
+            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label71.Location = new System.Drawing.Point(12, 116);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(128, 13);
             this.label71.TabIndex = 155;
@@ -3315,7 +3376,7 @@ namespace Nucleus.Coop
             this.cts_Panel.Controls.Add(this.cts_kar);
             this.cts_Panel.Controls.Add(this.cts_Mute);
             this.cts_Panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cts_Panel.Location = new System.Drawing.Point(12, 232);
+            this.cts_Panel.Location = new System.Drawing.Point(11, 132);
             this.cts_Panel.Name = "cts_Panel";
             this.cts_Panel.Size = new System.Drawing.Size(200, 74);
             this.cts_Panel.TabIndex = 154;
@@ -3323,7 +3384,7 @@ namespace Nucleus.Coop
             // cts_unfocus
             // 
             this.cts_unfocus.AutoSize = true;
-            this.cts_unfocus.Location = new System.Drawing.Point(6, 54);
+            this.cts_unfocus.Location = new System.Drawing.Point(4, 54);
             this.cts_unfocus.Name = "cts_unfocus";
             this.cts_unfocus.Size = new System.Drawing.Size(138, 17);
             this.cts_unfocus.TabIndex = 142;
@@ -3333,7 +3394,7 @@ namespace Nucleus.Coop
             // cts_kar
             // 
             this.cts_kar.AutoSize = true;
-            this.cts_kar.Location = new System.Drawing.Point(6, 29);
+            this.cts_kar.Location = new System.Drawing.Point(4, 28);
             this.cts_kar.Name = "cts_kar";
             this.cts_kar.Size = new System.Drawing.Size(154, 17);
             this.cts_kar.TabIndex = 141;
@@ -3343,19 +3404,20 @@ namespace Nucleus.Coop
             // cts_Mute
             // 
             this.cts_Mute.AutoSize = true;
-            this.cts_Mute.Location = new System.Drawing.Point(6, 4);
+            this.cts_Mute.Location = new System.Drawing.Point(4, 5);
             this.cts_Mute.Name = "cts_Mute";
             this.cts_Mute.Size = new System.Drawing.Size(104, 17);
             this.cts_Mute.TabIndex = 140;
             this.cts_Mute.Text = "Mute Audio Only";
             this.cts_Mute.UseVisualStyleBackColor = true;
-            this.cts_Mute.CheckedChanged += new System.EventHandler(this.cts_Mute_CheckedChanged);
+            this.cts_Mute.CheckedChanged += new System.EventHandler(this.Cts_Mute_CheckedChanged);
             // 
             // SplitColors
             // 
+            this.SplitColors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SplitColors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SplitColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitColors.Location = new System.Drawing.Point(15, 175);
+            this.SplitColors.Location = new System.Drawing.Point(17, 83);
             this.SplitColors.Margin = new System.Windows.Forms.Padding(0);
             this.SplitColors.Name = "SplitColors";
             this.SplitColors.Size = new System.Drawing.Size(119, 24);
@@ -3366,7 +3428,7 @@ namespace Nucleus.Coop
             this.splitDiv.AutoSize = true;
             this.splitDiv.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.splitDiv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.splitDiv.Location = new System.Drawing.Point(16, 107);
+            this.splitDiv.Location = new System.Drawing.Point(16, 13);
             this.splitDiv.Margin = new System.Windows.Forms.Padding(0);
             this.splitDiv.Name = "splitDiv";
             this.splitDiv.Size = new System.Drawing.Size(118, 17);
@@ -3379,7 +3441,7 @@ namespace Nucleus.Coop
             this.label49.AutoSize = true;
             this.label49.BackColor = System.Drawing.Color.Transparent;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.Location = new System.Drawing.Point(13, 153);
+            this.label49.Location = new System.Drawing.Point(14, 64);
             this.label49.Margin = new System.Windows.Forms.Padding(0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(105, 15);
@@ -3391,14 +3453,51 @@ namespace Nucleus.Coop
             // 
             this.layoutSizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.layoutSizer.BackColor = System.Drawing.Color.Transparent;
-            this.layoutSizer.Location = new System.Drawing.Point(416, 113);
+            this.layoutSizer.Location = new System.Drawing.Point(416, 19);
             this.layoutSizer.Margin = new System.Windows.Forms.Padding(0);
             this.layoutSizer.MaximumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.MinimumSize = new System.Drawing.Size(245, 170);
             this.layoutSizer.Name = "layoutSizer";
             this.layoutSizer.Size = new System.Drawing.Size(245, 170);
             this.layoutSizer.TabIndex = 147;
-            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.layoutSizer_Paint);
+            this.layoutSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.LayoutSizer_Paint);
+            // 
+            // numMaxPlyrs
+            // 
+            this.numMaxPlyrs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numMaxPlyrs.BackColor = System.Drawing.Color.Transparent;
+            this.numMaxPlyrs.Enabled = false;
+            this.numMaxPlyrs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numMaxPlyrs.Location = new System.Drawing.Point(300, 155);
+            this.numMaxPlyrs.Margin = new System.Windows.Forms.Padding(0);
+            this.numMaxPlyrs.Name = "numMaxPlyrs";
+            this.numMaxPlyrs.Size = new System.Drawing.Size(48, 20);
+            this.numMaxPlyrs.TabIndex = 161;
+            this.numMaxPlyrs.Value = 0;
+            // 
+            // numUpDownVer
+            // 
+            this.numUpDownVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownVer.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownVer.Location = new System.Drawing.Point(298, 57);
+            this.numUpDownVer.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownVer.Name = "numUpDownVer";
+            this.numUpDownVer.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownVer.TabIndex = 159;
+            this.numUpDownVer.Value = 0;
+            // 
+            // numUpDownHor
+            // 
+            this.numUpDownHor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numUpDownHor.BackColor = System.Drawing.Color.Transparent;
+            this.numUpDownHor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numUpDownHor.Location = new System.Drawing.Point(299, 104);
+            this.numUpDownHor.Margin = new System.Windows.Forms.Padding(0);
+            this.numUpDownHor.Name = "numUpDownHor";
+            this.numUpDownHor.Size = new System.Drawing.Size(48, 20);
+            this.numUpDownHor.TabIndex = 160;
+            this.numUpDownHor.Value = 0;
             // 
             // Settings
             // 
@@ -3407,7 +3506,7 @@ namespace Nucleus.Coop
             this.BackColor = System.Drawing.Color.Gray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(674, 418);
-            this.Controls.Add(this.btn_credits);
+            this.ControlBox = false;
             this.Controls.Add(this.closeBtnPicture);
             this.Controls.Add(this.layoutBtnPicture);
             this.Controls.Add(this.settingsBtnPicture);
@@ -3417,16 +3516,20 @@ namespace Nucleus.Coop
             this.Controls.Add(this.audioTabBtn);
             this.Controls.Add(this.playersTabBtn);
             this.Controls.Add(this.settingsTabBtn);
-            this.Controls.Add(this.playersTab);
-            this.Controls.Add(this.audioTab);
             this.Controls.Add(this.layoutTab);
             this.Controls.Add(this.settingsTab);
-            this.DoubleBuffered = true;
+            this.Controls.Add(this.playersTab);
+            this.Controls.Add(this.audioTab);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(0);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Settings";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Settings";
             this.VisibleChanged += new System.EventHandler(this.Settings_VisibleChanged);
@@ -3466,7 +3569,7 @@ namespace Nucleus.Coop
         private Button layoutTabBtn;
         private Label default_sid_list_label;
         private ComboBox def_sid_comboBox;
-        private BufferedClientAreaPanel audioTab;
+        private Panel audioTab;
         private Label audioWarningLabel;
         private Label audioDefaultDevice;
         private GroupBox audioCustomSettingsBox;
@@ -3493,12 +3596,12 @@ namespace Nucleus.Coop
         private PictureBox playersBtnPicture;
         private PictureBox settingsBtnPicture;
         private PictureBox layoutBtnPicture;
-        private BufferedClientAreaPanel settingsTab;
+        private Panel settingsTab;
         private Label label32;
-        private BufferedClientAreaPanel playersTab;
+        private Panel playersTab;
         private PictureBox closeBtnPicture;
         private ComboBox cmb_Network;
-        private BufferedClientAreaPanel layoutTab;
+        private Panel layoutTab;
         private CheckBox useNicksCheck;
         private CheckBox scaleOptionCbx;
         private Label label71;
@@ -3516,47 +3619,44 @@ namespace Nucleus.Coop
         private Label password_Label;
         private Label themeLabel;
         private ComboBox themeCbx;
-        private CheckBox clickSoundChkB;
         private ComboBox cmb_EpicLang;
         private Label label1;
         private CheckBox ignoreInputLockReminderCheckbox;
-        private CheckBox statusCheck;
         private ComboBox cmb_Lang;
         private Label label2;
         private CheckBox debugLogCheck;
         private GroupBox hotkeyBox;
-        private ComboBox swl_comboBox;
+        private ComboBox swl_Cmb;
         private Label plus7;
         private Label hkLabel7;
-        private TextBox swl_textBox;
-        private ComboBox csm_comboBox;
+        private TextBox swl_HKTxt;
+        private ComboBox csm_Cmb;
         private Label plus6;
         private Label hkLabel6;
-        private TextBox csm_textBox;
-        private ComboBox r1;
+        private TextBox csm_HKTxt;
+        private ComboBox rw_Cmb;
         private Label plus5;
-        private ComboBox settingsFocusCmb;
+        private ComboBox tu_Cmb;
         private Label hkLabel5;
         private Label plus1;
-        private TextBox r2;
+        private TextBox rw_HKTxt;
         private Label hotkeysLabel;
         private Label hkLabel1;
-        private TextBox settingsFocusHKTxt;
-        private ComboBox comboBox_lockKey;
+        private TextBox tu_HKTxt;
+        private ComboBox lockKey_Cmb;
         private Label hkLabel8;
-        private ComboBox settingsTopCmb;
-        private ComboBox settingsStopCmb;
-        private TextBox settingsTopTxt;
-        private TextBox settingsStopTxt;
-        private ComboBox settingsCloseCmb;
+        private ComboBox ttm_Cmb;
+        private ComboBox ss_Cmb;
+        private TextBox ttm_HKTxt;
+        private TextBox ss_HKTxt;
+        private ComboBox cn_Cmb;
         private Label plus4;
         private Label plus3;
         private Label plus2;
         private Label hkLabel4;
         private Label hkLabel3;
         private Label hkLabel;
-        private TextBox settingsCloseHKTxt;
-        private Button btn_credits;
+        private TextBox cn_HKTxt;
         private CheckBox disableGameProfiles;
         private Button btnNext;
         private Panel page1;
@@ -3669,7 +3769,6 @@ namespace Nucleus.Coop
         private Label label35;
         private Label label38;
         private ComboBox player28N;
-        private CheckBox showUIInfoMsg;
         private Gaming.Controls.CustomNumericUpDown numMaxPlyrs;
         private Gaming.Controls.CustomNumericUpDown numUpDownVer;
         private Label label29;
@@ -3678,8 +3777,22 @@ namespace Nucleus.Coop
         private Gaming.Controls.CustomNumericUpDown numUpDownHor;
         private Button btn_Gb_Update;
         private CheckBox gamepadsAssignMethods;
-        private Button btn_SteamExePath;
         private CheckBox hideDesktop;
-        private CheckBox cts_bringToFront;
+        private CheckBox enable_WMerger;
+        private ComboBox rm_Cmb;
+        private Label plus8;
+        private Label hkLabel2;
+        private TextBox rm_HKTxt;
+        private Panel screen_panel;
+        private TextBox selectedRes;
+        private CheckBox losslessHook;
+        private Label label4;
+        private Label mergerSettingsLabel;
+        private Label mergerResSelectorLabel;
+        private Button refreshScreenDatasButton;
+        private ComboBox smfw_Cmb;
+        private Label plus9;
+        private Label mergerShortcutLabel;
+        private TextBox smfw_HKTxt;
     }
 }

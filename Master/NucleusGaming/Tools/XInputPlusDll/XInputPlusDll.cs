@@ -12,23 +12,25 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
     public static class XInputPlusDll
     {
 
-        public static void SetupXInputPlusDll(GenericGameHandler genericGameHandler, GenericGameInfo gen, string garch, PlayerInfo player, GenericContext context, int i, bool setupDll)
+        public static void SetupXInputPlusDll(PlayerInfo player, int i, bool setupDll)
         {
-            genericGameHandler.Log("Setting up XInput Plus");
+            var handlerInstance = GenericGameHandler.Instance;
+
+            handlerInstance.Log("Setting up XInput Plus");
             string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\XInputPlus");
-           
-            if (gen.XInputPlusOldDll)
+
+            if (handlerInstance.CurrentGameInfo.XInputPlusOldDll)
             {
                 utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\XInputPlus\\old");
             }
 
             if (setupDll)
             {
-                foreach (string xinputDllName in gen.XInputPlusDll)
+                foreach (string xinputDllName in handlerInstance.CurrentGameInfo.XInputPlusDll)
                 {
                     string xinputDll = "xinput1_3.dl_";
 
-                    FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(genericGameHandler.instanceExeFolder, xinputDllName));
+                    FileUtil.FileCheck(Path.Combine(handlerInstance.instanceExeFolder, xinputDllName));
                     try
                     {
                         if (xinputDllName.ToLower().StartsWith("dinput."))
@@ -40,94 +42,96 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                             xinputDll = "Dinput8.dl_";
                         }
 
-                        genericGameHandler.Log("Using " + xinputDll + " (" + garch + ") as base and naming it: " + xinputDllName);
+                        handlerInstance.Log("Using " + xinputDll + " (" + handlerInstance.garch + ") as base and naming it: " + xinputDllName);
 
-                        File.Copy(Path.Combine(utilFolder, garch + "\\" + xinputDll), Path.Combine(genericGameHandler.instanceExeFolder, xinputDllName), true);
+                        File.Copy(Path.Combine(utilFolder, handlerInstance.garch + "\\" + xinputDll), Path.Combine(handlerInstance.instanceExeFolder, xinputDllName), true);
                     }
                     catch (Exception ex)
                     {
-                        genericGameHandler.Log("ERROR - " + ex.Message);
-                        genericGameHandler.Log("Using alternative copy method for " + xinputDll);
-                        CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, garch + "\\" + xinputDll) + "\" \"" + Path.Combine(genericGameHandler.instanceExeFolder, xinputDllName) + "\"");
+                        handlerInstance.Log("ERROR - " + ex.Message);
+                        handlerInstance.Log("Using alternative copy method for " + xinputDll);
+                        CmdUtil.ExecuteCommand(utilFolder, out int exitCode, "copy \"" + Path.Combine(utilFolder, handlerInstance.garch + "\\" + xinputDll) + "\" \"" + Path.Combine(handlerInstance.instanceExeFolder, xinputDllName) + "\"");
                     }
                 }
             }
 
-            if (!gen.XInputPlusNoIni)
+            if (!handlerInstance.CurrentGameInfo.XInputPlusNoIni)
             {
                 List<string> textChanges = new List<string>();
 
-                if (player.IsController || (player.IsKeyboardPlayer && gen.PlayersPerInstance <= 1))
+                if (player.IsController || (player.IsKeyboardPlayer && handlerInstance.CurrentGameInfo.PlayersPerInstance <= 1))
                 {
                     if (setupDll)
                     {
-                        genericGameHandler.addedFiles.Add(Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"));
+                        handlerInstance.addedFiles.Add(Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"));
                     }
 
-                    genericGameHandler.Log("Copying XInputPlus.ini");
+                    handlerInstance.Log("Copying XInputPlus.ini");
 
-                    File.Copy(Path.Combine(utilFolder, "XInputPlus.ini"), Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"), true);
+                    File.Copy(Path.Combine(utilFolder, "XInputPlus.ini"), Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"), true);
 
-                    genericGameHandler.Log("Making changes to the lines in XInputPlus.ini; FileVersion and Controller values");
+                    handlerInstance.Log("Making changes to the lines in XInputPlus.ini; FileVersion and Controller values");
 
-                    gen.XInputPlusDll = Array.ConvertAll(gen.XInputPlusDll, x => x.ToLower());
+                    handlerInstance.CurrentGameInfo.XInputPlusDll = Array.ConvertAll(handlerInstance.CurrentGameInfo.XInputPlusDll, x => x.ToLower());
 
-                    if (gen.XInputPlusDll.ToList().Any(val => val.StartsWith("dinput") == true)) //(xinputDll.ToLower().StartsWith("dinput"))
+                    if (handlerInstance.CurrentGameInfo.XInputPlusDll.ToList().Any(val => val.StartsWith("dinput") == true)) //(xinputDll.ToLower().StartsWith("dinput"))
                     {
-                        genericGameHandler.Log("A Dinput dll has been detected, also enabling X2Dinput in XInputPlus.ini");
-                        textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"), "EnableX2Dinput=", SearchType.StartsWith) + "|EnableX2Dinput=True");
+                        handlerInstance.Log("A Dinput dll has been detected, also enabling X2Dinput in XInputPlus.ini");
+                        textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"), "EnableX2Dinput=", SearchType.StartsWith) + "|EnableX2Dinput=True");
                     }
 
-                    textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"), "FileVersion=", SearchType.StartsWith) + "|FileVersion=" + garch);
+                    textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"), "FileVersion=", SearchType.StartsWith) + "|FileVersion=" + handlerInstance.garch);
 
                     if (player.IsController)
                     {
-                        if (gen.PlayersPerInstance > 1)
+                        if (handlerInstance.CurrentGameInfo.PlayersPerInstance > 1)
                         {
-                            for (int x = 1; x <= gen.PlayersPerInstance; x++)
+                            for (int x = 1; x <= handlerInstance.CurrentGameInfo.PlayersPerInstance; x++)
                             {
-                                textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"), "Controller" + x + "=", SearchType.StartsWith) + "|Controller" + x + "=" + (x + genericGameHandler.plyrIndex));
+                                textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"), "Controller" + x + "=", SearchType.StartsWith) + "|Controller" + x + "=" + (x + handlerInstance.plyrIndex));
                             }
-                            genericGameHandler.plyrIndex += gen.PlayersPerInstance;
+                            handlerInstance.plyrIndex += handlerInstance.CurrentGameInfo.PlayersPerInstance;
                         }
                         else
                         {
-                            textChanges.Add(context.FindLineNumberInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"), "Controller1=", SearchType.StartsWith) + "|Controller1=" + (player.GamepadId + 1));
+                            textChanges.Add(handlerInstance.context.FindLineNumberInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"), "Controller1=", SearchType.StartsWith) + "|Controller1=" + (player.GamepadId + 1));
                         }
                     }
                     else
                     {
-                        genericGameHandler.Log("Skipping setting controller value for this instance, as this player is using keyboard");
-                        genericGameHandler.kbi = 0;
+                        handlerInstance.Log("Skipping setting controller value for this instance, as this player is using keyboard");
+                        handlerInstance.kbi = 0;
                     }
 
-                    context.ReplaceLinesInTextFile(Path.Combine(genericGameHandler.instanceExeFolder, "XInputPlus.ini"), textChanges.ToArray());
+                    handlerInstance.context.ReplaceLinesInTextFile(Path.Combine(handlerInstance.instanceExeFolder, "XInputPlus.ini"), textChanges.ToArray());
                 }
             }
 
-            genericGameHandler.Log("XInput Plus setup complete");
+            handlerInstance.Log("XInput Plus setup complete");
         }
 
-        public static void CustomDllEnabled(GenericGameHandler genericGameHandler, GenericGameInfo gen, GenericContext context, PlayerInfo player, Rectangle playerBounds, int i, bool setupDll)
+        public static void CustomDllEnabled(PlayerInfo player, Rectangle playerBounds, int i, bool setupDll)
         {
+            var handlerInstance = GenericGameHandler.Instance;
+
             if (setupDll)
             {
-                genericGameHandler.Log(string.Format("Setting up Custom DLL, UseAlpha8CustomDll: {0}", gen.Hook.UseAlpha8CustomDll));
-               
+                handlerInstance.Log(string.Format("Setting up Custom DLL, UseAlpha8CustomDll: {0}", handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll));
+
                 byte[] xdata;
 
-                if (gen.Hook.UseAlpha8CustomDll && !genericGameHandler.gameIs64)
+                if (handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll && !handlerInstance.gameIs64)
                 {
                     xdata = Properties.Resources.xinput1_3;
                 }
                 else
                 {
-                    if (gen.Hook.UseAlpha8CustomDll)
+                    if (handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll)
                     {
-                        genericGameHandler.Log("Using Alpha 10 custom dll as there is no Alpha 8 x64 custom dll");
+                        handlerInstance.Log("Using Alpha 10 custom dll as there is no Alpha 8 x64 custom dll");
                     }
 
-                    if (genericGameHandler.gameIs64)
+                    if (handlerInstance.gameIs64)
                     {
                         xdata = Properties.Resources.xinput1_3_a10_x64;
                     }
@@ -137,12 +141,12 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                     }
                 }
 
-                if (context.Hook.XInputNames == null)
+                if (handlerInstance.context.Hook.XInputNames == null)
                 {
-                    string ogFile = Path.Combine(genericGameHandler.instanceExeFolder, "xinput1_3.dll");
-                    FileUtil.FileCheck(genericGameHandler, gen, ogFile);
-                    genericGameHandler.Log(string.Format("Writing custom dll xinput1_3.dll to {0}", genericGameHandler.instanceExeFolder));
-                    
+                    string ogFile = Path.Combine(handlerInstance.instanceExeFolder, "xinput1_3.dll");
+                    FileUtil.FileCheck(ogFile);
+                    handlerInstance.Log(string.Format("Writing custom dll xinput1_3.dll to {0}", handlerInstance.instanceExeFolder));
+
                     using (Stream str = File.OpenWrite(ogFile))
                     {
                         str.Write(xdata, 0, xdata.Length);
@@ -150,17 +154,16 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                 }
                 else
                 {
-                    string[] xinputs = context.Hook.XInputNames;
+                    string[] xinputs = handlerInstance.context.Hook.XInputNames;
 
                     for (int z = 0; z < xinputs.Length; z++)
                     {
                         string xinputName = xinputs[z];
-                        string ogFile = Path.Combine(genericGameHandler.instanceExeFolder, xinputName);
+                        string ogFile = Path.Combine(handlerInstance.instanceExeFolder, xinputName);
 
-
-                        FileUtil.FileCheck(genericGameHandler, gen, ogFile);
-                        genericGameHandler.Log(string.Format("Writing custom dll {0} to {1}", xinputName, genericGameHandler.instanceExeFolder));
-                        using (Stream str = File.OpenWrite(Path.Combine(genericGameHandler.instanceExeFolder, xinputName)))
+                        FileUtil.FileCheck(ogFile);
+                        handlerInstance.Log(string.Format("Writing custom dll {0} to {1}", xinputName, handlerInstance.instanceExeFolder));
+                        using (Stream str = File.OpenWrite(Path.Combine(handlerInstance.instanceExeFolder, xinputName)))
                         {
                             str.Write(xdata, 0, xdata.Length);
                         }
@@ -168,8 +171,8 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                 }
             }
 
-            genericGameHandler.Log(string.Format("Writing ncoop.ini to {0} with Game.Hook values", genericGameHandler.instanceExeFolder));
-            string ncoopIni = Path.Combine(genericGameHandler.instanceExeFolder, "ncoop.ini");
+            handlerInstance.Log(string.Format("Writing ncoop.ini to {0} with Game.Hook values", handlerInstance.instanceExeFolder));
+            string ncoopIni = Path.Combine(handlerInstance.instanceExeFolder, "ncoop.ini");
 
             using (Stream str = File.OpenWrite(ncoopIni))
             {
@@ -177,27 +180,27 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                 str.Write(ini, 0, ini.Length);
             }
 
-            FileUtil.FileCheck(genericGameHandler, gen, Path.Combine(genericGameHandler.instanceExeFolder, "ncoop.ini"));
+            FileUtil.FileCheck(Path.Combine(handlerInstance.instanceExeFolder, "ncoop.ini"));
             IniFile x360 = new IniFile(ncoopIni);
 
             x360.IniWriteValue("Options", "Log", "0");
             x360.IniWriteValue("Options", "FileLog", "0");
-            x360.IniWriteValue("Options", "ForceFocus", gen.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "ForceFocus", handlerInstance.CurrentGameInfo.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
 
-            if (!gen.Hook.UseAlpha8CustomDll)
+            if (!handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll)
             {
                 x360.IniWriteValue("Options", "Version", "2");
-                x360.IniWriteValue("Options", "ForceFocusWindowRegex", gen.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
+                x360.IniWriteValue("Options", "ForceFocusWindowRegex", handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                string windowTitle = gen.Hook.ForceFocusWindowName;
-                if (gen.IdInWindowTitle || gen.FlawlessWidescreen?.Length > 0)
+                string windowTitle = handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName;
+                if (handlerInstance.CurrentGameInfo.IdInWindowTitle || handlerInstance.CurrentGameInfo.FlawlessWidescreen?.Length > 0)
                 {
-                    windowTitle = gen.Hook.ForceFocusWindowName + "(" + i + ")";
-                    if (!string.IsNullOrEmpty(gen.FlawlessWidescreen))
+                    windowTitle = handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName + "(" + i + ")";
+                    if (!string.IsNullOrEmpty(handlerInstance.CurrentGameInfo.FlawlessWidescreen))
                     {
-                        windowTitle = "Nucleus Instance " + (i + 1) + "(" + gen.Hook.ForceFocusWindowName + ")";
+                        windowTitle = "Nucleus Instance " + (i + 1) + "(" + handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName + ")";
                     }
                 }
                 x360.IniWriteValue("Options", "ForceFocusWindowName", windowTitle.ToString(CultureInfo.InvariantCulture));
@@ -208,12 +211,12 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
             int rw;
             int rh;
 
-            if (context.Hook.WindowX > 0 && context.Hook.WindowY > 0)
+            if (handlerInstance.context.Hook.WindowX > 0 && handlerInstance.context.Hook.WindowY > 0)
             {
-                wx = context.Hook.WindowX;
-                wy = context.Hook.WindowY;
-                x360.IniWriteValue("Options", "WindowX", context.Hook.WindowX.ToString(CultureInfo.InvariantCulture));
-                x360.IniWriteValue("Options", "WindowY", context.Hook.WindowY.ToString(CultureInfo.InvariantCulture));
+                wx = handlerInstance.context.Hook.WindowX;
+                wy = handlerInstance.context.Hook.WindowY;
+                x360.IniWriteValue("Options", "WindowX", handlerInstance.context.Hook.WindowX.ToString(CultureInfo.InvariantCulture));
+                x360.IniWriteValue("Options", "WindowY", handlerInstance.context.Hook.WindowY.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
@@ -223,44 +226,44 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
                 x360.IniWriteValue("Options", "WindowY", playerBounds.Y.ToString(CultureInfo.InvariantCulture));
             }
 
-            if (context.Hook.ResWidth > 0 && context.Hook.ResHeight > 0)
+            if (handlerInstance.context.Hook.ResWidth > 0 && handlerInstance.context.Hook.ResHeight > 0)
             {
-                rw = context.Hook.ResWidth;
-                rh = context.Hook.ResHeight;
-                x360.IniWriteValue("Options", "ResWidth", context.Hook.ResWidth.ToString(CultureInfo.InvariantCulture));
-                x360.IniWriteValue("Options", "ResHeight", context.Hook.ResHeight.ToString(CultureInfo.InvariantCulture));
+                rw = handlerInstance.context.Hook.ResWidth;
+                rh = handlerInstance.context.Hook.ResHeight;
+                x360.IniWriteValue("Options", "ResWidth", handlerInstance.context.Hook.ResWidth.ToString(CultureInfo.InvariantCulture));
+                x360.IniWriteValue("Options", "ResHeight", handlerInstance.context.Hook.ResHeight.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                rw = context.Width;
-                rh = context.Height;
-                x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
-                x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
+                rw = handlerInstance.context.Width;
+                rh = handlerInstance.context.Height;
+                x360.IniWriteValue("Options", "ResWidth", handlerInstance.context.Width.ToString(CultureInfo.InvariantCulture));
+                x360.IniWriteValue("Options", "ResHeight", handlerInstance.context.Height.ToString(CultureInfo.InvariantCulture));
             }
 
-            if (!gen.Hook.UseAlpha8CustomDll)
+            if (!handlerInstance.CurrentGameInfo.Hook.UseAlpha8CustomDll)
             {
-                if (context.Hook.FixResolution)
+                if (handlerInstance.context.Hook.FixResolution)
                 {
-                    genericGameHandler.Log(string.Format("Custom DLL will be doing the resizing with values width:{0}, height:{1}", rw, rh));
-                    genericGameHandler.dllResize = true;
+                    handlerInstance.Log(string.Format("Custom DLL will be doing the resizing with values width:{0}, height:{1}", rw, rh));
+                    handlerInstance.dllResize = true;
                 }
-                if (context.Hook.FixPosition)
+                if (handlerInstance.context.Hook.FixPosition)
                 {
-                    genericGameHandler.Log(string.Format("Custom DLL will be doing the repositioning with values x:{0}, y:{1}", wx, wy));
-                    genericGameHandler.dllRepos = true;
+                    handlerInstance.Log(string.Format("Custom DLL will be doing the repositioning with values x:{0}, y:{1}", wx, wy));
+                    handlerInstance.dllRepos = true;
                 }
-                x360.IniWriteValue("Options", "FixResolution", context.Hook.FixResolution.ToString(CultureInfo.InvariantCulture));
-                x360.IniWriteValue("Options", "FixPosition", context.Hook.FixPosition.ToString(CultureInfo.InvariantCulture));
+                x360.IniWriteValue("Options", "FixResolution", handlerInstance.context.Hook.FixResolution.ToString(CultureInfo.InvariantCulture));
+                x360.IniWriteValue("Options", "FixPosition", handlerInstance.context.Hook.FixPosition.ToString(CultureInfo.InvariantCulture));
                 x360.IniWriteValue("Options", "ClipMouse", player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture)); //context.Hook.ClipMouse
             }
 
-            x360.IniWriteValue("Options", "RerouteInput", context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "RerouteInput", handlerInstance.context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(player.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
 
-            if (context.Hook.EnableMKBInput || player.IsKeyboardPlayer)
+            if (handlerInstance.context.Hook.EnableMKBInput || player.IsKeyboardPlayer)
             {
-                genericGameHandler.Log("Enabling MKB");
+                handlerInstance.Log("Enabling MKB");
                 x360.IniWriteValue("Options", "EnableMKBInput", "True".ToString(CultureInfo.InvariantCulture));
             }
             else
@@ -270,18 +273,18 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
 
             x360.IniWriteValue("Options", "IsKeyboardPlayer", player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
             // windows events
-            x360.IniWriteValue("Options", "BlockInputEvents", context.Hook.BlockInputEvents.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "BlockMouseEvents", context.Hook.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "BlockKeyboardEvents", context.Hook.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "BlockInputEvents", handlerInstance.context.Hook.BlockInputEvents.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "BlockMouseEvents", handlerInstance.context.Hook.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "BlockKeyboardEvents", handlerInstance.context.Hook.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
             // xinput
-            x360.IniWriteValue("Options", "XInputEnabled", context.Hook.XInputEnabled.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "XInputEnabled", handlerInstance.context.Hook.XInputEnabled.ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "XInputPlayerID", player.GamepadId.ToString(CultureInfo.InvariantCulture));
             // dinput
-            x360.IniWriteValue("Options", "DInputEnabled", context.Hook.DInputEnabled.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "DInputEnabled", handlerInstance.context.Hook.DInputEnabled.ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "DInputGuid", player.GamepadGuid.ToString().ToUpper());
-            x360.IniWriteValue("Options", "DInputForceDisable", context.Hook.DInputForceDisable.ToString());
+            x360.IniWriteValue("Options", "DInputForceDisable", handlerInstance.context.Hook.DInputForceDisable.ToString());
 
-            genericGameHandler.Log("Custom DLL setup complete");
+            handlerInstance.Log("Custom DLL setup complete");
         }
 
     }

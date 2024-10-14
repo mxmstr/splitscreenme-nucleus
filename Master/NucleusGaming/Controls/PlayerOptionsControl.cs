@@ -15,7 +15,6 @@ namespace Nucleus.Coop
     public class PlayerOptionsControl : UserInputControl, IDynamicSized
     {
         private ControlListBox list;
-        //private string customOption = "";
         public override bool CanProceed => true;
         public override bool CanPlay => true;
         private float _scale;
@@ -23,7 +22,7 @@ namespace Nucleus.Coop
         private Dictionary<string, object> vals;
 
         public PlayerOptionsControl()
-        {        
+        {
             BackColor = Color.Transparent;
             DPIManager.Register(this);
             DPIManager.Update(this);
@@ -33,7 +32,8 @@ namespace Nucleus.Coop
         {
             base.Initialize(game, profile);
             this.game = game;
-            Controls.Clear();
+
+            foreach (Control c in Controls) {c.Dispose();}
 
             int wid = 200;
 
@@ -65,7 +65,6 @@ namespace Nucleus.Coop
                     Width = list.Width,
                     Font = new Font("Segoe UI", 8 * _scale)
                 };
-                //cool.DetailsFont = detailsFont;
 
                 list.Controls.Add(cool);
 
@@ -73,6 +72,9 @@ namespace Nucleus.Coop
                 if (opt.Value is Enum || opt.List != null && opt.List.Count != 0)
                 {
                     ComboBox box = new ComboBox();
+                    box.BackColor = Color.Black;
+                    box.ForeColor = Color.White;
+                    box.FlatStyle = FlatStyle.Flat;
 
                     int border = 10;
 
@@ -84,14 +86,11 @@ namespace Nucleus.Coop
                     {
                         value = (Enum)val;
                         values = Enum.GetValues(value.GetType());
-                        //defaultValue = opt.DefaultValue;
                     }
                     else
                     {
-
                         value = opt.List[0];
                         values = opt.List;
-                        //defaultValue = vals[opt.Name];
                     }
 
                     for (int i = 0; i < values.Count; i++)
@@ -130,6 +129,10 @@ namespace Nucleus.Coop
                 else if (opt.Value is bool && opt.List.Count != 0)
                 {
                     SizeableCheckbox box = new SizeableCheckbox();
+                    box.BackColor = Color.Black;
+                    box.ForeColor = Color.White;
+                    box.FlatStyle = FlatStyle.Flat;
+
                     int border = 10;
 
                     box.Checked = (bool)val;
@@ -147,6 +150,9 @@ namespace Nucleus.Coop
                 else if ((opt.Value is int || opt.Value is double) && opt.List.Count != 0)
                 {
                     NumericUpDown num = new NumericUpDown();
+                    num.BackColor = Color.Black;
+                    num.ForeColor = Color.White;
+
                     int border = 10;
 
                     int value = (int)(double)val;
@@ -171,6 +177,10 @@ namespace Nucleus.Coop
                 else if (opt.Value is GameOptionValue && opt.List.Count != 0)
                 {
                     ComboBox box = new ComboBox();
+                    box.BackColor = Color.Black;
+                    box.ForeColor = Color.White;
+                    box.FlatStyle = FlatStyle.Flat;
+
                     int border = 10;
 
                     GameOptionValue value = (GameOptionValue)val;
@@ -183,7 +193,7 @@ namespace Nucleus.Coop
                     }
 
                     box.SelectedIndex = box.Items.IndexOf(value);
-                    
+
                     box.Width = (int)(wid * _scale);
                     box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;
@@ -194,16 +204,18 @@ namespace Nucleus.Coop
 
                     box.Tag = opt;
                     box.SelectedValueChanged += box_SelectedValueChanged;
-                    
+
                     ChangeOption(box.Tag, box.SelectedItem);
                 }
                 else if (opt.List.Count == 0)
                 {
                     TextBox box = new TextBox();
+                    box.BackColor = Color.Black;
+                    box.ForeColor = Color.White;
 
                     int border = 10;
 
-                    box.TextChanged += new System.EventHandler(this.box_TextChanged);
+                    box.TextChanged += box_TextChanged;
                     box.Width = (int)(wid * _scale);
                     box.Height = (int)(40 * _scale);
                     box.Left = cool.Width - box.Width - border;
@@ -241,13 +253,12 @@ namespace Nucleus.Coop
             ///reseted if an other game is selected.
             GameOption cast = box.Tag as GameOption;
             vals[cast.Key] = box.Text;
-            ///
             ChangeOption(box.Tag, box.Text);
         }
 
         private void ChangeOption(object tag, object value)
         {
-            // boxing but whatever
+            //boxing but whatever
             GameOption option = (GameOption)tag;
             profile.Options[option.Key] = value;
         }

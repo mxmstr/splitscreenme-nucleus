@@ -72,8 +72,9 @@ namespace Nucleus.Gaming.Controls
 
         private void val_TextChanged(object sender, EventArgs e)
         {
-            if (InvalidParent)
-                Parent.Invalidate();
+            if (Parent != null)
+                if (InvalidParent)
+                    Parent.Invalidate();                
         }
     }
 }

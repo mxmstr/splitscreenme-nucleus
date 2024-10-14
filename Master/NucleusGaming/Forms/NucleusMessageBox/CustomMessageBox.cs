@@ -1,42 +1,43 @@
-﻿using Jint.Parser;
-using Nucleus.Gaming.Cache;
+﻿using Nucleus.Gaming.Cache;
+using Nucleus.Gaming.DPI;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Forms
 {
-    internal partial class CustomMessageBox : Form
+    public partial class CustomMessageBox : Form
     {
         private string message;
         private bool sized;
+        private Font font;
 
-        internal CustomMessageBox(string title, string message, bool format)
+        public CustomMessageBox(string title, string message, bool format)
         {
-            string[] rgb_MouseOverColor = Globals.ThemeIni.IniReadValue("Colors", "MouseOver").Split(',');
+            string[] rgb_MouseOverColor = Globals.ThemeConfigFile.IniReadValue("Colors", "MouseOver").Split(',');
+
             InitializeComponent();
-            
+
+            Cursor = Theme_Settings.Default_Cursor;
+            TopMost = true;
             Text = title;
+
             this.message = format ? FormatText(message) : message;
-            closeBtn.BackgroundImage = ImageCache.GetImage(Globals.Theme + "title_close.png");
+
+            closeBtn.BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "title_close.png");
+            closeBtn.Cursor = Theme_Settings.Hand_Cursor;
 
             closeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(int.Parse(rgb_MouseOverColor[0]), int.Parse(rgb_MouseOverColor[1]), int.Parse(rgb_MouseOverColor[2]), int.Parse(rgb_MouseOverColor[3]));
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
             Opacity = 0;//invisible until resized
-            
         }
 
         private string FormatText(string message)
         {
-            string removedNewLineJump = message.Replace('\n',' ');
+            string removedNewLineJump = message;
             string[] words = removedNewLineJump.Split(' ');
             string formated = string.Empty;
 
@@ -57,33 +58,43 @@ namespace Nucleus.Gaming.Forms
                         formated += words[i] + '\n';
                         start += wordsBeforeNewLine;
                     }
-                    else 
+                    else
                     {
                         formated += words[i] + ' ';
-                    }                 
-                }        
+                    }
+                }
             }
 
             return formated;
         }
 
         private void CustomMessaBox_Paint(object sender, PaintEventArgs e)
-        {     
-            e.Graphics.DrawString(message, Font, Brushes.White, 10, 10);
+        {
+            Graphics g = e.Graphics;
+
+            float scale = DPIManager.Scale;
+            font = new Font(Font.FontFamily, Font.Size * scale);
+            
+            SizeF newSize = g.MeasureString(message, font);
 
             if (!sized)
             {
-                SizeF newSize = e.Graphics.MeasureString(message, Font);
-                Size = new Size((int)newSize.Width + 30, (int)newSize.Height + 30);
+                Size = new Size((int)newSize.Width + 30, (int)newSize.Height + 30 + closeBtn.Bottom + 5);
                 MaximumSize = Size;
-                Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Width , Height , 20, 20));
+
+                FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 20, 20);
+
                 CenterToScreen();
                 Opacity = 1.0F;
+
                 sized = true;
             }
+
+            g.DrawString(message, font, Brushes.White, 10, closeBtn.Bottom + 5);
+            g.Dispose();
         }
 
-        private void closeBtn_Click(object sender, EventArgs e)
+        private void CloseBtn_Click(object sender, EventArgs e)
         {
             Close();
         }

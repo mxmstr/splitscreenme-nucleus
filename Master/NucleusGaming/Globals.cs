@@ -1,32 +1,29 @@
-﻿using Jint.Parser.Ast;
-using Nucleus.Gaming.Coop.Generic;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using Nucleus.Gaming.App.Settings;
+using Nucleus.Gaming.Controls;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Threading;
 
 namespace Nucleus.Gaming
 {
     public static class Globals
     {
-        public const string Version = "2.2.2";
+        public const string Version = "2.3.0";
 
         public static readonly IniFile ini = new IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         //return theme path(current theme folder)
-        public static string Theme => Path.Combine(Application.StartupPath, $@"gui\theme\{ini.IniReadValue("Theme", "Theme")}\");
+        public static string ThemeFolder => Path.Combine(Application.StartupPath, $@"gui\theme\{App_Misc.Theme}\");
 
         //return theme.ini file(current theme)
-        public static IniFile ThemeIni => new IniFile(Path.Combine(Theme, "theme.ini"));
+        public static IniFile ThemeConfigFile => new IniFile(Path.Combine(ThemeFolder, "theme.ini"));
 
         public static Button PlayButton;
-        public static RichTextBox NoteZoomTextBox;
-        public static PictureBox NoteZoomButton;
+        public static HandlerNotesZoom HandlerNotesZoom;
         public static Button Btn_debuglog;
+        public static Button ProfilesList_btn;
+
         public static readonly string GameProfilesFolder = Path.Combine(Application.StartupPath, $"game profiles");
         public static WPF_OSD MainOSD;
-             
+        public static readonly int NucleusMaxPlayers = 32;
     }
 }

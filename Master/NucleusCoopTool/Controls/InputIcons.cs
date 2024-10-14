@@ -1,10 +1,9 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.Coop.Controls;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -12,11 +11,13 @@ namespace Nucleus.Coop
 
     public static class InputIcons
     {
-        public static Control[] SetInputsIcons(MainForm main, GenericGameInfo game)
+        public static Control[] SetInputsIcons(GenericGameInfo game)
         {
+            MainForm mainForm = MainForm.Instance;
+
             List<PictureBox> icons = new List<PictureBox>();
 
-            Size iconsSize = new Size(main.icons_Container.Height + 6, main.icons_Container.Height - 2);
+            Size iconsSize = new Size(mainForm.icons_Container.Height + 5, mainForm.icons_Container.Height - 2);
 
             if ((game.Hook.XInputEnabled && !game.Hook.XInputReroute && !game.ProtoInput.DinputDeviceHook) || game.ProtoInput.XinputHook)
             {
@@ -25,10 +26,10 @@ namespace Nucleus.Coop
                     Name = "icon1",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "xinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "xinput_icon.png")
                 };
 
-                CustomToolTips.SetToolTip(icon, "Supports xinput gamepads (e.g. X360).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(icon, "Supports xinput gamepads (e.g. X360).", "icon1", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(icon);
             }
 
@@ -39,11 +40,11 @@ namespace Nucleus.Coop
                     Name = "icon2",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "dinput_icon.png")
                 };
 
 
-                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g. Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g. Ps3).", "icon2", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(icon);
             }
             else if ((game.Hook.DInputEnabled || game.Hook.XInputReroute || game.ProtoInput.DinputDeviceHook) && (!game.Hook.XInputEnabled || !game.ProtoInput.XinputHook))
@@ -53,10 +54,10 @@ namespace Nucleus.Coop
                     Name = "icon3",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "dinput_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "dinput_icon.png")
                 };
 
-                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g. Ps3).", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(icon, "Supports dinput gamepads (e.g. Ps3).", "icon3", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(icon);
             }
 
@@ -67,10 +68,10 @@ namespace Nucleus.Coop
                     Name = "icon4",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "keyboard_icon.png")
                 };
 
-                CustomToolTips.SetToolTip(icon, @"Supports 1 keyboard\mouse.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(icon, @"Supports 1 keyboard\mouse.", "icon4", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(icon);
             }
 
@@ -81,7 +82,7 @@ namespace Nucleus.Coop
                     Name = "icon5",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")               
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "keyboard_icon.png")
                 };
 
                 PictureBox iconKB2 = new PictureBox
@@ -89,14 +90,14 @@ namespace Nucleus.Coop
                     Name = "icon6",
                     Size = iconsSize,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = ImageCache.GetImage(Globals.Theme + "keyboard_icon.png")
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "keyboard_icon.png")
                 };
 
 
-                CustomToolTips.SetToolTip(iconKB1, @"Supports multiple keyboards/mice.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(iconKB1, @"Supports multiple keyboards/mice.", "iconKB1", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(iconKB1);
 
-                CustomToolTips.SetToolTip(iconKB2, @"Supports multiple keyboards/mice.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                CustomToolTips.SetToolTip(iconKB2, @"Supports multiple keyboards/mice.", "iconKB2", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 icons.Add(iconKB2);
             }
 

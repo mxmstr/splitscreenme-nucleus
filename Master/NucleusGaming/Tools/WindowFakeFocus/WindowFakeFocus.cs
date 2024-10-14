@@ -26,11 +26,11 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
         private static GenericGameInfo gen;
         private static GameProfile profile;
 
-        public static void Initialize(GenericGameHandler GenericGameHandler, GenericGameInfo GenericGameInfo, GameProfile _profile)
+        public static void Initialize()
         {
-            gen = GenericGameInfo;
-            genericGameHandler = GenericGameHandler;
-            profile = _profile;
+            genericGameHandler = GenericGameHandler.Instance;
+            gen = GenericGameHandler.Instance.CurrentGameInfo;
+            profile = GenericGameHandler.Instance.profile;
         }
 
         public static void SendFocusMsgs()
@@ -40,11 +40,6 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
             {
                 return;
             }
-
-            //while(ControllersUINav.EnabledRuntime)
-            //{
-            //    Thread.Sleep(1000);
-            //}
 
             List<Process> fakeFocusProcs = new List<Process>();
             var windows = RawInputManager.windows;
@@ -95,7 +90,7 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
 
                         User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_ACTIVATEAPP, (IntPtr)1, IntPtr.Zero);
                         User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_NCACTIVATE, (IntPtr)0x00000001, IntPtr.Zero);
-                        User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_SETFOCUS, IntPtr.Zero, IntPtr.Zero);                                            
+                        User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_SETFOCUS, IntPtr.Zero, IntPtr.Zero);
                         User32Interop.SendMessage(hWnd, (int)FocusMessages.WM_MOUSEACTIVATE, (IntPtr)hWnd, (IntPtr)1);
 
                         //Deep Rock Galactic doesn't work with this message
@@ -140,12 +135,6 @@ namespace Nucleus.Gaming.Tools.WindowFakeFocus
 
         public static void SendFakeFocusMsg()
         {
-            //while (ControllersUINav.EnabledRuntime)
-            //{
-
-            //    Thread.Sleep(1000);
-            //}
-
             foreach (PlayerInfo plyr in profile.DevicesList)
             {
                 Thread.Sleep(1000);

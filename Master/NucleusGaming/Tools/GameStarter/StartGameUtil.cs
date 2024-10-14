@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Nucleus.Gaming.Forms;
+using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Management.Instrumentation;
 using System.Reflection;
 
 namespace Nucleus.Gaming.Tools.GameStarter
@@ -15,7 +13,6 @@ namespace Nucleus.Gaming.Tools.GameStarter
     {
         private static string lastLine;
         private static object locker = new object();
-        private static readonly IniFile ini = new Gaming.IniFile(Path.Combine(Directory.GetCurrentDirectory(), "Settings.ini"));
 
         public static string GetStartGamePath()
         {
@@ -167,7 +164,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
             lock (locker)
             {
                 string startGamePath = GetStartGamePath();
-           
+
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = startGamePath
@@ -217,15 +214,39 @@ namespace Nucleus.Gaming.Tools.GameStarter
             return true;
         }
 
-        public static void UnlockGameFiles(string origGamefolder)
+        public static bool UnlockGameFiles(string origGameDir)
         {
-            string[] subDirectories = Directory.GetFileSystemEntries(origGamefolder, "*", SearchOption.AllDirectories);
-
-            foreach (string dir in subDirectories)
+            if (!Directory.Exists(origGameDir))
             {
-                File.SetAttributes(dir, FileAttributes.Normal);
+                NucleusMessageBox.Show("",
+                                           $"Directory not found:\n"+
+                                           $"{origGameDir}", false);
+                return false;
             }
-        }
 
+            string[] fileSystemEntries = Directory.GetFileSystemEntries(origGameDir, "*", SearchOption.AllDirectories);
+
+            foreach (string entry in fileSystemEntries)
+            {
+                if(entry.Length > 256)
+                {
+                    NucleusMessageBox.Show("File path is too long!", 
+                                           $"The file path is too long.\n" +
+                                           $"{entry}\n" + 
+                                           $"Limit is 256 characters and the file path is {entry.Length} characters.\n" +
+                                           $"You can try moving your game at the root of your drive to reduce its length.",false);
+                    return false;
+                }
+
+                if(!File.Exists(entry))
+                {
+                    continue;
+                }
+
+                File.SetAttributes(entry, FileAttributes.Normal);
+            }
+
+            return true;
+        }
     }
 }

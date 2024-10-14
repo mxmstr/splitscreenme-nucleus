@@ -1,16 +1,15 @@
-﻿using EasyHook;
-using SharpDX.XInput;
+﻿using SharpDX.XInput;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
     public static class GamepadState
     {
+        //Turn off native Xinput wireless controllers
+        [DllImport("XInput1_4.dll", CharSet = CharSet.Auto, EntryPoint = "#103")]
+        public static extern int FnOff(int i);
+
         [DllImport("xinput1_4.dll", EntryPoint = "#100")]//Enable Menu button on controllers
         public static extern int XInputGetStateSecret
         (
@@ -25,10 +24,9 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
             if (Controllers[index].IsConnected)
             {
                 State state = (State)GetControllerState(index);
-                
                 return (int)state.Gamepad.Buttons;
             }
-           
+
             return 0;
         }
 
@@ -84,18 +82,21 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         {
             Controller controller = Controllers[index];
 
+            State state = new State();
+
             if (controller.IsConnected)
             {
-                var state = controller.GetState();
-
                 XInputGetStateSecret(index, ref state);
-
-                int.TryParse("None", out int noButtonPressed);
-
+               
                 return state;
             }
 
-            return new State();
+            return state;
+        }
+
+        public static void TurnOffXInputGamepadByIndex(int i)
+        {
+            FnOff(i);
         }
     }
 }

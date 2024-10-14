@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Interop;
 using Nucleus.Gaming.Tools.Steam;
@@ -20,13 +21,12 @@ namespace Nucleus
 {
     public static class ProcessUtil
     {
-        private static readonly IniFile ini = Globals.ini;
         private static string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         private static string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         private static void Log(string logMessage)
         {
-            if (ini.IniReadValue("Misc", "DebugLog") == "True")
+            if (App_Misc.DebugLog)
             {
                 using (StreamWriter writer = new StreamWriter("debug-log.txt", true))
                 {
@@ -499,24 +499,25 @@ namespace Nucleus
             }
         }
 
-        public static void KillRemainingProcess(GenericGameHandler genericGameHandler, GenericGameInfo gen)
+        public static void KillRemainingProcess()
         {
             // search for game instances left behind
             try
             {
+                var handlerInstance = GenericGameHandler.Instance;
                 Process[] procs = Process.GetProcesses();
 
                 List<string> addtlProcsToKill = new List<string>();
-                if (gen.KillProcessesOnClose?.Length > 0)
+                if (handlerInstance.CurrentGameInfo.KillProcessesOnClose?.Length > 0)
                 {
-                    addtlProcsToKill = gen.KillProcessesOnClose.ToList();
+                    addtlProcsToKill = handlerInstance.CurrentGameInfo.KillProcessesOnClose.ToList();
                 }
 
                 foreach (Process proc in procs)
                 {
                     try
                     {
-                        if ((gen.LauncherExe != null && !gen.LauncherExe.Contains("NucleusDefined") && proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(gen.LauncherExe.ToLower())) || addtlProcsToKill.Contains(proc.ProcessName, StringComparer.OrdinalIgnoreCase) || proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()) || (proc.Id != 0 && genericGameHandler.attachedIds.Contains(proc.Id)) || (gen.Hook.ForceFocusWindowName != "" && proc.MainWindowTitle == gen.Hook.ForceFocusWindowName))
+                        if ((handlerInstance.CurrentGameInfo.LauncherExe != null && !handlerInstance.CurrentGameInfo.LauncherExe.Contains("NucleusDefined") && proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.LauncherExe.ToLower())) || addtlProcsToKill.Contains(proc.ProcessName, StringComparer.OrdinalIgnoreCase) || proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(handlerInstance.CurrentGameInfo.ExecutableName.ToLower()) || (proc.Id != 0 && handlerInstance.attachedIds.Contains(proc.Id)) || (handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName != "" && proc.MainWindowTitle == handlerInstance.CurrentGameInfo.Hook.ForceFocusWindowName))
                         {
                             Log(string.Format("Killing process {0} (pid {1})", proc.ProcessName, proc.Id));
                             proc.Kill();

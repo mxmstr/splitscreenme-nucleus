@@ -1,10 +1,9 @@
-﻿using System;
-using Ionic.Zip;
+﻿using Ionic.Zip;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Reflection;
-
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Tools.Steam
@@ -18,8 +17,8 @@ namespace Nucleus.Gaming.Tools.Steam
         {
             InitializeComponent();
             label.Location = new Point(Width / 2 - label.Width / 2, panel.Height / 2 - label.Height / 2);
-            button.Location = new Point(panel.Width / 2 - button.Width / 2, panel.Height/2 - button.Height/2);
-            button.BackColor = Color.FromArgb(200, 0, 0, 0);            
+            button.Location = new Point(panel.Width / 2 - button.Width / 2, panel.Height / 2 - button.Height / 2);
+            button.BackColor = Color.FromArgb(200, 0, 0, 0);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -42,7 +41,7 @@ namespace Nucleus.Gaming.Tools.Steam
 
             SuspendLayout();
             panel.BackColor = Color.FromArgb(180, 0, 0, 0);
-            label.Location = new Point(Width / 2 - label.Width / 2, panel.Height / 2 - label.Height/2);
+            label.Location = new Point(Width / 2 - label.Width / 2, panel.Height / 2 - label.Height / 2);
             ResumeLayout();
 
             try

@@ -4,13 +4,12 @@ using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Generic;
 using Nucleus.Gaming.Coop.ProtoInput;
 using Nucleus.Gaming.Forms;
-using Nucleus.Gaming.Forms.NucleusMessageBox;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Tools.NemirtingasEpicEmu;
 using Nucleus.Gaming.Tools.NemirtingasGalaxyEmu;
+using Nucleus.Gaming.Tools.Steam;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -62,6 +61,7 @@ namespace Nucleus.Gaming
 
         public string StartArguments;
         public string BinariesFolder;
+        public bool BinariesFolderPathFix;
 
         public bool FakeFocus;
         public int FakeFocusInterval = 1000;//TODO: high CPU usage with low value?
@@ -70,7 +70,7 @@ namespace Nucleus.Gaming
         public bool SplitDivCompatibility = true;
         public bool SetTopMostAtEnd;
         public bool Favorite;
-
+       
         public void AddOption(string name, string desc, string key, object value, object defaultValue)
         {
             Options.Add(new GameOption(name, desc, key, value, defaultValue));
@@ -80,8 +80,6 @@ namespace Nucleus.Gaming
         {
             Options.Add(new GameOption(name, desc, key, value));
         }
-
-        public string ScreenshotsUri => Hub.GetScreenshotsUri();
 
         public string HandlerId => Hub.Handler.Id;
 
@@ -185,6 +183,7 @@ namespace Nucleus.Gaming
         public string UserProfileConfigPath;
         public string UserProfileSavePath;
         public string[] PlayerSteamIDs;
+        public bool UseHandlerSteamIds;
         public string[] HexEditExeAddress;
         public string[] HexEditFileAddress;
         public bool ForceUserProfileConfigCopy;
@@ -284,6 +283,7 @@ namespace Nucleus.Gaming
         public string ForceGameArch;
         public string[] SSEAdditionalLines;
         public string[] DeleteOnClose;
+        public float[] DesktopScale;
         // -- From USS
         //Effectively a switch for all of USS features
         public bool SupportsMultipleKeyboardsAndMice;
@@ -318,18 +318,28 @@ namespace Nucleus.Gaming
         public int LockInputToggleKey = 0x23;//End by default. Keys: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
         public bool ForceEnvironmentUse;
         public bool ForceLauncherExeIgnoreFileCheck;
-
+        //deprecated kept for backward compatibility => use SteamlessPatch insatead
         public bool UseSteamless = false;
         public string SteamlessArgs;
         public int SteamlessTiming = 2500;
+        //
+
+        public string[] SteamlessPatch;//bool apply to launcher,string Steamless Args,int wait for exe pacthing finished.
+
         // Proto Input
         public ProtoInputOptions ProtoInput = new ProtoInputOptions();
         public bool LockInputSuspendsExplorer = false;
         public bool ToggleUnfocusOnInputsLock = false;//v.2.1.2 see RawInputProcessor & GenericGameHandler
+        public string[] CustomHotkeys;
+
+        public Action OnCustomHotKey_1;
+        public Action OnCustomHotKey_2;
+        public Action OnCustomHotKey_3;
 
         public Type HandlerType => typeof(GenericGameHandler);
+        public GameMetaInfo MetaInfo = new GameMetaInfo();
 
-        public GenericGameInfo(string fileName, string folderPath, Stream str)
+        public GenericGameInfo(string fileName, string folderPath, Stream str, bool[] checkUpdate)//checkUpdate [0]=initial update check [1]=update was available before reloading the handler  
         {
             JsFileName = fileName;
             Folder = folderPath;
@@ -357,32 +367,55 @@ namespace Nucleus.Gaming
 
             try
             {
-                engine.Execute(js);
+                engine.Execute(js); 
             }
             catch (Exception ex)
             {
                 System.Threading.Tasks.Task.Run(() =>
                 {
                     string[] lineSplit = ex.Message.Split(':');
-                    string splited = lineSplit[0];
+                    string splited = lineSplit?[0];
                     string[] getNum = splited.Split(' ');
-                    int numLine = Convert.ToInt32(getNum[1]);
+
+                    bool lineIsNum = int.TryParse(getNum?[1], out int numLine);
+
+                    string details = ex.Message;
+
+                    if (lineIsNum)
+                    {
+                        int num = int.Parse(getNum?[1]);
+                        details = $"Error at line {num/2} {lineSplit?[1]}";
+                    }
+
                     string error = $"There is an error in the game handler {fileName}.\n" +
                     $"\nThe game this handler is for will not appear in the list. If the issue has been fixed,\n" +
                     $"please try re-adding the game.\n\nCommon errors include:\n- A syntax error (such as a \',\' \';\' or \']\' missing)\n" +
                     $"- Another handler has this GUID (must be unique!)\n- Code is not in the right place or format\n(for example: methods using Context must be within the Game.Play function)" +
-                    $"\n\n{1} {2} \nError at line {numLine / 2}";
+                    $"\n\n{details}";
 
-                    NucleusMessageBox.Show("Error in handler", error,false);
+                    NucleusMessageBox.Show("Error in handler", error, false);
 
                 });
             }
 
-            // Run this in another thread to not block UI
-            System.Threading.Tasks.Task.Run(() =>
+            MetaInfo.LoadGameMetaInfo(GUID);
+
+            if (MetaInfo.CheckUpdate)
             {
-                UpdateAvailable = Hub.IsUpdateAvailable(true);
-            });
+                if (checkUpdate[0])//workaround else handler update is checked before instances setup too,
+                                   //see MainForm.cs Btn_Play_Click(object sender, EventArgs e) => gameManager.AddScript.
+                {
+                    // Run this in another thread to not block UI
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        UpdateAvailable = Hub.IsUpdateAvailable(true);
+                    });
+                }
+                else
+                {
+                    UpdateAvailable = checkUpdate[1];
+                }
+            }
 
             engine.SetValue("Game", (object)null);
         }
@@ -414,10 +447,12 @@ namespace Nucleus.Gaming
             //engine.SetValue("ProtoInputValues", Coop.ProtoInput.ProtoInput.exposedValues);
         }
 
-        public void PrePlay(GenericContext context, GenericGameHandler handler, PlayerInfo player)
+        public void PrePlay(PlayerInfo player)
         {
-            engine.SetValue("Context", context);
-            engine.SetValue("Handler", handler);
+            var handlerInstance = GenericGameHandler.Instance;
+
+            engine.SetValue("Context", handlerInstance.context);
+            engine.SetValue("Handler", handlerInstance);
             engine.SetValue("Player", player);
             engine.SetValue("Game", this);
             engine.SetValue("Hub", Hub);
@@ -429,9 +464,11 @@ namespace Nucleus.Gaming
         /// Clones this Game Info into a new Generic Context
         /// </summary>
         /// <returns></returns>
-        public GenericContext CreateContext(GameProfile profile, PlayerInfo info, GenericGameHandler handler, bool hasKeyboardPlayer)
+        public GenericContext CreateContext(GameProfile profile, PlayerInfo info, bool hasKeyboardPlayer)
         {
-            GenericContext context = new GenericContext(profile, info, handler, hasKeyboardPlayer);
+            var handlerInstance = GenericGameHandler.Instance;
+
+            GenericContext context = new GenericContext(profile, info, handlerInstance, hasKeyboardPlayer);
 
             Type t = GetType();
             PropertyInfo[] props = t.GetProperties();
@@ -482,23 +519,9 @@ namespace Nucleus.Gaming
         }
 
         public string EpicLang => NemirtingasEpicEmu.GetEpicLanguage();
-       
-        public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
-       
-        public string GetSteamLanguage()
-        {
-            string result;
-            if (Environment.Is64BitOperatingSystem)
-            {
-                result = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam\steamglobal", "Language", "english");
-            }
-            else
-            {
-                result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "Language", "english");
-            }
 
-            return result;
-        }
-      
+        public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
+
+        public string SteamLang => SteamFunctions.GetUserSteamLanguageChoice();
     }
 }

@@ -22,7 +22,7 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        struct DEVMODE
+        public struct DEVMODE
         {
             public const int DM_PELSWIDTH = 0x80000;
             public const int DM_PELSHEIGHT = 0x100000;
@@ -103,7 +103,7 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        static extern bool EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
+        public static extern bool EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
 
         private static DISP_CHANGE SetResolution(int w, int h, string deviceName)
         {
@@ -148,9 +148,11 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
 
         public static List<Display> screensChanged = new List<Display>();
 
-        public static void SetupMonitors(GenericGameHandler genericGameHandler)
+        public static void SetupMonitors()
         {
-            genericGameHandler.Log("Checking if any monitors to be used by Nucleus are using DPI scaling other than 100%");
+            var handlerInstance = GenericGameHandler.Instance;
+
+            handlerInstance.Log("Checking if any monitors to be used by Nucleus are using DPI scaling other than 100%");
             RegistryKey perMonKey = Registry.CurrentUser.OpenSubKey("Control Panel\\Desktop\\PerMonitorSettings", true);
             if (perMonKey != null)
             {
@@ -158,7 +160,7 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
                 foreach (var v in perMonKey.GetSubKeyNames())
                 {
                     //Log("TEMP: Looping through GetSubKeyNames");
-                    foreach (Display screen in genericGameHandler.screensInUse)
+                    foreach (Display screen in handlerInstance.screensInUse)
                     {
                         //Log("TEMP: Looping through screensInUse");
                         if (v.ToString().StartsWith(screen.MonitorID))
@@ -179,11 +181,11 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
                             {
                                 if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), $@"utils\backup\{v.ToString()}.reg")))
                                 {
-                                    genericGameHandler.Log($"Backing up monitor settings for {screen.MonitorID}");
+                                    handlerInstance.Log($"Backing up monitor settings for {screen.MonitorID}");
                                     RegistryUtil.ExportRegistry($@"HKEY_CURRENT_USER\Control Panel\Desktop\PerMonitorSettings\{v.ToString()}", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), $@"utils\backup\{v.ToString()}.reg"));
                                 }
 
-                                genericGameHandler.Log($"Setting DpiValue for {screen.MonitorID} from {currentVal} to {newVal}");
+                                handlerInstance.Log($"Setting DpiValue for {screen.MonitorID} from {currentVal} to {newVal}");
                                 monitorKey.SetValue("DpiValue", newVal, RegistryValueKind.DWord);
 
                                 string modeOutput = EnumerateSupportedModes(screen);
@@ -210,7 +212,7 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
             }
             else
             {
-                genericGameHandler.Log("PerMonitorSettings does not exist");
+                handlerInstance.Log("PerMonitorSettings does not exist");
                 RegistryKey userCpDesktopKey = Registry.CurrentUser.OpenSubKey("Control Panel\\Desktop", true);
                 if (userCpDesktopKey != null)
                 {
@@ -220,13 +222,13 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
 
                     if ((!string.IsNullOrEmpty(origPix) && origPix != "96") || (!string.IsNullOrEmpty(origScale) && origScale != "0") || (string.IsNullOrEmpty(origPix) && string.IsNullOrEmpty(origScale)))
                     {
-                        genericGameHandler.Log($"Setting Windows DPI Scaling to 100% for the duration of Nucleus session - Original LogPixels:{origPix}, DpiScaling:{origScale}");
+                        handlerInstance.Log($"Setting Windows DPI Scaling to 100% for the duration of Nucleus session - Original LogPixels:{origPix}, DpiScaling:{origScale}");
                         RegistryUtil.ExportRegistry(@"HKEY_CURRENT_USER\Control Panel\Desktop", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Control Panel Desktop.reg"));
 
                         userCpDesktopKey.SetValue("LogPixels", 96, RegistryValueKind.DWord);
                         userCpDesktopKey.SetValue("Win8DpiScaling", 0, RegistryValueKind.DWord);
 
-                        foreach (Display screen in genericGameHandler.screensInUse)
+                        foreach (Display screen in handlerInstance.screensInUse)
                         {
                             string modeOutput = EnumerateSupportedModes(screen);
                             if (modeOutput != "NULL")
@@ -251,13 +253,14 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
             }
         }
 
-        public static void ResetMonitorsSettings(GenericGameHandler genericGameHandler)
+        public static void ResetMonitorsSettings()
         {
+            var handlerInstance = GenericGameHandler.Instance;
             if (screensChanged.Count > 0)
             {
                 foreach (Display screen in screensChanged)
                 {
-                    genericGameHandler.Log($"Resetting resolution for {screen.MonitorID} to revert Dpi settings");
+                    handlerInstance.Log($"Resetting resolution for {screen.MonitorID} to revert Dpi settings");
                     SetResolution(800, 600, screen.DeviceName);
                     SetResolution(screen.Bounds.Width, screen.Bounds.Height, screen.DeviceName);
                 }

@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Jint;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Nucleus.Coop;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls.SetupScreen;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
+using Nucleus.Gaming.Tools.Steam;
+using Nucleus.Gaming.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,55 +15,96 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
+
 
 namespace Nucleus.Gaming.Controls
 {
     public partial class ProfilesList : ControlListBox
     {
-        private IniFile themeIni = Globals.ThemeIni;
+        private IniFile themeIni = Globals.ThemeConfigFile;
 
         private float _scale;
-        public static ProfilesList profilesList;
+        public static ProfilesList Instance;
         public bool Locked = false;
 
-        private Cursor hand_Cursor;
-        private Cursor default_Cursor;
+        private Color foreColor;
+        public static readonly string PartialTitle = "Load profile:";
 
-        private Color buttonsBackColor;
-        public string loadedTitle;
-        private Pen borderPen;
-        private SetupScreenControl parentControl;
+        private int[] backGradient;
 
-        public ProfilesList(SetupScreenControl parent)
+        private Control parentControl;
+        private bool useGradient;
+        private MouseEventArgs eventArgs;
+        private Font titleFont;
+        private Font previewFont;
+
+        public ProfilesList(Control parent)
         {
             parentControl = parent;
 
             InitializeComponent();
-            Parent = parent;
-            profilesList = this;
+
             Name = "ProfilePanel";
-            Size = new Size(300, 3);
+            Size = new Size(300,1);
             Location = new Point(0, 0);
             Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Visible = false;
             BorderStyle = BorderStyle.None;
-            BackColor = Color.FromArgb(50,0, 0, 0);
+            
+            foreColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[0]), 
+                                       int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[1]), 
+                                       int.Parse(themeIni.IniReadValue("Colors", "Font").Split(',')[2]));
 
-            buttonsBackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[0]),
-                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[1]),
-                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[2]),
-                                                  int.Parse(themeIni.IniReadValue("Colors", "ButtonsBackground").Split(',')[3]));
+            if (int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[0]) == 1)
+            {
+                backGradient = new int[] {int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[0]),
+                                       int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[1]),
+                                       int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[2]),
+                                       int.Parse(themeIni.IniReadValue("Colors", "BackgroundGradient").Split(',')[2])};
+                
+                BackColor = Color.Transparent;
+                useGradient = true;
+            }
+            else
+            {
+                backGradient = new int[] {0,0,0,0};
+                BackColor = Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[0]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[1]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[2]),
+                                               int.Parse(themeIni.IniReadValue("Colors", "MainButtonFrameBackground").Split(',')[3]));
+            }
 
-            borderPen = new Pen(Color.FromArgb(int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[0]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[1]),
-                                               int.Parse(themeIni.IniReadValue("Colors", "SetupScreenBorder").Split(',')[2])),2.0f);
+            eventArgs = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
 
-            default_Cursor = new Cursor(Globals.Theme + "cursor.ico");
-            hand_Cursor = new Cursor(Globals.Theme + "cursor_hand.ico");
+            Instance = this;
         }
 
-        public void ProfileBtn_CheckedChanged(object sender, EventArgs e)
+        public void Update_Reload()
+        {
+            string name = int.Parse(Regex.Match(GameProfile.ModeText, @"\d+").Value).ToString();
+
+            Label dummy = new Label
+            {
+                Name = name,
+                Text = $"{PartialTitle} {name}"
+            };
+
+            ProfileBtn_CheckedChanged(dummy, eventArgs);
+            ScrollControlIntoView(Controls.Find(name,true).FirstOrDefault());
+
+            dummy.Dispose();
+        }
+
+        public void Update_Unload()
+        {
+            Label dummy = new Label();
+            ProfileBtn_CheckedChanged(dummy, null);
+            dummy.Dispose();
+        }
+
+        public void ProfileBtn_CheckedChanged(object sender, MouseEventArgs e)
         {
             if (Locked)
             {
@@ -70,12 +113,35 @@ namespace Nucleus.Gaming.Controls
 
             Label selected = (Label)sender;
 
+            if (e != null)
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    if (File.Exists(Application.StartupPath + "\\Profiles Launcher.exe"))
+                    {
+                        DialogResult dialogResult = System.Windows.Forms.MessageBox.Show($"Do you want to export a desktop shortcut for this handler profile?", "Export handler profile shortcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(selected.Name) - 1]);
+                            JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
+                            string userNotes = ((string)Jprofile["Notes"] != null && (string)Jprofile["Notes"] != "") ? (string)Jprofile["Notes"] : "";
+
+                            string shortcutTitle = selected.Text.StartsWith("Load profile:") ? selected.Text.Split(':')[1] : selected.Text;
+                            GameProfile.CreateShortcut(GameProfile.GameInfo.GameGuid, shortcutTitle, selected.Name, userNotes);
+                        }
+                    }
+
+                    return;
+                }
+            }
+
             selected.BackColor = Color.Transparent;
             foreach (Control c in Controls)
             {
                 if (c != selected && c.Text != "Unload")
                 {
-                    c.ForeColor = Color.WhiteSmoke;
+                    c.ForeColor = foreColor;
                 }
 
                 if (e == null && c.Text == "Unload")
@@ -87,38 +153,48 @@ namespace Nucleus.Gaming.Controls
 
             if ((selected.Text == "Unload" && selected.ForeColor == Color.Gray) || e == null)
             {
-                Globals.PlayButton.Text = "PLAY";
-                Globals.PlayButton.Enabled = false;
+                Globals.PlayButton.Tag = "START";
+                Globals.PlayButton.Visible = false;
                 return;
             }
 
             if (selected.Text == "Unload")
             {
                 selected.ForeColor = Color.Gray;
-                GameProfile._GameProfile.Reset();
-                Globals.MainOSD.Show(500, "Game Profile Unloaded");
+                GameProfile.Instance.Reset();
+                Globals.MainOSD.Show(500, "Handler Profile Unloaded");
                 return;
             }
 
-            if (GameProfile._GameProfile.LoadGameProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
+            if (GameProfile.Instance.LoadGameProfile(int.Parse(selected.Name)))//GameProfile auto reset on load
             {
-                Controls[int.Parse(selected.Name)-1].ForeColor = Color.LightGreen;
+                Controls[int.Parse(selected.Name) - 1].ForeColor = Color.LightGreen;
                 Label unloadBtn = Controls[Controls.Count - 1] as Label;
                 unloadBtn.ForeColor = Color.Orange;
-                loadedTitle = selected.Text;
             }
         }
 
         public void Update_ProfilesList()
         {
-            Controls.Clear();
-                     
-            List<SizeF> sizes = new List<SizeF>();
+            Visible = false;
 
-            Size = new Size((int)(300* _scale), (int)(3 * _scale));
+            foreach (Control control in Controls)
+            {
+                control.Dispose();
+            }
+
+            Controls.Clear();
+
+            List<int> sizes = new List<int>();
+
+            Size = new Size((int)(300 * _scale), (int)(1 * _scale));
             int offset = 5;
 
-            Font font = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            if (titleFont == null)
+            {
+                titleFont = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                previewFont = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            }
 
             for (int i = 0; i < GameProfile.profilesPathList.Count + 1; i++)
             {
@@ -136,7 +212,7 @@ namespace Nucleus.Gaming.Controls
                     }
                     else
                     {
-                        text = $"Profile n°{i + 1}";
+                        text = $"{PartialTitle} {i + 1}";
                     }
                 }
                 else
@@ -148,16 +224,16 @@ namespace Nucleus.Gaming.Controls
                 {
                     Anchor = AnchorStyles.Right,
                     Size = new Size((int)(20 * _scale), (int)(20 * _scale)),
-                    Font = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0),
+                    Font = new Font("Lucida Console", (float)12, FontStyle.Bold, GraphicsUnit.Pixel, 0),
                     ForeColor = Color.Red,
                     FlatStyle = FlatStyle.Flat,
                     TextAlign = ContentAlignment.MiddleCenter,
                     Text = "X",
-                    Cursor = hand_Cursor
+                    Cursor = Theme_Settings.Hand_Cursor
                 };
 
-                ToolTip deleteTooltip = CustomToolTips.SetToolTip(deleteBtn, "Delete this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                deleteBtn.Click += new EventHandler(DeleteBtn_Click);//Delete profile
+                CustomToolTips.SetToolTip(deleteBtn, $"Delete handler profile {i + 1}.", $"Delete profile{i}.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                deleteBtn.Click += DeleteBtn_Click;//Delete profile
 
                 offset += deleteBtn.Width;
 
@@ -165,78 +241,88 @@ namespace Nucleus.Gaming.Controls
                 {
                     Anchor = AnchorStyles.Right,
                     Size = new Size((int)(13 * _scale), (int)(20 * _scale)),
-                    Font = new Font("Franklin Gothic", (float)10, FontStyle.Regular, GraphicsUnit.Pixel, 0),
+                    Font = previewFont,
                     BackgroundImageLayout = ImageLayout.Zoom,
-                    BackgroundImage = ImageCache.GetImage(Globals.Theme + "magnifier.png"),
+                    BackgroundImage = ImageCache.GetImage(Globals.ThemeFolder + "magnifier.png"),
                     BackColor = Color.Transparent,
                     ForeColor = Color.Green,
                     FlatStyle = FlatStyle.Flat,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    Cursor = hand_Cursor
+                    Cursor = Theme_Settings.Hand_Cursor
                 };
 
-                ToolTip notesTooltip = CustomToolTips.SetToolTip(previewBtn, "Show profile content or user notes if available.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                previewBtn.Click += new EventHandler(Profile_Preview);//view profile event 
+                CustomToolTips.SetToolTip(previewBtn, "Show handler profile content.", $"previewBtn{i}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
+                previewBtn.Click += Profile_Preview;//view profile event 
 
                 offset += previewBtn.Width;
 
                 Label profileBtn = new Label
                 {
                     Name = (i + 1).ToString(),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right,
                     FlatStyle = FlatStyle.Flat,
                     BackgroundImageLayout = ImageLayout.Zoom,
-                    Font = font,
-                    BackColor = buttonsBackColor,
-                    ForeColor = Color.White,
+                    Font = titleFont,
+                    BackColor = Color.Transparent,
+                    ForeColor = foreColor,
                     TextAlign = ContentAlignment.MiddleLeft,
                     Text = text,
                     Height = (int)(20 * _scale),
-                    Cursor = hand_Cursor
+                    Cursor = Theme_Settings.Hand_Cursor
                 };
 
-                ToolTip loadTooltip = CustomToolTips.SetToolTip(profileBtn, "Load this game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                profileBtn.Click += new EventHandler(ProfileBtn_CheckedChanged);
+                string profileBtnToolTipText = File.Exists(Application.StartupPath + "\\Profiles Launcher.exe") ? $"Load handler profile {profileBtn.Name}. Right click to export a shortcut to desktop." : $"Load handler profile {profileBtn.Name}.";
+
+                profileBtn.MouseClick += ProfileBtn_CheckedChanged;
 
                 if (i != GameProfile.profilesPathList.Count)
                 {
                     deleteBtn.Location = new Point(profileBtn.Right - deleteBtn.Width, profileBtn.Location.Y);
                     previewBtn.Location = new Point(deleteBtn.Left - previewBtn.Width, deleteBtn.Location.Y);
+                    previewBtn.Location = new Point(deleteBtn.Left - previewBtn.Width, deleteBtn.Location.Y);
                     profileBtn.Controls.Add(deleteBtn);
                     profileBtn.Controls.Add(previewBtn);
+                    CustomToolTips.SetToolTip(profileBtn, profileBtnToolTipText, $"profileBtnToolTipText${i}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
                 else
                 {
                     profileBtn.ForeColor = Color.Gray;
-                    ToolTip unloadTooltip = CustomToolTips.SetToolTip(profileBtn, "Unload current loaded game profile.", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                }
-     
-                using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new Bitmap(1, 1)))
-                {
-                    sizes.Add(graphics.MeasureString(profileBtn.Text, profileBtn.Font , Size.Width,StringFormat.GenericDefault));
+                    CustomToolTips.SetToolTip(profileBtn, "Unload current loaded handler profile.", $"Unload profile", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                 }
 
-                Height += profileBtn.Height + 1;
-              
+                using (Graphics graphics = Graphics.FromImage(new Bitmap(1, 1)))
+                {
+                   sizes.Add((int)graphics.MeasureString(profileBtn.Text, profileBtn.Font, Size.Width, StringFormat.GenericDefault).Width + 40);
+                   graphics.Dispose();
+                }
+
+                if (i <= 5)
+                {
+                    Height += profileBtn.Height+1;               
+                }
+
                 Controls.Add(profileBtn);
             }
 
-            var sortedSizes = sizes.OrderByDescending(x => x.Width).ToList();//Sort profiles titles by Width so the list Width is set to the max value
-            Width = (int)((sortedSizes[0].Width) * _scale) + offset;
+            var sortedSizes = sizes.OrderByDescending(x => x).ToList();//Sort profiles titles by Width so the list Width is set to the max value
+            Width = (int)((sortedSizes[0]) * _scale) + offset;
 
-            Location = new Point((parentControl.gameProfilesList_btn.Left - Width) + 1 , parentControl.gameProfilesList_btn.Location.Y + parentControl.gameProfilesList_btn.Height / 2);
+            Location = new Point((parentControl.Right - Width) + 1, parentControl.Top);
+
             BringToFront();
-            Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(-1, -1, Width, Height, 15, 15));
 
             if (Controls.Count == 1)
             {
                 Controls.Clear();
                 Visible = false;
             }
+            else
+            {
+                Visible = true;
+            }
+
         }
 
-
-        //Show profile config or user notesin handler note "zoomed" textbox
+        //Show profile config or user notes in handler note "zoomed" textbox
         private void Profile_Preview(object sender, EventArgs e)
         {
             if (Locked)
@@ -246,37 +332,108 @@ namespace Nucleus.Gaming.Controls
 
             Label selected = (Label)sender;
 
-            Control preview = selected.Parent as Control;
+            Control preview = (Control)selected.Parent;
 
             if (preview.Text == "Unload")
             {
                 return;
-            }          
+            }
 
             string jsonString = File.ReadAllText(GameProfile.profilesPathList[int.Parse(preview.Name) - 1]);
             JObject Jprofile = (JObject)JsonConvert.DeserializeObject(jsonString);
 
-            string text;
+            Globals.HandlerNotesZoom.Notes.Text = BuildPreviewText(Jprofile);
+            Globals.HandlerNotesZoom.Visible = true;
+            Globals.HandlerNotesZoom.BringToFront();
+        }
 
-            if ((string)Jprofile["Notes"] != "" && (string)Jprofile["Notes"] != null)
+        private string BuildPreviewText(JObject Jprofile)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (Jprofile["Title"].ToString() != "")
             {
-                text = (string)Jprofile["Notes"];
+                sb.Append($"Title: {Jprofile["Title"]}\n\n");
+            }
+
+            if (Jprofile["Notes"].ToString() != "")
+            {
+                sb.Append($"User Notes:\n");
+                sb.Append($"{Jprofile["Notes"]}\n\n");
+            }
+
+            sb.Append($"Players Count: {Jprofile["Player(s)"]}\n\n");
+            sb.Append($"Gamepads Used: {Jprofile["Controller(s)"]}\n");
+            sb.Append($"Keyboard/Mouse Combo Used: {Jprofile["K&M"]}\n\n");
+            sb.Append($"Use Xinput Indexes: {Jprofile["Use XInput Index"]}\n");
+            sb.Append($"AutoPlay: {Jprofile["AutoPlay"]["Enabled"]}\n");
+            sb.Append($"Use Custom Nicknames: {Jprofile["UseNicknames"]["Use"]}\n");
+            sb.Append($"Auto Desktop Scaling On: {Jprofile["AutoDesktopScaling"]["Enabled"]}\n\n");
+
+            if (Jprofile["Options"].Count() > 0)
+            {
+                sb.Append($"Choosen Options:\n");
+
+                JToken Joptions = Jprofile["Options"];
+
+                foreach (JProperty Jopt in Joptions)
+                {
+                    sb.Append($" -{(string)Jopt.Name}: {Jopt.Value}\n");
+                }
+
+                sb.Append($"\n");
+            }
+
+            if ((bool)Jprofile["UseSplitDiv"]["Enabled"])
+            {
+                sb.Append($"Splitcreen Division Settings:\n");
+                sb.Append($" -Color: {Jprofile["UseSplitDiv"]["Color"]}\n");
+                sb.Append($" -Hide Desktop Only: {Jprofile["UseSplitDiv"]["HideOnly"]}\n\n");
             }
             else
             {
-                text = jsonString;//jsonString.Replace(" ", "").                                
-                                           //Replace(",", "").
-                                           //Replace("\"", "").
-                                           //Replace("{", "").
-                                           //Replace("}", "");
+                sb.Append($"Splitcreen Division: Off\n\n");
             }
 
-            Globals.NoteZoomTextBox.Text = text;
-            Globals.NoteZoomTextBox.Parent.Region = Region.FromHrgn(GlobalWindowMethods.CreateRoundRectRgn(0, 0, Globals.NoteZoomTextBox.Parent.Width, Globals.NoteZoomTextBox.Parent.Height, 20, 20));
-            Globals.NoteZoomTextBox.Parent.Visible = true;
-            Globals.NoteZoomTextBox.Parent.BringToFront();
-        }
+            sb.Append($"Custom Windows Setup Timing: {Jprofile["WindowsSetupTiming"]["Time"]}ms\n");
+            sb.Append($"Custom Instances Startup Wait Time: {Jprofile["PauseBetweenInstanceLaunch"]["Time"]}s\n\n");
 
+            sb.Append($"Cutscenes Mode Settings:\n");
+            sb.Append($" -Keep Window Size: {Jprofile["CutscenesModeSettings"]["Cutscenes_KeepAspectRatio"]}\n");
+            sb.Append($" -Mute Audio Only: {Jprofile["CutscenesModeSettings"]["Cutscenes_MuteAudioOnly"]}\n");
+            sb.Append($" -UnFocus Game Windows On Exit: {Jprofile["CutscenesModeSettings"]["Cutscenes_Unfocus"]}\n\n");
+
+            sb.Append($"Players Info:\n");
+
+            for (int i = 0; i < Jprofile["Data"].Count(); i++)
+            {
+                var playerDatas = Jprofile["Data"][i];
+
+                //sb.Append($"\n");
+                sb.Append($"------------------------\n");
+                sb.Append($" -Nickname: {playerDatas["Nickname"]}\n");
+                sb.Append($" -Index: {(int)playerDatas["PlayerID"] + 1}\n");
+                sb.Append($" -Steam Id: {playerDatas["SteamID"]}\n");
+
+                bool isController = (bool)playerDatas["IsDInput"] || (bool)playerDatas["IsXInput"];
+                if (isController)
+                {
+                    sb.Append($" -Device Type: Gamepad\n");
+                }
+                else
+                {
+                    sb.Append($" -Device Type: Keyboard/Mouse\n");
+                }
+
+                sb.Append($" -Screen Index: {playerDatas["ScreenIndex"]}\n");
+                if (i == Jprofile["Data"].Count() - 1)
+                    sb.Append($"------------------------");
+            }
+
+            string preview = sb.ToString();
+
+            return preview;
+        }
 
         private void DeleteBtn_Click(object sender, EventArgs e)//Delete game profile
         {
@@ -287,7 +444,7 @@ namespace Nucleus.Gaming.Controls
 
             Label deleteBtn = (Label)sender;
 
-            DialogResult dialogResult = MessageBox.Show($"Are you sure you want to delete Profile n°{deleteBtn.Parent.Name} ?", "Are you sure?!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult dialogResult = MessageBox.Show($"Are you sure you want to delete handler profile {deleteBtn.Parent.Name} ?", "Are you sure?!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (dialogResult == DialogResult.Yes)
             {
@@ -308,7 +465,7 @@ namespace Nucleus.Gaming.Controls
 
                 # region Delete per game profile game files backup 
 
-                string backupPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop\Game Files Backup\{GameProfile.GameGUID}";
+                string backupPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop\Game Files Backup\{GameProfile.GameInfo.GameGuid}";
 
                 string backupToDelete = $"{backupPath}\\Profile{deleteBtn.Parent.Name}";
 
@@ -346,36 +503,46 @@ namespace Nucleus.Gaming.Controls
 
                 #endregion
 
-                GameProfile._GameProfile.Reset();
+                GameProfile.Instance.Reset();
 
                 Update_ProfilesList();
 
                 if (Controls.Count == 0)
                 {
-                    parentControl.gameProfilesList_btn.Image = ImageCache.GetImage(Globals.Theme + "profiles_list.png");
+                    Visible = false;
+                    Globals.ProfilesList_btn.Visible = false;
                 }
 
-                Globals.MainOSD.Show(500, "Game Profile Deleted");
+                Globals.MainOSD.Show(500, "Handler Profile Deleted");
             }
         }
 
-
         protected override void OnPaint(PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-            g.InterpolationMode = InterpolationMode.HighQualityBilinear;
-            g.CompositingQuality = CompositingQuality.HighQuality;
-            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.DrawRectangle(borderPen, new Rectangle(1, 1, Width - 3, Height - 3));
+            Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height);
 
-            g.DrawArc(borderPen, 0, 0, 16, 16, -90, -90);//Top left angle
-            g.DrawArc(borderPen, 0, Height - 18, 16, 16, 90, 90);//Bottom left angle
+            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            {
+                return;
+            }
 
-            g.DrawArc(borderPen, Width - 18, 0, 16, 16, -90, 90);//Top Right angle   
-            g.DrawArc(borderPen, Width - 18, Height - 18, 16, 16, 90, -90);//Bottom Right angle 
+            Color color = Color.FromArgb(useGradient ? 100 : 0, backGradient[1], backGradient[2], backGradient[3]);
+            Color color2 = Color.FromArgb(useGradient ? 120 : 0, backGradient[1], backGradient[2], backGradient[3]);
+            LinearGradientBrush lgb =
+            new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color, 90f);
+
+            ColorBlend topcblend = new ColorBlend(3);
+            topcblend.Colors = new Color[3] { Color.Transparent,color, color2};
+            topcblend.Positions = new float[3] { 0f, 0.5f, 1f };
+
+            GraphicsPath graphicsPath = FormGraphicsUtil.MakeRoundedRect(gradientBrushbounds, 10, 10, false, false, false, true);
+            
+            lgb.InterpolationColors = topcblend;
+            e.Graphics.FillPath(lgb, graphicsPath);
+
+            lgb.Dispose();
+            graphicsPath.Dispose();
         }
-
 
         public void UpdateSize(float scale)
         {

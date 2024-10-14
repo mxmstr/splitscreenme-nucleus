@@ -1,6 +1,6 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Cache;
-using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.UI;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
@@ -35,12 +34,13 @@ namespace Nucleus.Coop
         private List<Control> ctrls = new List<Control>();
         private bool searching;
         private bool closed;
-        private MainForm main;
+        private MainForm mainForm;
         private float fontSize;
 
         private Cursor hand_Cursor;
         private Cursor default_Cursor;
-
+        private List<string> paths = new List<string>()
+;
         private void controlscollect()
         {
             foreach (Control control in Controls)
@@ -61,58 +61,54 @@ namespace Nucleus.Coop
             }
         }
 
-        public void button_Click(object sender, EventArgs e)
-        {
-            if (main.mouseClick)
-                main.SoundPlayer(main.theme + "button_click.wav");
-        }
-
         private void closeButton(object sender, EventArgs e)
         {
+            //for (int x = 0; x < disksBox.Items.Count; x++)
+            //{
+            //    mainForm.ini.IniWriteValue("SearchPaths", (x + 1).ToString(), disksBox.Items[x].ToString());
+            //}
+
             txt_Stage.Visible = false;
             progressBar1.Visible = false;
             txt_Path.Visible = false;
-            ini.IniWriteValue("Misc", "AutoSearchLocation", Location.X + "X" + Location.Y);
+            //ini.IniWriteValue("Misc", "AutoSearchLocation", Location.X + "X" + Location.Y);
             this.Visible = false;
         }
 
-        public SearchDisksForm(MainForm main)
+        public SearchDisksForm(MainForm mainForm)
         {
-            this.main = main;
+            this.mainForm = mainForm;
 
             InitializeComponent();
 
-            SuspendLayout();
+            default_Cursor = Theme_Settings.Default_Cursor;
+            hand_Cursor = Theme_Settings.Hand_Cursor;
 
-            default_Cursor = main.default_Cursor;
-            Cursor.Current = default_Cursor;
-            hand_Cursor = main.hand_Cursor;
-            
-            fontSize = float.Parse(main.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
-            ForeColor = Color.FromArgb(int.Parse(main.rgb_font[0]), int.Parse(main.rgb_font[1]), int.Parse(main.rgb_font[2]));
-            
-            BackgroundImage = ImageCache.GetImage(Globals.Theme + "other_backgrounds.jpg");
-            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
+            fontSize = float.Parse(mainForm.themeIni.IniReadValue("Font", "AutoSearchFontSize"));
+            ForeColor = Color.FromArgb(int.Parse(mainForm.rgb_font[0]), int.Parse(mainForm.rgb_font[1]), int.Parse(mainForm.rgb_font[2]));
 
-            btn_addSelection.BackColor = main.buttonsBackColor;
-            btn_customPath.BackColor = main.buttonsBackColor;
-            btnSearch.BackColor = main.buttonsBackColor;
-            btn_delPath.BackColor = main.buttonsBackColor;
-            btn_selectAll.BackColor = main.buttonsBackColor;
-            btn_deselectAll.BackColor = main.buttonsBackColor;
-    
-            btn_addSelection.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btn_customPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btnSearch.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btn_delPath.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btn_selectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
-            btn_deselectAll.FlatAppearance.MouseOverBackColor = main.MouseOverBackColor;
+            BackgroundImage = Image.FromFile(Globals.ThemeFolder + "other_backgrounds.jpg");
+            closeBtn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
+
+            btn_addSelection.BackColor = mainForm.buttonsBackColor;
+            btn_customPath.BackColor = mainForm.buttonsBackColor;
+            btnSearch.BackColor = mainForm.buttonsBackColor;
+            btn_delPath.BackColor = mainForm.buttonsBackColor;
+            btn_selectAll.BackColor = mainForm.buttonsBackColor;
+            btn_deselectAll.BackColor = mainForm.buttonsBackColor;
+
+            btn_addSelection.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btn_customPath.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btnSearch.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btn_delPath.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btn_selectAll.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
+            btn_deselectAll.FlatAppearance.MouseOverBackColor = mainForm.MouseOverBackColor;
 
             controlscollect();
 
             foreach (Control control in ctrls)
             {
-                control.Font = new Font(main.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                control.Font = new Font(mainForm.customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
 
                 if (control.Name != "panel1")
                 {
@@ -122,66 +118,47 @@ namespace Nucleus.Coop
                 {
                     control.Cursor = default_Cursor;
                 }
-
-                if (main.mouseClick)
-                {
-                    if (control is Button)
-                    {
-                        control.Click += new System.EventHandler(this.button_Click);
-                    }
-                }              
             }
-
-            if (main.useButtonsBorder)
-            {
-                btn_addSelection.FlatAppearance.BorderSize = 1;
-                btn_addSelection.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-                btn_customPath.FlatAppearance.BorderSize = 1;
-                btn_customPath.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-                btnSearch.FlatAppearance.BorderSize = 1;
-                btnSearch.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-
-                btn_delPath.FlatAppearance.BorderSize = 1;
-                btn_delPath.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-                btn_selectAll.FlatAppearance.BorderSize = 1;
-                btn_selectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-                btn_deselectAll.FlatAppearance.BorderSize = 1;
-                btn_deselectAll.FlatAppearance.BorderColor = main.ButtonsBorderColor;
-            }
-
-            ResumeLayout();
 
             closeBtn.Cursor = hand_Cursor;
 
             for (int x = 1; x <= 100; x++)
             {
-                if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
-                {
-                    break;
-                }
-                else
-                {
-                    disksBox.Items.Add(main.ini.IniReadValue("SearchPaths", x.ToString()), true);
-                }
+                //if (mainForm.ini.IniReadValue("SearchPaths", x.ToString()) == "")
+                //{
+                //    continue;
+                //}
+                //else
+                //{
+                //    //paths.Add(mainForm.ini.IniReadValue("SearchPaths", x.ToString()));
+                //    //disksBox.Items.Add(mainForm.ini.IniReadValue("SearchPaths", x.ToString()), true);
+                //}
             }
 
             Rectangle area = Screen.PrimaryScreen.Bounds;
-
-            if (ini.IniReadValue("Misc", "AutoSearchLocation") != "")
+            if (/*ini.IniReadValue("Misc", "AutoSearchLocation") != ""*/true)
             {
-                string[] windowLocation = ini.IniReadValue("Misc", "AutoSearchLocation").Split('X');
-                Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+               // string[] windowLocation = ini.IniReadValue("Misc", "AutoSearchLocation").Split('X');
+
+                //if (ScreensUtil.AllScreens().All(s => !s.MonitorBounds.Contains(int.Parse(windowLocation[0]), int.Parse(windowLocation[1]))))
+                //{
+                //    CenterToScreen();
+                //}
+                //else
+                //{
+                //    Location = new Point(area.X + int.Parse(windowLocation[0]), area.Y + int.Parse(windowLocation[1]));
+                //}
             }
             else
             {
-                StartPosition = FormStartPosition.CenterScreen;
+                CenterToScreen();
             }
 
             DPIManager.Register(this);
             DPIManager.Update(this);
         }
 
-        public void UpdateSize(float scale)
+        public new void UpdateSize(float scale)
         {
             if (IsDisposed)
             {
@@ -216,19 +193,19 @@ namespace Nucleus.Coop
                 heightField.SetValue(checkboxFoundGames, addedHeight);
 
             }
-          
+
             float textBoxFontSize = (Font.Size + 4) * scale;
 
             foreach (Control c in ctrls)
             {
                 if (c.GetType() == typeof(CheckedListBox))
                 {
-                    c.Font = new Font(main.customFont, c.Font.Size, FontStyle.Regular, GraphicsUnit.Point, 0);
+                    c.Font = new Font(mainForm.customFont, c.Font.Size, FontStyle.Regular, GraphicsUnit.Point, 0);
                 }
 
                 if (c.GetType() == typeof(TextBox))
                 {
-                    c.Font = new Font(main.customFont, textBoxFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+                    c.Font = new Font(mainForm.customFont, textBoxFontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
                 }
             }
 
@@ -329,7 +306,10 @@ namespace Nucleus.Coop
                 }
 
                 path = queue.Dequeue();
-                txt_Path.Text = path;
+                Invoke(new Action(delegate
+                {
+                    txt_Path.Text = path;
+                }));
 
                 try
                 {
@@ -340,6 +320,18 @@ namespace Nucleus.Coop
                             break;
                         }
                         queue.Enqueue(subDir);
+
+                        //foreach (string sub in Directory.GetDirectories(subDir))
+                        //{
+                        //{ continue; }
+                        //if(Directory.GetFiles(path, "*.exe").Length == 0)
+                        //{ 
+                        //    continue;
+                        //}
+
+                        //queue.Enqueue(sub);
+                        // Console.WriteLine(sub);
+                        // }
                     }
                 }
                 catch (Exception ex)
@@ -355,6 +347,7 @@ namespace Nucleus.Coop
                     {
                         break;
                     }
+
                     files = Directory.GetFiles(path, "*.exe");
                 }
                 catch (Exception ex)
@@ -414,7 +407,11 @@ namespace Nucleus.Coop
             {
                 for (int i = 0; i < pathsToSearch.Count; i++)
                 {
-                    txt_Stage.Text = i + 1 + " of " + pathsToSearch.Count;
+                    Invoke(new Action(delegate
+                    {
+                        txt_Stage.Text = i + 1 + " of " + pathsToSearch.Count;
+                    }));
+
                     string currentPath = pathsToSearch[i];
 
                     float totalDiskPc = 1 / (float)pathsToSearch.Count;
@@ -440,7 +437,7 @@ namespace Nucleus.Coop
                         //UpdateProgress(increment);
                         if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == exeFilePath.ToLower()))
                         {
-                            continue;
+                            //continue;
                         }
 
                         if (GameManager.Instance.AnyGame(Path.GetFileName(exeFilePath).ToLower()))
@@ -490,7 +487,10 @@ namespace Nucleus.Coop
                 }
 
                 searching = false;
-                btnSearch.Text = "Search";
+                Invoke(new Action(delegate
+                {
+                    btnSearch.Text = "Search";
+                }));
 
                 watch.Stop();
 
@@ -498,28 +498,35 @@ namespace Nucleus.Coop
 
                 if (checkboxFoundGames.Items.Count == 0)
                 {
-                    btn_customPath.Enabled = true;
-                    btn_delPath.Enabled = true;
-                    disksBox.Enabled = true;
+                    Invoke(new Action(delegate
+                    {
+                        btn_customPath.Enabled = true;
+                        btn_delPath.Enabled = true;
+                        disksBox.Enabled = true;
 
-                    MessageBox.Show("Operation completed in " + elapsedMs + "s. No new games found.");
-                    progressBar1.Value = 0;
+                        MessageBox.Show("Operation completed in " + elapsedMs + "s. No new games found.");
+                        progressBar1.Value = 0;
+                    }));
                     return;
                 }
 
                 progress = 1;
                 UpdateProgress(0);
-                btn_addSelection.Enabled = true;
-                btn_selectAll.Enabled = true;
-                btn_deselectAll.Enabled = true;
-                checkboxFoundGames.Enabled = true;
-                btnSearch.Enabled = false;
-                label2.Enabled = true;
-                label1.Enabled = false;
-                txt_Stage.Text = "Done";
-                txt_Path.Text = "";
-                Refresh();
-                Invalidate();
+                Invoke(new Action(delegate
+                {
+                    btn_addSelection.Enabled = true;
+                    btn_selectAll.Enabled = true;
+                    btn_deselectAll.Enabled = true;
+                    checkboxFoundGames.Enabled = true;
+                    btnSearch.Enabled = false;
+                    label2.Enabled = true;
+                    label1.Enabled = false;
+                    txt_Stage.Text = "Done";
+                    txt_Path.Text = "";
+                    Refresh();
+                    Invalidate();
+                }));
+
                 MessageBox.Show("Search has completed, operation took " + elapsedMs + "s. Select the games you wish to add from the right-hand side.", "Search finished");
             }
             catch (Exception ex)
@@ -532,6 +539,7 @@ namespace Nucleus.Coop
         private bool closing;
         private void SearchDisksForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+
             Refresh();
             closing = true;
         }
@@ -544,19 +552,26 @@ namespace Nucleus.Coop
 
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    disksBox.Items.Add(fbd.SelectedPath, true);
+                    List<bool> wasSelected = new List<bool>();
 
-                    int freeIndex = 1;
-                    for (int x = 1; x <= 100; x++)
+                    if (paths.Any(p => p == fbd.SelectedPath))
                     {
-                        if (main.ini.IniReadValue("SearchPaths", x.ToString()) == "")
-                        {
-                            freeIndex = x;
-                            break;
-                        }
+                        return;
                     }
 
-                    main.ini.IniWriteValue("SearchPaths", freeIndex.ToString(), fbd.SelectedPath);
+                    paths.Add(fbd.SelectedPath);
+                }
+
+                for (int i = 0; i < paths.Count; i++)
+                {
+                    //mainForm.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), paths[i]);
+                    if (disksBox.Items.Contains(paths[i]))
+                    {
+                        continue;
+                    }
+
+                    disksBox.Items.Add(paths[i]);
+                    disksBox.SetItemCheckState(i, CheckState.Checked);
                 }
             }
         }
@@ -586,16 +601,25 @@ namespace Nucleus.Coop
 
                 foreach (string gameToAdd in gamesToAdd)
                 {
-                    UserGameInfo uinfo = GameManager.Instance.TryAddGame(gameToAdd);
-                    if (uinfo != null)
+                    string exeName = gameToAdd.Split('\\').Last();
+
+                    //if (GameManager.Instance.IsGameAlreadyInUserProfile(exeName))
                     {
-                        main.NewUserGame(uinfo);
-                        numAdded++;
+                        MessageBox.Show($"Executable {exeName} is already in your game list and will be skipped.", "Already in your list", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        continue;
                     }
+
+                    //UserGameInfo uinfo = GameManager.Instance.TryAddGame(gameToAdd);
+                    //if (uinfo != null)
+                    //{
+                    //    mainForm.NewUserGame(uinfo);
+                    //    numAdded++;
+                    //}
+
                 }
 
                 MessageBox.Show(string.Format("{0}/{1} selected games added!", numAdded, checkboxFoundGames.CheckedItems.Count), "Games added");
-                main.RefreshGames();
+                mainForm.RefreshGames();
             }
 
             btnSearch.Enabled = true;
@@ -623,21 +647,33 @@ namespace Nucleus.Coop
                 return;
             }
 
-            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the paths that are currently checked?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete the paths that are currently unchecked?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialogResult == DialogResult.Yes)
             {
-                foreach (string item in disksBox.CheckedItems.OfType<string>().ToList())
+                // foreach (string item in disksBox.Items.OfType<string>().ToList())
+                List<string> pathsToRemove = new List<string>();
+                for (int i = 0; i < paths.Count; i++)
                 {
-                    disksBox.Items.Remove(item);
-                    for (int x = 1; x <= 100; x++)
+                    if (i < disksBox.Items.Count)
                     {
-                        if (main.ini.IniReadValue("SearchPaths", x.ToString()) == item)
+                        if (disksBox.CheckedItems.Contains(disksBox.Items[i]))
                         {
-                            main.ini.IniWriteValue("SearchPaths", x.ToString(), "");
-                            break;
+                            //mainForm.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), disksBox.Items[i].ToString());
+                        }
+                        else
+                        {
+                            pathsToRemove.Add(disksBox.Items[i].ToString());
+                            //mainForm.ini.IniWriteValue("SearchPaths", (i + 1).ToString(), "");
                         }
                     }
                 }
+
+                foreach (string pathToRemove in pathsToRemove)
+                {
+                    disksBox.Items.Remove(pathToRemove);
+                    paths.Remove(pathToRemove);
+                }
+
             }
         }
 
@@ -659,12 +695,12 @@ namespace Nucleus.Coop
 
         private void closeBtn_MouseEnter(object sender, EventArgs e)
         {
-            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close_mousehover.png");
+            closeBtn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close_mousehover.png");
         }
 
         private void closeBtn_MouseLeave(object sender, EventArgs e)
         {
-            closeBtn.BackgroundImage = ImageCache.GetImage(main.theme + "title_close.png");
+            closeBtn.BackgroundImage = ImageCache.GetImage(mainForm.theme + "title_close.png");
         }
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
@@ -679,6 +715,16 @@ namespace Nucleus.Coop
                 User32Interop.SendMessage(nucHwnd, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, (IntPtr)0);
 
             }
+        }
+
+        private void DisksBox_ControlAdded(object sender, ControlEventArgs e)
+        {
+
+        }
+
+        private void DisksBox_ControlRemoved(object sender, ControlEventArgs e)
+        {
+
         }
     }
 }

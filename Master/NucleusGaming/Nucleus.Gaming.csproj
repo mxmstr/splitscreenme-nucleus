@@ -12,10 +12,14 @@
     <AssemblyName>Nucleus.Gaming</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -77,14 +81,8 @@
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Direct2D1, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.Direct2D1.4.2.0\lib\net45\SharpDX.Direct2D1.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX.DirectInput, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.DirectInput.4.2.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.DXGI, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.DXGI.4.2.0\lib\net45\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.XInput, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.XInput.4.2.0\lib\net45\SharpDX.XInput.dll</HintPath>
@@ -98,6 +96,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -106,9 +105,44 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\App.Settings\App_Audio.cs" />
+    <Compile Include="Cache\App.Settings\App_Layouts.cs" />
+    <Compile Include="Cache\App.Settings\App_GamePadShortcuts.cs" />
+    <Compile Include="Cache\App.Settings\App_GamePadNavigation.cs" />
+    <Compile Include="Cache\App.Settings\App_Hotkeys.cs" />
+    <Compile Include="Cache\App.Settings\App_Misc.cs" />
+    <Compile Include="Cache\App.Settings\App_Settings_Loader.cs" />
+    <Compile Include="Controls\BufferedClientAreaPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\BufferedFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HorizontalGameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HorizontalControlListBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HandlerNotesZoom.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HandlerNotesZoom.Designer.cs">
+      <DependentUpon>HandlerNotesZoom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TransparentRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TransparentRichTextBox.Designer.cs">
+      <DependentUpon>TransparentRichTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Coop\Generic\Handler.cs" />
+    <Compile Include="Cache\HubCache.cs" />
     <Compile Include="Cache\ImageCache.cs" />
-    <Compile Include="Cache\SteamIdsCache.cs" />
-    <Compile Include="Cache\NicknamesCache.cs" />
+    <Compile Include="Cache\PlayersIdentityCache.cs" />
     <Compile Include="Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -180,11 +214,14 @@
     <Compile Include="Coop\InputManagement\Gamepads\GamepadButtons.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadNavigation.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadState.cs" />
+    <Compile Include="Coop\InputManagement\HotkeysRegistration.cs" />
     <Compile Include="Coop\InputManagement\Osk.cs" />
     <Compile Include="Coop\InputManagement\Gamepads\GamepadShortcuts.cs" />
     <Compile Include="Coop\InputManagement\RawInputDeviceName.cs" />
     <Compile Include="Coop\InputManagement\VirtualInputs.cs" />
     <Compile Include="Coop\ProfilePlayer.cs" />
+    <Compile Include="Coop\GameMetaInfo.cs" />
+    <Compile Include="DPI\ThreadDPIContext.cs" />
     <Compile Include="Forms\NucleusMessageBox\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +229,7 @@
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\NucleusMessageBox\NucleusMessageBox.cs" />
+    <Compile Include="Forms\ShortcutsReminder\ReminderFormThread.cs" />
     <Compile Include="Coop\Generic\ProcessPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -214,7 +252,7 @@
     <Compile Include="Coop\InputManagement\Enums\WNDCLASSEX.cs" />
     <Compile Include="Coop\InputManagement\HookPipe.cs" />
     <Compile Include="Coop\InputManagement\InputInterceptor.cs" />
-    <Compile Include="Coop\InputManagement\LockInput.cs" />
+    <Compile Include="Coop\InputManagement\LockInputRuntime.cs" />
     <Compile Include="Coop\InputManagement\Logger.cs" />
     <Compile Include="Coop\InputManagement\RawInputManager.cs" />
     <Compile Include="Coop\InputManagement\RawInputProcessor.cs" />
@@ -236,7 +274,7 @@
     <Compile Include="Coop\InputManagement\Structs\RID_DEVICE_INFO_MOUSE.cs" />
     <Compile Include="Coop\InputManagement\Structs\WM_MOUSEMOVE_wParam.cs" />
     <Compile Include="Coop\InputManagement\WinApi.cs" />
-    <Compile Include="Coop\OpenXinputController.cs" />
+    <Compile Include="Coop\InputManagement\Gamepads\OpenXinputController.cs" />
     <Compile Include="Coop\ProtoInput\GetMainWindow.cs" />
     <Compile Include="Coop\ProtoInput\ProtoInput.cs" />
     <Compile Include="Coop\ProtoInput\ProtoInputLauncher.cs" />
@@ -283,12 +321,16 @@
     <Compile Include="Forms\Prompt.Designer.cs">
       <DependentUpon>Prompt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ShortcutsReminder\ShortcutsReminder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShortcutsReminder\ShortcutsReminder.Designer.cs">
+      <DependentUpon>ShortcutsReminder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WindowMeger.cs" />
     <Compile Include="Forms\WPFDiv.cs" />
     <Compile Include="Forms\WPF_OSD.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Controls\GameControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Platform\IO\WinDirectoryUtil.cs" />
     <Compile Include="Platform\MachineSpecs\MachineSpecs.cs" />
     <Compile Include="Platform\Windows\GetNetFrameworkVersion.cs" />
@@ -354,7 +396,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Tools\AudioReroute\AudioReroute.cs" />
-    <Compile Include="Tools\BackupFiles\BackupFiles.cs" />
+    <Compile Include="Tools\BackupDatas\BackupDatas.cs" />
     <Compile Include="Tools\DevReorder\DevReorder.cs" />
     <Compile Include="Tools\DInputBlocker\DInputBlocker.cs" />
     <Compile Include="Tools\DirectX9Wrapper\DirectX9Wrapper.cs" />
@@ -379,13 +421,14 @@
     <Compile Include="Tools\GlobalWindowMethods\GlobalWindowMethods.cs" />
     <Compile Include="Tools\X360ce\X360ce.cs" />
     <Compile Include="Tools\XInputPlusDll\XInputPlusDll.cs" />
+    <Compile Include="UI\BackgroundColors.cs" />
+    <Compile Include="UI\Theme_Settings.cs" />
     <Compile Include="Util\ExecutableUtil.cs" />
     <Compile Include="Util\FormGraphicsUtil.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />
     <Compile Include="Platform\Windows\WindowsVersionInfo.cs" />
-    <Compile Include="PlayerID.cs" />
     <Compile Include="Coop\PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Coop\Generic\ProcessData.cs" />
@@ -405,6 +448,15 @@
     <Compile Include="Util\WindowsUsersUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\GameControl.resx">
+      <DependentUpon>GameControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HorizontalGameControl.resx">
+      <DependentUpon>HorizontalGameControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HorizontalControlListBox.resx">
+      <DependentUpon>HorizontalControlListBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlListBox.resx">
       <DependentUpon>ControlListBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -420,6 +472,9 @@
     <EmbeddedResource Include="Controls\CustomNumericUpDown.resx">
       <DependentUpon>CustomNumericUpDown.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HandlerNotesZoom.resx">
+      <DependentUpon>HandlerNotesZoom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PictureButton.resx">
       <DependentUpon>PictureButton.cs</DependentUpon>
     </EmbeddedResource>
@@ -432,20 +487,20 @@
     <EmbeddedResource Include="Controls\JSUserInputControl.resx">
       <DependentUpon>JSUserInputControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NucleusMessageBox\CustomMessageBox.resx">
-      <DependentUpon>CustomMessageBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Coop\Generic\ProcessPicker.resx">
       <DependentUpon>ProcessPicker.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomPrompt.resx">
       <DependentUpon>CustomPrompt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NucleusMessageBox\CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GameControl.resx">
-      <DependentUpon>GameControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageButton.resx">
       <DependentUpon>ImageButton.cs</DependentUpon>
@@ -461,6 +516,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserInputControl.resx">
       <DependentUpon>UserInputControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShortcutsReminder\ShortcutsReminder.resx">
+      <DependentUpon>ShortcutsReminder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -493,11 +551,12 @@
     <None Include="Resources\instructions.gif" />
     <None Include="Resources\title_dropdown_opened.png" />
     <None Include="Resources\title_dropdown_closed.png" />
-    <None Include="Resources\title_dropdown_closed1.png" />
-    <None Include="Resources\title_dropdown_opened1.png" />
     <Content Include="Resources\xinput1_3.dll" />
     <None Include="Resources\xinput1_3_a10_x64.dll" />
     <None Include="Resources\xinput1_3_a10.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
@@ -509,9 +568,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

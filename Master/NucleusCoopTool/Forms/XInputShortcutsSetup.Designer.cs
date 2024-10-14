@@ -88,8 +88,11 @@
             this.radioButtonXbox = new System.Windows.Forms.RadioButton();
             this.radioButtonPs = new System.Windows.Forms.RadioButton();
             this.groupBoxType = new System.Windows.Forms.GroupBox();
-            this.gamepadTopFront = new BufferedClientAreaPanel();
             this.warning = new System.Windows.Forms.Label();
+            this.reminderPict = new System.Windows.Forms.PictureBox();
+            this.shortcutReminderLabel = new System.Windows.Forms.Label();
+            this.ShortcutsReminderContainer = new System.Windows.Forms.GroupBox();
+            this.gamepadTopFront = new BufferedClientAreaPanel();
             ((System.ComponentModel.ISupportInitialize)(this.slave7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slave6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slave5)).BeginInit();
@@ -118,6 +121,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.switch13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.switch12)).BeginInit();
             this.groupBoxType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.reminderPict)).BeginInit();
+            this.ShortcutsReminderContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // Close
@@ -782,7 +787,7 @@
             this.enabled_chk.TabIndex = 92;
             this.enabled_chk.Text = "Enable Gamepad UI Navigation";
             this.enabled_chk.UseVisualStyleBackColor = false;
-            this.enabled_chk.CheckedChanged += new System.EventHandler(this.enabled_chk_CheckedChanged);
+            this.enabled_chk.CheckedChanged += new System.EventHandler(this.Enabled_chk_CheckedChanged);
             // 
             // radioButtonXbox
             // 
@@ -814,7 +819,7 @@
             this.radioButtonPs.Tag = "Playstation";
             this.radioButtonPs.Text = "Playstation";
             this.radioButtonPs.UseVisualStyleBackColor = false;
-            this.radioButtonPs.CheckedChanged += new System.EventHandler(this.radioButtonPs_CheckedChanged);
+            this.radioButtonPs.CheckedChanged += new System.EventHandler(this.RadioButtonPs_CheckedChanged);
             // 
             // groupBoxType
             // 
@@ -829,6 +834,57 @@
             this.groupBoxType.TabStop = false;
             this.groupBoxType.Text = "Gamepad Type";
             // 
+            // warning
+            // 
+            this.warning.AutoSize = true;
+            this.warning.BackColor = System.Drawing.Color.Transparent;
+            this.warning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.warning.ForeColor = System.Drawing.Color.Red;
+            this.warning.Location = new System.Drawing.Point(467, 36);
+            this.warning.Name = "warning";
+            this.warning.Size = new System.Drawing.Size(202, 30);
+            this.warning.TabIndex = 98;
+            this.warning.Text = "Warning: Steam Input may interfere \r\nwith the controller shortcuts. ";
+            // 
+            // reminderPict
+            // 
+            this.reminderPict.BackColor = System.Drawing.Color.Transparent;
+            this.reminderPict.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.reminderPict.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.reminderPict.Location = new System.Drawing.Point(16, 19);
+            this.reminderPict.Margin = new System.Windows.Forms.Padding(2);
+            this.reminderPict.Name = "reminderPict";
+            this.reminderPict.Size = new System.Drawing.Size(35, 35);
+            this.reminderPict.TabIndex = 143;
+            this.reminderPict.TabStop = false;
+            // 
+            // shortcutReminderLabel
+            // 
+            this.shortcutReminderLabel.AutoSize = true;
+            this.shortcutReminderLabel.BackColor = System.Drawing.Color.Transparent;
+            this.shortcutReminderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.shortcutReminderLabel.ForeColor = System.Drawing.Color.White;
+            this.shortcutReminderLabel.Location = new System.Drawing.Point(5, 21);
+            this.shortcutReminderLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.shortcutReminderLabel.Name = "shortcutReminderLabel";
+            this.shortcutReminderLabel.Size = new System.Drawing.Size(0, 13);
+            this.shortcutReminderLabel.TabIndex = 142;
+            this.shortcutReminderLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ShortcutsReminderContainer
+            // 
+            this.ShortcutsReminderContainer.BackColor = System.Drawing.Color.Transparent;
+            this.ShortcutsReminderContainer.Controls.Add(this.shortcutReminderLabel);
+            this.ShortcutsReminderContainer.Controls.Add(this.reminderPict);
+            this.ShortcutsReminderContainer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShortcutsReminderContainer.ForeColor = System.Drawing.Color.White;
+            this.ShortcutsReminderContainer.Location = new System.Drawing.Point(156, 5);
+            this.ShortcutsReminderContainer.Name = "ShortcutsReminderContainer";
+            this.ShortcutsReminderContainer.Size = new System.Drawing.Size(67, 63);
+            this.ShortcutsReminderContainer.TabIndex = 144;
+            this.ShortcutsReminderContainer.TabStop = false;
+            this.ShortcutsReminderContainer.Text = "Reminder";
+            // 
             // gamepadTopFront
             // 
             this.gamepadTopFront.BackColor = System.Drawing.Color.Transparent;
@@ -836,19 +892,8 @@
             this.gamepadTopFront.Name = "gamepadTopFront";
             this.gamepadTopFront.Size = new System.Drawing.Size(228, 229);
             this.gamepadTopFront.TabIndex = 93;
-            this.gamepadTopFront.Paint += new System.Windows.Forms.PaintEventHandler(this.gamepadTopFront_Paint);
-            this.gamepadTopFront.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gamepadTopFront_MouseDown);
-            // 
-            // warning
-            // 
-            this.warning.AutoSize = true;
-            this.warning.BackColor = System.Drawing.Color.Transparent;
-            this.warning.ForeColor = System.Drawing.Color.Red;
-            this.warning.Location = new System.Drawing.Point(482, 22);
-            this.warning.Name = "warning";
-            this.warning.Size = new System.Drawing.Size(176, 26);
-            this.warning.TabIndex = 98;
-            this.warning.Text = "Warning: Steam Input may interfere \r\nwith the controller shortcuts. ";
+            this.gamepadTopFront.Paint += new System.Windows.Forms.PaintEventHandler(this.GamepadTopFront_Paint);
+            this.gamepadTopFront.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GamepadTopFront_MouseDown);
             // 
             // XInputShortcutsSetup
             // 
@@ -856,6 +901,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(693, 381);
+            this.Controls.Add(this.ShortcutsReminderContainer);
             this.Controls.Add(this.warning);
             this.Controls.Add(this.groupBoxType);
             this.Controls.Add(this.Close);
@@ -901,6 +947,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.switch12)).EndInit();
             this.groupBoxType.ResumeLayout(false);
             this.groupBoxType.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.reminderPict)).EndInit();
+            this.ShortcutsReminderContainer.ResumeLayout(false);
+            this.ShortcutsReminderContainer.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -969,5 +1018,8 @@
         private System.Windows.Forms.RadioButton radioButtonPs;
         private System.Windows.Forms.GroupBox groupBoxType;
         private System.Windows.Forms.Label warning;
+        private System.Windows.Forms.PictureBox reminderPict;
+        private System.Windows.Forms.Label shortcutReminderLabel;
+        private System.Windows.Forms.GroupBox ShortcutsReminderContainer;
     }
 }

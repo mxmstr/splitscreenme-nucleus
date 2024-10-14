@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Prompt));
-            this.lbl_Msg = new System.Windows.Forms.Label();
+            this.lbl_Msg = new System.Windows.Forms.LinkLabel();
             this.btn_Ok = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -81,7 +81,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lbl_Msg;
+        private System.Windows.Forms.LinkLabel lbl_Msg;
         private System.Windows.Forms.Button btn_Ok;
     }
 }

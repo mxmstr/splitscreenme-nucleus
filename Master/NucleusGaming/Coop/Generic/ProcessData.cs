@@ -12,7 +12,7 @@ namespace Nucleus.Gaming
         public Point Position;
         private HwndObject hWnd;
         public bool HWNDRetry;
-
+        
         public Size Size;
         public bool Setted;
 

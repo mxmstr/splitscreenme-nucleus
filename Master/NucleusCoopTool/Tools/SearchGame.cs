@@ -1,24 +1,35 @@
 ﻿using Nucleus.Coop.Forms;
-using Nucleus.Gaming.Coop;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Nucleus.Coop.Tools
 {
     internal class SearchGame
     {
-        public static void Search(MainForm main, string exeName)
+        public static void Search( string exeName, GenericGameInfo genericGameInfo)
         {
+            MainForm mainForm = MainForm.Instance;
+
             try
             {
+                string result = null;
+
+                if (genericGameInfo != null)
+                {
+                    if (genericGameInfo.SteamID != null && genericGameInfo.SteamID != "")
+                    {
+                        result = GameManager.Instance.AutoSearchGameInstallPath(genericGameInfo);
+                    }
+                }
+
                 using (System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog())
                 {
+                    open.InitialDirectory = result;
+
                     if (string.IsNullOrEmpty(exeName))
                     {
                         open.Title = "Select a game executable to add to Nucleus";
@@ -34,7 +45,7 @@ namespace Nucleus.Coop.Tools
                     {
                         string path = open.FileName;
 
-                        List<GenericGameInfo> info = main.gameManager.GetGames(path);
+                        List<GenericGameInfo> info = GameManager.Instance.GetGames(path);
 
                         if (info.Count > 1)
                         {
@@ -44,19 +55,44 @@ namespace Nucleus.Coop.Tools
                             {
                                 UserGameInfo game = GameManager.Instance.TryAddGame(path, list.Selected);
 
-                                if (game != null)
+                                if (game != null && list.Selected != null)
                                 {
-                                    MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
-                                    main.RefreshGames();
+                                    if (list.Selected.HandlerId != null && list.Selected.HandlerId != "" && mainForm.Connected)
+                                    {
+                                        MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
+                                        DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                        if (dialogResult == DialogResult.Yes)
+                                        {
+                                            AssetsDownloader.DownloadGameAssets(game, null);
+                                        }
+                                    }
                                 }
                             }
+
+                            mainForm.RefreshUI(true);
                         }
                         else if (info.Count == 1)
                         {
                             UserGameInfo game = GameManager.Instance.TryAddGame(path, info[0]);
-                            if (main.gameContextMenuStrip != null)
-                                MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
-                                main.RefreshGames();
+
+                            if(game == null){ return; }
+
+                            if (info[0].HandlerId != null && info[0].HandlerId != "")
+                            {
+                                if (mainForm.gameContextMenuStrip != null && mainForm.Connected)
+                                {
+                                    MessageBox.Show(string.Format("The game {0} has been added!", game.Game.GameName), "Nucleus - Game added");
+                                    DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you want to download game cover and screenshots?", "Download game assets?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                    if (dialogResult == DialogResult.Yes)
+                                    {
+                                        AssetsDownloader.DownloadGameAssets(game, null);
+                                    }
+                                }
+                            }
+
+                            mainForm.RefreshUI(true);
                         }
                         else
                         {

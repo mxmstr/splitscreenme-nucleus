@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomPrompt));
-            this.lbl_Desc = new System.Windows.Forms.Label();
+            this.lbl_Desc = new System.Windows.Forms.LinkLabel();
             this.btn_Ok = new System.Windows.Forms.Button();
-            this.txt_UserInput = new System.Windows.Forms.TextBox();
+            this.txt_UserInput = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // lbl_Desc
@@ -93,8 +93,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lbl_Desc;
+        private System.Windows.Forms.LinkLabel lbl_Desc;
         private System.Windows.Forms.Button btn_Ok;
-        private System.Windows.Forms.TextBox txt_UserInput;
+        private System.Windows.Forms.RichTextBox txt_UserInput;
     }
 }

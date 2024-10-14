@@ -1,24 +1,19 @@
-﻿using Nucleus.Gaming.Coop.InputManagement.Gamepads;
-using Nucleus.Gaming.Coop.InputManagement.Structs;
+﻿using Nucleus.Coop.Forms;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Tools.GlobalWindowMethods;
 using Nucleus.Gaming.Windows;
 using SharpDX.XInput;
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using Win32;
 
 namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 {
     public static class GamepadShortcuts
     {
-        private static IniFile ini = Globals.ini;
-
+        //TODO: Add a button panel so we can shut down Nucleus and the pc with gamepads
         private static int SetFocus;
         private static int Close;
         private static int StopSession;
@@ -28,16 +23,12 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         private static int SwitchLayout;
         private static int LockInputs;
         private static int ReleaseCursor;
-        public static int Pressed;
-        public static int RightTriggerValue;
-        public static int LeftTriggerValue;
-        public static (int, int) RightStickValue;
-        public static (int, int) LeftstickValue;
+        private static int Pressed;
+        private static int RightTriggerValue;
+        private static int LeftTriggerValue;
 
         private static int RT = 9999;
         private static int LT = 10000;
-
-        private static bool ToggleCutscenes;
 
         public static Thread GamepadShortcutsThread;
         private static State previousState;
@@ -49,22 +40,21 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
         {
             while (true)
             {
+                while (GenericGameHandler.Instance == null)
+                {
+                    Thread.Sleep(5000);
+                }
+
+                while (GenericGameHandler.Instance.hasEnded)
+                {
+                    Thread.Sleep(5000);
+                }
+
                 for (int i = 0; i < GamepadState.Controllers.Length; i++)
                 {
-                   
                     if (!GamepadState.Controllers[i].IsConnected)
                     {
                         continue;
-                    }
-
-                    while (GenericGameHandler.Instance == null)
-                    {
-                        Thread.Sleep(1000);
-                    }
-
-                    while (GenericGameHandler.Instance.hasEnded)
-                    {
-                        Thread.Sleep(1000);
                     }
 
                     State currentState = (State)GamepadState.GetControllerState(i);
@@ -77,44 +67,41 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
 
                         if ((button == Cutscenes || rt == Cutscenes || lt == Cutscenes) && GameProfile.Saved)///cutscenes mode
                         {
-                            if (!ToggleCutscenes)
-                            {
-                                GlobalWindowMethods.ToggleCutScenesMode(true);
-                                ToggleCutscenes = true;
-                            }
-                            else
-                            {
-                                GlobalWindowMethods.ToggleCutScenesMode(false);
-                                ToggleCutscenes = false;
-                            }
+                            GlobalWindowMethods.ToggleCutScenesMode();
+                            Thread.Sleep(500);
                         }
                         else if ((button == SwitchLayout || rt == SwitchLayout || lt == SwitchLayout) && GameProfile.Saved)///Switch layout
                         {
                             GlobalWindowMethods.SwitchLayout();
+                            Thread.Sleep(500);
                         }
                         else if ((button == ResetWindows || rt == ResetWindows || lt == ResetWindows) && GameProfile.Saved)///Reset windows
                         {
                             if (GenericGameHandler.Instance != null)
-                                GenericGameHandler.Instance.Update(GenericGameHandler.Instance.HWndInterval, true);
-                            Globals.MainOSD.Show(1600, $"Reseting game windows. Please wait...");
+                                GlobalWindowMethods.ResetingWindows = true;
+                            Thread.Sleep(500);
 
                         }
                         else if ((button == SetFocus || rt == SetFocus || lt == SetFocus))///Unfocus windows
                         {
                             GlobalWindowMethods.ChangeForegroundWindow();
                             Globals.MainOSD.Show(1600, $"Game Windows Unfocused");
+                            Thread.Sleep(500);
                         }
                         else if ((button == TopMost || rt == TopMost || lt == TopMost))///Minimize/restore windows
                         {
-                            GlobalWindowMethods.ShowHideWindows(GameProfile.Game);
+                            GlobalWindowMethods.ShowHideWindows();
+                            Thread.Sleep(500);
                         }
                         else if (button == StopSession || rt == StopSession || lt == StopSession)///End current session
                         {
-                            if (!Gaming.Coop.InputManagement.LockInput.IsLocked)
+                            if (!Gaming.Coop.InputManagement.LockInputRuntime.IsLocked)
                             {
                                 if (GenericGameHandler.Instance != null)
+                                {
                                     GenericGameHandler.Instance.End(true);
-                                Globals.MainOSD.Show(1600, $"Session Ended");
+                                    Globals.MainOSD.Show(1600, $"Session Ended");
+                                }
                             }
                             else
                             {
@@ -123,38 +110,35 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                         }
                         else if (button == Close || rt == Close || lt == Close)///Close nucleus
                         {
-                            if (GenericGameHandler.Instance != null)
-                            {
-                                GenericGameHandler.Instance.End(false);
-                            }
+                            GenericGameHandler.Instance?.End(false);
 
-                            User32Util.ShowTaskBar();
-                            Globals.MainOSD.Show(1600, $"See You Later!");
+                            //User32Util.ShowTaskBar();
+
                             Thread.Sleep(5000);
 
-                            if (GenericGameHandler.Instance == null)
+                            if (GenericGameHandler.Instance.hasEnded)
                             {
-                                Process nc = Process.GetCurrentProcess();
-                                nc.Kill();
+                                Process.GetCurrentProcess().Kill();
                             }
                         }
                         else if ((button == LockInputs || rt == LockInputs || lt == LockInputs) && GameProfile.Saved)///Lock k&m inputs
                         {
-                            if (!LockInput.IsLocked)
+                            if (!LockInputRuntime.IsLocked)
                             {
                                 Globals.MainOSD.Show(1000, "Inputs Locked");
 
-                                LockInput.Lock(GameProfile.Game?.LockInputSuspendsExplorer ?? true, GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
+                                LockInputRuntime.Lock(GenericGameHandler.Instance.CurrentGameInfo?.LockInputSuspendsExplorer ?? true, GenericGameHandler.Instance.CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
 
-                                if (GameProfile.Game.ToggleUnfocusOnInputsLock)
+                                if (GenericGameHandler.Instance.CurrentGameInfo.ToggleUnfocusOnInputsLock)
                                 {
                                     GlobalWindowMethods.ChangeForegroundWindow();
-                                    Debug.WriteLine("Toggle Unfocus");
                                 }
+
+                                Thread.Sleep(1000);
                             }
                             else
                             {
-                                LockInput.Unlock(GameProfile.Game?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GameProfile.Game?.ProtoInput);
+                                LockInputRuntime.Unlock(GenericGameHandler.Instance.CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, GenericGameHandler.Instance.CurrentGameInfo?.ProtoInput);
                                 Globals.MainOSD.Show(1000, "Inputs Unlocked");
                             }
                         }
@@ -165,108 +149,63 @@ namespace Nucleus.Gaming.Coop.InputManagement.Gamepads
                             Thread.Sleep(500);
                         }
 
-                        Thread.Sleep(135);
                         previousState = currentState;
                         Pressed = button;
                     }
 
                     RightTriggerValue = GamepadState.GetRightTriggerValue(i);
                     LeftTriggerValue = GamepadState.GetLeftTriggerValue(i);
+
+                    #region Toggle shortcuts reminder window
+
+                    if (Pressed == 1024)//Guide button
+                    {
+                        Thread.Sleep(500);//good enough to check for long press here
+
+                        if (GamepadState.GetPressedButtons(i) == 1024)//good enough to check for long press here
+                        {
+                            foreach (ShortcutsReminder reminder in GenericGameHandler.Instance.shortcutsReminders)
+                            {
+                                reminder.Toggle(7);
+                            }
+
+                            Thread.Sleep(500);
+                        }
+                    }
+
+                    #endregion                   
+                }
+
+                if (Pressed > 0)
+                {
+                    Thread.Sleep(350);
+                }
+                else
+                {
+                    Thread.Sleep(135);
                 }
             }
         }
 
         public static void UpdateShortcutsValue()
         {
-            if (ini.IniReadValue("XShortcuts", "SetFocus").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "SetFocus").Split('+');
-                SetFocus = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "SetFocus", "");
-            }
+            SetFocus = App_GamePadShortcuts.SetFocus[0] + App_GamePadShortcuts.SetFocus[1];
 
-            if (ini.IniReadValue("XShortcuts", "Close").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "Close").Split('+');
-                Close = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Close", "");
-            }
+            Close = App_GamePadShortcuts.Close[0] + App_GamePadShortcuts.Close[1];
 
-            if (ini.IniReadValue("XShortcuts", "Stop").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "Stop").Split('+');
-                StopSession = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Stop", "");
-            }
+            StopSession = App_GamePadShortcuts.StopSession[0] + App_GamePadShortcuts.StopSession[1];
 
-            if (ini.IniReadValue("XShortcuts", "TopMost").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "TopMost").Split('+');
-                TopMost = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "TopMost", "");
-            }
+            TopMost = App_GamePadShortcuts.TopMost[0] + App_GamePadShortcuts.TopMost[1];
 
-            if (ini.IniReadValue("XShortcuts", "ResetWindows").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "ResetWindows").Split('+');
-                ResetWindows = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "ResetWindows", "");
-            }
+            ResetWindows = App_GamePadShortcuts.ResetWindows[0] + App_GamePadShortcuts.ResetWindows[1];
 
-            if (ini.IniReadValue("XShortcuts", "Cutscenes").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "Cutscenes").Split('+');
-                Cutscenes = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Cutscenes", "");
-            }
+            Cutscenes = App_GamePadShortcuts.CutscenesMode[0] + App_GamePadShortcuts.CutscenesMode[1];
 
-            if (ini.IniReadValue("XShortcuts", "Switch").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "Switch").Split('+');
-                SwitchLayout = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "Switch", "");
-            }
+            SwitchLayout = App_GamePadShortcuts.SwitchLayout[0] + App_GamePadShortcuts.SwitchLayout[1];
 
-            if (ini.IniReadValue("XShortcuts", "LockInputs").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "LockInputs").Split('+');
-                LockInputs = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "LockInputs", "");
-            }
+            LockInputs = App_GamePadShortcuts.LockInputs[0] + App_GamePadShortcuts.LockInputs[1];
 
-            if (ini.IniReadValue("XShortcuts", "ReleaseCursor").Contains('+'))
-            {
-                string[] str = ini.IniReadValue("XShortcuts", "ReleaseCursor").Split('+');
-                ReleaseCursor = Convert.ToInt32(str[0]) + Convert.ToInt32(str[1]);
-            }
-            else
-            {
-                ini.IniWriteValue("XShortcuts", "ReleaseCursor", "");
-            }
+            ReleaseCursor = App_GamePadShortcuts.TopMost[0] + App_GamePadShortcuts.TopMost[1];
         }
     }
 }

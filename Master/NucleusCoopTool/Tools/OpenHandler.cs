@@ -1,12 +1,9 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Coop;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nucleus.Coop.Tools
 {
@@ -18,9 +15,9 @@ namespace Nucleus.Coop.Tools
 
             try
             {
-                if (Globals.ini.IniReadValue("Dev", "TextEditorPath") != "Default")
+                if (App_Misc.TextEditorPath != "Default")
                 {
-                    Process.Start($"{Globals.ini.IniReadValue("Dev", "TextEditorPath")}", "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
+                    Process.Start(App_Misc.TextEditorPath, "\"" + Path.Combine(gameManager.GetJsScriptsPath(), currentGameInfo.Game.JsFileName) + "\"");
                 }
                 else
                 {
