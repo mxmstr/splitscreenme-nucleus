@@ -8,6 +8,7 @@ using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -64,22 +65,12 @@ namespace Nucleus.Coop
 
         private Bitmap favorite_Unselected;
         private Bitmap favorite_Selected;
-        public System.Threading.Timer IsUpdateAvailableTimer;
+        public System.Windows.Forms.Timer IsUpdateAvailableTimer;
 
         private Size maxSize;
         private Size minSize;
         private Point maxLoc;
         private Point minLoc;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams handleparams = base.CreateParams;
-                handleparams.ExStyle = 0x02000000;
-                return handleparams;
-            }
-        }
 
         public GameControl(GenericGameInfo game, UserGameInfo userGame, bool favorite)
         {
@@ -226,8 +217,12 @@ namespace Nucleus.Coop
                     CustomToolTips.SetToolTip(GameOptions, "Game options menu.", $"GameOptions_{GameInfo.GUID}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                     CustomToolTips.SetToolTip(HandlerUpdate, "Update game handler.", $"HandlerUpdate{GameInfo.GUID}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
                     CustomToolTips.SetToolTip(playerIcon, "Number of supported players.", $"playerIcon{GameInfo.GUID}", new int[] { 190, 0, 0, 0 }, new int[] { 255, 255, 255, 255 });
-                    ///Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
-                    IsUpdateAvailableTimer = new System.Threading.Timer(IsUpdateAvailable_Tick, this, 1500, 1550);
+                   
+                    //Set a different title color if a handler update is available using a timer(need to wait for the hub to return the value).
+                    IsUpdateAvailableTimer = new System.Windows.Forms.Timer();
+                    IsUpdateAvailableTimer.Interval = (1500); //millisecond                   
+                    IsUpdateAvailableTimer.Tick += IsUpdateAvailable_Tick;
+                    IsUpdateAvailableTimer.Start();
                 }
 
                 DPIManager.Register(this);
@@ -303,10 +298,12 @@ namespace Nucleus.Coop
 
         private void DisposeTimer(object sender , EventArgs e)
         {
-            IsUpdateAvailableTimer?.Dispose();
+            IsUpdateAvailableTimer.Stop();
+            IsUpdateAvailableTimer.Tick -= IsUpdateAvailable_Tick;
+            IsUpdateAvailableTimer.Dispose();
         }
 
-        private void IsUpdateAvailable_Tick(object state)
+        private void IsUpdateAvailable_Tick(object Object, EventArgs eventArgs)
         {
             try
             {
@@ -329,7 +326,10 @@ namespace Nucleus.Coop
             }
             catch
             {
-                IsUpdateAvailableTimer?.Dispose();
+                IsUpdateAvailableTimer.Stop();
+                IsUpdateAvailableTimer.Tick -= IsUpdateAvailable_Tick;
+                IsUpdateAvailableTimer.Dispose();
+
                 Console.WriteLine("GameControl was Disposed!");
             }
         }

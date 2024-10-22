@@ -497,10 +497,10 @@ namespace Nucleus.Coop
             this.clientAreaPanel.Controls.Add(this.rightFrame);
             this.clientAreaPanel.Controls.Add(this.mainButtonFrame);
             this.clientAreaPanel.Controls.Add(this.stepPanelPictureBox);
-            this.clientAreaPanel.Location = new System.Drawing.Point(5, 5);
+            this.clientAreaPanel.Location = new System.Drawing.Point(5, 4);
             this.clientAreaPanel.Margin = new System.Windows.Forms.Padding(0);
             this.clientAreaPanel.Name = "clientAreaPanel";
-            this.clientAreaPanel.Size = new System.Drawing.Size(1166, 655);
+            this.clientAreaPanel.Size = new System.Drawing.Size(1166, 656);
             this.clientAreaPanel.TabIndex = 34;
             this.clientAreaPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.ClientAreaPanel_Paint);
             // 
@@ -517,7 +517,7 @@ namespace Nucleus.Coop
             this.StepPanel.Location = new System.Drawing.Point(209, 58);
             this.StepPanel.Margin = new System.Windows.Forms.Padding(0);
             this.StepPanel.Name = "StepPanel";
-            this.StepPanel.Size = new System.Drawing.Size(771, 597);
+            this.StepPanel.Size = new System.Drawing.Size(771, 598);
             this.StepPanel.TabIndex = 0;
             this.StepPanel.Visible = false;
             this.StepPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.StepPanel_Paint);
@@ -532,7 +532,7 @@ namespace Nucleus.Coop
             this.game_listSizer.Location = new System.Drawing.Point(0, 58);
             this.game_listSizer.Margin = new System.Windows.Forms.Padding(0);
             this.game_listSizer.Name = "game_listSizer";
-            this.game_listSizer.Size = new System.Drawing.Size(209, 597);
+            this.game_listSizer.Size = new System.Drawing.Size(209, 598);
             this.game_listSizer.TabIndex = 35;
             this.game_listSizer.Paint += new System.Windows.Forms.PaintEventHandler(this.Game_listSizer_Paint);
             // 
@@ -552,7 +552,7 @@ namespace Nucleus.Coop
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 0);
             this.list_Games.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.list_Games.Size = new System.Drawing.Size(230, 571);
+            this.list_Games.Size = new System.Drawing.Size(230, 572);
             this.list_Games.TabIndex = 2;
             this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.List_Games_SelectedChanged);
             // 
@@ -570,7 +570,7 @@ namespace Nucleus.Coop
             this.rightFrame.Location = new System.Drawing.Point(980, 58);
             this.rightFrame.Margin = new System.Windows.Forms.Padding(0);
             this.rightFrame.Name = "rightFrame";
-            this.rightFrame.Size = new System.Drawing.Size(186, 597);
+            this.rightFrame.Size = new System.Drawing.Size(186, 598);
             this.rightFrame.TabIndex = 34;
             this.rightFrame.Visible = false;
             this.rightFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.RightFrame_Paint);
@@ -722,7 +722,7 @@ namespace Nucleus.Coop
             this.scriptAuthorTxtSizer.Location = new System.Drawing.Point(8, 323);
             this.scriptAuthorTxtSizer.Margin = new System.Windows.Forms.Padding(5);
             this.scriptAuthorTxtSizer.Name = "scriptAuthorTxtSizer";
-            this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(171, 248);
+            this.scriptAuthorTxtSizer.Size = new System.Drawing.Size(171, 249);
             this.scriptAuthorTxtSizer.TabIndex = 31;
             // 
             // btn_expandNotes
@@ -754,7 +754,7 @@ namespace Nucleus.Coop
             this.scriptAuthorTxt.Name = "scriptAuthorTxt";
             this.scriptAuthorTxt.ReadOnly = true;
             this.scriptAuthorTxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 226);
+            this.scriptAuthorTxt.Size = new System.Drawing.Size(188, 227);
             this.scriptAuthorTxt.TabIndex = 13;
             this.scriptAuthorTxt.Text = "";
             this.scriptAuthorTxt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.ScriptAuthorTxt_LinkClicked);
@@ -1146,7 +1146,7 @@ namespace Nucleus.Coop
             this.stepPanelPictureBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.stepPanelPictureBox.BackColor = System.Drawing.Color.Transparent;
             this.stepPanelPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.stepPanelPictureBox.Location = new System.Drawing.Point(420, 187);
+            this.stepPanelPictureBox.Location = new System.Drawing.Point(420, 188);
             this.stepPanelPictureBox.Margin = new System.Windows.Forms.Padding(0);
             this.stepPanelPictureBox.Name = "stepPanelPictureBox";
             this.stepPanelPictureBox.Size = new System.Drawing.Size(532, 306);

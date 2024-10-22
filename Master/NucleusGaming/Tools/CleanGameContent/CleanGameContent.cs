@@ -40,6 +40,7 @@ namespace Nucleus.Gaming
             }
         }
 
+
         private static void CleanContentFolder(GenericGameInfo currentGameInfo, string path)
         {
             System.Threading.Tasks.Task.Run(() =>
@@ -93,6 +94,51 @@ namespace Nucleus.Gaming
                     }
                 }
             });
+        }
+
+
+        public static void CleanContentFolder(GenericGameInfo currentGameInfo)
+        {
+            string path = Path.Combine(GameManager.Instance.GetAppContentPath(), currentGameInfo.GUID);
+
+            if (Directory.Exists(path))
+            {
+                try
+                {
+                    Directory.Delete(path, true);
+                }
+                catch
+                {
+                    LogManager.Log("Nucleus will try to unlock one or more files in order to cleanup game content.");
+
+                    try
+                    {
+                        string[] instances = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
+
+                        foreach (string instance in instances)
+                        {
+                            if (Directory.Exists(instance))
+                            {
+                                string[] subs = Directory.GetFileSystemEntries(instance, "*", SearchOption.AllDirectories);
+
+                                foreach (string locked in subs)
+                                {
+                                    File.SetAttributes(locked, FileAttributes.Normal);
+                                }
+
+                                Directory.Delete(instance, true);
+                                LogManager.Log("Game content cleaned.");
+                            }
+                        }
+
+                        Directory.Delete(path, true);
+                    }
+                    catch
+                    {
+                        LogManager.Log("Game content cleanup failed. One or more files can't be unlocked by Nucleus.");
+                    }
+                }
+            }
         }
 
         private static void KillRemainingGameProcess(GenericGameInfo currentGameInfo)

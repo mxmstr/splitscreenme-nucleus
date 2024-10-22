@@ -438,19 +438,24 @@ namespace Nucleus.Gaming.Coop.InputManagement
                             return;
                         }
 
-                        Globals.MainOSD.Show(1000, "Inputs Locked");
-
-                        LockInputRuntime.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
-
                         if (CurrentGameInfo.ToggleUnfocusOnInputsLock)
                         {
                             GlobalWindowMethods.ChangeForegroundWindow();
                         }
+
+                        Globals.MainOSD.Show(800, "Inputs Locked");
+
+                        Thread.Sleep(850);
+
+                        LockInputRuntime.Lock(CurrentGameInfo?.LockInputSuspendsExplorer ?? true, CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
                     }
                     else
                     {
                         LockInputRuntime.Unlock(CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
-                        Globals.MainOSD.Show(1000, "Inputs Unlocked");
+                        
+                        Thread.Sleep(150);
+                        
+                        Globals.MainOSD.Show(800, "Inputs Unlocked");
                     }
                 }
 

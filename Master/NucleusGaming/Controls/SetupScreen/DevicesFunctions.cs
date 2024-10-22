@@ -19,6 +19,9 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             userGameInfo = _userGameInfo;
             profile = _profile;
             useGamepadApiIndex = App_Misc.UseXinputIndex;
+
+            ClearDInputDevicesList();
+            gamepadTimer = new System.Threading.Timer(GamepadTimer_Tick, null, 0, 500);
         }
 
         private static SetupScreenControl parent;

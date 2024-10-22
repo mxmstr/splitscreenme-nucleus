@@ -22,4 +22,6 @@ wizark952 (dinput8 blocker),
 
 Nemirtingas (Epic\Galaxy Emulator): https://nemirtingas.gitlab.io/nemirtingas_epic_emu/ / https://nemirtingas.gitlab.io/nemirtingas_galaxy_emu/ 
 
+darkreader (Dark Reader extension): https://github.com/darkreader/darkreader?tab=readme-ov-file
+
 Josivan88 (SplitCalculator).

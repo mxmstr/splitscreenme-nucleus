@@ -80,10 +80,11 @@ namespace Nucleus.Coop.Tools
                     if (currentControl != null && mainForm.StepPanel.Visible)
                     {
                         SetBackroundAndCover.ApplyBackgroundAndCover(currentControl.UserGameInfo.GameGuid);
+                        mainForm.clientAreaPanel.Invalidate();
                     }
 
                     mainForm.Invalidate(false);
-                    mainForm.mainButtonFrame.Select();
+                    mainForm.mainButtonFrame.Select();                 
                 });
 
             });
@@ -152,10 +153,11 @@ namespace Nucleus.Coop.Tools
                     if (currentControl != null && mainForm.StepPanel.Visible)
                     {
                         SetBackroundAndCover.ApplyBackgroundAndCover(currentControl.UserGameInfo.GameGuid);
+                        mainForm.clientAreaPanel.Invalidate();
                     }
 
                     mainForm.Invalidate(false);
-                    mainForm.mainButtonFrame.Select();
+                    mainForm.mainButtonFrame.Select();                
                 });
 
             });

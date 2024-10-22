@@ -9,7 +9,9 @@ using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.UI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -88,6 +90,8 @@ namespace Nucleus.Coop.Forms
 
             button_Panel.BackColor = BackColor;
 
+            ShowThrobber();
+
             string debugUri = Path.Combine(Application.StartupPath, $"webview\\debugUri.txt");
 
             if (File.Exists(debugUri))
@@ -120,8 +124,53 @@ namespace Nucleus.Coop.Forms
                     }
                 }
             }
-
+         
             BuildHandlersDatas();
+        }
+
+        private PictureBox throbber;
+
+        private void ShowThrobber()
+        {
+            if (throbber == null)
+            {
+                throbber = new PictureBox
+                {
+                    Size = new Size(50, 50),
+                    BackColor = BackColor,
+                    Image = ImageCache.GetImage(Globals.ThemeFolder + "loading.gif"),
+                    SizeMode = PictureBoxSizeMode.StretchImage
+                };
+
+                throbber.LocationChanged += ThrobberLocationChanged;              
+                Controls.Add(throbber);
+
+                throbber.BringToFront();
+            } 
+        }
+
+        protected void ThrobberLocationChanged(object sender,EventArgs e)
+        {
+            PictureBox _throb = (PictureBox)sender;
+            using (var gp = new GraphicsPath())
+            {
+                gp.AddEllipse(new Rectangle(0, 0, _throb.Width , _throb.Height));
+                _throb.Region = new Region(gp);
+            }
+        }
+
+        private void ThrobberDispose()
+        {
+            if (throbber != null)
+                Controls.Remove(throbber);
+                throbber?.Dispose();
+                throbber = null;
+        }
+
+        private void HubWebView_Resize(object sender, EventArgs e)
+        {
+            if(throbber != null)
+            throbber.Location = RectangleUtil.Center(throbber.ClientRectangle, ClientRectangle).Location;
         }
 
         private void BuildHandlersDatas()
@@ -146,14 +195,14 @@ namespace Nucleus.Coop.Forms
         }
 
         private async void OnLoad(object sender, EventArgs e)
-        {
+        {         
             await InitializeAsync();
         }
 
         private async Task InitializeAsync()
         {
             try
-            {
+            {               
                 CoreWebView2Environment environment;
                 CoreWebView2EnvironmentOptions environmentOptions = new CoreWebView2EnvironmentOptions();
                 environmentOptions.AreBrowserExtensionsEnabled = true;
@@ -215,12 +264,43 @@ namespace Nucleus.Coop.Forms
                     webView.CoreWebView2.NewWindowRequested += NewWindowRequested;
                     webView.CoreWebView2.WebMessageReceived += WebMessageReceived;
                     webView.CoreWebView2.ProcessFailed += ProcessFailed;
+                    webView.CoreWebView2.NavigationStarting += NavigationStarting;
+                    webView.CoreWebView2.NavigationCompleted += NavigationCompleted;
+
                     webView.CoreWebView2.Profile.PreferredColorScheme = CoreWebView2PreferredColorScheme.Dark;
-                
+                    
                     BringToFront();
                 }
             }
             catch { Console.WriteLine("Webview init failed!"); }
+        }
+
+        private bool inUserBrowser;
+
+        private void NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            if(e.IsSuccess)
+                inUserBrowser = false;
+        }
+
+        private void NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
+        {
+            CoreWebView2 currentWindow = (CoreWebView2)sender;
+
+            if (!e.Uri.StartsWith("https://hub.splitscreen.me/"))
+            {
+                if(!inUserBrowser)
+                {
+                    Process.Start(e.Uri);
+                    inUserBrowser = true; 
+                }
+                else
+                {
+                    currentWindow.Reload();
+                }
+
+                e.Cancel = true;
+            }
         }
 
         private void WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
@@ -256,6 +336,7 @@ namespace Nucleus.Coop.Forms
                 hasFreshCahe = false;
             }
 
+            ThrobberDispose();
             webView.ZoomFactor = 0.8;
             SendDatas();
         }
@@ -596,7 +677,6 @@ namespace Nucleus.Coop.Forms
             }
 
             webView?.Dispose();
-        }
+        }   
     }
-
 }

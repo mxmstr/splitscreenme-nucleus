@@ -95,6 +95,7 @@ namespace Nucleus.Coop
         public Action<IntPtr> RawInputAction { get; set; }
 
         public Bitmap defBackground;
+        public Bitmap BackgroundImg;
 
         private Point defCoverLoc;
         public bool restartRequired = false;
@@ -257,10 +258,10 @@ namespace Nucleus.Coop
         }
 
         private string[] startArgs;
-        
+
         public MainForm(string[] args)
         {
-            if(args.Length != 0)
+            if (args.Length != 0)
             {
                 startArgs = args;
             }
@@ -350,7 +351,8 @@ namespace Nucleus.Coop
             InputsTextLabel.BackColor = Color.Transparent;
             btn_Play.BackColor = Color.Transparent;
 
-            clientAreaPanel.BackgroundImage = ImageCache.GetImage(theme + "background.jpg");
+            BackgroundImg = new Bitmap(ImageCache.GetImage(theme + "background.jpg"), new Size(1280, 720));
+            defBackground = BackgroundImg;
 
             btn_Play.BackgroundImage = ImageCache.GetImage(theme + "play.png");
             btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
@@ -482,8 +484,6 @@ namespace Nucleus.Coop
             maximizeBtn.Click += MaximizeButtonClick;
             closeBtn.Click += CloseButtonClick;
 
-            defBackground = clientAreaPanel.BackgroundImage as Bitmap;
-
             setupScreen = new SetupScreenControl();
 
             profileSettings_btn.Click += ProfileSettings_btn_Click;
@@ -502,7 +502,7 @@ namespace Nucleus.Coop
 
             optionsControl = new PlayerOptionsControl();
             optionsControl.OnCanPlayUpdated += StepCanPlay;
-           
+
             Xinput_S_Setup = new XInputShortcutsSetup();
 
             handlerNotesZoom = new HandlerNotesZoom
@@ -577,7 +577,7 @@ namespace Nucleus.Coop
                 Settings._ctrlr_shorcuts.Enabled = false;
             }
 
-            ThreadDPIContext.SetThreadDpiAwarenessContext((IntPtr)ThreadDPIContext.DpiAwarenessContext.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
+            if (!IsHandleCreated) { CreateHandle(); }//need this for custom scaling factors now(?)
 
             DPIManager.Register(this);
             DPIManager.AddForm(this);
@@ -664,7 +664,8 @@ namespace Nucleus.Coop
                 rainbowTimer?.Dispose();
                 rainbowTimerRunning = false;
                 btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
-                clientAreaPanel.BackgroundImage = defBackground;
+                BackgroundImg = defBackground;
+                clientAreaPanel.Invalidate();
             }
 
             DevicesFunctions.gamepadTimer?.Dispose();
@@ -705,12 +706,14 @@ namespace Nucleus.Coop
 
             webView.Size = clientAreaPanel.Size;
             webView.Location = game_listSizer.Location;
+
             btn_AddGame.Selected = true;
 
             RefreshUI(true);
             Invalidate(false);
+            webView.BringToFront();
         }
-
+        
         public void WebviewDisposed(object sender, EventArgs e)
         {
             if (webView == null)
@@ -759,8 +762,8 @@ namespace Nucleus.Coop
             {
                 GameControl con = controls?.Where(g => g.Value.GameInfo.GUID == startArgs[0]).FirstOrDefault().Value;
 
-                if(con != null)
-                List_Games_SelectedChanged(con, null);
+                if (con != null)
+                    List_Games_SelectedChanged(con, null);
             }
         }
 
@@ -794,46 +797,45 @@ namespace Nucleus.Coop
 
             if (this.WindowState == FormWindowState.Normal)
             {
-                switch (m.Msg)//resizing messages handling
+                if (m.Msg == 0x0084)/*NCHITTEST*/
                 {
-                    case 0x0084/*NCHITTEST*/ :
-                        base.WndProc(ref m);
+                    base.WndProc(ref m);
 
-                        if ((int)m.Result == 0x01/*HTCLIENT*/)
+                    if ((int)m.Result == 0x01/*HTCLIENT*/)
+                    {
+                        Point screenPoint = new Point(m.LParam.ToInt32());
+                        Point clientPoint = PointToClient(screenPoint);
+
+                        if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
                         {
-                            Point screenPoint = new Point(m.LParam.ToInt32());
-                            Point clientPoint = this.PointToClient(screenPoint);
-
-                            if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
-                            {
-                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                    m.Result = (IntPtr)13/*HTTOPLEFT*/ ;
-                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                    m.Result = (IntPtr)12/*HTTOP*/ ;
-                                else
-                                    m.Result = (IntPtr)14/*HTTOPRIGHT*/ ;
-                            }
-                            else if (clientPoint.Y <= (Size.Height - RESIZE_HANDLE_SIZE))
-                            {
-                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                    m.Result = (IntPtr)10/*HTLEFT*/ ;
-                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                    m.Result = (IntPtr)2/*HTCAPTION*/ ;
-                                else
-                                    m.Result = (IntPtr)11/*HTRIGHT*/ ;
-                            }
+                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                                m.Result = (IntPtr)13/*HTTOPLEFT*/ ;
+                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                m.Result = (IntPtr)12/*HTTOP*/ ;
                             else
-                            {
-                                if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                    m.Result = (IntPtr)16/*HTBOTTOMLEFT*/ ;
-                                else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                    m.Result = (IntPtr)15/*HTBOTTOM*/ ;
-                                else
-                                    m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
-                            }
+                                m.Result = (IntPtr)14/*HTTOPRIGHT*/ ;
                         }
+                        else if (clientPoint.Y <= (Size.Height - RESIZE_HANDLE_SIZE))
+                        {
+                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                                m.Result = (IntPtr)10/*HTLEFT*/ ;
+                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                m.Result = (IntPtr)2/*HTCAPTION*/ ;
+                            else
+                                m.Result = (IntPtr)11/*HTRIGHT*/ ;
+                        }
+                        else
+                        {
+                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                                m.Result = (IntPtr)16/*HTBOTTOMLEFT*/ ;
+                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                m.Result = (IntPtr)15/*HTBOTTOM*/ ;
+                            else
+                                m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
+                        }
+                    }
 
-                        return;
+                    return;
                 }
             }
 
@@ -870,7 +872,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.Cutscenes_HotkeyID && 
+            if (m.Msg == 0x0312 && m.WParam.ToInt32() == HotkeysRegistration.Cutscenes_HotkeyID &&
                 I_GameHandler != null)
             {
                 GlobalWindowMethods.ToggleCutScenesMode();
@@ -893,11 +895,11 @@ namespace Nucleus.Coop
             else if (m.Msg == 0x0312)//WM_HOTKEY
             {
                 if (I_GameHandler != null)
-                {                  
+                {
                     switch (m.WParam.ToInt32())
                     {
                         case HotkeysRegistration.TopMost_HotkeyID:
-                            GlobalWindowMethods.ShowHideWindows();                           
+                            GlobalWindowMethods.ShowHideWindows();
                             break;
 
                         case HotkeysRegistration.StopSession_HotkeyID:
@@ -1230,8 +1232,7 @@ namespace Nucleus.Coop
             StepPanel.Visible = true;
 
             GameProfile newProfile = new GameProfile();
-
-            GameProfile.GameInfo = currentGameInfo;
+            newProfile.InitializeDefault(currentGameInfo);
 
             stepsList = new List<UserInputControl> { setupScreen, optionsControl };
 
@@ -1244,8 +1245,6 @@ namespace Nucleus.Coop
             {
                 stepsList.Add(jsControl);
             }
-
-            newProfile.InitializeDefault(currentGame);
 
             if (!disableGameProfiles && !currentGame.MetaInfo.DisableProfiles)
             {
@@ -1500,7 +1499,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            DevicesFunctions.gamepadTimer.Dispose();
+            DevicesFunctions.gamepadTimer?.Dispose();
 
             currentStep?.Ended();
 
@@ -1531,6 +1530,7 @@ namespace Nucleus.Coop
 
             WindowState = FormWindowState.Minimized;
 
+            currentControl = null;
             RefreshUI(true);
         }
 
@@ -1940,7 +1940,7 @@ namespace Nucleus.Coop
                             (gameContextMenuStrip.Items["openBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
                             (gameContextMenuStrip.Items["deleteBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
 
-                            string backupsPath = $"{NucleusEnvironmentRoot}\\_Game Files Backup_\\NucleusCoop\\{menuCurrentGameInfo.Game.GUID}";
+                            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\_Game Files Backup_\\{menuCurrentGameInfo.Game.GUID}";
 
                             if (Directory.Exists(backupsPath))
                             {
@@ -2322,7 +2322,7 @@ namespace Nucleus.Coop
 
         private void DeleteContentFolderMenuItem_Click(object sender, EventArgs e)
         {
-            CleanGameContent.CleanContentFolder(menuCurrentGameInfo.Game, true);       
+            CleanGameContent.CleanContentFolder(menuCurrentGameInfo.Game, true);
         }
 
         private void Button_UpdateAvailable_Click(object sender, EventArgs e)
@@ -2548,8 +2548,8 @@ namespace Nucleus.Coop
                 gameContextMenuStrip.Items["disableProfilesMenuItem"].Image = ImageCache.GetImage(theme + "locked.png");
 
                 if (menuCurrentGameInfo == currentGameInfo)
-                {                
-                    GameProfile.Instance.InitializeDefault(currentControl.GameInfo);
+                {
+                    GameProfile.Instance.InitializeDefault(currentControl.UserGameInfo);
                     ProfilesList.Instance.Update_ProfilesList();
 
                     bool showList = GameProfile.profilesPathList.Count > 0;
@@ -2580,7 +2580,7 @@ namespace Nucleus.Coop
 
                 if (menuCurrentGameInfo == currentGameInfo)
                 {
-                    GameProfile.Instance.InitializeDefault(currentControl.GameInfo);               
+                    GameProfile.Instance.InitializeDefault(currentControl.UserGameInfo);
                     setupScreen.ProfilesList.Visible = false;
                     profilesList_btn.Visible = false;
                     profileSettings_btn.Visible = false;
@@ -2591,7 +2591,7 @@ namespace Nucleus.Coop
                 if (stepsList != null)
                 {
                     GoToStep(0);
-                }             
+                }
             }
 
             if (stepButtonsPanel.Visible)
@@ -2604,7 +2604,7 @@ namespace Nucleus.Coop
 
         private void SetCoverLocation(bool profileEnabled)
         {
-            if(profileEnabled)
+            if (profileEnabled)
             {
                 cover.Location = defCoverLoc;
                 return;
@@ -2743,7 +2743,7 @@ namespace Nucleus.Coop
                 tuto.Size = new Size(this.Width - 200, this.Height - 113);
                 tuto.Location = new Point(Width / 2 - tuto.Width / 2, Height / 2 - tuto.Height / 2);
                 tuto.Click += ClickAnyControl;
-                
+
                 tuto.BringToFront();
             }
             else
@@ -2897,8 +2897,8 @@ namespace Nucleus.Coop
                     btnPlayParticles.Draw(sender, btn_Play, e, 4, 140, new int[] { 100, 255, 100 });
                 }
             }
-               
-            coverFrame.BackColor = btn_Play.Visible ? Color.FromArgb(100, 0, 0, 0) : Color.Transparent;         
+
+            coverFrame.BackColor = btn_Play.Visible ? Color.FromArgb(100, 0, 0, 0) : Color.Transparent;
         }
 
         private DrawParticles panelParticles;
@@ -2957,7 +2957,7 @@ namespace Nucleus.Coop
 
             var prevText = InputsTextLabel.Text;
             var inputText = currentStepIndex == 0 ? InputsText.GetInputText(DisableGameProfiles) : ("", InputsTextLabel.ForeColor);
-            
+
             if (prevText != inputText.Item1)
             {
                 InputsTextLabel.Text = inputText.Item1;
@@ -2966,42 +2966,73 @@ namespace Nucleus.Coop
             }
         }
 
+        private LinearGradientBrush clientAreaPanelBrush;
+        private RectangleF backImgRect;
+
         private void ClientAreaPanel_Paint(object sender, PaintEventArgs e)
         {
+            if (refreshing || backImgRect == null)
+            {
+                RectangleF client = clientAreaPanel.ClientRectangle;
+                RectangleF img = new RectangleF(0, 0, BackgroundImg.Width, BackgroundImg.Height);
+
+                float ratio = 1.78f;
+
+                backImgRect = new RectangleF(0, 0, client.Width, client.Width / ratio);
+
+                if (client.Width / client.Height < ratio)
+                {
+                    float multH = (float)client.Width / (float)backImgRect.Width;
+                    backImgRect.Height = client.Height * multH;
+                    backImgRect.Width = (backImgRect.Height * ratio) * multH;
+                }
+
+                PointF loc = RectangleUtil.Center(backImgRect.Size, client);
+                backImgRect.Location = loc;
+            }
+
+            e.Graphics.DrawImage(BackgroundImg, backImgRect);
+
             if (backGradient.A == 0)
             {
                 return;
             }
 
-            Rectangle gradientBrushbounds = new Rectangle(0, 0, mainButtonFrame.Width, Height);
-
-            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            if (clientAreaPanelBrush == null || refreshing)
             {
-                return;
+                Rectangle gradientBrushbounds = new Rectangle(0, 0, clientAreaPanel.ClientRectangle.Width, clientAreaPanel.ClientRectangle.Height);
+
+                if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+                {
+                    return;
+                }
+
+                Color color1 = Color.FromArgb(230, backGradient.R, backGradient.G, backGradient.B);
+                Color color2 = Color.FromArgb(195, backGradient.R, backGradient.G, backGradient.B);
+                Color color3 = Color.FromArgb(155, backGradient.R, backGradient.G, backGradient.B);
+                Color color4 = Color.FromArgb(130, backGradient.R, backGradient.G, backGradient.B);
+                Color color5 = Color.FromArgb(115, backGradient.R, backGradient.G, backGradient.B);
+                Color color6 = Color.FromArgb(130, backGradient.R, backGradient.G, backGradient.B);
+                Color color7 = Color.FromArgb(155, backGradient.R, backGradient.G, backGradient.B);
+                Color color8 = Color.FromArgb(195, backGradient.R, backGradient.G, backGradient.B);
+                Color color9 = Color.FromArgb(230, backGradient.R, backGradient.G, backGradient.B);
+
+                clientAreaPanelBrush =
+                    new LinearGradientBrush(gradientBrushbounds, color1, color5, 90f);
+
+                ColorBlend topcblend = new ColorBlend(9);
+                topcblend.Colors = new Color[9] { color1, color2, color3, color4, color5, color6, color7, color8, color9 };
+                topcblend.Positions = new float[9] { 0f, 0.125f, 0.250f, 0.375f, 0.500f, 0.625f, 0.750f, 0.875f, 1.0f };
+
+                clientAreaPanelBrush.InterpolationColors = topcblend;
             }
 
-            Color color1 = Color.FromArgb(230, backGradient.R, backGradient.G, backGradient.B);
-            Color color2 = Color.FromArgb(195, backGradient.R, backGradient.G, backGradient.B);
-            Color color3 = Color.FromArgb(155, backGradient.R, backGradient.G, backGradient.B);
-            Color color4 = Color.FromArgb(130, backGradient.R, backGradient.G, backGradient.B);
-            Color color5 = Color.FromArgb(115, backGradient.R, backGradient.G, backGradient.B);
-            Color color6 = Color.FromArgb(130, backGradient.R, backGradient.G, backGradient.B);
-            Color color7 = Color.FromArgb(155, backGradient.R, backGradient.G, backGradient.B);
-            Color color8 = Color.FromArgb(195, backGradient.R, backGradient.G, backGradient.B);
-            Color color9 = Color.FromArgb(230, backGradient.R, backGradient.G, backGradient.B);
+            e.Graphics.FillRectangle(clientAreaPanelBrush, clientAreaPanel.ClientRectangle);
 
-            LinearGradientBrush ClientAreaPanel_LinearGradientBrush =
-                new LinearGradientBrush(gradientBrushbounds, color1, color5, 90f);
-
-            ColorBlend topcblend = new ColorBlend(9);
-            topcblend.Colors = new Color[9] { color1, color2, color3, color4, color5, color6, color7, color8, color9 };
-            topcblend.Positions = new float[9] { 0f, 0.125f, 0.250f, 0.375f, 0.500f, 0.625f, 0.750f, 0.875f, 1.0f };
-
-            ClientAreaPanel_LinearGradientBrush.InterpolationColors = topcblend;
-
-            e.Graphics.FillRectangle(ClientAreaPanel_LinearGradientBrush, clientAreaPanel.ClientRectangle);
-            ClientAreaPanel_LinearGradientBrush.Dispose();
+            refreshing = false;
         }
+
+        private LinearGradientBrush game_listSizerlBrush;
 
         private void Game_listSizer_Paint(object sender, PaintEventArgs e)
         {
@@ -3010,29 +3041,33 @@ namespace Nucleus.Coop
                 return;
             }
 
-            Rectangle gradientBrushbounds = new Rectangle(0, 0, game_listSizer.Width / 2, game_listSizer.Height);
-
-            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            if (game_listSizerlBrush == null || refreshing)
             {
-                return;
+                Rectangle gradientBrushbounds = new Rectangle(0, 0, game_listSizer.Width / 2, game_listSizer.Height);
+
+                if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+                {
+                    return;
+                }
+
+                Color color1 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
+                Color color2 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
+                Color color3 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
+                Color color4 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
+
+                game_listSizerlBrush =
+                new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color1, 90f);
+
+                ColorBlend topcblend = new ColorBlend(6);
+                topcblend.Colors = new Color[6] { Color.Transparent, color1, color2, color3, color4, Color.Transparent };
+                topcblend.Positions = new float[6] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
+                game_listSizerlBrush.InterpolationColors = topcblend;
             }
 
-            Color color1 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
-            Color color2 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
-            Color color3 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
-            Color color4 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
-
-            LinearGradientBrush game_listSizer_LinearGradientBrush =
-            new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color1, 90f);
-
-            ColorBlend topcblend = new ColorBlend(6);
-            topcblend.Colors = new Color[6] { Color.Transparent, color1, color2, color3, color4, Color.Transparent };
-            topcblend.Positions = new float[6] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
-            game_listSizer_LinearGradientBrush.InterpolationColors = topcblend;
-
-            e.Graphics.FillRectangle(game_listSizer_LinearGradientBrush, game_listSizer.ClientRectangle);
-            game_listSizer_LinearGradientBrush.Dispose();
+            e.Graphics.FillRectangle(game_listSizerlBrush, game_listSizer.ClientRectangle);
         }
+
+        private LinearGradientBrush rightFrameBrush;
 
         private void RightFrame_Paint(object sender, PaintEventArgs e)
         {
@@ -3041,29 +3076,32 @@ namespace Nucleus.Coop
                 return;
             }
 
-            Rectangle gradientBrushbounds = new Rectangle(0, 0, rightFrame.Width / 2, rightFrame.Height);
-
-            if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+            if (rightFrameBrush == null || refreshing)
             {
-                return;
-            }
+                Rectangle gradientBrushbounds = new Rectangle(0, 0, rightFrame.Width / 2, rightFrame.Height);
 
-            Color color1 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
-            Color color2 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
-            Color color3 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
-            Color color4 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
+                if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
+                {
+                    return;
+                }
 
-            LinearGradientBrush rightFrame_LinearGradientBrush =
+                Color color1 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
+                Color color2 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
+                Color color3 = Color.FromArgb(100, backGradient.R, backGradient.G, backGradient.B);
+                Color color4 = Color.FromArgb(20, backGradient.R, backGradient.G, backGradient.B);
+
+                rightFrameBrush =
                 new LinearGradientBrush(gradientBrushbounds, Color.Transparent, color1, 90f);
 
-            ColorBlend topcblend = new ColorBlend(6);
-            topcblend.Colors = new Color[6] { Color.Transparent, color1, color2, color3, color4, Color.Transparent };
-            topcblend.Positions = new float[6] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
+                ColorBlend topcblend = new ColorBlend(6);
+                topcblend.Colors = new Color[6] { Color.Transparent, color1, color2, color3, color4, Color.Transparent };
+                topcblend.Positions = new float[6] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
 
-            rightFrame_LinearGradientBrush.InterpolationColors = topcblend;
+                rightFrameBrush.InterpolationColors = topcblend;
+            }
 
-            e.Graphics.FillRectangle(rightFrame_LinearGradientBrush, rightFrame.ClientRectangle);
-            rightFrame_LinearGradientBrush.Dispose();
+            e.Graphics.FillRectangle(rightFrameBrush, rightFrame.ClientRectangle);
+
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -3121,8 +3159,12 @@ namespace Nucleus.Coop
             bottomLinearGradientBrush.Dispose();
         }
 
+        private bool refreshing;
+
         private void MainForm_ClientSizeChanged(object sender, EventArgs e)
         {
+            refreshing = true;
+
             Invalidate(false);
 
             if (roundedCorners)
@@ -3130,7 +3172,7 @@ namespace Nucleus.Coop
                 if (WindowState == FormWindowState.Maximized)
                 {
                     FormGraphicsUtil.CreateRoundedControlRegion(this, 0, 0, Width, Height, 0, 0);
-                    FormGraphicsUtil.CreateRoundedControlRegion(clientAreaPanel,0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 0, 0); 
+                    FormGraphicsUtil.CreateRoundedControlRegion(clientAreaPanel, 0, 0, clientAreaPanel.Width, clientAreaPanel.Height, 0, 0);
                 }
                 else
                 {
@@ -3159,6 +3201,7 @@ namespace Nucleus.Coop
 
         private void MainForm_ResizeBegin(object sender, EventArgs e)
         {
+            refreshing = true;
             clientAreaPanel.Visible = false;
             Opacity = 0.6D;
         }
@@ -3166,7 +3209,6 @@ namespace Nucleus.Coop
         private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
             clientAreaPanel.Visible = true;
-
             game_listSizer.Refresh();
             StepPanel.Refresh();
             mainButtonFrame.Refresh();
@@ -3175,6 +3217,7 @@ namespace Nucleus.Coop
 
             Opacity = 1.0D;
             Refresh();
+            refreshing = false;
         }
 
         private void MainForm_Deactivate(object sender, EventArgs e)

@@ -216,6 +216,7 @@
             this.DoubleBuffered = true;
             this.Name = "HubWebView";
             this.Size = new System.Drawing.Size(1166, 655);
+            this.Resize += new System.EventHandler(this.HubWebView_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.webView)).EndInit();
             this.button_Panel.ResumeLayout(false);
             this.modal.ResumeLayout(false);

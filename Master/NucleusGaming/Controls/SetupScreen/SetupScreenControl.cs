@@ -60,8 +60,6 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
             userGameInfo = game;
             DevicesFunctions.Initialize(this, game, profile);
-            DevicesFunctions.ClearDInputDevicesList();
-            DevicesFunctions.gamepadTimer = new System.Threading.Timer(DevicesFunctions.GamepadTimer_Tick, null, 0, 500);
 
             BoundsFunctions.Initialize(this, game, profile);
             Draw.Initialize(this, game, profile);
@@ -124,8 +122,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
 
             DevicesFunctions.ClearDInputDevicesList();
-
-            DevicesFunctions.gamepadTimer.Dispose();
+            DevicesFunctions.gamepadTimer?.Dispose();
         }
 
         protected override void OnSizeChanged(EventArgs e)

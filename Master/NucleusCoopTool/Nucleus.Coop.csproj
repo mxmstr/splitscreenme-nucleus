@@ -911,6 +911,9 @@
     <Content Include="gui\theme\default\layout.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="gui\theme\default\loading.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gui\theme\default\locked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

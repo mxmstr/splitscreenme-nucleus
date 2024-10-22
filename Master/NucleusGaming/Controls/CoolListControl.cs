@@ -79,9 +79,7 @@ namespace SplitTool.Controls
 
             Controls.Add(titleLabel);
             Controls.Add(descLabel);
-
-            font.Dispose();
-
+            
             DPIManager.Register(this);
         }
 
