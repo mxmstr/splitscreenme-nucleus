@@ -56,22 +56,23 @@ namespace Nucleus.Coop.Tools
                     Random rNum = new Random();
                     int RandomIndex = rNum.Next(0, imgsPath.Length);
 
-                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg")));
+                    Bitmap backgroundImg = ApplyBlur(new Bitmap(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{gameGuid}\\{RandomIndex}_{gameGuid}.jpeg")));
+                    mainForm.BackgroundImg = backgroundImg;
                     mainForm.GameBorderGradientTop = colorTop;
                     mainForm.GameBorderGradientBottom = colorBottom;
                 }
                 else
                 {
-                    Bitmap def = new Bitmap ((Bitmap)mainForm.defBackground.Clone());
-                    mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(def);
+                    Bitmap def = ApplyBlur(new Bitmap((Bitmap)mainForm.defBackground.Clone()));
+                    mainForm.BackgroundImg = def;
                     mainForm.GameBorderGradientTop = mainForm.BorderGradient;
                     mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
                 }
             }
             else
             {
-                Bitmap def = new Bitmap((Bitmap)mainForm.defBackground.Clone());
-                mainForm.clientAreaPanel.BackgroundImage = ApplyBlur(def);
+                Bitmap def = ApplyBlur(new Bitmap((Bitmap)mainForm.defBackground.Clone()));
+                mainForm.BackgroundImg = def;
                 mainForm.GameBorderGradientTop = mainForm.BorderGradient;
                 mainForm.GameBorderGradientBottom = mainForm.BorderGradient;
             }

@@ -351,10 +351,12 @@ namespace Nucleus.Gaming.Coop
             }
         }
 
-        public void InitializeDefault(GenericGameInfo game)
+        public void InitializeDefault(UserGameInfo userGameInfo)
         {
             Instance = this;
-            Game = game;
+
+            GameInfo = userGameInfo;
+            Game = userGameInfo.Game;
 
             Reset();
 
@@ -379,7 +381,7 @@ namespace Nucleus.Gaming.Coop
             {
                 options = new Dictionary<string, object>();
 
-                foreach (GameOption opt in game.Options)
+                foreach (GameOption opt in Game.Options)
                 {
                     options.Add(opt.Key, opt.Value);
                 }

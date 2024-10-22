@@ -135,7 +135,6 @@ namespace Nucleus.Coop
                     isButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
                 }
 
-
                 if (c.Name.Contains("pauseBetweenInstanceLaunch_TxtBox") || c.Name.Contains("WindowsSetupTiming_TextBox"))
                 {
                     c.KeyPress += Num_KeyPress;

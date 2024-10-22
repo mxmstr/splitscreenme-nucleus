@@ -20,8 +20,10 @@ namespace Nucleus.Coop
         public Color topColor;
         public Color bottomColor;
 
-        public GaussianBlur(Bitmap image)
+        public GaussianBlur(Bitmap bmp)
         {
+            Bitmap image = new Bitmap(bmp, new Size(1280,720));
+
             var rct = new Rectangle(0, 0, image.Width, image.Height);
             var source = new int[rct.Width * rct.Height];
             var bits = image.LockBits(rct, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);

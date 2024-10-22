@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Cache;
+﻿using Jint.Parser.Ast;
+using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.UI;
 using System;
@@ -212,6 +213,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public static void UIDevices(Graphics g, PlayerInfo player)
         {
+            if (player.EditBounds == RectangleF.Empty)
+            {
+                return;
+            }
+
             RectangleF s = player.EditBounds;
 
             g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 2, s.Height + 1));
@@ -228,7 +234,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             }
 
             if (player.IsXInput)
-            {
+            {      
                 string str = (player.GamepadId + 1).ToString();
 
                 SizeF size = g.MeasureString(str, fontToScale);

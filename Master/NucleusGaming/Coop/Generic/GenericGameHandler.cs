@@ -3580,7 +3580,7 @@ namespace Nucleus.Gaming
 
             if (!gen.KeepSymLinkOnExit && !CurrentGameInfo.MetaInfo.KeepSymLink)
             {
-                CleanGameContent.CleanContentFolder(gen,false);
+                CleanGameContent.CleanContentFolder(gen);
             }
 
             if  (!App_Misc.KeepAccounts)

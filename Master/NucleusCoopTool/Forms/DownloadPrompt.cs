@@ -26,8 +26,6 @@ namespace Nucleus.Coop.Forms
         private int entriesDone = 0;
         private float fontSize;
         private bool overwriteWithoutAsking = false;
-        private MainForm mainForm;
-        //public bool gameExeNoUpdate;
         public string game;
 
         private void controlscollect()
