@@ -53,7 +53,7 @@ Note that Nucleus does not add multiplayer or co-op to single player games, the 
 2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
 
 
-# 🤝 How can you contribute?
+# 🤝 How can you contribute❓
 If you would like to learn all about contributing to this project, whether it's bug reporting or working on the codebase, check out the [Nucleus Coop Contributing Guide](CONTRIBUTING.md)!
 
 Thank you! ^_^
