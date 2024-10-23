@@ -2,6 +2,7 @@
 
 ![v2 3 0](https://github.com/user-attachments/assets/db89456a-714a-4bf6-ac78-53c3fa1d023c)
 
+
 <div align="center">
     <img width="150" src="https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/NucleusCoop1.png" alt="nucleuscoop">
     </br>
@@ -11,6 +12,10 @@
     <a href="https://discord.gg/QDUt8HpCvr"><img src="https://img.shields.io/discord/142649962839277568.svg?style=for-the-badge" alt="Discord server" /></a>
     <a href="https://patreon.com/nucleus_coop"><img src="https://img.shields.io/badge/sponsor-Patreon-blue?style=for-the-badge" alt="patreon" /></a>
 </div>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# What is Nucleus Co-op?
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
 
@@ -28,23 +33,11 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 
 View the full list of features/changes and changelog in the Readme.txt inside Nucleus Co-op or in the releases page. Download latest [Nucleus Co-op here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 
-# Disclaimer
-Nucleus Co-op was originally created by Lucas Assis.
-
-- Github link to the original project: https://github.com/lucasassislar/nucleuscoop
-- Official website: https://www.splitscreen.me/docs/what-is-splitscreen-me/
-- Nucleus Co-op FAQ: https://www.splitscreen.me/docs/faq
-- Subscribe the official Nucleus Co-op subreddit: https://www.reddit.com/r/nucleuscoop/ 
-- Join the official Nucleus Co-op Discord server: https://discord.gg/QDUt8HpCvr
-
 # How does Nucleus Co-op work?
 Nucleus Co-op symlinks and opens multiple instances of the same game files (sometimes mutex killing is required for that, among other methods) that will only answer to one specific gamepad (we do this via Nucleus Co-op custom xinput libraries or xinput plus dlls) and connects those instances via LAN or online multiplayer emulation (Goldberg, Nemirtingas emulators etc.), all while making sure the game windows have focus so they can be playable at the same time with multiple controllers or that the instances are playable even in the background. Nucleus Co-op then resizes, removes borders and repositions the game windows so you can have synthetic split-screen to play locally with your friends!
 
 Note that Nucleus does not add multiplayer or co-op to single player games, the game needs to already have some form of online or LAN multiplayer, or another way to connect the instances, like via mods for example.
 
-# Installation:
-1. Download latest [release](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
-2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
 
 # Prerequisites:
 
@@ -53,11 +46,26 @@ Note that Nucleus does not add multiplayer or co-op to single player games, the 
 - Microsoft Visual C++ 2015-2019 Redistributable (both x86 and x64): [Microsoft direct download x86](https://aka.ms/vs/17/release/vc_redist.x86.exe), [Microsoft direct download x64](https://aka.ms/vs/17/release/vc_redist.x64.exe).
 
 - Microsoft Edge WebView2 (Only if the downloader get stuck on loading screen): [Microsoft Edge WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer/?form=MA13LH ).
- 
+
+
+# Installation:
+1. Download latest [release](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
+2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
+
+
 # How can you contribute?
 If you would like to learn all about contributing to this project, whether it's bug reporting or working on the codebase, check out the [Nucleus Coop Contributing Guide](CONTRIBUTING.md)!
 
 Thank you! ^_^
+
+# Disclaimer
+Nucleus Co-op was originally created by Lucas Assis.
+
+- Github link to the original project: https://github.com/lucasassislar/nucleuscoop
+- Official website: https://www.splitscreen.me/docs/what-is-splitscreen-me/
+- Nucleus Co-op FAQ: https://www.splitscreen.me/docs/faq
+- Subscribe the official Nucleus Co-op subreddit: https://www.reddit.com/r/nucleuscoop/ 
+- Join the official Nucleus Co-op Discord server: https://discord.gg/QDUt8HpCvr
 
 # Credits
 - Original Nucleus Co-op Project: [Lucas Assis (lucasassislar)](https://github.com/lucasassislar)  
