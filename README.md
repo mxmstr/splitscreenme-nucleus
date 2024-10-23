@@ -12,8 +12,6 @@
       </br>
 </div>
 
----------------------------------------------------------------------------------------------------------------------------------------------------------
-
 # What is Nucleus Co-op?
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
@@ -37,24 +35,20 @@ Nucleus Co-op symlinks and opens multiple instances of the same game files (some
 
 Note that Nucleus does not add multiplayer or co-op to single player games, the game needs to already have some form of online or LAN multiplayer, or another way to connect the instances, like via mods for example.
 
-
 # 📚 Prerequisites:
 
 - .NET Framework 4.7.2 or higher: [Microsoft direct download link](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net472-web-installer).
   
 - Microsoft Visual C++ 2015-2019 Redistributable (both x86 and x64): [Microsoft direct download x86](https://aka.ms/vs/17/release/vc_redist.x86.exe), [Microsoft direct download x64](https://aka.ms/vs/17/release/vc_redist.x64.exe).
 
-- Microsoft Edge WebView2 (Only if the downloader get stuck on loading screen): [Microsoft Edge WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer/?form=MA13LH ).
-
+- Microsoft Edge WebView2 (Only if the downloader gets stuck on loading screen): [Microsoft Edge WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer/?form=MA13LH ).
 
 # ⚒ Installation:
 1. Download latest [release](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
-2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
-
+2. Extract the .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains the majority of your games is a good choice (e.g. C:\). DO NOT place Nucleus Co-op inside a folder containing the files for a game you wish to play.
 
 # 🤝 How can you contribute?
 If you would like to learn all about contributing to this project, whether it's bug reporting or working on the codebase, check out the [Nucleus Coop Contributing Guide](CONTRIBUTING.md)!
-
 
 # 🔎 Website & FAQ
 
@@ -63,7 +57,7 @@ If you would like to learn all about contributing to this project, whether it's 
   
 #  👥 Social
 
-- [Subscribe the official Nucleus Co-op subreddit](https://www.reddit.com/r/nucleuscoop/ )
+- [Subscribe to the official Nucleus Co-op subreddit](https://www.reddit.com/r/nucleuscoop/)
 - [Join the official Nucleus Co-op Discord server](https://discord.gg/QDUt8HpCvr)
 
 # 📄 Credits
@@ -72,7 +66,7 @@ If you would like to learn all about contributing to this project, whether it's 
 - Proto Input, USS, multiple keyboards/mice & hooks: [Ilyaki](https://github.com/Ilyaki)  
 - Official Nucleus Co-op 2.0 and Up: [Mikou27](https://github.com/Mikou27) 
 - Website & handler API: [r-mach](https://github.com/r-mach)  
-- Handlers development and general testing: [Talos91](https://github.com/Talos910), [PoundlandBacon](https://github.com/PoundlandBacon), [Pizzo](https://github.com/Bizzo499), [maxine64](https://github.com/Maxine202) and many more.
+- Handlers development, Nucleus Co-op general testing, feedback and improvement: [Talos91](https://github.com/Talos910), [PoundlandBacon](https://github.com/PoundlandBacon), [Pizzo](https://github.com/Bizzo499), [maxine64](https://github.com/Maxine202) and many more.
   
 Additional credits to all original developers of the third party utilities Nucleus Co-op uses:
 - Mr_Goldberg ([Goldberg Emulator](https://gitlab.com/Mr_Goldberg/goldberg_emulator))
@@ -89,5 +83,4 @@ Additional credits to all original developers of the third party utilities Nucle
 - Josivan88 (SplitCalculator)
 - darkreader ([Dark Reader extension](https://github.com/darkreader/darkreader?tab=readme-ov-file)) 
   
-Special thanks to the SplitScreenDreams discord community, this wouldn't have been possible without all your contributions.
-
+Special thanks to the SplitScreenDreams discord community, this wouldn't have been possible without all their contributions.
