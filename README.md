@@ -63,7 +63,7 @@ Thank you! ^_^
 - [Official website](https://www.splitscreen.me/docs/what-is-splitscreen-me/)
 - [Nucleus Co-op FAQ](https://www.splitscreen.me/docs/faq)
   
-#  🗪 Social
+#  🗩 Social
 
 - [Subscribe the official Nucleus Co-op subreddit](https://www.reddit.com/r/nucleuscoop/ )
 - [Join the official Nucleus Co-op Discord server](https://discord.gg/QDUt8HpCvr)
