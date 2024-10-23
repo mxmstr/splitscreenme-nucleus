@@ -55,7 +55,6 @@ Note that Nucleus does not add multiplayer or co-op to single player games, the 
 # 🤝 How can you contribute?
 If you would like to learn all about contributing to this project, whether it's bug reporting or working on the codebase, check out the [Nucleus Coop Contributing Guide](CONTRIBUTING.md)!
 
-Thank you! ^_^
 
 # 🔎 Website & FAQ
 
