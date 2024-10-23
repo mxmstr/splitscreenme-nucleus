@@ -11,7 +11,6 @@
     <a href="https://discord.gg/QDUt8HpCvr"><img src="https://img.shields.io/discord/142649962839277568.svg?style=for-the-badge" alt="Discord server"/></a>
     <a href="https://patreon.com/nucleus_coop"><img src="https://img.shields.io/badge/sponsor-Patreon-blue?style=for-the-badge" alt="patreon"/></a>
       </br>
-      </br>
 </div>
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +53,7 @@ Note that Nucleus does not add multiplayer or co-op to single player games, the 
 2. Extract .zip archive to a non-restrictive folder, that all users have access to (i.e. do NOT extract to Program Files, Desktop, or your Documents folder, to name a few). The root folder that contains majority of your games is a good choice (e.g. C:\).
 
 
-# 💻How can you contribute?
+# 🤝 How can you contribute?
 If you would like to learn all about contributing to this project, whether it's bug reporting or working on the codebase, check out the [Nucleus Coop Contributing Guide](CONTRIBUTING.md)!
 
 Thank you! ^_^
