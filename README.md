@@ -1,5 +1,5 @@
 <div align="center">
-    <h1 align="center">:keyboard:🖱:video_game: Nucleus Co-op :video_game:🖱:keyboard:</h1>
+    <h1 align="center">Nucleus Co-op</h1>
   </br>
 </div>
 
