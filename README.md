@@ -67,7 +67,7 @@ Thank you! ^_^
 - [Subscribe the official Nucleus Co-op subreddit](https://www.reddit.com/r/nucleuscoop/ )
 - [Join the official Nucleus Co-op Discord server](https://discord.gg/QDUt8HpCvr)
 
-# 💕 Credits
+# 📄 Credits
 - Original Nucleus Co-op Project: [Lucas Assis (lucasassislar)](https://github.com/lucasassislar)  
 - Nucleus Co-op Alpha 8 Mod : [ZeroFox](https://github.com/ZeroFox5866)  
 - Proto Input, USS, multiple keyboards/mice & hooks: [Ilyaki](https://github.com/Ilyaki)  
