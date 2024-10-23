@@ -15,7 +15,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# 🤨 What is Nucleus Co-op❓
+# What is Nucleus Co-op❓
 
 Nucleus Co-op is a free and open source tool for Windows that allows split-screen play on many games that do not initially support it, the app purpose is to make it as easy as possible for the average user to play games locally using only one PC and one game copy. 
 
@@ -33,7 +33,7 @@ This repo is a new and improved official version of the Nucleus Co-op applicatio
 
 View the full list of features/changes and changelog in the Readme.txt inside Nucleus Co-op or in the releases page. Download latest [Nucleus Co-op here](https://github.com/SplitScreen-Me/splitscreenme-nucleus/releases). 
 
-# :thinking: How does Nucleus Co-op work❓
+# How does Nucleus Co-op work❓
 Nucleus Co-op symlinks and opens multiple instances of the same game files (sometimes mutex killing is required for that, among other methods) that will only answer to one specific gamepad (we do this via Nucleus Co-op custom xinput libraries or xinput plus dlls) and connects those instances via LAN or online multiplayer emulation (Goldberg, Nemirtingas emulators etc.), all while making sure the game windows have focus so they can be playable at the same time with multiple controllers or that the instances are playable even in the background. Nucleus Co-op then resizes, removes borders and repositions the game windows so you can have synthetic split-screen to play locally with your friends!
 
 Note that Nucleus does not add multiplayer or co-op to single player games, the game needs to already have some form of online or LAN multiplayer, or another way to connect the instances, like via mods for example.
