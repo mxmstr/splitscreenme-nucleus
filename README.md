@@ -1,11 +1,10 @@
 <div align="center">
-    <h1 align="center">Nucleus Co-op</h1>
+    <img align="left" width="40" height="44" src="https://github.com/SplitScreen-Me/splitscreenme-www/blob/master/static/img/NucleusCoop1.png">
+     <h1 align="left">Nucleus Co-op</h1>  
   </br>
 </div>
 
 ![v2 3 0](https://github.com/user-attachments/assets/db89456a-714a-4bf6-ac78-53c3fa1d023c)
-
-
 
 <div align="center">
     <a href="https://discord.gg/QDUt8HpCvr"><img src="https://img.shields.io/discord/142649962839277568.svg?style=for-the-badge" alt="Discord server"/></a>
@@ -63,7 +62,7 @@ Thank you! ^_^
 - [Official website](https://www.splitscreen.me/docs/what-is-splitscreen-me/)
 - [Nucleus Co-op FAQ](https://www.splitscreen.me/docs/faq)
   
-#  🗩 Social
+#  👥 Social
 
 - [Subscribe the official Nucleus Co-op subreddit](https://www.reddit.com/r/nucleuscoop/ )
 - [Join the official Nucleus Co-op Discord server](https://discord.gg/QDUt8HpCvr)
