@@ -58,14 +58,15 @@ If you would like to learn all about contributing to this project, whether it's 
 
 Thank you! ^_^
 
-# Disclaimer
-Nucleus Co-op was originally created by Lucas Assis.
+# Website & FAQ
 
-- Github link to the original project: https://github.com/lucasassislar/nucleuscoop
-- Official website: https://www.splitscreen.me/docs/what-is-splitscreen-me/
-- Nucleus Co-op FAQ: https://www.splitscreen.me/docs/faq
-- Subscribe the official Nucleus Co-op subreddit: https://www.reddit.com/r/nucleuscoop/ 
-- Join the official Nucleus Co-op Discord server: https://discord.gg/QDUt8HpCvr
+- [Official website](https://www.splitscreen.me/docs/what-is-splitscreen-me/)
+- [Nucleus Co-op FAQ](https://www.splitscreen.me/docs/faq)
+  
+# Social
+
+- [Subscribe the official Nucleus Co-op subreddit](https://www.reddit.com/r/nucleuscoop/ )
+- [Join the official Nucleus Co-op Discord server](https://discord.gg/QDUt8HpCvr)
 
 # Credits
 - Original Nucleus Co-op Project: [Lucas Assis (lucasassislar)](https://github.com/lucasassislar)  
@@ -73,7 +74,7 @@ Nucleus Co-op was originally created by Lucas Assis.
 - Proto Input, USS, multiple keyboards/mice & hooks: [Ilyaki](https://github.com/Ilyaki)  
 - Official Nucleus Co-op 2.0 and Up: [Mikou27](https://github.com/Mikou27) 
 - Website & handler API: [r-mach](https://github.com/r-mach)  
-- Handlers development and general testing: [Talos91](https://github.com/Talos910), PoundlandBacon, Pizzo, dr.oldboi and many more.
+- Handlers development and general testing: [Talos91](https://github.com/Talos910), [PoundlandBacon](https://github.com/orgs/SplitScreen-Me/people/PoundlandBacon), [Pizzo](https://github.com/orgs/SplitScreen-Me/people/Bizzo499), [maxine64](https://github.com/orgs/SplitScreen-Me/people/Maxine202) and many more.
   
 Additional credits to all original developers of the third party utilities Nucleus Co-op uses:
 - Mr_Goldberg ([Goldberg Emulator](https://gitlab.com/Mr_Goldberg/goldberg_emulator))
