@@ -73,7 +73,7 @@ Thank you! ^_^
 - Proto Input, USS, multiple keyboards/mice & hooks: [Ilyaki](https://github.com/Ilyaki)  
 - Official Nucleus Co-op 2.0 and Up: [Mikou27](https://github.com/Mikou27) 
 - Website & handler API: [r-mach](https://github.com/r-mach)  
-- Handlers development and general testing: [Talos91](https://github.com/Talos910), [PoundlandBacon](https://github.com/orgs/SplitScreen-Me/people/PoundlandBacon), [Pizzo](https://github.com/orgs/SplitScreen-Me/people/Bizzo499), [maxine64](https://github.com/orgs/SplitScreen-Me/people/Maxine202) and many more.
+- Handlers development and general testing: [Talos91](https://github.com/Talos910), [PoundlandBacon](https://github.com/PoundlandBacon), [Pizzo](https://github.com/Bizzo499), [maxine64](https://github.com/Maxine202) and many more.
   
 Additional credits to all original developers of the third party utilities Nucleus Co-op uses:
 - Mr_Goldberg ([Goldberg Emulator](https://gitlab.com/Mr_Goldberg/goldberg_emulator))
