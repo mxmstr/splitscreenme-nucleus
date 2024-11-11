@@ -89,6 +89,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
@@ -162,7 +163,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\CustomComboBox.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\CustomComboBox.Designer.cs">
       <DependentUpon>CustomComboBox.cs</DependentUpon>

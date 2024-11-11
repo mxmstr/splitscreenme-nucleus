@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming.Platform.Windows;
+using SharpDX;
 using System;
 using System.IO;
 using System.Linq;
@@ -14,8 +15,18 @@ namespace Nucleus.Gaming.Platform.PCSpecs
             var handlerInstance = GenericGameHandler.Instance;
 
             string pcSpecs = "PC Info - ";
-            var name = (from x in new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
+
+            object name;
+
+            try
+            {
+                name = (from x in new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
                         select x.GetPropertyValue("Caption")).FirstOrDefault();
+            }
+            catch
+            {
+                name = null;
+            }
 
             pcSpecs += name != null ? "OS: " + name.ToString() + ", " : "Windows OS: Unknown, ";
 
@@ -31,18 +42,25 @@ namespace Nucleus.Gaming.Platform.PCSpecs
 
         public static string GetNETFrameworkVersion()
         {
-            const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-
-            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
+            try
             {
-                if (ndpKey != null && ndpKey.GetValue("Release") != null)
+                const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+
+                using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
                 {
-                    return GetNetFrameworkVersion.CheckFor45PlusVersion((int)ndpKey.GetValue("Release"));
+                    if (ndpKey != null && ndpKey.GetValue("Release") != null)
+                    {
+                        return GetNetFrameworkVersion.CheckFor45PlusVersion((int)ndpKey.GetValue("Release"));
+                    }
+                    else
+                    {
+                        return Environment.Version.ToString();
+                    }
                 }
-                else
-                {
-                    return Environment.Version.ToString();
-                }
+            }
+            catch 
+            {
+                return "Unknown";
             }
         }
 
@@ -114,8 +132,8 @@ namespace Nucleus.Gaming.Platform.PCSpecs
         {
             var buildNumber = GetWindowsBuildNumber();
 
-            // Check for Windows 10/11 21H2 version
-            if (buildNumber >= 19044)
+            // Check for Windows 11 21H2 version and up
+            if (buildNumber >= 22000)
             {
                 return true;
             }

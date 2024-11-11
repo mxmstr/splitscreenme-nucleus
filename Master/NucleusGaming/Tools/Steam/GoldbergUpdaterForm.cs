@@ -10,7 +10,7 @@ namespace Nucleus.Gaming.Tools.Steam
 {
     public partial class GoldbergUpdaterForm : Form
     {
-        public static string destinationPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\GoldbergEmu");
+        public static string destinationPath = Path.Combine(Globals.NucleusInstallRoot, "utils\\GoldbergEmu");
         private ZipFile zip = null;
 
         public GoldbergUpdaterForm()

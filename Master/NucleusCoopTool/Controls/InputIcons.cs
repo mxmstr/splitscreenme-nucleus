@@ -8,9 +8,10 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
-
     public static class InputIcons
     {
+        private static Size iconsSize;
+
         public static Control[] SetInputsIcons(GenericGameInfo game)
         {
             MainForm mainForm = MainForm.Instance;
@@ -21,7 +22,7 @@ namespace Nucleus.Coop
             {
                iconsSize = new Size(mainForm.icons_Container.Height + 5, mainForm.icons_Container.Height - 2);
             }
-
+       
             if ((game.Hook.XInputEnabled && !game.Hook.XInputReroute && !game.ProtoInput.DinputDeviceHook) || game.ProtoInput.XinputHook)
             {
                 PictureBox icon = new PictureBox

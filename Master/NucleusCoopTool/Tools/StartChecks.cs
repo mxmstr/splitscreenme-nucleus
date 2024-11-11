@@ -16,7 +16,6 @@ namespace Nucleus.Coop
     internal static class StartChecks
     {
         static bool isRunning = false;
-        private static string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         private static void ExportRegistry(string strKey, string filepath)
         {
@@ -141,7 +140,7 @@ namespace Nucleus.Coop
 
                     if (mydocPath.Contains("NucleusCoop"))
                     {
-                        string[] environmentRegFileBackup = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
+                        string[] environmentRegFileBackup = Directory.GetFiles(Path.Combine(Globals.NucleusInstallRoot, "utils\\backup"), "*.reg", SearchOption.AllDirectories);
 
                         if (environmentRegFileBackup.Length > 0)
                         {
@@ -233,7 +232,7 @@ namespace Nucleus.Coop
                                exePath.StartsWith(@"C:\Windows\".ToLower());
 
 
-            bool OnDriveEnabled = DocumentsRoot.Contains("OneDrive");
+            bool OnDriveEnabled = Globals.UserDocumentsRoot.Contains("OneDrive");
 
             if (OnDriveEnabled)
             {
@@ -510,7 +509,7 @@ namespace Nucleus.Coop
 
         public static void CleanLogs()
         {
-            string logsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "content");
+            string logsDirectory = Path.Combine(Globals.NucleusInstallRoot, "content");
 
             if(!Directory.Exists(logsDirectory))
             {

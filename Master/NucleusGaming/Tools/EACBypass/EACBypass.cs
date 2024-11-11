@@ -14,7 +14,7 @@ namespace Nucleus.Gaming.Tools.EACBypass
             {
                 handlerInstance.Log("Starting EAC Bypass setup");
 
-                string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\EAC Bypass");
+                string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\EAC Bypass");
 
                 string[] eac64DllFiles = Directory.GetFiles(linkFolder, "EasyAntiCheat_x64.dll", SearchOption.AllDirectories);
                 foreach (string nameFile in eac64DllFiles)

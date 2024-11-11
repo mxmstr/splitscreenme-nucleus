@@ -16,7 +16,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasGalaxyEmu
             if (setupDll)
             {
                 handlerInstance.Log("Starting Nemirtingas Galaxy Emu setup");
-                string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\NemirtingasGalaxyEmu");
+                string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\NemirtingasGalaxyEmu");
                 string x86dll = "Galaxy.dll";
                 string x64dll = "Galaxy64.dll";
 

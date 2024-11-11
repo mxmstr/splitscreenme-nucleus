@@ -11,7 +11,7 @@ namespace Nucleus.Gaming.Tools.DirectX9Wrapper
             if (setupDll)
             {
                 handlerInstance.Log("Copying over DirectX 9, Direct 3D Wrapper (d3d9.dll) to instance executable folder");
-                string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\DirectXWrapper");
+                string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\DirectXWrapper");
                 string ogFile = Path.Combine(handlerInstance.instanceExeFolder, "d3d9.dll");
 
                 FileUtil.FileCheck(ogFile);

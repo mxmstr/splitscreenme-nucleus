@@ -33,7 +33,7 @@ namespace Nucleus.Gaming.Util
 
         public static void RestoreUserEnvironmentRegistryPath()
         {
-            string[] environmentRegFile = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
+            string[] environmentRegFile = Directory.GetFiles(Path.Combine(Globals.NucleusInstallRoot, "utils\\backup"), "*.reg", SearchOption.AllDirectories);
 
             if (environmentRegFile.Length > 0)
             {
@@ -70,7 +70,7 @@ namespace Nucleus.Gaming.Util
 
         public static void RestoreRegistry(string step)
         {
-            string[] regFiles = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
+            string[] regFiles = Directory.GetFiles(Path.Combine(Globals.NucleusInstallRoot, "utils\\backup"), "*.reg", SearchOption.AllDirectories);
             if (regFiles.Length > 0)
             {
                 LogManager.Log("Restoring backed up registry files " + step);

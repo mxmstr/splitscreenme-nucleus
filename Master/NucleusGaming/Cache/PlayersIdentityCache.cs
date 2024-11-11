@@ -13,15 +13,34 @@ namespace Nucleus.Gaming.Cache
     {
         private static readonly string nickJsonPath = $"{Globals.GameProfilesFolder}\\Nicknames.json";
         private static readonly string sidJsonPath = $"{Globals.GameProfilesFolder}\\SteamIds.json";
+        private static long random_steam_id = 76561199023125438;
 
         public static void LoadPlayersIdentityCache()
         {
+            GenDefaultIdentityValues();
+
             LoadNicknamesFromJson();
             LoadNicknamesFromSettingsIni();
 
             LoadSteamIdsFromJson();
             LoadSteamIdsFromSettingsIni();
         }
+
+        public static List<long> DefaultSteamIds { get; private set; }
+        public static List<string> DefaultNicknames { get; private set; }
+
+        private static void GenDefaultIdentityValues()
+        {
+            DefaultSteamIds = new List<long>();
+            DefaultNicknames = new List<string>();
+
+            for (int i = 0; i < Globals.NucleusMaxPlayers; i++)
+            {
+                DefaultSteamIds.Add(random_steam_id + i);
+                DefaultNicknames.Add($"Player{i+1}");
+            }
+        }
+
 
         #region Nicknames
 
@@ -85,10 +104,7 @@ namespace Nucleus.Gaming.Cache
             iniNicknameList[index] = nickname;
             Globals.ini.IniWriteValue("ControllerMapping", "Player_" + (index + 1), nickname);
 
-            if (!nickname.StartsWith("Player") && !jsonNicknamesList.Contains(nickname))
-            {
-                jsonNicknamesList.Add(nickname);
-            }
+            AddNicknameToCache(nickname);
         }
 
         public static void AddNicknameToCache(string nickname)
@@ -162,7 +178,7 @@ namespace Nucleus.Gaming.Cache
             get => jsonSteamIdList;
         }
 
-        //list of settings.ini steam ids
+        //list of settings.ini 
         private static List<string> settingsIniSteamIdsList = new List<string>();
 
         public static List<string> PlayersSteamId
@@ -182,10 +198,17 @@ namespace Nucleus.Gaming.Cache
         {
             if (index > settingsIniSteamIdsList.Count - 1)
             {
-                return "";
+                return DefaultSteamIds[index].ToString();
             }
 
-            return settingsIniSteamIdsList[index];
+            string steamid = settingsIniSteamIdsList[index];
+
+            if(steamid == "")
+            {
+                steamid = DefaultSteamIds[index].ToString();
+            }
+
+            return steamid;
         }
 
         public static void SetSteamIdAt(int index, string steamid)
@@ -197,26 +220,23 @@ namespace Nucleus.Gaming.Cache
 
             if (steamid == null)
             {
-                steamid = "";
+                steamid = DefaultSteamIds[index].ToString();
             }
 
             settingsIniSteamIdsList[index] = steamid;
             Globals.ini.IniWriteValue("SteamIDs", "Player_" + (index + 1), steamid);
 
-            if (steamid != "" && steamid != "-1" && !jsonSteamIdList.Contains(steamid))
-            {
-                jsonSteamIdList.Add(steamid);
-            }
+            AddSteamIdToCache(steamid);
         }
 
         public static void AddSteamIdToCache(string steamid)
         {
-            if (steamid != "" && steamid != "-1" && !jsonSteamIdList.Contains(steamid))
+            if (steamid != "" && steamid != "-1" && !jsonSteamIdList.Contains(steamid) && DefaultSteamIds.TrueForAll(bkp => bkp != long.Parse(steamid)))
             {
                 jsonSteamIdList.Add(steamid);
             }
         }
-        #endregion
 
+        #endregion
     }
 }

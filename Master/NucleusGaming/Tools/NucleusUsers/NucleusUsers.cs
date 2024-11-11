@@ -19,8 +19,8 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string nucConfigPath = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
-            string realConfigPath = Path.Combine(handlerInstance.NucleusEnvironmentRoot, handlerInstance.CurrentGameInfo.UserProfileConfigPath);
+            string nucConfigPath = Path.Combine($@"{Globals.UserEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
+            string realConfigPath = Path.Combine(Globals.UserEnvironmentRoot, handlerInstance.CurrentGameInfo.UserProfileConfigPath);
             if ((!Directory.Exists(nucConfigPath) && Directory.Exists(realConfigPath)) || (Directory.Exists(realConfigPath) && handlerInstance.CurrentGameInfo.ForceUserProfileConfigCopy))
             {
                 Directory.CreateDirectory(nucConfigPath);
@@ -51,8 +51,8 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string nucSavePath = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileSavePath);
-            string realSavePath = Path.Combine(handlerInstance.NucleusEnvironmentRoot, handlerInstance.CurrentGameInfo.UserProfileSavePath);
+            string nucSavePath = Path.Combine($@"{Globals.UserEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileSavePath);
+            string realSavePath = Path.Combine(Globals.UserEnvironmentRoot, handlerInstance.CurrentGameInfo.UserProfileSavePath);
             if ((!Directory.Exists(nucSavePath) && Directory.Exists(realSavePath)) || (Directory.Exists(realSavePath) && handlerInstance.CurrentGameInfo.ForceUserProfileSaveCopy))
             {
                 Directory.CreateDirectory(nucSavePath);
@@ -84,8 +84,8 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string nucConfigPath = Path.Combine($@"{Path.GetDirectoryName(handlerInstance.DocumentsRoot)}\NucleusCoop\{player.Nickname}\Documents\", handlerInstance.CurrentGameInfo.DocumentsConfigPath);
-            string realConfigPath = Path.Combine(handlerInstance.DocumentsRoot, handlerInstance.CurrentGameInfo.DocumentsConfigPath);
+            string nucConfigPath = Path.Combine($@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\{player.Nickname}\Documents\", handlerInstance.CurrentGameInfo.DocumentsConfigPath);
+            string realConfigPath = Path.Combine(Globals.UserDocumentsRoot, handlerInstance.CurrentGameInfo.DocumentsConfigPath);
             if ((!Directory.Exists(nucConfigPath) && Directory.Exists(realConfigPath)) || (Directory.Exists(realConfigPath) && handlerInstance.CurrentGameInfo.ForceDocumentsConfigCopy))
             {
                 Directory.CreateDirectory(nucConfigPath);
@@ -117,8 +117,8 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         {
             var handlerInstance = GenericGameHandler.Instance;
 
-            string nucSavePath = Path.Combine($@"{Path.GetDirectoryName(handlerInstance.DocumentsRoot)}\NucleusCoop\{player.Nickname}\Documents\", handlerInstance.CurrentGameInfo.DocumentsSavePath);
-            string realSavePath = Path.Combine(handlerInstance.DocumentsRoot, handlerInstance.CurrentGameInfo.DocumentsSavePath);
+            string nucSavePath = Path.Combine($@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\{player.Nickname}\Documents\", handlerInstance.CurrentGameInfo.DocumentsSavePath);
+            string realSavePath = Path.Combine(Globals.UserDocumentsRoot, handlerInstance.CurrentGameInfo.DocumentsSavePath);
 
             if ((!Directory.Exists(nucSavePath) && Directory.Exists(realSavePath)) || (Directory.Exists(realSavePath) && handlerInstance.CurrentGameInfo.ForceDocumentsSaveCopy))
             {
@@ -149,7 +149,7 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         public static void DeleteFilesInConfigPath(PlayerInfo player)
         {
             var handlerInstance = GenericGameHandler.Instance;
-            string path = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
+            string path = Path.Combine($@"{Globals.UserEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
 
             foreach (string fileName in handlerInstance.CurrentGameInfo.DeleteFilesInConfigPath)
             {
@@ -174,7 +174,7 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
         public static void DeleteFilesInSavePath(PlayerInfo player)
         {
             var handlerInstance = GenericGameHandler.Instance;
-            string path = Path.Combine($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
+            string path = Path.Combine($@"{Globals.UserEnvironmentRoot}\NucleusCoop\{player.Nickname}\", handlerInstance.CurrentGameInfo.UserProfileConfigPath);
 
             foreach (string fileName in handlerInstance.CurrentGameInfo.DeleteFilesInSavePath)
             {
@@ -202,7 +202,7 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
             handlerInstance.Log("Transfer Nucleus user account profiles is enabled");
             foreach (PlayerInfo player in data)
             {
-                handlerInstance.Log("Backing up AppData and Documents from " + Path.Combine($@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{player.UserProfile}") + " to " + Path.Combine(handlerInstance.NucleusEnvironmentRoot + $@"\NucleusCoop\UserAccounts"));
+                handlerInstance.Log("Backing up AppData and Documents from " + Path.Combine($@"{Path.GetDirectoryName(Globals.UserEnvironmentRoot)}\{player.UserProfile}") + " to " + Path.Combine(Globals.UserEnvironmentRoot + $@"\NucleusCoop\UserAccounts"));
                 string subFolder;
                 for (int fol = 0; fol < 2; fol++)
                 {
@@ -215,8 +215,8 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
                         subFolder = "Documents";
                     }
 
-                    string SourcePath = $@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{player.UserProfile}\{subFolder}";
-                    string DestinationPath = handlerInstance.NucleusEnvironmentRoot + $@"\NucleusCoop\UserAccounts\{player.UserProfile}\{subFolder}";
+                    string SourcePath = $@"{Path.GetDirectoryName(Globals.UserEnvironmentRoot)}\{player.UserProfile}\{subFolder}";
+                    string DestinationPath = Globals.UserEnvironmentRoot + $@"\NucleusCoop\UserAccounts\{player.UserProfile}\{subFolder}";
 
                     try
                     {
@@ -248,28 +248,28 @@ namespace Nucleus.Gaming.Tools.NucleusUsers
             var sb = new StringBuilder();
             System.Collections.IDictionary envVars = Environment.GetEnvironmentVariables();
             string username = WindowsIdentity.GetCurrent().Name.Split('\\')[1];
-            envVars["USERPROFILE"] = $@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}";
+            envVars["USERPROFILE"] = $@"{Globals.UserEnvironmentRoot}\NucleusCoop\{player.Nickname}";
             envVars["HOMEPATH"] = $@"\Users\{username}\NucleusCoop\{player.Nickname}";
-            envVars["APPDATA"] = $@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Roaming";
-            envVars["LOCALAPPDATA"] = $@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Local";
+            envVars["APPDATA"] = $@"{Globals.UserEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Roaming";
+            envVars["LOCALAPPDATA"] = $@"{Globals.UserEnvironmentRoot}\NucleusCoop\{player.Nickname}\AppData\Local";
 
             //Some games will crash if the directories don't exist
-            Directory.CreateDirectory($@"{handlerInstance.NucleusEnvironmentRoot}\NucleusCoop");
+            Directory.CreateDirectory($@"{Globals.UserEnvironmentRoot}\NucleusCoop");
             Directory.CreateDirectory(envVars["USERPROFILE"].ToString());
             Directory.CreateDirectory(Path.Combine(envVars["USERPROFILE"].ToString(), "Documents"));
             Directory.CreateDirectory(envVars["APPDATA"].ToString());
             Directory.CreateDirectory(envVars["LOCALAPPDATA"].ToString());
-            Directory.CreateDirectory(Path.GetDirectoryName(handlerInstance.DocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents");
+            Directory.CreateDirectory(Path.GetDirectoryName(Globals.UserDocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents");
 
             if (handlerInstance.CurrentGameInfo.DocumentsConfigPath?.Length > 0 || handlerInstance.CurrentGameInfo.DocumentsSavePath?.Length > 0)
             {
-                if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
+                if (!File.Exists(Path.Combine(Globals.NucleusInstallRoot, @"utils\backup\User Shell Folders.reg")))
                 {
-                    RegistryUtil.ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg"));
+                    RegistryUtil.ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Globals.NucleusInstallRoot, @"utils\backup\User Shell Folders.reg"));
                 }
 
                 RegistryKey dkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
-                dkey.SetValue("Personal", Path.GetDirectoryName(handlerInstance.DocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents", (RegistryValueKind)(int)RegType.ExpandString);
+                dkey.SetValue("Personal", Path.GetDirectoryName(Globals.UserDocumentsRoot) + $@"\NucleusCoop\{player.Nickname}\Documents", (RegistryValueKind)(int)RegType.ExpandString);
             }
 
             foreach (object envVarKey in envVars.Keys)

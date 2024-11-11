@@ -17,11 +17,11 @@ namespace Nucleus.Gaming.Tools.XInputPlusDll
             var handlerInstance = GenericGameHandler.Instance;
 
             handlerInstance.Log("Setting up XInput Plus");
-            string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\XInputPlus");
+            string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\XInputPlus");
 
             if (handlerInstance.CurrentGameInfo.XInputPlusOldDll)
             {
-                utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\XInputPlus\\old");
+                utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\XInputPlus\\old");
             }
 
             if (setupDll)

@@ -18,7 +18,7 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
 
             bool pcIs64 = Environment.Is64BitOperatingSystem;
             string pcArch = pcIs64 ? "x64" : "x86";
-            string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\FlawlessWidescreen\\" + pcArch);
+            string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\FlawlessWidescreen\\" + pcArch);
 
             if (handlerInstance.CurrentGameInfo.FlawlessWidescreenOverrideDisplay)
             {
@@ -215,7 +215,7 @@ namespace Nucleus.Gaming.Tools.FlawlessWidescreen
             if (handlerInstance.CurrentGameInfo.FlawlessWidescreenOverrideDisplay)
             {
                 handlerInstance.Log("Restoring back up Flawless Widescreen settings file");
-                string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\FlawlessWidescreen\\" + handlerInstance.garch);
+                string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\FlawlessWidescreen\\" + handlerInstance.garch);
                 string setPath = utilFolder + "\\settings.xml";
                 string backupPath = Path.GetDirectoryName(setPath) + "\\settings_NUCLEUS_BACKUP.xml";
                 if (File.Exists(backupPath))

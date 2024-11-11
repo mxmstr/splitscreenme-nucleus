@@ -179,10 +179,10 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
 
                             if (diff != 0)
                             {
-                                if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), $@"utils\backup\{v.ToString()}.reg")))
+                                if (!File.Exists(Path.Combine(Globals.NucleusInstallRoot, $@"utils\backup\{v.ToString()}.reg")))
                                 {
                                     handlerInstance.Log($"Backing up monitor settings for {screen.MonitorID}");
-                                    RegistryUtil.ExportRegistry($@"HKEY_CURRENT_USER\Control Panel\Desktop\PerMonitorSettings\{v.ToString()}", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), $@"utils\backup\{v.ToString()}.reg"));
+                                    RegistryUtil.ExportRegistry($@"HKEY_CURRENT_USER\Control Panel\Desktop\PerMonitorSettings\{v.ToString()}", Path.Combine(Globals.NucleusInstallRoot , $@"utils\backup\{v.ToString()}.reg"));
                                 }
 
                                 handlerInstance.Log($"Setting DpiValue for {screen.MonitorID} from {currentVal} to {newVal}");
@@ -223,7 +223,7 @@ namespace Nucleus.Gaming.Tools.MonitorsDpiScaling
                     if ((!string.IsNullOrEmpty(origPix) && origPix != "96") || (!string.IsNullOrEmpty(origScale) && origScale != "0") || (string.IsNullOrEmpty(origPix) && string.IsNullOrEmpty(origScale)))
                     {
                         handlerInstance.Log($"Setting Windows DPI Scaling to 100% for the duration of Nucleus session - Original LogPixels:{origPix}, DpiScaling:{origScale}");
-                        RegistryUtil.ExportRegistry(@"HKEY_CURRENT_USER\Control Panel\Desktop", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Control Panel Desktop.reg"));
+                        RegistryUtil.ExportRegistry(@"HKEY_CURRENT_USER\Control Panel\Desktop", Path.Combine(Globals.NucleusInstallRoot, @"utils\backup\User Control Panel Desktop.reg"));
 
                         userCpDesktopKey.SetValue("LogPixels", 96, RegistryValueKind.DWord);
                         userCpDesktopKey.SetValue("Win8DpiScaling", 0, RegistryValueKind.DWord);

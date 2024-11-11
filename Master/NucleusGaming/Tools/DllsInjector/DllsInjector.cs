@@ -20,7 +20,7 @@ namespace Nucleus.Gaming.Tools.DllsInjector
             GlobalWindowMethods.GlobalWindowMethods.WaitForProcWindowHandleNotZero(proc);
 
             bool is64 = EasyHook.RemoteHooking.IsX64Process(proc.Id);
-            string currDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location); //Directory.GetCurrentDirectory();
+            string currDir = Globals.NucleusInstallRoot;
 
             bool windowNull = (window == null);
 
@@ -42,7 +42,7 @@ namespace Nucleus.Gaming.Tools.DllsInjector
 		            handlerInstance.CurrentGameInfo.HookFocus, // Hook GetForegroundWindow/etc
 		            handlerInstance.CurrentGameInfo.HideCursor,
                     handlerInstance.isDebug,
-                    handlerInstance.NucleusFolderPath, // Primarily for log output
+                    Globals.NucleusInstallRoot, // Primarily for log output
 		            handlerInstance.CurrentGameInfo.SetWindowHook, // SetWindow hook (prevents window from moving)
 					handlerInstance.CurrentGameInfo.PreventWindowDeactivation,
                     player.MonitorBounds.Width,

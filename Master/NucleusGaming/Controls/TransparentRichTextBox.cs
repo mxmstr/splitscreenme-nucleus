@@ -7,7 +7,7 @@ namespace Nucleus.Gaming.Controls
     {
         public TransparentRichTextBox()
         {
-            InitializeComponent();
+            InitializeComponent();       
         }
 
         protected override CreateParams CreateParams

@@ -157,6 +157,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Diagnostics.Tracing, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.Tracing.4.3.0\lib\net462\System.Diagnostics.Tracing.dll</HintPath>
       <Private>True</Private>
@@ -251,11 +252,23 @@
     <Compile Include="Controls\AddGameButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\CustomCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomRadio.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\CustomRadioButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\CustomRadioButton.Designer.cs">
       <DependentUpon>CustomRadioButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FlatCombo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\FlatTextBox.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\HubWebView.cs">
       <SubType>UserControl</SubType>

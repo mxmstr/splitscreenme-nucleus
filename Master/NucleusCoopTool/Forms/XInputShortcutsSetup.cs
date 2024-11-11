@@ -208,6 +208,8 @@ namespace Nucleus.Coop.Forms
                     }
                 }
             }
+
+            switch15.Location = new Point(switch15.Location.X, label_15.Top + ((label_15.DisplayRectangle.Height / 2) - (switch15.DisplayRectangle.Height / 2)));
         }
 
         private void RefreshTimerTick(Object Object, EventArgs EventArgs)

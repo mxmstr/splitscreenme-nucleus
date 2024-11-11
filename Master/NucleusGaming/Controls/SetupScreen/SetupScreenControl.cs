@@ -64,6 +64,11 @@ namespace Nucleus.Gaming.Controls.SetupScreen
             BoundsFunctions.Initialize(this, game, profile);
             Draw.Initialize(this, game, profile);
 
+            if (game.Game.UseHandlerSteamIds && game.Game.PlayerSteamIDs != null /*&& Game.PlayerSteamIDs.Length < Game.MaxPlayers*/)
+            {
+                GameProfile.GenMissingIdFromPlayerSteamIDs();//just in case Game.PlayerSteamIDs is missing values or user add more players than the handler supports
+            }
+
             profileDisabled = App_Misc.DisableGameProfiles || game.Game.MetaInfo.DisableProfiles;
 
             if (game.Game.UseDevReorder || game.Game.CreateSingleDeviceFile)
@@ -191,7 +196,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                 if (GameProfile.AssignedDevices.Contains(player))
                 {
-                    GameProfile.UpdateProfilePlayerNickAndSID(player);
+                    GameProfile.UpdateProfilePlayerIdentity(player);
 
                     if (!player.EditBounds.IntersectsWith(BoundsFunctions.ActiveSizer))
                     {

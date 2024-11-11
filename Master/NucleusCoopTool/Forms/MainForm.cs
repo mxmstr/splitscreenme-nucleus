@@ -28,7 +28,6 @@ using System.Windows.Forms;
 using Nucleus.Gaming.DPI;
 using Nucleus.Gaming.Forms;
 
-
 namespace Nucleus.Coop
 {
     /// <summary>
@@ -45,8 +44,8 @@ namespace Nucleus.Coop
 
         protected string faq_link = "https://www.splitscreen.me/docs/faq";
         protected string api = "https://hub.splitscreen.me/api/v1/";
-        private string NucleusEnvironmentRoot => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        private string DocumentsRoot => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string UserEnvironmentRoot => Globals.UserEnvironmentRoot;
+
         public string customFont;
         public string[] rgb_font;
         public string[] rgb_MouseOverColor;
@@ -442,7 +441,7 @@ namespace Nucleus.Coop
                 {
                     if (!(control is TransparentRichTextBox) && control != InputsTextLabel)
                     {
-                        control.Font = new Font(customFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        control.Font = new Font(customFont, fontSize, control.Font.Style, GraphicsUnit.Pixel, 0);
                     }
                 }
 
@@ -576,8 +575,8 @@ namespace Nucleus.Coop
                 Settings._ctrlr_shorcuts.Text = "Windows 8™ and up only";
                 Settings._ctrlr_shorcuts.Enabled = false;
             }
-
-            if (!IsHandleCreated) { CreateHandle(); }//need this for custom scaling factors now(?)
+    
+            if (!IsHandleCreated) { CreateHandle(); }//need this for custom scaling factors now(?) 
 
             DPIManager.Register(this);
             DPIManager.AddForm(this);
@@ -624,14 +623,14 @@ namespace Nucleus.Coop
                 {
                     if (button != InputsTextLabel)
                     {
-                        button.Font = new Font(customFont, mainButtonFrameFont, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+                        button.Font = new Font(customFont, mainButtonFrameFont,button.Font.Style, GraphicsUnit.Pixel, 0);
                     }
                 }
             }
 
-            gameContextMenuStrip.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            socialLinksMenu.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            scriptAuthorTxt.Font = new Font(customFont, 12 * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            gameContextMenuStrip.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, gameContextMenuStrip.Font.Style, GraphicsUnit.Pixel, 0);
+            socialLinksMenu.Font = new Font(gameContextMenuStrip.Font.FontFamily, 10.25f, socialLinksMenu.Font.Style, GraphicsUnit.Pixel, 0);
+            scriptAuthorTxt.Font = new Font(customFont, 12 * scale, scriptAuthorTxt.Font.Style, GraphicsUnit.Pixel, 0);
 
             lastPlayedAt.Font = new Font(customFont, 10, FontStyle.Bold, GraphicsUnit.Pixel, 0);
             lastPlayedAtValue.Font = new Font(customFont, 10, FontStyle.Bold, GraphicsUnit.Pixel, 0);
@@ -881,7 +880,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (LockInputRuntime.IsLocked)
+            if (m.Msg == 0x0312 && LockInputRuntime.IsLocked)//WM_HOTKEY
             {
                 Globals.MainOSD.Show(1600, $"Unlock Inputs First (Press {App_Hotkeys.LockInputs} Key)");
                 base.WndProc(ref m);
@@ -961,7 +960,7 @@ namespace Nucleus.Coop
             if (!hotkeysCooldown)
             {
                 hotkeysCooldownTimer.Stop();
-                hotkeysCooldownTimer.Interval = (800); //millisecond
+                hotkeysCooldownTimer.Interval = (600); //millisecond
                 hotkeysCooldownTimer.Start();
                 hotkeysCooldown = true;
             }
@@ -1039,12 +1038,12 @@ namespace Nucleus.Coop
                     list_Games.Height -= btn_AddGame.Height;
                     btn_AddGame.Anchor = AnchorStyles.Top | AnchorStyles.Left;
                     btn_AddGame.Location = new Point(0, 0);
-                    list_Games.Top = btn_AddGame.Bottom;
+                    list_Games.Top = btn_AddGame.Bottom;                
                 }
 
                 list_Games.Visible = true;
             }
-
+        
             if (currentControl != null)
             {
                 list_Games.ScrollControlIntoView(currentControl);
@@ -1225,7 +1224,7 @@ namespace Nucleus.Coop
 
             icons_Container.Controls.Clear();
             icons_Container.Controls.AddRange(InputIcons.SetInputsIcons(currentGame));
-
+            
             btn_Play.Visible = false;
             rightFrame.Visible = true;
 
@@ -1278,9 +1277,10 @@ namespace Nucleus.Coop
 
             if (currentGame.Description?.Length > 0)
             {
+                scriptAuthorTxt.ResetText();
                 scriptAuthorTxt.Text = currentGame.Description;
                 scriptAuthorTxtSizer.Visible = true;
-
+                
                 if (currentGame.MetaInfo.FirstLaunch && !disableForcedNote)
                 {
                     Btn_magnifier_Click(null, null);
@@ -1402,7 +1402,13 @@ namespace Nucleus.Coop
             GoToStep(currentStepIndex);
         }
 
-        private void BtnNext_Click(object sender, EventArgs e) => GoToStep(currentStepIndex + 1);
+        private void BtnNext_Click(object sender, EventArgs e)
+        {               
+            if(profileSettings.Visible){profileSettings.BringToFront(); return; }
+            if (settings.Visible){settings.BringToFront(); return;}
+
+            GoToStep(currentStepIndex + 1);
+        }
 
         private void KillCurrentStep()
         {
@@ -1413,7 +1419,7 @@ namespace Nucleus.Coop
         }
 
         private void GoToStep(int step)
-        {
+        {          
             btn_Prev.Enabled = step > 0;
 
             if (step >= stepsList.Count)
@@ -1491,6 +1497,9 @@ namespace Nucleus.Coop
 
         private void Btn_Play_Click(object sender, EventArgs e)
         {
+            if (profileSettings.Visible) { profileSettings.BringToFront(); return; }
+            if (settings.Visible) { settings.BringToFront(); return; }
+
             if ((string)btn_Play.Tag == "S T O P")
             {
                 I_GameHandlerEndFunc("Stop button clicked", true);
@@ -1712,11 +1721,11 @@ namespace Nucleus.Coop
                         {
                             profilePaths.Clear();
                             profilePaths.Add(Environment.GetEnvironmentVariable("userprofile"));
-                            profilePaths.Add(DocumentsRoot);
+                            profilePaths.Add(Globals.UserDocumentsRoot);
 
                             if (menuCurrentGameInfo.Game.UseNucleusEnvironment)
                             {
-                                string targetDirectory = $@"{NucleusEnvironmentRoot}\NucleusCoop\";
+                                string targetDirectory = $@"{UserEnvironmentRoot}\NucleusCoop\";
 
                                 if (Directory.Exists(targetDirectory))
                                 {
@@ -1724,16 +1733,16 @@ namespace Nucleus.Coop
                                     foreach (string subdirectory in subdirectoryEntries)
                                     {
                                         profilePaths.Add(subdirectory);
-                                        if ($@"{Path.GetDirectoryName(DocumentsRoot)}\NucleusCoop\" == targetDirectory)
+                                        if ($@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\" == targetDirectory)
                                         {
                                             profilePaths.Add(subdirectory + "\\Documents");
                                         }
                                     }
                                 }
 
-                                if ($@"{Path.GetDirectoryName(DocumentsRoot)}\NucleusCoop\" != targetDirectory)
+                                if ($@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\" != targetDirectory)
                                 {
-                                    targetDirectory = $@"{Path.GetDirectoryName(DocumentsRoot)}\NucleusCoop\";
+                                    targetDirectory = $@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\";
                                     if (Directory.Exists(targetDirectory))
                                     {
                                         string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory, "*", SearchOption.TopDirectoryOnly);
@@ -1940,7 +1949,7 @@ namespace Nucleus.Coop
                             (gameContextMenuStrip.Items["openBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
                             (gameContextMenuStrip.Items["deleteBackupFolderMenuItem"] as ToolStripMenuItem).DropDownItems.Clear();
 
-                            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\_Game Files Backup_\\{menuCurrentGameInfo.Game.GUID}";
+                            string backupsPath = $@"{UserEnvironmentRoot}\NucleusCoop\_Game Files Backup_\{menuCurrentGameInfo.Game.GUID}";
 
                             if (Directory.Exists(backupsPath))
                             {
@@ -2023,7 +2032,7 @@ namespace Nucleus.Coop
 
                                     if (subItem == screenshotsMenuItem)
                                     {
-                                        bool showItem = Directory.Exists(Path.Combine(Application.StartupPath, $"gui\\screenshots\\{menuCurrentControl.UserGameInfo.GameGuid}"));
+                                        bool showItem = Directory.Exists(Path.Combine(Application.StartupPath, $@"gui\screenshots\{menuCurrentControl.UserGameInfo.GameGuid}"));
                                         subItem.Visible = showItem;
                                         if (showItem)
                                             visibleCount++;
@@ -2031,7 +2040,7 @@ namespace Nucleus.Coop
 
                                     if (subItem == coverMenuItem)
                                     {
-                                        bool showItem = File.Exists(Path.Combine(Application.StartupPath, $"gui\\covers\\{menuCurrentControl.UserGameInfo.GameGuid}.jpeg"));
+                                        bool showItem = File.Exists(Path.Combine(Application.StartupPath, $@"gui\covers\{menuCurrentControl.UserGameInfo.GameGuid}.jpeg"));
                                         subItem.Visible = showItem;
                                         if (showItem)
                                             visibleCount++;
@@ -2116,9 +2125,9 @@ namespace Nucleus.Coop
         private void OpenBackupFolderSubmenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
-            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\_Game Files Backup_\\{menuCurrentGameInfo.Game.GUID}";
+            string backupsPath = $@"{UserEnvironmentRoot}\NucleusCoop\_Game Files Backup_\{menuCurrentGameInfo.Game.GUID}";
 
-            string path = $"{backupsPath}\\{item.Text}";
+            string path = $@"{backupsPath}\{item.Text}";
 
             if (Directory.Exists(path))
             {
@@ -2129,9 +2138,9 @@ namespace Nucleus.Coop
         private void DeleteBackupFolderSubmenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
-            string backupsPath = $"{NucleusEnvironmentRoot}\\NucleusCoop\\_Game Files Backup_\\{menuCurrentGameInfo.Game.GUID}";
+            string backupsPath = $@"{UserEnvironmentRoot}\NucleusCoop\_Game Files Backup_\{menuCurrentGameInfo.Game.GUID}";
 
-            string path = $"{backupsPath}\\{item.Text}";
+            string path = $@"{backupsPath}\{item.Text}";
 
             DialogResult dialogResult = MessageBox.Show($"Do you really want to delete \"{menuCurrentControl.GameInfo.GUID}\" {item.Text}'s backup folder?", $"Delete {item.Text}'s backup folder.", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -2162,7 +2171,7 @@ namespace Nucleus.Coop
             string path;
             if (item.Text.StartsWith("Nucleus: "))
             {
-                path = Path.Combine($@"{NucleusEnvironmentRoot}\NucleusCoop\{item.Text.Substring("Nucleus: ".Length)}\", pathSuffix);
+                path = Path.Combine($@"{UserEnvironmentRoot}\NucleusCoop\{item.Text.Substring("Nucleus: ".Length)}\", pathSuffix);
             }
             else
             {
@@ -2193,7 +2202,7 @@ namespace Nucleus.Coop
             string path;
             if (item.Text.StartsWith("Nucleus: "))
             {
-                path = Path.Combine($@"{NucleusEnvironmentRoot}\NucleusCoop\{item.Text.Substring("Nucleus: ".Length)}\", pathSuffix);
+                path = Path.Combine($@"{UserEnvironmentRoot}\NucleusCoop\{item.Text.Substring("Nucleus: ".Length)}\", pathSuffix);
             }
             else
             {
@@ -2228,11 +2237,11 @@ namespace Nucleus.Coop
             string path;
             if (item.Text.StartsWith("Nucleus: "))
             {
-                path = Path.Combine($@"{Path.GetDirectoryName(DocumentsRoot)}\NucleusCoop\{item.Text.Substring("Nucleus: ".Length)}\Documents", pathSuffix);
+                path = Path.Combine($@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\{item.Text.Substring("Nucleus: ".Length)}\Documents", pathSuffix);
             }
             else
             {
-                path = Path.Combine(DocumentsRoot, pathSuffix);
+                path = Path.Combine(Globals.UserDocumentsRoot, pathSuffix);
             }
 
             if (Directory.Exists(path))
@@ -2259,11 +2268,11 @@ namespace Nucleus.Coop
             string path;
             if (item.Text.StartsWith("Nucleus: "))
             {
-                path = Path.Combine($@"{Path.GetDirectoryName(DocumentsRoot)}\NucleusCoop\{item.Text.Substring("Nucleus: ".Length)}\Documents", pathSuffix);
+                path = Path.Combine($@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\{item.Text.Substring("Nucleus: ".Length)}\Documents", pathSuffix);
             }
             else
             {
-                path = Path.Combine(DocumentsRoot, pathSuffix);
+                path = Path.Combine(Globals.UserDocumentsRoot, pathSuffix);
             }
 
             if (Directory.Exists(path))
@@ -2348,7 +2357,8 @@ namespace Nucleus.Coop
                     DownloadPrompt downloadPrompt = new DownloadPrompt(handler, null, true);
                     downloadPrompt.ShowDialog();
 
-                    gameControl.GameInfo = GameManager.Instance.GameInfos.Where(g => g.Value.GUID == gameControl.GameInfo.GUID).FirstOrDefault().Value;
+                    gameControl.UserGameInfo = GameManager.Instance.User.Games.Where(g => g.GameGuid == gameControl.GameInfo.GUID).FirstOrDefault();
+                    gameControl.GameInfo = gameControl.UserGameInfo.Game;
 
                     if (currentControl?.GameInfo.GUID == gameControl.GameInfo.GUID)
                     {
@@ -2540,8 +2550,6 @@ namespace Nucleus.Coop
 
         private void DisableProfilesMenuItem_Click(object sender, EventArgs e)
         {
-            //profilepButtonsPanel.Visible = false;
-
             if (menuCurrentGameInfo.Game.MetaInfo.DisableProfiles)
             {
                 menuCurrentGameInfo.Game.MetaInfo.DisableProfiles = false;
@@ -2756,9 +2764,9 @@ namespace Nucleus.Coop
 
         private void CoverMenuItem_Click(object sender, EventArgs e)
         {
-            string coverPath = Path.Combine(Application.StartupPath, $"gui\\covers");
+            string coverPath = Path.Combine(Application.StartupPath, $@"gui\covers");
 
-            if (File.Exists($"{coverPath}\\{menuCurrentGameInfo.GameGuid}.jpeg"))
+            if (File.Exists($@"{coverPath}\{menuCurrentGameInfo.GameGuid}.jpeg"))
             {
                 Process.Start(coverPath);
             }
@@ -2766,7 +2774,7 @@ namespace Nucleus.Coop
 
         private void ScreenshotsMenuItem_Click(object sender, EventArgs e)
         {
-            string screenshotsPath = Path.Combine(Application.StartupPath, $"gui\\screenshots\\{menuCurrentGameInfo.GameGuid}");
+            string screenshotsPath = Path.Combine(Application.StartupPath, $@"gui\screenshots\{menuCurrentGameInfo.GameGuid}");
             if (Directory.Exists(screenshotsPath))
             {
                 Process.Start(screenshotsPath);
@@ -3007,15 +3015,15 @@ namespace Nucleus.Coop
                     return;
                 }
 
-                Color color1 = Color.FromArgb(230, backGradient.R, backGradient.G, backGradient.B);
-                Color color2 = Color.FromArgb(195, backGradient.R, backGradient.G, backGradient.B);
-                Color color3 = Color.FromArgb(155, backGradient.R, backGradient.G, backGradient.B);
+                Color color1 = Color.FromArgb(245, backGradient.R, backGradient.G, backGradient.B);
+                Color color2 = Color.FromArgb(200, backGradient.R, backGradient.G, backGradient.B);
+                Color color3 = Color.FromArgb(150, backGradient.R, backGradient.G, backGradient.B);
                 Color color4 = Color.FromArgb(130, backGradient.R, backGradient.G, backGradient.B);
-                Color color5 = Color.FromArgb(115, backGradient.R, backGradient.G, backGradient.B);
+                Color color5 = Color.FromArgb(120, backGradient.R, backGradient.G, backGradient.B);
                 Color color6 = Color.FromArgb(130, backGradient.R, backGradient.G, backGradient.B);
-                Color color7 = Color.FromArgb(155, backGradient.R, backGradient.G, backGradient.B);
-                Color color8 = Color.FromArgb(195, backGradient.R, backGradient.G, backGradient.B);
-                Color color9 = Color.FromArgb(230, backGradient.R, backGradient.G, backGradient.B);
+                Color color7 = Color.FromArgb(150, backGradient.R, backGradient.G, backGradient.B);
+                Color color8 = Color.FromArgb(200, backGradient.R, backGradient.G, backGradient.B);
+                Color color9 = Color.FromArgb(245, backGradient.R, backGradient.G, backGradient.B);
 
                 clientAreaPanelBrush =
                     new LinearGradientBrush(gradientBrushbounds, color1, color5, 90f);

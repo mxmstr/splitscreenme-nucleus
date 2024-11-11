@@ -453,7 +453,7 @@ namespace Nucleus.Gaming.Coop.InputManagement
                     {
                         LockInputRuntime.Unlock(CurrentGameInfo?.ProtoInput.FreezeExternalInputWhenInputNotLocked ?? true, CurrentGameInfo?.ProtoInput);
                         
-                        Thread.Sleep(150);
+                        Thread.Sleep(300);
                         
                         Globals.MainOSD.Show(800, "Inputs Unlocked");
                     }

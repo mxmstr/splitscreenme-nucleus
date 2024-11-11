@@ -17,7 +17,7 @@ namespace Nucleus.Gaming.Tools.X360ce
             handlerInstance.Log("Setting up x360ce");
             string x360exe = "";
             string x360dll = "";
-            string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\x360ce");
+            string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\x360ce");
 
             string[] x360cedlls = { "xinput1_3.dll" };
             if (handlerInstance.CurrentGameInfo.X360ceDll?.Length > 0)

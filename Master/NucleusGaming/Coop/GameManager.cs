@@ -333,8 +333,7 @@ namespace Nucleus.Gaming
         public string GetAppContentPath()
         {
 #if ALPHA
-            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "content");
+            return Path.Combine(Globals.NucleusInstallRoot, "content");
 #else
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(appData, "Nucleus Coop");
@@ -343,14 +342,12 @@ namespace Nucleus.Gaming
 
         public string GetJsScriptsPath()
         {
-            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "handlers");
+            return Path.Combine(Globals.NucleusInstallRoot, "handlers");
         }
 
         public string GetUtilsPath()
         {
-            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "utils");
+            return Path.Combine(Globals.NucleusInstallRoot, "utils");
         }
 
         public string GetUserProfilePath()

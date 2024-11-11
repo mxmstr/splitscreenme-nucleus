@@ -4,8 +4,8 @@ using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows.Media;
 using WindowScrape.Static;
@@ -36,7 +36,7 @@ public class WPF_OSD : Window
 
     private System.Drawing.Rectangle destBounds;
 
-    private Timer timer = new Timer();
+    private Timer timer;
 
     private bool initialized;
     private bool setStyle;
@@ -77,8 +77,6 @@ public class WPF_OSD : Window
         Value.BorderThickness = new Thickness(1);
         Visibility = Visibility.Hidden;
         AddChild(Value);
-
-        timer.Tick += TimerTick;
     }
 
     private void Resize(string text)
@@ -127,17 +125,16 @@ public class WPF_OSD : Window
                     //pretty much all window parameters will mess with the game windows
                     //(mostly bringing the taskbar on top and focus stealing) so using tricky ways here.
                     Resize(text);
-                    timer.Interval = timing; //millisecond
 
                     Show();
 
-                    var hwnd = new WindowInteropHelper(this).Handle;
-                    //IntPtr hwnd = User32Interop.FindWindow(null, Title);
+                   
+                    IntPtr hwnd = User32Interop.FindWindow(null, Title);
 
-                    //while (hwnd == IntPtr.Zero)
-                    //{
-                    //    hwnd = User32Interop.FindWindow(null, Title);
-                    //}
+                    while (hwnd == IntPtr.Zero)
+                    {
+                        hwnd = User32Interop.FindWindow(null, Title);
+                    }
 
                     if (!setStyle)
                     {
@@ -152,25 +149,27 @@ public class WPF_OSD : Window
                     Opacity = 1.0D;
                 }
 
-                timer.Start();//keep it for the main osd even if it's kind of
-                              //disabled so we can handle the childs and re-enable it automatically afterward
+                //keep it for the main osd even if it's kind of
+                //disabled so we can handle the childs and re-enable it automatically afterward
+                timer?.Dispose();
+                timer = new Timer(TimerTick, null, timing, 0);
+                
             }));
         }
         catch { }
     }
 
-    private void TimerTick(object Object, EventArgs EventArgs)
+    private void TimerTick(object obj)
     {
         this.Dispatcher.Invoke(new Action(() =>
         {
             //pretty much all window parameters will mess with the game windows
             //(mostly bringing the taskbar on top and focus stealing) so using tricky ways here.
-            Value.Content = "";
-            timer.Stop();
+            Value.Content = "";    
             Opacity = 0.0D;
             IsEnabled = false;
             Topmost = false;
-
+            
             if (GenericGameHandler.Instance != null)
             {
                 //close all childs osd and re-enable the main one => hideMain = false;
@@ -185,6 +184,8 @@ public class WPF_OSD : Window
                     hideMain = false;
                 }
             }
+
+            timer.Dispose();
         }));
     }
 
