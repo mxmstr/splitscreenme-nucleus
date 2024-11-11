@@ -2747,9 +2747,7 @@ namespace Nucleus.Coop
             {
                 tuto = new Tutorial();
                 Controls.Add(tuto);
-
-                tuto.Size = new Size(this.Width - 200, this.Height - 113);
-                tuto.Location = new Point(Width / 2 - tuto.Width / 2, Height / 2 - tuto.Height / 2);
+                SizeAndScaleTuto();
                 tuto.Click += ClickAnyControl;
 
                 tuto.BringToFront();
@@ -2760,6 +2758,35 @@ namespace Nucleus.Coop
             }
 
             Update();
+        }
+
+        private void SizeAndScaleTuto()
+        {
+            RectangleF client = clientAreaPanel.ClientRectangle;
+
+            float ratio = 1.78f;
+
+            RectangleF bounds = new RectangleF(0, 0, client.Width - 200, (client.Width - 200) / ratio);
+
+            if (client.Width / client.Height < ratio)
+            {
+                tuto.Height = (int)(bounds.Height);
+                tuto.Width = (int)((bounds.Height * ratio));
+            }
+            else
+            {
+                tuto.Height = (int)(bounds.Width / ratio);
+                tuto.Width = (int)((bounds.Width));
+
+                if (tuto.ClientRectangle.Height > client.Height)
+                {
+                    tuto.Height -= (tuto.ClientRectangle.Height - (int)client.Height);
+                    tuto.Height -= (int)(200 / ratio);
+                    tuto.Width = (int)((tuto.Height * ratio));
+                }
+            }
+
+            tuto.Location = new Point(Width / 2 - tuto.Width / 2, Height / 2 - tuto.Height / 2);
         }
 
         private void CoverMenuItem_Click(object sender, EventArgs e)
@@ -3189,6 +3216,11 @@ namespace Nucleus.Coop
                 }
             }
 
+            if(tuto != null)
+            {
+                SizeAndScaleTuto();
+            }
+     
             maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed.png") : ImageCache.GetImage(theme + "title_maximize.png");
 
             if (setupScreen != null && I_GameHandler == null)
@@ -3211,6 +3243,7 @@ namespace Nucleus.Coop
         {
             refreshing = true;
             clientAreaPanel.Visible = false;
+            if(tuto!= null){tuto.Visible = false; }
             Opacity = 0.6D;
         }
 
@@ -3222,7 +3255,7 @@ namespace Nucleus.Coop
             mainButtonFrame.Refresh();
             rightFrame.Refresh();
             stepPanelPictureBox.Refresh();
-
+            if (tuto != null) { tuto.Visible = true; }
             Opacity = 1.0D;
             Refresh();
             refreshing = false;
