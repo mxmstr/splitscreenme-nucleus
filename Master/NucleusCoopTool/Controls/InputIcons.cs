@@ -17,7 +17,10 @@ namespace Nucleus.Coop
 
             List<PictureBox> icons = new List<PictureBox>();
 
-            Size iconsSize = new Size(mainForm.icons_Container.Height + 5, mainForm.icons_Container.Height - 2);
+            if(iconsSize == Size.Empty)
+            {
+               iconsSize = new Size(mainForm.icons_Container.Height + 5, mainForm.icons_Container.Height - 2);
+            }
 
             if ((game.Hook.XInputEnabled && !game.Hook.XInputReroute && !game.ProtoInput.DinputDeviceHook) || game.ProtoInput.XinputHook)
             {
