@@ -357,7 +357,7 @@ namespace Nucleus.Coop
             btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
             btn_Next.BackgroundImage = ImageCache.GetImage(theme + "arrow_right.png");
             coverFrame.BackgroundImage = ImageCache.GetImage(theme + "cover_layer.png");
-            stepPanelPictureBox.Image = ImageCache.GetImage(theme + "logo.png");
+            bigLogo.Image = ImageCache.GetImage(theme + "logo.png");
             logo.BackgroundImage = ImageCache.GetImage(theme + "title_logo.png");
             btn_downloadAssets.BackgroundImage = ImageCache.GetImage(theme + "title_download_assets.png");
             btn_Links.BackgroundImage = ImageCache.GetImage(theme + "title_dropdown_closed.png");
@@ -659,7 +659,7 @@ namespace Nucleus.Coop
                 stepButtonsPanel.Visible = false;
                 rightFrame.Visible = false;
                 StepPanel.Visible = false;
-                stepPanelPictureBox.Visible = webView == null;
+                bigLogo.Visible = webView == null;
                 rainbowTimer?.Dispose();
                 rainbowTimerRunning = false;
                 btn_Prev.BackgroundImage = ImageCache.GetImage(theme + "arrow_left.png");
@@ -672,7 +672,7 @@ namespace Nucleus.Coop
 
             mainButtonFrame.Focus();
 
-            stepPanelPictureBox.Refresh();
+            bigLogo.Refresh();
         }
 
         public void InsertWebview(object sender, EventArgs e)
@@ -743,8 +743,8 @@ namespace Nucleus.Coop
 
             if (sender is HubWebView)
             {
-                stepPanelPictureBox.Visible = true;
-                stepPanelPictureBox.Refresh();
+                bigLogo.Visible = true;
+                bigLogo.Refresh();
             }
         }
 
@@ -1192,7 +1192,7 @@ namespace Nucleus.Coop
             coverFrame.BackColor = Color.Transparent;
 
             profilepButtonsPanel.Visible = false;
-            stepPanelPictureBox.Visible = false;
+            bigLogo.Visible = false;
             profileSettings.Visible = false;
             handlerNotesZoom.Visible = false;
 
@@ -2937,7 +2937,7 @@ namespace Nucleus.Coop
         }
 
         private DrawParticles panelParticles;
-        private void StepPanelPictureBox_Paint(object sender, PaintEventArgs e)
+        private void BigLogo_Paint(object sender, PaintEventArgs e)
         {
             if (enableParticles)
             {
@@ -2946,7 +2946,7 @@ namespace Nucleus.Coop
                     panelParticles = new DrawParticles();
                 }
 
-                if (stepPanelPictureBox.Visible)
+                if (bigLogo.Visible)
                     panelParticles.Draw(sender, sender as Control, e, 6, 100, new int[] { 255, 255, 255 });
             }
         }
@@ -3220,7 +3220,7 @@ namespace Nucleus.Coop
             {
                 SizeAndScaleTuto();
             }
-     
+
             maximizeBtn.BackgroundImage = WindowState == FormWindowState.Maximized ? ImageCache.GetImage(theme + "title_windowed.png") : ImageCache.GetImage(theme + "title_maximize.png");
 
             if (setupScreen != null && I_GameHandler == null)
@@ -3253,8 +3253,8 @@ namespace Nucleus.Coop
             game_listSizer.Refresh();
             StepPanel.Refresh();
             mainButtonFrame.Refresh();
-            rightFrame.Refresh();
-            stepPanelPictureBox.Refresh();
+            rightFrame.Refresh();           
+            bigLogo.Refresh();
             if (tuto != null) { tuto.Visible = true; }
             Opacity = 1.0D;
             Refresh();

@@ -124,7 +124,7 @@ namespace Nucleus.Coop
             this.minimizeBtn = new System.Windows.Forms.Button();
             this.txt_version = new System.Windows.Forms.Label();
             this.logo = new System.Windows.Forms.PictureBox();
-            this.stepPanelPictureBox = new System.Windows.Forms.PictureBox();
+            this.bigLogo = new System.Windows.Forms.PictureBox();
             this.gameContextMenuStrip.SuspendLayout();
             this.socialLinksMenu.SuspendLayout();
             this.clientAreaPanel.SuspendLayout();
@@ -140,7 +140,7 @@ namespace Nucleus.Coop
             this.mainButtonsPanel.SuspendLayout();
             this.stepButtonsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.stepPanelPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bigLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // gameContextMenuStrip
@@ -496,7 +496,7 @@ namespace Nucleus.Coop
             this.clientAreaPanel.Controls.Add(this.game_listSizer);
             this.clientAreaPanel.Controls.Add(this.rightFrame);
             this.clientAreaPanel.Controls.Add(this.mainButtonFrame);
-            this.clientAreaPanel.Controls.Add(this.stepPanelPictureBox);
+            this.clientAreaPanel.Controls.Add(this.bigLogo);
             this.clientAreaPanel.Location = new System.Drawing.Point(5, 4);
             this.clientAreaPanel.Margin = new System.Windows.Forms.Padding(0);
             this.clientAreaPanel.Name = "clientAreaPanel";
@@ -1141,19 +1141,19 @@ namespace Nucleus.Coop
             this.logo.TabStop = false;
             this.logo.DoubleClick += new System.EventHandler(this.Logo_Click);
             // 
-            // stepPanelPictureBox
+            // bigLogo
             // 
-            this.stepPanelPictureBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.stepPanelPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.stepPanelPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.stepPanelPictureBox.Location = new System.Drawing.Point(420, 188);
-            this.stepPanelPictureBox.Margin = new System.Windows.Forms.Padding(0);
-            this.stepPanelPictureBox.Name = "stepPanelPictureBox";
-            this.stepPanelPictureBox.Size = new System.Drawing.Size(532, 306);
-            this.stepPanelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.stepPanelPictureBox.TabIndex = 15;
-            this.stepPanelPictureBox.TabStop = false;
-            this.stepPanelPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.StepPanelPictureBox_Paint);
+            this.bigLogo.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.bigLogo.BackColor = System.Drawing.Color.Transparent;
+            this.bigLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bigLogo.Location = new System.Drawing.Point(420, 188);
+            this.bigLogo.Margin = new System.Windows.Forms.Padding(0);
+            this.bigLogo.Name = "bigLogo";
+            this.bigLogo.Size = new System.Drawing.Size(532, 306);
+            this.bigLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.bigLogo.TabIndex = 15;
+            this.bigLogo.TabStop = false;
+            this.bigLogo.Paint += new System.Windows.Forms.PaintEventHandler(this.BigLogo_Paint);
             // 
             // MainForm
             // 
@@ -1201,7 +1201,7 @@ namespace Nucleus.Coop
             this.mainButtonsPanel.ResumeLayout(false);
             this.stepButtonsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.stepPanelPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bigLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1234,7 +1234,7 @@ namespace Nucleus.Coop
         private System.Windows.Forms.ToolStripMenuItem deleteDocumentConfMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openDocumentSaveMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteDocumentSaveMenuItem;
-		private System.Windows.Forms.PictureBox stepPanelPictureBox;
+		private System.Windows.Forms.PictureBox bigLogo;
         private Button minimizeBtn;
         private Button maximizeBtn;
         private PictureBox logo;
