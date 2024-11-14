@@ -18,7 +18,6 @@ namespace Nucleus.Gaming.Util
     {
         private static string adminLocalGroup;
 
-
         [DllImport("userenv.dll", CharSet = CharSet.Unicode, ExactSpelling = false, SetLastError = true)]
         static extern bool DeleteProfile(string sidString, string profilePath, string computerName);
 
@@ -135,7 +134,7 @@ namespace Nucleus.Gaming.Util
                 }
 
                 handlerInstance.Log("Checking if sufficient Nucleus user accounts already exist");
-                string createUserBatPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\LaunchUsers\\create_users.bat");
+                string createUserBatPath = Path.Combine(Globals.NucleusInstallRoot, "utils\\LaunchUsers\\create_users.bat");
 
                 if (File.Exists(createUserBatPath))
                 {
@@ -217,29 +216,29 @@ namespace Nucleus.Gaming.Util
                 handlerInstance.Log("Transfer Nucleus user account profiles is enabled");
 
                 List<string> SourcePath = new List<string>();
-                string OrigSourcePath = handlerInstance.NucleusEnvironmentRoot + $@"\NucleusCoop\UserAccounts\{player.UserProfile}";
+                string OrigSourcePath = Globals.UserEnvironmentRoot + $@"\NucleusCoop\UserAccounts\{player.UserProfile}";
                 SourcePath.Add(OrigSourcePath);
 
                 if (handlerInstance.CurrentGameInfo.CopyEnvFoldersToNucleusAccounts?.Length > 0)
                 {
                     foreach (string folder in handlerInstance.CurrentGameInfo.CopyEnvFoldersToNucleusAccounts)
                     {
-                        SourcePath.Add(handlerInstance.NucleusEnvironmentRoot + "\\" + folder);
+                        SourcePath.Add(Globals.UserEnvironmentRoot + "\\" + folder);
                     }
                 }
 
-                string DestinationPath = $@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{player.UserProfile}";
+                string DestinationPath = $@"{Path.GetDirectoryName(Globals.UserEnvironmentRoot)}\{player.UserProfile}";
                 try
                 {
                     foreach (string folder in SourcePath)
                     {
                         if (folder != OrigSourcePath)
                         {
-                            DestinationPath = $@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{player.UserProfile}" + folder.Substring(handlerInstance.NucleusEnvironmentRoot.Length);
+                            DestinationPath = $@"{Path.GetDirectoryName(Globals.UserEnvironmentRoot)}\{player.UserProfile}" + folder.Substring(Globals.UserEnvironmentRoot.Length);
                         }
                         else
                         {
-                            DestinationPath = $@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{player.UserProfile}";
+                            DestinationPath = $@"{Path.GetDirectoryName(Globals.UserEnvironmentRoot)}\{player.UserProfile}";
                         }
 
                         if (Directory.Exists(folder))
@@ -273,7 +272,7 @@ namespace Nucleus.Gaming.Util
 
             foreach (string folder in handlerInstance.folderUsers)
             {
-                string username = folder.Substring(Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot).Length + 1);
+                string username = folder.Substring(Path.GetDirectoryName(Globals.UserEnvironmentRoot).Length + 1);
                 if (username.StartsWith("nucleusplayer"))
                 {
                     handlerInstance.nucUsers.Add(username);
@@ -315,7 +314,7 @@ namespace Nucleus.Gaming.Util
                 }
             }
 
-            string deleteUserBatPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\LaunchUsers\\delete_users.bat");
+            string deleteUserBatPath = Path.Combine(Globals.NucleusInstallRoot, "utils\\LaunchUsers\\delete_users.bat");
             if (File.Exists(deleteUserBatPath))
             {
                 File.Delete(deleteUserBatPath);
@@ -349,7 +348,7 @@ namespace Nucleus.Gaming.Util
             var handlerInstance = GenericGameHandler.Instance;
             foreach (string nucUser in handlerInstance.nucUsers)
             {
-                DeleteProfileFolder($@"{Path.GetDirectoryName(handlerInstance.NucleusEnvironmentRoot)}\{nucUser}");
+                DeleteProfileFolder($@"{Path.GetDirectoryName(Globals.UserEnvironmentRoot)}\{nucUser}");
             }
         }
     }

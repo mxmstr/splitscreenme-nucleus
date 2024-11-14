@@ -14,7 +14,7 @@ namespace Nucleus.Gaming.Tools.DevReorder
 
             handlerInstance.Log("Setting up Devreorder");
 
-            string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\devreorder");
+            string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\devreorder");
 
             if (setupDll)
             {

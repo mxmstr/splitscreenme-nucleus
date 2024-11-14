@@ -151,20 +151,20 @@ namespace Nucleus.Inject
             {
                 Log("Setting up Nucleus environment");
 
-                string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string UserEnvironmentRoot = Globals.UserEnvironmentRoot;
                 //string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
                 IDictionary envVars = Environment.GetEnvironmentVariables();
                 var sb = new StringBuilder();
                 //var username = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile).Replace(@"C:\Users\", "");
                 string username = WindowsIdentity.GetCurrent().Name.Split('\\')[1];
-                envVars["USERPROFILE"] = $@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNick}";
+                envVars["USERPROFILE"] = $@"{UserEnvironmentRoot}\NucleusCoop\{playerNick}";
                 envVars["HOMEPATH"] = $@"\Users\{username}\NucleusCoop\{playerNick}";
-                envVars["APPDATA"] = $@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNick}\AppData\Roaming";
-                envVars["LOCALAPPDATA"] = $@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNick}\AppData\Local";
+                envVars["APPDATA"] = $@"{UserEnvironmentRoot}\NucleusCoop\{playerNick}\AppData\Roaming";
+                envVars["LOCALAPPDATA"] = $@"{UserEnvironmentRoot}\NucleusCoop\{playerNick}\AppData\Local";
 
                 //Some games will crash if the directories don't exist
-                Directory.CreateDirectory($@"{NucleusEnvironmentRoot}\NucleusCoop");
+                Directory.CreateDirectory($@"{UserEnvironmentRoot}\NucleusCoop");
                 Directory.CreateDirectory(envVars["USERPROFILE"].ToString());
                 Directory.CreateDirectory(Path.Combine(envVars["USERPROFILE"].ToString(), "Documents"));
                 Directory.CreateDirectory(envVars["APPDATA"].ToString());
@@ -174,10 +174,10 @@ namespace Nucleus.Inject
 
                 if (useDocs)
                 {
-                    if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
+                    if (!File.Exists(Path.Combine(Globals.NucleusInstallRoot, @"utils\backup\User Shell Folders.reg")))
                     {
                         //string mydocPath = key.GetValue("Personal").ToString();
-                        ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg"));
+                        ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Globals.NucleusInstallRoot, @"utils\backup\User Shell Folders.reg"));
                     }
 
                     RegistryKey dkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);

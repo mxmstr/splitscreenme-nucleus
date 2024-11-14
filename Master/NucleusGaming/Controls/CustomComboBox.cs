@@ -1,22 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
+
 namespace Nucleus.Gaming.Controls
 {
-    public partial class CustomComboBox : Panel, IDynamicSized
-    {
-        public List<string> Items = new List<string>();
 
-        private string selectedItem;
-        public string SelectedItem
+    public partial class CustomComboBox : UserControl, IDynamicSized
+    {
+        public FlatStyle FlatStyle;
+
+        private List<string> items = new List<string>();
+        [Browsable(false)]
+        public List<string> Items
+        {
+            get
+            {            
+                return items;
+            }
+
+            set
+            {
+                items = value;
+            }
+        }
+
+        private string itemsCollection;
+        [Browsable(true)]
+        public string ItemsCollection
+        {
+            get => itemsCollection;
+            set
+            {
+                items.Clear();
+                if (value != string.Empty)
+                {
+                    var all = value.Split(',');
+                    foreach (var val in all)
+                    {
+                        items.Add(val);
+                    }
+                }
+
+                itemsCollection = value;
+            }
+        }
+
+        [Browsable(true)]
+        public int MaxDropDownItems
+        {
+            get;
+            set;
+        }
+
+        [Browsable(true)]
+        public int MaxLength
+        {
+            get;
+            set;
+        }
+
+
+        [Browsable(true)]
+        public int SelectedIndex
+        {
+            get;
+            set;
+        }
+
+        private ControlListBox dropDownList;
+
+        private object selectedItem;
+        public object SelectedItem
         {
             get => selectedItem;
             set
             {
-                selectedItem = value;
-                MainItem.Text = selectedItem;
+                selectedItem = (string)value;
+                MainItem.Text = (string)value;
             }
         }
 
@@ -31,134 +94,185 @@ namespace Nucleus.Gaming.Controls
         }
 
         private float _scale;
+        private int defaultHeight;
 
-        public bool Opened = false;
-        private bool outOfBounds = false;
-
-        public TextBox MainItem;
+        public TransparentRichTextBox MainItem;
         private Label Expand;
-        //private Label Real;
+        private Font itemFont;
+        private FontFamily fontFamily;
+
         public CustomComboBox()
         {
             InitializeComponent();
-            //SetStyle( ControlStyles.FixedHeight,true);
-
-            BackColor = Color.Transparent;
+//            SetStyle( ControlStyles.AllPaintingInWmPaint |ControlStyles.UserPaint |ControlStyles.DoubleBuffer | ControlStyles.OptimizedDoubleBuffer
+//                | /*ControlStyles.FixedHeight | ControlStyles.FixedWidth |*/ ControlStyles.ResizeRedraw,
+//true);
+            BackColor = Color.FromArgb(100, 0, 0, 0);
             BorderStyle = BorderStyle.FixedSingle;
 
-            Height = 20;
-
-            Font font = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-            MainItem = new TextBox()
-            {
-                Name = "Main",
-                Dock = DockStyle.Top,
-                BorderStyle = BorderStyle.FixedSingle,
-
-                Font = font,
-                BackColor = Color.FromArgb(0, 180, 12),
-                ForeColor = Color.White,
-
-            };
-
-            //Real = new Label()
-            //{
-            //    Name = "Real",
-            //   // Dock = DockStyle.Top,
-            //   AutoSize = true,
-            //    BorderStyle = BorderStyle.None,
-            //    TextAlign = ContentAlignment.MiddleLeft,
-            //    Font = font,
-            //    BackColor = Color.FromArgb(0,0, 180, 12),
-            //    ForeColor = Color.White,
-
-            //};
-
-            //Real.MouseEnter += new EventHandler(Real_MouseEnter);
-            //Real.MouseLeave += new EventHandler(Real_MouseLeave);
-
+            fontFamily = Font.FontFamily;
+            
             Expand = new Label()
             {
                 Name = "Expand",
                 Dock = DockStyle.Right,
-                FlatStyle = FlatStyle.Flat,
                 BackgroundImageLayout = ImageLayout.Zoom,
                 BackgroundImage = new Bitmap(Properties.Resources.title_dropdown_closed),
-                BorderStyle = BorderStyle.FixedSingle,// BorderStyle.FixedSingle,
-                Font = font,
-                BackColor = Color.FromArgb(50, 0, 180, 12),
+                BorderStyle = BorderStyle.None,
+                Font = this.Font,
+                BackColor = Color.FromArgb(0, 0, 0, 0),
                 ForeColor = Color.White,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right
             };
 
-            Expand.Size = new Size(MainItem.Height, MainItem.Height);
+            Expand.Size = new Size(Height, Height);
             Expand.Click += new EventHandler(Expand_Click);
+            Expand.Location = new Point(Width - Height,0);
+            Controls.Add(Expand);
 
-            MainItem.Controls.Add(Expand);
-            // Controls.Add(Real);
+            MainItem = new TransparentRichTextBox()
+            {
+                Name = "Main",
+                BorderStyle = BorderStyle.None,
+                Font = this.Font,
+                ForeColor = Color.White,
+                BackColor =Color.DarkGoldenrod,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                MaxLength = MaxLength
+            };
+
+            MainItem.Multiline = false;
+
+            MainItem.AutoSize = true;
+            MainItem.Location = new Point(0, 0);
+            MainItem.LostFocus += Main_LostFocus;
+            LostFocus += _LostFocus;
+            //MainItem.MouseCaptureChanged += Main_LostFocus;
+            MainItem.Click += Main_Click;
 
             Controls.Add(MainItem);
-            // Real.Location = MainItem.Location;
 
-            this.MouseWheel += new MouseEventHandler(Scrolling);
+            dropDownList = new ControlListBox();
+            
+            dropDownList.Visible = false;
+            dropDownList.Width = Width;
+            dropDownList.Location = new Point(0, Height);
+
+            
+            dropDownList.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            
+            dropDownList.BringToFront();
+            dropDownList.Scroll += Scrolling;
+
+            Controls.Add(dropDownList);
+
+            MainItem.MouseWheel += new MouseEventHandler(Scrolling);
+
+            if(MaxDropDownItems == 0)
+            {
+                MaxDropDownItems = 3;
+            }
+
+            if(items.Count > 0)
+            {
+                MainItem.Text = items[SelectedIndex];
+            }
+
+            BringToFront();
             DPIManager.Register(this);
         }
 
-        private void Real_MouseEnter(object sender, EventArgs e)
+        private void Scrolling(object sender, ScrollEventArgs e)
         {
-            MainItem.BringToFront();
-            //MainItem.Focus();
+            Control V = sender as Control;
+    
+        }
+        private void Main_Click(object sender, EventArgs e)
+        {
+            Expand_Click(false, null);
         }
 
-        private void Real_MouseLeave(object sender, EventArgs e)
+        private void _LostFocus(object sender, EventArgs e)
         {
-            // Real.Text = MainItem.Text;
-            // Real.BringToFront();
+            Expand_Click(false, null);       
+        }
+
+        private void Main_LostFocus(object sender,EventArgs e)
+        {
+            TransparentRichTextBox txt = sender as TransparentRichTextBox;
+            if(!Items.Contains(txt.Text) && txt.Text != "")
+            {
+                Items.Add(txt.Text);
+                Expand_Click(true,null);
+            }
         }
 
         public void Expand_Click(object sender, EventArgs e)//refresh the whole list
         {
-            MainItem.Width = Width;
+            dropDownList.Visible =  dropDownList.Visible ? false : true;
 
-            if (Opened)
+            bool update = sender != null && sender is bool ? (bool)sender : false;
+
+            if(dropDownList.Visible || update)
             {
-                Controls.Clear();
-                Controls.Add(MainItem);
-                Height = MainItem.Height;
-                Opened = false;
-                return;
-            }
+                dropDownList.Visible = false;
+                Expand.BackgroundImage = new Bitmap(Properties.Resources.title_dropdown_opened);
+               
 
-            Font font = new Font("Franklin Gothic", 12F, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-
-            for (int i = 0; i < Items.Count; i++)
-            {
-                string text = Items[i];
-
-                Label item = new Label()
+                foreach(Control item in dropDownList.Controls)
                 {
-                    Name = Items[i],
-                    FlatStyle = FlatStyle.Flat,
-                    BackgroundImageLayout = ImageLayout.Zoom,
-                    BorderStyle = BorderStyle.FixedSingle,
-                    Font = font,
-                    BackColor = Color.FromArgb(130, 28, 47, 32),
-                    ForeColor = Color.White,
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    Text = text,
-                    Height = (int)(20 * _scale)
-                };
+                    item.Dispose();
+                }
 
-                item.Size = new Size((int)(MainItem.Width), (int)(MainItem.Height));
-                item.Location = new Point(0, Controls[i].Bottom);
-                item.Click += new EventHandler(Item_Click);
+                dropDownList.Controls.Clear();
+                dropDownList.Height = 0;
 
-                Height += MainItem.Height;
-                Controls.Add(item);
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    string text = (string)Items[i];
+
+                    Label item = new Label
+                    {
+                        Name = (string)Items[i],
+                        BorderStyle = BorderStyle.None,
+                        Font = itemFont,
+                        BackColor = Color.Transparent,
+                        ForeColor = Color.White,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Text = text,
+                        MinimumSize = new Size(dropDownList.Width, (int)(defaultHeight * _scale)),
+                        //Size = new Size(dropDownList.Width, (int)(defaultHeight * _scale)),
+                        AutoSize = true
+                    };
+
+                    item.Click += Item_Click;
+                     
+                    if (i <= MaxDropDownItems)
+                    {
+                        dropDownList.Size = new Size(Width, dropDownList.Height += item.ClientRectangle.Height);
+                    }
+
+                    dropDownList.Controls.Add(item);
+                }
+
+                dropDownList.Location = new Point(0, Height);
+                Height = defaultHeight + dropDownList.Height;
+                dropDownList.Visible = true;
+                dropDownList.BringToFront();
+            }
+            else
+            {
+                Height = defaultHeight;
+                Expand.BackgroundImage = new Bitmap(Properties.Resources.title_dropdown_closed);
             }
 
-            Opened = true;
-            Refresh();
+            if (items.Count > 0)
+            {
+                MainItem.Text = items[SelectedIndex];
+            }
+
+            BringToFront();
+            Update();
         }
 
 
@@ -172,7 +286,6 @@ namespace Nucleus.Gaming.Controls
             Label item = sender as Label;
             MainItem.Text = item.Text;
             selectedItem = item.Text;
-            // Real.Text = MainItem.Text;
             Expand_Click(null, null);
         }
 
@@ -180,80 +293,34 @@ namespace Nucleus.Gaming.Controls
         {
             Delta = (int)e.Delta;
 
-            if (!Opened)//change MainItem text on scrolling 
+            if (Delta > 0)
             {
-                if (Delta > 0)
+                if (ItemIndex >= 1)
                 {
-                    if (ItemIndex >= 1)
-                    {
-                        ItemIndex--;
-                        Controls[0].Text = Items[ItemIndex];
-                    }
-                }
-
-                if (Delta < 0)
-                {
-                    if (ItemIndex < Items.Count)
-                    {
-                        Controls[0].Text = Items[ItemIndex];
-                        ItemIndex++;
-                    }
+                    ItemIndex--;
+                    MainItem.Text = (string)Items[ItemIndex];
                 }
             }
 
-            if (Opened && outOfBounds)//Scroll Items list 
+            if (Delta < 0)
             {
-                if (Delta > 0 && Controls[1].Top != Controls[0].Bottom)
+                if (ItemIndex < Items.Count)
                 {
-                    for (int i = 1; i < Controls.Count; i++)
-                    {
-                        Controls[i].Location = new Point(0, Controls[i].Location.Y + Controls[i].Height * ScrollOffset);
-                    }
-
-                    Height += Controls[0].Height * ScrollOffset;
-                }
-
-                if (Delta < 0 && Controls[Controls.Count - 2].Top != Controls[0].Bottom)
-                {
-                    for (int i = 1; i < Controls.Count; i++)
-                    {
-                        Controls[i].Location = new Point(0, Controls[i].Location.Y - Controls[i].Height * ScrollOffset);
-                    }
-
-                    Height -= Controls[0].Height * ScrollOffset;
+                    MainItem.Text = (string)Items[ItemIndex];
+                    ItemIndex++;
                 }
             }
+
+            selectedItem = MainItem.Text;
         }
 
         public void SelectedDefaultText(string text)
         {
             MainItem.Text = text;
-            // Real.Text = MainItem.Text;
         }
 
-        protected override void OnPaint(PaintEventArgs e)///voir pour utiliser drawstring seulement si readonly
-        {
-            Graphics g = e.Graphics;
-
-            Rectangle parentBounds = new Rectangle(Parent.Location.X, Parent.Location.Y, Parent.Width, Parent.Height);
-            Rectangle bounds = new Rectangle(0, 0, Width, Height);
-            Rectangle border = new Rectangle(MainItem.Location.X, MainItem.Location.Y, MainItem.Width, MainItem.Height - 3);
-            //Pen pen = new Pen(Color.Yellow,1);
-            //g.DrawRectangle(pen, border);
-
-            // Size textSize = TextRenderer.MeasureText(MainItem.Text, MainItem.Font);
-            //float ratio = (float)(textSize.Width / textSize.Height)/10;
-            //Real.Width = textSize.Width;
-            //Real.Size = new Size(textSize.Width, MainItem.Height);
-            //Console.WriteLine(ratio);
-            //RectangleF textBounds = new RectangleF((float)MainItem.Location.X+4, (float)MainItem.Location.Y, (float)(MainItem.Width-2)*ratio, (float)MainItem.Height);
-            //g.DrawString(MainItem.Text, new Font("Franklin Gothic", textSize.Height-2, FontStyle.Regular, GraphicsUnit.Pixel, 0), Brushes.White,textBounds);
-            //Real.Text = MainItem.Text;
-            if (bounds.Bottom > parentBounds.Bottom)
-            {
-                outOfBounds = true;
-            }
-        }
+       
+        private bool scaled = false;
 
         public void UpdateSize(float scale)
         {
@@ -262,9 +329,34 @@ namespace Nucleus.Gaming.Controls
                 DPIManager.Unregister(this);
                 return;
             }
-            //Font = new Font("Franklin Gothic", 10.25F * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            MainItem.Font = new Font("Franklin Gothic", 12f * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+            if (!scaled)
+            {
+                
+                float ratio = ((float)Height / (float)MainItem.Height);
+                MainItem.Font = new Font(fontFamily, (Font.Size + ratio ) * scale  , FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+
+                Height = MainItem.ClientRectangle.Bottom + 7;
+                Expand.Size = new Size(Height,Height);
+                Expand.Location = new Point(Width - Expand.Width, 0);
+                MainItem.Width = Width - Expand.Width;
+                MainItem.Location = new Point(0, 3);
+                defaultHeight = Height;              
+                dropDownList.Location = new Point(0, Height);
+                itemFont = new Font(fontFamily, Font.Size + ratio, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+
+            }
+
+            scaled = true;
             _scale = scale;
         }
+
+
+        //protected override void OnPaint(PaintEventArgs e)///voir pour utiliser drawstring seulement si readonly
+        //{
+
+        //}
+
     }
 }

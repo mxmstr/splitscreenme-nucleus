@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.Coop.Controls;
+using Nucleus.Gaming;
 using Nucleus.Gaming.App.Settings;
 using Nucleus.Gaming.Cache;
 using Nucleus.Gaming.Controls;
@@ -104,12 +105,23 @@ namespace Nucleus.Coop.Forms
             switch14.Tag = App_GamePadNavigation.LeftClick;
             switch15.Text = App_GamePadNavigation.Deadzone.ToString();
 
-            foreach (RadioButton rb in groupBoxType.Controls)
+
+            enabled_chk.SelectionColor = Color.FromArgb(255, 31, 34, 35);
+            enabled_chk.CheckColor = Color.FromArgb(Theme_Settings.SelectedBackColor.R, Theme_Settings.SelectedBackColor.G, Theme_Settings.SelectedBackColor.B);
+            enabled_chk.BorderColor = Color.White;
+            enabled_chk.BackColor = Color.Transparent;
+
+            foreach (CustomRadio rb in groupBoxType.Controls)
             {
                 if (rb.Tag.ToString() == gamepadType)
                 {
-                    rb.Checked = true;
+                    rb.Checked = true;             
                 }
+
+                rb.SelectionColor = Color.FromArgb(255, 31, 34, 35);
+                rb.CheckColor = Color.FromArgb(Theme_Settings.SelectedBackColor.R, Theme_Settings.SelectedBackColor.G, Theme_Settings.SelectedBackColor.B);
+                rb.BorderColor = Color.White;
+                rb.BackColor = Color.Transparent;
             }
 
             foreach (Control c in shortContainer.Controls)
@@ -208,6 +220,8 @@ namespace Nucleus.Coop.Forms
                     }
                 }
             }
+
+            switch15.Location = new Point(switch15.Location.X, label_15.Top + ((label_15.DisplayRectangle.Height / 2) - (switch15.DisplayRectangle.Height / 2)));
         }
 
         private void RefreshTimerTick(Object Object, EventArgs EventArgs)

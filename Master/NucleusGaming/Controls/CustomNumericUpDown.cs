@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace Nucleus.Gaming.Controls
 {
@@ -18,6 +20,23 @@ namespace Nucleus.Gaming.Controls
             {
                 _value = value;
                 val.Text = _value.ToString();
+            }
+        }
+
+        private Color mUpdown = Color.Gray;
+        [EditorBrowsable(EditorBrowsableState.Always), Browsable(true)]
+        [Editor(typeof(WindowsFormsComponentEditor), typeof(Color))]
+        [Category("Appearance"), Description("Updown Button BackColor")]
+        public Color UpdownBackColor
+        {
+            get { return mUpdown; }
+            set
+            {
+                if (mUpdown != value)
+                {
+                    mUpdown = value;
+                    Invalidate();
+                }
             }
         }
 
@@ -67,14 +86,36 @@ namespace Nucleus.Gaming.Controls
                 return;
             }
 
-            Font = new Font("Franklin Gothic", 9.25f * scale, FontStyle.Regular, GraphicsUnit.Pixel, 0);
+            Font = new Font(Font.FontFamily, 9.25f * scale, Font.Style, GraphicsUnit.Pixel, 0);
         }
 
         private void val_TextChanged(object sender, EventArgs e)
         {
             if (Parent != null)
                 if (InvalidParent)
-                    Parent.Invalidate();                
+                    Parent.Invalidate();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            
+            Pen pen = new Pen(Color.White);
+
+            Rectangle rec = new Rectangle(down.Left, up.Top, down.Width, down.Bottom);
+            Rectangle border = new Rectangle(0, 0, down.Right-1 , down.Bottom);
+
+            SolidBrush br = new SolidBrush(Color.FromArgb(255, 31, 34, 35));
+            e.Graphics.FillRectangle(br, border);
+
+            br = new SolidBrush(UpdownBackColor);
+            e.Graphics.FillRectangle(br,rec);
+
+            e.Graphics.DrawRectangle(pen, border);
+
+            br.Dispose();
+            pen.Dispose();
         }
     }
 }

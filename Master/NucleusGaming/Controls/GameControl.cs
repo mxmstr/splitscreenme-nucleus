@@ -31,7 +31,7 @@ namespace Nucleus.Coop
     public class GameControl : UserControl, IDynamicSized, IRadioControl
     {
         public GenericGameInfo GameInfo { get; set; }
-        public UserGameInfo UserGameInfo { get; private set; }
+        public UserGameInfo UserGameInfo { get; set; }
         private PictureBox picture;
         private PictureBox playerIcon;
         public PictureBox FavoriteBox;
@@ -146,7 +146,6 @@ namespace Nucleus.Coop
                     Name = "favorite",
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     BackColor = Color.Transparent,
-                    //Cursor = Theme_Settings.Hand_Cursor,
                     Tag = "no_parent_click"
                 };
 
@@ -156,7 +155,6 @@ namespace Nucleus.Coop
                     BackColor = BackColor = Color.Transparent,
                     BackgroundImage = ImageCache.GetImage(themePath + "game_options.png"),
                     BackgroundImageLayout = ImageLayout.Stretch,
-                    //Cursor = Theme_Settings.Hand_Cursor,
                     Tag = "no_parent_click"
                 };
 
@@ -166,7 +164,6 @@ namespace Nucleus.Coop
                     BackColor = Color.Transparent,
                     BackgroundImage = ImageCache.GetImage(themePath + "update.png"),
                     BackgroundImageLayout = ImageLayout.Stretch,
-                    //Cursor = Theme_Settings.Hand_Cursor,
                     Visible = false,
                     Tag = "no_parent_click"
                 };
@@ -447,14 +444,14 @@ namespace Nucleus.Coop
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Rectangle gradientBrushbounds = new Rectangle(0, 0, Width, Height / 3);
+            Rectangle gradientBrushbounds = new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height / 3);
 
             if (gradientBrushbounds.Width == 0 || gradientBrushbounds.Height == 0)
             {
                 return;
             }
 
-            Rectangle bounds = new Rectangle(0, 0, Width, Height);
+            Rectangle bounds = new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height);
 
             Color color = isSelected ? radioSelectedBackColor : Color.Transparent;
 

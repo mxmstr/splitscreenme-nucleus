@@ -62,7 +62,7 @@ namespace Nucleus.Gaming.Tools.GlobalWindowMethods
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, ShowWindowEnum flags);
 
-        public static void RefreshBools()
+        public static void ResetBools()
         {
             ResetingWindows = false;
             TopMostToggle = true;

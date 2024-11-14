@@ -15,7 +15,11 @@ namespace Nucleus.Gaming.UI
         {
             if(default_Cursor == null)
             {
-                default_Cursor = new Cursor(ThemeFolder + "cursor.ico");               
+                Bitmap bmp = new Bitmap(ThemeFolder + "cursor.ico");
+
+                bmp = new Bitmap(bmp, new Size(Cursor.Current.Size.Width, Cursor.Current.Size.Height));
+                default_Cursor = new Cursor(bmp.GetHicon());
+                bmp.Dispose();
             }
 
             return default_Cursor;
@@ -28,7 +32,10 @@ namespace Nucleus.Gaming.UI
         {
             if (hand_Cursor == null)
             {
-                hand_Cursor = new Cursor(ThemeFolder + "cursor_hand.ico");
+                Bitmap bmp = new Bitmap(ThemeFolder + "cursor_hand.ico");
+                bmp = new Bitmap(bmp, new Size(Cursor.Current.Size.Width, Cursor.Current.Size.Height));
+                hand_Cursor = new Cursor(bmp.GetHicon());
+                bmp.Dispose();
             }
 
             return hand_Cursor;

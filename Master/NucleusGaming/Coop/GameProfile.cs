@@ -345,9 +345,9 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 
-            if (BoundsFunctions.screens != null)
+            if (BoundsFunctions.Screens != null)
             {
-                screens = BoundsFunctions.screens.ToList();
+                screens = BoundsFunctions.Screens.ToList();
             }
         }
 
@@ -385,6 +385,37 @@ namespace Nucleus.Gaming.Coop
                 {
                     options.Add(opt.Key, opt.Value);
                 }
+            }
+        }
+
+        public static void UpdateSharedSettings()
+        {
+            autoDesktopScaling = App_Misc.AutoDesktopScaling;
+            useNicknames = App_Misc.UseNicksInGame;
+            useXinputIndex = App_Misc.UseXinputIndex;
+            network = App_Misc.Network;
+
+            audioCustomSettings = int.Parse(App_Audio.Custom) == 1;
+            audioDefaultSettings = audioCustomSettings == false;
+            
+
+            useSplitDiv = App_Layouts.SplitDiv;
+            splitDivColor = App_Layouts.SplitDivColor;
+            hideDesktopOnly = App_Layouts.HideOnly;
+            customLayout_Ver = App_Layouts.VerticalLines;
+            customLayout_Hor = App_Layouts.HorizontalLines;
+            customLayout_Max = App_Layouts.MaxPlayers;
+            cts_MuteAudioOnly = App_Layouts.Cts_MuteAudioOnly;
+            cts_KeepAspectRatio = App_Layouts.Cts_KeepAspectRatio;
+            cts_Unfocus = App_Layouts.Cts_Unfocus;
+
+            enableWindowsMerger = App_Layouts.WindowsMerger;
+            enableLosslessHook = App_Layouts.LosslessHook;
+            mergerResolution = App_Layouts.WindowsMergerRes;
+
+            foreach(var output in App_Audio.Instances_AudioOutput)
+            {
+                AudioInstances.Add(output);
             }
         }
 
@@ -609,31 +640,6 @@ namespace Nucleus.Gaming.Coop
             return path;
         }
 
-        public static void UpdateSharedSettings()
-        {
-            autoDesktopScaling = App_Misc.AutoDesktopScaling;
-            useNicknames = App_Misc.UseNicksInGame;
-            useXinputIndex = App_Misc.UseXinputIndex;
-            network = App_Misc.Network;
-
-            audioCustomSettings = int.Parse(App_Audio.Custom) == 1;
-            audioDefaultSettings = audioCustomSettings == false;
-
-            useSplitDiv = App_Layouts.SplitDiv;
-            splitDivColor = App_Layouts.SplitDivColor;
-            hideDesktopOnly = App_Layouts.HideOnly;
-            customLayout_Ver = App_Layouts.VerticalLines;
-            customLayout_Hor = App_Layouts.HorizontalLines;
-            customLayout_Max = App_Layouts.MaxPlayers;
-            cts_MuteAudioOnly = App_Layouts.Cts_MuteAudioOnly;
-            cts_KeepAspectRatio = App_Layouts.Cts_KeepAspectRatio;
-            cts_Unfocus = App_Layouts.Cts_Unfocus;
-
-            enableWindowsMerger = App_Layouts.WindowsMerger;
-            enableLosslessHook = App_Layouts.LosslessHook;
-            mergerResolution = App_Layouts.WindowsMergerRes;
-        }
-
         public static void UpdateGameProfile(GameProfile profile)
         {
             string path = $"{Globals.GameProfilesFolder}\\{GameInfo.GameGuid}\\Profile[{profileToSave}].json";
@@ -851,13 +857,8 @@ namespace Nucleus.Gaming.Coop
             string path;
             bool profileDisabled = App_Misc.DisableGameProfiles;
 
-            if (/*profilesCount + 1 >= 21 ||*/ profileDisabled || GameInfo.Game.MetaInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
+            if (profileDisabled || GameInfo.Game.MetaInfo.DisableProfiles || !GameInfo.Game.MetaInfo.SaveProfile)
             {
-                //if (!profileDisabled && !GameInfo.Game.MetaInfo.DisableProfiles && GameInfo.Game.MetaInfo.SaveProfile)
-                //{
-                //    Globals.MainOSD.Show(2000, $"Limit Of 20 Profiles Has Been Reach Already");
-                //}
-
                 saved = true;
                 return;
             }
@@ -1026,9 +1027,9 @@ namespace Nucleus.Gaming.Coop
 
             List<JObject> JScreens = new List<JObject>();
 
-            var screens = BoundsFunctions.screens;
+            var screens = BoundsFunctions.Screens;
 
-            for (int s = 0; s < BoundsFunctions.screens.Count(); s++)
+            for (int s = 0; s < BoundsFunctions.Screens.Count(); s++)
             {
                 UserScreen screen = screens[s];
 
@@ -1314,13 +1315,13 @@ namespace Nucleus.Gaming.Coop
 
         internal static (UserScreen, int) FindScreenOrAlternative(ProfilePlayer profilePlayer)
         {
-            UserScreen screen = BoundsFunctions.screens.ElementAtOrDefault(profilePlayer.ScreenIndex);
+            UserScreen screen = BoundsFunctions.Screens.ElementAtOrDefault(profilePlayer.ScreenIndex);
             int ogIndex = profilePlayer.ScreenIndex;
 
             while (screen == null)
             {
                 --ogIndex;
-                screen = BoundsFunctions.screens.ElementAtOrDefault(ogIndex);
+                screen = BoundsFunctions.Screens.ElementAtOrDefault(ogIndex);
             }
 
             screen.Type = (UserScreenType)profilePlayer.OwnerType;
@@ -1409,27 +1410,41 @@ namespace Nucleus.Gaming.Coop
             return nprof;
         }
 
-        public static void UpdateProfilePlayerNickAndSID(PlayerInfo player)
+        public static void UpdateProfilePlayerIdentity(PlayerInfo player)
         {
             PlayerInfo secondInBounds = DevicesToMerge.Where(pl => pl.EditBounds == player.EditBounds && pl != player).FirstOrDefault();
 
             int playerIndex = AssignedDevices.FindIndex(pl => pl == player);
 
-            bool getNameFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
+            bool getIdFromProfile = ProfilePlayersList.Count() > 0 && ProfilePlayersList.Count() > playerIndex && !GameInfo.Game.MetaInfo.DisableProfiles;
 
-            player.Nickname = getNameFromProfile ? ProfilePlayersList[playerIndex].Nickname :
+            player.Nickname = getIdFromProfile ? ProfilePlayersList[playerIndex].Nickname :
                              PlayersIdentityCache.GetNicknameAt(playerIndex);
 
-            string steamID = "-1";
 
-            if (getNameFromProfile)
+            string steamID = string.Empty;
+
+            if (getIdFromProfile)//get profile value
             {
-                steamID = ProfilePlayersList[playerIndex].SteamID.ToString();
+                if (Game.UseHandlerSteamIds)//get custom handler value anyway if Game.UseHandlerSteamIds 
+                {                
+                    steamID = Game.PlayerSteamIDs[playerIndex];
+                }
+                else
+                {
+                    steamID = ProfilePlayersList[playerIndex].SteamID.ToString();
+                }
             }
-            else if (PlayersIdentityCache.GetSteamIdAt(playerIndex) != "")
+            else if(Game.UseHandlerSteamIds)//get custom handler value if Game.UseHandlerSteamIds
+            {
+                steamID = Game.PlayerSteamIDs[playerIndex];
+            }
+            else if (PlayersIdentityCache.GetSteamIdAt(playerIndex) != "")//get custom user (ini) value
             {
                 steamID = PlayersIdentityCache.GetSteamIdAt(playerIndex);
             }
+
+            Console.WriteLine(steamID + " " + player.Nickname + "\n");
 
             player.SteamID = long.Parse(steamID);
 
@@ -1440,6 +1455,31 @@ namespace Nucleus.Gaming.Coop
             }
         }
 
-    }
+        public static void GenMissingIdFromPlayerSteamIDs()
+        {
+            string lastIdOfArray = Game.PlayerSteamIDs.Last();
+            List<string> newArray = Game.PlayerSteamIDs.ToList();
 
+            while (newArray.Count() < Globals.NucleusMaxPlayers)
+            {
+                long convToLong;
+
+                if (newArray.Count == 0)
+                {
+                    convToLong = long.Parse(lastIdOfArray);
+                }
+                else
+                {
+                    convToLong = long.Parse(newArray.Last());
+                }
+
+                convToLong++;
+
+                newArray.Add(convToLong.ToString());
+            }
+
+            Game.PlayerSteamIDs = newArray.ToArray();
+        }
+
+    }
 }

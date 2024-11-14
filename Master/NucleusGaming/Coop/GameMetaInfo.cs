@@ -9,7 +9,7 @@ namespace Nucleus.Gaming.Coop
 {
     public class GameMetaInfo
     {
-        private readonly string nucleusEnvironment = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\NucleusCoop";
+        private readonly string nucleusEnvironment = $@"{Globals.UserEnvironmentRoot}\NucleusCoop";
         private readonly string metaInfoJson = "metaInfo.json";
         private string guid;
 

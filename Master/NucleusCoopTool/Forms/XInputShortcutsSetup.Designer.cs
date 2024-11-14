@@ -1,4 +1,6 @@
-﻿namespace Nucleus.Coop.Forms
+﻿using Nucleus.Coop.Controls;
+
+namespace Nucleus.Coop.Forms
 {
     partial class XInputShortcutsSetup
     {
@@ -84,15 +86,15 @@
             this.switch13 = new System.Windows.Forms.PictureBox();
             this.label_12 = new System.Windows.Forms.Label();
             this.switch12 = new System.Windows.Forms.PictureBox();
-            this.enabled_chk = new System.Windows.Forms.CheckBox();
-            this.radioButtonXbox = new System.Windows.Forms.RadioButton();
-            this.radioButtonPs = new System.Windows.Forms.RadioButton();
             this.groupBoxType = new System.Windows.Forms.GroupBox();
             this.warning = new System.Windows.Forms.Label();
             this.reminderPict = new System.Windows.Forms.PictureBox();
             this.shortcutReminderLabel = new System.Windows.Forms.Label();
             this.ShortcutsReminderContainer = new System.Windows.Forms.GroupBox();
             this.gamepadTopFront = new BufferedClientAreaPanel();
+            this.radioButtonXbox = new Nucleus.Coop.Controls.CustomRadio();
+            this.radioButtonPs = new Nucleus.Coop.Controls.CustomRadio();
+            this.enabled_chk = new Nucleus.Coop.Controls.CustomCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.slave7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slave6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slave5)).BeginInit();
@@ -773,54 +775,6 @@
             this.switch12.TabIndex = 2;
             this.switch12.TabStop = false;
             // 
-            // enabled_chk
-            // 
-            this.enabled_chk.AutoSize = true;
-            this.enabled_chk.BackColor = System.Drawing.Color.Transparent;
-            this.enabled_chk.Checked = true;
-            this.enabled_chk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enabled_chk.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.enabled_chk.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.enabled_chk.Location = new System.Drawing.Point(12, 98);
-            this.enabled_chk.Name = "enabled_chk";
-            this.enabled_chk.Size = new System.Drawing.Size(199, 19);
-            this.enabled_chk.TabIndex = 92;
-            this.enabled_chk.Text = "Enable Gamepad UI Navigation";
-            this.enabled_chk.UseVisualStyleBackColor = false;
-            this.enabled_chk.CheckedChanged += new System.EventHandler(this.Enabled_chk_CheckedChanged);
-            // 
-            // radioButtonXbox
-            // 
-            this.radioButtonXbox.AutoSize = true;
-            this.radioButtonXbox.BackColor = System.Drawing.Color.Transparent;
-            this.radioButtonXbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.radioButtonXbox.ForeColor = System.Drawing.Color.White;
-            this.radioButtonXbox.Location = new System.Drawing.Point(6, 19);
-            this.radioButtonXbox.Name = "radioButtonXbox";
-            this.radioButtonXbox.Size = new System.Drawing.Size(53, 19);
-            this.radioButtonXbox.TabIndex = 94;
-            this.radioButtonXbox.TabStop = true;
-            this.radioButtonXbox.Tag = "Xbox";
-            this.radioButtonXbox.Text = "Xbox";
-            this.radioButtonXbox.UseVisualStyleBackColor = false;
-            this.radioButtonXbox.CheckedChanged += new System.EventHandler(this.radioButtonXbox_CheckedChanged);
-            // 
-            // radioButtonPs
-            // 
-            this.radioButtonPs.AutoSize = true;
-            this.radioButtonPs.BackColor = System.Drawing.Color.Transparent;
-            this.radioButtonPs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.radioButtonPs.ForeColor = System.Drawing.Color.White;
-            this.radioButtonPs.Location = new System.Drawing.Point(6, 42);
-            this.radioButtonPs.Name = "radioButtonPs";
-            this.radioButtonPs.Size = new System.Drawing.Size(84, 19);
-            this.radioButtonPs.TabIndex = 95;
-            this.radioButtonPs.TabStop = true;
-            this.radioButtonPs.Tag = "Playstation";
-            this.radioButtonPs.Text = "Playstation";
-            this.radioButtonPs.UseVisualStyleBackColor = false;
-            this.radioButtonPs.CheckedChanged += new System.EventHandler(this.RadioButtonPs_CheckedChanged);
-            // 
             // groupBoxType
             // 
             this.groupBoxType.Controls.Add(this.radioButtonXbox);
@@ -829,7 +783,7 @@
             this.groupBoxType.ForeColor = System.Drawing.Color.White;
             this.groupBoxType.Location = new System.Drawing.Point(12, 5);
             this.groupBoxType.Name = "groupBoxType";
-            this.groupBoxType.Size = new System.Drawing.Size(130, 63);
+            this.groupBoxType.Size = new System.Drawing.Size(130, 66);
             this.groupBoxType.TabIndex = 96;
             this.groupBoxType.TabStop = false;
             this.groupBoxType.Text = "Gamepad Type";
@@ -894,6 +848,63 @@
             this.gamepadTopFront.TabIndex = 93;
             this.gamepadTopFront.Paint += new System.Windows.Forms.PaintEventHandler(this.GamepadTopFront_Paint);
             this.gamepadTopFront.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GamepadTopFront_MouseDown);
+            // 
+            // radioButtonXbox
+            // 
+            this.radioButtonXbox.AutoSize = true;
+            this.radioButtonXbox.BackColor = System.Drawing.Color.Transparent;
+            this.radioButtonXbox.BorderColor = System.Drawing.Color.Blue;
+            this.radioButtonXbox.CheckColor = System.Drawing.Color.Blue;
+            this.radioButtonXbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.radioButtonXbox.ForeColor = System.Drawing.Color.White;
+            this.radioButtonXbox.Location = new System.Drawing.Point(6, 19);
+            this.radioButtonXbox.Name = "radioButtonXbox";
+            this.radioButtonXbox.SelectionColor = System.Drawing.Color.LightBlue;
+            this.radioButtonXbox.Size = new System.Drawing.Size(53, 19);
+            this.radioButtonXbox.TabIndex = 94;
+            this.radioButtonXbox.TabStop = true;
+            this.radioButtonXbox.Tag = "Xbox";
+            this.radioButtonXbox.Text = "Xbox";
+            this.radioButtonXbox.UseVisualStyleBackColor = false;
+            this.radioButtonXbox.CheckedChanged += new System.EventHandler(this.radioButtonXbox_CheckedChanged);
+            // 
+            // radioButtonPs
+            // 
+            this.radioButtonPs.AutoSize = true;
+            this.radioButtonPs.BackColor = System.Drawing.Color.Transparent;
+            this.radioButtonPs.BorderColor = System.Drawing.Color.Blue;
+            this.radioButtonPs.CheckColor = System.Drawing.Color.Blue;
+            this.radioButtonPs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.radioButtonPs.ForeColor = System.Drawing.Color.White;
+            this.radioButtonPs.Location = new System.Drawing.Point(6, 42);
+            this.radioButtonPs.Name = "radioButtonPs";
+            this.radioButtonPs.SelectionColor = System.Drawing.Color.LightBlue;
+            this.radioButtonPs.Size = new System.Drawing.Size(84, 19);
+            this.radioButtonPs.TabIndex = 95;
+            this.radioButtonPs.TabStop = true;
+            this.radioButtonPs.Tag = "Playstation";
+            this.radioButtonPs.Text = "Playstation";
+            this.radioButtonPs.UseVisualStyleBackColor = false;
+            this.radioButtonPs.CheckedChanged += new System.EventHandler(this.RadioButtonPs_CheckedChanged);
+            // 
+            // enabled_chk
+            // 
+            this.enabled_chk.AutoSize = true;
+            this.enabled_chk.BackColor = System.Drawing.Color.Transparent;
+            this.enabled_chk.BorderColor = System.Drawing.Color.White;
+            this.enabled_chk.CheckColor = System.Drawing.Color.White;
+            this.enabled_chk.Checked = true;
+            this.enabled_chk.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enabled_chk.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.enabled_chk.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.enabled_chk.Location = new System.Drawing.Point(12, 98);
+            this.enabled_chk.Name = "enabled_chk";
+            this.enabled_chk.SelectionColor = System.Drawing.Color.Green;
+            this.enabled_chk.Size = new System.Drawing.Size(199, 19);
+            this.enabled_chk.TabIndex = 92;
+            this.enabled_chk.Text = "Enable Gamepad UI Navigation";
+            this.enabled_chk.UseVisualStyleBackColor = false;
+            this.enabled_chk.CheckedChanged += new System.EventHandler(this.Enabled_chk_CheckedChanged);
             // 
             // XInputShortcutsSetup
             // 
@@ -1002,7 +1013,7 @@
         private System.Windows.Forms.Label plus9;
         private System.Windows.Forms.PictureBox slave9;
         private System.Windows.Forms.Label label_9;
-        private System.Windows.Forms.CheckBox enabled_chk;
+        private CustomCheckBox enabled_chk;
         private System.Windows.Forms.PictureBox switch10;
         private System.Windows.Forms.Label plus10;
         private System.Windows.Forms.Label label_15;
@@ -1014,8 +1025,8 @@
         private System.Windows.Forms.PictureBox slave11;
         private System.Windows.Forms.Label label_11;
         private BufferedClientAreaPanel gamepadTopFront;
-        private System.Windows.Forms.RadioButton radioButtonXbox;
-        private System.Windows.Forms.RadioButton radioButtonPs;
+        private CustomRadio radioButtonXbox;
+        private CustomRadio radioButtonPs;
         private System.Windows.Forms.GroupBox groupBoxType;
         private System.Windows.Forms.Label warning;
         private System.Windows.Forms.PictureBox reminderPict;

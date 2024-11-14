@@ -18,7 +18,7 @@ namespace Nucleus.Gaming.Tools.NemirtingasEpicEmu
             if (setupDll)
             {
                 handlerInstance.Log("Starting Nemirtingas Epic Emu setup");
-                string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\NemirtingasEpicEmu");
+                string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\NemirtingasEpicEmu");
                 string x86dll = "EOSSDK-Win32-Shipping.dll";
                 string x64dll = "EOSSDK-Win64-Shipping.dll";
 

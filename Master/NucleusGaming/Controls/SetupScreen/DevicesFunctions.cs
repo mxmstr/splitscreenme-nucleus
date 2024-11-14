@@ -304,7 +304,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
                             if (GameProfile.AssignedDevices.Contains(data[j]))
                             {
-                                BoundsFunctions.screens[data[j].ScreenIndex].PlayerOnScreen--;
+                                BoundsFunctions.Screens[data[j].ScreenIndex].PlayerOnScreen--;
                                 GameProfile.TotalAssignedPlayers--;
                                 GameProfile.AssignedDevices.Remove(data[j]);
                             }
@@ -408,7 +408,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                                 if (GameProfile.AssignedDevices.Contains(data[j]))
                                 {
                                     GameProfile.AssignedDevices.Remove(data[j]);
-                                    BoundsFunctions.screens[data[j].ScreenIndex].PlayerOnScreen--;
+                                    BoundsFunctions.Screens[data[j].ScreenIndex].PlayerOnScreen--;
                                     GameProfile.TotalAssignedPlayers--;
                                 }
 
@@ -521,7 +521,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     if (GameProfile.AssignedDevices.Contains(hasNullDInputJoystick))
                     {
                         GameProfile.AssignedDevices.Remove(hasNullDInputJoystick);
-                        BoundsFunctions.screens[hasNullDInputJoystick.ScreenIndex].PlayerOnScreen--;
+                        BoundsFunctions.Screens[hasNullDInputJoystick.ScreenIndex].PlayerOnScreen--;
                         GameProfile.TotalAssignedPlayers--;
                     }
 

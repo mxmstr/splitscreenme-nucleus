@@ -137,6 +137,14 @@ namespace Nucleus.Gaming
         public bool GoldbergNoWarning = false;
         public string OrigSteamDllPath;
         public bool GoldbergNeedSteamInterface;
+        //deprecated kept for backward compatibility => use SteamlessPatch insatead
+        public bool UseSteamless = false;
+        public string SteamlessArgs;
+        public int SteamlessTiming = 2500;
+        //
+        public string[] SteamlessPatch;//bool apply to launcher,string Steamless Args,int wait for exe pacthing finished.
+        public bool UseGoldbergNoOGSteamDlls;
+        public string[] CustomSteamApiDllPath;
         public bool XboxOneControllerFix;
         public bool UseForceBindIP;
         public string[] XInputPlusDll;
@@ -318,13 +326,7 @@ namespace Nucleus.Gaming
         public int LockInputToggleKey = 0x23;//End by default. Keys: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
         public bool ForceEnvironmentUse;
         public bool ForceLauncherExeIgnoreFileCheck;
-        //deprecated kept for backward compatibility => use SteamlessPatch insatead
-        public bool UseSteamless = false;
-        public string SteamlessArgs;
-        public int SteamlessTiming = 2500;
-        //
 
-        public string[] SteamlessPatch;//bool apply to launcher,string Steamless Args,int wait for exe pacthing finished.
 
         // Proto Input
         public ProtoInputOptions ProtoInput = new ProtoInputOptions();
@@ -522,6 +524,6 @@ namespace Nucleus.Gaming
 
         public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
 
-        public string SteamLang => SteamFunctions.GetUserSteamLanguageChoice();
+        public string SteamLang => SteamFunctions.GetUserSteamLanguageChoice(this);
     }
 }

@@ -60,8 +60,7 @@ namespace Nucleus.Gaming
         private static string GetAppDataPath()
         {
 #if ALPHA
-            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "content");
+            return Path.Combine(Globals.NucleusInstallRoot, "content");
 #else
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(appData, "Nucleus Coop");
@@ -134,7 +133,7 @@ namespace Nucleus.Gaming
 
             Log("Attempting shut-down procedures in order to clean-up");
 
-            string[] regFiles = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\backup"), "*.reg", SearchOption.AllDirectories);
+            string[] regFiles = Directory.GetFiles(Path.Combine(Globals.NucleusInstallRoot, "utils\\backup"), "*.reg", SearchOption.AllDirectories);
             if (regFiles.Length > 0)
             {
                 LogManager.Log("Restoring backed up registry files - method 2");

@@ -127,7 +127,7 @@ namespace Nucleus.Gaming
             if (setupDll)
             {
                 handlerInstance.Log("Copying custom files/folders");
-                string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\User");
+                string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\User");
                 foreach (string customUtil in handlerInstance.CurrentGameInfo.CopyCustomUtils)
                 {
                     int numParams = customUtil.Count(x => x == '|') + 1;
@@ -150,7 +150,7 @@ namespace Nucleus.Gaming
                         }
                     }
 
-                    string source_dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\utils\\User\\" + utilPath;
+                    string source_dir = Globals.NucleusInstallRoot + "\\utils\\User\\" + utilPath;
                     FileAttributes attr = File.GetAttributes(source_dir);
 
                     if (attr.HasFlag(FileAttributes.Directory)) //directory

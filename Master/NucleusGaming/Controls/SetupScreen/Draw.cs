@@ -121,7 +121,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
 
         public static void UIScreens(Graphics g)
         {
-            var screens = BoundsFunctions.screens;
+            var screens = BoundsFunctions.Screens;
 
             for (int i = 0; i < screens.Length; i++)
             {
@@ -132,6 +132,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                     continue;
                 }
 
+                //if a player is expanded don't draw the screen subBounds intersecting with its bounds
                 if (s.Type != UserScreenType.Manual && s.Type != UserScreenType.FullScreen)
                 {
                     var boundsToDraw = s.SubScreensBounds?.Values.Where(sb => !GameProfile.Instance.DevicesList.Any(pl => pl.EditBounds.IntersectsWith(sb))).ToArray();
@@ -146,6 +147,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                 {
                     RectangleF minimizedSwapType = s.SwapTypeBounds;
 
+                    //resize the SwapTypeBound rectangle dynamically
                     var interstcWithSwapTypeBound = GameProfile.Instance.DevicesList.Where(dv => dv.EditBounds.IntersectsWith(minimizedSwapType)).ToArray();
 
                     if (interstcWithSwapTypeBound.Length > 0 && !s.SwapTypeBounds.Contains(BoundsFunctions.MousePos))
@@ -199,6 +201,7 @@ namespace Nucleus.Gaming.Controls.SetupScreen
                         g.DrawRectangles(PositionScreenPen, new RectangleF[] { s.UIBounds });
                     }
 
+                    //show a sawp type screen type on each UI screen if its anew game
                     if (parent.UserGameInfo.Game.MetaInfo.FirstLaunch &&
                         s.Type == UserScreenType.FullScreen &&
                         interstcWithSwapTypeBound.Length == 0 && 

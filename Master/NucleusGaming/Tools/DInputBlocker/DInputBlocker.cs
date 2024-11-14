@@ -9,7 +9,7 @@ namespace Nucleus.Gaming.Tools.DInputBlocker
         {
             var handlerInstance = GenericGameHandler.Instance;
             handlerInstance.Log("Setting up DInput blocker");
-            string utilFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "utils\\dinput8.blocker");
+            string utilFolder = Path.Combine(Globals.NucleusInstallRoot, "utils\\dinput8.blocker");
 
             if (setupDll)
             {

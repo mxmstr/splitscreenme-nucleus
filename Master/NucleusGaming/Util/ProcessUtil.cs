@@ -21,8 +21,7 @@ namespace Nucleus
 {
     public static class ProcessUtil
     {
-        private static string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        private static string DocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private static string UserEnvironmentRoot = Globals.UserEnvironmentRoot;
 
         private static void Log(string logMessage)
         {
@@ -156,30 +155,30 @@ namespace Nucleus
                     Log("ERROR - getting current user's username, defaulting to using environment's username");
                 }
 
-                cmd.StandardInput.WriteLine($@"set APPDATA={NucleusEnvironmentRoot}\NucleusCoop\{playerNickname}\AppData\Roaming");
-                cmd.StandardInput.WriteLine($@"set LOCALAPPDATA={NucleusEnvironmentRoot}\NucleusCoop\{playerNickname}\AppData\Local");
-                cmd.StandardInput.WriteLine($@"set USERPROFILE={NucleusEnvironmentRoot}\NucleusCoop\{playerNickname}");
+                cmd.StandardInput.WriteLine($@"set APPDATA={UserEnvironmentRoot}\NucleusCoop\{playerNickname}\AppData\Roaming");
+                cmd.StandardInput.WriteLine($@"set LOCALAPPDATA={UserEnvironmentRoot}\NucleusCoop\{playerNickname}\AppData\Local");
+                cmd.StandardInput.WriteLine($@"set USERPROFILE={UserEnvironmentRoot}\NucleusCoop\{playerNickname}");
                 cmd.StandardInput.WriteLine($@"set HOMEPATH=\Users\{username}\NucleusCoop\{playerNickname}");
 
                 //Some games will crash if the directories don't exist
-                Directory.CreateDirectory($@"{NucleusEnvironmentRoot}\NucleusCoop");
-                Directory.CreateDirectory($@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNickname}");
-                Directory.CreateDirectory($@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNickname}\AppData\Roaming");
-                Directory.CreateDirectory($@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNickname}\AppData\Local");
+                Directory.CreateDirectory($@"{UserEnvironmentRoot}\NucleusCoop");
+                Directory.CreateDirectory($@"{UserEnvironmentRoot}\NucleusCoop\{playerNickname}");
+                Directory.CreateDirectory($@"{UserEnvironmentRoot}\NucleusCoop\{playerNickname}\AppData\Roaming");
+                Directory.CreateDirectory($@"{UserEnvironmentRoot}\NucleusCoop\{playerNickname}\AppData\Local");
 
                 //Directory.CreateDirectory($@"\Users\{username}\NucleusCoop\{playerNickname}");
-                Directory.CreateDirectory($@"{NucleusEnvironmentRoot}\NucleusCoop\{playerNickname}\Documents");
+                Directory.CreateDirectory($@"{UserEnvironmentRoot}\NucleusCoop\{playerNickname}\Documents");
 
-                Directory.CreateDirectory(Path.GetDirectoryName(DocumentsRoot) + $@"\NucleusCoop\{playerNickname}\Documents");
+                Directory.CreateDirectory(Path.GetDirectoryName(Globals.UserDocumentsRoot) + $@"\NucleusCoop\{playerNickname}\Documents");
 
-                if (!File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg")))
+                if (!File.Exists(Path.Combine(Globals.NucleusInstallRoot, @"utils\backup\User Shell Folders.reg")))
                 {
                     //string mydocPath = key.GetValue("Personal").ToString();
-                    RegistryUtil.ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"utils\backup\User Shell Folders.reg"));
+                    RegistryUtil.ExportRegistry(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", Path.Combine(Globals.NucleusInstallRoot, @"utils\backup\User Shell Folders.reg"));
                 }
 
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", true);
-                key.SetValue("Personal", Path.GetDirectoryName(DocumentsRoot) + $@"\NucleusCoop\{playerNickname}\Documents", (RegistryValueKind)(int)RegType.ExpandString);
+                key.SetValue("Personal", Path.GetDirectoryName(Globals.UserDocumentsRoot) + $@"\NucleusCoop\{playerNickname}\Documents", (RegistryValueKind)(int)RegType.ExpandString);
             }
 
             cmd.StandardInput.WriteLine("\"" + path + "\" " + arguments);

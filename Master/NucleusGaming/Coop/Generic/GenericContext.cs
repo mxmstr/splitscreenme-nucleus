@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -120,11 +119,13 @@ namespace Nucleus.Gaming
 
         private List<string> regKeyPaths = new List<string>();
 
-        public string NucleusEnvironmentRoot = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        public string NucleusEnvironmentRoot = Globals.UserEnvironmentRoot;
 
-        public string NucleusDocumentsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        public string NucleusDocumentsRoot = Globals.UserDocumentsRoot;
 
-        public string UtilFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\utils";
+        public string UtilFolder = Globals.NucleusInstallRoot + "\\utils";
+
+        public string PlayerGameFilesBackupFolder => $@"{Globals.UserEnvironmentRoot}\NucleusCoop\_Game Files Backup_\{HandlerGUID}\{Nickname}";
 
         public Type HandlerType => typeof(GenericGameHandler);
 
@@ -232,7 +233,7 @@ namespace Nucleus.Gaming
 
         public string HandlerGUID => parent.HandlerGUID;
 
-        public string NucleusFolder => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public string NucleusFolder => Globals.NucleusInstallRoot;
 
         public int NumberOfPlayers => parent.numPlayers;
 
@@ -345,7 +346,7 @@ namespace Nucleus.Gaming
 
         public string GogLang => NemirtingasGalaxyEmu.GetGogLanguage();
 
-        public string SteamLang => SteamFunctions.GetUserSteamLanguageChoice();
+        public string SteamLang => SteamFunctions.GetUserSteamLanguageChoice(parent.CurrentGameInfo);
 
         public string UserName => Environment.UserName.Trim();
 
@@ -400,9 +401,9 @@ namespace Nucleus.Gaming
             }
         }
 
-        public string DocumentsPlayer => $@"{Path.GetDirectoryName(NucleusDocumentsRoot)}\NucleusCoop\{Nickname}\Documents\";
+        public string DocumentsPlayer => $@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\{Nickname}\Documents\";
 
-        public string DocumentsRoot => $@"{Path.GetDirectoryName(NucleusDocumentsRoot)}\NucleusCoop\";
+        public string DocumentsRoot => $@"{Path.GetDirectoryName(Globals.UserDocumentsRoot)}\NucleusCoop\";
 
         public string UserProfileConfigPath
         {
@@ -1102,14 +1103,27 @@ namespace Nucleus.Gaming
             return filesFound.ToArray();
         }
 
-        public bool WriteTextFile(string path, string[] lines)
+        //https://stackoverflow.com/questions/11689337/net-file-writealllines-leaves-empty-line-at-the-end-of-file //v.2.3.2
+        public bool WriteTextFile(string path, params string[] lines)
         {
+
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
 
-            File.WriteAllLines(path, lines);
+            using (var stream = File.OpenWrite(path))
+            using (StreamWriter writer = new StreamWriter(stream))
+            {
+                if (lines.Length > 0)
+                {
+                    for (int i = 0; i < lines.Length - 1; i++)
+                    {
+                        writer.WriteLine(lines[i]);
+                    }
+                    writer.Write(lines[lines.Length - 1]);
+                }
+            }
 
             return true;
         }

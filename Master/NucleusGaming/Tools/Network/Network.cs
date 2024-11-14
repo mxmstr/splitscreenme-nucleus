@@ -171,7 +171,7 @@ namespace Nucleus.Gaming.Tools.Network
             Process p = new Process();
 
             p.StartInfo.FileName = "cmd.exe";
-            p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\utils\\devcon";
+            p.StartInfo.WorkingDirectory = Globals.NucleusInstallRoot + "\\utils\\devcon";
             p.StartInfo.CreateNoWindow = false;
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardError = true;
@@ -214,7 +214,7 @@ namespace Nucleus.Gaming.Tools.Network
             Process p = new Process();
             //string devconPath = Path.Combine(Directory.GetCurrentDirectory(), "utils\\devcon\\devcon.exe");
             p.StartInfo.FileName = "cmd.exe";
-            p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\utils\\devcon";
+            p.StartInfo.WorkingDirectory = Globals.NucleusInstallRoot + "\\utils\\devcon";
             p.StartInfo.CreateNoWindow = true;
             p.StartInfo.RedirectStandardError = true;
             p.StartInfo.RedirectStandardOutput = true;
