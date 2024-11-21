@@ -209,6 +209,9 @@ namespace Nucleus.Gaming.Coop.ProtoInput
             {
                 ProtoInput.protoInput.InstallHook(instanceHandle, ProtoInput.ProtoHookIDs.DinputOrderHookID);
             }
+            
+            ProtoInput.protoInput.SetForwardRawInputToDinput(instanceHandle, gen.ProtoInput.ForwardRawInputToDinput);
+            ProtoInput.protoInput.SetDinput8FPSFix(instanceHandle, gen.ProtoInput.Dinput8FPSFix);
 
             ProtoInput.protoInput.SetSetWindowPosSettings(instanceHandle, player.MonitorBounds.X, player.MonitorBounds.Y, player.MonitorBounds.Width, player.MonitorBounds.Height);
             if (gen.ProtoInput.SetWindowPosHook)

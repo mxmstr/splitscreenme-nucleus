@@ -182,6 +182,12 @@ namespace Nucleus.Gaming.Coop.ProtoInput
             public static extern void DinputHookAlsoHooksGetDeviceState(uint instanceHandle, bool enable);
 
             [DllImport("ProtoInputLoader32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+            public static extern void SetForwardRawInputToDinput(uint instanceHandle, bool enable);
+
+            [DllImport("ProtoInputLoader32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+            public static extern void SetDinput8FPSFix(uint instanceHandle, bool enable);
+
+            [DllImport("ProtoInputLoader32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
             public static extern void SetSetWindowPosSettings(uint instanceHandle, int posx, int posy, int width, int height);
 
             [DllImport("ProtoInputLoader32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
@@ -315,6 +321,12 @@ namespace Nucleus.Gaming.Coop.ProtoInput
 
             [DllImport("ProtoInputLoader64.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
             public static extern void DinputHookAlsoHooksGetDeviceState(uint instanceHandle, bool enable);
+
+            [DllImport("ProtoInputLoader64.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+            public static extern void SetForwardRawInputToDinput(uint instanceHandle, bool enable);
+            
+            [DllImport("ProtoInputLoader64.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+            public static extern void SetDinput8FPSFix(uint instanceHandle, bool enable);
 
             [DllImport("ProtoInputLoader64.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
             public static extern void SetSetWindowPosSettings(uint instanceHandle, int posx, int posy, int width, int height);
@@ -816,6 +828,30 @@ namespace Nucleus.Gaming.Coop.ProtoInput
             else
             {
                 ProtoInput64.DinputHookAlsoHooksGetDeviceState(instanceHandle, enable);
+            }
+        }
+
+        public void SetForwardRawInputToDinput(uint instanceHandle, bool enable)
+        {
+            if (IntPtr.Size == 4)
+            {
+                ProtoInput32.SetForwardRawInputToDinput(instanceHandle, enable);
+            }
+            else
+            {
+                ProtoInput64.SetForwardRawInputToDinput(instanceHandle, enable);
+            }
+        }
+
+        public void SetDinput8FPSFix(uint instanceHandle, bool dinput8FPSFix)
+        {
+            if (IntPtr.Size == 4)
+            {
+                ProtoInput32.SetDinput8FPSFix(instanceHandle, dinput8FPSFix);
+            }
+            else
+            {
+                ProtoInput64.SetDinput8FPSFix(instanceHandle, dinput8FPSFix);
             }
         }
 

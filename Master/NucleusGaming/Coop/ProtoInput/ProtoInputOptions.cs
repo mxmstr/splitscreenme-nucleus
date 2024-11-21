@@ -66,6 +66,10 @@ namespace Nucleus.Gaming.Coop.ProtoInput
 
         public bool UseDinputRedirection;
 
+        public bool ForwardRawInputToDinput;
+
+        public bool Dinput8FPSFix;
+
         public bool UseOpenXinput;
 
         public bool MultipleProtoControllers;
